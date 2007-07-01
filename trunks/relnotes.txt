@@ -1,0 +1,8 @@
+
+
+Release Notes 0.9
+-------------------
+
+Final release 0.9 available
+This distribution includes also Jar file libraries, source files, licence and readme.txt installation instructions.
+
