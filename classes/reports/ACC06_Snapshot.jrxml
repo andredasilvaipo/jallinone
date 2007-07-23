@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="ACC06_Snapshot"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="842"
+		 columnWidth="535"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false"
+		 resourceBundle="ACC06_Snapshot">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="LANGUAGE_CODE" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["EN"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COMPANY_CODE_SYS01" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["COMP"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATE_FORMAT" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DECIMALS" isForPrompting="false" class="java.math.BigDecimal">
+		<defaultValueExpression ><![CDATA[new java.math.BigDecimal(2)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="START_DATE" isForPrompting="false" class="java.util.Date">
+		<defaultValueExpression ><![CDATA[new java.util.Date(System.currentTimeMillis()-864000000)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="END_DATE" isForPrompting="false" class="java.util.Date">
+		<defaultValueExpression ><![CDATA[new java.util.Date(System.currentTimeMillis()+86400000)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ACCOUNT_TYPE" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["P"]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[select COMPANY_CODE_SYS01,ACCOUNT_CODE_ACC02,DESCRIPTION,DEBIT_AMOUNT,CREDIT_AMOUNT,LEDGER_CODE_ACC01,DESCR_LEDGER from (
+select ACC06_JOURNAL_ROWS.COMPANY_CODE_SYS01,ACC06_JOURNAL_ROWS.ACCOUNT_CODE_ACC02,SYS10_TRANSLATIONS.DESCRIPTION,
+SUM(ACC06_JOURNAL_ROWS.DEBIT_AMOUNT) AS DEBIT_AMOUNT,
+SUM(ACC06_JOURNAL_ROWS.CREDIT_AMOUNT) AS CREDIT_AMOUNT,
+ACC02_ACCOUNTS.LEDGER_CODE_ACC01,SYS10_ACC01.DESCRIPTION AS DESCR_LEDGER
+from ACC06_JOURNAL_ROWS,ACC05_JOURNAL_HEADER,ACC02_ACCOUNTS,SYS10_TRANSLATIONS,SYS10_TRANSLATIONS SYS10_ACC01,ACC01_LEDGER
+where 
+ACC06_JOURNAL_ROWS.COMPANY_CODE_SYS01=$P{COMPANY_CODE_SYS01} and
+ACC06_JOURNAL_ROWS.COMPANY_CODE_SYS01=ACC05_JOURNAL_HEADER.COMPANY_CODE_SYS01 and
+ACC06_JOURNAL_ROWS.ITEM_YEAR_ACC05=ACC05_JOURNAL_HEADER.ITEM_YEAR and
+ACC06_JOURNAL_ROWS.PROGRESSIVE_ACC05=ACC05_JOURNAL_HEADER.PROGRESSIVE and
+ACC05_JOURNAL_HEADER.ITEM_DATE>=$P{START_DATE} and 
+ACC05_JOURNAL_HEADER.ITEM_DATE<=$P{END_DATE} and
+ACC06_JOURNAL_ROWS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and
+ACC06_JOURNAL_ROWS.ACCOUNT_CODE_ACC02=ACC02_ACCOUNTS.ACCOUNT_CODE and
+ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and
+SYS10_TRANSLATIONS.LANGUAGE_CODE=$P{LANGUAGE_CODE} and
+ACC02_ACCOUNTS.COMPANY_CODE_SYS01=ACC01_LEDGER.COMPANY_CODE_SYS01 and
+ACC02_ACCOUNTS.LEDGER_CODE_ACC01=ACC01_LEDGER.LEDGER_CODE and
+ACC01_LEDGER.PROGRESSIVE_SYS10=SYS10_ACC01.PROGRESSIVE and
+SYS10_ACC01.LANGUAGE_CODE=$P{LANGUAGE_CODE} and
+ACC01_LEDGER.ACCOUNT_TYPE=$P{ACCOUNT_TYPE} 
+GROUP BY ACC06_JOURNAL_ROWS.COMPANY_CODE_SYS01,ACC06_JOURNAL_ROWS.ACCOUNT_CODE_ACC02,
+SYS10_TRANSLATIONS.DESCRIPTION,ACC02_ACCOUNTS.LEDGER_CODE_ACC01,DESCR_LEDGER
+ORDER BY ACC06_JOURNAL_ROWS.ACCOUNT_CODE_ACC02
+) AUX
+WHERE
+NOT DEBIT_AMOUNT=0 OR NOT CREDIT_AMOUNT=0]]></queryString>
+
+	<field name="COMPANY_CODE_SYS01" class="java.lang.String"/>
+	<field name="ACCOUNT_CODE_ACC02" class="java.lang.String"/>
+	<field name="DESCRIPTION" class="java.lang.String"/>
+	<field name="DEBIT_AMOUNT" class="java.math.BigDecimal"/>
+	<field name="CREDIT_AMOUNT" class="java.math.BigDecimal"/>
+	<field name="LEDGER_CODE_ACC01" class="java.lang.String"/>
+	<field name="DESCR_LEDGER" class="java.lang.String"/>
+
+	<variable name="DEBIT_VALUE" class="java.math.BigDecimal" resetType="Group" resetGroup="LEDGER_CODE_ACC01" calculation="Sum">
+		<variableExpression><![CDATA[$F{DEBIT_AMOUNT}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+	</variable>
+	<variable name="CREDIT_VALUE" class="java.math.BigDecimal" resetType="Group" resetGroup="LEDGER_CODE_ACC01" calculation="Sum">
+		<variableExpression><![CDATA[$F{CREDIT_AMOUNT}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_CREDIT" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[($F{CREDIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{CREDIT_AMOUNT}).subtract(
+$F{DEBIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{DEBIT_AMOUNT}
+)]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_DEBIT" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[($F{DEBIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{DEBIT_AMOUNT}).subtract(
+$F{CREDIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{CREDIT_AMOUNT}
+)]]></variableExpression>
+	</variable>
+	<variable name="TOTAL" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[$V{TOTAL_DEBIT}
+]]></variableExpression>
+	</variable>
+
+		<group  name="LEDGER_CODE_ACC01" >
+			<groupExpression><![CDATA[$F{LEDGER_CODE_ACC01}]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="17"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="69"
+						y="4"
+						width="323"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCR_LEDGER}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="4"
+						width="66"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{LEDGER_CODE_ACC01}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="393"
+						y="4"
+						width="69"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-3">
+							<printWhenExpression><![CDATA[new Boolean(
+$V{CREDIT_VALUE}==null ||
+$V{CREDIT_VALUE}.doubleValue()-$V{DEBIT_VALUE}.doubleValue()<0
+)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
+$V{DEBIT_VALUE}.subtract($V{CREDIT_VALUE}==null?new java.math.BigDecimal(0):$V{CREDIT_VALUE}),
+$P{DECIMALS}
+)]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="1"
+						width="534"
+						height="0"
+						forecolor="#CCCCCC"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="463"
+						y="4"
+						width="69"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-4">
+							<printWhenExpression><![CDATA[new Boolean(
+$V{DEBIT_VALUE}==null ||
+$V{CREDIT_VALUE}.doubleValue()-$V{DEBIT_VALUE}.doubleValue()>0
+)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
+$V{CREDIT_VALUE}.subtract($V{DEBIT_VALUE}==null?new java.math.BigDecimal(0):$V{DEBIT_VALUE}),
+$P{DECIMALS}
+)]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="16"
+						width="534"
+						height="0"
+						forecolor="#000000"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch" pen="Dotted"/>
+				</line>
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="50"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="50"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="37"
+						width="66"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left">
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{code}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="69"
+						y="37"
+						width="322"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{description}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="392"
+						y="37"
+						width="69"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-13"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ACCOUNT_TYPE}.equals("P") ?
+$R{credit}
+:
+$R{costs}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="462"
+						y="37"
+						width="68"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ACCOUNT_TYPE}.equals("P") ?
+$R{debit}
+:
+$R{proceeds}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="49"
+						width="534"
+						height="0"
+						forecolor="#000000"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch" pen="Dotted"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="181"
+						y="1"
+						width="66"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[new java.text.SimpleDateFormat(
+  $P{DATE_FORMAT}
+).format(
+  $P{START_DATE}
+)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="267"
+						y="1"
+						width="69"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-16"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[new java.text.SimpleDateFormat(
+  $P{DATE_FORMAT}
+).format(
+  $P{END_DATE}
+)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="250"
+						y="1"
+						width="16"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{to}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="153"
+						y="1"
+						width="27"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-18"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{from}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1"
+						y="1"
+						width="140"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-19"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ACCOUNT_TYPE}.equals("P") ?
+$R{credit/debit}
+:
+$R{costs/proceeds}]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="16"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="5"
+						width="66"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-7"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ACCOUNT_CODE_ACC02}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="393"
+						y="6"
+						width="69"
+						height="10"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-8"
+						isRemoveLineWhenBlank="true">
+							<printWhenExpression><![CDATA[new Boolean(
+$F{CREDIT_AMOUNT}==null ||
+$F{CREDIT_AMOUNT}.doubleValue()-$F{DEBIT_AMOUNT}.doubleValue()<0
+)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
+$F{DEBIT_AMOUNT}.subtract($F{CREDIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{CREDIT_AMOUNT}),
+$P{DECIMALS}
+)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="463"
+						y="6"
+						width="69"
+						height="10"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-9">
+							<printWhenExpression><![CDATA[new Boolean(
+$F{DEBIT_AMOUNT}==null ||
+$F{CREDIT_AMOUNT}.doubleValue()-$F{DEBIT_AMOUNT}.doubleValue()>0
+)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
+$F{CREDIT_AMOUNT}.subtract($F{DEBIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{DEBIT_AMOUNT}),
+$P{DECIMALS}
+)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="69"
+						y="5"
+						width="323"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRIPTION}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="1"
+						width="532"
+						height="0"
+						forecolor="#CCCCCC"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="35"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="393"
+						y="2"
+						width="69"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-22"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
+$V{TOTAL_DEBIT}==null || $V{TOTAL_DEBIT}.doubleValue()<0?new BigDecimal(0):$V{TOTAL_DEBIT},
+$P{DECIMALS}
+)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="463"
+						y="2"
+						width="69"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-23"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
+$V{TOTAL_CREDIT}==null || $V{TOTAL_CREDIT}.doubleValue()<0?new BigDecimal(0):$V{TOTAL_CREDIT},
+$P{DECIMALS}
+)]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="27"
+						width="534"
+						height="0"
+						forecolor="#000000"
+						key="line-5"/>
+					<graphicElement stretchType="NoStretch" pen="Dotted"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="295"
+						y="15"
+						width="237"
+						height="11"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-25"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[(
+$P{ACCOUNT_TYPE}.equals("P") ?
+($V{TOTAL}.doubleValue()>0?$R{activeSurplus}:$R{passiveSurplus}):
+($V{TOTAL}.doubleValue()<0?$R{profit}:$R{loss})
+)+
+" "+
+org.jallinone.reports.utils.server.ReportUtils.formatNumber(
+new BigDecimal(Math.abs($V{TOTAL}.doubleValue())),
+$P{DECIMALS}
+)]]></textFieldExpression>
+				</textField>
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="13"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Page" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="506"
+						y="1"
+						width="27"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{PAGE_NUMBER}.toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1"
+						y="1"
+						width="79"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[new java.text.SimpleDateFormat(
+  $P{DATE_FORMAT}
+).format(
+new java.util.Date()
+)]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>
