@@ -95,7 +95,7 @@ public class CreateConfigFileAction implements Action {
       }
       catch (Exception ex) {
         try {
-          new File(this.getClass().getResource("/").getPath() + "pooler.ini").delete();
+          new File(this.getClass().getResource("/").getFile() + "pooler.ini").delete();
           ConnectionManager.initConnectionSource(
               null,
               "org.openswing.swing.server.PoolerConnectionSource"
@@ -171,8 +171,7 @@ public class CreateConfigFileAction implements Action {
             sql = replace(sql, "DATETIME", "DATE");
           }
           else if (vo.getDriverName().equals("com.microsoft.jdbc.sqlserver.SQLServerDriver")) {
-            sql = replace(sql, "TIMESTAMP", "DATE");
-            sql = replace(sql, "DATETIME", "DATE");
+            sql = replace(sql, "TIMESTAMP", "DATETIME");
           }
 
           sql = replace(sql,"ON DELETE NO ACTION","");
@@ -367,7 +366,7 @@ public class CreateConfigFileAction implements Action {
       props.setProperty("user", user);
       props.setProperty("password", password);
       props.setProperty("url", url);
-      FileOutputStream out = new FileOutputStream(this.getClass().getResource("/").getPath()+"pooler.ini");
+      FileOutputStream out = new FileOutputStream(this.getClass().getResource("/").getFile()+"pooler.ini");
       props.save(out,"POOLER PROPERTIES");
       try {
         out.close();

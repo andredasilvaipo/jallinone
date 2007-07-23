@@ -1,6 +1,7 @@
 <project name="jAllInOne" default="allclasses-nosign" basedir=".">
 
   <property name="src" value="${basedir}/../src"/>
+  <property name="docs" value="${basedir}/../docs"/>
   <property name="classes" value="${basedir}/../classes"/>
   <property name="tmp" value="${basedir}/../tmp"/>
   <property name="lib" value="${basedir}/../lib"/>
@@ -213,5 +214,53 @@
       </fileset>
     </copy>
   </target>
+
+  <target name="createdistribution">
+    <mkdir dir="${tmp}"/>
+    <copy todir="${lib}" >
+      <fileset dir="${libOpenSwing}">
+        <include name="clientos.jar"/>
+        <include name="serveros.jar"/>
+      </fileset>
+    </copy>
+    <copy todir="${tmp}/lib" >
+      <fileset dir="${lib}" />
+    </copy>
+    <copy todir="${tmp}/pub" >
+      <fileset dir="${pub}" >
+        <include name="build.xml"/>
+        <include name="jallinone.war"/>
+      </fileset>
+    </copy>
+    <copy todir="${tmp}" >
+      <fileset dir="${basedir}/../" >
+        <include name="licence.txt"/>
+        <include name="README.txt"/>
+        <include name="relnotes.txt"/>
+      </fileset>
+    </copy>
+    <copy todir="${tmp}/docs" >
+      <fileset dir="${docs}" >
+        <include name="build.xml"/>
+      </fileset>
+    </copy>
+    <copy todir="${tmp}/classes" >
+      <fileset dir="${classes}">
+        <include name="*.xml"/>
+        <include name="images/*"/>
+        <include name="demo*/**"/>
+        <include name="reports/**"/>
+        <include name="*.ini"/>
+        <include name="*.jnlp"/>
+        <include name="*.jsp"/>
+      </fileset>
+    </copy>
+    <copy todir="${tmp}/src" >
+      <fileset dir="${src}">
+        <include name="org/**/*.java"/>
+      </fileset>
+    </copy>
+  </target>
+
 
 </project>
