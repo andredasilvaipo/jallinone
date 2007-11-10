@@ -1,0 +1,271 @@
+<project name="jAllInOne" default="allclasses-nosign" basedir=".">
+
+  <property name="src" value="${basedir}/../src"/>
+  <property name="docs" value="${basedir}/../docs"/>
+  <property name="classes" value="${basedir}/../classes"/>
+  <property name="tmp" value="${basedir}/../tmp"/>
+  <property name="lib" value="${basedir}/../lib"/>
+  <property name="pub" value="${basedir}/../pub"/>
+  <property name="libOpenSwing" value="${LIB_OPENSWING}"/>
+  <property name="webapps" value="${WEBAPPS}"/>
+  <property name="keystore" value="${KEYSTORE}"/>
+  <property name="alias" value="${ALIAS}"/>
+  <property name="storepass" value="${STOREPASS}"/>
+
+  <target name="allclasses">
+    <mkdir dir="${tmp}"/>
+    <copy todir="${tmp}/images" >
+      <fileset dir="${classes}/images"/>
+    </copy>
+    <copy todir="${tmp}/" >
+      <fileset dir="${classes}">
+        <include name="**/java/*.class"/>
+        <include name="**/client/*.class"/>
+        <include name="Resources_*.xml"/>
+      </fileset>
+    </copy>
+    <delete file="${tmp}/clientjaio.jar"/>
+    <jar jarfile="${tmp}/clientjaio.jar" basedir="${tmp}"/>
+    <copy todir="${lib}" >
+      <fileset dir="${tmp}">
+        <include name="clientjaio.jar"/>
+      </fileset>
+    </copy>
+    <delete dir="${tmp}"/>
+    <signjar jar="${lib}/clientjaio.jar" alias="${ALIAS}" storepass="${STOREPASS}" keystore="${keystore}" />
+    <signjar jar="${lib}/netscape.jar" alias="${ALIAS}" storepass="${STOREPASS}" keystore="${keystore}" />
+    <signjar jar="${lib}/jasperreports-1.2.7.jar" alias="${ALIAS}" storepass="${STOREPASS}" keystore="${keystore}" />
+    <signjar jar="${lib}/itext-1.3.1.jar" alias="${ALIAS}" storepass="${STOREPASS}" keystore="${keystore}" />
+    <signjar jar="${lib}/looks-2.0.1.jar" alias="${ALIAS}" storepass="${STOREPASS}" keystore="${keystore}" />
+
+    <copy todir="${webapps}/jAllInOne" >
+      <fileset dir="${lib}">
+        <include name="clientjaio.jar"/>
+        <include name="netscape.jar"/>
+        <include name="jasperreports-1.2.7.jar"/>
+        <include name="itext-1.3.1.jar"/>
+        <include name="looks-2.0.1.jar"/>
+      </fileset>
+      <fileset dir="${classes}">
+        <include name="launch.jnlp"/>
+        <include name="jAllInOne.jsp"/>
+        <include name="launch.jnlp"/>
+        <include name="appicon11.gif"/>
+        <include name="jAllInOne.jpg"/>
+      </fileset>
+    </copy>
+    <copy todir="${webapps}/jAllInOne" >
+      <fileset dir="${lib}">
+        <include name="jcalendar.jar"/>
+        <include name="jnlp.jar"/>
+      </fileset>
+      <fileset dir="${libOpenSwing}">
+        <include name="clientos.jar"/>
+      </fileset>
+    </copy>
+
+    <delete dir="${tmp}"/>
+    <mkdir dir="${tmp}"/>
+    <copy todir="${tmp}/org/" >
+      <fileset dir="${classes}/org/">
+        <include name="**/java/*.class"/>
+        <include name="**/server/*.class"/>
+      </fileset>
+    </copy>
+    <delete file="${tmp}/serverjaio.jar"/>
+    <jar jarfile="${tmp}/serverjaio.jar" basedir="${tmp}"/>
+    <copy todir="${lib}" >
+      <fileset dir="${tmp}">
+        <include name="serverjaio.jar"/>
+      </fileset>
+    </copy>
+    <delete dir="${tmp}"/>
+    <copy todir="${webapps}/jAllInOne/WEB-INF/lib" >
+      <fileset dir="${lib}">
+        <include name="serverjaio.jar"/>
+        <include name="pooler.jar"/>
+        <include name="jnlp-servlet.jar"/>
+        <include name="log4j-1.2.7.jar"/>
+        <include name="poi-2.0-RC2-20040102.jar"/>
+        <include name="mysql-connector-java-5.0.3-bin.jar"/>
+        <include name="jasperreports-1.2.7.jar"/>
+        <include name="itext-1.3.1.jar"/>
+        <include name="commons-collections-2.1.jar"/>
+        <include name="commons-beanutils-1.5.jar"/>
+        <include name="commons-digester-1.7.jar"/>
+        <include name="jruleengine.jar"/>
+        <include name="jsr94.jar"/>
+      </fileset>
+      <fileset dir="${libOpenSwing}">
+        <include name="serveros.jar"/>
+      </fileset>
+    </copy>
+    <copy todir="${webapps}/jAllInOne/WEB-INF" >
+      <fileset dir="${classes}">
+        <include name="web.xml"/>
+      </fileset>
+    </copy>
+    <copy todir="${webapps}/jAllInOne/WEB-INF/classes" >
+      <fileset dir="${classes}">
+        <include name="Resources_*.xml"/>
+        <include name="*.ini"/>
+        <include name="Rules.xml"/>
+        <include name="reports/*.jasper"/>
+        <include name="reports/*.properties"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="war">
+    <war warfile="${pub}/jallinone.war" webxml="${webapps}/jallinone/WEB-INF/web.xml" basedir="${webapps}/jAllInOne/"/>
+  </target>
+
+
+  <target name="allclasses-nosign">
+    <mkdir dir="${tmp}"/>
+    <copy todir="${tmp}/images" >
+      <fileset dir="${classes}/images"/>
+    </copy>
+    <copy todir="${tmp}/" >
+      <fileset dir="${classes}">
+        <include name="**/java/*.class"/>
+        <include name="**/client/*.class"/>
+        <include name="Resources_*.xml"/>
+      </fileset>
+    </copy>
+    <delete file="${tmp}/clientjaio.jar"/>
+    <jar jarfile="${tmp}/clientjaio.jar" basedir="${tmp}"/>
+    <copy todir="${lib}" >
+      <fileset dir="${tmp}">
+        <include name="clientjaio.jar"/>
+      </fileset>
+    </copy>
+    <delete dir="${tmp}"/>
+
+    <copy todir="${webapps}/jAllInOne" >
+      <fileset dir="${lib}">
+        <include name="clientjaio.jar"/>
+        <include name="netscape.jar"/>
+        <include name="jasperreports-1.2.7.jar"/>
+        <include name="itext-1.3.1.jar"/>
+        <include name="looks-2.0.1.jar"/>
+      </fileset>
+      <fileset dir="${classes}">
+        <include name="jAllInOne.jsp"/>
+        <include name="launch.jnlp"/>
+        <include name="appicon11.gif"/>
+        <include name="jAllInOne.jpg"/>
+      </fileset>
+    </copy>
+    <copy todir="${webapps}/jAllInOne" >
+      <fileset dir="${lib}">
+        <include name="jcalendar.jar"/>
+        <include name="jnlp.jar"/>
+      </fileset>
+      <fileset dir="${libOpenSwing}">
+        <include name="clientos.jar"/>
+      </fileset>
+    </copy>
+
+    <delete dir="${tmp}"/>
+    <mkdir dir="${tmp}"/>
+    <copy todir="${tmp}/org/" >
+      <fileset dir="${classes}/org/">
+        <include name="**/java/*.class"/>
+        <include name="**/server/*.class"/>
+      </fileset>
+    </copy>
+    <delete file="${tmp}/serverjaio.jar"/>
+    <jar jarfile="${tmp}/serverjaio.jar" basedir="${tmp}"/>
+    <copy todir="${lib}" >
+      <fileset dir="${tmp}">
+        <include name="serverjaio.jar"/>
+      </fileset>
+    </copy>
+    <delete dir="${tmp}"/>
+    <copy todir="${webapps}/jAllInOne/WEB-INF/lib" >
+      <fileset dir="${lib}">
+        <include name="serverjaio.jar"/>
+        <include name="pooler.jar"/>
+        <include name="log4j-1.2.7.jar"/>
+        <include name="poi-2.0-RC2-20040102.jar"/>
+        <include name="mysql-connector-java-5.0.3-bin.jar"/>
+        <include name="jasperreports-1.2.7.jar"/>
+        <include name="itext-1.3.1.jar"/>
+        <include name="commons-collections-2.1.jar"/>
+        <include name="commons-beanutils-1.5.jar"/>
+        <include name="commons-digester-1.7.jar"/>
+        <include name="jnlp-servlet.jar"/>
+        <include name="jruleengine.jar"/>
+        <include name="jsr94.jar"/>
+      </fileset>
+      <fileset dir="${libOpenSwing}">
+        <include name="serveros.jar"/>
+      </fileset>
+    </copy>
+    <copy todir="${webapps}/jAllInOne/WEB-INF" >
+      <fileset dir="${classes}">
+        <include name="web.xml"/>
+      </fileset>
+    </copy>
+    <copy todir="${webapps}/jAllInOne/WEB-INF/classes" >
+      <fileset dir="${classes}">
+        <include name="Resources_*.xml"/>
+        <include name="net/sf/**"/>
+        <include name="Rules.xml"/>
+        <include name="*.ini"/>
+        <include name="reports/*.jasper"/>
+        <include name="reports/*.properties"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="createdistribution">
+    <mkdir dir="${tmp}"/>
+    <copy todir="${lib}" >
+      <fileset dir="${libOpenSwing}">
+        <include name="clientos.jar"/>
+        <include name="serveros.jar"/>
+      </fileset>
+    </copy>
+    <copy todir="${tmp}/lib" >
+      <fileset dir="${lib}" />
+    </copy>
+    <copy todir="${tmp}/pub" >
+      <fileset dir="${pub}" >
+        <include name="build.xml"/>
+        <include name="jallinone.war"/>
+      </fileset>
+    </copy>
+    <copy todir="${tmp}" >
+      <fileset dir="${basedir}/../" >
+        <include name="licence.txt"/>
+        <include name="README.txt"/>
+        <include name="relnotes.txt"/>
+      </fileset>
+    </copy>
+    <copy todir="${tmp}/docs" >
+      <fileset dir="${docs}" >
+        <include name="build.xml"/>
+      </fileset>
+    </copy>
+    <copy todir="${tmp}/classes" >
+      <fileset dir="${classes}">
+        <include name="*.xml"/>
+        <include name="images/*"/>
+        <include name="demo*/**"/>
+        <include name="reports/**"/>
+        <include name="*.ini"/>
+        <include name="*.jnlp"/>
+        <include name="*.jsp"/>
+      </fileset>
+    </copy>
+    <copy todir="${tmp}/src" >
+      <fileset dir="${src}">
+        <include name="org/**/*.java"/>
+      </fileset>
+    </copy>
+  </target>
+
+
+</project>
