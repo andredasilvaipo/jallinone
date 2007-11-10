@@ -99,7 +99,7 @@ public class InsertLevelAction implements Action {
 
       // insert record in HIE01...
       pstmt = conn.prepareStatement(
-          "insert into HIE01_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE01,PROGRESSIVE_HIE02,LEVEL,ENABLED) values(?,?,?,?,?)"
+          "insert into HIE01_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE01,PROGRESSIVE_HIE02,LEV,ENABLED) values(?,?,?,?,?)"
       );
       pstmt.setBigDecimal(1,progressiveHIE01);
       pstmt.setBigDecimal(2,vo.getProgressiveHie01HIE01());

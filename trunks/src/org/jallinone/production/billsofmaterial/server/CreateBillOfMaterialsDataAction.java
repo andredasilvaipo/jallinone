@@ -123,7 +123,7 @@ public class CreateBillOfMaterialsDataAction implements Action {
       DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
 
       pstmt = conn.prepareStatement(
-        "insert into TMP01_BILL_OF_MATERIALS(REPORT_ID,PROGRESSIVE,COMPANY_CODE,PAD,ITEM_CODE,DESCRIPTION,LEVEL,QTY,UM,PRICE,TOTAL_PRICE,COST,TOTAL_COST) values(?,?,?,?,?,?,?,?,?,?,?,?,?)"
+        "insert into TMP01_BILL_OF_MATERIALS(REPORT_ID,PROGRESSIVE,COMPANY_CODE,PAD,ITEM_CODE,DESCRIPTION,LEV,QTY,UM,PRICE,TOTAL_PRICE,COST,TOTAL_COST) values(?,?,?,?,?,?,?,?,?,?,?,?,?)"
       );
       expandNode(0,"",0,null,format,qtyFormat,reportId,pstmt,root);
 

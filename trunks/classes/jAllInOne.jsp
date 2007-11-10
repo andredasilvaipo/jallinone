@@ -14,7 +14,7 @@
     width="500" height="400" align="baseline"
     codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2">
     <PARAM NAME="code" VALUE="org.jallinone.commons.client.ClientApplet">
-    <PARAM NAME=archive VALUE="clientjaio.jar,clientos.jar,jcalendar.jar,signedjdnc-0_6-all.jar,jnlp.jar">
+    <PARAM NAME=archive VALUE="clientjaio.jar,clientos.jar,jcalendar.jar,signedjdnc-0_6-all.jar,jnlp.jar,looks-2.0.1.jar">
     <PARAM NAME="codebase" VALUE=".">
     <PARAM NAME="type" VALUE="application/x-java-applet;jpi-version=1.4.2">
     <PARAM NAME=MAYSCRIPT value="true">
@@ -29,7 +29,7 @@
    height="400" align="baseline" code="org.jallinone.commons.client.ClientApplet"
    codebase="."
    pluginspage="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"
-   archive="clientjaio.jar,clientos.jar,jcalendar.jar,signedjdnc-0_6-all.jar,jnlp.jar" MAYSCRIPT="true"
+   archive="clientjaio.jar,clientos.jar,jcalendar.jar,signedjdnc-0_6-all.jar,jnlp.jar,looks-2.0.1.jar" MAYSCRIPT="true"
    SERVERURL=
         "<%=request.getScheme()%>://<%= request.getServerName()+
         ":"+request.getServerPort()+

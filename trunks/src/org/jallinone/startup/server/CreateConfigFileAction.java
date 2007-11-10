@@ -166,9 +166,11 @@ public class CreateConfigFileAction implements Action {
         sql.append(line);
         if (line.endsWith(";")) {
           if (vo.getDriverName().equals("oracle.jdbc.driver.OracleDriver")) {
-            sql = replace(sql, "VARCHAR", "VARCHAR2");
-            sql = replace(sql, "TIMESTAMP", "DATE");
-            sql = replace(sql, "DATETIME", "DATE");
+            sql = replace(sql, " VARCHAR(", " VARCHAR2(");
+            sql = replace(sql, " NUMERIC(", " NUMBER(");
+            sql = replace(sql, " DECIMAL(", " NUMBER(");
+            sql = replace(sql, " TIMESTAMP ", " DATE ");
+            sql = replace(sql, " DATETIME ", " DATE ");
           }
           else if (vo.getDriverName().equals("com.microsoft.jdbc.sqlserver.SQLServerDriver")) {
             sql = replace(sql, "TIMESTAMP", "DATETIME");
@@ -288,14 +290,24 @@ public class CreateConfigFileAction implements Action {
       for(int i=0;i<fks.size();i++) {
         sql = (StringBuffer)fks.get(i);
         pstmt = conn.prepareStatement(sql.toString());
-        pstmt.execute();
+        try {
+          pstmt.execute();
+        }
+        catch (SQLException ex4) {
+          System.out.println(ex4.toString());
+        }
         pstmt.close();
       }
 
       for(int i=0;i<indexes.size();i++) {
         sql = (StringBuffer)indexes.get(i);
         pstmt = conn.prepareStatement(sql.toString());
-        pstmt.execute();
+        try {
+          pstmt.execute();
+        }
+        catch (SQLException ex3) {
+          System.out.println(ex3.toString());
+        }
         pstmt.close();
       }
 
@@ -344,9 +356,10 @@ public class CreateConfigFileAction implements Action {
    * @return sql script with substitutions
    */
   private StringBuffer replace(StringBuffer b,String oldPattern,String newPattern) {
-    int i = -1;
-    while((i=b.indexOf(oldPattern))!=-1) {
+    int i = 0;
+    while((i=b.indexOf(oldPattern,i))!=-1) {
       b.replace(i,i+oldPattern.length(),newPattern);
+      i = i+oldPattern.length();
     }
     return b;
   }

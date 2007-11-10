@@ -24,6 +24,7 @@ import org.jallinone.system.java.ApplicationParametersVO;
 import java.awt.Color;
 import org.jallinone.subjects.java.Subject;
 import org.jallinone.commons.java.ApplicationConsts;
+import org.openswing.swing.table.profiles.client.FileGridProfileManager;
 
 
 /**
@@ -608,6 +609,9 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     ClientSettings.LOCK_OFF="unlock.gif";
     ClientSettings.LOCK_ON="lock.gif";
     ClientSettings.FILTER_PANEL_ON_GRID = true;
+
+    ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "com.jgoodies.looks.plastic.PlasticXPLookAndFeel";
+    ClientSettings.GRID_PROFILE_MANAGER = new FileGridProfileManager();
 
     ClientSettings.getInstance().setLanguage(languageId);
 

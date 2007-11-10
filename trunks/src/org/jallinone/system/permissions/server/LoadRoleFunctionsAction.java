@@ -95,9 +95,9 @@ public class LoadRoleFunctionsAction implements Action {
 
       // retrieve all subnodes of the specified node...
       pstmt = conn.prepareStatement(
-          "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEVEL from HIE01_LEVELS "+
+          "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV from HIE01_LEVELS "+
           "where ENABLED='Y' and PROGRESSIVE_HIE02=2 and PROGRESSIVE>=? "+
-          "order by LEVEL,PROGRESSIVE_HIE01,PROGRESSIVE"
+          "order by LEV,PROGRESSIVE_HIE01,PROGRESSIVE"
       );
       pstmt.setBigDecimal(1,progressiveHIE01);
       ResultSet rset = pstmt.executeQuery();

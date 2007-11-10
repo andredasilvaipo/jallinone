@@ -115,12 +115,12 @@ public class UpdateEmployeeAction implements Action {
       attribute2dbField.put("managerProgressiveReg04SCH01","MANAGER_PROGRESSIVE_REG04");
       attribute2dbField.put("assistantProgressiveReg04SCH01","ASSISTANT_PROGRESSIVE_REG04");
       attribute2dbField.put("salarySCH01","SALARY");
-      attribute2dbField.put("levelSCH01","LEVEL");
+      attribute2dbField.put("levelSCH01","LEV");
       attribute2dbField.put("enabledSCH01","ENABLED");
       attribute2dbField.put("engagedDateSCH01","ENGAGED_DATE");
       attribute2dbField.put("dismissalDateSCH01","DISMISSAL_DATE");
-      attribute2dbField.put("managerCompanyCodeSys01SCH01","COMPANY_CODE_SYS01_MANAGER_SCH01");
-      attribute2dbField.put("assistantCompanyCodeSys01SCH01","COMPANY_CODE_SYS01_ASSISTANT_SCH01");
+      attribute2dbField.put("managerCompanyCodeSys01SCH01","COMPANY_CODE_SYS01_MAN_SCH01");
+      attribute2dbField.put("assistantCompanyCodeSys01SCH01","COMPANY_CODE_SYS01_ASS_SCH01");
 
 
       res = new CustomizeQueryUtil().updateTable(

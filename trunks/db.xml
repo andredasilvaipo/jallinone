@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="yes" ?>
 <DBMODEL Version="4.0">
 <SETTINGS>
-<GLOBALSETTINGS ModelName="db" IDModel="0" IDVersion="0" VersionStr="1.0.0.0" Comments="" UseVersionHistroy="1" AutoIncVersion="1" DatabaseType="MySQL" ZoomFac="80.00" XPos="1500" YPos="1169" DefaultDataType="33" DefaultTablePrefix="0" DefSaveDBConn="" DefSyncDBConn="" DefQueryDBConn="" Printer="Canon BJC-6000" HPageCount="1.993187347931874" PageAspectRatio="1.431747134421674" PageOrientation="1" PageFormat="A4 (210x297 mm, 8.26x11.7 inches)" SelectedPages="" UsePositionGrid="1" PositionGridX="20" PositionGridY="20" TableNameInRefs="1" DefaultTableType="0" ActivateRefDefForNewRelations="1" FKPrefix="" FKPostfix="" CreateFKRefDefIndex="1" DBQuoteCharacter="`" CreateSQLforLinkedObjects="0" DefModelFont="Tahoma" CanvasWidth="8649" CanvasHeight="6001" />
+<GLOBALSETTINGS ModelName="db" IDModel="0" IDVersion="0" VersionStr="1.0.0.0" Comments="" UseVersionHistroy="1" AutoIncVersion="1" DatabaseType="MySQL" ZoomFac="80.00" XPos="1501" YPos="1169" DefaultDataType="33" DefaultTablePrefix="0" DefSaveDBConn="" DefSyncDBConn="" DefQueryDBConn="" Printer="Canon BJC-6000" HPageCount="1.993187347931874" PageAspectRatio="1.431747134421674" PageOrientation="1" PageFormat="A4 (210x297 mm, 8.26x11.7 inches)" SelectedPages="" UsePositionGrid="1" PositionGridX="20" PositionGridY="20" TableNameInRefs="1" DefaultTableType="0" ActivateRefDefForNewRelations="1" FKPrefix="" FKPostfix="" CreateFKRefDefIndex="1" DBQuoteCharacter="`" CreateSQLforLinkedObjects="0" DefModelFont="Tahoma" CanvasWidth="8649" CanvasHeight="6001" />
 <DATATYPEGROUPS>
 <DATATYPEGROUP Name="Numeric Types" Icon="1" />
 <DATATYPEGROUP Name="Date and Time Types" Icon="2" />
@@ -342,17 +342,17 @@
 <INDEXCOLUMN idColumn="1055" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1607" IndexName="WAR01_WAREHOUSES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1153">
+<INDEX ID="1607" IndexName="WAR01_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1153">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3907" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4371" IndexName="WAR01_WAREHOUSES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4369">
+<INDEX ID="4371" IndexName="WAR01_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4369">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4372" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4787" IndexName="WAR01_WAREHOUSES_FKIndex3" IndexKind="1" FKRefDef_Obj_id="3885">
+<INDEX ID="4787" IndexName="WAR01_FKIndex3" IndexKind="1" FKRefDef_Obj_id="3885">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4785" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -428,7 +428,7 @@
 <INDEXCOLUMN idColumn="1134" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5808" IndexName="SYS01_COMPANIES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5806">
+<INDEX ID="5808" IndexName="SYS01_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5806">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5809" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -480,7 +480,7 @@
 <INDEXCOLUMN idColumn="4017" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1625" IndexName="SYS02_COMPANIES_ACCESS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1295">
+<INDEX ID="1625" IndexName="SYS02_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1295">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4016" LengthParam="0" />
 <INDEXCOLUMN idColumn="4017" LengthParam="0" />
@@ -553,12 +553,12 @@
 <INDEXCOLUMN idColumn="1192" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1620" IndexName="SYS03_USERS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1281">
+<INDEX ID="1620" IndexName="SYS03_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1281">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1308" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4388" IndexName="SYS03_USERS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4385">
+<INDEX ID="4388" IndexName="SYS03_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4385">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4389" LengthParam="0" />
 <INDEXCOLUMN idColumn="4390" LengthParam="0" />
@@ -689,7 +689,7 @@
 <INDEXCOLUMN idColumn="4015" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1612" IndexName="SYS07_ROLE_FUNCTIONS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1236">
+<INDEX ID="1612" IndexName="SYS07_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1236">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4013" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -735,7 +735,7 @@
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
-<COLUMN ID="1254" ColName="DESCRIPTION" PrevColName="" Pos="3" idDatatype="20" DatatypeParams="(255)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<COLUMN ID="1254" ColName="DESCRIPTION" PrevColName="" Pos="3" idDatatype="20" DatatypeParams="(255)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
@@ -751,7 +751,7 @@
 <INDEXCOLUMN idColumn="1252" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1629" IndexName="SYS10_TRANSLATIONS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1278">
+<INDEX ID="1629" IndexName="SYS10_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1278">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1252" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -814,7 +814,7 @@
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
-<COLUMN ID="3901" ColName="LEVEL" PrevColName="" Pos="3" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<COLUMN ID="3901" ColName="LEV" PrevColName="" Pos="3" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
@@ -854,7 +854,7 @@
 <INDEXCOLUMN idColumn="1304" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4788" IndexName="HIE01_LEVELS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="3903">
+<INDEX ID="4788" IndexName="HIE01_FKIndex1" IndexKind="1" FKRefDef_Obj_id="3903">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4775" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -905,7 +905,7 @@
 <INDEXCOLUMN idColumn="1318" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1638" IndexName="HIE02_HIERARCHIES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1320">
+<INDEX ID="1638" IndexName="HIE02_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1320">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1323" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -1100,63 +1100,63 @@
 <INDEXCOLUMN idColumn="1337" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1613" IndexName="ITM01_ITEMS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1342">
+<INDEX ID="1613" IndexName="ITM01_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1342">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3918" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1640" IndexName="ITM01_ITEMS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1445">
+<INDEX ID="1640" IndexName="ITM01_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1445">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3918" LengthParam="0" />
 <INDEXCOLUMN idColumn="4916" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1641" IndexName="ITM01_ITEMS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="1356">
+<INDEX ID="1641" IndexName="ITM01_FKIndex3" IndexKind="1" FKRefDef_Obj_id="1356">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1359" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1644" IndexName="ITM01_ITEMS_FKIndex4" IndexKind="1" FKRefDef_Obj_id="1424">
+<INDEX ID="1644" IndexName="ITM01_FKIndex4" IndexKind="1" FKRefDef_Obj_id="1424">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="2868" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1645" IndexName="ITM01_ITEMS_FKIndex5" IndexKind="1" FKRefDef_Obj_id="1421">
+<INDEX ID="1645" IndexName="ITM01_FKIndex5" IndexKind="1" FKRefDef_Obj_id="1421">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1427" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2865" IndexName="ITM01_ITEMS_FKIndex6" IndexKind="1" FKRefDef_Obj_id="2863">
+<INDEX ID="2865" IndexName="ITM01_FKIndex6" IndexKind="1" FKRefDef_Obj_id="2863">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="2873" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2871" IndexName="ITM01_ITEMS_FKIndex7" IndexKind="1" FKRefDef_Obj_id="2869">
+<INDEX ID="2871" IndexName="ITM01_FKIndex7" IndexKind="1" FKRefDef_Obj_id="2869">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="2872" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2876" IndexName="ITM01_ITEMS_FKIndex8" IndexKind="1" FKRefDef_Obj_id="2874">
+<INDEX ID="2876" IndexName="ITM01_FKIndex8" IndexKind="1" FKRefDef_Obj_id="2874">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="2877" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2880" IndexName="ITM01_ITEMS_FKIndex9" IndexKind="1" FKRefDef_Obj_id="2878">
+<INDEX ID="2880" IndexName="ITM01_FKIndex9" IndexKind="1" FKRefDef_Obj_id="2878">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="2881" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4210" IndexName="ITM01_ITEMS_FKIndex10" IndexKind="1" FKRefDef_Obj_id="4208">
+<INDEX ID="4210" IndexName="ITM01_FKIndex10" IndexKind="1" FKRefDef_Obj_id="4208">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4211" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4214" IndexName="ITM01_ITEMS_FKIndex11" IndexKind="1" FKRefDef_Obj_id="4212">
+<INDEX ID="4214" IndexName="ITM01_FKIndex11" IndexKind="1" FKRefDef_Obj_id="4212">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4215" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6273" IndexName="ITM01_ITEMS_FKIndex12" IndexKind="1" FKRefDef_Obj_id="6270">
+<INDEX ID="6273" IndexName="ITM01_FKIndex12" IndexKind="1" FKRefDef_Obj_id="6270">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3918" LengthParam="0" />
 <INDEXCOLUMN idColumn="6274" LengthParam="0" />
@@ -1214,18 +1214,18 @@
 <INDEXCOLUMN idColumn="4001" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1611" IndexName="WAR03_ITEMS_AVAILABILITY_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1381">
+<INDEX ID="1611" IndexName="WAR03_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1381">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4005" LengthParam="0" />
 <INDEXCOLUMN idColumn="3916" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="3897" IndexName="WAR03_ITEMS_AVAILABILITY_FKIndex2" IndexKind="1" FKRefDef_Obj_id="3895">
+<INDEX ID="3897" IndexName="WAR03_FKIndex2" IndexKind="1" FKRefDef_Obj_id="3895">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4001" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4708" IndexName="WAR03_ITEMS_AVAILABILITY_FKIndex3" IndexKind="1" FKRefDef_Obj_id="4705">
+<INDEX ID="4708" IndexName="WAR03_FKIndex3" IndexKind="1" FKRefDef_Obj_id="4705">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4005" LengthParam="0" />
 <INDEXCOLUMN idColumn="4709" LengthParam="0" />
@@ -1343,12 +1343,12 @@
 <INDEXCOLUMN idColumn="4781" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1616" IndexName="ITM02_ITEM_TYPES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1464">
+<INDEX ID="1616" IndexName="ITM02_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1464">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3945" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4789" IndexName="ITM02_ITEM_TYPES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1457">
+<INDEX ID="4789" IndexName="ITM02_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1457">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4781" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -1393,12 +1393,12 @@
 <INDEXCOLUMN idColumn="1478" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1614" IndexName="SAL01_PRICELISTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1491">
+<INDEX ID="1614" IndexName="SAL01_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1491">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4022" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1670" IndexName="SAL01_PRICELISTS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1668">
+<INDEX ID="1670" IndexName="SAL01_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1668">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1671" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -1448,13 +1448,13 @@
 <INDEXCOLUMN idColumn="4027" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1642" IndexName="SAL02_PRICES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1505">
+<INDEX ID="1642" IndexName="SAL02_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1505">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4026" LengthParam="0" />
 <INDEXCOLUMN idColumn="4032" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1649" IndexName="SAL02_PRICES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1496">
+<INDEX ID="1649" IndexName="SAL02_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1496">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4026" LengthParam="0" />
 <INDEXCOLUMN idColumn="4027" LengthParam="0" />
@@ -1545,12 +1545,12 @@
 <INDEXCOLUMN idColumn="1514" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1615" IndexName="SAL03_DISCOUNTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1522">
+<INDEX ID="1615" IndexName="SAL03_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1522">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3932" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1676" IndexName="SAL03_DISCOUNTS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1674">
+<INDEX ID="1676" IndexName="SAL03_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1674">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1677" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -1587,13 +1587,13 @@
 <INDEXCOLUMN idColumn="4030" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1643" IndexName="SAL04_ITEM_DISCOUNTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1546">
+<INDEX ID="1643" IndexName="SAL04_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1546">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4029" LengthParam="0" />
 <INDEXCOLUMN idColumn="4030" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1652" IndexName="SAL04_ITEM_DISCOUNTS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1538">
+<INDEX ID="1652" IndexName="SAL04_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1538">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4029" LengthParam="0" />
 <INDEXCOLUMN idColumn="4063" LengthParam="0" />
@@ -1631,12 +1631,12 @@
 <INDEXCOLUMN idColumn="4082" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1637" IndexName="SAL05_HIERAR_DISCOUNTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1573">
+<INDEX ID="1637" IndexName="SAL05_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1573">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4082" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1650" IndexName="SAL05_HIERAR_DISCOUNTS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1564">
+<INDEX ID="1650" IndexName="SAL05_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1564">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4084" LengthParam="0" />
 <INDEXCOLUMN idColumn="4986" LengthParam="0" />
@@ -1755,17 +1755,17 @@
 <INDEXCOLUMN idColumn="1681" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1690" IndexName="SAL06_CHARGES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1688">
+<INDEX ID="1690" IndexName="SAL06_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1688">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3925" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1694" IndexName="SAL06_CHARGES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1692">
+<INDEX ID="1694" IndexName="SAL06_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1692">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1695" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1748" IndexName="SAL06_CHARGES_FKIndex3" IndexKind="1" FKRefDef_Obj_id="1746">
+<INDEX ID="1748" IndexName="SAL06_FKIndex3" IndexKind="1" FKRefDef_Obj_id="1746">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1749" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -1929,12 +1929,12 @@
 <INDEXCOLUMN idColumn="1699" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1711" IndexName="REG04_SUBJECTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1709">
+<INDEX ID="1711" IndexName="REG04_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1709">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3941" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4228" IndexName="REG04_SUBJECTS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4225">
+<INDEX ID="4228" IndexName="REG04_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4225">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4229" LengthParam="0" />
 <INDEXCOLUMN idColumn="4232" LengthParam="0" />
@@ -2037,55 +2037,55 @@
 <INDEXCOLUMN idColumn="4056" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1732" IndexName="SAL07_CUSTOMERS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1729">
-<INDEXCOLUMNS>
-<INDEXCOLUMN idColumn="4047" LengthParam="0" />
-<INDEXCOLUMN idColumn="4056" LengthParam="0" />
-</INDEXCOLUMNS>
-</INDEX>
-<INDEX ID="1743" IndexName="SAL07_CUSTOMERS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1740">
+<INDEX ID="1743" IndexName="SAL07_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1740">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4047" LengthParam="0" />
 <INDEXCOLUMN idColumn="1745" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2821" IndexName="SAL07_CUSTOMERS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="2819">
+<INDEX ID="2821" IndexName="SAL07_FKIndex3" IndexKind="1" FKRefDef_Obj_id="2819">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="2822" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4293" IndexName="SAL07_CUSTOMERS_FKIndex4" IndexKind="1" FKRefDef_Obj_id="4291">
+<INDEX ID="4293" IndexName="SAL07_FKIndex4" IndexKind="1" FKRefDef_Obj_id="4291">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4294" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4989" IndexName="SAL07_CUSTOMERS_FKIndex5" IndexKind="1" FKRefDef_Obj_id="4987">
+<INDEX ID="4989" IndexName="SAL07_FKIndex5" IndexKind="1" FKRefDef_Obj_id="4987">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4990" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5722" IndexName="SAL07_CUSTOMERS_FKIndex6" IndexKind="1" FKRefDef_Obj_id="5719">
+<INDEX ID="5722" IndexName="SAL07_FKIndex6" IndexKind="1" FKRefDef_Obj_id="5719">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4047" LengthParam="0" />
 <INDEXCOLUMN idColumn="5750" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5748" IndexName="SAL07_CUSTOMERS_FKIndex7" IndexKind="1" FKRefDef_Obj_id="5745">
+<INDEX ID="5748" IndexName="SAL07_FKIndex7" IndexKind="1" FKRefDef_Obj_id="5745">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4047" LengthParam="0" />
 <INDEXCOLUMN idColumn="5766" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5761" IndexName="SAL07_CUSTOMERS_FKIndex8" IndexKind="1" FKRefDef_Obj_id="5758">
+<INDEX ID="5761" IndexName="SAL07_FKIndex8" IndexKind="1" FKRefDef_Obj_id="5758">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4047" LengthParam="0" />
 <INDEXCOLUMN idColumn="5764" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5763" IndexName="SAL07_CUSTOMERS_FKIndex9" IndexKind="1" FKRefDef_Obj_id="5762">
+<INDEX ID="5763" IndexName="SAL07_FKIndex9" IndexKind="1" FKRefDef_Obj_id="5762">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4047" LengthParam="0" />
 <INDEXCOLUMN idColumn="5765" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="6608" IndexName="SAL07_CUSTOMERS_FKIndex9" IndexKind="1" FKRefDef_Obj_id="1729">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="4047" LengthParam="0" />
+<INDEXCOLUMN idColumn="4056" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 </INDICES>
@@ -2120,13 +2120,13 @@
 <INDEXCOLUMN idColumn="4984" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1765" IndexName="SAL08_CUSTOMER_DISCOUNTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1762">
+<INDEX ID="1765" IndexName="SAL08_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1762">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4066" LengthParam="0" />
 <INDEXCOLUMN idColumn="4984" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4359" IndexName="SAL08_CUSTOMER_DISCOUNTS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1770">
+<INDEX ID="4359" IndexName="SAL08_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1770">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4066" LengthParam="0" />
 <INDEXCOLUMN idColumn="4067" LengthParam="0" />
@@ -2163,12 +2163,12 @@
 <INDEXCOLUMN idColumn="1798" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1793" IndexName="REG05_MEASURE_CONV_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1791">
+<INDEX ID="1793" IndexName="REG05_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1791">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1794" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1797" IndexName="REG05_MEASURE_CONV_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1795">
+<INDEX ID="1797" IndexName="REG05_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1795">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1798" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -2204,12 +2204,12 @@
 <INDEXCOLUMN idColumn="4035" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1815" IndexName="REG06_CURRENCY_CONV_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1813">
+<INDEX ID="1815" IndexName="REG06_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1813">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1822" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1821" IndexName="REG06_CURRENCY_CONV_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1819">
+<INDEX ID="1821" IndexName="REG06_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1819">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4035" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -2278,32 +2278,32 @@
 <INDEXCOLUMN idColumn="4038" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1834" IndexName="PUR01_SUPPLIERS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1831">
-<INDEXCOLUMNS>
-<INDEXCOLUMN idColumn="4037" LengthParam="0" />
-<INDEXCOLUMN idColumn="4038" LengthParam="0" />
-</INDEXCOLUMNS>
-</INDEX>
-<INDEX ID="2825" IndexName="PUR01_SUPPLIERS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="2823">
+<INDEX ID="2825" IndexName="PUR01_FKIndex2" IndexKind="1" FKRefDef_Obj_id="2823">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="2826" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4298" IndexName="PUR01_SUPPLIERS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="4296">
+<INDEX ID="4298" IndexName="PUR01_FKIndex3" IndexKind="1" FKRefDef_Obj_id="4296">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4299" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5729" IndexName="PUR01_SUPPLIERS_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5726">
+<INDEX ID="5729" IndexName="PUR01_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5726">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4037" LengthParam="0" />
 <INDEXCOLUMN idColumn="5756" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5755" IndexName="PUR01_SUPPLIERS_FKIndex5" IndexKind="1" FKRefDef_Obj_id="5752">
+<INDEX ID="5755" IndexName="PUR01_FKIndex5" IndexKind="1" FKRefDef_Obj_id="5752">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4037" LengthParam="0" />
 <INDEXCOLUMN idColumn="5776" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="6609" IndexName="PUR01_SUPPLIERS_FKIndex5" IndexKind="1" FKRefDef_Obj_id="1831">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="4037" LengthParam="0" />
+<INDEXCOLUMN idColumn="4038" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 </INDICES>
@@ -2379,29 +2379,29 @@
 <INDEXCOLUMN idColumn="4053" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1852" IndexName="PUR02_SUPPLIER_ITEMS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1849">
+<INDEX ID="1852" IndexName="PUR02_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1849">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4052" LengthParam="0" />
 <INDEXCOLUMN idColumn="4053" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4360" IndexName="PUR02_SUPPLIER_ITEMS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1842">
+<INDEX ID="4360" IndexName="PUR02_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1842">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4052" LengthParam="0" />
 <INDEXCOLUMN idColumn="4073" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5111" IndexName="PUR02_SUPPLIER_ITEMS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="5109">
+<INDEX ID="5111" IndexName="PUR02_FKIndex3" IndexKind="1" FKRefDef_Obj_id="5109">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5112" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5116" IndexName="PUR02_SUPPLIER_ITEMS_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5114">
+<INDEX ID="5116" IndexName="PUR02_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5114">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5117" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5120" IndexName="PUR02_SUPPLIER_ITEMS_FKIndex5" IndexKind="1" FKRefDef_Obj_id="5118">
+<INDEX ID="5120" IndexName="PUR02_FKIndex5" IndexKind="1" FKRefDef_Obj_id="5118">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5121" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -2451,12 +2451,12 @@
 <INDEXCOLUMN idColumn="1860" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1872" IndexName="PUR03_SUPPLIER_PRICELISTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1870">
+<INDEX ID="1872" IndexName="PUR03_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1870">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1873" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4361" IndexName="PUR03_SUPPLIER_PRICELISTS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1863">
+<INDEX ID="4361" IndexName="PUR03_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1863">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4077" LengthParam="0" />
 <INDEXCOLUMN idColumn="4078" LengthParam="0" />
@@ -2513,14 +2513,14 @@
 <INDEXCOLUMN idColumn="4115" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1889" IndexName="PUR04_SUPPLIER_PRICES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1885">
+<INDEX ID="1889" IndexName="PUR04_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1885">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4068" LengthParam="0" />
 <INDEXCOLUMN idColumn="4114" LengthParam="0" />
 <INDEXCOLUMN idColumn="4115" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1900" IndexName="PUR04_SUPPLIER_PRICES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1895">
+<INDEX ID="1900" IndexName="PUR04_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1895">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4068" LengthParam="0" />
 <INDEXCOLUMN idColumn="4114" LengthParam="0" />
@@ -2819,12 +2819,12 @@
 <INDEXCOLUMN idColumn="1905" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1936" IndexName="DOC01_SELLING_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1934">
+<INDEX ID="1936" IndexName="DOC01_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1934">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3985" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2089" IndexName="DOC01_SELLING_FKIndex2" IndexKind="1" FKRefDef_Obj_id="2084">
+<INDEX ID="2089" IndexName="DOC01_FKIndex2" IndexKind="1" FKRefDef_Obj_id="2084">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4165" LengthParam="0" />
 <INDEXCOLUMN idColumn="2091" LengthParam="0" />
@@ -2832,13 +2832,13 @@
 <INDEXCOLUMN idColumn="2093" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4362" IndexName="DOC01_SELLING_FKIndex3" IndexKind="1" FKRefDef_Obj_id="1925">
+<INDEX ID="4362" IndexName="DOC01_FKIndex3" IndexKind="1" FKRefDef_Obj_id="1925">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3985" LengthParam="0" />
 <INDEXCOLUMN idColumn="4164" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5356" IndexName="DOC01_SELLING_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5353">
+<INDEX ID="5356" IndexName="DOC01_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5353">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3985" LengthParam="0" />
 <INDEXCOLUMN idColumn="5357" LengthParam="0" />
@@ -3012,7 +3012,7 @@
 <INDEXCOLUMN idColumn="5214" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1951" IndexName="DOC02_SELLING_ITEM_ROWS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1946">
+<INDEX ID="1951" IndexName="DOC02_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1946">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4102" LengthParam="0" />
 <INDEXCOLUMN idColumn="1954" LengthParam="0" />
@@ -3020,18 +3020,18 @@
 <INDEXCOLUMN idColumn="1956" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5209" IndexName="DOC02_SELLING_ITEMS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5206">
+<INDEX ID="5209" IndexName="DOC02_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5206">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4102" LengthParam="0" />
 <INDEXCOLUMN idColumn="5214" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5369" IndexName="DOC02_SELLING_ITEMS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="5367">
+<INDEX ID="5369" IndexName="DOC02_FKIndex3" IndexKind="1" FKRefDef_Obj_id="5367">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5370" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5481" IndexName="DOC02_SELLING_ITEMS_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5479">
+<INDEX ID="5481" IndexName="DOC02_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5479">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5482" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -3140,7 +3140,7 @@
 <INDEXCOLUMN idColumn="5393" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1993" IndexName="DOC03_SELLING_CHARGES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1988">
+<INDEX ID="1993" IndexName="DOC03_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1988">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4100" LengthParam="0" />
 <INDEXCOLUMN idColumn="1996" LengthParam="0" />
@@ -3148,7 +3148,7 @@
 <INDEXCOLUMN idColumn="1998" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2003" IndexName="DOC03_SELLING_CHARGES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="2000">
+<INDEX ID="2003" IndexName="DOC03_FKIndex2" IndexKind="1" FKRefDef_Obj_id="2000">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4100" LengthParam="0" />
 <INDEXCOLUMN idColumn="5393" LengthParam="0" />
@@ -3256,7 +3256,7 @@
 <INDEXCOLUMN idColumn="4982" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2023" IndexName="DOC04_SELLING_DISCOUNTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2016">
+<INDEX ID="2023" IndexName="DOC04_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2016">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4112" LengthParam="0" />
 <INDEXCOLUMN idColumn="2026" LengthParam="0" />
@@ -3351,7 +3351,7 @@
 <INDEXCOLUMN idColumn="4980" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2068" IndexName="DOC05_SELLING_DISCOUNTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2063">
+<INDEX ID="2068" IndexName="DOC05_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2063">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4161" LengthParam="0" />
 <INDEXCOLUMN idColumn="2071" LengthParam="0" />
@@ -3593,12 +3593,12 @@
 <INDEXCOLUMN idColumn="2099" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2128" IndexName="DOC06_PURCHASE_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2126">
+<INDEX ID="2128" IndexName="DOC06_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2126">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3976" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2144" IndexName="DOC06_PURCHASE_FKIndex2" IndexKind="1" FKRefDef_Obj_id="2139">
+<INDEX ID="2144" IndexName="DOC06_FKIndex2" IndexKind="1" FKRefDef_Obj_id="2139">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4090" LengthParam="0" />
 <INDEXCOLUMN idColumn="2146" LengthParam="0" />
@@ -3606,13 +3606,13 @@
 <INDEXCOLUMN idColumn="2148" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4363" IndexName="DOC06_PURCHASE_FKIndex3" IndexKind="1" FKRefDef_Obj_id="2131">
+<INDEX ID="4363" IndexName="DOC06_FKIndex3" IndexKind="1" FKRefDef_Obj_id="2131">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3976" LengthParam="0" />
 <INDEXCOLUMN idColumn="4089" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5172" IndexName="DOC06_PURCHASE_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5169">
+<INDEX ID="5172" IndexName="DOC06_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5169">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3976" LengthParam="0" />
 <INDEXCOLUMN idColumn="5173" LengthParam="0" />
@@ -3780,7 +3780,7 @@
 <INDEXCOLUMN idColumn="5203" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2180" IndexName="DOC07_PURCHASE_ITEMS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2175">
+<INDEX ID="2180" IndexName="DOC07_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2175">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4151" LengthParam="0" />
 <INDEXCOLUMN idColumn="2183" LengthParam="0" />
@@ -3788,12 +3788,12 @@
 <INDEXCOLUMN idColumn="2185" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5148" IndexName="DOC07_PURCHASE_ITEMS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5146">
+<INDEX ID="5148" IndexName="DOC07_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5146">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5149" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5202" IndexName="DOC07_PURCHASE_ITEMS_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5199">
+<INDEX ID="5202" IndexName="DOC07_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5199">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4151" LengthParam="0" />
 <INDEXCOLUMN idColumn="5203" LengthParam="0" />
@@ -3870,7 +3870,7 @@
 <INDEXCOLUMN idColumn="2231" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2788" IndexName="SYS12_WINDOW_CUSTOMIZATIONS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2786">
+<INDEX ID="2788" IndexName="SYS12_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2786">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4086" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -4008,29 +4008,29 @@
 <INDEXCOLUMN idColumn="2254" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2286" IndexName="DOC08_DELIVERY_NOTES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2284">
+<INDEX ID="2286" IndexName="DOC08_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2284">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3975" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2770" IndexName="DOC08_DELIVERY_NOTES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="2768">
+<INDEX ID="2770" IndexName="DOC08_FKIndex2" IndexKind="1" FKRefDef_Obj_id="2768">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="2771" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5190" IndexName="DOC08_DELIVERY_NOTES_FKIndex3" IndexKind="1" FKRefDef_Obj_id="5187">
+<INDEX ID="5190" IndexName="DOC08_FKIndex3" IndexKind="1" FKRefDef_Obj_id="5187">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3975" LengthParam="0" />
 <INDEXCOLUMN idColumn="5191" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5264" IndexName="DOC08_DELIVERY_NOTES_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5261">
+<INDEX ID="5264" IndexName="DOC08_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5261">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3975" LengthParam="0" />
 <INDEXCOLUMN idColumn="5265" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5693" IndexName="DOC08_DELIVERY_NOTES_FKIndex5" IndexKind="1" FKRefDef_Obj_id="5559">
+<INDEX ID="5693" IndexName="DOC08_FKIndex5" IndexKind="1" FKRefDef_Obj_id="5559">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5568" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -4139,13 +4139,13 @@
 <INDEXCOLUMN idColumn="5186" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5185" IndexName="DOC09_IN_DELIVERY_NOTE_ITEMS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5182">
+<INDEX ID="5185" IndexName="DOC09_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5182">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4156" LengthParam="0" />
 <INDEXCOLUMN idColumn="5186" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5230" IndexName="DOC09_IN_DELIVERY_NOTE_ITEMS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5225">
+<INDEX ID="5230" IndexName="DOC09_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5225">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4156" LengthParam="0" />
 <INDEXCOLUMN idColumn="5231" LengthParam="0" />
@@ -4153,7 +4153,7 @@
 <INDEXCOLUMN idColumn="5233" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5239" IndexName="DOC09_IN_DELIVERY_NOTE_ITEMS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="5234">
+<INDEX ID="5239" IndexName="DOC09_FKIndex3" IndexKind="1" FKRefDef_Obj_id="5234">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4156" LengthParam="0" />
 <INDEXCOLUMN idColumn="5240" LengthParam="0" />
@@ -4161,12 +4161,12 @@
 <INDEXCOLUMN idColumn="5242" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5268" IndexName="DOC09_IN_DELIVERY_NOTE_ITEMS_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5266">
+<INDEX ID="5268" IndexName="DOC09_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5266">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5269" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5278" IndexName="DOC09_IN_DELIVERY_NOTE_ITEMS_FKIndex5" IndexKind="1" FKRefDef_Obj_id="5276">
+<INDEX ID="5278" IndexName="DOC09_FKIndex5" IndexKind="1" FKRefDef_Obj_id="5276">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5279" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -4269,7 +4269,7 @@
 <INDEXCOLUMN idColumn="5221" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2412" IndexName="DOC10_OUT_DELIVERY_NOTE_ITEMS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2405">
+<INDEX ID="2412" IndexName="DOC10_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2405">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4168" LengthParam="0" />
 <INDEXCOLUMN idColumn="2400" LengthParam="0" />
@@ -4278,7 +4278,7 @@
 <INDEXCOLUMN idColumn="5221" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5251" IndexName="DOC10_OUT_DELIVERY_NOTE_ITEMS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5246">
+<INDEX ID="5251" IndexName="DOC10_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5246">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4168" LengthParam="0" />
 <INDEXCOLUMN idColumn="5252" LengthParam="0" />
@@ -4286,12 +4286,12 @@
 <INDEXCOLUMN idColumn="5254" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5283" IndexName="DOC10_OUT_DELIVERY_NOTE_ITEMS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="5281">
+<INDEX ID="5283" IndexName="DOC10_FKIndex3" IndexKind="1" FKRefDef_Obj_id="5281">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5284" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5430" IndexName="DOC10_OUT_DELIVERY_NOTE_ITEMS_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5428">
+<INDEX ID="5430" IndexName="DOC10_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5428">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5431" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -4361,13 +4361,13 @@
 <INDEXCOLUMN idColumn="6294" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6289" IndexName="ITM04_COMPONENTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6286">
+<INDEX ID="6289" IndexName="ITM04_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6286">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6292" LengthParam="0" />
 <INDEXCOLUMN idColumn="6293" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6291" IndexName="ITM04_COMPONENTS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6290">
+<INDEX ID="6291" IndexName="ITM04_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6290">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6292" LengthParam="0" />
 <INDEXCOLUMN idColumn="6294" LengthParam="0" />
@@ -4412,7 +4412,7 @@
 <INDEXCOLUMN idColumn="2487" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2495" IndexName="PRO01_MANUFACTURES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2493">
+<INDEX ID="2495" IndexName="PRO01_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2493">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3955" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -4467,17 +4467,17 @@
 <INDEXCOLUMN idColumn="2529" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2524" IndexName="SAL09_ACTIVITIES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2522">
+<INDEX ID="2524" IndexName="SAL09_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2522">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5421" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2537" IndexName="SAL09_ACTIVITIES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="2535">
+<INDEX ID="2537" IndexName="SAL09_FKIndex2" IndexKind="1" FKRefDef_Obj_id="2535">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="2538" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5414" IndexName="SAL09_ACTIVITIES_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5412">
+<INDEX ID="5414" IndexName="SAL09_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5412">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5415" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -4590,7 +4590,7 @@
 <INDEXCOLUMN idColumn="2544" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2560" IndexName="DOC13_SELLING_ACTIVITIES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2555">
+<INDEX ID="2560" IndexName="DOC13_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2555">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4159" LengthParam="0" />
 <INDEXCOLUMN idColumn="2563" LengthParam="0" />
@@ -4656,17 +4656,17 @@
 <INDEXCOLUMN idColumn="2571" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2594" IndexName="REG07_TASKS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="2592">
+<INDEX ID="2594" IndexName="REG07_FKIndex2" IndexKind="1" FKRefDef_Obj_id="2592">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="2597" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6058" IndexName="REG07_TASKS_FKIndex4" IndexKind="1" FKRefDef_Obj_id="6056">
+<INDEX ID="6058" IndexName="REG07_FKIndex4" IndexKind="1" FKRefDef_Obj_id="6056">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6059" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6078" IndexName="REG07_TASKS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="6075">
+<INDEX ID="6078" IndexName="REG07_FKIndex3" IndexKind="1" FKRefDef_Obj_id="6075">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6059" LengthParam="0" />
 <INDEXCOLUMN idColumn="6079" LengthParam="0" />
@@ -4734,12 +4734,12 @@
 <INDEXCOLUMN idColumn="2582" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2606" IndexName="REG08_MACHINERIES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2604">
+<INDEX ID="2606" IndexName="REG08_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2604">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="2607" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4650" IndexName="PRO03_MACHINERIES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4648">
+<INDEX ID="4650" IndexName="PRO03_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4648">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4651" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -4839,36 +4839,36 @@
 <INDEXCOLUMN idColumn="2625" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2652" IndexName="PRO02_MANUFACTURE_PHASES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2649">
+<INDEX ID="2652" IndexName="PRO02_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2649">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3970" LengthParam="0" />
 <INDEXCOLUMN idColumn="4657" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2735" IndexName="PRO02_MANUFACTURE_PHASES_FKIndex3" IndexKind="1" FKRefDef_Obj_id="2733">
+<INDEX ID="2735" IndexName="PRO02_FKIndex3" IndexKind="1" FKRefDef_Obj_id="2733">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3970" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2741" IndexName="PRO02_MANUFACTURE_PHASES_FKIndex4" IndexKind="1" FKRefDef_Obj_id="2738">
+<INDEX ID="2741" IndexName="PRO02_FKIndex4" IndexKind="1" FKRefDef_Obj_id="2738">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3970" LengthParam="0" />
 <INDEXCOLUMN idColumn="2742" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6100" IndexName="PRO02_MANUFACTURE_PHASES_FKIndex5" IndexKind="1" FKRefDef_Obj_id="6097">
+<INDEX ID="6100" IndexName="PRO02_FKIndex5" IndexKind="1" FKRefDef_Obj_id="6097">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3970" LengthParam="0" />
 <INDEXCOLUMN idColumn="6102" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6193" IndexName="PRO02_MANUFACTURE_PHASES_FKIndex7" IndexKind="1" FKRefDef_Obj_id="6190">
+<INDEX ID="6193" IndexName="PRO02_FKIndex7" IndexKind="1" FKRefDef_Obj_id="6190">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3970" LengthParam="0" />
 <INDEXCOLUMN idColumn="6194" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6312" IndexName="PRO02_MANUFACTURE_PHASES_FKIndex8" IndexKind="1" FKRefDef_Obj_id="6309">
+<INDEX ID="6312" IndexName="PRO02_FKIndex8" IndexKind="1" FKRefDef_Obj_id="6309">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3970" LengthParam="0" />
 <INDEXCOLUMN idColumn="6313" LengthParam="0" />
@@ -4935,7 +4935,7 @@
 <INDEXCOLUMN idColumn="2777" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4686" IndexName="SYS13_WINDOWS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4684">
+<INDEX ID="4686" IndexName="SYS13_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4684">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4687" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -4999,7 +4999,7 @@
 <INDEXCOLUMN idColumn="2802" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2886" IndexName="REG10_PAYMENTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2815">
+<INDEX ID="2886" IndexName="REG10_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2815">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="2839" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -5086,7 +5086,7 @@
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
-<COLUMN ID="4189" ColName="COMPANY_CODE_SYS01_MANAGER_SCH01" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<COLUMN ID="4189" ColName="COMPANY_CODE_SYS01_MAN_SCH01" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
@@ -5096,7 +5096,7 @@
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
-<COLUMN ID="4187" ColName="COMPANY_CODE_SYS01_ASSISTANT_SCH01" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<COLUMN ID="4187" ColName="COMPANY_CODE_SYS01_ASS_SCH01" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
@@ -5111,7 +5111,7 @@
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
-<COLUMN ID="5068" ColName="LEVEL" PrevColName="" Pos="16" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<COLUMN ID="5068" ColName="LEV" PrevColName="" Pos="16" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
@@ -5143,25 +5143,25 @@
 <INDEXCOLUMN idColumn="4137" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="2900" IndexName="SCH01_EMPLOYEES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2897">
+<INDEX ID="2900" IndexName="SCH01_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2897">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4136" LengthParam="0" />
 <INDEXCOLUMN idColumn="4137" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4364" IndexName="SCH01_EMPLOYEES_FKIndex3" IndexKind="1" FKRefDef_Obj_id="2905">
+<INDEX ID="4364" IndexName="SCH01_FKIndex3" IndexKind="1" FKRefDef_Obj_id="2905">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4187" LengthParam="0" />
 <INDEXCOLUMN idColumn="4188" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4365" IndexName="SCH01_EMPLOYEES_FKIndex4" IndexKind="1" FKRefDef_Obj_id="2909">
+<INDEX ID="4365" IndexName="SCH01_FKIndex4" IndexKind="1" FKRefDef_Obj_id="2909">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4189" LengthParam="0" />
 <INDEXCOLUMN idColumn="4190" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6084" IndexName="SCH01_EMPLOYEES_FKIndex5" IndexKind="1" FKRefDef_Obj_id="6081">
+<INDEX ID="6084" IndexName="SCH01_FKIndex5" IndexKind="1" FKRefDef_Obj_id="6081">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4136" LengthParam="0" />
 <INDEXCOLUMN idColumn="6085" LengthParam="0" />
@@ -5214,7 +5214,7 @@
 <INDEXCOLUMN idColumn="2922" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4366" IndexName="SCH02_EMPLOYEE_CALENDAR_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2928">
+<INDEX ID="4366" IndexName="SCH02_FKIndex1" IndexKind="1" FKRefDef_Obj_id="2928">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4175" LengthParam="0" />
 <INDEXCOLUMN idColumn="4176" LengthParam="0" />
@@ -5244,7 +5244,7 @@
 <INDEXCOLUMN idColumn="3560" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="3565" IndexName="SCH05_COMPANY_CLOSINGS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="3563">
+<INDEX ID="3565" IndexName="SCH05_FKIndex1" IndexKind="1" FKRefDef_Obj_id="3563">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3973" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -5389,19 +5389,19 @@
 <INDEXCOLUMN idColumn="3777" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4239" IndexName="SCH06_SCHEDULED_ACTIVITIES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4236">
+<INDEX ID="4239" IndexName="SCH06_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4236">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5977" LengthParam="0" />
 <INDEXCOLUMN idColumn="4256" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4254" IndexName="SCH06_SCHEDULED_ACTIVITIES_FKIndex3" IndexKind="1" FKRefDef_Obj_id="4251">
+<INDEX ID="4254" IndexName="SCH06_FKIndex3" IndexKind="1" FKRefDef_Obj_id="4251">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5977" LengthParam="0" />
 <INDEXCOLUMN idColumn="4255" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5980" IndexName="SCH06_SCHEDULED_ACTIVITIES_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5978">
+<INDEX ID="5980" IndexName="SCH06_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5978">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5977" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -5457,13 +5457,13 @@
 <INDEXCOLUMN idColumn="3793" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="3800" IndexName="SCH07_SCHEDULED_EMPLOYEES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="3798">
+<INDEX ID="3800" IndexName="SCH07_FKIndex1" IndexKind="1" FKRefDef_Obj_id="3798">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4182" LengthParam="0" />
 <INDEXCOLUMN idColumn="4184" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4368" IndexName="SCH07_SCHEDULED_EMPLOYEES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="3808">
+<INDEX ID="4368" IndexName="SCH07_FKIndex2" IndexKind="1" FKRefDef_Obj_id="3808">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4182" LengthParam="0" />
 <INDEXCOLUMN idColumn="4183" LengthParam="0" />
@@ -5599,19 +5599,19 @@
 <INDEXCOLUMN idColumn="3843" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="3859" IndexName="WAR04_WAREHOUSE_MOVEMENTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="3853">
+<INDEX ID="3859" IndexName="WAR04_FKIndex1" IndexKind="1" FKRefDef_Obj_id="3853">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4008" LengthParam="0" />
 <INDEXCOLUMN idColumn="4003" LengthParam="0" />
 <INDEXCOLUMN idColumn="4004" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="3875" IndexName="WAR04_WAREHOUSE_MOVEMENTS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="3873">
+<INDEX ID="3875" IndexName="WAR04_FKIndex2" IndexKind="1" FKRefDef_Obj_id="3873">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="3882" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4702" IndexName="WAR02_WAREHOUSE_MOVEMENTS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="4699">
+<INDEX ID="4702" IndexName="WAR02_FKIndex3" IndexKind="1" FKRefDef_Obj_id="4699">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4008" LengthParam="0" />
 <INDEXCOLUMN idColumn="4703" LengthParam="0" />
@@ -5754,7 +5754,7 @@
 <INDEXCOLUMN idColumn="4260" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4817" IndexName="DOC14_DOCUMENTS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4815">
+<INDEX ID="4817" IndexName="DOC14_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4815">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4818" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -5799,7 +5799,7 @@
 <INDEXCOLUMN idColumn="4279" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4274" IndexName="DOC15_DOCUMENT_VERSIONS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4272">
+<INDEX ID="4274" IndexName="DOC15_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4272">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4824" LengthParam="0" />
 <INDEXCOLUMN idColumn="4276" LengthParam="0" />
@@ -5843,13 +5843,13 @@
 <INDEXCOLUMN idColumn="6132" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4308" IndexName="SCH08_ATTACHED_DOCS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4305">
+<INDEX ID="4308" IndexName="SCH08_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4305">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4826" LengthParam="0" />
 <INDEXCOLUMN idColumn="4319" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6131" IndexName="SCH08_ACT_ATTACHED_DOCS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6127">
+<INDEX ID="6131" IndexName="SCH08_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6127">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4826" LengthParam="0" />
 <INDEXCOLUMN idColumn="6132" LengthParam="0" />
@@ -5892,12 +5892,12 @@
 <INDEXCOLUMN idColumn="4812" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4336" IndexName="DOC16_DOC_HIERARCHY_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4334">
+<INDEX ID="4336" IndexName="DOC16_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4334">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4341" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4790" IndexName="DOC16_DOC_HIERARCHY_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4343">
+<INDEX ID="4790" IndexName="DOC16_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4343">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4784" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -5928,12 +5928,12 @@
 <INDEXCOLUMN idColumn="4384" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4378" IndexName="SYS14_USER_ROLES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4376">
+<INDEX ID="4378" IndexName="SYS14_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4376">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4383" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4382" IndexName="SYS14_USER_ROLES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4380">
+<INDEX ID="4382" IndexName="SYS14_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4380">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4384" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -5989,13 +5989,13 @@
 <INDEXCOLUMN idColumn="4419" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4410" IndexName="SCH09_SCHEDULED_MACHINERIES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4407">
+<INDEX ID="4410" IndexName="SCH09_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4407">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4658" LengthParam="0" />
 <INDEXCOLUMN idColumn="4417" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4414" IndexName="SCH09_SCHEDULED_MACHINERIES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4412">
+<INDEX ID="4414" IndexName="SCH09_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4412">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4658" LengthParam="0" />
 <INDEXCOLUMN idColumn="4659" LengthParam="0" />
@@ -6041,7 +6041,7 @@
 <INDEXCOLUMN idColumn="6552" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6550" IndexName="WKF01_PROCESSES_FKIndex3" IndexKind="1" FKRefDef_Obj_id="4434">
+<INDEX ID="6550" IndexName="WKF01_FKIndex3" IndexKind="1" FKRefDef_Obj_id="4434">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6546" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -6143,17 +6143,17 @@
 <INDEXCOLUMN idColumn="4443" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4465" IndexName="WKF02_PROCESS_ACTIVITIES_FKIndex3" IndexKind="1" FKRefDef_Obj_id="4463">
+<INDEX ID="4465" IndexName="WKF02_FKIndex3" IndexKind="1" FKRefDef_Obj_id="4463">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4466" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6095" IndexName="WKF02_PROCESS_ACTIVITIES_FKIndex4" IndexKind="1" FKRefDef_Obj_id="6093">
+<INDEX ID="6095" IndexName="WKF02_FKIndex4" IndexKind="1" FKRefDef_Obj_id="6093">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6096" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6571" IndexName="WKF02_PROCESS_ACTIVITIES_FKIndex3" IndexKind="1" FKRefDef_Obj_id="6569">
+<INDEX ID="6571" IndexName="WKF02_PRO_FKIndex3" IndexKind="1" FKRefDef_Obj_id="6569">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6572" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -6232,7 +6232,7 @@
 <INDEXCOLUMN idColumn="4470" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6565" IndexName="WKF04_PROCESS_PROPERTIES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4540">
+<INDEX ID="6565" IndexName="WKF04_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4540">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6554" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -6274,13 +6274,13 @@
 <INDEXCOLUMN idColumn="4485" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4481" IndexName="WKF05_ACTIVITY_PROPERTIES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4478">
+<INDEX ID="4481" IndexName="WKF05_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4478">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4487" LengthParam="0" />
 <INDEXCOLUMN idColumn="6578" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4484" IndexName="WKF05_ACTIVITY_PROPERTIES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4482">
+<INDEX ID="4484" IndexName="WKF05_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4482">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4485" LengthParam="0" />
 <INDEXCOLUMN idColumn="6578" LengthParam="0" />
@@ -6326,19 +6326,19 @@
 <INDEXCOLUMN idColumn="4492" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4503" IndexName="WKF06_ACTIVITY_RELS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4500">
+<INDEX ID="4503" IndexName="WKF06_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4500">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4507" LengthParam="0" />
 <INDEXCOLUMN idColumn="6563" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4505" IndexName="WKF06_ACTIVITY_RELS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4504">
+<INDEX ID="4505" IndexName="WKF06_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4504">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4508" LengthParam="0" />
 <INDEXCOLUMN idColumn="6563" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6566" IndexName="WKF06_ACTIVITY_RELS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="4510">
+<INDEX ID="6566" IndexName="WKF06_FKIndex3" IndexKind="1" FKRefDef_Obj_id="4510">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6563" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -6399,13 +6399,13 @@
 <INDEXCOLUMN idColumn="4516" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4525" IndexName="WKF07_REL_CONDITIONS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4522">
+<INDEX ID="4525" IndexName="WKF07_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4522">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4532" LengthParam="0" />
 <INDEXCOLUMN idColumn="6579" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4538" IndexName="WKF07_REL_CONDITIONS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4536">
+<INDEX ID="4538" IndexName="WKF07_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4536">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4539" LengthParam="0" />
 <INDEXCOLUMN idColumn="6579" LengthParam="0" />
@@ -6457,13 +6457,13 @@
 <INDEXCOLUMN idColumn="4611" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4607" IndexName="WKF10_INSTANCE_PROPERTIES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4604">
+<INDEX ID="4607" IndexName="WKF10_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4604">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4611" LengthParam="0" />
 <INDEXCOLUMN idColumn="6577" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4633" IndexName="WKF10_INSTANCE_PROPERTIES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4630">
+<INDEX ID="4633" IndexName="WKF10_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4630">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4634" LengthParam="0" />
 <INDEXCOLUMN idColumn="6577" LengthParam="0" />
@@ -6510,7 +6510,7 @@
 <INDEXCOLUMN idColumn="4551" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6568" IndexName="WKF08_PROCESS_INSTANCES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4553">
+<INDEX ID="6568" IndexName="WKF08_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4553">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6562" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -6556,7 +6556,7 @@
 <INDEXCOLUMN idColumn="4667" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4674" IndexName="REG15_REFERENCES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4671">
+<INDEX ID="4674" IndexName="REG15_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4671">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4675" LengthParam="0" />
 <INDEXCOLUMN idColumn="4676" LengthParam="0" />
@@ -6599,12 +6599,12 @@
 <INDEXCOLUMN idColumn="4793" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4715" IndexName="REG08_SUBJECT_HIERARCHIES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4713">
+<INDEX ID="4715" IndexName="REG08_SUB_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4713">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4717" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4791" IndexName="REG08_SUBJECT_HIERARCHIES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4721">
+<INDEX ID="4791" IndexName="REG08_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4721">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4786" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -6641,13 +6641,13 @@
 <INDEXCOLUMN idColumn="4771" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4762" IndexName="SAL10__SUBJECT_HIERAR_DISCOUNTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4759">
+<INDEX ID="4762" IndexName="SAL10_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4759">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4764" LengthParam="0" />
 <INDEXCOLUMN idColumn="4765" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4769" IndexName="SAL10__SUBJECT_HIERAR_DISCOUNTS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4767">
+<INDEX ID="4769" IndexName="SAL10_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4767">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4771" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -6690,18 +6690,18 @@
 <INDEXCOLUMN idColumn="4955" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4802" IndexName="REG16_SUBJECTS_LINKS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4799">
+<INDEX ID="4802" IndexName="REG16_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4799">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4804" LengthParam="0" />
 <INDEXCOLUMN idColumn="4805" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4954" IndexName="REG16_SUBJECTS_LINKS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4952">
+<INDEX ID="4954" IndexName="REG16_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4952">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4955" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4958" IndexName="REG16_SUBJECTS_LINKS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="4956">
+<INDEX ID="4958" IndexName="REG16_FKIndex3" IndexKind="1" FKRefDef_Obj_id="4956">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4959" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -6742,13 +6742,13 @@
 <INDEXCOLUMN idColumn="4839" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4831" IndexName="DOC17_DOCUMENT_LINKS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4828">
+<INDEX ID="4831" IndexName="DOC17_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4828">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4833" LengthParam="0" />
 <INDEXCOLUMN idColumn="4834" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4838" IndexName="DOC17_DOCUMENT_LINKS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4836">
+<INDEX ID="4838" IndexName="DOC17_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4836">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4839" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -6784,12 +6784,12 @@
 <INDEXCOLUMN idColumn="4848" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4847" IndexName="SYS15_REPORT_CUSTOMIZATIONS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4845">
+<INDEX ID="4847" IndexName="SYS15_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4845">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4848" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4852" IndexName="SYS15_REPORT_CUSTOMIZATIONS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4850">
+<INDEX ID="4852" IndexName="SYS15_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4850">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4853" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -6856,7 +6856,7 @@
 <INDEXCOLUMN idColumn="4863" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4861" IndexName="SYS16_CUSTOM_FUNCTIONS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4859">
+<INDEX ID="4861" IndexName="SYS16_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4859">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4863" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -6892,12 +6892,12 @@
 <INDEXCOLUMN idColumn="4904" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4897" IndexName="SYS18_FUNCTION_LINKS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4895">
+<INDEX ID="4897" IndexName="SYS18_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4895">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4899" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4903" IndexName="SYS18_FUNCTION_LINKS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4901">
+<INDEX ID="4903" IndexName="SYS18_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4901">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4904" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -6943,12 +6943,12 @@
 <INDEXCOLUMN idColumn="4927" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4931" IndexName="REG17_PAYMENT_INSTALMENTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4929">
+<INDEX ID="4931" IndexName="REG17_FKIndex1" IndexKind="1" FKRefDef_Obj_id="4929">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4932" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="4936" IndexName="REG17_PAYMENT_INSTALMENTS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4934">
+<INDEX ID="4936" IndexName="REG17_FKIndex2" IndexKind="1" FKRefDef_Obj_id="4934">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="4937" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -7014,7 +7014,7 @@
 <INDEXCOLUMN idColumn="4994" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5006" IndexName="REG18_DESTINATIONS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5003">
+<INDEX ID="5006" IndexName="REG18_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5003">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5007" LengthParam="0" />
 <INDEXCOLUMN idColumn="5008" LengthParam="0" />
@@ -7085,13 +7085,13 @@
 <INDEXCOLUMN idColumn="5043" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5040" IndexName="SAL10_AGENTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5037">
+<INDEX ID="5040" IndexName="SAL10_AGE_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5037">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5042" LengthParam="0" />
 <INDEXCOLUMN idColumn="5043" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5055" IndexName="SAL10_AGENTS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5053">
+<INDEX ID="5055" IndexName="SAL10_AGE_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5053">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5056" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -7135,7 +7135,7 @@
 <INDEXCOLUMN idColumn="5289" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5296" IndexName="WAR05_STORED_SERIAL_NUMBERS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5292">
+<INDEX ID="5296" IndexName="WAR05_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5292">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5297" LengthParam="0" />
 <INDEXCOLUMN idColumn="5298" LengthParam="0" />
@@ -7211,7 +7211,7 @@
 <INDEXCOLUMN idColumn="5303" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5321" IndexName="DOC11_IN_SERIAL_NUMBERS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5311">
+<INDEX ID="5321" IndexName="DOC11_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5311">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5322" LengthParam="0" />
 <INDEXCOLUMN idColumn="5323" LengthParam="0" />
@@ -7293,7 +7293,7 @@
 <INDEXCOLUMN idColumn="5308" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5342" IndexName="DOC12_OUT_SERIAL_NUMBERS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5332">
+<INDEX ID="5342" IndexName="DOC12_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5332">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5343" LengthParam="0" />
 <INDEXCOLUMN idColumn="5344" LengthParam="0" />
@@ -7343,12 +7343,12 @@
 <INDEXCOLUMN idColumn="5436" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5441" IndexName="SYS19_USER_PARAMS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5439">
+<INDEX ID="5441" IndexName="SYS19_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5439">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5442" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5445" IndexName="SYS19_USER_PARAMS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5443">
+<INDEX ID="5445" IndexName="SYS19_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5443">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5446" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -7402,7 +7402,7 @@
 <INDEXCOLUMN idColumn="5451" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5471" IndexName="DOC18_SELLING_SERIAL_NUMBERS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5465">
+<INDEX ID="5471" IndexName="DOC18_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5465">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5472" LengthParam="0" />
 <INDEXCOLUMN idColumn="5473" LengthParam="0" />
@@ -7505,12 +7505,12 @@
 <INDEXCOLUMN idColumn="5528" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5535" IndexName="DOC19_EXPIRATIONS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5533">
+<INDEX ID="5535" IndexName="DOC19_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5533">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5537" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5802" IndexName="DOC19_EXPIRATIONS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5799">
+<INDEX ID="5802" IndexName="DOC19_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5799">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5537" LengthParam="0" />
 <INDEXCOLUMN idColumn="5803" LengthParam="0" />
@@ -7588,7 +7588,7 @@
 <INDEXCOLUMN idColumn="5572" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5580" IndexName="ACC01_LEDGER_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5578">
+<INDEX ID="5580" IndexName="ACC01_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5578">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5581" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -7654,13 +7654,13 @@
 <INDEXCOLUMN idColumn="5585" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5629" IndexName="ACC02_ACCOUNTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5626">
+<INDEX ID="5629" IndexName="ACC02_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5626">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5630" LengthParam="0" />
 <INDEXCOLUMN idColumn="5631" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5635" IndexName="ACC02_ACCOUNTS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5633">
+<INDEX ID="5635" IndexName="ACC02_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5633">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5630" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -7762,12 +7762,12 @@
 <INDEXCOLUMN idColumn="5609" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5616" IndexName="ACC04_VAT_REGISTERS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5614">
+<INDEX ID="5616" IndexName="ACC04_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5614">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5617" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5707" IndexName="ACC04_VAT_REGISTERS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5704">
+<INDEX ID="5707" IndexName="ACC04_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5704">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5617" LengthParam="0" />
 <INDEXCOLUMN idColumn="5708" LengthParam="0" />
@@ -7822,12 +7822,12 @@
 <INDEXCOLUMN idColumn="5643" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5649" IndexName="ACC05_ACCOUNTING_JOURNAL_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5647">
+<INDEX ID="5649" IndexName="ACC05_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5647">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5650" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5654" IndexName="ACC05_ACCOUNTING_JOURNAL_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5652">
+<INDEX ID="5654" IndexName="ACC05_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5652">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5655" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -7900,14 +7900,14 @@
 <INDEXCOLUMN idColumn="5718" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5663" IndexName="ACC06_JOURNAL_ROWS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5659">
+<INDEX ID="5663" IndexName="ACC06_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5659">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5665" LengthParam="0" />
 <INDEXCOLUMN idColumn="5666" LengthParam="0" />
 <INDEXCOLUMN idColumn="5667" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5739" IndexName="ACC06_JOURNAL_ROWS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5736">
+<INDEX ID="5739" IndexName="ACC06_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5736">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5665" LengthParam="0" />
 <INDEXCOLUMN idColumn="5740" LengthParam="0" />
@@ -7979,7 +7979,7 @@
 <INDEXCOLUMN idColumn="5688" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5697" IndexName="ACC07_VAT_ROWS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5694">
+<INDEX ID="5697" IndexName="ACC07_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5694">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5698" LengthParam="0" />
 <INDEXCOLUMN idColumn="5699" LengthParam="0" />
@@ -8021,7 +8021,7 @@
 <INDEXCOLUMN idColumn="5783" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5787" IndexName="SYS20_COMPANY_PROGRESSIVES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5785">
+<INDEX ID="5787" IndexName="SYS20_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5785">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5788" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -8056,7 +8056,7 @@
 <INDEXCOLUMN idColumn="5821" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5818" IndexName="SYS21_COMPANY_PARAMS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5816">
+<INDEX ID="5818" IndexName="SYS21_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5816">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5819" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -8160,18 +8160,18 @@
 <INDEXCOLUMN idColumn="5829" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5838" IndexName="SCH03_CALL_OUTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5836">
+<INDEX ID="5838" IndexName="SCH03_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5836">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5839" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5844" IndexName="SCH03_CALL_OUTS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5841">
+<INDEX ID="5844" IndexName="SCH03_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5841">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5839" LengthParam="0" />
 <INDEXCOLUMN idColumn="5845" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5854" IndexName="SCH03_CALL_OUTS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="5849">
+<INDEX ID="5854" IndexName="SCH03_FKIndex3" IndexKind="1" FKRefDef_Obj_id="5849">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5839" LengthParam="0" />
 <INDEXCOLUMN idColumn="5855" LengthParam="0" />
@@ -8179,13 +8179,13 @@
 <INDEXCOLUMN idColumn="5857" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5905" IndexName="SCH03_CALL_OUT_REQUESTS_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5903">
+<INDEX ID="5905" IndexName="SCH03_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5903">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5839" LengthParam="0" />
 <INDEXCOLUMN idColumn="5908" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6005" IndexName="SCH03_CALL_OUT_REQUESTS_FKIndex5" IndexKind="1" FKRefDef_Obj_id="6002">
+<INDEX ID="6005" IndexName="SCH03_FKIndex5" IndexKind="1" FKRefDef_Obj_id="6002">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5839" LengthParam="0" />
 <INDEXCOLUMN idColumn="6006" LengthParam="0" />
@@ -8244,17 +8244,17 @@
 <INDEXCOLUMN idColumn="5894" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5889" IndexName="SCH10_CALL_OUTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5887">
+<INDEX ID="5889" IndexName="SCH10_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5887">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5891" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5913" IndexName="SCH10_CALL_OUTS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="5911">
+<INDEX ID="5913" IndexName="SCH10_FKIndex3" IndexKind="1" FKRefDef_Obj_id="5911">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5914" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5917" IndexName="SCH10_CALL_OUTS_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5915">
+<INDEX ID="5917" IndexName="SCH10_FKIndex4" IndexKind="1" FKRefDef_Obj_id="5915">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5918" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -8290,12 +8290,12 @@
 <INDEXCOLUMN idColumn="5931" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5924" IndexName="SCH11_CALL_OUT_TYPES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5922">
+<INDEX ID="5924" IndexName="SCH11_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5922">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5926" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5930" IndexName="SCH11_CALL_OUT_TYPES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5928">
+<INDEX ID="5930" IndexName="SCH11_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5928">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5931" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -8332,13 +8332,13 @@
 <INDEXCOLUMN idColumn="6092" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5944" IndexName="SCH12_CALL_OUT_TASKS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5941">
+<INDEX ID="5944" IndexName="SCH12_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5941">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5967" LengthParam="0" />
 <INDEXCOLUMN idColumn="5968" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6091" IndexName="SCH12_CALL_OUT_TASKS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6088">
+<INDEX ID="6091" IndexName="SCH12_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6088">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5967" LengthParam="0" />
 <INDEXCOLUMN idColumn="6092" LengthParam="0" />
@@ -8376,13 +8376,13 @@
 <INDEXCOLUMN idColumn="5972" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5949" IndexName="SCH13_CALL_OUT_MACHINERIES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5946">
+<INDEX ID="5949" IndexName="SCH13_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5946">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5970" LengthParam="0" />
 <INDEXCOLUMN idColumn="5971" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5962" IndexName="SCH13_CALL_OUT_MACHINERIES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5959">
+<INDEX ID="5962" IndexName="SCH13_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5959">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5970" LengthParam="0" />
 <INDEXCOLUMN idColumn="5972" LengthParam="0" />
@@ -8420,13 +8420,13 @@
 <INDEXCOLUMN idColumn="5975" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5954" IndexName="SCH14_CALL_OUT_ITEMS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5951">
+<INDEX ID="5954" IndexName="SCH14_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5951">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5973" LengthParam="0" />
 <INDEXCOLUMN idColumn="5974" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5966" IndexName="SCH14_CALL_OUT_ITEMS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5963">
+<INDEX ID="5966" IndexName="SCH14_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5963">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5973" LengthParam="0" />
 <INDEXCOLUMN idColumn="5975" LengthParam="0" />
@@ -8469,13 +8469,13 @@
 <INDEXCOLUMN idColumn="5996" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5988" IndexName="SCH15_SCHEDULED_ITEMS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5985">
+<INDEX ID="5988" IndexName="SCH15_FKIndex1" IndexKind="1" FKRefDef_Obj_id="5985">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5994" LengthParam="0" />
 <INDEXCOLUMN idColumn="5995" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="5993" IndexName="SCH15_SCHEDULED_ITEMS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5990">
+<INDEX ID="5993" IndexName="SCH15_FKIndex2" IndexKind="1" FKRefDef_Obj_id="5990">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="5994" LengthParam="0" />
 <INDEXCOLUMN idColumn="5996" LengthParam="0" />
@@ -8527,13 +8527,13 @@
 <INDEXCOLUMN idColumn="6051" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6050" IndexName="DOC20_DOC_PROPERTIES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6047">
+<INDEX ID="6050" IndexName="DOC20_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6047">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6020" LengthParam="0" />
 <INDEXCOLUMN idColumn="6051" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6108" IndexName="DOC20_DOC_PROPERTIES_FKIndex3" IndexKind="1" FKRefDef_Obj_id="6105">
+<INDEX ID="6108" IndexName="DOC20_FKIndex3" IndexKind="1" FKRefDef_Obj_id="6105">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6020" LengthParam="0" />
 <INDEXCOLUMN idColumn="6109" LengthParam="0" />
@@ -8584,17 +8584,17 @@
 <INDEXCOLUMN idColumn="6026" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6031" IndexName="DOC21_LEVEL_PROPERTIES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6029">
+<INDEX ID="6031" IndexName="DOC21_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6029">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6043" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6038" IndexName="DOC21_LEVEL_PROPERTIES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6036">
+<INDEX ID="6038" IndexName="DOC21_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6036">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6039" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6042" IndexName="DOC21_LEVEL_PROPERTIES_FKIndex3" IndexKind="1" FKRefDef_Obj_id="6040">
+<INDEX ID="6042" IndexName="DOC21_FKIndex3" IndexKind="1" FKRefDef_Obj_id="6040">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6044" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -8637,13 +8637,13 @@
 <INDEXCOLUMN idColumn="6139" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6117" IndexName="ITM05_ITEM_ATTACHED_DOCS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6114">
+<INDEX ID="6117" IndexName="ITM05_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6114">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6119" LengthParam="0" />
 <INDEXCOLUMN idColumn="6120" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6138" IndexName="ITM05_ITEM_ATTACHED_DOCS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6134">
+<INDEX ID="6138" IndexName="ITM05_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6134">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6119" LengthParam="0" />
 <INDEXCOLUMN idColumn="6139" LengthParam="0" />
@@ -8721,18 +8721,18 @@
 <INDEXCOLUMN idColumn="6166" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6176" IndexName="PRO04_OPERATIONS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6174">
+<INDEX ID="6176" IndexName="PRO04_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6174">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6177" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6182" IndexName="PRO04_OPERATIONS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6179">
+<INDEX ID="6182" IndexName="PRO04_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6179">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6177" LengthParam="0" />
 <INDEXCOLUMN idColumn="6183" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6187" IndexName="PRO04_OPERATIONS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="6184">
+<INDEX ID="6187" IndexName="PRO04_FKIndex3" IndexKind="1" FKRefDef_Obj_id="6184">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6177" LengthParam="0" />
 <INDEXCOLUMN idColumn="6188" LengthParam="0" />
@@ -8816,18 +8816,18 @@
 <INDEXCOLUMN idColumn="6209" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6229" IndexName="DOC22_PRODUCTION_ORDER_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6227">
+<INDEX ID="6229" IndexName="DOC22_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6227">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6222" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6239" IndexName="DOC22_PRODUCTION_ORDER_FKIndex3" IndexKind="1" FKRefDef_Obj_id="6236">
+<INDEX ID="6239" IndexName="DOC22_FKIndex3" IndexKind="1" FKRefDef_Obj_id="6236">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6222" LengthParam="0" />
 <INDEXCOLUMN idColumn="6242" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6241" IndexName="DOC22_PRODUCTION_ORDER_FKIndex4" IndexKind="1" FKRefDef_Obj_id="6240">
+<INDEX ID="6241" IndexName="DOC22_FKIndex4" IndexKind="1" FKRefDef_Obj_id="6240">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6222" LengthParam="0" />
 <INDEXCOLUMN idColumn="6243" LengthParam="0" />
@@ -8888,25 +8888,25 @@
 <INDEXCOLUMN idColumn="6284" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6254" IndexName="DOC23_PRODUCTION_ORDER_ROWS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6250">
+<INDEX ID="6254" IndexName="DOC23_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6250">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6255" LengthParam="0" />
 <INDEXCOLUMN idColumn="6256" LengthParam="0" />
 <INDEXCOLUMN idColumn="6257" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6283" IndexName="DOC23_PRODUCTION_ORDER_ROWS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6280">
+<INDEX ID="6283" IndexName="DOC23_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6280">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6255" LengthParam="0" />
 <INDEXCOLUMN idColumn="6284" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6356" IndexName="DOC23_PRODUCTION_PRODUCTS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="6354">
+<INDEX ID="6356" IndexName="DOC23_FKIndex3" IndexKind="1" FKRefDef_Obj_id="6354">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6367" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6365" IndexName="DOC23_PRODUCTION_PRODUCTS_FKIndex4" IndexKind="1" FKRefDef_Obj_id="6363">
+<INDEX ID="6365" IndexName="DOC23_FKIndex4" IndexKind="1" FKRefDef_Obj_id="6363">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6366" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -8961,20 +8961,20 @@
 <INDEXCOLUMN idColumn="6423" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6344" IndexName="DOC24_PRODUCTION_COMPONENTS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6340">
+<INDEX ID="6344" IndexName="DOC24_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6340">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6345" LengthParam="0" />
 <INDEXCOLUMN idColumn="6346" LengthParam="0" />
 <INDEXCOLUMN idColumn="6347" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6351" IndexName="DOC24_PRODUCTION_COMPONENTS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6348">
+<INDEX ID="6351" IndexName="DOC24_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6348">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6345" LengthParam="0" />
 <INDEXCOLUMN idColumn="6352" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6422" IndexName="DOC24_PRODUCTION_COMPONENTS_FKIndex4" IndexKind="1" FKRefDef_Obj_id="6420">
+<INDEX ID="6422" IndexName="DOC24_FKIndex4" IndexKind="1" FKRefDef_Obj_id="6420">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6423" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -9008,7 +9008,7 @@
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
-<COLUMN ID="6374" ColName="LEVEL" PrevColName="" Pos="3" idDatatype="13" DatatypeParams="(5)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<COLUMN ID="6374" ColName="LEV" PrevColName="" Pos="3" idDatatype="13" DatatypeParams="(5)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
@@ -9086,7 +9086,7 @@
 <INDEXCOLUMN idColumn="6393" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6391" IndexName="ITM04_ALTERNATIVE_ITEMS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6388">
+<INDEX ID="6610" IndexName="ITM04_ALTERNATIVE_ITEMS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6388">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6392" LengthParam="0" />
 <INDEXCOLUMN idColumn="6393" LengthParam="0" />
@@ -9148,20 +9148,20 @@
 <INDEXCOLUMN idColumn="6502" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6437" IndexName="DOC25_PRODUCTION_PROD_COMPS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6434">
+<INDEX ID="6437" IndexName="DOC25_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6434">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6439" LengthParam="0" />
 <INDEXCOLUMN idColumn="6443" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6472" IndexName="DOC25_PRODUCTION_PROD_COMPS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="6468">
+<INDEX ID="6472" IndexName="DOC25_FKIndex3" IndexKind="1" FKRefDef_Obj_id="6468">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6439" LengthParam="0" />
 <INDEXCOLUMN idColumn="6484" LengthParam="0" />
 <INDEXCOLUMN idColumn="6485" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6481" IndexName="DOC25_PRODUCTION_PROD_COMPS_FKIndex4" IndexKind="1" FKRefDef_Obj_id="6478">
+<INDEX ID="6481" IndexName="DOC25_FKIndex4" IndexKind="1" FKRefDef_Obj_id="6478">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6439" LengthParam="0" />
 <INDEXCOLUMN idColumn="6482" LengthParam="0" />
@@ -9281,14 +9281,14 @@
 <INDEXCOLUMN idColumn="6462" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6477" IndexName="DOC26_PRODUCTION_OPERATIONS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6473">
+<INDEX ID="6477" IndexName="DOC26_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6473">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6486" LengthParam="0" />
 <INDEXCOLUMN idColumn="6487" LengthParam="0" />
 <INDEXCOLUMN idColumn="6488" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6494" IndexName="DOC26_PRODUCTION_OPERATIONS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6491">
+<INDEX ID="6494" IndexName="DOC26_FKIndex2" IndexKind="1" FKRefDef_Obj_id="6491">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6486" LengthParam="0" />
 <INDEXCOLUMN idColumn="6495" LengthParam="0" />
@@ -9359,7 +9359,7 @@
 <INDEXCOLUMN idColumn="6523" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="6522" IndexName="SYS22_CUSTOM_COLUMNS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6520">
+<INDEX ID="6522" IndexName="SYS22_FKIndex1" IndexKind="1" FKRefDef_Obj_id="6520">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="6523" LengthParam="0" />
 </INDEXCOLUMNS>
@@ -9398,7 +9398,7 @@
 <RELATION ID="1688" RelationName="Rel_34" Kind="4" SrcTable="1132" DestTable="1679" FKFields="COMPANY_CODE=COMPANY_CODE_SYS01\n" FKFieldsComments="\n" relDirection="3" MidOffset="-110" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1690" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="58" />
 <RELATION ID="1692" RelationName="Rel_35" Kind="2" SrcTable="1662" DestTable="1679" FKFields="CURRENCY_CODE=CURRENCY_CODE_REG03\n" FKFieldsComments="\n" relDirection="2" MidOffset="-1" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1694" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="59" />
 <RELATION ID="1709" RelationName="Rel_36" Kind="4" SrcTable="1132" DestTable="1697" FKFields="COMPANY_CODE=COMPANY_CODE_SYS01\n" FKFieldsComments="\n" relDirection="3" MidOffset="-211" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1711" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="61" />
-<RELATION ID="1729" RelationName="Rel_37" Kind="4" SrcTable="1697" DestTable="1724" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nPROGRESSIVE=PROGRESSIVE_REG04\n" FKFieldsComments="\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1732" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="63" />
+<RELATION ID="1729" RelationName="Rel_37" Kind="4" SrcTable="1697" DestTable="1724" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nPROGRESSIVE=PROGRESSIVE_REG04\n" FKFieldsComments="\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="6608" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="63" />
 <RELATION ID="1740" RelationName="Rel_39" Kind="2" SrcTable="1476" DestTable="1724" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nPRICELIST_CODE=PRICELIST_CODE_SAL01\n" FKFieldsComments="\n\n" relDirection="3" MidOffset="-108" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1743" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="64" />
 <RELATION ID="1746" RelationName="Rel_40" Kind="2" SrcTable="1406" DestTable="1679" FKFields="VAT_CODE=VAT_CODE_REG01\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1748" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="65" />
 <RELATION ID="1762" RelationName="Rel_41" Kind="4" SrcTable="1512" DestTable="1754" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nDISCOUNT_CODE=DISCOUNT_CODE_SAL03\n" FKFieldsComments="\n\n" relDirection="3" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1765" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="67" />
@@ -9407,7 +9407,7 @@
 <RELATION ID="1795" RelationName="Rel_44" Kind="4" SrcTable="1414" DestTable="1787" FKFields="UM_CODE=UM_CODE_REG02\n" FKFieldsComments="\n" relDirection="2" MidOffset="-9" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1797" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="71" />
 <RELATION ID="1813" RelationName="Rel_45" Kind="4" SrcTable="1662" DestTable="1807" FKFields="CURRENCY_CODE=CURRENCY_CODE_REG03\n" FKFieldsComments="\n" relDirection="4" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1815" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="73" />
 <RELATION ID="1819" RelationName="Rel_46" Kind="4" SrcTable="1662" DestTable="1807" FKFields="CURRENCY_CODE=CURRENCY_CODE2_REG03\n" FKFieldsComments="\n" relDirection="4" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1821" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="74" />
-<RELATION ID="1831" RelationName="Rel_47" Kind="4" SrcTable="1697" DestTable="1824" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nPROGRESSIVE=PROGRESSIVE_REG04\n" FKFieldsComments="\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1834" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="76" />
+<RELATION ID="1831" RelationName="Rel_47" Kind="4" SrcTable="1697" DestTable="1824" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nPROGRESSIVE=PROGRESSIVE_REG04\n" FKFieldsComments="\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="6609" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="76" />
 <RELATION ID="1842" RelationName="Rel_48" Kind="4" SrcTable="1824" DestTable="1838" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nPROGRESSIVE_REG04=PROGRESSIVE_REG04\n" FKFieldsComments="\n\n" relDirection="4" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4360" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="78" />
 <RELATION ID="1849" RelationName="Rel_49" Kind="4" SrcTable="1335" DestTable="1838" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nITEM_CODE=ITEM_CODE_ITM01\n" FKFieldsComments="\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1852" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="79" />
 <RELATION ID="1863" RelationName="Rel_50" Kind="4" SrcTable="1824" DestTable="1858" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nPROGRESSIVE_REG04=PROGRESSIVE_REG04\n" FKFieldsComments="\n\n" relDirection="1" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4361" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="81" />
@@ -9434,7 +9434,7 @@
 <RELATION ID="2555" RelationName="Rel_89" Kind="4" SrcTable="1903" DestTable="2542" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nDOC_TYPE=DOC_TYPE\nDOC_YEAR=DOC_YEAR\nDOC_NUMBER=DOC_NUMBER\n" FKFieldsComments="\n\n\n\n" relDirection="2" MidOffset="-115" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2560" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="143" />
 <RELATION ID="2592" RelationName="Rel_92" Kind="2" SrcTable="1662" DestTable="2569" FKFields="CURRENCY_CODE=CURRENCY_CODE_REG03\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2594" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="148" />
 <RELATION ID="2604" RelationName="Rel_93" Kind="2" SrcTable="1662" DestTable="2580" FKFields="CURRENCY_CODE=CURRENCY_CODE_REG03\n" FKFieldsComments="\n" relDirection="2" MidOffset="4" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2606" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="149" />
-<RELATION ID="2649" RelationName="Rel_96" Kind="2" SrcTable="2580" DestTable="2609" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nMACHINERY_CODE=MACHINERY_CODE_PRO03\n" FKFieldsComments="\n\n" relDirection="4" MidOffset="27" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2652" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="151" />
+<RELATION ID="2649" RelationName="Rel_96" Kind="2" SrcTable="2580" DestTable="2609" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nMACHINERY_CODE=MACHINERY_CODE_PRO03\n" FKFieldsComments="\n\n" relDirection="4" MidOffset="-27" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2652" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="151" />
 <RELATION ID="2733" RelationName="Rel_101" Kind="4" SrcTable="1132" DestTable="2609" FKFields="COMPANY_CODE=COMPANY_CODE_SYS01\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2735" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="151" />
 <RELATION ID="2738" RelationName="Rel_102" Kind="2" SrcTable="2485" DestTable="2609" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nMANUFACTURE_CODE=MANUFACTURE_CODE_PRO01\n" FKFieldsComments="\n\n" relDirection="2" MidOffset="2" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2741" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="151" />
 <RELATION ID="2768" RelationName="Rel_97" Kind="2" SrcTable="2762" DestTable="2250" FKFields="CARRIER_CODE=CARRIER_CODE_REG09\n" FKFieldsComments="\n" relDirection="4" MidOffset="13" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2770" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="155" />
@@ -9447,8 +9447,8 @@
 <RELATION ID="2874" RelationName="Rel_106" Kind="2" SrcTable="1414" DestTable="1335" FKFields="UM_CODE=WIDTH_UM_CODE_REG02\n" FKFieldsComments="\n" relDirection="4" MidOffset="-28" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2876" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="166" />
 <RELATION ID="2878" RelationName="Rel_107" Kind="2" SrcTable="1414" DestTable="1335" FKFields="UM_CODE=HEIGHT_UM_CODE_REG02\n" FKFieldsComments="\n" relDirection="4" MidOffset="-28" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="-3" CaptionOffsetY="-4" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2880" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="167" />
 <RELATION ID="2897" RelationName="Rel_107" Kind="4" SrcTable="1697" DestTable="2887" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nPROGRESSIVE=PROGRESSIVE_REG04\n" FKFieldsComments="\n\n" relDirection="2" MidOffset="29" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2900" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="169" />
-<RELATION ID="2905" RelationName="Rel_108" Kind="2" SrcTable="2887" DestTable="2887" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01_ASSISTANT_SCH01\nPROGRESSIVE_REG04=ASSISTANT_PROGRESSIVE_REG04\n" FKFieldsComments="\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4364" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="170" />
-<RELATION ID="2909" RelationName="Rel_109" Kind="2" SrcTable="2887" DestTable="2887" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01_MANAGER_SCH01\nPROGRESSIVE_REG04=MANAGER_PROGRESSIVE_REG04\n" FKFieldsComments="\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4365" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="171" />
+<RELATION ID="2905" RelationName="Rel_108" Kind="2" SrcTable="2887" DestTable="2887" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01_ASS_SCH01\nPROGRESSIVE_REG04=ASSISTANT_PROGRESSIVE_REG04\n" FKFieldsComments="\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4364" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="170" />
+<RELATION ID="2909" RelationName="Rel_109" Kind="2" SrcTable="2887" DestTable="2887" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01_MAN_SCH01\nPROGRESSIVE_REG04=MANAGER_PROGRESSIVE_REG04\n" FKFieldsComments="\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4365" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="171" />
 <RELATION ID="2928" RelationName="Rel_110" Kind="4" SrcTable="2887" DestTable="2920" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nPROGRESSIVE_REG04=PROGRESSIVE_REG04\n" FKFieldsComments="\n\n" relDirection="1" MidOffset="116" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4366" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="173" />
 <RELATION ID="3563" RelationName="Rel_114" Kind="4" SrcTable="1132" DestTable="3558" FKFields="COMPANY_CODE=COMPANY_CODE_SYS01\n" FKFieldsComments="\n" relDirection="2" MidOffset="-250" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="3565" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="180" />
 <RELATION ID="3798" RelationName="Rel_115" Kind="4" SrcTable="3775" DestTable="3789" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nPROGRESSIVE=PROGRESSIVE_SCH06\n" FKFieldsComments="\n\n" relDirection="1" MidOffset="-2" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="3800" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="183" />
@@ -9504,7 +9504,7 @@
 <RELATION ID="4845" RelationName="Rel_166" Kind="4" SrcTable="1225" DestTable="4840" FKFields="FUNCTION_CODE=FUNCTION_CODE_SYS06\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4847" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="258" />
 <RELATION ID="4850" RelationName="Rel_167" Kind="4" SrcTable="1132" DestTable="4840" FKFields="COMPANY_CODE=COMPANY_CODE_SYS01\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4852" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="259" />
 <RELATION ID="4859" RelationName="Rel_168" Kind="4" SrcTable="1225" DestTable="4857" FKFields="FUNCTION_CODE=FUNCTION_CODE_SYS06\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4861" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="261" />
-<RELATION ID="4895" RelationName="Rel_170" Kind="4" SrcTable="1225" DestTable="4893" FKFields="FUNCTION_CODE=FUNCTION_CODE_SYS06\n" FKFieldsComments="\n" relDirection="2" MidOffset="3" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4897" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="264" />
+<RELATION ID="4895" RelationName="Rel_170" Kind="4" SrcTable="1225" DestTable="4893" FKFields="FUNCTION_CODE=FUNCTION_CODE_SYS06\n" FKFieldsComments="\n" relDirection="2" MidOffset="-3" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4897" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="264" />
 <RELATION ID="4901" RelationName="Rel_171" Kind="4" SrcTable="1302" DestTable="4893" FKFields="PROGRESSIVE=PROGRESSIVE_HIE01\n" FKFieldsComments="\n" relDirection="2" MidOffset="-24" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4903" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="265" />
 <RELATION ID="4929" RelationName="Rel_171" Kind="4" SrcTable="2800" DestTable="4925" FKFields="PAYMENT_CODE=PAYMENT_CODE_REG10\n" FKFieldsComments="\n" relDirection="4" MidOffset="-19" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4931" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="267" />
 <RELATION ID="4934" RelationName="Rel_172" Kind="2" SrcTable="2808" DestTable="4925" FKFields="PAYMENT_TYPE_CODE=PAYMENT_TYPE_CODE_REG11\n" FKFieldsComments="\n" relDirection="4" MidOffset="1" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4936" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="268" />
@@ -9612,7 +9612,7 @@
 <RELATION ID="6348" RelationName="Rel_251" Kind="4" SrcTable="1335" DestTable="6336" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nITEM_CODE=ITEM_CODE_ITM01\n" FKFieldsComments="\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="6351" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="372" />
 <RELATION ID="6354" RelationName="Rel_252" Kind="2" SrcTable="1302" DestTable="6245" FKFields="PROGRESSIVE=PROGRESSIVE_HIE01\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="6356" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="373" />
 <RELATION ID="6363" RelationName="Rel_250" Kind="2" SrcTable="1316" DestTable="6245" FKFields="PROGRESSIVE=PROGRESSIVE_HIE02\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="6365" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="374" />
-<RELATION ID="6388" RelationName="Rel_250" Kind="4" SrcTable="1335" DestTable="6384" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nITEM_CODE=ITEM_CODE_ITM01\n" FKFieldsComments="\n\n" relDirection="3" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="6391" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="377" />
+<RELATION ID="6388" RelationName="Rel_250" Kind="4" SrcTable="1335" DestTable="6384" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nITEM_CODE=ITEM_CODE_ITM01\n" FKFieldsComments="\n\n" relDirection="3" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="6610" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="377" />
 <RELATION ID="6420" RelationName="Rel_254" Kind="4" SrcTable="1302" DestTable="6336" FKFields="PROGRESSIVE=PROGRESSIVE_HIE01\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="6422" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="378" />
 <RELATION ID="6434" RelationName="Rel_252" Kind="4" SrcTable="1335" DestTable="6424" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nITEM_CODE=COMPONENT_ITEM_CODE_ITM01\n" FKFieldsComments="\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="6437" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="380" />
 <RELATION ID="6468" RelationName="Rel_254" Kind="4" SrcTable="6203" DestTable="6424" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nDOC_YEAR=DOC_YEAR\nDOC_NUMBER=DOC_NUMBER\n" FKFieldsComments="\n\n\n" relDirection="3" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="6472" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="381" />

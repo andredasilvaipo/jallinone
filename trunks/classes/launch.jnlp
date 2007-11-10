@@ -26,6 +26,7 @@
 <jar href="netscape.jar" />
 <jar href="jasperreports-1.2.7.jar" />
 <jar href="itext-1.3.1.jar" />
+<jar href="looks-2.0.1.jar" />
 
 <property name="SERVERURL" value="$$context/controller"/> 
 

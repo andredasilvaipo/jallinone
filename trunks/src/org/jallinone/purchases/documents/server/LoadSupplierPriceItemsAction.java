@@ -132,9 +132,9 @@ public class LoadSupplierPriceItemsAction implements Action {
       if (rootProgressiveHIE01==null || !rootProgressiveHIE01.equals(progressiveHIE01)) {
         // retrieve all subnodes of the specified node...
         pstmt = conn.prepareStatement(
-            "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEVEL from HIE01_LEVELS "+
+            "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV from HIE01_LEVELS "+
             "where ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE>=? "+
-            "order by LEVEL,PROGRESSIVE_HIE01,PROGRESSIVE"
+            "order by LEV,PROGRESSIVE_HIE01,PROGRESSIVE"
         );
         pstmt.setBigDecimal(1,progressiveHIE02);
         pstmt.setBigDecimal(2,progressiveHIE01);

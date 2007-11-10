@@ -100,7 +100,7 @@ public class InsertItemTypeAction implements Action {
       BigDecimal progressiveHIE02 = ProgressiveUtils.getInternalProgressive("HIE02_HIERARCHIES","PROGRESSIVE",conn);
       BigDecimal progressiveHIE01 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
       stmt.execute("INSERT INTO HIE02_HIERARCHIES(PROGRESSIVE,ENABLED) VALUES("+progressiveHIE02+",'Y')");
-      stmt.execute("INSERT INTO HIE01_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE02,LEVEL,ENABLED) VALUES("+progressiveHIE01+","+progressiveHIE02+",0,'Y')");
+      stmt.execute("INSERT INTO HIE01_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE02,LEV,ENABLED) VALUES("+progressiveHIE01+","+progressiveHIE02+",0,'Y')");
       stmt.execute("UPDATE HIE02_HIERARCHIES SET PROGRESSIVE_HIE01="+progressiveHIE01+" WHERE PROGRESSIVE="+progressiveHIE02);
       vo.setProgressiveHie02ITM02(progressiveHIE02);
       vo.setProgressiveHie01HIE02(progressiveHIE01);

@@ -103,7 +103,7 @@ public class InsertSubjectHierarchyAction implements Action {
 
       // insert into HIE01...
       BigDecimal progressiveHIE01 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
-      pstmt = conn.prepareStatement("insert into HIE01_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE02,LEVEL,ENABLED) values(?,?,0,'Y')");
+      pstmt = conn.prepareStatement("insert into HIE01_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE02,LEV,ENABLED) values(?,?,0,'Y')");
       pstmt.setBigDecimal(1,progressiveHIE01);
       pstmt.setBigDecimal(2,vo.getProgressiveHie02REG08());
       pstmt.execute();

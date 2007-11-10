@@ -128,11 +128,11 @@ public class LoadFunctionsAction implements Action {
       // retrieve the whole tree...
       DefaultTreeModel model = null;
       pstmt = conn.prepareStatement(
-          "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEVEL,SYS10_TRANSLATIONS.DESCRIPTION "+
+          "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV,SYS10_TRANSLATIONS.DESCRIPTION "+
           "from HIE01_LEVELS,SYS10_TRANSLATIONS "+
           "where HIE01_LEVELS.PROGRESSIVE = SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE='"+langId+"' and ENABLED='Y' and PROGRESSIVE_HIE02=2 "+
-          "order by LEVEL,PROGRESSIVE_HIE01,PROGRESSIVE"
+          "order by LEV,PROGRESSIVE_HIE01,PROGRESSIVE"
       );
       rset = pstmt.executeQuery();
       Hashtable currentLevelNodes = new Hashtable();
