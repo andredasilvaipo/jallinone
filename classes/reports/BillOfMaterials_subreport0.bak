@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="BillOfMaterials_subreport0"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Landscape"
+		 pageWidth="802"
+		 pageHeight="535"
+		 columnWidth="802"
+		 columnSpacing="0"
+		 leftMargin="0"
+		 rightMargin="0"
+		 topMargin="0"
+		 bottomMargin="0"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false"
+		 resourceBundle="BillOfMaterials_subreport0">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="COMPANY_CODE" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["COMP"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LANGUAGE_CODE" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["EN"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="REPORT_ID" isForPrompting="false" class="java.math.BigDecimal">
+		<defaultValueExpression ><![CDATA[new java.math.BigDecimal(271)]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[SELECT * FROM (
+select ITM04_ALTERNATIVE_ITEMS.ITEM_CODE_ITM01,C.DESCRIPTION AS D1,ITM04_ALTERNATIVE_ITEMS.PROGRESSIVE,B.ITEM_CODE,C.DESCRIPTION AS D2
+from ITM04_ALTERNATIVE_ITEMS,ITM01_ITEMS A,ITM01_ITEMS B,SYS10_TRANSLATIONS C,SYS10_TRANSLATIONS D
+where 
+ITM04_ALTERNATIVE_ITEMS.COMPANY_CODE_SYS01=B.COMPANY_CODE_SYS01 and 
+ITM04_ALTERNATIVE_ITEMS.COMPANY_CODE_SYS01=A.COMPANY_CODE_SYS01 and 
+ITM04_ALTERNATIVE_ITEMS.ITEM_CODE_ITM01=A.ITEM_CODE and
+C.PROGRESSIVE=A.PROGRESSIVE_SYS10 and
+C.LANGUAGE_CODE=$P{LANGUAGE_CODE} and
+D.PROGRESSIVE=B.PROGRESSIVE_SYS10 and
+D.LANGUAGE_CODE=$P{LANGUAGE_CODE} and
+ITM04_ALTERNATIVE_ITEMS.COMPANY_CODE_SYS01=$P{COMPANY_CODE} and
+NOT A.ITEM_CODE=B.ITEM_CODE and 
+(ITM04_ALTERNATIVE_ITEMS.PROGRESSIVE,B.ITEM_CODE) in 
+(select distinct ITM04_ALTERNATIVE_ITEMS.PROGRESSIVE,ITM01_ITEMS.ITEM_CODE
+from
+TMP01_BILL_OF_MATERIALS,ITM01_ITEMS,ITM04_ALTERNATIVE_ITEMS
+where
+TMP01_BILL_OF_MATERIALS.COMPANY_CODE=ITM01_ITEMS.COMPANY_CODE_SYS01 and
+TMP01_BILL_OF_MATERIALS.ITEM_CODE=ITM01_ITEMS.ITEM_CODE and
+ITM01_ITEMS.MANUFACTURE_CODE_PRO01 is null and
+TMP01_BILL_OF_MATERIALS.COMPANY_CODE=$P{COMPANY_CODE} and
+TMP01_BILL_OF_MATERIALS.REPORT_ID=$P{REPORT_ID} and
+ITM04_ALTERNATIVE_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and 
+ITM04_ALTERNATIVE_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE
+)
+order by ITM04_ALTERNATIVE_ITEMS.PROGRESSIVE,ITM04_ALTERNATIVE_ITEMS.ITEM_CODE_ITM01
+) aux]]></queryString>
+
+	<field name="ITEM_CODE_ITM01" class="java.lang.String"/>
+	<field name="D1" class="java.lang.String"/>
+	<field name="PROGRESSIVE" class="java.math.BigDecimal"/>
+	<field name="ITEM_CODE" class="java.lang.String"/>
+	<field name="D2" class="java.lang.String"/>
+
+
+		<group  name="ITEM_CODE" >
+			<groupExpression><![CDATA[$F{ITEM_CODE}]]></groupExpression>
+			<groupHeader>
+			<band height="22"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="7"
+						width="123"
+						height="12"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ITEM_CODE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="127"
+						y="7"
+						width="397"
+						height="12"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{D2}]]></textFieldExpression>
+				</textField>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="41"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1"
+						y="20"
+						width="522"
+						height="14"
+						key="textField-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{altComps}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="37"
+						width="784"
+						height="0"
+						forecolor="#CCCCCC"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="0"
+						width="784"
+						height="0"
+						forecolor="#CCCCCC"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="16"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="2"
+						width="124"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ITEM_CODE_ITM01}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="128"
+						y="2"
+						width="398"
+						height="12"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{D1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>
