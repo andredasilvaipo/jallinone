@@ -32,7 +32,7 @@
 	<field name="PROGRESSIVE" class="java.math.BigDecimal"/>
 	<field name="ITEM_CODE" class="java.lang.String"/>
 	<field name="DESCRIPTION" class="java.lang.String"/>
-	<field name="LEVEL" class="java.math.BigDecimal"/>
+	<field name="LEV" class="java.math.BigDecimal"/>
 	<field name="PARENT_ITEM_CODE" class="java.lang.String"/>
 	<field name="QTY" class="java.lang.String"/>
 	<field name="PRICE" class="java.lang.String"/>
@@ -278,7 +278,7 @@
 					<textElement>
 						<font fontName="Courier New" size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{LEVEL}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{LEV}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

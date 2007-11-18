@@ -29,6 +29,7 @@ import org.jallinone.scheduler.activities.java.ScheduledActivityPK;
 import org.jallinone.scheduler.activities.java.ScheduledActivityVO;
 import java.util.ArrayList;
 import org.jallinone.scheduler.activities.java.GridScheduledActivityVO;
+import java.util.HashSet;
 
 
 /**
@@ -98,6 +99,7 @@ public class ContactDetailFrame extends InternalFrame {
   GenericButton convertButton = new GenericButton(new ImageIcon(ClientUtils.getImage("workflow.gif")));
 
   private ScheduledActivitiesPanel panel = new ScheduledActivitiesPanel(false);
+  NavigatorBar navigatorBar = new NavigatorBar();
 
 
   public ContactDetailFrame(ContactController controller) {
@@ -109,6 +111,15 @@ public class ContactDetailFrame extends InternalFrame {
 
       organizationPanel.setFunctionId("REG04_CONTACTS");
       peoplePanel.setFunctionId("REG04_CONTACTS");
+
+      // link the parent grid to the current Form...
+      HashSet pk = new HashSet();
+      pk.add("companyCodeSys01REG04");
+      pk.add("progressiveREG04");
+      pk.add("name_1REG04");
+      pk.add("name_2REG04");
+      pk.add("subjectTypeREG04");
+      voidPanel.linkGrid(controller.getGridFrame().getGrid(),pk,true,true,true,navigatorBar);
 
       controlSubjectType.getComboBox().addItemListener(new ItemListener() {
         public void itemStateChanged(ItemEvent e) {
@@ -303,6 +314,7 @@ public class ContactDetailFrame extends InternalFrame {
     buttonsPanel.add(reloadButton, null);
     buttonsPanel.add(deleteButton, null);
     buttonsPanel.add(convertButton, null);
+    buttonsPanel.add(navigatorBar, null);
 
     convertButton.setToolTipText(ClientSettings.getInstance().getResources().getResource("convert contact to customer"));
     convertButton.setEnabled(false);

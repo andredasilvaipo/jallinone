@@ -35,6 +35,7 @@ import org.jallinone.items.java.ItemPK;
 import org.jallinone.warehouse.availability.client.*;
 import org.jallinone.production.billsofmaterial.client.ProductPanel;
 import org.jallinone.purchases.pricelist.client.SupplierItemPricesPanel;
+import java.util.HashSet;
 
 
 /**
@@ -216,6 +217,7 @@ public class ItemFrame extends InternalFrame {
   private ProductPanel bomTabbedPane = new ProductPanel(this);
   private SupplierItemPricesPanel supplierPrices = new SupplierItemPricesPanel(this);
   JSplitPane pricesSplit = new JSplitPane();
+  NavigatorBar navigatorBar = new NavigatorBar();
 
 
 
@@ -228,6 +230,14 @@ public class ItemFrame extends InternalFrame {
       jbInit();
       setSize(750,600);
       setMinimumSize(new Dimension(750,600));
+
+
+      // link the parent grid to the current Form...
+      HashSet pk = new HashSet();
+      pk.add("companyCodeSys01ITM01");
+      pk.add("itemCodeITM01");
+      formPanel.linkGrid(controller.getParentFrame().getGrid(),pk,true,true,true,navigatorBar);
+
 
       controlLevel.setLookupController(levelController);
       levelController.setLookupDataLocator(levelDataLocator);
@@ -906,6 +916,7 @@ public class ItemFrame extends InternalFrame {
     buttonsPanel.add(saveButton1, null);
     buttonsPanel.add(reloadButton1, null);
     buttonsPanel.add(deleteButton1, null);
+    buttonsPanel.add(navigatorBar, null);
     formPanel.add(controlUMSellQty,        new GridBagConstraints(5, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     formPanel.add(controlMinSellQty,     new GridBagConstraints(6, 3, 1, 1, 0.0, 0.0

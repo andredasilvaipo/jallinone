@@ -93,6 +93,7 @@ public class SaleEstimateDocFrame extends InternalFrame implements SaleDocument 
   private SaleDocActivitiesPanel actPanel = new SaleDocActivitiesPanel(this,true);
   GenericButton confirmButton = new GenericButton(new ImageIcon(ClientUtils.getImage("workflow.gif")));
   GenericButton printButton = new GenericButton(new ImageIcon(ClientUtils.getImage("printer.gif")));
+  NavigatorBar navigatorBar = new NavigatorBar();
 
 
   public SaleEstimateDocFrame(SaleEstimateDocController controller) {
@@ -102,6 +103,15 @@ public class SaleEstimateDocFrame extends InternalFrame implements SaleDocument 
       setSize(750,630);
       setMinimumSize(new Dimension(750,630));
       setTitle(ClientSettings.getInstance().getResources().getResource("sale estimate"));
+
+
+      // link the parent grid to the current Form...
+      HashSet pk = new HashSet();
+      pk.add("companyCodeSys01DOC01");
+      pk.add("docTypeDOC01");
+      pk.add("docYearDOC01");
+      pk.add("docNumberDOC01");
+      headerFormPanel.linkGrid(controller.getParentFrame().getGrid(),pk,true,true,true,navigatorBar);
 
       CustomizedControls customizedControls = new CustomizedControls(tabbedPane,headerFormPanel,ApplicationConsts.ID_SALE_ESTIMATE);
 
@@ -198,6 +208,7 @@ public class SaleEstimateDocFrame extends InternalFrame implements SaleDocument 
     headerButtonsPanel.add(confirmButton, null);
     printButton.setEnabled(false);
     headerButtonsPanel.add(printButton, null);
+    headerButtonsPanel.add(navigatorBar, null);
 
     confirmButton.setToolTipText(ClientSettings.getInstance().getResources().getResource("create sale document from estimate"));
     confirmButton.setEnabled(false);

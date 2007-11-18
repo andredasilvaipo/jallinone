@@ -93,6 +93,7 @@ public class SaleContractDocFrame extends InternalFrame implements SaleDocument 
   private SaleDocChargesPanel chargePanel = new SaleDocChargesPanel(this,true);
   private SaleDocActivitiesPanel actPanel = new SaleDocActivitiesPanel(this,true);
   GenericButton printButton = new GenericButton(new ImageIcon(ClientUtils.getImage("printer.gif")));
+  NavigatorBar navigatorBar = new NavigatorBar();
 
 
   public SaleContractDocFrame(SaleContractDocController controller) {
@@ -107,6 +108,16 @@ public class SaleContractDocFrame extends InternalFrame implements SaleDocument 
 
       saleCustomerHeadPanel1.getCustomerDataLocator().getLookupFrameParams().put(ApplicationConsts.SUBJECT_TYPE,ApplicationConsts.SUBJECT_PEOPLE_CUSTOMER);
       saleCustomerHeadPanel1.getCustomerDataLocator().getLookupValidationParameters().put(ApplicationConsts.SUBJECT_TYPE,ApplicationConsts.SUBJECT_PEOPLE_CUSTOMER);
+
+
+      // link the parent grid to the current Form...
+      HashSet pk = new HashSet();
+      pk.add("companyCodeSys01DOC01");
+      pk.add("docTypeDOC01");
+      pk.add("docYearDOC01");
+      pk.add("docNumberDOC01");
+      headerFormPanel.linkGrid(controller.getParentFrame().getGrid(),pk,true,true,true,navigatorBar);
+
 
       init();
 
@@ -213,6 +224,7 @@ public class SaleContractDocFrame extends InternalFrame implements SaleDocument 
     headerButtonsPanel.add(confirmButton, null);
     printButton.setEnabled(false);
     headerButtonsPanel.add(printButton, null);
+    headerButtonsPanel.add(navigatorBar, null);
     linesPanel.add(rowsPanel, BorderLayout.CENTER);
     headerPanel.add(headerFormPanel,  BorderLayout.CENTER);
     headerFormPanel.add(saleIdHeadPanel1,   new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0

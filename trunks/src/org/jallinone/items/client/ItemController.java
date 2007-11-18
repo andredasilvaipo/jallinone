@@ -116,6 +116,14 @@ public class ItemController extends CompanyFormController {
    * @return a VOResponse object if data loading is successfully completed, or an ErrorResponse object if an error occours
    */
   public Response loadData(Class valueObjectClass) {
+    // since this method could be invoked also when selecting another row on the linked grid,
+   // the pk attribute must be recalculated from the grid...
+   int row = parentFrame.getGrid().getSelectedRow();
+   if (row!=-1) {
+     GridItemVO gridVO = (GridItemVO)parentFrame.getGrid().getVOListTableModel().getObjectForRow(row);
+     pk = new ItemPK(gridVO.getCompanyCodeSys01ITM01(),gridVO.getItemCodeITM01());
+   }
+
     return ClientUtils.getData("loadItem",pk);
   }
 
@@ -137,7 +145,7 @@ public class ItemController extends CompanyFormController {
       vo = (DetailItemVO)((VOResponse)res).getVo();
       pk = new ItemPK(vo.getCompanyCodeSys01ITM01(),vo.getItemCodeITM01());
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+//        parentFrame.getGrid().reloadData();
       }
 
       frame.getDiscountsGrid().getOtherGridParams().put(
@@ -209,7 +217,7 @@ public class ItemController extends CompanyFormController {
     Response res = ClientUtils.getData("updateItem",new ValueObject[]{oldPersistentObject,vo});
     if (!res.isError()) {
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+ //       parentFrame.getGrid().reloadData();
       }
     }
     return res;
@@ -280,6 +288,9 @@ public class ItemController extends CompanyFormController {
    */
   public void loadDataCompleted(boolean error) {
     frame.loadDataCompleted(error,pk);
+  }
+  public ItemsFrame getParentFrame() {
+    return parentFrame;
   }
 
 

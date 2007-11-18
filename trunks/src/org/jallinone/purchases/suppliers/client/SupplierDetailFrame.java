@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import org.openswing.swing.message.send.java.GridParams;
 import org.jallinone.items.java.GridItemVO;
 import org.jallinone.purchases.pricelist.client.*;
+import java.util.HashSet;
 
 
 /**
@@ -155,6 +156,7 @@ public class SupplierDetailFrame extends InternalFrame {
   LookupServerDataLocator debitDataLocator = new LookupServerDataLocator();
   LookupController costsController = new LookupController();
   LookupServerDataLocator costsDataLocator = new LookupServerDataLocator();
+  NavigatorBar navigatorBar = new NavigatorBar();
 
 
   public SupplierDetailFrame(SupplierController controller) {
@@ -171,6 +173,13 @@ public class SupplierDetailFrame extends InternalFrame {
       supplierPanel.setSaveButton(saveButton);
       supplierPanel.setFunctionId("PUR01");
       organizationPanel.setFunctionId("PUR01");
+
+      // link the parent grid to the current Form...
+      HashSet pk = new HashSet();
+      pk.add("companyCodeSys01REG04");
+      pk.add("progressiveREG04");
+      supplierPanel.linkGrid(controller.getGridFrame().getGrid(),pk,true,true,true,navigatorBar);
+
 
       // banks lookup...
       bankDataLocator.setGridMethodName("loadBanks");
@@ -541,6 +550,7 @@ public class SupplierDetailFrame extends InternalFrame {
     buttonsPanel.add(saveButton, null);
     buttonsPanel.add(reloadButton, null);
     buttonsPanel.add(deleteButton, null);
+    buttonsPanel.add(navigatorBar, null);
 //    tabbedPane.add(subjectPanel,   "generic data");
     this.getContentPane().add(tabbedPane, BorderLayout.CENTER);
     supplierPanel.add(labelCompanyCode,        new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0

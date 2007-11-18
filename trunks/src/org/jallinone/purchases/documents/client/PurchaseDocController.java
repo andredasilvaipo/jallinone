@@ -102,6 +102,14 @@ public class PurchaseDocController extends CompanyFormController {
    * @return a VOResponse object if data loading is successfully completed, or an ErrorResponse object if an error occours
    */
   public Response loadData(Class valueObjectClass) {
+    // since this method could be invoked also when selecting another row on the linked grid,
+    // the pk attribute must be recalculated from the grid...
+    int row = parentFrame.getGrid().getSelectedRow();
+    if (row!=-1) {
+      GridPurchaseDocVO gridVO = (GridPurchaseDocVO)parentFrame.getGrid().getVOListTableModel().getObjectForRow(row);
+      pk = new PurchaseDocPK(gridVO.getCompanyCodeSys01DOC06(),gridVO.getDocTypeDOC06(),gridVO.getDocYearDOC06(),gridVO.getDocNumberDOC06());
+    }
+
     return ClientUtils.getData("loadPurchaseDoc",pk);
   }
 
@@ -132,7 +140,7 @@ public class PurchaseDocController extends CompanyFormController {
    */
   public void afterInsertData() {
     if (parentFrame!=null) {
-      parentFrame.getGrid().reloadData();
+//      parentFrame.getGrid().reloadData();
     }
 
     DetailPurchaseDocVO vo = (DetailPurchaseDocVO)frame.getHeaderFormPanel().getVOModel().getValueObject();
@@ -153,7 +161,7 @@ public class PurchaseDocController extends CompanyFormController {
     Response res = ClientUtils.getData("updatePurchaseDoc",new ValueObject[]{oldPersistentObject,persistentObject});
     if (!res.isError()) {
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+//        parentFrame.getGrid().reloadData();
       }
     }
     return res;

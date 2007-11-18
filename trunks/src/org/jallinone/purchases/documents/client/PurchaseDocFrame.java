@@ -83,6 +83,7 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
   GenericButton confirmButton = new GenericButton(new ImageIcon(ClientUtils.getImage("workflow.gif")));
   PurchaseWarehousePanel warePanel = new PurchaseWarehousePanel(headerFormPanel);
   GenericButton printButton = new GenericButton(new ImageIcon(ClientUtils.getImage("printer.gif")));
+  NavigatorBar navigatorBar = new NavigatorBar();
 
 
   public PurchaseDocFrame(PurchaseDocController controller) {
@@ -92,6 +93,16 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
       setSize(750,610);
       setMinimumSize(new Dimension(750,610));
       setTitle(ClientSettings.getInstance().getResources().getResource("purchase order"));
+
+
+      // link the parent grid to the current Form...
+      HashSet pk = new HashSet();
+      pk.add("companyCodeSys01DOC06");
+      pk.add("docTypeDOC06");
+      pk.add("docYearDOC06");
+      pk.add("docNumberDOC06");
+      headerFormPanel.linkGrid(controller.getParentFrame().getGrid(),pk,true,true,true,navigatorBar);
+
 
       CustomizedControls customizedControls = new CustomizedControls(tabbedPane,headerFormPanel,ApplicationConsts.ID_PURCHASE_ORDER);
 
@@ -183,6 +194,7 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
     headerButtonsPanel.add(confirmButton, null);
     printButton.setEnabled(false);
     headerButtonsPanel.add(printButton, null);
+    headerButtonsPanel.add(navigatorBar, null);
     tabbedPane.add(linesPanel,   "lines");
     linesPanel.add(rowsPanel, BorderLayout.CENTER);
     headerPanel.add(headerFormPanel,  BorderLayout.CENTER);

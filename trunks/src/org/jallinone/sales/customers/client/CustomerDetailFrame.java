@@ -29,6 +29,7 @@ import org.jallinone.scheduler.activities.java.ScheduledActivityPK;
 import org.jallinone.scheduler.activities.java.GridScheduledActivityVO;
 import java.util.ArrayList;
 import org.jallinone.scheduler.activities.java.ScheduledActivityVO;
+import java.util.HashSet;
 
 
 /**
@@ -206,6 +207,7 @@ public class CustomerDetailFrame extends InternalFrame {
   private ScheduledActivitiesPanel panel = new ScheduledActivitiesPanel(false);
 
   private CustomerController customerController = null;
+  NavigatorBar navigatorBar = new NavigatorBar();
 
 
   public CustomerDetailFrame(CustomerController controller) {
@@ -222,6 +224,14 @@ public class CustomerDetailFrame extends InternalFrame {
       customerPanel.setDeleteButton(deleteButton);
       customerPanel.setSaveButton(saveButton);
       customerPanel.setFunctionId("SAL07");
+
+      // link the parent grid to the current Form...
+      HashSet pk = new HashSet();
+      pk.add("companyCodeSys01REG04");
+      pk.add("progressiveREG04");
+      pk.add("subjectTypeREG04");
+      customerPanel.linkGrid(controller.getGridFrame().getGrid(),pk,true,true,true,navigatorBar);
+
       organizationPanel.setFunctionId("SAL07");
       peoplePanel.setFunctionId("SAL07");
 
@@ -904,6 +914,7 @@ public class CustomerDetailFrame extends InternalFrame {
     buttonsPanel.add(saveButton, null);
     buttonsPanel.add(reloadButton, null);
     buttonsPanel.add(deleteButton, null);
+    buttonsPanel.add(navigatorBar, null);
     tabbedPane.add(subjectPanel,   "generic data");
     this.getContentPane().add(tabbedPane, BorderLayout.CENTER);
     customerPanel.add(labelCompanyCode,            new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0

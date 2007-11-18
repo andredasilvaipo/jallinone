@@ -87,6 +87,15 @@ public class CustomerController extends CompanyFormController {
    * @return a VOResponse object if data loading is successfully completed, or an ErrorResponse object if an error occours
    */
   public Response loadData(Class valueObjectClass) {
+    // since this method could be invoked also when selecting another row on the linked grid,
+    // the pk attribute must be recalculated from the grid...
+    int row = gridFrame.getGrid().getSelectedRow();
+    if (row!=-1) {
+      Subject gridVO = (Subject)gridFrame.getGrid().getVOListTableModel().getObjectForRow(row);
+      pk = new CustomerPK(gridVO.getCompanyCodeSys01REG04(),gridVO.getProgressiveREG04(),gridVO.getSubjectTypeREG04());
+    }
+
+
     detailFrame.subjectChanged( pk.getSubjectTypeREG04() );
     return ClientUtils.getData("loadCustomer",pk);
   }
@@ -168,7 +177,7 @@ public class CustomerController extends CompanyFormController {
         sub.getProgressiveREG04(),
         sub.getSubjectTypeREG04()
       );
-      gridFrame.reloadData();
+//      gridFrame.reloadData();
       detailFrame.getReferencesPanel().getGrid().getOtherGridParams().put(
           ApplicationConsts.SUBJECT_PK,
           new SubjectPK(pk.getCompanyCodeSys01SAL07(),pk.getProgressiveReg04SAL07())
@@ -216,7 +225,7 @@ public class CustomerController extends CompanyFormController {
   public Response updateRecord(ValueObject oldPersistentObject,ValueObject persistentObject) throws Exception {
     Response response = ClientUtils.getData("updateCustomer",new ValueObject[]{oldPersistentObject,persistentObject});
     if (!response.isError()) {
-      gridFrame.reloadData();
+//      gridFrame.reloadData();
     }
     return response;
   }
@@ -319,6 +328,9 @@ public class CustomerController extends CompanyFormController {
   }
   public CustomerPK getPk() {
     return pk;
+  }
+  public CustomersGridFrame getGridFrame() {
+    return gridFrame;
   }
 
 

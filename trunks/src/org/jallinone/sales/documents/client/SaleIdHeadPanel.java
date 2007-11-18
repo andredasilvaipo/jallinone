@@ -176,6 +176,7 @@ public class SaleIdHeadPanel extends JPanel {
     controlDocDate.setCanCopy(true);
     controlDocDate.setLinkLabel(labelDocDate);
     controlDocDate.setRequired(true);
+    controlDocDate.setEnabledOnEdit(false);
     controlDocDate.setAttributeName("docDateDOC01");
     controlDocState.setCanCopy(false);
     controlDocState.setLinkLabel(labelDocDate);

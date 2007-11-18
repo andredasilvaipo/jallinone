@@ -145,5 +145,8 @@ public class WarehousesGridFrame extends InternalFrame {
     grid.getColumnContainer().add(colProv, null);
     grid.getColumnContainer().add(colCountry, null);
   }
+  public GridControl getGrid() {
+    return grid;
+  }
 
 }

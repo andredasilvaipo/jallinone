@@ -86,6 +86,16 @@ public class WarehouseController extends CompanyFormController {
    * @return a VOResponse object if data loading is successfully completed, or an ErrorResponse object if an error occours
    */
   public Response loadData(Class valueObjectClass) {
+    // since this method could be invoked also when selecting another row on the linked grid,
+   // the pk attribute must be recalculated from the grid...
+   int row = gridFrame.getGrid().getSelectedRow();
+   if (row!=-1) {
+     WarehouseVO gridVO = (WarehouseVO)gridFrame.getGrid().getVOListTableModel().getObjectForRow(row);
+     companyCodeSys01WAR01 =gridVO.getCompanyCodeSys01WAR01();
+     warehouseCodeWAR01 =gridVO.getWarehouseCodeWAR01();
+
+   }
+
     return ClientUtils.getData("loadWarehouse",new WarehousePK(companyCodeSys01WAR01,warehouseCodeWAR01));
   }
 
@@ -100,7 +110,7 @@ public class WarehouseController extends CompanyFormController {
     if (!response.isError()) {
       companyCodeSys01WAR01 = ((WarehouseVO)newPersistentObject).getCompanyCodeSys01WAR01();
       warehouseCodeWAR01 = ((WarehouseVO)newPersistentObject).getWarehouseCodeWAR01();
-      gridFrame.reloadData();
+ //     gridFrame.reloadData();
     }
     return response;
   }
@@ -177,7 +187,7 @@ public class WarehouseController extends CompanyFormController {
   public Response updateRecord(ValueObject oldPersistentObject,ValueObject persistentObject) throws Exception {
     Response response = ClientUtils.getData("updateWarehouse",new ValueObject[]{oldPersistentObject,persistentObject});
     if (!response.isError()) {
-      gridFrame.reloadData();
+//      gridFrame.reloadData();
     }
     return response;
   }
@@ -285,6 +295,9 @@ public class WarehouseController extends CompanyFormController {
       detailFrame.getOrderedItemsPanel().getGrid().clearData();
 
     } return ok;
+  }
+  public WarehousesGridFrame getGridFrame() {
+    return gridFrame;
   }
 
 

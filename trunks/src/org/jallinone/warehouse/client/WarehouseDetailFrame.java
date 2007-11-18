@@ -17,6 +17,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.jallinone.hierarchies.java.HierarchyLevelVO;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.warehouse.availability.client.*;
+import java.util.HashSet;
 
 
 /**
@@ -102,6 +103,7 @@ public class WarehouseDetailFrame extends InternalFrame {
   ItemAvailabilityPanel availPanel = new ItemAvailabilityPanel();
   BookedItemsPanel bookedItemsPanel = new BookedItemsPanel(false,true);
   OrderedItemsPanel orderedItemsPanel = new OrderedItemsPanel(false,true);
+  NavigatorBar navigatorBar = new NavigatorBar();
 
 
   public WarehouseDetailFrame(WarehouseController controller) {
@@ -109,6 +111,13 @@ public class WarehouseDetailFrame extends InternalFrame {
       jbInit();
       setSize(750,450);
       setMinimumSize(new Dimension(750,450));
+
+
+      // link the parent grid to the current Form...
+      HashSet pk = new HashSet();
+      pk.add("companyCodeSys01WAR01");
+      pk.add("warehouseCodeWAR01");
+      warehouseForm.linkGrid(controller.getGridFrame().getGrid(),pk,true,true,true,navigatorBar);
 
       warehouseForm.setFormController(controller);
 
@@ -214,6 +223,7 @@ public class WarehouseDetailFrame extends InternalFrame {
     buttonsPanel.add(saveButton, null);
     buttonsPanel.add(reloadButton, null);
     buttonsPanel.add(deleteButton, null);
+    buttonsPanel.add(navigatorBar, null);
     warehouseForm.add(labelWarCode,       new GridBagConstraints(0, 1, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
     warehouseForm.add(labelDescr,      new GridBagConstraints(0, 2, 2, 1, 0.0, 0.0

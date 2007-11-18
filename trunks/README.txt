@@ -37,6 +37,10 @@ docs		documentation files.
 
 classes/        client-side files
 
+pub/            build.xml Ant file and JAllInOne war file
+
+/		db.xml database project file, created using DBDesigner 4
+
 
 3. Installation instructions
 ----------------------------

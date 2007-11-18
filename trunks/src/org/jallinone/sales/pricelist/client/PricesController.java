@@ -78,8 +78,14 @@ public class PricesController extends CompanyGridController implements ImportIte
     PriceVO vo = null;
     Response response = null;
 
+    PricelistVO pricelistVO = (PricelistVO)frame.getGrid().getVOListTableModel().getObjectForRow(frame.getGrid().getSelectedRow());
+
     for(int i=0;i<newValueObjects.size();i++) {
       vo = (PriceVO)newValueObjects.get(i);
+      if (vo.getCompanyCodeSys01SAL02()==null)
+        vo.setCompanyCodeSys01SAL02(pricelistVO.getCompanyCodeSys01SAL01());
+      if (vo.getPricelistCodeSal01SAL02()==null)
+        vo.setPricelistCodeSal01SAL02(pricelistVO.getPricelistCodeSAL01());
       response = validateDates(vo);
       if (response.isError())
         return response;
