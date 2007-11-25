@@ -101,7 +101,12 @@ public class UpdateItemAction implements Action {
           conn
       );
 
-      if (newVO.getAddDescriptionSYS10()!=null) {
+      if (newVO.getAddDescriptionSYS10()!=null &&
+          (newVO.getAddDescriptionSYS10().trim().length()>0 && oldVO.getAddDescriptionSYS10()==null ||
+           newVO.getAddDescriptionSYS10().trim().length()>0 && oldVO.getAddDescriptionSYS10()!=null && oldVO.getAddDescriptionSYS10().trim().length()==0 ||
+           oldVO.getAddDescriptionSYS10()!=null && oldVO.getAddDescriptionSYS10().trim().length()>0 && newVO.getAddDescriptionSYS10()==null ||
+           oldVO.getAddDescriptionSYS10()!=null && oldVO.getAddDescriptionSYS10().trim().length()>0 && newVO.getAddDescriptionSYS10()!=null && newVO.getAddDescriptionSYS10().trim().length()==0 ||
+           oldVO.getAddDescriptionSYS10()!=null && oldVO.getAddDescriptionSYS10().trim().length()>0 && oldVO.getAddDescriptionSYS10()!=null && !oldVO.getAddDescriptionSYS10().equals(newVO.getAddDescriptionSYS10()))) {
         // update item additional description...
         if (newVO.getAddProgressiveSys10ITM01()!=null)
           TranslationUtils.updateTranslation(

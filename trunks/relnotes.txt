@@ -1,5 +1,16 @@
+Release Notes 0.9.0.6
+---------------------
+
+Final release 0.9.0.6 available
+Fixed some bugs in JAllInOne GUI usage: when updating item detail.
+Fixed problem when opening reports from development environment.
+Updated OpenSwing library version to 1.3.6 so resolving a problem with tree lookups having only the root node.
+Updated "Installation Info" section of this web site, by specifying more detailed information about how to compile the project.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
 Release Notes 0.9.0.5
--------------------
+---------------------
 
 Final release 0.9.0.5 available
 Fixed some bugs in JAllInOne GUI usage: when updating sales documents, when manually inserting prices in a sale pricelist.
@@ -10,7 +21,7 @@ This distribution includes also Jar file libraries, source files, build.xml, lic
 
 
 Release Notes 0.9.0.4
--------------------
+---------------------
 
 Final release 0.9.0.4 available
 Fixed bug when installing JAllInOne with Oracle database.
@@ -20,7 +31,7 @@ This distribution includes also Jar file libraries, source files, build.xml, lic
 
 
 Release Notes 0.9.0.3
--------------------
+---------------------
 
 Final release 0.9.0.3 available
 Fixed bug when installing JAllInOne in a path having spaces. 
@@ -30,7 +41,7 @@ This distribution includes also Jar file libraries, source files, build.xml, lic
 
 
 Release Notes 0.9.0.2
--------------------
+---------------------
 
 Final release 0.9.0.2 available
 This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
@@ -38,7 +49,7 @@ This distribution includes also Jar file libraries, source files, build.xml, lic
 
 
 Release Notes 0.9.0.1
--------------------
+---------------------
 
 Final release 0.9.0.1 available
 This distribution includes also Jar file libraries, source files, licence and readme.txt installation instructions.
