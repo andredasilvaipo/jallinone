@@ -88,15 +88,15 @@ public class ValidateBankCodeAction implements Action {
       ));
 
       String sql =
-          "select REG12_BANKS.BANK_CODE,REG12_BANKS.DESCRIPTION,REG12_BANKS.CAB,REG12_BANKS.ABI,REG12_BANKS.ADDRESS,REG12_BANKS.CITY,REG12_BANKS.ZIP,REG12_BANKS.PROVINCE,REG12_BANKS.COUNTRY,REG12_BANKS.ENABLED from REG12_BANKS where "+
+          "select REG12_BANKS.BANK_CODE,REG12_BANKS.DESCRIPTION,REG12_BANKS.BBAN,REG12_BANKS.IBAN,REG12_BANKS.ADDRESS,REG12_BANKS.CITY,REG12_BANKS.ZIP,REG12_BANKS.PROVINCE,REG12_BANKS.COUNTRY,REG12_BANKS.ENABLED from REG12_BANKS where "+
           "REG12_BANKS.ENABLED='Y' and "+
           "REG12_BANKS.BANK_CODE='"+validationPars.getCode()+"'";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("bankCodeREG12","REG12_BANKS.BANK_CODE");
       attribute2dbField.put("descriptionREG12","REG12_BANKS.DESCRIPTION");
-      attribute2dbField.put("cabREG12","REG12_BANKS.CAB");
-      attribute2dbField.put("abiREG12","REG12_BANKS.ABI");
+      attribute2dbField.put("bbanREG12","REG12_BANKS.BBAN");
+      attribute2dbField.put("ibanREG12","REG12_BANKS.IBAN");
       attribute2dbField.put("addressREG12","REG12_BANKS.ADDRESS");
       attribute2dbField.put("cityREG12","REG12_BANKS.CITY");
       attribute2dbField.put("zipREG12","REG12_BANKS.ZIP");

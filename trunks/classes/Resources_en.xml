@@ -283,8 +283,8 @@
   <object key="bank detail" value="Bank Detail" />
   <object key="bankCodeREG12" value="Bank Code" />
   <object key="descriptionREG12" value="Bank Description" />
-  <object key="cabREG12" value="CAB" />
-  <object key="abiREG12" value="ABI" />
+  <object key="bbanREG12" value="BBAN" />
+  <object key="ibanREG12" value="IBAN" />
 
   <object key="carriers" value="Carriers" />
   <object key="carrierCodeREG09" value="Carrier Code" />

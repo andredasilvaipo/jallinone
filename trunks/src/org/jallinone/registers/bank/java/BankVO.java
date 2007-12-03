@@ -37,12 +37,13 @@ public class BankVO extends BaseValueObject {
   private String enabledREG12;
   private String descriptionREG12;
   private String abiREG12;
-  private String cabREG12;
+  private String bbanREG12;
   private String addressREG12;
-  private String cityREG12;
+  private String ibanREG12;
   private String zipREG12;
   private String provinceREG12;
   private String countryREG12;
+  private String cityREG12;
 
 
   public BankVO() {
@@ -73,11 +74,11 @@ public class BankVO extends BaseValueObject {
   public void setAbiREG12(String abiREG12) {
     this.abiREG12 = abiREG12;
   }
-  public String getCabREG12() {
-    return cabREG12;
+  public String getBbanREG12() {
+    return bbanREG12;
   }
-  public void setCabREG12(String cabREG12) {
-    this.cabREG12 = cabREG12;
+  public void setBbanREG12(String bbanREG12) {
+    this.bbanREG12 = bbanREG12;
   }
   public String getAddressREG12() {
     return addressREG12;
@@ -85,11 +86,11 @@ public class BankVO extends BaseValueObject {
   public void setAddressREG12(String addressREG12) {
     this.addressREG12 = addressREG12;
   }
-  public String getCityREG12() {
-    return cityREG12;
+  public String getIbanREG12() {
+    return ibanREG12;
   }
-  public void setCityREG12(String cityREG12) {
-    this.cityREG12 = cityREG12;
+  public void setIbanREG12(String ibanREG12) {
+    this.ibanREG12 = ibanREG12;
   }
   public String getZipREG12() {
     return zipREG12;
@@ -108,6 +109,12 @@ public class BankVO extends BaseValueObject {
   }
   public void setCountryREG12(String countryREG12) {
     this.countryREG12 = countryREG12;
+  }
+  public String getCityREG12() {
+    return cityREG12;
+  }
+  public void setCityREG12(String cityREG12) {
+    this.cityREG12 = cityREG12;
   }
 
 }

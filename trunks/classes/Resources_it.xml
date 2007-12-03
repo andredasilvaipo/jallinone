@@ -269,8 +269,8 @@
   <object key="bank detail" value="Dettaglio banca" />
   <object key="bankCodeREG12" value="Cod.Banca" />
   <object key="descriptionREG12" value="Descrizione banca" />
-  <object key="cabREG12" value="CAB" />
-  <object key="abiREG12" value="ABI" />
+  <object key="bbanREG12" value="BBAN" />
+  <object key="ibanREG12" value="IBAN" />
 
   <object key="carriers" value="Vettori" />
   <object key="carrierCodeREG09" value="Cod.Vettore" />

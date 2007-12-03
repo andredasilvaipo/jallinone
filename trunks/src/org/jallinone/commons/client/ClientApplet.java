@@ -515,12 +515,12 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
         "\n"+
         "Copyright: Copyright (C) 2006 Mauro Carniel\n"+
         "Author: Mauro Carniel\n"+
-        "Release: 0.9\n\n"+
+        "Database release: "+ApplicationConsts.DB_VERSION+"\n\n"+
         "This application is free software; you can redistribute it and/or\n"+
         "modify it under the terms of the (LGPL) Lesser General Public\n"+
         "License as published by the Free Software Foundation;\n\n"+
         "                GNU LESSER GENERAL PUBLIC LICENSE\n"+
-        "                 Version 2.1, February 1999\n\n"+
+        "                   Version 2.1, February 1999\n\n"+
         "This application is distributed in the hope that it will be useful,\n"+
         "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"+
         "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\n"+

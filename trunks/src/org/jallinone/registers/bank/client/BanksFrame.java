@@ -16,6 +16,7 @@ import org.openswing.swing.form.client.Form;
 import org.jallinone.commons.client.CustomizedControls;
 import org.openswing.swing.util.java.Consts;
 import java.awt.event.*;
+import javax.swing.text.MaskFormatter;
 
 
 /**
@@ -61,8 +62,8 @@ public class BanksFrame extends InternalFrame {
   TextColumn colBank = new TextColumn();
   TextColumn colDescr = new TextColumn();
   ExportButton exportButton = new ExportButton();
-  TextColumn colCab = new TextColumn();
-  TextColumn colAbi = new TextColumn();
+  TextColumn colBban = new TextColumn();
+  TextColumn colIban = new TextColumn();
   JPanel detailPanel = new JPanel();
   TitledBorder titledBorder1;
   TitledBorder titledBorder2;
@@ -81,10 +82,10 @@ public class BanksFrame extends InternalFrame {
   TextControl controlBankCode = new TextControl();
   LabelControl labelDescr = new LabelControl();
   TextControl controlDescr = new TextControl();
-  LabelControl labelCab = new LabelControl();
-  TextControl controlCab = new TextControl();
-  LabelControl labelAbi = new LabelControl();
-  TextControl controlAbi = new TextControl();
+  LabelControl labelBban = new LabelControl();
+  FormattedTextControl controlBban = new FormattedTextControl();
+  LabelControl labelIban = new LabelControl();
+  FormattedTextControl controlIban = new FormattedTextControl();
   LabelControl labelAddress = new LabelControl();
   TextControl controlAddress = new TextControl();
   LabelControl labelCity = new LabelControl();
@@ -106,7 +107,7 @@ public class BanksFrame extends InternalFrame {
     gridDataLocator.setServerMethodName("loadBanks");
     try {
       jbInit();
-      setSize(620,550);
+      setSize(750,550);
       setMinimumSize(new Dimension(620,550));
 
       formPanel.setFormController(bankController);
@@ -156,12 +157,14 @@ public class BanksFrame extends InternalFrame {
     colDescr.setEditableOnEdit(true);
     colDescr.setEditableOnInsert(true);
     colDescr.setPreferredWidth(290);
-    colCab.setMaxCharacters(20);
-    colCab.setColumnFilterable(true);
-    colCab.setColumnName("cabREG12");
-    colCab.setColumnSortable(true);
-    colCab.setEditableOnEdit(false);
-    colAbi.setColumnName("abiREG12");
+    colBban.setMaxCharacters(26);
+    colBban.setPreferredWidth(150);
+    colBban.setColumnFilterable(true);
+    colBban.setColumnName("bbanREG12");
+    colBban.setColumnSortable(true);
+    colBban.setEditableOnEdit(false);
+    colIban.setColumnName("ibanREG12");
+    colIban.setPreferredWidth(250);
     detailPanel.setBorder(titledBorder1);
     detailPanel.setLayout(borderLayout1);
     titledBorder1.setTitleColor(Color.blue);
@@ -178,8 +181,8 @@ public class BanksFrame extends InternalFrame {
     flowLayout2.setAlignment(FlowLayout.LEFT);
     labelBankCode.setText("bankCodeREG12");
     labelDescr.setText("descriptionREG12");
-    labelCab.setText("cabREG12");
-    labelAbi.setText("abiREG12");
+    labelBban.setText("bbanREG12");
+    labelIban.setText("ibanREG12");
     labelAddress.setText("address");
     labelCity.setText("city");
     labelZip.setText("zip");
@@ -195,19 +198,29 @@ public class BanksFrame extends InternalFrame {
     controlDescr.setAttributeName("descriptionREG12");
     controlDescr.setLinkLabel(labelDescr);
     controlDescr.setRequired(true);
-    controlCab.setAttributeName("cabREG12");
-    controlCab.setCanCopy(false);
-    controlCab.setLinkLabel(labelCab);
-    controlCab.setMaxCharacters(20);
-    controlCab.setRequired(true);
-    controlCab.setTrimText(true);
-    controlCab.setUpperCase(true);
-    controlAbi.setAttributeName("abiREG12");
-    controlAbi.setLinkLabel(labelAbi);
-    controlAbi.setMaxCharacters(20);
-    controlAbi.setRequired(true);
-    controlAbi.setTrimText(true);
-    controlAbi.setUpperCase(true);
+    controlBban.setAttributeName("bbanREG12");
+    controlBban.setCanCopy(false);
+    controlBban.setLinkLabel(labelBban);
+//    controlBban.setMaxCharacters(26);
+    controlBban.setRequired(true);
+//    controlBban.setTrimText(true);
+//    controlBban.setUpperCase(true);
+
+    MaskFormatter mask1 = new MaskFormatter("A AAAAA AAAAA AAAAAAAAAAAA");
+    controlBban.setFormatter(mask1);
+    controlBban.addFocusListener(new BanksFrame_controlBban_focusAdapter(this));
+
+    MaskFormatter mask2 = new MaskFormatter("AAAA AAAA AAAA AAAA AAAA AAA");
+    controlIban.setFormatter(mask2);
+    controlIban.addFocusListener(new BanksFrame_controlIban_focusAdapter(this));
+
+
+    controlIban.setAttributeName("ibanREG12");
+    controlIban.setLinkLabel(labelIban);
+//    controlIban.setMaxCharacters(33);
+    controlIban.setRequired(true);
+//    controlIban.setTrimText(true);
+//    controlIban.setUpperCase(true);
     controlAddress.setAttributeName("addressREG12");
     controlAddress.setCanCopy(true);
     controlAddress.setLinkLabel(labelAddress);
@@ -243,8 +256,8 @@ public class BanksFrame extends InternalFrame {
     this.getContentPane().add(grid, BorderLayout.CENTER);
     grid.getColumnContainer().add(colBank, null);
     grid.getColumnContainer().add(colDescr, null);
-    grid.getColumnContainer().add(colCab, null);
-    grid.getColumnContainer().add(colAbi, null);
+    grid.getColumnContainer().add(colBban, null);
+    grid.getColumnContainer().add(colIban, null);
     this.getContentPane().add(detailPanel,  BorderLayout.SOUTH);
     detailPanel.add(detailButtonsPanel,  BorderLayout.NORTH);
     detailPanel.add(tab, BorderLayout.CENTER);
@@ -256,9 +269,9 @@ public class BanksFrame extends InternalFrame {
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     formPanel.add(controlDescr,           new GridBagConstraints(3, 0, 4, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelCab,        new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+    formPanel.add(labelBban,        new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlCab,             new GridBagConstraints(1, 1, 2, 1, 0.0, 0.0
+    formPanel.add(controlBban,             new GridBagConstraints(1, 1, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     formPanel.add(labelAddress,        new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
@@ -276,13 +289,13 @@ public class BanksFrame extends InternalFrame {
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     formPanel.add(controlCountry,     new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlAbi,      new GridBagConstraints(5, 1, 2, 1, 1.0, 0.0
+    formPanel.add(controlIban,      new GridBagConstraints(5, 1, 2, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     formPanel.add(labelProv,   new GridBagConstraints(5, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     formPanel.add(controlZip,   new GridBagConstraints(3, 3, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelAbi,  new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0
+    formPanel.add(labelIban,  new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     formPanel.add(labelDescr, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 0, 0));
@@ -309,8 +322,39 @@ public class BanksFrame extends InternalFrame {
     return grid;
   }
 
+  void controlBban_focusLost(FocusEvent e) {
+    controlBban.setText(controlBban.getText().toUpperCase());
+  }
+
+  void controlIban_focusLost(FocusEvent e) {
+    controlIban.setText(controlIban.getText().toUpperCase());
+  }
 
 
+
+
+}
+
+class BanksFrame_controlBban_focusAdapter extends java.awt.event.FocusAdapter {
+  BanksFrame adaptee;
+
+  BanksFrame_controlBban_focusAdapter(BanksFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void focusLost(FocusEvent e) {
+    adaptee.controlBban_focusLost(e);
+  }
+}
+
+class BanksFrame_controlIban_focusAdapter extends java.awt.event.FocusAdapter {
+  BanksFrame adaptee;
+
+  BanksFrame_controlIban_focusAdapter(BanksFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void focusLost(FocusEvent e) {
+    adaptee.controlIban_focusLost(e);
+  }
 }
 
 

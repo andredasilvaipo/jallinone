@@ -14,6 +14,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServlet;
 import java.sql.*;
 import java.util.ArrayList;
+import org.jallinone.commons.java.ApplicationConsts;
 
 
 /**
@@ -379,6 +380,7 @@ public class CreateConfigFileAction implements Action {
       props.setProperty("user", user);
       props.setProperty("password", password);
       props.setProperty("url", url);
+      props.setProperty("dbversion", ApplicationConsts.DB_VERSION);
       FileOutputStream out = new FileOutputStream(this.getClass().getResource("/").getFile()+"pooler.ini");
       props.save(out,"POOLER PROPERTIES");
       try {

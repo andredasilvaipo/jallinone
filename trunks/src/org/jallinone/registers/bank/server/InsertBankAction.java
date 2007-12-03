@@ -91,8 +91,8 @@ public class InsertBankAction implements Action {
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("bankCodeREG12","BANK_CODE");
       attribute2dbField.put("descriptionREG12","DESCRIPTION");
-      attribute2dbField.put("cabREG12","CAB");
-      attribute2dbField.put("abiREG12","ABI");
+      attribute2dbField.put("bbanREG12","BBAN");
+      attribute2dbField.put("ibanREG12","IBAN");
       attribute2dbField.put("addressREG12","ADDRESS");
       attribute2dbField.put("cityREG12","CITY");
       attribute2dbField.put("zipREG12","ZIP");
