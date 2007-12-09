@@ -137,7 +137,7 @@ public class CurrenciesGridFrame extends InternalFrame {
     colCurrency.setPreferredWidth(120);
     colCurrency.setSortVersus(org.openswing.swing.util.java.Consts.ASC_SORTED);
     colCurrency.setSortingOrder(1);
-    colCurrSymbol.setMaxCharacters(1);
+    colCurrSymbol.setMaxCharacters(3);
     colCurrSymbol.setColumnFilterable(false);
     colCurrSymbol.setColumnName("currencySymbolREG03");
     colCurrSymbol.setColumnSortable(true);

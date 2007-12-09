@@ -32,6 +32,7 @@ import org.jallinone.warehouse.availability.java.ItemAvailabilityVO;
 import org.openswing.swing.table.client.GridController;
 import org.openswing.swing.table.java.ServerGridDataLocator;
 import org.jallinone.items.java.ItemPK;
+import org.openswing.swing.lookup.client.*;
 
 
 /**
@@ -262,7 +263,11 @@ public class ItemAvailabilityPanel extends JPanel {
   void controlItemType_itemStateChanged(ItemEvent e) {
     if (e.getStateChange()==e.SELECTED) {
       controlItemCode.setValue(null);
-      controlItemCode.validateCode(null);
+      try {
+        controlItemCode.validateCode(null);
+      }
+      catch (RestoreFocusOnInvalidCodeException ex) {
+      }
       itemController.getLookupDataLocator().getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_HIE02,controlItemType.getValue());
       itemController.getLookupDataLocator().getLookupValidationParameters().put(ApplicationConsts.PROGRESSIVE_HIE02,controlItemType.getValue());
       treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,controlItemType.getValue());

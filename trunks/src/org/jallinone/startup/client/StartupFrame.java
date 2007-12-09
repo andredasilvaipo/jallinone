@@ -274,7 +274,7 @@ public class StartupFrame extends JFrame {
     symbTF.setColumns(10);
     maxDecSymLabel.setText("(1character)");
     maxThLabel.setText("(1character)");
-    maxCurrSymLabel.setText("(1character)");
+    maxCurrSymLabel.setText("(3characters)");
     this.getContentPane().add(northPanel, BorderLayout.NORTH);
     this.getContentPane().add(mainPanel, BorderLayout.CENTER);
     northPanel.add(titleLabel, null);
@@ -593,7 +593,7 @@ public class StartupFrame extends JFrame {
     dbConnVO.setLanguageCode(languageCodeTF.getText().trim());
     dbConnVO.setLanguageDescription(languageDescrTF.getText().trim());
     dbConnVO.setCurrencyCodeREG03(currencyCodeTF.getText().toUpperCase().trim());
-    dbConnVO.setCurrencySymbolREG03(symbTF.getText().trim().substring(0,1));
+    dbConnVO.setCurrencySymbolREG03(symbTF.getText().trim().length()>3?symbTF.getText().trim().substring(0,3):symbTF.getText().trim());
     dbConnVO.setDecimalsREG03(new BigDecimal(decTF.getText().trim()));
     dbConnVO.setDecimalSymbolREG03(decSymTF.getText().trim().substring(0,1));
     dbConnVO.setThousandSymbolREG03(thTF.getText().trim().substring(0,1));

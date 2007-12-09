@@ -1,3 +1,13 @@
+Release Notes 0.9.0.8
+---------------------
+
+Final release 0.9.0.8 available
+Changed currencies table; changed currency symbol: now it can be a 3 length text, e.g. "USD", "EUR" or unicode single character as the euro symbol.
+Updated OpenSwing library version to 1.3.8, so that focus is correctly setted inside frames having more than one grid control. 
+Moreover, it is changed the policy in all lookups when user digits an invalid code: now the lookup automatically restores the last valid code in case of invalid code. 
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
 Release Notes 0.9.0.7
 ---------------------
 

@@ -25,6 +25,7 @@ import java.awt.Color;
 import org.jallinone.subjects.java.Subject;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.openswing.swing.table.profiles.client.FileGridProfileManager;
+import org.openswing.swing.lookup.client.LookupController;
 
 
 /**
@@ -612,6 +613,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
 
     ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "com.jgoodies.looks.plastic.PlasticXPLookAndFeel";
     ClientSettings.GRID_PROFILE_MANAGER = new FileGridProfileManager();
+    ClientSettings.ON_INVALID_CODE = LookupController.ON_INVALID_CODE_RESTORE_LAST_VALID_CODE;
 
     ClientSettings.getInstance().setLanguage(languageId);
 
