@@ -272,6 +272,7 @@ public class StartupFrame extends JFrame {
     decTF.setColumns(10);
     symbTF.setText(new Character((char)8364).toString());
     symbTF.setColumns(10);
+    maxCurrCodeLabel.setText("(20character)");
     maxDecSymLabel.setText("(1character)");
     maxThLabel.setText("(1character)");
     maxCurrSymLabel.setText("(3characters)");

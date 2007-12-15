@@ -92,10 +92,13 @@ public class InsertCompanyAction implements Action {
       OrganizationVO vo = (OrganizationVO)inputPar;
 
       // insert record in SYS01...
-      stmt.execute(
-          "insert into SYS01_COMPANIES(COMPANY_CODE,CURRENCY_CODE_REG03,ENABLED) "+
-          "VALUES('"+vo.getCompanyCodeSys01REG04()+"','"+vo.getCurrencyCodeReg03()+"','Y')"
+      pstmt = conn.prepareStatement(
+          "insert into SYS01_COMPANIES(COMPANY_CODE,CURRENCY_CODE_REG03,CREATION_DATE,ENABLED) "+
+          "VALUES('"+vo.getCompanyCodeSys01REG04()+"','"+vo.getCurrencyCodeReg03()+"',?,'Y')"
       );
+      pstmt.setTimestamp(1,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.execute();
+      pstmt.close();
 
       vo.setProgressiveREG04(new BigDecimal(2));
       vo.setSubjectTypeREG04(ApplicationConsts.SUBJECT_MY_COMPANY);
@@ -156,7 +159,7 @@ public class InsertCompanyAction implements Action {
       // insert company user parameters...
       pstmt = conn.prepareStatement(
         "INSERT INTO SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) "+
-        "SELECT ?,PARAM_CODE,VALUE FROM SYS19_USER_PARAMS WHERE COMPANY_CODE_SYS01=?"
+        "SELECT DISTINCT ?,PARAM_CODE,VALUE FROM SYS19_USER_PARAMS WHERE COMPANY_CODE_SYS01=?"
       );
       pstmt.setString(1,vo.getCompanyCodeSys01REG04());
       pstmt.setString(2,companyCode);

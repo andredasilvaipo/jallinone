@@ -313,7 +313,7 @@
   <object key="tasks" value="Duties" />
   <object key="taskCodeREG07" value="Duty Code" />
   <object key="activityCodeSal09REG07" value="Act. Code" />
-  <object key="activityDescription9REG07" value="Act. Description" />
+  <object key="activityDescriptionREG07" value="Act. Description" />
   <object key="companyCodeSys01REG07" value="Company Code" />
   <object key="taskDescription" value="Duty Description" />
   <object key="currencyCodeReg03REG07" value="Currency Code" />

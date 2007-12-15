@@ -299,7 +299,7 @@
   <object key="tasks" value="Mansioni" />
   <object key="taskCodeREG07" value="Cod.Mansione" />
   <object key="activityCodeSal09REG07" value="Cod.Attiv." />
-  <object key="activityDescription9REG07" value="Descrizione Attiv." />
+  <object key="activityDescriptionREG07" value="Descrizione Attiv." />
   <object key="companyCodeSys01REG07" value="Cod.Organizz." />
   <object key="taskDescription" value="Descrizione mansione" />
   <object key="currencyCodeReg03REG07" value="Cod.Valuta" />
