@@ -1,0 +1,116 @@
+package org.jallinone.system.translations.server;
+
+import java.sql.*;
+import java.math.BigDecimal;
+import org.jallinone.system.progressives.server.ProgressiveUtils;
+
+
+/**
+ * <p>Title: JAllInOne ERP/CRM application</p>
+ * <p>Description: Utility class used insert, update and delete record in SYS10 table.</p>
+ * <p>Copyright: Copyright (C) 2006 Mauro Carniel</p>
+ *
+ * <p> This file is part of JAllInOne ERP/CRM application.
+ * This application is free software; you can redistribute it and/or
+ * modify it under the terms of the (LGPL) Lesser General Public
+ * License as published by the Free Software Foundation;
+ *
+ *                GNU LESSER GENERAL PUBLIC LICENSE
+ *                 Version 2.1, February 1999
+ *
+ * This application is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public
+ * License along with this library; if not, write to the Free
+ * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *
+ *       The author may be contacted at:
+ *           maurocarniel@tin.it</p>
+ *
+ * @author Mauro Carniel
+ * @version 1.0
+ */
+public class TranslationUtils {
+
+
+  /**
+   * Insert a record in SYS10 table for each language defined in SYS09.
+   * @param description description to insert
+   * @param conn database connection
+   * @return new progressive relative to SYS10
+   */
+  public static final BigDecimal insertTranslations(String description,Connection conn) throws Exception {
+    BigDecimal progressive = ProgressiveUtils.getInternalProgressive("SYS10_TRANSLATIONS","PROGRESSIVE",conn);
+    Statement stmt = null;
+    try {
+      stmt = conn.createStatement();
+      stmt.execute(
+        "insert into SYS10_TRANSLATIONS(PROGRESSIVE,LANGUAGE_CODE,DESCRIPTION) "+
+        "select "+progressive+",LANGUAGE_CODE,'"+description+"' FROM SYS09_LANGUAGES where ENABLED='Y'"
+      );
+    }
+    finally {
+      try {
+        stmt.close();
+      }
+      catch (Exception ex) {
+      }
+    }
+    return progressive;
+  }
+
+
+  /**
+   * Update a record in SYS10 table for for the specified language.
+   * @param oldDescription old description value
+   * @param description description to insert
+   * @param progressive progressive that identifies the record in SYS10
+   * @param languageCode server language identifier
+   * @param conn database connection
+   */
+  public static final void updateTranslation(String oldDescription,String description,BigDecimal progressive,String languageCode,Connection conn) throws Exception {
+    Statement stmt = null;
+    try {
+      stmt = conn.createStatement();
+      int updatedRows = stmt.executeUpdate(
+        "update SYS10_TRANSLATIONS set DESCRIPTION='"+description+"' where "+
+        "PROGRESSIVE="+progressive+" and LANGUAGE_CODE='"+languageCode+"' and DESCRIPTION='"+oldDescription+"'"
+      );
+      if (updatedRows==0)
+        throw new Exception("Update not allowed: description already updated by another process");
+    }
+    finally {
+      try {
+        stmt.close();
+      }
+      catch (Exception ex) {
+      }
+    }
+  }
+
+
+  /**
+   * Delete a record in SYS10 table for each language defined in SYS09.
+   * @param progressive progressive that identifies the record in SYS10
+   * @param conn database connection
+   */
+  public static final void deleteTranslations(BigDecimal progressive,Connection conn) throws Exception {
+    Statement stmt = null;
+    try {
+      stmt = conn.createStatement();
+      stmt.execute("delete from SYS10_TRANSLATIONS where PROGRESSIVE="+progressive);
+    }
+    finally {
+      try {
+        stmt.close();
+      }
+      catch (Exception ex) {
+      }
+    }
+  }
+
+
+}
