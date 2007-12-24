@@ -611,7 +611,8 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     ClientSettings.LOCK_ON="lock.gif";
     ClientSettings.FILTER_PANEL_ON_GRID = true;
 
-    ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "com.jgoodies.looks.plastic.PlasticXPLookAndFeel";
+//    ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "com.jgoodies.looks.plastic.PlasticXPLookAndFeel";
+    ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "org.fife.plaf.VisualStudio2005.VisualStudio2005LookAndFeel";
     ClientSettings.GRID_PROFILE_MANAGER = new FileGridProfileManager();
     ClientSettings.ON_INVALID_CODE = LookupController.ON_INVALID_CODE_RESTORE_LAST_VALID_CODE;
 

@@ -24,6 +24,8 @@ The following files must be available to use JAllInOne:
 - clientos.jar
 - serveros.jar
 
+Note: OfficeLnFs_2.7.jar an open source project available in http://officelnfs.sourceforge.net/ and distributed with a BSD-style license.
+
 Note: a JDBC driver is also required (not included in this distribution), according to the database.
 
 
