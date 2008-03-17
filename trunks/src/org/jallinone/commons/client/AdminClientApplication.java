@@ -22,6 +22,7 @@ import netscape.javascript.JSObject;
 import org.jallinone.startup.client.StartupFrame;
 import org.jallinone.system.java.ApplicationParametersVO;
 import java.awt.Color;
+//import org.openswing.swing.util.client.HessianObjectSender;
 
 
 public class AdminClientApplication extends ClientApplication {
@@ -39,6 +40,8 @@ public class AdminClientApplication extends ClientApplication {
    * Method that initialize the client side application.
    */
   protected void initApplication() {
+//    ClientUtils.setObjectSender(new HessianObjectSender());
+
     // define domains...
     Domain colTypeSYS12Domain = new Domain("COLUMN_TYPE");
     colTypeSYS12Domain.addDomainPair("S","text");
@@ -52,6 +55,7 @@ public class AdminClientApplication extends ClientApplication {
     Domain languagesDomain = new Domain("LANGUAGES");
     languagesDomain.addDomainPair("EN","english");
     languagesDomain.addDomainPair("IT","italian");
+    languagesDomain.addDomainPair("ES","espanol");
     domains.put(
       languagesDomain.getDomainId(),
       languagesDomain

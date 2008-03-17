@@ -112,7 +112,7 @@ public class InsertLanguagesAction implements Action {
         )));
         String line = null;
         while ( (line = br.readLine()) != null) {
-          sql.append(line);
+          sql.append(' ').append(line);
           if (line.endsWith(";")) {
             if (sql.indexOf(":LANGUAGE_CODE") != -1) {
               sql = replace(sql, ":LANGUAGE_CODE",

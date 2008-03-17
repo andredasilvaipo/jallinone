@@ -30,13 +30,13 @@
 		<defaultValueExpression ><![CDATA["COMP"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="DOC_TYPE" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["R"]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA["S"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="DOC_YEAR" isForPrompting="false" class="java.math.BigDecimal">
-		<defaultValueExpression ><![CDATA[new java.math.BigDecimal(2006)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new java.math.BigDecimal(2008)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="DOC_NUMBER" isForPrompting="false" class="java.math.BigDecimal">
-		<defaultValueExpression ><![CDATA[new java.math.BigDecimal(41)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new java.math.BigDecimal(11)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="DATE_FORMAT" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
@@ -54,8 +54,8 @@ order by expiration_date]]></queryString>
 	<field name="DOC_NUMBER" class="java.math.BigDecimal"/>
 	<field name="DOC_SEQUENCE" class="java.math.BigDecimal"/>
 	<field name="PROGRESSIVE" class="java.math.BigDecimal"/>
-	<field name="EXPIRATION_DATE" class="java.sql.Date"/>
-	<field name="DOC_DATE" class="java.sql.Date"/>
+	<field name="EXPIRATION_DATE" class="java.util.Date"/>
+	<field name="DOC_DATE" class="java.util.Date"/>
 	<field name="NAME_1" class="java.lang.String"/>
 	<field name="NAME_2" class="java.lang.String"/>
 	<field name="VALUE" class="java.math.BigDecimal"/>
@@ -207,7 +207,7 @@ $P{DECIMALS_REG03}
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRIPTION}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="390"
 						y="3"

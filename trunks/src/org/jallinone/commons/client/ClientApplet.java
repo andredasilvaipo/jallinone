@@ -26,6 +26,7 @@ import org.jallinone.subjects.java.Subject;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.openswing.swing.table.profiles.client.FileGridProfileManager;
 import org.openswing.swing.lookup.client.LookupController;
+//import org.openswing.swing.util.client.HessianObjectSender;
 
 
 /**
@@ -87,6 +88,8 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
    * Method that initialize the client side application.
    */
   protected void initApplication() {
+//    ClientUtils.setObjectSender(new HessianObjectSender());
+
     loadDomains();
     // test if database is already created...
     VOResponse response = (VOResponse)ClientUtils.getData("databaseAlreadyExixts",new Object[0]);
@@ -115,6 +118,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     Domain languagesDomain = new Domain("LANGUAGES");
     languagesDomain.addDomainPair("EN","english");
     languagesDomain.addDomainPair("IT","italian");
+    languagesDomain.addDomainPair("ES","spanish");
     domains.put(
       languagesDomain.getDomainId(),
       languagesDomain
@@ -588,6 +592,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     Hashtable xmlFiles = new Hashtable();
     xmlFiles.put("EN","Resources_en.xml");
     xmlFiles.put("IT","Resources_it.xml");
+    xmlFiles.put("ES","Resources_es.xml");
 
     // initialize internationalization settings, according to user language identifier...
     ClientSettings clientSettings = new ClientSettings(

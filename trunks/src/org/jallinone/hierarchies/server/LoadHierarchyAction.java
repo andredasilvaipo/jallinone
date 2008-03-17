@@ -16,6 +16,7 @@ import org.jallinone.hierarchies.java.HierarchyLevelVO;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.openswing.swing.tree.java.OpenSwingTreeNode;
 
 
 /**
@@ -124,7 +125,7 @@ public class LoadHierarchyAction implements Action {
           vo.setProgressiveHie01HIE01(rset.getBigDecimal(2));
           vo.setProgressiveHie02HIE01(progressiveHIE02);
           vo.setDescriptionSYS10(rset.getString(4));
-          currentNode = new DefaultMutableTreeNode(vo);
+          currentNode = new OpenSwingTreeNode(vo);
           model = new DefaultTreeModel(currentNode);
         }
         else {
@@ -135,7 +136,7 @@ public class LoadHierarchyAction implements Action {
           vo.setProgressiveHie01HIE01(rset.getBigDecimal(2));
           vo.setProgressiveHie02HIE01(progressiveHIE02);
           vo.setDescriptionSYS10(rset.getString(4));
-          currentNode = new DefaultMutableTreeNode(vo);
+          currentNode = new OpenSwingTreeNode(vo);
 
           parentNode = (DefaultMutableTreeNode)currentLevelNodes.get(new Integer(rset.getInt(2)));
           parentNode.add(currentNode);

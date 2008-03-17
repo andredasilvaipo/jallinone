@@ -640,6 +640,7 @@
   <object key="docSequenceDoc06DOC09" value="Num.Doc.di acq." />
   <object key="docSequenceDoc01DOC10" value="Num.Doc.di vend." />
   <object key="docSequenceDOC08" value="Num.DDT" />
+  <object key="sectionalDOC01" value="Sezionale" />
 
   <object key="close out delivery note?" value="Chiusura DDT e scarico articoli da magazzino?" />
   <object key="unload items from sale document" value="Scarico articoli da doc. di vendita" />

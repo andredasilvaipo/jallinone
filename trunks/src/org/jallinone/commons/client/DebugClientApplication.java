@@ -64,7 +64,7 @@ public class DebugClientApplication extends ClientApplet {
 
   public DebugClientApplication() {
     calledAsApplet = false;
-    System.setProperty("SERVERURL","http://localhost:80/jAllInOne/controller");
+    System.setProperty("SERVERURL","http://localhost:80/jallinone/controller");
     initApplication();
   }
 
@@ -73,6 +73,8 @@ public class DebugClientApplication extends ClientApplet {
    * Method that initialize the client side application.
    */
   protected void initApplication() {
+//    ClientUtils.setObjectSender(new HessianObjectSender());
+
     loadDomains();
 
     // test if database is already created...

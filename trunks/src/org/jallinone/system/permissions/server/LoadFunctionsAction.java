@@ -13,6 +13,7 @@ import org.openswing.swing.logger.server.Logger;
 import org.jallinone.system.permissions.java.JAIOApplicationFunctionVO;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.openswing.swing.tree.java.OpenSwingTreeNode;
 
 
 /**
@@ -153,12 +154,12 @@ public class LoadFunctionsAction implements Action {
           // prepare a tree model with the root node...
           currentVO = new JAIOApplicationFunctionVO();
           currentVO.setDescription("");
-          currentNode = new DefaultMutableTreeNode(currentVO);
+          currentNode = new OpenSwingTreeNode(currentVO);
           model = new DefaultTreeModel(currentNode);
         }
         else {
           currentVO = new JAIOApplicationFunctionVO(rset.getString(4),null,rset.getBigDecimal(1),rset.getBigDecimal(2));
-          currentNode = new DefaultMutableTreeNode(currentVO);
+          currentNode = new OpenSwingTreeNode(currentVO);
 
           parentNode = (DefaultMutableTreeNode)currentLevelNodes.get(new Integer(rset.getInt(2)));
           parentNode.add(currentNode);
@@ -170,7 +171,7 @@ public class LoadFunctionsAction implements Action {
         functionsPerNode = (ArrayList)functions.get(new Integer(rset.getInt(1)));
         if (functionsPerNode!=null)
           for(int i=0;i<functionsPerNode.size();i++) {
-            currentNode.add(new DefaultMutableTreeNode(functionsPerNode.get(i)));
+            currentNode.add(new OpenSwingTreeNode(functionsPerNode.get(i)));
           }
 
       }

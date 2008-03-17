@@ -1,3 +1,34 @@
+
+
+Release Notes 0.9.12
+---------------------
+
+Added sectional field to sale invoices. Sectional field value is defined through company parameters feature.
+Improved sale and purchase docs detail frames.
+Created distinct jnlp launch files for java 1.4, 1.5 and 1.6, to avoid client executions with JVM different from the one used on the server-side. 
+Updated OpenSwing library version to 1.5.2.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.11
+---------------------
+
+Final release 0.9.11 available
+Fixed problem on creating war file (clientos.jar file was not signed in past versions).
+Added a partial spanish translation to JAllInOne.
+Updated OpenSwing library version to 1.4.2.
+Provided three distinct launch1xxx.jnlp files: for java 1.4,1.5 and 1.6.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.10
+---------------------
+
+Fixed problem with jsp starting page.
+Updated OpenSwing library version to 1.4, by adding search capabilities to combo boxes, tree panels and grids.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
 Release Notes 0.9.0.9
 ---------------------
 

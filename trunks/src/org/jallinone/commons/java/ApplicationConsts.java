@@ -78,6 +78,8 @@ public class ApplicationConsts {
   public static final String MORNING_END_HOUR = "MORNING_END_HOUR";
   public static final String AFTERNOON_END_HOUR = "AFTERNOON_END_HOUR";
 
+  public static final String SALE_SECTIONAL = "SALE_SECTIONAL";
+
   public static final String CREDITS_ACCOUNT_VALUE = "020.010";
   public static final String ITEMS_ACCOUNT_VALUE = "200.010";
   public static final String ACTIVITIES_ACCOUNT_VALUE = "200.020";

@@ -15,6 +15,7 @@ import org.jallinone.system.server.JAIOUserSessionParameters;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
 import org.jallinone.events.server.*;
+import org.openswing.swing.tree.java.OpenSwingTreeNode;
 
 
 /**
@@ -64,7 +65,7 @@ public class LoadWindowsAction implements Action {
    * Business logic to execute.
    */
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
-    DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+    DefaultMutableTreeNode root = new OpenSwingTreeNode();
     DefaultTreeModel model = new DefaultTreeModel(root);
     String serverLanguageId = ((JAIOUserSessionParameters)userSessionPars).getServerLanguageId();
 
@@ -108,10 +109,10 @@ public class LoadWindowsAction implements Action {
           vo.setDescriptionSYS10(rset.getString(3));
           vo.setProgressiveSYS13(rset.getBigDecimal(1));
           vo.setTableNameSYS13(rset.getString(5));
-          parentNode = new DefaultMutableTreeNode(vo);
+          parentNode = new OpenSwingTreeNode(vo);
           root.add(parentNode);
           code = rset.getString(4);
-          parentNode.add(new DefaultMutableTreeNode(vo));
+          parentNode.add(new OpenSwingTreeNode(vo));
         }
         else {
           // new level 2 node...
@@ -119,7 +120,7 @@ public class LoadWindowsAction implements Action {
           vo.setProgressiveSYS13(rset.getBigDecimal(1));
           vo.setDescriptionSYS10(rset.getString(2));
           vo.setTableNameSYS13(rset.getString(5));
-          parentNode.add(new DefaultMutableTreeNode(vo));
+          parentNode.add(new OpenSwingTreeNode(vo));
         }
       }
 

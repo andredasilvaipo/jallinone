@@ -22,6 +22,7 @@ import org.jallinone.registers.currency.server.LoadCompanyCurrencyAction;
 import org.jallinone.registers.currency.java.CurrencyVO;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.openswing.swing.tree.java.OpenSwingTreeNode;
 
 
 /**
@@ -120,7 +121,7 @@ public class LoadBillOfMaterialBean {
       compVO.setDescriptionSYS10("");
       compVO.setItemCodeItm01ITM03(pk.getItemCodeITM01());
       compVO.setQtyITM03(new BigDecimal(1));
-      DefaultMutableTreeNode node = new DefaultMutableTreeNode(compVO);
+      DefaultMutableTreeNode node = new OpenSwingTreeNode(compVO);
       DefaultTreeModel model = new DefaultTreeModel(node);
 
       String sql2 = "'" + pk.getItemCodeITM01() + "'";
@@ -160,7 +161,7 @@ public class LoadBillOfMaterialBean {
           for(int i=0;i<rows.size();i++) {
             compVO = (MaterialVO)rows.get(i);
             sql2 += "'"+compVO.getItemCodeItm01ITM03()+"',";
-            auxnode = new DefaultMutableTreeNode(compVO);
+            auxnode = new OpenSwingTreeNode(compVO);
             auxlist = (ArrayList)auxnodes.get(compVO.getParentItemCodeItm01ITM03());
             if (auxlist==null) {
               auxlist = new ArrayList();

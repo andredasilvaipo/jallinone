@@ -24,6 +24,7 @@ import org.jallinone.registers.currency.server.ValidateCurrencyCodeAction;
 import org.jallinone.registers.currency.java.CurrencyVO;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.java.CompanyParametersVO;
 
 
 /**
@@ -197,6 +198,7 @@ public class InsertSaleDocBean {
       attribute2dbField.put("customerVatCodeReg01DOC01","CUSTOMER_VAT_CODE_REG01");
       attribute2dbField.put("docSequenceDOC01","DOC_SEQUENCE");
       attribute2dbField.put("docSequenceDoc01DOC01","DOC_SEQUENCE_DOC01");
+      attribute2dbField.put("sectionalDOC01","DOC01_SELLING.SECTIONAL");
 
       // insert into DOC01...
       Response res = CustomizeQueryUtil.insertTable(

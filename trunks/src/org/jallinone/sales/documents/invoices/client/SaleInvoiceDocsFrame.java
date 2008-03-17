@@ -69,6 +69,7 @@ public class SaleInvoiceDocsFrame extends InternalFrame implements CurrencyColum
   GridBagLayout gridBagLayout1 = new GridBagLayout();
   GridControl grid = new GridControl();
   TextColumn colCompany = new TextColumn();
+  TextColumn colSectional = new TextColumn();
 
   /** grid data locator */
   private ServerGridDataLocator gridDataLocator = new ServerGridDataLocator();
@@ -132,10 +133,18 @@ public class SaleInvoiceDocsFrame extends InternalFrame implements CurrencyColum
     colCompany.setPreferredWidth(100);
     colCompany.setSortVersus(org.openswing.swing.util.java.Consts.ASC_SORTED);
     colCompany.setSortingOrder(0);
+
+    colDocNr.setTextAlignment(SwingConstants.LEFT);
+    colSectional.setTextAlignment(SwingConstants.RIGHT);
+    colSectional.setColumnFilterable(true);
+    colSectional.setColumnName("sectionalDOC01");
+    colSectional.setColumnSortable(true);
+    colSectional.setPreferredWidth(80);
+
     grid.setDeleteButton(deleteButton1);
     grid.setExportButton(exportButton1);
     grid.setFunctionId("DOC01_INVOICES");
-    grid.setLockedColumns(3);
+    grid.setLockedColumns(4);
     grid.setMaxSortedColumns(4);
     grid.setNavBar(navigatorBar1);
     grid.setReloadButton(reloadButton1);
@@ -209,6 +218,7 @@ public class SaleInvoiceDocsFrame extends InternalFrame implements CurrencyColum
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
     grid.getColumnContainer().add(colCompany, null);
     grid.getColumnContainer().add(colDocYear, null);
+    grid.getColumnContainer().add(colSectional, null);
     grid.getColumnContainer().add(colDocNr, null);
     grid.getColumnContainer().add(colDocType, null);
     grid.getColumnContainer().add(colDocDate, null);

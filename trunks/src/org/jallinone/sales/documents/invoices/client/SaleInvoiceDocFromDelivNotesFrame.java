@@ -84,7 +84,7 @@ public class SaleInvoiceDocFromDelivNotesFrame extends InternalFrame implements 
   ReloadButton reloadButton1 = new ReloadButton();
   DeleteButton deleteButton1 = new DeleteButton();
   GridBagLayout gridBagLayout1 = new GridBagLayout();
-  SaleIdHeadPanel saleIdHeadPanel1 = new SaleIdHeadPanel(headerFormPanel,true);
+  SaleIdHeadPanel saleIdHeadPanel1 = new SaleIdHeadPanel(headerFormPanel,true,true);
   SaleCustomerHeadPanel saleCustomerHeadPanel1 = new SaleCustomerHeadPanel(headerFormPanel);
   SaleAgentPanel saleAgentPanel = new SaleAgentPanel(headerFormPanel);
   SaleNotesPanel saleNotesPanel = new SaleNotesPanel();

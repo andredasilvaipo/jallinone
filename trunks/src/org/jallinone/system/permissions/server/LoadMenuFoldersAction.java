@@ -16,6 +16,7 @@ import org.openswing.swing.mdi.java.ApplicationFunction;
 import org.jallinone.hierarchies.java.HierarchyLevelVO;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.openswing.swing.tree.java.OpenSwingTreeNode;
 
 
 /**
@@ -120,7 +121,7 @@ public class LoadMenuFoldersAction implements Action {
           vo.setProgressiveHIE01(rset.getBigDecimal(1));
           vo.setProgressiveHie01HIE01(rset.getBigDecimal(2));
           vo.setProgressiveHie02HIE01(new BigDecimal(2));
-          currentNode = new DefaultMutableTreeNode(vo);
+          currentNode = new OpenSwingTreeNode(vo);
           model = new DefaultTreeModel(currentNode);
         }
         else {
@@ -131,7 +132,7 @@ public class LoadMenuFoldersAction implements Action {
           vo.setProgressiveHIE01(rset.getBigDecimal(1));
           vo.setProgressiveHie01HIE01(rset.getBigDecimal(2));
           vo.setProgressiveHie02HIE01(new BigDecimal(2));
-          currentNode = new DefaultMutableTreeNode(vo);
+          currentNode = new OpenSwingTreeNode(vo);
 
           parentNode = (DefaultMutableTreeNode)currentLevelNodes.get(new Integer(rset.getInt(2)));
           parentNode.add(currentNode);

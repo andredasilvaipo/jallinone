@@ -164,7 +164,7 @@ public class CreateConfigFileAction implements Action {
           conn.getMetaData().getDriverName().equals("com.microsoft.jdbc.sqlserver.SQLServerDriver") ||
           conn.getMetaData().getDriverName().equals("com.mysql.jdbc.Driver");
       while ( (line = br.readLine()) != null) {
-        sql.append(line);
+        sql.append(' ').append(line);
         if (line.endsWith(";")) {
           if (vo.getDriverName().equals("oracle.jdbc.driver.OracleDriver")) {
             sql = replace(sql, " VARCHAR(", " VARCHAR2(");

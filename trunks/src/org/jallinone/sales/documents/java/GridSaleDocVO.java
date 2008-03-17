@@ -52,6 +52,7 @@ public class GridSaleDocVO extends ValueObjectImpl {
   private String thousandSymbolREG03;
   private String decimalSymbolREG03;
   private java.math.BigDecimal docSequenceDOC01;
+  private String sectionalDOC01;
 
 
   public GridSaleDocVO() {
@@ -177,6 +178,12 @@ public class GridSaleDocVO extends ValueObjectImpl {
   }
   public void setDocSequenceDOC01(java.math.BigDecimal docSequenceDOC01) {
     this.docSequenceDOC01 = docSequenceDOC01;
+  }
+  public String getSectionalDOC01() {
+    return sectionalDOC01;
+  }
+  public void setSectionalDOC01(String sectionalDOC01) {
+    this.sectionalDOC01 = sectionalDOC01;
   }
 
 }

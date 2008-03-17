@@ -65,6 +65,8 @@ public class CompanyParametersVO extends ValueObjectImpl {
   private java.sql.Timestamp afternoonStartHourSCH02;
   private java.sql.Timestamp afternoonEndHourSCH02;
 
+  private String saleSectionalDOC01;
+
 
   public CompanyParametersVO() {
   }
@@ -255,6 +257,12 @@ public class CompanyParametersVO extends ValueObjectImpl {
   }
   public void setMorningStartHourSCH02(java.sql.Timestamp morningStartHourSCH02) {
     this.morningStartHourSCH02 = morningStartHourSCH02;
+  }
+  public String getSaleSectionalDOC01() {
+    return saleSectionalDOC01;
+  }
+  public void setSaleSectionalDOC01(String saleSectionalDOC01) {
+    this.saleSectionalDOC01 = saleSectionalDOC01;
   }
 
 }

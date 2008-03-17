@@ -157,6 +157,8 @@ public class CompanyParametersFrame extends InternalFrame {
   DateControl controlMorningStartHour = new DateControl();
   LabelControl labelMorningEndHour = new LabelControl();
   DateControl controlMorningEndHour = new DateControl();
+  LabelControl labelSaleSectional = new LabelControl();
+  TextControl controlSaleSectional = new TextControl();
 
 
   public CompanyParametersFrame(CompanyParametersController controller) {
@@ -654,6 +656,11 @@ public class CompanyParametersFrame extends InternalFrame {
     controlAfternoonEndHour.setDateType(Consts.TYPE_TIME);
     controlAfternoonStartHour.setDateType(Consts.TYPE_TIME);
 
+    labelSaleSectional.setText("sectionalDOC01");
+    controlSaleSectional.setAttributeName("saleSectionalDOC01");
+    controlSaleSectional.setColumns(20);
+    controlSaleSectional.setLinkLabel(labelSaleSectional);
+    controlSaleSectional.setMaxCharacters(20);
     tabbed.add(panel1, "panel1");
     tabbed.add(panel2, "panel2");
 
@@ -849,48 +856,52 @@ public class CompanyParametersFrame extends InternalFrame {
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 
 
-    panel2.add(labelLossProfitE,               new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+    panel2.add(labelLossProfitE,                new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlLossProfitECode,             new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+    panel2.add(controlLossProfitECode,              new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlLossProfitEDescr,              new GridBagConstraints(2, 0, 2, 1, 1.0, 0.0
+    panel2.add(controlLossProfitEDescr,               new GridBagConstraints(2, 0, 2, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 
-    panel2.add(labelLossProfitP,               new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+    panel2.add(labelLossProfitP,                new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlLossProfitPCode,             new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+    panel2.add(controlLossProfitPCode,              new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlLossProfitPDescr,              new GridBagConstraints(2, 1, 2, 1, 1.0, 0.0
+    panel2.add(controlLossProfitPDescr,               new GridBagConstraints(2, 1, 2, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 
-    panel2.add(labelClosing,               new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+    panel2.add(labelClosing,                new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlClosingCode,             new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0
+    panel2.add(controlClosingCode,              new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlClosingDescr,              new GridBagConstraints(2, 2, 2, 1, 1.0, 0.0
+    panel2.add(controlClosingDescr,               new GridBagConstraints(2, 2, 2, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 
-    panel2.add(labelOpening,                  new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+    panel2.add(labelOpening,                   new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlOpeningCode,              new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
+    panel2.add(controlOpeningCode,               new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlOpeningDescr,             new GridBagConstraints(2, 3, 2, 3, 1.0, 1.0
+    panel2.add(controlOpeningDescr,              new GridBagConstraints(2, 3, 2, 4, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 0, 5), 0, 0));
-    panel2.add(labelAfternoonStartHour,             new GridBagConstraints(0, 5, 1, 3, 0.0, 0.0
+    panel2.add(labelAfternoonStartHour,                new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
+    panel2.add(controlAfternoonStartHour,              new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlAfternoonStartHour,            new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0
+    panel2.add(controlAfternoonEndHour,            new GridBagConstraints(3, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlAfternoonEndHour,          new GridBagConstraints(3, 5, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(labelMorningStartHour,         new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+    panel2.add(labelMorningStartHour,          new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlMorningEndHour,       new GridBagConstraints(3, 4, 1, 1, 0.0, 0.0
+    panel2.add(controlMorningEndHour,        new GridBagConstraints(3, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlMorningStartHour,    new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
+    panel2.add(controlMorningStartHour,     new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(labelMorningEndHour,     new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0
+    panel2.add(labelMorningEndHour,      new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 9, 5), 0, 0));
-    panel2.add(labelAfternoonEndHour,  new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0
+    panel2.add(labelAfternoonEndHour,    new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    panel2.add(controlSaleSectional,   new GridBagConstraints(1, 6, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    panel2.add(labelSaleSectional, new GridBagConstraints(0, 6, 1, 1, 0.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
     controlCreditsCode.setAttributeName("creditAccountCodeAcc02SAL07");

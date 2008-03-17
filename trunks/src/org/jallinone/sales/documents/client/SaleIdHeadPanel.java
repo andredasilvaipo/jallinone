@@ -12,6 +12,7 @@ import org.openswing.swing.form.client.Form;
 import org.openswing.swing.lookup.client.LookupListener;
 import org.openswing.swing.message.receive.java.*;
 import java.util.Collection;
+import javax.swing.SwingConstants;
 
 /**
   * <p>Title: JAllInOne ERP/CRM application</p>
@@ -63,6 +64,8 @@ public class SaleIdHeadPanel extends JPanel {
   LabelControl labelDocRefNr = new LabelControl();
   TextControl controlDofRef = new TextControl();
   private boolean showDocRefLookup;
+  private boolean showSectional;
+  TextControl controlSectional = new TextControl();
 
 
 
@@ -70,9 +73,11 @@ public class SaleIdHeadPanel extends JPanel {
    * Constructor called by sale doc header frames.
    * @param form sale doc header form
    * @param showDocRefLookup <code>true</code> to show combo+lookup used to select a linked document (e.g. a sale document in an invoice document); <code>false</code> to hide combo+lookup and show doc. ref. nr. input control
+   * @param showSectional <code>true</code> to show  the sectional field (for invoice documents); <code>false</code> to hide that field
    */
-  public SaleIdHeadPanel(Form form,boolean showDocRefLookup) {
+  public SaleIdHeadPanel(Form form,boolean showDocRefLookup,boolean showSectional) {
     this.showDocRefLookup = showDocRefLookup;
+    this.showSectional = showSectional;
     try {
       jbInit();
 
@@ -186,10 +191,14 @@ public class SaleIdHeadPanel extends JPanel {
     controlDocState.setAttributeName("docStateDOC01");
     controlDocState.setDomainId("DOC01_STATES");
     labelDocRefNr.setText("docRef");
-    this.add(labelDocNum,        new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+    controlSectional.setAttributeName("sectionalDOC01");
+    controlSectional.setEnabledOnInsert(false);
+    controlSectional.setEnabledOnEdit(false);
+    controlSectional.setTextAlignment(SwingConstants.RIGHT);
+    this.add(labelDocNum,         new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlDocNumber,               new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 30, 0));
+    this.add(controlDocNumber,                new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 30, 0));
 
     if (showDocRefLookup) {
       this.add(labelDocRif,         new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
@@ -210,20 +219,23 @@ public class SaleIdHeadPanel extends JPanel {
               ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 10, 0));
     }
 
-    this.add(controlDocYear,           new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0
+    this.add(controlDocYear,            new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 30, 0));
-    this.add(labelDocYear,      new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
+    this.add(labelDocYear,       new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
 
-    this.add(labelDocDate,     new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0
+    this.add(labelDocDate,      new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlDocDate,         new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0
+    this.add(controlDocDate,          new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 60, 0));
-    this.add(labelDocState,    new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0
+    this.add(labelDocState,     new GridBagConstraints(7, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlDocState,        new GridBagConstraints(7, 0, 1, 1, 0.0, 0.0
+    this.add(controlDocState,         new GridBagConstraints(8, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 10, 0));
+    if (showSectional)
+      this.add(controlSectional,  new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+              ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
   }
 
 

@@ -571,25 +571,25 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     detailPanel.add(labelItemCode,                               new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(10, 5, 5, 5), 0, 0));
     detailPanel.add(controlItemCode,                                            new GridBagConstraints(2, 0, 2, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(10, 0, 5, 0), 80, 0));
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(10, 0, 5, 0), 20, 0));
     detailPanel.add(labelQty,                                new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
     detailPanel.add(controlQty,                                 new GridBagConstraints(1, 2, 2, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 80, 0));
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 20, 0));
     detailPanel.add(labelVat,                              new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
     detailPanel.add(controlVatCode,                                  new GridBagConstraints(1, 1, 2, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 80, 0));
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
     detailPanel.add(controlVatDescr,                                new GridBagConstraints(3, 1, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 5, 5), 70, 0));
     detailPanel.add(labelValueReg01,                              new GridBagConstraints(5, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
     detailPanel.add(controlValueReg01,                                 new GridBagConstraints(6, 1, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 80, 0));
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
     detailPanel.add(labelDeductibleReg01,                              new GridBagConstraints(7, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
     detailPanel.add(controlDeductibleReg01,                               new GridBagConstraints(8, 1, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 80, 0));
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
     detailPanel.add(controlItemDescr,                             new GridBagConstraints(4, 0, 5, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(10, 5, 5, 5), 0, 0));
     detailPanel.add(controlUmCode,                               new GridBagConstraints(3, 2, 2, 1, 0.0, 0.0
@@ -597,25 +597,25 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     detailPanel.add(labelPriceUnit,                           new GridBagConstraints(5, 2, 1, 2, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
     detailPanel.add(controlPriceUnit,                            new GridBagConstraints(6, 2, 1, 2, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 80, 0));
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
     detailPanel.add(labelVatValue,                           new GridBagConstraints(7, 2, 1, 2, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
     detailPanel.add(controlTotalDisc,                              new GridBagConstraints(6, 5, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 10, 5), 80, 0));
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 10, 5), 20, 0));
     detailPanel.add(labelTotalDisc,                             new GridBagConstraints(5, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 10, 5), 0, 0));
     detailPanel.add(controlVatValue,                            new GridBagConstraints(8, 2, 1, 2, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 80, 0));
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
     detailPanel.add(labelTotal,                             new GridBagConstraints(7, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 10, 5), 0, 0));
     detailPanel.add(controlTotal,                              new GridBagConstraints(8, 5, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 10, 5), 80, 0));
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 10, 5), 20, 0));
     detailPanel.add(controlItemType,                           new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(10, 5, 5, 5), 0, 0));
     detailPanel.add(voidPanel,                      new GridBagConstraints(0, 6, 1, 1, 0.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
     detailPanel.add(controlDiscPerc,   new GridBagConstraints(8, 4, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 80, 0));
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
     detailPanel.add(labelDiscPerc, new GridBagConstraints(7, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
     detailPanel.add(controlDiscValue,  new GridBagConstraints(6, 4, 1, 1, 0.0, 0.0

@@ -14,6 +14,7 @@ import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.util.client.ClientUtils;
 import org.openswing.swing.mdi.client.MDIFrame;
 import java.math.BigDecimal;
+import org.openswing.swing.tree.java.OpenSwingTreeNode;
 
 
 /**
@@ -197,7 +198,7 @@ public class FunctionsTreeFrame extends InternalFrame {
                 if (num==1)
                   vo.setCopyNode(true);
             }
-            newDragNode = new DefaultMutableTreeNode(vo);
+            newDragNode = new OpenSwingTreeNode(vo);
           }
 
 

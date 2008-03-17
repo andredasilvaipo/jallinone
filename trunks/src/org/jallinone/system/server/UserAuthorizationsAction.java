@@ -18,6 +18,7 @@ import org.jallinone.system.java.ButtonCompanyAuthorizations;
 import org.jallinone.system.java.CustomizedWindows;
 import org.jallinone.system.customizations.java.WindowCustomizationVO;
 import java.math.BigDecimal;
+import org.openswing.swing.tree.java.OpenSwingTreeNode;
 
 
 /**
@@ -190,7 +191,7 @@ public class UserAuthorizationsAction implements Action {
 
         if (currentLevel==0) {
           // prepare a tree model with the root node...
-          currentNode = new DefaultMutableTreeNode();
+          currentNode = new OpenSwingTreeNode();
           model = new DefaultTreeModel(currentNode);
         }
         else {

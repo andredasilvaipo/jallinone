@@ -51,6 +51,8 @@ import org.jallinone.sales.documents.headercharges.server.LoadSaleDocChargesBean
 import org.jallinone.sales.documents.activities.server.LoadSaleDocActivitiesBean;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.java.CompanyParametersVO;
+import org.jallinone.system.server.LoadCompanyParamsAction;
 
 
 /**
@@ -104,6 +106,7 @@ public class CloseSaleDocAction implements Action {
   UpdateTaxableIncomesBean taxableIncomeAction = new UpdateTaxableIncomesBean();
   InsertVatRegisterBean vatRegisterAction =  new InsertVatRegisterBean();
   LoadUserParamAction userParamAction = new LoadUserParamAction();
+  LoadCompanyParamsAction parsBean = new LoadCompanyParamsAction();
 
 
   public CloseSaleDocAction() {}
@@ -531,6 +534,13 @@ public class CloseSaleDocAction implements Action {
         pstmt.setString(3,ApplicationConsts.SALE_INVOICE_FROM_DN_DOC_TYPE);
         pstmt.setString(4,ApplicationConsts.SALE_INVOICE_FROM_SD_DOC_TYPE);
         pstmt.setBigDecimal(5,pk.getDocYearDOC01());
+
+        Response sectRes = parsBean.executeCommand(docVO.getCompanyCodeSys01DOC01(),userSessionPars,request, response,userSession,context);
+        if (!res.isError()) {
+          CompanyParametersVO parsVO = (CompanyParametersVO)((VOResponse)sectRes).getVo();
+          docVO.setSectionalDOC01(parsVO.getSaleSectionalDOC01());
+        }
+
       }
       else {
         // other sale document (e.g. credit note)...
@@ -629,13 +639,14 @@ public class CloseSaleDocAction implements Action {
 
 
       // change doc state to close...
-      pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=?,DOC_SEQUENCE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
+      pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=?,DOC_SEQUENCE=?,SECTIONAL=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
       pstmt.setString(1,ApplicationConsts.CLOSED);
       pstmt.setInt(2,docSequenceDOC01);
-      pstmt.setString(3,pk.getCompanyCodeSys01DOC01());
-      pstmt.setString(4,pk.getDocTypeDOC01());
-      pstmt.setBigDecimal(5,pk.getDocYearDOC01());
-      pstmt.setBigDecimal(6,pk.getDocNumberDOC01());
+      pstmt.setString(3,docVO.getSectionalDOC01());
+      pstmt.setString(4,pk.getCompanyCodeSys01DOC01());
+      pstmt.setString(5,pk.getDocTypeDOC01());
+      pstmt.setBigDecimal(6,pk.getDocYearDOC01());
+      pstmt.setBigDecimal(7,pk.getDocNumberDOC01());
       int rowNum = pstmt.executeUpdate();
 
 

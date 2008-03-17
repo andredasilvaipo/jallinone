@@ -17,6 +17,7 @@ import org.openswing.swing.mdi.client.MDIFrame;
 import org.openswing.swing.message.receive.java.VOResponse;
 import java.beans.Beans;
 import org.jallinone.commons.java.ApplicationConsts;
+import org.openswing.swing.tree.java.OpenSwingTreeNode;
 
 
 /**
@@ -118,7 +119,7 @@ public class HierarTreePanel extends TreePanel implements TreeController {
                     newVO.setProgressiveHie01HIE01(newVO.getProgressiveHIE01());
                     newVO.setLevelHIE01(newVO.getLevelHIE01().add(new BigDecimal(1)));
                     newVO.setDescriptionSYS10(value);
-                    DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(newVO);
+                    DefaultMutableTreeNode newNode = new OpenSwingTreeNode(newVO);
                     Response response = ClientUtils.getData("insertLevel",newVO);
                     if (!response.isError()) {
                       newNode.setUserObject(((VOResponse)response).getVo());

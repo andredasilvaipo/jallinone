@@ -45,7 +45,7 @@
 	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[select DOC01_SELLING.COMPANY_CODE_SYS01,DOC01_SELLING.DOC_TYPE,DOC01_SELLING.DOC_STATE,
+	<queryString><![CDATA[select DOC01_SELLING.COMPANY_CODE_SYS01,DOC01_SELLING.SECTIONAL,DOC01_SELLING.DOC_TYPE,DOC01_SELLING.DOC_STATE,
 DOC01_SELLING.PRICELIST_CODE_SAL01,DOC01_SELLING.PRICELIST_DESCRIPTION,
 DOC01_SELLING.CURRENCY_CODE_REG03,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,
 DOC01_SELLING.DOC_YEAR,DOC01_SELLING.DOC_NUMBER,DOC01_SELLING.TAXABLE_INCOME,
@@ -84,6 +84,7 @@ DOC01_SELLING.COMPANY_CODE_SYS01=WAR01_WAREHOUSES.COMPANY_CODE_SYS01 and
 DOC01_SELLING.WAREHOUSE_CODE_WAR01=WAR01_WAREHOUSES.WAREHOUSE_CODE]]></queryString>
 
 	<field name="COMPANY_CODE_SYS01" class="java.lang.String"/>
+	<field name="SECTIONAL" class="java.lang.String"/>
 	<field name="DOC_TYPE" class="java.lang.String"/>
 	<field name="DOC_STATE" class="java.lang.String"/>
 	<field name="PRICELIST_CODE_SAL01" class="java.lang.String"/>
@@ -189,6 +190,7 @@ DOC01_SELLING.WAREHOUSE_CODE_WAR01=WAR01_WAREHOUSES.WAREHOUSE_CODE]]></queryStri
 		<pageHeader>
 			<band height="141"  isSplitAllowed="true" >
 				<frame>					<reportElement
+						mode="Transparent"
 						x="1"
 						y="4"
 						width="534"
@@ -309,8 +311,9 @@ $F{DOC_DATE}
 					<textElement>
 						<font fontName="Courier New" pdfFontName="Helvetica" size="10" isBold="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[($F{DOC_SEQUENCE}==null || $F{DOC_SEQUENCE}.equals("")?"":$F{DOC_SEQUENCE}.toString()+
-"/"+$F{DOC_YEAR}.toString())]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{SECTIONAL}==null || $F{SECTIONAL}.equals("")?"":$F{SECTIONAL}.toString())+
+($F{DOC_SEQUENCE}==null || $F{DOC_SEQUENCE}.equals("")?"":$F{DOC_SEQUENCE}.toString())+
+"/"+$F{DOC_YEAR}.toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

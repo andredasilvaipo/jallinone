@@ -159,6 +159,7 @@ public class StartupFrame extends JFrame {
 
       clientLanguageCodeComboBox.addItem("English");
       clientLanguageCodeComboBox.addItem("Italiano");
+      clientLanguageCodeComboBox.addItem("Espanol");
       clientLanguageCodeComboBox.setSelectedIndex(0);
 
       setVisible(true);
@@ -601,8 +602,10 @@ public class StartupFrame extends JFrame {
 
     if (clientLanguageCodeComboBox.getSelectedIndex()==0)
       dbConnVO.setClientLanguageCode("EN");
-    else
+    else if (clientLanguageCodeComboBox.getSelectedIndex()==1)
       dbConnVO.setClientLanguageCode("IT");
+    else
+      dbConnVO.setClientLanguageCode("ES");
     dbConnVO.setAdminPassword(adminPasswdTF.getText().trim());
     Response response = ClientUtils.getData("createConfigFile",dbConnVO);
     if (response.isError()) {

@@ -87,7 +87,7 @@ public class SaleDeskDocFrame extends InternalFrame implements SaleDocument {
   ReloadButton reloadButton1 = new ReloadButton();
   DeleteButton deleteButton1 = new DeleteButton();
   GridBagLayout gridBagLayout1 = new GridBagLayout();
-  SaleIdHeadPanel saleIdHeadPanel1 = new SaleIdHeadPanel(headerFormPanel,false);
+  SaleIdHeadPanel saleIdHeadPanel1 = new SaleIdHeadPanel(headerFormPanel,false,false);
   SaleCustomerHeadPanel saleCustomerHeadPanel1 = new SaleCustomerHeadPanel(headerFormPanel);
   SaleTotalsPanel saleTotalsPanel1 = new SaleTotalsPanel(headerFormPanel);
   SaleDeskDocRowsGridPanel rowsPanel = new SaleDeskDocRowsGridPanel(this,headerFormPanel);

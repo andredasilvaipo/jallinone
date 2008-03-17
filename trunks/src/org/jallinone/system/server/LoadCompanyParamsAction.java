@@ -394,6 +394,19 @@ public class LoadCompanyParamsAction implements Action {
       }
       rset.close();
 
+      // retrieve sectional for sale invoices...
+      pstmt.close();
+      pstmt = conn.prepareStatement(
+          "select VALUE from SYS21_COMPANY_PARAMS where SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? "
+      );
+      pstmt.setString(1,companyCode);
+      pstmt.setString(2,ApplicationConsts.SALE_SECTIONAL);
+      rset = pstmt.executeQuery();
+      while(rset.next()) {
+        vo.setSaleSectionalDOC01(rset.getString(1));
+      }
+      rset.close();
+
 
       return new VOResponse(vo);
     } catch (Exception ex) {

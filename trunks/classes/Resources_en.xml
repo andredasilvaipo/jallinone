@@ -669,6 +669,7 @@
   <object key="docSequenceDoc06DOC09" value="Pur.Doc. Nr." />
   <object key="docSequenceDoc01DOC10" value="Sell.Doc. Nr." />
   <object key="docSequenceDOC08" value="Del.Note Nr." />
+  <object key="sectionalDOC01" value="Sectional" />
 
   <object key="close out delivery note?" value="Close delivery note and unload items from warehouse?" />
   <object key="unload items from sale document" value="Unload items from sale document" />

@@ -19,6 +19,7 @@ import org.openswing.swing.logger.server.Logger;
 import org.jallinone.items.java.ItemPK;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.openswing.swing.tree.java.OpenSwingTreeNode;
 
 
 /**
@@ -127,7 +128,7 @@ public class LoadItemImplosionAction implements Action {
       rootVO.setDescriptionSYS10("");
       rootVO.setParentItemCodeItm01ITM03("");
       rootVO.setItemCodeItm01ITM03("");
-      DefaultMutableTreeNode root = new DefaultMutableTreeNode(rootVO);
+      DefaultMutableTreeNode root = new OpenSwingTreeNode(rootVO);
       DefaultTreeModel model = new DefaultTreeModel(root);
 
       String sql2 = "'" + pk.getItemCodeITM01() + "'";
@@ -163,7 +164,7 @@ public class LoadItemImplosionAction implements Action {
           for(int i=0;i<rows.size();i++) {
             auxVO = (MaterialVO)rows.get(i);
             sql2 += "'"+auxVO.getParentItemCodeItm01ITM03()+"',";
-            auxnode = new DefaultMutableTreeNode(auxVO);
+            auxnode = new OpenSwingTreeNode(auxVO);
             auxnode2 = (DefaultMutableTreeNode)nodes.get(auxVO.getItemCodeItm01ITM03());
             if (auxnode2!=null)
               auxnode.add(auxnode2);

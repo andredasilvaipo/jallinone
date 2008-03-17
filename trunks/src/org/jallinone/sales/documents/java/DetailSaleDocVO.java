@@ -95,6 +95,7 @@ public class DetailSaleDocVO extends BaseValueObject {
   private java.math.BigDecimal discountPercDOC01;
   private java.math.BigDecimal docSequenceDOC01;
   private java.math.BigDecimal docSequenceDoc01DOC01;
+  private String sectionalDOC01;
 
 
   public DetailSaleDocVO() {
@@ -466,6 +467,12 @@ public class DetailSaleDocVO extends BaseValueObject {
   }
   public void setDocSequenceDoc01DOC01(java.math.BigDecimal docSequenceDoc01DOC01) {
     this.docSequenceDoc01DOC01 = docSequenceDoc01DOC01;
+  }
+  public String getSectionalDOC01() {
+    return sectionalDOC01;
+  }
+  public void setSectionalDOC01(String sectionalDOC01) {
+    this.sectionalDOC01 = sectionalDOC01;
   }
 
 }
