@@ -13,7 +13,9 @@
   <property name="storepass" value="${STOREPASS}"/>
 
   <target name="allclasses">
-    <delete file="${tmp}/**"/>
+    <delete>
+      <fileset dir="${tmp}" includes="**/*.*"/>
+    </delete>
     <mkdir dir="${tmp}"/>
     <copy todir="${tmp}/images" >
       <fileset dir="${classes}/images"/>
@@ -32,7 +34,11 @@
         <include name="clientjaio.jar"/>
       </fileset>
     </copy>
-    <delete dir="${tmp}"/>
+    <delete>
+      <fileset dir="${tmp}" includes="**/*.*"/>
+    </delete>
+
+<!--    <delete dir="${tmp}"/>-->
     <copy todir="${webapps}/jAllInOne" >
       <fileset dir="${lib}">
         <include name="clientos.jar"/>
@@ -59,6 +65,7 @@
     <signjar jar="${webapps}/jAllInOne/itext-1.3.1.jar" alias="${ALIAS}" storepass="${STOREPASS}" keystore="${keystore}" />
     <signjar jar="${webapps}/jAllInOne/looks-2.0.1.jar" alias="${ALIAS}" storepass="${STOREPASS}" keystore="${keystore}" />
     <signjar jar="${webapps}/jAllInOne/OfficeLnFs_2.7.jar" alias="${ALIAS}" storepass="${STOREPASS}" keystore="${keystore}" />
+    <signjar jar="${webapps}/jAllInOne/jcalendar.jar" alias="${ALIAS}" storepass="${STOREPASS}" keystore="${keystore}" />
 
     <copy todir="${webapps}/jAllInOne" >
       <fileset dir="${lib}">
@@ -70,7 +77,10 @@
       </fileset>
     </copy>
 
-    <delete dir="${tmp}"/>
+    <delete>
+      <fileset dir="${tmp}" includes="**/*.*"/>
+    </delete>
+
     <mkdir dir="${tmp}"/>
     <copy todir="${tmp}/org/" >
       <fileset dir="${classes}/org/">
@@ -85,7 +95,10 @@
         <include name="serverjaio.jar"/>
       </fileset>
     </copy>
-    <delete dir="${tmp}"/>
+    <delete>
+      <fileset dir="${tmp}" includes="**/*.*"/>
+    </delete>
+
     <copy todir="${webapps}/jAllInOne/WEB-INF/lib" >
       <fileset dir="${lib}">
         <include name="serverjaio.jar"/>
@@ -128,7 +141,10 @@
 
 
   <target name="allclasses-nosign">
-    <delete file="${tmp}/**"/>
+    <delete>
+      <fileset dir="${tmp}" includes="**/*.*"/>
+    </delete>
+
     <mkdir dir="${tmp}"/>
     <copy todir="${tmp}/images" >
       <fileset dir="${classes}/images"/>
@@ -147,7 +163,10 @@
         <include name="clientjaio.jar"/>
       </fileset>
     </copy>
-    <delete dir="${tmp}"/>
+    <delete>
+      <fileset dir="${tmp}" includes="**/*.*"/>
+    </delete>
+
 
     <copy todir="${webapps}/jAllInOne" >
       <fileset dir="${lib}">
@@ -177,7 +196,10 @@
       </fileset>
     </copy>
 
-    <delete dir="${tmp}"/>
+    <delete>
+      <fileset dir="${tmp}" includes="**/*.*"/>
+    </delete>
+
     <mkdir dir="${tmp}"/>
     <copy todir="${tmp}/org/" >
       <fileset dir="${classes}/org/">
@@ -192,7 +214,10 @@
         <include name="serverjaio.jar"/>
       </fileset>
     </copy>
-    <delete dir="${tmp}"/>
+    <delete>
+      <fileset dir="${tmp}" includes="**/*.*"/>
+    </delete>
+
     <copy todir="${webapps}/jAllInOne/WEB-INF/lib" >
       <fileset dir="${lib}">
         <include name="serverjaio.jar"/>

@@ -1,5 +1,19 @@
 
 
+Release Notes 0.9.14
+---------------------
+
+Fix a problem in JAllInOne distribution: zip file was corrupted and jcalendar.jar file was not signed.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.13
+---------------------
+
+Updated OpenSwing library version to 1.5.9. Added an "Ask before close" dialog to grid/form frames.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
 Release Notes 0.9.12
 ---------------------
 

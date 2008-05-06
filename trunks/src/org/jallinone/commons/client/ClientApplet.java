@@ -621,6 +621,8 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     ClientSettings.GRID_PROFILE_MANAGER = new FileGridProfileManager();
     ClientSettings.ON_INVALID_CODE = LookupController.ON_INVALID_CODE_RESTORE_LAST_VALID_CODE;
 
+    ClientSettings.ASK_BEFORE_CLOSE = true;
+
     ClientSettings.getInstance().setLanguage(languageId);
 
     return true;
