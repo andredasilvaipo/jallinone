@@ -1,5 +1,18 @@
 
 
+Release Notes 0.9.15
+---------------------
+
+Updated OpenSwing library version to 1.6.
+Improved "window" menu in MDI menu bar: 
+- added "switch..." menu item to open a window dialog showing all opened internal windows and select a window to set to front
+- added numeric mnemonic (1, 2, 3, ... 9) at the left of menu items related to internal opened windows
+- added "reduce to icon" and "reduce all to icon" menu items
+- added "cascade", "tile horizontally/verically" menu items
+Added commands for copy/cut/paste to a popup menu showed over an input control when right mouse clicking on it.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
 Release Notes 0.9.14
 ---------------------
 

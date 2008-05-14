@@ -237,6 +237,7 @@ public class UsersFrame extends InternalFrame {
     colRoleDescr.setHeaderColumnName("roleDescription");
     colRoleDescr.setPreferredWidth(300);
     colSel.setColumnName("selected");
+    colSel.setShowDeSelectAllInPopupMenu(true);
     colSel.setEditableOnEdit(true);
     usersPanel.setBorder(titledBorder2);
     rolesPanel.setBorder(titledBorder1);

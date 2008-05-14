@@ -620,7 +620,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "org.fife.plaf.VisualStudio2005.VisualStudio2005LookAndFeel";
     ClientSettings.GRID_PROFILE_MANAGER = new FileGridProfileManager();
     ClientSettings.ON_INVALID_CODE = LookupController.ON_INVALID_CODE_RESTORE_LAST_VALID_CODE;
-
+    ClientSettings.FORCE_FOCUS_ON_LOOKUP_CONTROL = true;
     ClientSettings.ASK_BEFORE_CLOSE = true;
 
     ClientSettings.getInstance().setLanguage(languageId);

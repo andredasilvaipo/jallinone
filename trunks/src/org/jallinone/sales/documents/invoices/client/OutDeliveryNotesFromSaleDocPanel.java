@@ -129,6 +129,7 @@ public class OutDeliveryNotesFromSaleDocPanel extends JPanel {
     colDocDate.setColumnName("docDateDOC08");
     colDocDate.setPreferredWidth(80);
     colSel.setColumnName("selected");
+    colSel.setShowDeSelectAllInPopupMenu(true);
     colSel.setColumnRequired(false);
     colSel.setEditableOnEdit(true);
     colSel.setPreferredWidth(50);

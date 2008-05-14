@@ -354,6 +354,7 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
     colValue.setColumnName("valueDOC19");
     colValue.setColumnSortable(true);
     colPayed.setColumnFilterable(true);
+    colPayed.setShowDeSelectAllInPopupMenu(true);
     colPayed.setColumnName("payedDOC19");
     colPayed.setColumnSortable(true);
     colPayed.setEditableOnEdit(true);
