@@ -1454,6 +1454,11 @@
   <object key="valueReg01DOC13" value="Rata IVA" />
   <object key="minQtyDOC04" value="Qta Min" />
 
+  <object key="avg. purchase cost" value="Cost di acq.medio" />
+  <object key="last purchase cost" value="Ultimo costo di acq." />
+  <object key="last purchase date" value="Data ultimo acq." />
+  <object key="order tracking" value="Tracking ordini" />
+
 
 <!-- application translations -->
 

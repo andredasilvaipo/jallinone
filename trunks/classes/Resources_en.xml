@@ -1457,6 +1457,18 @@
   <object key="confirm sale closing" value="Confirm sale closing?" />
   <object key="sale closing" value="Sale closing" />
   <object key="customers that have bought these items also bought" value="Customers that have bought these items also bought" />
+  <object key="avg. purchase cost" value="Avg. purchase cost" />
+  <object key="last purchase cost" value="Last purchase cost" />
+  <object key="last purchase date" value="Last purchase date" />
+  <object key="order tracking" value="Order tracking" />
+  <object key="" value="" />
+  <object key="" value="" />
+  <object key="" value="" />
+  <object key="" value="" />
+  <object key="" value="" />
+  <object key="" value="" />
+  <object key="" value="" />
+  <object key="" value="" />
   <object key="" value="" />
   <object key="" value="" />
   <object key="" value="" />
