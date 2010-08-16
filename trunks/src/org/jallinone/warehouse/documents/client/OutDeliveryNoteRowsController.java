@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import org.openswing.swing.message.receive.java.ErrorResponse;
 import org.openswing.swing.message.receive.java.VOResponse;
 import org.openswing.swing.message.receive.java.VOListResponse;
+import org.jallinone.variants.java.VariantsMatrixVO;
 
 
 /**
@@ -106,7 +107,7 @@ public class OutDeliveryNoteRowsController extends CompanyGridController {
   public Response insertRecords(int[] rowNumbers, ArrayList newValueObjects) throws Exception {
     ValueObject newValueObject = (ValueObject)newValueObjects.get(0);
     if (panel.isSerialNumberRequired() &&
-        !promptSerialNumbers((GridOutDeliveryNoteRowVO)newValueObject)) {
+        !promptSerialNumbers(null,null,(GridOutDeliveryNoteRowVO)newValueObject)) {
       return new ErrorResponse("insert not allowed until serial numbers are not defined");
     }
 
@@ -145,7 +146,7 @@ public class OutDeliveryNoteRowsController extends CompanyGridController {
     for(int i=0;i<persistentObjects.size();i++) {
       GridOutDeliveryNoteRowVO vo = (GridOutDeliveryNoteRowVO)persistentObjects.get(i);
       if (panel.isSerialNumberRequired() &&
-          !promptSerialNumbers(vo)) {
+          !promptSerialNumbers(null,null,vo)) {
         return new ErrorResponse("update not allowed until serial numbers are not defined");
       }
     }
@@ -162,40 +163,44 @@ public class OutDeliveryNoteRowsController extends CompanyGridController {
     panel.getGrid().reloadData();
     panel.getHeaderPanel().setMode(Consts.READONLY);
     panel.getHeaderPanel().executeReload();
-    panel.getOrders().reloadData();
+    panel.getOrders().reloadCurrentBlockOfData();
   }
 
 
   /**
    * Show an input dialog to insert serial numbers.
    */
-  private boolean promptSerialNumbers(GridOutDeliveryNoteRowVO vo) {
+  private boolean promptSerialNumbers(Object[][] cells,VariantsMatrixVO matrixVO,GridOutDeliveryNoteRowVO vo) {
 
     // define serial numbers and bar codes list to the right size...
     ArrayList list = (ArrayList)vo.getSerialNumbers();
     if (list==null) {
       list = new ArrayList(vo.getQtyDOC10().intValue());
+      for(int i=0;i<vo.getQtyDOC10().intValue();i++) {
+        list.add(null);
+      }
       vo.setSerialNumbers(list);
-      list = new ArrayList(vo.getQtyDOC10().intValue());
-      vo.setBarCodes(list);
     }
     else {
       if (vo.getSerialNumbers().size()<vo.getQtyDOC10().intValue()) {
         for(int i=vo.getSerialNumbers().size();i<vo.getQtyDOC10().intValue();i++) {
           vo.getSerialNumbers().add(null);
-          vo.getBarCodes().add(null);
         }
       }
       else if (vo.getSerialNumbers().size()>vo.getQtyDOC10().intValue()) {
         while(vo.getSerialNumbers().size()>vo.getQtyDOC10().intValue()) {
           vo.getSerialNumbers().remove(vo.getSerialNumbers().size()-1);
-          vo.getBarCodes().remove(vo.getBarCodes().size()-1);
         }
       }
     }
 
     // show input dialog...
-    new SerialNumberDialog(vo.getSerialNumbers(),vo.getBarCodes(),vo.getItemCodeItm01DOC10()+" - "+vo.getDescriptionSYS10());
+    new SerialNumberDialog(
+      cells,
+      matrixVO,
+      vo.getSerialNumbers(),
+      vo.getItemCodeItm01DOC10()+" - "+vo.getDescriptionSYS10()
+    );
 
     return true;
   }
@@ -213,6 +218,7 @@ public class OutDeliveryNoteRowsController extends CompanyGridController {
     for(int i=0;i<persistentObjects.size();i++) {
       vo = (GridOutDeliveryNoteRowVO)persistentObjects.get(i);
       pk = new OutDeliveryNoteRowPK(
+          vo.getProgressiveDOC10(),
           vo.getCompanyCodeSys01DOC10(),
           vo.getDocTypeDOC10(),
           vo.getDocYearDOC10(),
@@ -221,7 +227,18 @@ public class OutDeliveryNoteRowsController extends CompanyGridController {
           vo.getDocYearDoc01DOC10(),
           vo.getDocNumberDoc01DOC10(),
           vo.getRowNumberDOC10(),
-          vo.getItemCodeItm01DOC10()
+          vo.getItemCodeItm01DOC10(),
+          vo.getVariantTypeItm06DOC10(),
+          vo.getVariantCodeItm11DOC10(),
+          vo.getVariantTypeItm07DOC10(),
+          vo.getVariantCodeItm12DOC10(),
+          vo.getVariantTypeItm08DOC10(),
+          vo.getVariantCodeItm13DOC10(),
+          vo.getVariantTypeItm09DOC10(),
+          vo.getVariantCodeItm14DOC10(),
+          vo.getVariantTypeItm10DOC10(),
+          vo.getVariantCodeItm15DOC10()
+
       );
       pks.add(pk);
     }

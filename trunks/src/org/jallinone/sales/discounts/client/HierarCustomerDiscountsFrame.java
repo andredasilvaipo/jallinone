@@ -31,6 +31,7 @@ import org.openswing.swing.lookup.client.LookupController;
 import org.openswing.swing.lookup.client.LookupServerDataLocator;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.subjects.java.SubjectHierarchyVO;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 
 /**
@@ -94,11 +95,22 @@ public class HierarCustomerDiscountsFrame extends InternalFrame {
   EditButton editButton1 = new EditButton();
 
 
-  public HierarCustomerDiscountsFrame(HierarCustomerDiscountsController controller) {
+  public HierarCustomerDiscountsFrame(final HierarCustomerDiscountsController controller) {
     try {
       jbInit();
       setSize(750,500);
       setMinimumSize(new Dimension(750,500));
+
+      hierarTreePanel.addHierarTreeListener(new HierarTreeListener(){
+
+        public void loadDataCompleted(boolean error) {
+          if (hierarTreePanel.getTree().getRowCount()>0)
+            hierarTreePanel.getTree().setSelectionRow(0);
+          if (hierarTreePanel.getTree().getSelectionPath()!=null)
+            controller.leftClick((DefaultMutableTreeNode)hierarTreePanel.getTree().getSelectionPath().getLastPathComponent());
+        }
+
+      });
 
       discountsGrid.setController(controller);
       discountsGrid.setGridDataLocator(gridDataLocator);
@@ -142,7 +154,7 @@ public class HierarCustomerDiscountsFrame extends InternalFrame {
     Domain d = new Domain("CUSTOMER_TYPES");
     if (!res.isError()) {
       SubjectHierarchyVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (SubjectHierarchyVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02REG08(),vo.getDescriptionSYS10());

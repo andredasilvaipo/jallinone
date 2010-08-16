@@ -83,7 +83,7 @@ public class DeleteScheduledMachineriesAction implements Action {
         "delete from SCH09_SCHEDULED_MACHINERIES where COMPANY_CODE_SYS01=? and PROGRESSIVE_SCH06=? and MACHINERY_CODE_PRO03=?"
       );
 
-      ArrayList list =  (ArrayList)inputPar;
+      java.util.List list =  (ArrayList)inputPar;
       ScheduledMachineriesVO vo = null;
       for(int i=0;i<list.size();i++) {
         // phisically delete the record in SCH09...

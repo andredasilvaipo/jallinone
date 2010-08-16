@@ -81,7 +81,7 @@ public class DeleteChargesAction implements Action {
       ));
       stmt = conn.createStatement();
 
-      ArrayList list =  (ArrayList)inputPar;
+      java.util.List list =  (ArrayList)inputPar;
       ChargeVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in SAL06...

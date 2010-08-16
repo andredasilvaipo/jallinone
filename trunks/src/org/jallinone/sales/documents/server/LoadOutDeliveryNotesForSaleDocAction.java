@@ -197,7 +197,7 @@ public class LoadOutDeliveryNotesForSaleDocAction implements Action {
           docNumberDOC08s.add(rset.getBigDecimal(1));
         rset.close();
 
-        ArrayList rows = ((VOListResponse)res).getRows();
+        java.util.List rows = ((VOListResponse)res).getRows();
         OutDeliveryNotesVO vo = null;
         for(int i=0;i<rows.size();i++) {
           vo = (OutDeliveryNotesVO)rows.get(i);

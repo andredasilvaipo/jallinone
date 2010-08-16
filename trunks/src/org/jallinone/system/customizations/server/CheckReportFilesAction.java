@@ -64,7 +64,7 @@ public class CheckReportFilesAction implements Action {
    */
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
     try {
-      String path = this.getClass().getResource("/").getPath()+"reports/";
+      String path = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"reports/";
       Hashtable bytes = (Hashtable)inputPar;
       Enumeration en = bytes.keys();
       String fileName = null;

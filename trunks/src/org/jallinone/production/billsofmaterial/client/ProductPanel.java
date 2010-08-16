@@ -151,6 +151,7 @@ public class ProductPanel extends JPanel {
   ExportButton exportButton3 = new ExportButton();
   CodLookupColumn colAltItemCode = new CodLookupColumn();
   TextColumn colAltItemDescr = new TextColumn();
+  TextColumn colUM = new TextColumn();
 
 
   public ProductPanel() {
@@ -238,6 +239,7 @@ public class ProductPanel extends JPanel {
       colItemCodeController.addLookup2ParentLink("companyCodeSys01ITM01", "companyCodeSys01ITM03");
       colItemCodeController.addLookup2ParentLink("itemCodeITM01", "itemCodeItm01ITM03");
       colItemCodeController.addLookup2ParentLink("descriptionSYS10", "descriptionSYS10");
+      colItemCodeController.addLookup2ParentLink("minSellingQtyUmCodeReg02ITM01", "minSellingQtyUmCodeReg02ITM01");
 
       colItemCodeController.setAllColumnVisible(false);
       colItemCodeController.setVisibleColumn("companyCodeSys01ITM01", true);
@@ -458,6 +460,7 @@ public class ProductPanel extends JPanel {
       setAltButtonsEnabled(false);
     }
     else {
+      componentsGrid.clearData();
       setCompButtonsEnabled(false);
       altCompsGrid.reloadData();
       setAltButtonsEnabled(true);
@@ -556,6 +559,9 @@ public class ProductPanel extends JPanel {
     colAltItemDescr.setColumnRequired(false);
     colAltItemDescr.setColumnSortable(true);
     colAltItemDescr.setPreferredWidth(250);
+    colUM.setColumnName("minSellingQtyUmCodeReg02ITM01");
+    colUM.setColumnRequired(false);
+    colUM.setPreferredWidth(40);
     topPanel.add(controlRev,          new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     topPanel.add(controlVer,      new GridBagConstraints(1, 2, 1, 1, 1.0, 0.0
@@ -729,6 +735,7 @@ public class ProductPanel extends JPanel {
     componentsGrid.getColumnContainer().add(colVer, null);
     componentsGrid.getColumnContainer().add(colRev, null);
     componentsGrid.getColumnContainer().add(colQty, null);
+    componentsGrid.getColumnContainer().add(colUM, null);
     componentsGrid.getColumnContainer().add(colStartDate, null);
     componentsGrid.getColumnContainer().add(colEndDate, null);
     altPanel.add(altCompsButtonsPanel, BorderLayout.NORTH);

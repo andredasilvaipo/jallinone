@@ -168,7 +168,8 @@ public class CloseSaleDocAction implements Action {
       res = rowsAction.loadSaleDocRows(conn,gridParams,userSessionPars,request,response,userSession,context);
       if (res.isError())
         return res;
-      ArrayList rows = ((VOListResponse)res).getRows();
+      ArrayList rows = new ArrayList(((VOListResponse)res).getRows());
+      ArrayList itemRows = rows;
 
 
 
@@ -179,7 +180,7 @@ public class CloseSaleDocAction implements Action {
         DetailSaleDocRowVO detailVO = null;
         gridParams = new GridParams();
         BookedItemQtyVO availVO = null;
-        ArrayList availRows = null;
+        java.util.List availRows = null;
         for(int i=0;i<rows.size();i++) {
           vo = (GridSaleDocRowVO)rows.get(i);
           gridParams.getOtherGridParams().put(ApplicationConsts.WAREHOUSE_CODE,docVO.getWarehouseCodeWar01DOC01());
@@ -201,7 +202,18 @@ public class CloseSaleDocAction implements Action {
                     vo.getDocTypeDOC02(),
                     vo.getDocYearDOC02(),
                     vo.getDocNumberDOC02(),
-                    vo.getItemCodeItm01DOC02()
+                    vo.getItemCodeItm01DOC02(),
+                    vo.getVariantTypeItm06DOC02(),
+                    vo.getVariantCodeItm11DOC02(),
+                    vo.getVariantTypeItm07DOC02(),
+                    vo.getVariantCodeItm12DOC02(),
+                    vo.getVariantTypeItm08DOC02(),
+                    vo.getVariantCodeItm13DOC02(),
+                    vo.getVariantTypeItm09DOC02(),
+                    vo.getVariantCodeItm14DOC02(),
+                    vo.getVariantTypeItm10DOC02(),
+                    vo.getVariantCodeItm15DOC02()
+
                   ),
                   userSessionPars,
                   request,
@@ -224,7 +236,18 @@ public class CloseSaleDocAction implements Action {
                   ApplicationConsts.ITEM_GOOD,
                   resources.getResource("unload items from sale document")+" "+docVO.getDocTypeDOC01()+"/"+docVO.getDocNumberDOC01()+"/"+docVO.getDocYearDOC01(),
                   detailVO.getSerialNumbers(),
-                  detailVO.getBarCodes()
+
+                  vo.getVariantCodeItm11DOC02(),
+                  vo.getVariantCodeItm12DOC02(),
+                  vo.getVariantCodeItm13DOC02(),
+                  vo.getVariantCodeItm14DOC02(),
+                  vo.getVariantCodeItm15DOC02(),
+                  vo.getVariantTypeItm06DOC02(),
+                  vo.getVariantTypeItm07DOC02(),
+                  vo.getVariantTypeItm08DOC02(),
+                  vo.getVariantTypeItm09DOC02(),
+                  vo.getVariantTypeItm10DOC02()
+
               );
               res = movBean.addWarehouseMovement(conn,movVO,userSessionPars,request,response,userSession,context);
               if (res.isError()) {
@@ -277,7 +300,18 @@ public class CloseSaleDocAction implements Action {
                 docVO.getDocTypeDoc01DOC01(),
                 docVO.getDocYearDoc01DOC01(),
                 docVO.getDocNumberDoc01DOC01(),
-                vo.getItemCodeItm01DOC02()
+                vo.getItemCodeItm01DOC02(),
+                vo.getVariantTypeItm06DOC02(),
+                vo.getVariantCodeItm11DOC02(),
+                vo.getVariantTypeItm07DOC02(),
+                vo.getVariantCodeItm12DOC02(),
+                vo.getVariantTypeItm08DOC02(),
+                vo.getVariantCodeItm13DOC02(),
+                vo.getVariantTypeItm09DOC02(),
+                vo.getVariantCodeItm14DOC02(),
+                vo.getVariantTypeItm10DOC02(),
+                vo.getVariantCodeItm15DOC02()
+
               ),
               userSessionPars,
               request,
@@ -299,7 +333,12 @@ public class CloseSaleDocAction implements Action {
             // update ref. item row...
           pstmt = conn.prepareStatement(
             "update DOC02_SELLING_ITEMS set INVOICE_QTY=? where "+
-            "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=?"
+            "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and "+
+            "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+            "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+            "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+            "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+            "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? "
           );
           pstmt.setBigDecimal(1,refDetailVO.getInvoiceQtyDOC02());
           pstmt.setString(2,refDetailVO.getCompanyCodeSys01DOC02());
@@ -307,13 +346,30 @@ public class CloseSaleDocAction implements Action {
           pstmt.setBigDecimal(4,refDetailVO.getDocYearDOC02());
           pstmt.setBigDecimal(5,refDetailVO.getDocNumberDOC02());
           pstmt.setString(6,refDetailVO.getItemCodeItm01DOC02());
+
+          pstmt.setString(7,refDetailVO.getVariantTypeItm06DOC02());
+          pstmt.setString(8,refDetailVO.getVariantCodeItm11DOC02());
+          pstmt.setString(9,refDetailVO.getVariantTypeItm07DOC02());
+          pstmt.setString(10,refDetailVO.getVariantCodeItm12DOC02());
+          pstmt.setString(11,refDetailVO.getVariantTypeItm08DOC02());
+          pstmt.setString(12,refDetailVO.getVariantCodeItm13DOC02());
+          pstmt.setString(13,refDetailVO.getVariantTypeItm09DOC02());
+          pstmt.setString(14,refDetailVO.getVariantCodeItm14DOC02());
+          pstmt.setString(15,refDetailVO.getVariantTypeItm10DOC02());
+          pstmt.setString(16,refDetailVO.getVariantCodeItm15DOC02());
+
           pstmt.execute();
           pstmt.close();
 
           // update ref. item row in the out delivery note...
           pstmt2 = conn.prepareStatement(
             "select QTY,INVOICE_QTY,DOC_TYPE,DOC_YEAR,DOC_NUMBER,ROW_NUMBER from DOC10_OUT_DELIVERY_NOTE_ITEMS where "+
-            "COMPANY_CODE_SYS01=? and DOC_TYPE_DOC01=? and DOC_YEAR_DOC01=? and DOC_NUMBER_DOC01=? and ITEM_CODE_ITM01=? and INVOICE_QTY<QTY"
+            "COMPANY_CODE_SYS01=? and DOC_TYPE_DOC01=? and DOC_YEAR_DOC01=? and DOC_NUMBER_DOC01=? and ITEM_CODE_ITM01=? and INVOICE_QTY<QTY and "+
+            "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+            "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+            "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+            "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+            "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? "
           );
           qty = null;
           invoiceQty = null;
@@ -323,6 +379,18 @@ public class CloseSaleDocAction implements Action {
           pstmt2.setBigDecimal(3,refDetailVO.getDocYearDOC02());
           pstmt2.setBigDecimal(4,refDetailVO.getDocNumberDOC02());
           pstmt2.setString(5,refDetailVO.getItemCodeItm01DOC02());
+
+          pstmt2.setString(6,refDetailVO.getVariantTypeItm06DOC02());
+          pstmt2.setString(7,refDetailVO.getVariantCodeItm11DOC02());
+          pstmt2.setString(8,refDetailVO.getVariantTypeItm07DOC02());
+          pstmt2.setString(9,refDetailVO.getVariantCodeItm12DOC02());
+          pstmt2.setString(10,refDetailVO.getVariantTypeItm08DOC02());
+          pstmt2.setString(11,refDetailVO.getVariantCodeItm13DOC02());
+          pstmt2.setString(12,refDetailVO.getVariantTypeItm09DOC02());
+          pstmt2.setString(13,refDetailVO.getVariantCodeItm14DOC02());
+          pstmt2.setString(14,refDetailVO.getVariantTypeItm10DOC02());
+          pstmt2.setString(15,refDetailVO.getVariantCodeItm15DOC02());
+
           rset = pstmt2.executeQuery();
 
           // it only updates one row, that matches the where clause...
@@ -344,7 +412,12 @@ public class CloseSaleDocAction implements Action {
             pstmt = conn.prepareStatement(
               "update DOC10_OUT_DELIVERY_NOTE_ITEMS set INVOICE_QTY=? where "+
               "COMPANY_CODE_SYS01=? and DOC_TYPE_DOC01=? and DOC_YEAR_DOC01=? and DOC_NUMBER_DOC01=? and ITEM_CODE_ITM01=? and "+
-              "DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ROW_NUMBER=?"
+              "DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ROW_NUMBER=? and "+
+              "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+              "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+              "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+              "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+              "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? "
             );
             pstmt.setBigDecimal(1,qty);
             pstmt.setString(2,refDetailVO.getCompanyCodeSys01DOC02());
@@ -356,6 +429,18 @@ public class CloseSaleDocAction implements Action {
             pstmt.setBigDecimal(8,docYear);
             pstmt.setBigDecimal(9,docNumber);
             pstmt.setBigDecimal(10,rowNumber);
+
+            pstmt.setString(11,refDetailVO.getVariantTypeItm06DOC02());
+            pstmt.setString(12,refDetailVO.getVariantCodeItm11DOC02());
+            pstmt.setString(13,refDetailVO.getVariantTypeItm07DOC02());
+            pstmt.setString(14,refDetailVO.getVariantCodeItm12DOC02());
+            pstmt.setString(15,refDetailVO.getVariantTypeItm08DOC02());
+            pstmt.setString(16,refDetailVO.getVariantCodeItm13DOC02());
+            pstmt.setString(17,refDetailVO.getVariantTypeItm09DOC02());
+            pstmt.setString(18,refDetailVO.getVariantCodeItm14DOC02());
+            pstmt.setString(19,refDetailVO.getVariantTypeItm10DOC02());
+            pstmt.setString(20,refDetailVO.getVariantCodeItm15DOC02());
+
             pstmt.execute();
             pstmt.close();
           }
@@ -371,7 +456,7 @@ public class CloseSaleDocAction implements Action {
         }
 
         SaleDocChargeVO chargeVO = null;
-        rows = ((VOListResponse)res).getRows();
+        rows = new ArrayList(((VOListResponse)res).getRows());
         BigDecimal valueDOC03,invoicedValueDOC03 = new BigDecimal(0);
         for(int i=0;i<rows.size();i++) {
           chargeVO = (SaleDocChargeVO)rows.get(i);
@@ -424,7 +509,7 @@ public class CloseSaleDocAction implements Action {
 
         BigDecimal valueDOC13,invoicedValueDOC13 = new BigDecimal(0);
         SaleDocActivityVO actVO = null;
-        rows = ((VOListResponse)res).getRows();
+        rows = new ArrayList(((VOListResponse)res).getRows());
         for(int i=0;i<rows.size();i++) {
           actVO = (SaleDocActivityVO)rows.get(i);
           pstmt = conn.prepareStatement(
@@ -576,7 +661,7 @@ public class CloseSaleDocAction implements Action {
         conn.rollback();
         return res;
       }
-      rows = ((VOListResponse)res).getRows();
+      rows = new ArrayList(((VOListResponse)res).getRows());
 
 
 
@@ -654,7 +739,7 @@ public class CloseSaleDocAction implements Action {
       // if the document is a retail sale doc then
       // export the document in a text file format and call an external application to manage it...
       if (docVO.getDocTypeDOC01().equals(ApplicationConsts.SALE_DESK_DOC_TYPE)) {
-        res = expAction.exportToFile(pk,docVO,rows,userSessionPars,request,response,userSession,context);
+        res = expAction.exportToFile(pk,docVO,itemRows,userSessionPars,request,response,userSession,context);
         if (res.isError()) {
           conn.rollback();
           return res;
@@ -737,7 +822,7 @@ public class CloseSaleDocAction implements Action {
         }
 
         // add taxable income rows to the accounting item...
-        ArrayList taxableIncomes = ((VOListResponse)res).getRows();
+        java.util.List taxableIncomes = ((VOListResponse)res).getRows();
         TaxableIncomeVO tVO = null;
         JournalRowVO jrVO = null;
         BigDecimal totalVat = new BigDecimal(0);

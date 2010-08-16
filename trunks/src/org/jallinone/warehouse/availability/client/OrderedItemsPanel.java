@@ -111,6 +111,7 @@ public class OrderedItemsPanel extends JPanel {
 
   /** define if item lookup should be displayed */
   private boolean viewItemLookup;
+  TextColumn colDesc = new TextColumn();
 
 
   public OrderedItemsPanel(boolean viewWarehouse,boolean viewItemLookup) {
@@ -193,7 +194,7 @@ public class OrderedItemsPanel extends JPanel {
     final Domain d = new Domain("ITEM_TYPES");
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (ItemTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
@@ -257,10 +258,13 @@ public class OrderedItemsPanel extends JPanel {
     colWarDescr.setColumnName("descriptionWAR01");
     colWarDescr.setPreferredWidth(200);
 
+    colDesc.setColumnName("descriptionSYS10");
+    colDesc.setPreferredWidth(270);
     this.add(topPanel,    new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     this.add(grid,    new GridBagConstraints(0, 1, 1, 1, 1.0, 1.0
             ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+    grid.getColumnContainer().add(colDesc, null);
     grid.getColumnContainer().add(colFutureAvailQty, null);
     grid.getColumnContainer().add(colUM, null);
     topPanel.add(buttonsPanel,     new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0

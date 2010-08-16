@@ -212,7 +212,7 @@ public class EntitiesListPanel extends JPanel implements ListSelectionListener,G
         else {
           // list loaded...
           DefaultListModel model = new DefaultListModel();
-          ArrayList list = ((VOListResponse)res).getRows();
+          java.util.List list = ((VOListResponse)res).getRows();
           for(int i=0;i<list.size();i++)
             model.addElement(list.get(i));
           entitiesList.setModel(model);

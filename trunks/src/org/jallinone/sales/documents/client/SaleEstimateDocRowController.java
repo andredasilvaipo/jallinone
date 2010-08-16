@@ -79,7 +79,26 @@ public class SaleEstimateDocRowController extends CompanyFormController {
    * @return an ErrorResponse value object in case of errors, VOResponse if the operation is successfully completed
    */
   public Response insertRecord(ValueObject newPersistentObject) throws Exception {
-    Response res = ClientUtils.getData("insertSaleDocRow",newPersistentObject);
+    Response res = null;
+
+    if (panel.getVariantsPanel().getVariantsMatrixVO()==null) {
+      // no variants...
+      res = ClientUtils.getData("insertSaleDocRow",newPersistentObject);
+    }
+    else {
+      // the item has variants...
+      res = ClientUtils.getData(
+        "insertSaleDocRows",
+        new Object[]{
+          newPersistentObject,
+          panel.getVariantsPanel().getVariantsMatrixVO(),
+          panel.getVariantsPanel().getCells(),
+          panel.getParentVO().getDecimalsREG03()
+        }
+      );
+    }
+
+    //Response res = ClientUtils.getData("insertSaleDocRow",newPersistentObject);
     if (!res.isError()) {
       DetailSaleDocRowVO vo = (DetailSaleDocRowVO)((VOResponse)res).getVo();
       pk = new SaleDocRowPK(
@@ -87,7 +106,18 @@ public class SaleEstimateDocRowController extends CompanyFormController {
           vo.getDocTypeDOC02(),
           vo.getDocYearDOC02(),
           vo.getDocNumberDOC02(),
-          vo.getItemCodeItm01DOC02()
+          vo.getItemCodeItm01DOC02(),
+          vo.getVariantTypeItm06DOC02(),
+          vo.getVariantCodeItm11DOC02(),
+          vo.getVariantTypeItm07DOC02(),
+          vo.getVariantCodeItm12DOC02(),
+          vo.getVariantTypeItm08DOC02(),
+          vo.getVariantCodeItm13DOC02(),
+          vo.getVariantTypeItm09DOC02(),
+          vo.getVariantCodeItm14DOC02(),
+          vo.getVariantTypeItm10DOC02(),
+          vo.getVariantCodeItm15DOC02()
+
       );
     }
     return res;
@@ -101,7 +131,7 @@ public class SaleEstimateDocRowController extends CompanyFormController {
     panel.getGrid().reloadData();
     panel.getHeaderPanel().setMode(Consts.READONLY);
     panel.getHeaderPanel().executeReload();
-    panel.getEstimates().reloadData();
+    panel.getEstimates().reloadCurrentBlockOfData();
 
     panel.getDiscountsPanel().setEnabled(true);
     panel.getDiscountsPanel().setParentVO(panel.getParentVO(),(DetailSaleDocRowVO)panel.getDetailPanel().getVOModel().getValueObject());
@@ -147,7 +177,7 @@ public class SaleEstimateDocRowController extends CompanyFormController {
       panel.getGrid().reloadData();
       panel.getHeaderPanel().setMode(Consts.READONLY);
       panel.getHeaderPanel().executeReload();
-      panel.getEstimates().reloadData();
+      panel.getEstimates().reloadCurrentBlockOfData();
     }
     return res;
   }
@@ -232,6 +262,13 @@ public class SaleEstimateDocRowController extends CompanyFormController {
     if (!super.beforeDeleteData(form))
       return false;
     return !panel.getParentVO().getDocStateDOC01().equals(ApplicationConsts.CONFIRMED);
+  }
+
+
+  public void modeChanged(int mode) {
+    if (mode!=Consts.INSERT) {
+      panel.getVariantsPanel().codeChanged(null,null);
+    }
   }
 
 

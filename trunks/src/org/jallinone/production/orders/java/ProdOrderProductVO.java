@@ -43,7 +43,18 @@ public class ProdOrderProductVO extends ValueObjectImpl {
   private String locationDescriptionSYS10;
   private String warehouseCodeWar01DOC22;
   private java.math.BigDecimal progressiveHie02DOC23;
-
+/*
+  private String variantTypeItm06DOC23;
+  private String variantCodeItm11DOC23;
+  private String variantTypeItm07DOC23;
+  private String variantCodeItm12DOC23;
+  private String variantTypeItm08DOC23;
+  private String variantCodeItm13DOC23;
+  private String variantTypeItm09DOC23;
+  private String variantCodeItm14DOC23;
+  private String variantTypeItm10DOC23;
+  private String variantCodeItm15DOC23;
+*/
 
   public ProdOrderProductVO() {
   }
@@ -109,6 +120,67 @@ public class ProdOrderProductVO extends ValueObjectImpl {
   public void setProgressiveHie02DOC23(java.math.BigDecimal progressiveHie02DOC23) {
     this.progressiveHie02DOC23 = progressiveHie02DOC23;
   }
-
+  /*
+  public String getVariantCodeItm11DOC23() {
+    return variantCodeItm11DOC23;
+  }
+  public String getVariantCodeItm12DOC23() {
+    return variantCodeItm12DOC23;
+  }
+  public String getVariantCodeItm13DOC23() {
+    return variantCodeItm13DOC23;
+  }
+  public String getVariantCodeItm14DOC23() {
+    return variantCodeItm14DOC23;
+  }
+  public String getVariantCodeItm15DOC23() {
+    return variantCodeItm15DOC23;
+  }
+  public String getVariantTypeItm06DOC23() {
+    return variantTypeItm06DOC23;
+  }
+  public String getVariantTypeItm07DOC23() {
+    return variantTypeItm07DOC23;
+  }
+  public String getVariantTypeItm08DOC23() {
+    return variantTypeItm08DOC23;
+  }
+  public String getVariantTypeItm09DOC23() {
+    return variantTypeItm09DOC23;
+  }
+  public String getVariantTypeItm10DOC23() {
+    return variantTypeItm10DOC23;
+  }
+  public void setVariantTypeItm10DOC23(String variantTypeItm10DOC23) {
+    this.variantTypeItm10DOC23 = variantTypeItm10DOC23;
+  }
+  public void setVariantTypeItm09DOC23(String variantTypeItm09DOC23) {
+    this.variantTypeItm09DOC23 = variantTypeItm09DOC23;
+  }
+  public void setVariantTypeItm08DOC23(String variantTypeItm08DOC23) {
+    this.variantTypeItm08DOC23 = variantTypeItm08DOC23;
+  }
+  public void setVariantTypeItm07DOC23(String variantTypeItm07DOC23) {
+    this.variantTypeItm07DOC23 = variantTypeItm07DOC23;
+  }
+  public void setVariantTypeItm06DOC23(String variantTypeItm06DOC23) {
+    this.variantTypeItm06DOC23 = variantTypeItm06DOC23;
+  }
+  public void setVariantCodeItm15DOC23(String variantCodeItm15DOC23) {
+    this.variantCodeItm15DOC23 = variantCodeItm15DOC23;
+  }
+  public void setVariantCodeItm14DOC23(String variantCodeItm14DOC23) {
+    this.variantCodeItm14DOC23 = variantCodeItm14DOC23;
+  }
+  public void setVariantCodeItm13DOC23(String variantCodeItm13DOC23) {
+    this.variantCodeItm13DOC23 = variantCodeItm13DOC23;
+  }
+  public void setVariantCodeItm12DOC23(String variantCodeItm12DOC23) {
+    this.variantCodeItm12DOC23 = variantCodeItm12DOC23;
+  }
+  public void setVariantCodeItm11DOC23(String variantCodeItm11DOC23) {
+    this.variantCodeItm11DOC23 = variantCodeItm11DOC23;
+  }
+*/
 
 }

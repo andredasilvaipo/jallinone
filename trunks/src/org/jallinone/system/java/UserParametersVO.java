@@ -34,6 +34,8 @@ public class UserParametersVO extends ValueObjectImpl {
 
   private String companyCodeSys01SYS19;
   private String customerCodeSAL07;
+  private String warehouseCodeWAR01;
+  private String warehouseDescriptionSYS10;
   private String name_1REG04;
   private String name_2REG04;
   private String receiptPath;
@@ -198,6 +200,18 @@ public class UserParametersVO extends ValueObjectImpl {
   }
   public String getVatEndorseAccountCodeAcc02DOC19() {
     return vatEndorseAccountCodeAcc02DOC19;
+  }
+  public void setWarehouseCodeWAR01(String warehouseCodeWAR01) {
+    this.warehouseCodeWAR01 = warehouseCodeWAR01;
+  }
+  public String getWarehouseCodeWAR01() {
+    return warehouseCodeWAR01;
+  }
+  public String getWarehouseDescriptionSYS10() {
+    return warehouseDescriptionSYS10;
+  }
+  public void setWarehouseDescriptionSYS10(String warehouseDescriptionSYS10) {
+    this.warehouseDescriptionSYS10 = warehouseDescriptionSYS10;
   }
 
 }

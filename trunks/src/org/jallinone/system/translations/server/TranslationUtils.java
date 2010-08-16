@@ -3,6 +3,7 @@ package org.jallinone.system.translations.server;
 import java.sql.*;
 import java.math.BigDecimal;
 import org.jallinone.system.progressives.server.ProgressiveUtils;
+import org.openswing.swing.logger.server.*;
 
 
 /**
@@ -75,12 +76,15 @@ public class TranslationUtils {
     Statement stmt = null;
     try {
       stmt = conn.createStatement();
-      int updatedRows = stmt.executeUpdate(
+      String sql =
         "update SYS10_TRANSLATIONS set DESCRIPTION='"+description+"' where "+
-        "PROGRESSIVE="+progressive+" and LANGUAGE_CODE='"+languageCode+"' and DESCRIPTION='"+oldDescription+"'"
-      );
-      if (updatedRows==0)
+        "PROGRESSIVE="+progressive+" and LANGUAGE_CODE='"+languageCode+"' and DESCRIPTION='"+oldDescription+"'";
+
+      int updatedRows = stmt.executeUpdate(sql);
+      if (updatedRows==0) {
+        Logger.error("NONAME","org.jallinone.system.translations.server.TranslationUtils","updateTranslation",sql+"\n\nUpdate not allowed: description already updated by another process",null);
         throw new Exception("Update not allowed: description already updated by another process");
+      }
     }
     finally {
       try {

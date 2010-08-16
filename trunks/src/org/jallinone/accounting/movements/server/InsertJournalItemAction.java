@@ -148,7 +148,7 @@ public class InsertJournalItemAction implements EventAction {
           conn.rollback();
           return payRes;
         }
-        ArrayList rows = ((VOListResponse)payRes).getRows();
+        java.util.List rows = ((VOListResponse)payRes).getRows();
 
         // create expirations in DOC19 ONLY if:
         // - there are more than one instalment OR

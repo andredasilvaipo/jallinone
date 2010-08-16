@@ -146,7 +146,7 @@ public class CreateConfigFileAction implements Action {
     PreparedStatement pstmt = null;
     StringBuffer sql = new StringBuffer("");
     try {
-      BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(this.getClass().getResource("/").getPath() + fileName)));
+      BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/" + fileName)));
       String line = null;
       ArrayList vals = new ArrayList();
       int pos = -1;
@@ -174,8 +174,17 @@ public class CreateConfigFileAction implements Action {
             sql = replace(sql, " DATETIME ", " DATE ");
           }
           else if (vo.getDriverName().equals("com.microsoft.jdbc.sqlserver.SQLServerDriver")) {
-            sql = replace(sql, "TIMESTAMP", "DATETIME");
+            sql = replace(sql, " TIMESTAMP ", " DATETIME ");
+            sql = replace(sql, " DATE ", " DATETIME  ");
           }
+          else if (vo.getDriverName().toLowerCase().indexOf("postgres")!=-1) {
+            sql = replace(sql, " DATETIME ", " TIMESTAMP ");
+            sql = replace(sql, " DATE ", " TIMESTAMP ");
+          }
+          else {
+            sql = replace(sql, " DATE ", " DATETIME ");
+          }
+
 
           sql = replace(sql,"ON DELETE NO ACTION","");
           sql = replace(sql,"ON UPDATE NO ACTION","");
@@ -221,6 +230,38 @@ public class CreateConfigFileAction implements Action {
           }
           if (sql.indexOf(":THOUSAND_SYMBOL") != -1) {
             sql = replace(sql, ":THOUSAND_SYMBOL", "'" + vo.getThousandSymbolREG03() + "'");
+          }
+
+          if (sql.indexOf(":USE_VARIANT_TYPE_1") != -1) {
+            sql = replace(sql, ":USE_VARIANT_TYPE_1", "'" + vo.getUseVariantType1() + "'");
+          }
+          if (sql.indexOf(":USE_VARIANT_TYPE_2") != -1) {
+            sql = replace(sql, ":USE_VARIANT_TYPE_2", "'" + vo.getUseVariantType2() + "'");
+          }
+          if (sql.indexOf(":USE_VARIANT_TYPE_3") != -1) {
+            sql = replace(sql, ":USE_VARIANT_TYPE_3", "'" + vo.getUseVariantType3() + "'");
+          }
+          if (sql.indexOf(":USE_VARIANT_TYPE_4") != -1) {
+            sql = replace(sql, ":USE_VARIANT_TYPE_4", "'" + vo.getUseVariantType4() + "'");
+          }
+          if (sql.indexOf(":USE_VARIANT_TYPE_5") != -1) {
+            sql = replace(sql, ":USE_VARIANT_TYPE_5", "'" + vo.getUseVariantType5() + "'");
+          }
+
+          if (sql.indexOf(":VARIANT_1") != -1) {
+            sql = replace(sql, ":VARIANT_1", "'" + (vo.getVariant1()==null || vo.getVariant1().trim().equals("")?ApplicationConsts.JOLLY:vo.getVariant1()) + "'");
+          }
+          if (sql.indexOf(":VARIANT_2") != -1) {
+            sql = replace(sql, ":VARIANT_2", "'" + (vo.getVariant2()==null || vo.getVariant2().trim().equals("")?ApplicationConsts.JOLLY:vo.getVariant2()) + "'");
+          }
+          if (sql.indexOf(":VARIANT_3") != -1) {
+            sql = replace(sql, ":VARIANT_3", "'" + (vo.getVariant3()==null || vo.getVariant3().trim().equals("")?ApplicationConsts.JOLLY:vo.getVariant3()) + "'");
+          }
+          if (sql.indexOf(":VARIANT_4") != -1) {
+            sql = replace(sql, ":VARIANT_4", "'" + (vo.getVariant4()==null || vo.getVariant4().trim().equals("")?ApplicationConsts.JOLLY:vo.getVariant4()) + "'");
+          }
+          if (sql.indexOf(":VARIANT_5") != -1) {
+            sql = replace(sql, ":VARIANT_5", "'" + (vo.getVariant5()==null || vo.getVariant5().trim().equals("")?ApplicationConsts.JOLLY:vo.getVariant5()) + "'");
           }
 
           if (!useDefaultValue)
@@ -381,7 +422,7 @@ public class CreateConfigFileAction implements Action {
       props.setProperty("password", password);
       props.setProperty("url", url);
       props.setProperty("dbversion", ApplicationConsts.DB_VERSION);
-      FileOutputStream out = new FileOutputStream(this.getClass().getResource("/").getFile()+"pooler.ini");
+      FileOutputStream out = new FileOutputStream(this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"pooler.ini");
       props.save(out,"POOLER PROPERTIES");
       try {
         out.close();

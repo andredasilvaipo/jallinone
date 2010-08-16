@@ -112,6 +112,13 @@ public class ValidateSupplierItemCodeAction implements Action {
           "PUR02_SUPPLIER_ITEMS.ENABLED='Y' and "+
           "PUR02_SUPPLIER_ITEMS.ITEM_CODE_ITM01=? and "+
           "ITM01_ITEMS.MIN_SELlING_QTY_UM_CODE_REG02=REG02_ALIAS2.UM_CODE ";
+      if (Boolean.TRUE.equals(pars.getLookupValidationParameters().get(ApplicationConsts.SHOW_ITEMS_WITHOUT_VARIANTS)))
+          sql +=
+            " and ITM01_ITEMS.USE_VARIANT_1='N' "+
+            " and ITM01_ITEMS.USE_VARIANT_2='N' "+
+            " and ITM01_ITEMS.USE_VARIANT_3='N' "+
+            " and ITM01_ITEMS.USE_VARIANT_4='N' "+
+            " and ITM01_ITEMS.USE_VARIANT_5='N' ";
 
 
       Map attribute2dbField = new HashMap();
@@ -153,7 +160,7 @@ public class ValidateSupplierItemCodeAction implements Action {
       );
 
       if (!res.isError()) {
-        ArrayList rows = ((VOListResponse)res).getRows();
+        java.util.List rows = ((VOListResponse)res).getRows();
         SupplierItemVO supplierVO = null;
         for(int i=0;i<rows.size();i++) {
           supplierVO = (SupplierItemVO)rows.get(i);

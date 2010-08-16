@@ -87,7 +87,7 @@ public class DeleteSaleDocRowDiscountsAction implements Action {
         null
       ));
 
-      ArrayList list =  (ArrayList)inputPar;
+      java.util.List list =  (ArrayList)inputPar;
       SaleItemDiscountVO vo = null;
 
       pstmt = conn.prepareStatement(

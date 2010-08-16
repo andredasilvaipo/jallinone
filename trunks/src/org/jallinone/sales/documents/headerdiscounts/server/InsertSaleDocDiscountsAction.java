@@ -91,7 +91,7 @@ public class InsertSaleDocDiscountsAction implements Action {
         null
       ));
       SaleDocDiscountVO vo = null;
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
 
       Response res = null;
       for(int i=0;i<list.size();i++) {

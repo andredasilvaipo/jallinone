@@ -128,7 +128,7 @@ public class DocFilterPanel extends JPanel {
         );
         return;
       }
-      ArrayList rows = ((VOListResponse)res).getRows();
+      java.util.List rows = ((VOListResponse)res).getRows();
       if (rows.size() > 0) {
         // adding customized input controls...
         LevelPropertyVO inputControlInfo = null;

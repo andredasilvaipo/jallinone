@@ -199,7 +199,7 @@ public class LoadInDeliveryNotesForPurchaseDocAction implements Action {
           docNumberDOC08s.add(rset.getBigDecimal(1));
         rset.close();
 
-        ArrayList rows = ((VOListResponse)res).getRows();
+        java.util.List rows = ((VOListResponse)res).getRows();
         InDeliveryNotesVO vo = null;
         for(int i=0;i<rows.size();i++) {
           vo = (InDeliveryNotesVO)rows.get(i);

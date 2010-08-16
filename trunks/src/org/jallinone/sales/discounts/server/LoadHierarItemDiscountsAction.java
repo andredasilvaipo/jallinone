@@ -128,7 +128,7 @@ public class LoadHierarItemDiscountsAction implements Action {
           HierarItemDiscountVO.class
       );
       if (!res.isError()) {
-        ArrayList rows = ((VOListResponse)res).getRows();
+        java.util.List rows = ((VOListResponse)res).getRows();
         for(int i=0;i<rows.size();i++) {
           ((HierarItemDiscountVO)rows.get(i)).setProgressiveHie01SAL05(progressiveHIE01);
         }

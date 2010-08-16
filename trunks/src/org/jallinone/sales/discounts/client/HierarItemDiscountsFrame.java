@@ -29,6 +29,7 @@ import java.awt.event.ItemEvent;
 import org.jallinone.items.java.ItemTypeVO;
 import org.openswing.swing.lookup.client.LookupController;
 import org.openswing.swing.lookup.client.LookupServerDataLocator;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 
 /**
@@ -94,7 +95,7 @@ public class HierarItemDiscountsFrame extends InternalFrame {
   EditButton editButton1 = new EditButton();
 
 
-  public HierarItemDiscountsFrame(HierarItemDiscountsController controller) {
+  public HierarItemDiscountsFrame(final HierarItemDiscountsController controller) {
     try {
       jbInit();
       setSize(750,500);
@@ -105,6 +106,17 @@ public class HierarItemDiscountsFrame extends InternalFrame {
       gridDataLocator.setServerMethodName("loadHierarItemDiscounts");
       hierarTreePanel.setFunctionId("ITM02");
       hierarTreePanel.setTreeController(controller);
+
+      hierarTreePanel.addHierarTreeListener(new HierarTreeListener(){
+
+        public void loadDataCompleted(boolean error) {
+          if (hierarTreePanel.getTree().getRowCount()>0)
+            hierarTreePanel.getTree().setSelectionRow(0);
+          if (hierarTreePanel.getTree().getSelectionPath()!=null)
+            controller.leftClick((DefaultMutableTreeNode)hierarTreePanel.getTree().getSelectionPath().getLastPathComponent());
+        }
+
+      });
 
       init();
 
@@ -138,7 +150,7 @@ public class HierarItemDiscountsFrame extends InternalFrame {
     Domain d = new Domain("ITEM_TYPES");
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (ItemTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());

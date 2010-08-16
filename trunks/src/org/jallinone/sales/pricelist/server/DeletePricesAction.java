@@ -81,7 +81,7 @@ public class DeletePricesAction implements Action {
       ));
       stmt = conn.createStatement();
 
-      ArrayList list =  (ArrayList)inputPar;
+      java.util.List list =  (ArrayList)inputPar;
       PriceVO vo = null;
       for(int i=0;i<list.size();i++) {
         vo = (PriceVO)list.get(i);

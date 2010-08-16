@@ -117,6 +117,17 @@ public class InsertSaleDocRowBean {
       attribute2dbField.put("progressiveHie01DOC02","PROGRESSIVE_HIE01");
       attribute2dbField.put("invoiceQtyDOC02","INVOICE_QTY");
 
+      attribute2dbField.put("variantTypeItm06DOC02","VARIANT_TYPE_ITM06");
+      attribute2dbField.put("variantCodeItm11DOC02","VARIANT_CODE_ITM11");
+      attribute2dbField.put("variantTypeItm07DOC02","VARIANT_TYPE_ITM07");
+      attribute2dbField.put("variantCodeItm12DOC02","VARIANT_CODE_ITM12");
+      attribute2dbField.put("variantTypeItm08DOC02","VARIANT_TYPE_ITM08");
+      attribute2dbField.put("variantCodeItm13DOC02","VARIANT_CODE_ITM13");
+      attribute2dbField.put("variantTypeItm09DOC02","VARIANT_TYPE_ITM09");
+      attribute2dbField.put("variantCodeItm14DOC02","VARIANT_CODE_ITM14");
+      attribute2dbField.put("variantTypeItm10DOC02","VARIANT_TYPE_ITM10");
+      attribute2dbField.put("variantCodeItm15DOC02","VARIANT_CODE_ITM15");
+
       vo.setRowNumberDOC02( progBean.getInternalProgressive("DOC02_SELLING_ITEMS","ROW_NUMBER",conn) );
 
       // insert into DOC02...

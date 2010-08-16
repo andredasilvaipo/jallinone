@@ -124,7 +124,7 @@ public class LoadCustomizedReportsAction implements Action {
         return res;
 
 
-      ArrayList rows = ((VOListResponse)res).getRows();
+      java.util.List rows = ((VOListResponse)res).getRows();
       ReportVO vo = null;
       pstmt = conn.prepareStatement("select * from SYS16_CUSTOM_FUNCTIONS where FUNCTION_CODE_SYS06=?");
       ResultSet rset = null;

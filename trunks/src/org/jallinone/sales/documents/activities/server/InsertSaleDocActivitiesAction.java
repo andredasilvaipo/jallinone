@@ -90,7 +90,7 @@ public class InsertSaleDocActivitiesAction implements Action {
         inputPar,
         null
       ));
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       SaleDocActivityVO vo = null;
       Response res = null;
 

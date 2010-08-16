@@ -1,5 +1,87 @@
 
 
+Release Notes 0.9.23
+---------------------
+
+Updated OpenSwing library version to 2.2.3.
+Added "Point of sale" feature
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+
+Release Notes 0.9.22
+---------------------
+
+Updated OpenSwing library version to 2.2.3.
+Added support for variants and sub variants
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+
+Release Notes 0.9.21
+---------------------
+
+Updated OpenSwing library version to 2.0.7.
+Added a portuguese/brazilian translation to JAllInOne, thanks to Gideoni.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+
+Release Notes 0.9.20
+---------------------
+
+Updated OpenSwing library version to 1.9.8.
+Fixed a problem on loading contacts's empty grids and when saving sub-contacts.
+Fixed problem on JAllInOne's installer, when using MS SQL Server.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.19
+---------------------
+
+Updated OpenSwing library version to 1.9.6.
+Fixed problem on contacts detail frame.
+Restored default look and feel, since Substance created some problems and hanged application.
+Changed setup, in order to support installation in PostgreSQL database.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.18
+---------------------
+
+Updated OpenSwing library version to 1.9.
+Fixed problem on opening some detail frames, having a lookup auto-completition feature enabled.
+Changed default look and feel, by setting Substance LNF.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.17
+---------------------
+
+Updated OpenSwing library version to 1.8.5.
+Improved menu in MDI menu bar: added tooltip in tree menu nodes, in menubar and onto status bar.
+Fixed problem with progress bar that could block the front-end.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.16
+---------------------
+
+Updated OpenSwing library version to 1.7.3.
+Improved "window" menu in MDI menu bar: 
+- added "switch..." menu item to open a window dialog showing all opened internal windows and select a window to set to front
+- added numeric mnemonic (1, 2, 3, ... 9) at the left of menu items related to internal opened windows
+- added "reduce to icon" and "reduce all to icon" menu items
+- added "cascade", "tile horizontally/verically" menu items
+Added commands for copy/cut/paste to a popup menu showed over an input control when right mouse clicking on it.
+Added filter conditions and title in export documents.
+Activated autocompletition feature in lookups.
+Showed sorting order in column headers.
+Fixed problem with installation in Tomcat having spaces in the path.
+Fixed problem with Tomcat 6 when printing reports: added "commons-logging.jar" library to WEB-INF/lib folder.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
 Release Notes 0.9.15
 ---------------------
 

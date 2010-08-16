@@ -12,6 +12,7 @@ import org.jallinone.subjects.java.*;
 import org.openswing.swing.table.columns.client.*;
 import org.jallinone.commons.client.*;
 import org.jallinone.commons.java.ApplicationConsts;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 
 /**
@@ -89,7 +90,7 @@ public class SubjectHierarchiesFrame extends InternalFrame {
   private SubjectHierarchiesController controller = null;
 
 
-  public SubjectHierarchiesFrame(SubjectHierarchiesController controller,String functionId,String title,String subjectTypeREG08,boolean loadOnlyCurrentLevel) {
+  public SubjectHierarchiesFrame(final SubjectHierarchiesController controller,String functionId,String title,String subjectTypeREG08,boolean loadOnlyCurrentLevel) {
     this.controller = controller;
     this.functionId = functionId;
     try {
@@ -110,6 +111,17 @@ public class SubjectHierarchiesFrame extends InternalFrame {
       hierGridDataLocator.setServerMethodName("loadSubjectHierarchies");
       grid.getOtherGridParams().put(ApplicationConsts.SUBJECT_TYPE,subjectTypeREG08);
       grid.getOtherGridParams().put(ApplicationConsts.FUCTION_CODE,functionId);
+
+      treePanel.addHierarTreeListener(new HierarTreeListener(){
+
+        public void loadDataCompleted(boolean error) {
+          if (treePanel.getTree().getRowCount()>0)
+            treePanel.getTree().setSelectionRow(0);
+          if (treePanel.getTree().getSelectionPath()!=null)
+            controller.leftClick((DefaultMutableTreeNode)treePanel.getTree().getSelectionPath().getLastPathComponent());
+        }
+
+      });
 
       treePanel.setFunctionId(functionId);
       treePanel.setTreeController(controller);
@@ -217,6 +229,9 @@ public class SubjectHierarchiesFrame extends InternalFrame {
   }
   public GridControl getSubjectsGrid() {
     return subjectsGrid;
+  }
+  public GridControl getSubjectHierarchiesGrid() {
+    return grid;
   }
 
 

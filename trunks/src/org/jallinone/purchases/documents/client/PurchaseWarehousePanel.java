@@ -146,6 +146,7 @@ public class PurchaseWarehousePanel extends JPanel {
     this.setLayout(gridBagLayout1);
     controlWarehouseCode.setAttributeName("warehouseCodeWar01DOC06");
     controlWarehouseCode.setCanCopy(true);
+    controlWarehouseCode.setColumns(10);
     controlWarehouseCode.setLinkLabel(labelWarehouseCode);
     controlWarehouseCode.setMaxCharacters(20);
     controlWarehouseCode.setRequired(true);
@@ -213,8 +214,8 @@ public class PurchaseWarehousePanel extends JPanel {
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 0), 0, 0));
     this.add(controlProv,         new GridBagConstraints(2, 3, 2, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlWarehouseCode,     new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 0, 0));
+    this.add(controlWarehouseCode,      new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 50, 0));
     this.add(controlDescr,  new GridBagConstraints(3, 0, 3, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 

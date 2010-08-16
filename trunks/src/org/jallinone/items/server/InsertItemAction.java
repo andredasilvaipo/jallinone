@@ -67,6 +67,7 @@ public class InsertItemAction implements Action {
    */
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
     Connection conn = null;
+    Statement stmt = null;
     try {
       conn = ConnectionManager.getConnection(context);
 
@@ -91,6 +92,16 @@ public class InsertItemAction implements Action {
       vo.setEnabledITM01("Y");
       if (vo.getCompanyCodeSys01ITM01()==null)
         vo.setCompanyCodeSys01ITM01(companyCode);
+      if (vo.getUseVariant1ITM01()==null)
+        vo.setUseVariant1ITM01(Boolean.FALSE);
+      if (vo.getUseVariant2ITM01()==null)
+        vo.setUseVariant2ITM01(Boolean.FALSE);
+      if (vo.getUseVariant3ITM01()==null)
+        vo.setUseVariant3ITM01(Boolean.FALSE);
+      if (vo.getUseVariant4ITM01()==null)
+        vo.setUseVariant4ITM01(Boolean.FALSE);
+      if (vo.getUseVariant5ITM01()==null)
+        vo.setUseVariant5ITM01(Boolean.FALSE);
 
       // generate progressive for item description...
       BigDecimal progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
@@ -121,8 +132,6 @@ public class InsertItemAction implements Action {
       attribute2dbField.put("heightITM01","HEIGHT");
       attribute2dbField.put("heightUmCodeReg02ITM01","HEIGHT_UM_CODE_REG02");
       attribute2dbField.put("noteITM01","NOTE");
-      attribute2dbField.put("colorCodeReg13ITM01","COLOR_CODE_REG13");
-      attribute2dbField.put("sizeCodeReg14ITM01","SIZE_CODE_REG14");
       attribute2dbField.put("largeImageITM01","LARGE_IMAGE");
       attribute2dbField.put("smallImageITM01","SMALL_IMAGE");
       attribute2dbField.put("enabledITM01","ENABLED");
@@ -132,6 +141,13 @@ public class InsertItemAction implements Action {
       attribute2dbField.put("manufactureCodePro01ITM01","MANUFACTURE_CODE_PRO01");
       attribute2dbField.put("startDateITM01","START_DATE");
 
+      attribute2dbField.put("useVariant1ITM01","USE_VARIANT_1");
+      attribute2dbField.put("useVariant2ITM01","USE_VARIANT_2");
+      attribute2dbField.put("useVariant3ITM01","USE_VARIANT_3");
+      attribute2dbField.put("useVariant4ITM01","USE_VARIANT_4");
+      attribute2dbField.put("useVariant5ITM01","USE_VARIANT_5");
+
+      attribute2dbField.put("barCodeITM01","BAR_CODE");
 
       if (vo.getSmallImage()!=null) {
         BigDecimal imageProgressive = ProgressiveUtils.getInternalProgressive("ITM01_ITEMS","SMALL_IMG",conn);
@@ -145,7 +161,7 @@ public class InsertItemAction implements Action {
           appPath += "/";
         if (!new File(appPath).isAbsolute()) {
           // relative path (to "WEB-INF/classes/" folder)
-          appPath = this.getClass().getResource("/").getPath()+appPath;
+          appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
         }
         new File(appPath).mkdirs();
         FileOutputStream out = new FileOutputStream(appPath+vo.getSmallImageITM01());
@@ -165,7 +181,7 @@ public class InsertItemAction implements Action {
           appPath += "/";
         if (!new File(appPath).isAbsolute()) {
           // relative path (to "WEB-INF/classes/" folder)
-          appPath = this.getClass().getResource("/").getPath()+appPath;
+          appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
         }
         new File(appPath).mkdirs();
         FileOutputStream out = new FileOutputStream(appPath+vo.getLargeImageITM01());
@@ -186,6 +202,44 @@ public class InsertItemAction implements Action {
           true,
           new BigDecimal(262) // window identifier...
       );
+
+      // insert product variants...
+      stmt = conn.createStatement();
+      if (!Boolean.TRUE.equals(vo.getUseVariant1ITM01())) {
+        stmt.execute(
+            "insert into ITM16_PRODUCT_VARIANTS_1(COMPANY_CODE_SYS01,ITEM_CODE_ITM01,VARIANT_TYPE_ITM06,VARIANT_CODE_ITM11," +
+            "VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED) VALUES("+
+            "'"+vo.getCompanyCodeSys01ITM01()+"','"+vo.getItemCodeITM01()+"','*','*',3412,3362,'Y')"
+            );
+      }
+      if (!Boolean.TRUE.equals(vo.getUseVariant2ITM01())) {
+        stmt.execute(
+            "insert into ITM17_PRODUCT_VARIANTS_2(COMPANY_CODE_SYS01,ITEM_CODE_ITM01,VARIANT_TYPE_ITM07,VARIANT_CODE_ITM12," +
+            "VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED) VALUES("+
+            "'"+vo.getCompanyCodeSys01ITM01()+"','"+vo.getItemCodeITM01()+"','*','*',3422,3372,'Y')"
+            );
+      }
+      if (!Boolean.TRUE.equals(vo.getUseVariant3ITM01())) {
+        stmt.execute(
+            "insert into ITM18_PRODUCT_VARIANTS_3(COMPANY_CODE_SYS01,ITEM_CODE_ITM01,VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13," +
+            "VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED) VALUES("+
+            "'"+vo.getCompanyCodeSys01ITM01()+"','"+vo.getItemCodeITM01()+"','*','*',3432,3382,'Y')"
+            );
+      }
+      if (!Boolean.TRUE.equals(vo.getUseVariant4ITM01())) {
+        stmt.execute(
+            "insert into ITM19_PRODUCT_VARIANTS_4(COMPANY_CODE_SYS01,ITEM_CODE_ITM01,VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14," +
+            "VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED) VALUES("+
+            "'"+vo.getCompanyCodeSys01ITM01()+"','"+vo.getItemCodeITM01()+"','*','*',3442,3392,'Y')"
+            );
+      }
+      if (!Boolean.TRUE.equals(vo.getUseVariant5ITM01())) {
+        stmt.execute(
+            "insert into ITM20_PRODUCT_VARIANTS_5(COMPANY_CODE_SYS01,ITEM_CODE_ITM01,VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15," +
+            "VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED) VALUES("+
+            "'"+vo.getCompanyCodeSys01ITM01()+"','"+vo.getItemCodeITM01()+"','*','*',3452,3402,'Y')"
+            );
+      }
 
       Response answer = res;
 
@@ -233,6 +287,11 @@ public class InsertItemAction implements Action {
       return new ErrorResponse(ex.getMessage());
     }
     finally {
+      try {
+        stmt.close();
+      }
+      catch (Exception ex2) {
+      }
       try {
         ConnectionManager.releaseConnection(conn, context);
       }

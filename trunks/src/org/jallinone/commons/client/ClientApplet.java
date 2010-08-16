@@ -90,9 +90,22 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
   protected void initApplication() {
 //    ClientUtils.setObjectSender(new HessianObjectSender());
 
+//    ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "org.jvnet.substance.skin.SubstanceMistSilverLookAndFeel";
+
+
     loadDomains();
     // test if database is already created...
-    VOResponse response = (VOResponse)ClientUtils.getData("databaseAlreadyExixts",new Object[0]);
+    VOResponse response = null;
+    try {
+      response = (VOResponse) ClientUtils.getData("databaseAlreadyExixts",new Object[0]);
+    }
+    catch (Throwable ex) {
+      ex.printStackTrace();
+    }
+    if (response.isError()) {
+      JOptionPane.showMessageDialog(null,response.getErrorMessage(),"Error on checking database",JOptionPane.ERROR_MESSAGE);
+      return;
+    }
     if (((Boolean)response.getVo()).booleanValue()) {
       // view the login window before viewing MDI frame...
       LoginDialog d = new LoginDialog(null,false,this);
@@ -119,6 +132,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     languagesDomain.addDomainPair("EN","english");
     languagesDomain.addDomainPair("IT","italian");
     languagesDomain.addDomainPair("ES","spanish");
+    languagesDomain.addDomainPair("PTBR","brazilian");
     domains.put(
       languagesDomain.getDomainId(),
       languagesDomain
@@ -518,7 +532,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     return
         "JAllInOne ERP/CRM Application\n"+
         "\n"+
-        "Copyright: Copyright (C) 2006 Mauro Carniel\n"+
+        "Copyright: Copyright (C) 2010 Mauro Carniel\n"+
         "Author: Mauro Carniel\n"+
         "Database release: "+ApplicationConsts.DB_VERSION+"\n\n"+
         "This application is free software; you can redistribute it and/or\n"+
@@ -593,6 +607,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     xmlFiles.put("EN","Resources_en.xml");
     xmlFiles.put("IT","Resources_it.xml");
     xmlFiles.put("ES","Resources_es.xml");
+    xmlFiles.put("PTBR","Resources_PTBR.xml");
 
     // initialize internationalization settings, according to user language identifier...
     ClientSettings clientSettings = new ClientSettings(
@@ -614,14 +629,19 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     ClientSettings.VIEW_MANDATORY_SYMBOL = true;
     ClientSettings.LOCK_OFF="unlock.gif";
     ClientSettings.LOCK_ON="lock.gif";
-    ClientSettings.FILTER_PANEL_ON_GRID = true;
+    ClientSettings.FILTER_PANEL_ON_GRID = false;
 
 //    ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "com.jgoodies.looks.plastic.PlasticXPLookAndFeel";
-    ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "org.fife.plaf.VisualStudio2005.VisualStudio2005LookAndFeel";
+//    ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "org.fife.plaf.VisualStudio2005.VisualStudio2005LookAndFeel";
+
     ClientSettings.GRID_PROFILE_MANAGER = new FileGridProfileManager();
     ClientSettings.ON_INVALID_CODE = LookupController.ON_INVALID_CODE_RESTORE_LAST_VALID_CODE;
     ClientSettings.FORCE_FOCUS_ON_LOOKUP_CONTROL = true;
     ClientSettings.ASK_BEFORE_CLOSE = true;
+    ClientSettings.SHOW_FILTERING_CONDITIONS_IN_EXPORT = true;
+    ClientSettings.SHOW_SORTING_ORDER = true;
+    ClientSettings.LOOKUP_AUTO_COMPLETITION_WAIT_TIME = 1500;
+    ClientSettings.SHOW_FRAME_TITLE_IN_EXPORT = true;
 
     ClientSettings.getInstance().setLanguage(languageId);
 
@@ -696,7 +716,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
       );
       return new ArrayList();
     }
-    return ((VOListResponse)response).getRows(); // the list is composed of Language objects...
+    return new ArrayList(((VOListResponse)response).getRows()); // the list is composed of Language objects...
   }
 
 
@@ -743,6 +763,14 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
    */
   public final String getUsername() {
     return username;
+  }
+
+
+  /**
+   * @return <code>true</code> if the MDI frame must show the "File" menu in the menubar of the frame, <code>false</code> to hide it
+   */
+  public final boolean viewFileMenu() {
+    return true;
   }
 
 

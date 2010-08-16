@@ -82,7 +82,7 @@ public class SaleCreditDocFrame extends InternalFrame implements InvoiceDocument
   DeleteButton deleteButton1 = new DeleteButton();
   GridBagLayout gridBagLayout1 = new GridBagLayout();
   SaleIdHeadPanel saleIdHeadPanel1 = new SaleIdHeadPanel(headerFormPanel,false,true);
-  SaleCustomerHeadPanel saleCustomerHeadPanel1 = new SaleCustomerHeadPanel(headerFormPanel);
+  SaleCustomerHeadPanel saleCustomerHeadPanel1 = new SaleCustomerHeadPanel(false,headerFormPanel);
   SaleAgentPanel saleAgentPanel = new SaleAgentPanel(headerFormPanel);
   SaleNotesPanel saleNotesPanel = new SaleNotesPanel();
   SaleTotalsPanel saleTotalsPanel1 = new SaleTotalsPanel(headerFormPanel);

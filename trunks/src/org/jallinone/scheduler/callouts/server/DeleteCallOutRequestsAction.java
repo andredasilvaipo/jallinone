@@ -87,7 +87,7 @@ public class DeleteCallOutRequestsAction implements Action {
         null
       ));
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       CallOutRequestPK pk = null;
 
       Response res = null;

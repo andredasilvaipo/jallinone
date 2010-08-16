@@ -209,7 +209,7 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
     final Domain d = new Domain("ITEM_TYPES");
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (ItemTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
@@ -426,11 +426,11 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
 
   public final void setPricesPanelEnabled(boolean enabled) {
     if (enabled) {
-      insertButton1.setEnabled(insertButton1.getOldValue());
-      copyButton1.setEnabled(copyButton1.getOldValue());
-      editButton1.setEnabled(editButton1.getOldValue());
-      deleteButton1.setEnabled(deleteButton1.getOldValue());
-      exportButton1.setEnabled(exportButton1.getOldValue());
+      insertButton1.setEnabled(true);
+      copyButton1.setEnabled(true);
+      editButton1.setEnabled(true);
+      deleteButton1.setEnabled(true);
+      exportButton1.setEnabled(true);
     }
     else {
       insertButton1.setEnabled(false);

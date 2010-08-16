@@ -137,7 +137,7 @@ public class ValidateChargeCodeAction implements Action {
       if (res.isError())
         return res;
 
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       ChargeVO vo = null;
       sql =
           "select SYS10_TRANSLATIONS.DESCRIPTION,REG01_VATS.VALUE,REG01_VATS.DEDUCTIBLE "+

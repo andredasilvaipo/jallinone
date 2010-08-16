@@ -90,7 +90,7 @@ public class InsertEmployeeCalendarsAction implements Action {
 
       EmployeeCalendarVO vo = null;
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SCH02","COMPANY_CODE_SYS01");

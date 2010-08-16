@@ -30,17 +30,16 @@
 
 	<field name="REPORT_ID" class="java.math.BigDecimal"/>
 	<field name="PROGRESSIVE" class="java.math.BigDecimal"/>
+	<field name="COMPANY_CODE" class="java.lang.String"/>
 	<field name="ITEM_CODE" class="java.lang.String"/>
 	<field name="DESCRIPTION" class="java.lang.String"/>
 	<field name="LEV" class="java.math.BigDecimal"/>
-	<field name="PARENT_ITEM_CODE" class="java.lang.String"/>
 	<field name="QTY" class="java.lang.String"/>
+	<field name="UM" class="java.lang.String"/>
 	<field name="PRICE" class="java.lang.String"/>
 	<field name="TOTAL_PRICE" class="java.lang.String"/>
 	<field name="COST" class="java.lang.String"/>
 	<field name="TOTAL_COST" class="java.lang.String"/>
-	<field name="UM" class="java.lang.String"/>
-	<field name="COMPANY_CODE" class="java.lang.String"/>
 	<field name="PAD" class="java.lang.String"/>
 
 		<background>

@@ -69,7 +69,7 @@ public class ContactDetailFrame extends InternalFrame {
   SaveButton saveButton = new SaveButton();
   ReloadButton reloadButton = new ReloadButton();
   DeleteButton deleteButton = new DeleteButton();
-  OrganizationPanel organizationPanel = new OrganizationPanel();
+  OrganizationPanel organizationPanel = new OrganizationPanel(true);
   PeoplePanel peoplePanel = new PeoplePanel();
   JTabbedPane tabbedPane = new JTabbedPane();
   JPanel subjectPanel = new JPanel();
@@ -339,22 +339,29 @@ public class ContactDetailFrame extends InternalFrame {
 
 
   public void subjectChanged(String subjectTypeREG04) {
-    cardLayout1.show(cardPanel,subjectTypeREG04);
-    if (controlSubjectType.getValue()==null ||
-        !controlSubjectType.getValue().equals(subjectTypeREG04))
+    try {
+      cardLayout1.show(cardPanel, subjectTypeREG04);
+      if (controlSubjectType.getValue() == null ||
+          !controlSubjectType.getValue().equals(subjectTypeREG04)) {
         controlSubjectType.setValue(subjectTypeREG04);
 
-    if (subjectTypeREG04.equals(ApplicationConsts.SUBJECT_ORGANIZATION_CONTACT)) {
-      voidPanel.setVOClassName("org.jallinone.subjects.java.OrganizationVO");
-      voidPanel.getVOModel().setValueObject(new OrganizationVO());
-      voidPanel.removeLinkedPanel(peoplePanel);
-      voidPanel.addLinkedPanel(organizationPanel);
+      }
+      if (subjectTypeREG04.equals(ApplicationConsts.
+                                  SUBJECT_ORGANIZATION_CONTACT)) {
+        voidPanel.setVOClassName("org.jallinone.subjects.java.OrganizationVO");
+//        voidPanel.getVOModel().setValueObject(new OrganizationVO());
+        voidPanel.removeLinkedPanel(peoplePanel);
+        voidPanel.addLinkedPanel(organizationPanel);
+      }
+      else {
+        voidPanel.setVOClassName("org.jallinone.subjects.java.PeopleVO");
+//        voidPanel.getVOModel().setValueObject(new PeopleVO());
+        voidPanel.removeLinkedPanel(organizationPanel);
+        voidPanel.addLinkedPanel(peoplePanel);
+      }
     }
-    else {
-      voidPanel.setVOClassName("org.jallinone.subjects.java.PeopleVO");
-      voidPanel.getVOModel().setValueObject(new PeopleVO());
-      voidPanel.removeLinkedPanel(organizationPanel);
-      voidPanel.addLinkedPanel(peoplePanel);
+    catch (Exception ex) {
+      ex.printStackTrace();
     }
 
   }

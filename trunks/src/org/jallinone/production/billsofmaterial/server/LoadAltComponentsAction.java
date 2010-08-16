@@ -136,7 +136,7 @@ public class LoadAltComponentsAction implements Action {
       if (res.isError())
         return res;
 
-      ArrayList rows = ((VOListResponse)res).getRows();
+      java.util.List rows = ((VOListResponse)res).getRows();
       AltComponentVO vo = null;
       for(int i=0;i<rows.size();i++) {
         vo = (AltComponentVO)rows.get(i);

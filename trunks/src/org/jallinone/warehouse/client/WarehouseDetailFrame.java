@@ -18,6 +18,7 @@ import org.jallinone.hierarchies.java.HierarchyLevelVO;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.warehouse.availability.client.*;
 import java.util.HashSet;
+import org.jallinone.hierarchies.client.HierarTreeListener;
 
 
 /**
@@ -111,6 +112,17 @@ public class WarehouseDetailFrame extends InternalFrame {
       jbInit();
       setSize(750,450);
       setMinimumSize(new Dimension(750,450));
+
+      hierarTreePanel.addHierarTreeListener(new HierarTreeListener(){
+
+        public void loadDataCompleted(boolean error) {
+          if (hierarTreePanel.getTree().getRowCount()>0)
+            hierarTreePanel.getTree().setSelectionRow(0);
+          if (hierarTreePanel.getTree().getSelectionPath()!=null)
+            hierarTreePanel.leftClick((DefaultMutableTreeNode)hierarTreePanel.getTree().getSelectionPath().getLastPathComponent());
+        }
+
+      });
 
 
       // link the parent grid to the current Form...

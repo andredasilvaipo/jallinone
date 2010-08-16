@@ -146,13 +146,13 @@ public class MovementsGridFrame extends InternalFrame {
     colItemCode.setColumnSortable(true);
     colItemCode.setPreferredWidth(70);
     colItemDescr.setColumnName("itemDescriptionSYS10");
-    colItemDescr.setPreferredWidth(150);
+    colItemDescr.setPreferredWidth(200);
     colDeltaQty.setColumnName("deltaQtyWAR02");
     colDeltaQty.setPreferredWidth(50);
     colPosition.setColumnFilterable(true);
     colPosition.setColumnName("locationDescriptionSYS10");
     colPosition.setColumnSortable(true);
-    colPosition.setPreferredWidth(150);
+    colPosition.setPreferredWidth(100);
     colUsername.setColumnName("usernameWAR02");
     colUsername.setPreferredWidth(80);
     colNote.setColumnFilterable(true);

@@ -130,6 +130,8 @@ public class CompaniesComboControl extends ComboBoxControl {
                   ex.printStackTrace();
                 }
               }
+              else
+                setValue(companiesList.get(0));
 
             }
           }.start();

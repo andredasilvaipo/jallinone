@@ -81,7 +81,7 @@ public class CustomizeQueryUtil {
     String otherSQL = baseSQL.substring(baseSQL.toLowerCase().indexOf(" from "));
 
     CustomizedWindows cust = ((JAIOUserSessionParameters)userSessionPars).getCustomizedWindows();
-    ArrayList list = cust.getCustomizedFields(progressiveSYS13);
+    java.util.List list = cust.getCustomizedFields(progressiveSYS13);
     WindowCustomizationVO vo = null;
     for(int i=0;i<list.size();i++) {
       vo = (WindowCustomizationVO)list.get(i);
@@ -144,7 +144,7 @@ public class CustomizeQueryUtil {
     String otherSQL = baseSQL.substring(baseSQL.toLowerCase().indexOf(" from "));
 
     CustomizedWindows cust = ((JAIOUserSessionParameters)userSessionPars).getCustomizedWindows();
-    ArrayList list = cust.getCustomizedFields(progressiveSYS13);
+    java.util.List list = cust.getCustomizedFields(progressiveSYS13);
     WindowCustomizationVO vo = null;
     for(int i=0;i<list.size();i++) {
       vo = (WindowCustomizationVO)list.get(i);
@@ -204,7 +204,7 @@ public class CustomizeQueryUtil {
     String otherSQL = baseSQL.substring(baseSQL.toLowerCase().indexOf(" from "));
 
     CustomizedWindows cust = ((JAIOUserSessionParameters)userSessionPars).getCustomizedWindows();
-    ArrayList list = cust.getCustomizedFields(progressiveSYS13);
+    java.util.List list = cust.getCustomizedFields(progressiveSYS13);
     WindowCustomizationVO vo = null;
     for(int i=0;i<list.size();i++) {
       vo = (WindowCustomizationVO)list.get(i);
@@ -259,7 +259,7 @@ public class CustomizeQueryUtil {
    ) throws Exception {
 
     CustomizedWindows cust = ((JAIOUserSessionParameters)userSessionPars).getCustomizedWindows();
-    ArrayList list = cust.getCustomizedFields(progressiveSYS13);
+    java.util.List list = cust.getCustomizedFields(progressiveSYS13);
     WindowCustomizationVO winVO = null;
     for(int i=0;i<list.size();i++) {
       winVO = (WindowCustomizationVO)list.get(i);
@@ -314,7 +314,7 @@ public class CustomizeQueryUtil {
   ) throws Exception {
 
     CustomizedWindows cust = ((JAIOUserSessionParameters)userSessionPars).getCustomizedWindows();
-    ArrayList list = cust.getCustomizedFields(progressiveSYS13);
+    java.util.List list = cust.getCustomizedFields(progressiveSYS13);
     WindowCustomizationVO winVO = null;
     for(int i=0;i<list.size();i++) {
       winVO = (WindowCustomizationVO)list.get(i);

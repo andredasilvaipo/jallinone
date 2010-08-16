@@ -80,7 +80,7 @@ public class RolesController extends GridController {
     Response response = ClientUtils.getData("insertRoles",newValueObjects);
     if (!response.isError()) {
       currentProgressiveSYS04 = null;
-      ArrayList rows = ((VOListResponse)response).getRows();
+      List rows = ((VOListResponse)response).getRows();
       ClientApplet applet = ( (ApplicationClientFacade) MDIFrame.getInstance().getClientFacade()).getMainClass();
       for(int i=0;i<rows.size();i++) {
         vo = (RoleVO)rows.get(i);

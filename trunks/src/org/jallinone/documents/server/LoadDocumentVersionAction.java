@@ -116,7 +116,7 @@ public class LoadDocumentVersionAction implements Action {
         appPath += "/";
       if (!new File(appPath).isAbsolute()) {
         // relative path (to "WEB-INF/classes/" folder)
-        appPath = this.getClass().getResource("/").getPath()+appPath;
+        appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
       }
       File file = new File(appPath+"DOC"+vo.getProgressiveDoc14DOC15()+"_"+vo.getVersionDOC15());
       FileInputStream fis = new FileInputStream(file);

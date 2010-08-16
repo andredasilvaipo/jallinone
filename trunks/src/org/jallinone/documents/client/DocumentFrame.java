@@ -72,8 +72,6 @@ public class DocumentFrame extends InternalFrame {
   SaveButton saveButton1 = new SaveButton();
   ReloadButton reloadButton1 = new ReloadButton();
   DeleteButton deleteButton1 = new DeleteButton();
-  CompaniesComboControl controlCompaniesCombo = new CompaniesComboControl();
-  LabelControl labelCompanyCode = new LabelControl();
   LabelControl labelDescr = new LabelControl();
   TextControl controlDescr = new TextControl();
 
@@ -206,7 +204,7 @@ public class DocumentFrame extends InternalFrame {
     Domain d = new Domain("DOC_TYPE_DOC16");
     if (!res.isError()) {
       DocumentTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (DocumentTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02DOC16(),vo.getDescriptionSYS10());
@@ -247,13 +245,7 @@ public class DocumentFrame extends InternalFrame {
     formPanel.setDeleteButton(deleteButton1);
     formPanel.setSaveButton(saveButton1);
     formPanel.setFunctionId("DOC14");
-    labelCompanyCode.setText("companyCode");
     labelDescr.setText("descriptionDOC14");
-    controlCompaniesCombo.setAttributeName("companyCodeSys01DOC14");
-    controlCompaniesCombo.setCanCopy(true);
-    controlCompaniesCombo.setLinkLabel(labelCompanyCode);
-    controlCompaniesCombo.setRequired(true);
-    controlCompaniesCombo.setEnabledOnEdit(false);
     controlDescr.setAttributeName("descriptionDOC14");
     controlDescr.setCanCopy(true);
     controlDescr.setLinkLabel(labelDescr);
@@ -335,10 +327,6 @@ public class DocumentFrame extends InternalFrame {
     this.getContentPane().add(buttonsPanel,  BorderLayout.NORTH);
     this.getContentPane().add(tab, BorderLayout.CENTER);
     tab.add(formPanel,   "detailPanel");
-    formPanel.add(labelCompanyCode,                                                            new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlCompaniesCombo,                                                               new GridBagConstraints(1, 0, 3, 1, 1.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     formPanel.add(labelDescr,           new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     formPanel.add(controlDescr,        new GridBagConstraints(1, 1, 3, 1, 0.0, 0.0

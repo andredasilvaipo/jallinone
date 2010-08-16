@@ -151,7 +151,7 @@ public class DocPropertiesPanel extends Form {
         );
         return;
       }
-      ArrayList rows = ((VOListResponse)res).getRows();
+      ArrayList rows = new ArrayList(((VOListResponse)res).getRows());
       if (rows.size() > 0) {
         // adding customized input controls...
         DocPropertyVO inputControlInfo = null;

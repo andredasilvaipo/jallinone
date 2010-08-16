@@ -109,7 +109,7 @@ public class InsertLedgerAction implements EventAction {
 
       LedgerVO vo = null;
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       BigDecimal progressiveSYS10 = null;
       Response res = null;
 

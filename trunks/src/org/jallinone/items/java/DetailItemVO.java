@@ -1,7 +1,8 @@
 package org.jallinone.items.java;
 
 import org.jallinone.system.customizations.java.BaseValueObject;
-
+import org.jallinone.variants.java.VariantsItemDescriptor;
+import java.math.BigDecimal;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -31,7 +32,7 @@ import org.jallinone.system.customizations.java.BaseValueObject;
  * @author Mauro Carniel
  * @version 1.0
  */
-public class DetailItemVO extends BaseValueObject {
+public class DetailItemVO extends BaseValueObject implements VariantsItemDescriptor {
 
 
   private String companyCodeSys01ITM01;
@@ -60,8 +61,6 @@ public class DetailItemVO extends BaseValueObject {
   private java.math.BigDecimal heightDecimalsREG02;
   private String heightUmCodeReg02ITM01;
   private String noteITM01;
-  private String colorCodeReg13ITM01;
-  private String sizeCodeReg14ITM01;
   private String enabledITM01;
   private String levelDescriptionSYS10;
   private String largeImageITM01;
@@ -78,6 +77,14 @@ public class DetailItemVO extends BaseValueObject {
   private String manufactureCodePro01ITM01;
   private java.sql.Date startDateITM01;
   private String manufactureDescriptionSYS10;
+
+  private Boolean useVariant1ITM01;
+  private Boolean useVariant2ITM01;
+  private Boolean useVariant3ITM01;
+  private Boolean useVariant4ITM01;
+  private Boolean useVariant5ITM01;
+
+  private String barCodeITM01;
 
 
   public DetailItemVO() {
@@ -240,18 +247,7 @@ public class DetailItemVO extends BaseValueObject {
   public void setNoteITM01(String noteITM01) {
     this.noteITM01 = noteITM01;
   }
-  public String getColorCodeReg13ITM01() {
-    return colorCodeReg13ITM01;
-  }
-  public void setColorCodeReg13ITM01(String colorCodeReg13ITM01) {
-    this.colorCodeReg13ITM01 = colorCodeReg13ITM01;
-  }
-  public String getSizeCodeReg14ITM01() {
-    return sizeCodeReg14ITM01;
-  }
-  public void setSizeCodeReg14ITM01(String sizeCodeReg14ITM01) {
-    this.sizeCodeReg14ITM01 = sizeCodeReg14ITM01;
-  }
+
   public String getEnabledITM01() {
     return enabledITM01;
   }
@@ -347,6 +343,70 @@ public class DetailItemVO extends BaseValueObject {
   }
   public void setManufactureDescriptionSYS10(String manufactureDescriptionSYS10) {
     this.manufactureDescriptionSYS10 = manufactureDescriptionSYS10;
+  }
+
+  public Boolean getUseVariant1ITM01() {
+    return useVariant1ITM01;
+  }
+  public Boolean getUseVariant2ITM01() {
+    return useVariant2ITM01;
+  }
+  public Boolean getUseVariant3ITM01() {
+    return useVariant3ITM01;
+  }
+  public Boolean getUseVariant4ITM01() {
+    return useVariant4ITM01;
+  }
+  public Boolean getUseVariant5ITM01() {
+    return useVariant5ITM01;
+  }
+  public void setUseVariant4ITM01(Boolean useVariant4ITM01) {
+    this.useVariant4ITM01 = useVariant4ITM01;
+  }
+  public void setUseVariant5ITM01(Boolean useVariant5ITM01) {
+    this.useVariant5ITM01 = useVariant5ITM01;
+  }
+  public void setUseVariant3ITM01(Boolean useVariant3ITM01) {
+    this.useVariant3ITM01 = useVariant3ITM01;
+  }
+  public void setUseVariant2ITM01(Boolean useVariant2ITM01) {
+    this.useVariant2ITM01 = useVariant2ITM01;
+  }
+  public void setUseVariant1ITM01(Boolean useVariant1ITM01) {
+    this.useVariant1ITM01 = useVariant1ITM01;
+  }
+
+  /**
+   * getCompanyCodeSys01
+   *
+   * @return String
+   */
+  public String getCompanyCodeSys01() {
+    return getCompanyCodeSys01ITM01();
+  }
+
+  /**
+   * getDecimalsREG02
+   *
+   * @return BigDecimal
+   */
+  public BigDecimal getDecimalsREG02() {
+    return new BigDecimal(0); // not used
+  }
+
+  /**
+   * getItemCodeItm01
+   *
+   * @return String
+   */
+  public String getItemCodeItm01() {
+    return getItemCodeITM01();
+  }
+  public String getBarCodeITM01() {
+    return barCodeITM01;
+  }
+  public void setBarCodeITM01(String barCodeITM01) {
+    this.barCodeITM01 = barCodeITM01;
   }
 
 }

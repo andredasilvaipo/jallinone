@@ -131,7 +131,7 @@ public class UpdateItemAction implements Action {
           appPath += "/";
         if (!new File(appPath).isAbsolute()) {
           // relative path (to "WEB-INF/classes/" folder)
-          appPath = this.getClass().getResource("/").getPath()+appPath;
+          appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
         }
         new File(appPath+oldVO.getSmallImageITM01()).delete();
       }
@@ -150,7 +150,7 @@ public class UpdateItemAction implements Action {
           appPath += "/";
         if (!new File(appPath).isAbsolute()) {
           // relative path (to "WEB-INF/classes/" folder)
-          appPath = this.getClass().getResource("/").getPath()+appPath;
+          appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
         }
         new File(appPath).mkdirs();
         File f = new File(appPath+newVO.getSmallImageITM01());
@@ -169,7 +169,7 @@ public class UpdateItemAction implements Action {
           appPath += "/";
         if (!new File(appPath).isAbsolute()) {
           // relative path (to "WEB-INF/classes/" folder)
-          appPath = this.getClass().getResource("/").getPath()+appPath;
+          appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
         }
         new File(appPath+oldVO.getLargeImageITM01()).delete();
       }
@@ -188,7 +188,7 @@ public class UpdateItemAction implements Action {
           appPath += "/";
         if (!new File(appPath).isAbsolute()) {
           // relative path (to "WEB-INF/classes/" folder)
-          appPath = this.getClass().getResource("/").getPath()+appPath;
+          appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
         }
         new File(appPath).mkdirs();
         File f = new File(appPath+newVO.getLargeImageITM01());
@@ -219,8 +219,6 @@ public class UpdateItemAction implements Action {
       attribute2dbField.put("heightITM01","HEIGHT");
       attribute2dbField.put("heightUmCodeReg02ITM01","HEIGHT_UM_CODE_REG02");
       attribute2dbField.put("noteITM01","NOTE");
-      attribute2dbField.put("colorCodeReg13ITM01","COLOR_CODE_REG13");
-      attribute2dbField.put("sizeCodeReg14ITM01","SIZE_CODE_REG14");
       attribute2dbField.put("largeImageITM01","LARGE_IMAGE");
       attribute2dbField.put("smallImageITM01","SMALL_IMAGE");
       attribute2dbField.put("serialNumberRequiredITM01","SERIAL_NUMBER_REQUIRED");
@@ -228,6 +226,14 @@ public class UpdateItemAction implements Action {
       attribute2dbField.put("revisionITM01","REVISION");
       attribute2dbField.put("manufactureCodePro01ITM01","MANUFACTURE_CODE_PRO01");
       attribute2dbField.put("startDateITM01","START_DATE");
+
+      attribute2dbField.put("useVariant1ITM01","USE_VARIANT_1");
+      attribute2dbField.put("useVariant2ITM01","USE_VARIANT_2");
+      attribute2dbField.put("useVariant3ITM01","USE_VARIANT_3");
+      attribute2dbField.put("useVariant4ITM01","USE_VARIANT_4");
+      attribute2dbField.put("useVariant5ITM01","USE_VARIANT_5");
+
+      attribute2dbField.put("barCodeITM01","BAR_CODE");
 
       HashSet pkAttributes = new HashSet();
       pkAttributes.add("companyCodeSys01ITM01");

@@ -84,7 +84,7 @@ public class InsertProdOrderProductsAction implements Action {
         null
       ));
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01DOC23","COMPANY_CODE_SYS01");

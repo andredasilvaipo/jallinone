@@ -90,7 +90,7 @@ public class InsertMachineriesAction implements Action {
       MachineryVO vo = null;
 
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       String companyCode = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("PRO03").get(0).toString();
       BigDecimal progressiveSYS10 = null;
 

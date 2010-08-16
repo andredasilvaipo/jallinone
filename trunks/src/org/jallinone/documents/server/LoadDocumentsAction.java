@@ -108,7 +108,7 @@ public class LoadDocumentsAction implements Action {
       companies = companies.substring(0,companies.length()-1);
 
       String sql =
-          "select DOC14_DOCUMENTS.COMPANY_CODE_SYS01,DOC14_DOCUMENTS.PROGRESSIVE,DOC14_DOCUMENTS.DESCRIPTION,"+
+          "select DOC14_DOCUMENTS.COMPANY_CODE_SYS01,DOC14_DOCUMENTS.PROGRESSIVE,DOC14_DOCUMENTS.DESCRIPTION,DOC14_DOCUMENTS.FILENAME,"+
           "HIE01_LEVELS.PROGRESSIVE_HIE02,DOC17_DOCUMENT_LINKS.PROGRESSIVE_HIE01"+
           " from DOC14_DOCUMENTS,DOC17_DOCUMENT_LINKS,HIE01_LEVELS where "+
           "DOC14_DOCUMENTS.COMPANY_CODE_SYS01=DOC17_DOCUMENT_LINKS.COMPANY_CODE_SYS01 and "+
@@ -193,6 +193,7 @@ public class LoadDocumentsAction implements Action {
       attribute2dbField.put("companyCodeSys01DOC14","DOC14_DOCUMENTS.COMPANY_CODE_SYS01");
       attribute2dbField.put("progressiveDOC14","DOC14_DOCUMENTS.PROGRESSIVE");
       attribute2dbField.put("descriptionDOC14","DOC14_DOCUMENTS.DESCRIPTION");
+      attribute2dbField.put("filenameDOC14","DOC14_DOCUMENTS.FILENAME");
       attribute2dbField.put("progressiveHie02HIE01","HIE01_LEVELS.PROGRESSIVE_HIE02");
       attribute2dbField.put("progressiveHie01DOC17","DOC17_DOCUMENT_LINKS.PROGRESSIVE_HIE01");
 

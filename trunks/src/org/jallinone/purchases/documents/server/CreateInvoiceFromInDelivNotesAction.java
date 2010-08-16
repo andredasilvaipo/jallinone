@@ -28,6 +28,7 @@ import org.jallinone.purchases.documents.invoices.java.PurchaseInvoiceFromDelivN
 import org.jallinone.purchases.documents.invoices.java.InDeliveryNotesVO;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.variants.java.VariantItemPK;
 
 
 /**
@@ -124,9 +125,15 @@ public class CreateInvoiceFromInDelivNotesAction implements Action {
       );
 
       // retrieve the list of items referred by the selected delivery notes...
-      Hashtable selectedItems = new Hashtable();
+      Hashtable selectedItems = new Hashtable(); // couples <itemcode_variants,qty>
       pstmt = conn.prepareStatement(
-        "select DOC09_IN_DELIVERY_NOTE_ITEMS.QTY,DOC09_IN_DELIVERY_NOTE_ITEMS.ITEM_CODE_ITM01 from DOC09_IN_DELIVERY_NOTE_ITEMS where "+
+        "select DOC09_IN_DELIVERY_NOTE_ITEMS.QTY,DOC09_IN_DELIVERY_NOTE_ITEMS.ITEM_CODE_ITM01, "+
+        "VARIANT_TYPE_ITM06,VARIANT_CODE_ITM11, "+
+        "VARIANT_TYPE_ITM07,VARIANT_CODE_ITM12, "+
+        "VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13, "+
+        "VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14, "+
+        "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15  "+
+        "from DOC09_IN_DELIVERY_NOTE_ITEMS where "+
         "DOC09_IN_DELIVERY_NOTE_ITEMS.COMPANY_CODE_SYS01=? and "+
         "DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_TYPE=? and "+
         "DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_YEAR=? and "+
@@ -138,6 +145,7 @@ public class CreateInvoiceFromInDelivNotesAction implements Action {
       ResultSet rset = null;
       InDeliveryNotesVO delivVO = null;
       BigDecimal qty = null;
+      VariantItemPK variantItemPK = null;
       for(int i=0;i<delivNotes.size();i++) {
         delivVO = (InDeliveryNotesVO)delivNotes.get(i);
         pstmt.setString(1,delivVO.getCompanyCodeSys01DOC08());
@@ -150,9 +158,25 @@ public class CreateInvoiceFromInDelivNotesAction implements Action {
         rset = pstmt.executeQuery();
         while(rset.next()) {
           qty = rset.getBigDecimal(1);
-          if (selectedItems.contains(rset.getString(2)))
-            qty = qty.add( (BigDecimal)selectedItems.get(rset.getString(2)) );
-          selectedItems.put(rset.getString(2),qty);
+
+          variantItemPK = new VariantItemPK(
+            delivVO.getCompanyCodeSys01DOC08(),
+            rset.getString(2),
+            rset.getString(3),
+            rset.getString(4),
+            rset.getString(5),
+            rset.getString(6),
+            rset.getString(7),
+            rset.getString(8),
+            rset.getString(9),
+            rset.getString(10),
+            rset.getString(11),
+            rset.getString(12)
+          );
+
+          if (selectedItems.contains(variantItemPK))
+            qty = qty.add( (BigDecimal)selectedItems.get(variantItemPK) );
+          selectedItems.put(variantItemPK,qty);
         }
         rset.close();
       }
@@ -164,7 +188,7 @@ public class CreateInvoiceFromInDelivNotesAction implements Action {
       res = rowsAction.executeCommand(gridParams,userSessionPars,request,response,userSession,context);
       if (res.isError())
         return res;
-      ArrayList rows = ((VOListResponse)res).getRows();
+      java.util.List rows = ((VOListResponse)res).getRows();
 
       // create rows..
       GridPurchaseDocRowVO gridRowVO = null;
@@ -181,7 +205,18 @@ public class CreateInvoiceFromInDelivNotesAction implements Action {
             gridRowVO.getDocTypeDOC07(),
             gridRowVO.getDocYearDOC07(),
             gridRowVO.getDocNumberDOC07(),
-            gridRowVO.getItemCodeItm01DOC07()
+            gridRowVO.getItemCodeItm01DOC07(),
+            gridRowVO.getVariantTypeItm06DOC07(),
+            gridRowVO.getVariantCodeItm11DOC07(),
+            gridRowVO.getVariantTypeItm07DOC07(),
+            gridRowVO.getVariantCodeItm12DOC07(),
+            gridRowVO.getVariantTypeItm08DOC07(),
+            gridRowVO.getVariantCodeItm13DOC07(),
+            gridRowVO.getVariantTypeItm09DOC07(),
+            gridRowVO.getVariantCodeItm14DOC07(),
+            gridRowVO.getVariantTypeItm10DOC07(),
+            gridRowVO.getVariantCodeItm15DOC07()
+
         );
         res = rowAction.executeCommand(docRowPK,userSessionPars,request,response,userSession,context);
         if (res.isError())
@@ -189,7 +224,7 @@ public class CreateInvoiceFromInDelivNotesAction implements Action {
         rowVO = (DetailPurchaseDocRowVO)((VOResponse)res).getVo();
 
         // check if the row to be inserted is in the selected delivery notes...
-        if (!selectedItems.containsKey(rowVO.getItemCodeItm01DOC07()))
+        if (!selectedItems.containsKey(getVariantItemPK(rowVO)))
           continue;
 
         rowVO.setDocTypeDOC07(docVO.getDocTypeDOC06());
@@ -197,7 +232,7 @@ public class CreateInvoiceFromInDelivNotesAction implements Action {
 
         if (rowVO.getInvoiceQtyDOC07().doubleValue()<rowVO.getQtyDOC07().doubleValue()) {
           // this is the invoice qty to set
-          qty = (BigDecimal)selectedItems.get(rowVO.getItemCodeItm01DOC07());
+          qty = (BigDecimal)selectedItems.get(getVariantItemPK(rowVO));
 
           // check if the invoice qty is less or equals to max invoice qty...
           if (qty.doubleValue()<=rowVO.getQtyDOC07().subtract(rowVO.getInvoiceQtyDOC07()).doubleValue())
@@ -297,6 +332,31 @@ public class CreateInvoiceFromInDelivNotesAction implements Action {
       catch (Exception ex1) {
       }
     }
+  }
+
+
+  class ItemVariantPK {
+
+
+
+  }
+
+
+  private VariantItemPK getVariantItemPK(DetailPurchaseDocRowVO vo) {
+    return new VariantItemPK(
+      vo.getCompanyCodeSys01DOC07(),
+      vo.getItemCodeItm01DOC07(),
+      vo.getVariantTypeItm06DOC07(),
+      vo.getVariantCodeItm11DOC07(),
+      vo.getVariantTypeItm07DOC07(),
+      vo.getVariantCodeItm12DOC07(),
+      vo.getVariantTypeItm08DOC07(),
+      vo.getVariantCodeItm13DOC07(),
+      vo.getVariantTypeItm09DOC07(),
+      vo.getVariantCodeItm14DOC07(),
+      vo.getVariantTypeItm10DOC07(),
+      vo.getVariantCodeItm15DOC07()
+    );
   }
 
 

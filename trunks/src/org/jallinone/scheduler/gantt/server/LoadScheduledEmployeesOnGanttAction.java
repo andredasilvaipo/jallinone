@@ -175,7 +175,7 @@ public class LoadScheduledEmployeesOnGanttAction implements Action {
       if (res.isError())
         return res;
 
-      ArrayList rows = ((VOListResponse)res).getRows();
+      java.util.List rows = ((VOListResponse)res).getRows();
       ArrayList ganttRows = new ArrayList();
       GanttRowVO ganttVO = null;
       ScheduledEmployeeVO vo = null;
@@ -183,7 +183,7 @@ public class LoadScheduledEmployeesOnGanttAction implements Action {
       gridParams = new GridParams();
       Response calRes = null;
       EmployeeCalendarVO empCalVO = null;
-      ArrayList calRows = null;
+      java.util.List calRows = null;
       int i=0;
       String empCode = null;
       Hashtable days = new Hashtable();

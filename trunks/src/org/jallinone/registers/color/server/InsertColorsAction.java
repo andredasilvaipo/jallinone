@@ -87,7 +87,7 @@ public class InsertColorsAction implements Action {
       ));
       ColorVO vo = null;
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("colorCodeREG13","COLOR_CODE");

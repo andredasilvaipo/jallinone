@@ -86,7 +86,7 @@ public class InsertDestinationsAction implements Action {
         null
       ));
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       DestinationVO vo = null;
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01REG18","COMPANY_CODE_SYS01");

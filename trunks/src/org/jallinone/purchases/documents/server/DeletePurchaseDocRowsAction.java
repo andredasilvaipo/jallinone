@@ -84,12 +84,19 @@ public class DeletePurchaseDocRowsAction implements Action {
         inputPar,
         null
       ));
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       PurchaseDocRowPK rowPK = null;
 
       pstmt = conn.prepareStatement(
-          "delete from DOC07_PURCHASE_ITEMS where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=?"
+          "delete from DOC07_PURCHASE_ITEMS where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and "+
+          "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+          "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+          "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+          "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+          "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? "
       );
+
+
 
       for(int i=0;i<list.size();i++) {
         rowPK = (PurchaseDocRowPK)list.get(i);
@@ -100,6 +107,18 @@ public class DeletePurchaseDocRowsAction implements Action {
         pstmt.setBigDecimal(3,rowPK.getDocYearDOC07());
         pstmt.setBigDecimal(4,rowPK.getDocNumberDOC07());
         pstmt.setString(5,rowPK.getItemCodeItm01DOC07());
+
+        pstmt.setString(6,rowPK.getVariantTypeItm06DOC07());
+        pstmt.setString(7,rowPK.getVariantCodeItm11DOC07());
+        pstmt.setString(8,rowPK.getVariantTypeItm07DOC07());
+        pstmt.setString(9,rowPK.getVariantCodeItm12DOC07());
+        pstmt.setString(10,rowPK.getVariantTypeItm08DOC07());
+        pstmt.setString(11,rowPK.getVariantCodeItm13DOC07());
+        pstmt.setString(12,rowPK.getVariantTypeItm09DOC07());
+        pstmt.setString(13,rowPK.getVariantCodeItm14DOC07());
+        pstmt.setString(14,rowPK.getVariantTypeItm10DOC07());
+        pstmt.setString(15,rowPK.getVariantCodeItm15DOC07());
+
         pstmt.execute();
       }
 

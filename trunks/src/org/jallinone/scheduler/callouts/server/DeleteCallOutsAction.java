@@ -82,7 +82,7 @@ public class DeleteCallOutsAction implements Action {
         null
       ));
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       CallOutPK pk = null;
 
       stmt = conn.createStatement();

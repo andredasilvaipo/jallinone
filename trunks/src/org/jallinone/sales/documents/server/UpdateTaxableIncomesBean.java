@@ -138,7 +138,7 @@ public class UpdateTaxableIncomesBean {
       Response rowsResponse = rowsBean.loadSaleDocRows(conn,pars,userSessionPars,request,response,userSession,context);
       if (rowsResponse.isError())
         return rowsResponse;
-      ArrayList itemRows = ((VOListResponse)rowsResponse).getRows();
+      java.util.List itemRows = ((VOListResponse)rowsResponse).getRows();
 
       // for each item, calculate item discounts...
       GridSaleDocRowVO itemVO = null;
@@ -152,7 +152,23 @@ public class UpdateTaxableIncomesBean {
         // retrieve item detail...
         rowResponse = rowBean.loadSaleDocRow(
           conn,
-          new SaleDocRowPK(pk.getCompanyCodeSys01DOC01(),pk.getDocTypeDOC01(),pk.getDocYearDOC01(),pk.getDocNumberDOC01(),itemVO.getItemCodeItm01DOC02()),
+          new SaleDocRowPK(
+            pk.getCompanyCodeSys01DOC01(),
+            pk.getDocTypeDOC01(),
+            pk.getDocYearDOC01(),
+            pk.getDocNumberDOC01(),
+            itemVO.getItemCodeItm01DOC02(),
+            itemVO.getVariantTypeItm06DOC02(),
+            itemVO.getVariantCodeItm11DOC02(),
+            itemVO.getVariantTypeItm07DOC02(),
+            itemVO.getVariantCodeItm12DOC02(),
+            itemVO.getVariantTypeItm08DOC02(),
+            itemVO.getVariantCodeItm13DOC02(),
+            itemVO.getVariantTypeItm09DOC02(),
+            itemVO.getVariantCodeItm14DOC02(),
+            itemVO.getVariantTypeItm10DOC02(),
+            itemVO.getVariantCodeItm15DOC02()
+          ),
           userSessionPars,
           request,
           response,
@@ -191,7 +207,7 @@ public class UpdateTaxableIncomesBean {
       rowsResponse = actsBean.loadSaleDocActivities(conn,pars,userSessionPars,request,response,userSession,context);
       if (rowsResponse.isError())
         return rowsResponse;
-      ArrayList actsRows = ((VOListResponse)rowsResponse).getRows();
+      java.util.List actsRows = ((VOListResponse)rowsResponse).getRows();
       SaleDocActivityVO actVO = null;
       for(int i=0;i<actsRows.size();i++) {
         actVO = (SaleDocActivityVO)actsRows.get(i);
@@ -207,7 +223,7 @@ public class UpdateTaxableIncomesBean {
       rowsResponse = chargesBean.loadSaleDocCharges(conn,pars,userSessionPars,request,response,userSession,context);
       if (rowsResponse.isError())
         return rowsResponse;
-      ArrayList chargesRows = ((VOListResponse)rowsResponse).getRows();
+      java.util.List chargesRows = ((VOListResponse)rowsResponse).getRows();
       SaleDocChargeVO chargeVO = null;
       for(int i=0;i<chargesRows.size();i++) {
         chargeVO = (SaleDocChargeVO)chargesRows.get(i);
@@ -278,7 +294,7 @@ public class UpdateTaxableIncomesBean {
       rowsResponse = discountsBean.loadSaleDocDiscounts(conn,pars,userSessionPars,request,response,userSession,context);
       if (rowsResponse.isError())
         return rowsResponse;
-      ArrayList discounts = ((VOListResponse)rowsResponse).getRows();
+      java.util.List discounts = ((VOListResponse)rowsResponse).getRows();
 
       // apply header discounts to all taxable incomes...
       SaleDocDiscountVO discVO = null;
@@ -352,7 +368,15 @@ public class UpdateTaxableIncomesBean {
       String vatCode = null;
       String vatDescr = null;
       TaxableIncomeVO tVO = null;
-      pstmt = conn.prepareStatement("update DOC02_SELLING_ITEMS set TAXABLE_INCOME=?,VAT_VALUE=?,VALUE=?,TOTAL_DISCOUNT=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=?");
+      pstmt = conn.prepareStatement(
+        "update DOC02_SELLING_ITEMS set TAXABLE_INCOME=?,VAT_VALUE=?,VALUE=?,TOTAL_DISCOUNT=? "+
+        "where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and "+
+        "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+        "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+        "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+        "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+        "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? "
+      );
       for(int i=0;i<detailItemRows.size();i++) {
         detailItemVO = (DetailSaleDocRowVO)detailItemRows.get(i);
 
@@ -395,6 +419,18 @@ public class UpdateTaxableIncomesBean {
         pstmt.setBigDecimal(7,detailItemVO.getDocYearDOC02());
         pstmt.setBigDecimal(8,detailItemVO.getDocNumberDOC02());
         pstmt.setString(9,detailItemVO.getItemCodeItm01DOC02());
+
+        pstmt.setString(10,detailItemVO.getVariantTypeItm06DOC02());
+        pstmt.setString(11,detailItemVO.getVariantCodeItm11DOC02());
+        pstmt.setString(12,detailItemVO.getVariantTypeItm07DOC02());
+        pstmt.setString(13,detailItemVO.getVariantCodeItm12DOC02());
+        pstmt.setString(14,detailItemVO.getVariantTypeItm08DOC02());
+        pstmt.setString(15,detailItemVO.getVariantCodeItm13DOC02());
+        pstmt.setString(16,detailItemVO.getVariantTypeItm09DOC02());
+        pstmt.setString(17,detailItemVO.getVariantCodeItm14DOC02());
+        pstmt.setString(18,detailItemVO.getVariantTypeItm10DOC02());
+        pstmt.setString(19,detailItemVO.getVariantCodeItm15DOC02());
+
         pstmt.execute();
       }
       pstmt.close();

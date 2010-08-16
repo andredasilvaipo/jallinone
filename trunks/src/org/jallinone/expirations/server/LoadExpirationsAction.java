@@ -211,7 +211,7 @@ public class LoadExpirationsAction implements Action {
         Response currRes = currAction.executeCommand(new GridParams(),userSessionPars,request,response,userSession,context);
         if (currRes.isError())
           return res;
-        ArrayList currList = ((VOListResponse)currRes).getRows();
+        java.util.List currList = ((VOListResponse)currRes).getRows();
         Hashtable currencies = new Hashtable(currList.size());
         CurrencyVO currVO = null;
         for(int i=0;i<currList.size();i++) {
@@ -219,7 +219,7 @@ public class LoadExpirationsAction implements Action {
           currencies.put(currVO.getCurrencyCodeREG03(),currVO);
         }
 
-        ArrayList rows = ((VOListResponse)res).getRows();
+        java.util.List rows = ((VOListResponse)res).getRows();
         ExpirationVO vo = null;
         for(int i=0;i<rows.size();i++) {
           vo = (ExpirationVO)rows.get(i);

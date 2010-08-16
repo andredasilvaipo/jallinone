@@ -109,7 +109,34 @@ public class InsertOutDeliveryNoteRowAction implements Action {
       attribute2dbField.put("docSequenceDoc01DOC10","DOC_SEQUENCE_DOC01");
       attribute2dbField.put("invoiceQtyDOC10","INVOICE_QTY");
 
+      attribute2dbField.put("progressiveDOC10","PROGRESSIVE");
+      attribute2dbField.put("variantTypeItm06DOC10","VARIANT_TYPE_ITM06");
+      attribute2dbField.put("variantCodeItm11DOC10","VARIANT_CODE_ITM11");
+      attribute2dbField.put("variantTypeItm07DOC10","VARIANT_TYPE_ITM07");
+      attribute2dbField.put("variantCodeItm12DOC10","VARIANT_CODE_ITM12");
+      attribute2dbField.put("variantTypeItm08DOC10","VARIANT_TYPE_ITM08");
+      attribute2dbField.put("variantCodeItm13DOC10","VARIANT_CODE_ITM13");
+      attribute2dbField.put("variantTypeItm09DOC10","VARIANT_TYPE_ITM09");
+      attribute2dbField.put("variantCodeItm14DOC10","VARIANT_CODE_ITM14");
+      attribute2dbField.put("variantTypeItm10DOC10","VARIANT_TYPE_ITM10");
+      attribute2dbField.put("variantCodeItm15DOC10","VARIANT_CODE_ITM15");
+
       vo.setRowNumberDOC10( progBean.getInternalProgressive("DOC10_IN_DELIVERY_NOTE_ITEMS","ROW_NUMBER",conn) );
+      vo.setProgressiveDOC10( progBean.getInternalProgressive("DOC10_IN_DELIVERY_NOTE_ITEMS","PROGRESSIVE",conn) );
+/*
+      vo.setVariantCodeItm11DOC10(ApplicationConsts.JOLLY);
+      vo.setVariantTypeItm06DOC10(ApplicationConsts.JOLLY);
+
+      vo.setVariantCodeItm12DOC10(ApplicationConsts.JOLLY);
+      vo.setVariantCodeItm13DOC10(ApplicationConsts.JOLLY);
+      vo.setVariantCodeItm14DOC10(ApplicationConsts.JOLLY);
+      vo.setVariantCodeItm15DOC10(ApplicationConsts.JOLLY);
+
+      vo.setVariantTypeItm07DOC10(ApplicationConsts.JOLLY);
+      vo.setVariantTypeItm08DOC10(ApplicationConsts.JOLLY);
+      vo.setVariantTypeItm09DOC10(ApplicationConsts.JOLLY);
+      vo.setVariantTypeItm10DOC10(ApplicationConsts.JOLLY);
+*/
 
       // insert into DOC10...
       Response res = QueryUtil.insertTable(

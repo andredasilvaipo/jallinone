@@ -45,6 +45,7 @@ public class WarehouseVO extends BaseValueObject {
   private java.math.BigDecimal progressiveSys04WAR01;
   private java.math.BigDecimal progressiveHie02WAR01;
   private String enabledWAR01;
+  private java.math.BigDecimal progressiveHie01HIE02;
 
 
   public WarehouseVO() {
@@ -122,6 +123,12 @@ public class WarehouseVO extends BaseValueObject {
   }
   public void setEnabledWAR01(String enabledWAR01) {
     this.enabledWAR01 = enabledWAR01;
+  }
+  public java.math.BigDecimal getProgressiveHie01HIE02() {
+    return progressiveHie01HIE02;
+  }
+  public void setProgressiveHie01HIE02(java.math.BigDecimal progressiveHie01HIE02) {
+    this.progressiveHie01HIE02 = progressiveHie01HIE02;
   }
 
 }

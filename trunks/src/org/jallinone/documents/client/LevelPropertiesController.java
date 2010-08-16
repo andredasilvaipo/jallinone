@@ -103,6 +103,7 @@ public class LevelPropertiesController extends CompanyGridController {
       );
       return false;
     }
+
     return true;
   }
 
@@ -116,8 +117,10 @@ public class LevelPropertiesController extends CompanyGridController {
     LevelPropertyVO vo = (LevelPropertyVO)valueObject;
     DefaultMutableTreeNode node = frame.getHierarTreePanel().getSelectedNode();
     HierarchyLevelVO levelVO = (HierarchyLevelVO)node.getUserObject();
+    DocumentTypeVO docTypeVO = (DocumentTypeVO)frame.getGrid().getVOListTableModel().getObjectForRow(frame.getGrid().getSelectedRow());
     vo.setProgressiveHie02DOC21(frame.getHierarTreePanel().getProgressiveHIE02());
     vo.setProgressiveHie01DOC21(levelVO.getProgressiveHIE01());
+    vo.setCompanyCodeSys01DOC21(docTypeVO.getCompanyCodeSys01DOC16());
   }
 
 

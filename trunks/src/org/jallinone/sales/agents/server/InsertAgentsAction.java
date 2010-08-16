@@ -95,7 +95,7 @@ public class InsertAgentsAction implements Action {
 
       AgentVO vo = null;
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       pstmt = conn.prepareStatement("select AGENT_CODE from SAL10_AGENTS where COMPANY_CODE_SYS01=? and AGENT_CODE=?");
 
       Map attribute2dbField = new HashMap();

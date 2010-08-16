@@ -96,6 +96,27 @@ public class InsertSaleDocRowAction implements Action {
       ));
       DetailSaleDocRowVO vo = (DetailSaleDocRowVO)inputPar;
 
+      if (vo.getVariantCodeItm11DOC02()==null)
+        vo.setVariantCodeItm11DOC02(ApplicationConsts.JOLLY);
+      if (vo.getVariantTypeItm06DOC02()==null)
+        vo.setVariantTypeItm06DOC02(ApplicationConsts.JOLLY);
+      if (vo.getVariantCodeItm12DOC02()==null)
+        vo.setVariantCodeItm12DOC02(ApplicationConsts.JOLLY);
+      if (vo.getVariantCodeItm13DOC02()==null)
+        vo.setVariantCodeItm13DOC02(ApplicationConsts.JOLLY);
+      if (vo.getVariantCodeItm14DOC02()==null)
+        vo.setVariantCodeItm14DOC02(ApplicationConsts.JOLLY);
+      if (vo.getVariantCodeItm15DOC02()==null)
+        vo.setVariantCodeItm15DOC02(ApplicationConsts.JOLLY);
+      if (vo.getVariantTypeItm07DOC02()==null)
+        vo.setVariantTypeItm07DOC02(ApplicationConsts.JOLLY);
+      if (vo.getVariantTypeItm08DOC02()==null)
+        vo.setVariantTypeItm08DOC02(ApplicationConsts.JOLLY);
+      if (vo.getVariantTypeItm09DOC02()==null)
+        vo.setVariantTypeItm09DOC02(ApplicationConsts.JOLLY);
+      if (vo.getVariantTypeItm10DOC02()==null)
+        vo.setVariantTypeItm10DOC02(ApplicationConsts.JOLLY);
+
       Response res = bean.insertSaleItem(conn,vo,userSessionPars,request,response,userSession,context);
       if (res.isError()) {
         conn.rollback();
@@ -135,7 +156,23 @@ public class InsertSaleDocRowAction implements Action {
       // reload v.o. after updating taxable incomes...
       res = load.loadSaleDocRow(
         conn,
-        new SaleDocRowPK(pk.getCompanyCodeSys01DOC01(),pk.getDocTypeDOC01(),pk.getDocYearDOC01(),pk.getDocNumberDOC01(),vo.getItemCodeItm01DOC02()),
+        new SaleDocRowPK(
+          pk.getCompanyCodeSys01DOC01(),
+          pk.getDocTypeDOC01(),
+          pk.getDocYearDOC01(),
+          pk.getDocNumberDOC01(),
+          vo.getItemCodeItm01DOC02(),
+          vo.getVariantTypeItm06DOC02(),
+          vo.getVariantCodeItm11DOC02(),
+          vo.getVariantTypeItm07DOC02(),
+          vo.getVariantCodeItm12DOC02(),
+          vo.getVariantTypeItm08DOC02(),
+          vo.getVariantCodeItm13DOC02(),
+          vo.getVariantTypeItm09DOC02(),
+          vo.getVariantCodeItm14DOC02(),
+          vo.getVariantTypeItm10DOC02(),
+          vo.getVariantCodeItm15DOC02()
+        ),
         userSessionPars,
         request,
         response,

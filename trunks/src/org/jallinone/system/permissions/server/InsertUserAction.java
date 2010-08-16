@@ -137,7 +137,7 @@ public class InsertUserAction implements Action {
             "select COMPANY_CODE_SYS01,?,PARAM_CODE,VALUE from SYS21_COMPANY_PARAMS where COMPANY_CODE_SYS01=?"
         );
 
-        ArrayList list = ((VOListResponse)res).getRows();
+        java.util.List list = ((VOListResponse)res).getRows();
         CompanyVO companyVO = null;
         for(int i=0;i<list.size();i++) {
           companyVO = (CompanyVO)list.get(i);

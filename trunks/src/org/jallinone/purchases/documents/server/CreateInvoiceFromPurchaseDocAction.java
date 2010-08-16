@@ -125,7 +125,7 @@ public class CreateInvoiceFromPurchaseDocAction implements Action {
       res = rowsAction.executeCommand(gridParams,userSessionPars,request,response,userSession,context);
       if (res.isError())
         return res;
-      ArrayList rows = ((VOListResponse)res).getRows();
+      java.util.List rows = ((VOListResponse)res).getRows();
 
       // create rows..
       GridPurchaseDocRowVO gridRowVO = null;
@@ -142,7 +142,18 @@ public class CreateInvoiceFromPurchaseDocAction implements Action {
             gridRowVO.getDocTypeDOC07(),
             gridRowVO.getDocYearDOC07(),
             gridRowVO.getDocNumberDOC07(),
-            gridRowVO.getItemCodeItm01DOC07()
+            gridRowVO.getItemCodeItm01DOC07(),
+            gridRowVO.getVariantTypeItm06DOC07(),
+            gridRowVO.getVariantCodeItm11DOC07(),
+            gridRowVO.getVariantTypeItm07DOC07(),
+            gridRowVO.getVariantCodeItm12DOC07(),
+            gridRowVO.getVariantTypeItm08DOC07(),
+            gridRowVO.getVariantCodeItm13DOC07(),
+            gridRowVO.getVariantTypeItm09DOC07(),
+            gridRowVO.getVariantCodeItm14DOC07(),
+            gridRowVO.getVariantTypeItm10DOC07(),
+            gridRowVO.getVariantCodeItm15DOC07()
+
         );
         res = rowAction.executeCommand(docRowPK,userSessionPars,request,response,userSession,context);
         if (res.isError())

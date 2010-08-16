@@ -128,12 +128,33 @@ public class UpdatePurchaseDocRowAction implements Action {
       attribute2dbField.put("inQtyDOC07","IN_QTY");
       attribute2dbField.put("orderQtyDOC07","ORDER_QTY");
 
+      attribute2dbField.put("variantTypeItm06DOC07","VARIANT_TYPE_ITM06");
+      attribute2dbField.put("variantCodeItm11DOC07","VARIANT_CODE_ITM11");
+      attribute2dbField.put("variantTypeItm07DOC07","VARIANT_TYPE_ITM07");
+      attribute2dbField.put("variantCodeItm12DOC07","VARIANT_CODE_ITM12");
+      attribute2dbField.put("variantTypeItm08DOC07","VARIANT_TYPE_ITM08");
+      attribute2dbField.put("variantCodeItm13DOC07","VARIANT_CODE_ITM13");
+      attribute2dbField.put("variantTypeItm09DOC07","VARIANT_TYPE_ITM09");
+      attribute2dbField.put("variantCodeItm14DOC07","VARIANT_CODE_ITM14");
+      attribute2dbField.put("variantTypeItm10DOC07","VARIANT_TYPE_ITM10");
+      attribute2dbField.put("variantCodeItm15DOC07","VARIANT_CODE_ITM15");
+
       HashSet pkAttributes = new HashSet();
       pkAttributes.add("companyCodeSys01DOC07");
       pkAttributes.add("docTypeDOC07");
       pkAttributes.add("docYearDOC07");
       pkAttributes.add("docNumberDOC07");
       pkAttributes.add("itemCodeItm01DOC07");
+      pkAttributes.add("variantTypeItm06DOC07");
+      pkAttributes.add("variantCodeItm11DOC07");
+      pkAttributes.add("variantTypeItm07DOC07");
+      pkAttributes.add("variantCodeItm12DOC07");
+      pkAttributes.add("variantTypeItm08DOC07");
+      pkAttributes.add("variantCodeItm13DOC07");
+      pkAttributes.add("variantTypeItm09DOC07");
+      pkAttributes.add("variantCodeItm14DOC07");
+      pkAttributes.add("variantTypeItm10DOC07");
+      pkAttributes.add("variantCodeItm15DOC07");
 
       // update DOC07 table...
       Response res = QueryUtil.updateTable(

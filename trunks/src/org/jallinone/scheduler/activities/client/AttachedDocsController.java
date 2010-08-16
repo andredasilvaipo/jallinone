@@ -103,6 +103,7 @@ public class AttachedDocsController extends GridController {
     new DocumentController(
       null,
       new DocumentPK(vo.getCompanyCodeSys01SCH08(),vo.getProgressiveDoc14SCH08()),
+      vo.getCompanyCodeSys01SCH08(),
       null
     );
   }

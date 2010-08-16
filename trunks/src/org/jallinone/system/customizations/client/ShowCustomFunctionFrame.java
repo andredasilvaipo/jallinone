@@ -139,7 +139,7 @@ public class ShowCustomFunctionFrame extends InternalFrame {
         );
         return;
       }
-      ArrayList customCols = ((VOListResponse)res).getRows();
+      java.util.List customCols = ((VOListResponse)res).getRows();
 
       // construct main tables list...
       StringTokenizer st = new StringTokenizer(vo.getMainTablesSYS16(),",");

@@ -42,12 +42,36 @@ public class InDeliveryNoteRowPK implements Serializable {
   private java.math.BigDecimal rowNumberDOC09;
   private String itemCodeItm01DOC09;
 
+  private java.math.BigDecimal progressiveDOC09;
+  private String variantTypeItm06DOC09;
+  private String variantCodeItm11DOC09;
+  private String variantTypeItm07DOC09;
+  private String variantCodeItm12DOC09;
+  private String variantTypeItm08DOC09;
+  private String variantCodeItm13DOC09;
+  private String variantTypeItm09DOC09;
+  private String variantCodeItm14DOC09;
+  private String variantTypeItm10DOC09;
+  private String variantCodeItm15DOC09;
+
 
   public InDeliveryNoteRowPK(
+      java.math.BigDecimal progressiveDOC09,
       String companyCodeSys01DOC09,String docTypeDOC09,java.math.BigDecimal docYearDOC09,java.math.BigDecimal docNumberDOC09,
       String docTypeDoc06DOC09,java.math.BigDecimal docYearDoc06DOC09,java.math.BigDecimal docNumberDoc06DOC09,
-      java.math.BigDecimal rowNumberDOC09,String itemCodeItm01DOC09
+      java.math.BigDecimal rowNumberDOC09,String itemCodeItm01DOC09,
+      String variantTypeItm06DOC09,
+      String variantCodeItm11DOC09,
+      String variantTypeItm07DOC09,
+      String variantCodeItm12DOC09,
+      String variantTypeItm08DOC09,
+      String variantCodeItm13DOC09,
+      String variantTypeItm09DOC09,
+      String variantCodeItm14DOC09,
+      String variantTypeItm10DOC09,
+      String variantCodeItm15DOC09
   ) {
+    this.progressiveDOC09 = progressiveDOC09;
     this.companyCodeSys01DOC09 = companyCodeSys01DOC09;
     this.docTypeDOC09 = docTypeDOC09;
     this.docYearDOC09 = docYearDOC09;
@@ -57,6 +81,17 @@ public class InDeliveryNoteRowPK implements Serializable {
     this.docNumberDoc06DOC09 = docNumberDoc06DOC09;
     this.rowNumberDOC09 = rowNumberDOC09;
     this.itemCodeItm01DOC09 = itemCodeItm01DOC09;
+
+    this.variantTypeItm10DOC09 = variantTypeItm10DOC09;
+    this.variantTypeItm09DOC09 = variantTypeItm09DOC09;
+    this.variantTypeItm08DOC09 = variantTypeItm08DOC09;
+    this.variantTypeItm07DOC09 = variantTypeItm07DOC09;
+    this.variantTypeItm06DOC09 = variantTypeItm06DOC09;
+    this.variantCodeItm15DOC09 = variantCodeItm15DOC09;
+    this.variantCodeItm14DOC09 = variantCodeItm14DOC09;
+    this.variantCodeItm13DOC09 = variantCodeItm13DOC09;
+    this.variantCodeItm12DOC09 = variantCodeItm12DOC09;
+    this.variantCodeItm11DOC09 = variantCodeItm11DOC09;
   }
 
 
@@ -86,6 +121,42 @@ public class InDeliveryNoteRowPK implements Serializable {
   }
   public java.math.BigDecimal getRowNumberDOC09() {
     return rowNumberDOC09;
+  }
+  public String getVariantCodeItm11DOC09() {
+    return variantCodeItm11DOC09;
+  }
+  public String getVariantCodeItm12DOC09() {
+    return variantCodeItm12DOC09;
+  }
+  public String getVariantCodeItm13DOC09() {
+    return variantCodeItm13DOC09;
+  }
+  public String getVariantCodeItm14DOC09() {
+    return variantCodeItm14DOC09;
+  }
+  public String getVariantCodeItm15DOC09() {
+    return variantCodeItm15DOC09;
+  }
+  public String getVariantTypeItm06DOC09() {
+    return variantTypeItm06DOC09;
+  }
+  public String getVariantTypeItm07DOC09() {
+    return variantTypeItm07DOC09;
+  }
+  public String getVariantTypeItm08DOC09() {
+    return variantTypeItm08DOC09;
+  }
+  public String getVariantTypeItm09DOC09() {
+    return variantTypeItm09DOC09;
+  }
+  public String getVariantTypeItm10DOC09() {
+    return variantTypeItm10DOC09;
+  }
+  public java.math.BigDecimal getProgressiveDOC09() {
+    return progressiveDOC09;
+  }
+  public void setProgressiveDOC09(java.math.BigDecimal progressiveDOC09) {
+    this.progressiveDOC09 = progressiveDOC09;
   }
 
 }

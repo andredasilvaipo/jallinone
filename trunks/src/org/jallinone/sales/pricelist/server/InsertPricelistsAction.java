@@ -88,7 +88,7 @@ public class InsertPricelistsAction implements Action {
       ));
      PricelistVO vo = null;
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SAL01","COMPANY_CODE_SYS01");
       attribute2dbField.put("pricelistCodeSAL01","PRICELIST_CODE");

@@ -48,6 +48,17 @@ public class GridWarehouseMovementVO extends ValueObjectImpl {
   private String itemTypeWAR04;
   private String qtySignWAR04;
 
+  private String variantTypeItm06WAR02;
+  private String variantCodeItm11WAR02;
+  private String variantTypeItm07WAR02;
+  private String variantCodeItm12WAR02;
+  private String variantTypeItm08WAR02;
+  private String variantCodeItm13WAR02;
+  private String variantTypeItm09WAR02;
+  private String variantCodeItm14WAR02;
+  private String variantTypeItm10WAR02;
+  private String variantCodeItm15WAR02;
+
 
   public GridWarehouseMovementVO() {
   }
@@ -142,6 +153,66 @@ public class GridWarehouseMovementVO extends ValueObjectImpl {
   }
   public void setQtySignWAR04(String qtySignWAR04) {
     this.qtySignWAR04 = qtySignWAR04;
+  }
+  public String getVariantCodeItm11WAR02() {
+    return variantCodeItm11WAR02;
+  }
+  public String getVariantCodeItm12WAR02() {
+    return variantCodeItm12WAR02;
+  }
+  public String getVariantCodeItm13WAR02() {
+    return variantCodeItm13WAR02;
+  }
+  public String getVariantCodeItm14WAR02() {
+    return variantCodeItm14WAR02;
+  }
+  public String getVariantCodeItm15WAR02() {
+    return variantCodeItm15WAR02;
+  }
+  public String getVariantTypeItm06WAR02() {
+    return variantTypeItm06WAR02;
+  }
+  public String getVariantTypeItm07WAR02() {
+    return variantTypeItm07WAR02;
+  }
+  public String getVariantTypeItm08WAR02() {
+    return variantTypeItm08WAR02;
+  }
+  public String getVariantTypeItm09WAR02() {
+    return variantTypeItm09WAR02;
+  }
+  public String getVariantTypeItm10WAR02() {
+    return variantTypeItm10WAR02;
+  }
+  public void setVariantTypeItm10WAR02(String variantTypeItm10WAR02) {
+    this.variantTypeItm10WAR02 = variantTypeItm10WAR02;
+  }
+  public void setVariantTypeItm09WAR02(String variantTypeItm09WAR02) {
+    this.variantTypeItm09WAR02 = variantTypeItm09WAR02;
+  }
+  public void setVariantTypeItm08WAR02(String variantTypeItm08WAR02) {
+    this.variantTypeItm08WAR02 = variantTypeItm08WAR02;
+  }
+  public void setVariantTypeItm07WAR02(String variantTypeItm07WAR02) {
+    this.variantTypeItm07WAR02 = variantTypeItm07WAR02;
+  }
+  public void setVariantTypeItm06WAR02(String variantTypeItm06WAR02) {
+    this.variantTypeItm06WAR02 = variantTypeItm06WAR02;
+  }
+  public void setVariantCodeItm15WAR02(String variantCodeItm15WAR02) {
+    this.variantCodeItm15WAR02 = variantCodeItm15WAR02;
+  }
+  public void setVariantCodeItm14WAR02(String variantCodeItm14WAR02) {
+    this.variantCodeItm14WAR02 = variantCodeItm14WAR02;
+  }
+  public void setVariantCodeItm13WAR02(String variantCodeItm13WAR02) {
+    this.variantCodeItm13WAR02 = variantCodeItm13WAR02;
+  }
+  public void setVariantCodeItm12WAR02(String variantCodeItm12WAR02) {
+    this.variantCodeItm12WAR02 = variantCodeItm12WAR02;
+  }
+  public void setVariantCodeItm11WAR02(String variantCodeItm11WAR02) {
+    this.variantCodeItm11WAR02 = variantCodeItm11WAR02;
   }
 
 }

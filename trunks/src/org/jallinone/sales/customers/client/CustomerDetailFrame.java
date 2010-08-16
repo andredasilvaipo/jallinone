@@ -68,7 +68,7 @@ public class CustomerDetailFrame extends InternalFrame {
   SaveButton saveButton = new SaveButton();
   ReloadButton reloadButton = new ReloadButton();
   DeleteButton deleteButton = new DeleteButton();
-  OrganizationPanel organizationPanel = new OrganizationPanel();
+  OrganizationPanel organizationPanel = new OrganizationPanel(true);
   PeoplePanel peoplePanel = new PeoplePanel();
   LabelControl labelCompanyCode = new LabelControl();
   CompaniesComboControl controlCompanyCode = new CompaniesComboControl();
@@ -214,8 +214,8 @@ public class CustomerDetailFrame extends InternalFrame {
     this.customerController = controller;
     try {
       jbInit();
-      setSize(750,500);
-      setMinimumSize(new Dimension(750, 500));
+      setSize(750,550);
+      setMinimumSize(new Dimension(750, 550));
 
       customerPanel.setFormController(controller);
       customerPanel.setInsertButton(insertButton);
@@ -387,6 +387,11 @@ public class CustomerDetailFrame extends InternalFrame {
       creditController.setAllColumnVisible(false);
       creditController.setVisibleColumn("accountCodeACC02", true);
       creditController.setVisibleColumn("descriptionSYS10", true);
+      creditController.setFilterableColumn("accountCodeACC02", true);
+      creditController.setFilterableColumn("descriptionSYS10", true);
+      creditController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      creditController.setSortableColumn("accountCodeACC02", true);
+      creditController.setSortableColumn("descriptionSYS10", true);
       creditController.setPreferredWidthColumn("accountCodeACC02", 100);
       creditController.setPreferredWidthColumn("descriptionSYS10", 290);
       creditController.addLookupListener(new LookupListener() {
@@ -419,6 +424,11 @@ public class CustomerDetailFrame extends InternalFrame {
       itemsController.setAllColumnVisible(false);
       itemsController.setVisibleColumn("accountCodeACC02", true);
       itemsController.setVisibleColumn("descriptionSYS10", true);
+      itemsController.setFilterableColumn("accountCodeACC02", true);
+      itemsController.setFilterableColumn("descriptionSYS10", true);
+      itemsController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      itemsController.setSortableColumn("accountCodeACC02", true);
+      itemsController.setSortableColumn("descriptionSYS10", true);
       itemsController.setPreferredWidthColumn("accountCodeACC02", 100);
       itemsController.setPreferredWidthColumn("descriptionSYS10", 290);
       itemsController.addLookupListener(new LookupListener() {
@@ -451,6 +461,11 @@ public class CustomerDetailFrame extends InternalFrame {
       actController.setAllColumnVisible(false);
       actController.setVisibleColumn("accountCodeACC02", true);
       actController.setVisibleColumn("descriptionSYS10", true);
+      actController.setFilterableColumn("accountCodeACC02", true);
+      actController.setFilterableColumn("descriptionSYS10", true);
+      actController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      actController.setSortableColumn("accountCodeACC02", true);
+      actController.setSortableColumn("descriptionSYS10", true);
       actController.setPreferredWidthColumn("accountCodeACC02", 100);
       actController.setPreferredWidthColumn("descriptionSYS10", 290);
       actController.addLookupListener(new LookupListener() {
@@ -483,6 +498,11 @@ public class CustomerDetailFrame extends InternalFrame {
       chargesController.setAllColumnVisible(false);
       chargesController.setVisibleColumn("accountCodeACC02", true);
       chargesController.setVisibleColumn("descriptionSYS10", true);
+      chargesController.setFilterableColumn("accountCodeACC02", true);
+      chargesController.setFilterableColumn("descriptionSYS10", true);
+      chargesController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      chargesController.setSortableColumn("accountCodeACC02", true);
+      chargesController.setSortableColumn("descriptionSYS10", true);
       chargesController.setPreferredWidthColumn("accountCodeACC02", 100);
       chargesController.setPreferredWidthColumn("descriptionSYS10", 290);
       chargesController.addLookupListener(new LookupListener() {
@@ -919,8 +939,8 @@ public class CustomerDetailFrame extends InternalFrame {
     this.getContentPane().add(tabbedPane, BorderLayout.CENTER);
     customerPanel.add(labelCompanyCode,            new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    customerPanel.add(controlCompanyCode,          new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    customerPanel.add(controlCompanyCode,           new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 50, 0));
 
     tabbedPane.add(customerPanel,    "customerPanel");
     customerPanel.add(labelCustomerCode,           new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0

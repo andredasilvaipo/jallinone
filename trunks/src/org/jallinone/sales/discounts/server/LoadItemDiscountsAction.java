@@ -113,7 +113,7 @@ public class LoadItemDiscountsAction implements Action {
           ItemDiscountVO.class
       );
       if (!res.isError()) {
-        ArrayList rows = ((VOListResponse)res).getRows();
+        java.util.List rows = ((VOListResponse)res).getRows();
         for(int i=0;i<rows.size();i++) {
           ((ItemDiscountVO)rows.get(i)).setItemCodeItm01SAL04(pk.getItemCodeITM01());
         }

@@ -50,7 +50,7 @@ public class CustomizedWindows implements Serializable {
    * @param vo customized field
    */
   public final void addWindowCustomization(WindowCustomizationVO vo) {
-    ArrayList list = (ArrayList)cust.get(vo.getProgressiveSys13SYS12());
+    java.util.List list = (ArrayList)cust.get(vo.getProgressiveSys13SYS12());
     if (list==null) {
       list = new ArrayList();
       cust.put(vo.getProgressiveSys13SYS12(),list);

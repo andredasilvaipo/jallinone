@@ -613,7 +613,7 @@ public class CompanyParametersFrame extends InternalFrame {
     final Domain d = new Domain("COMPANIES");
     if (!res.isError()) {
       CompanyVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (CompanyVO)list.get(i);
         d.addDomainPair(vo.getCompanyCodeSYS01(),vo.getName_1REG04());

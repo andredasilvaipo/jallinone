@@ -1,11 +1,9 @@
 package org.jallinone.sales.documents.client;
 
-import javax.swing.JPanel;
 import javax.swing.border.*;
 import java.awt.*;
 import org.openswing.swing.client.*;
 import org.openswing.swing.util.client.*;
-import javax.swing.BorderFactory;
 import org.openswing.swing.lookup.client.LookupController;
 import org.openswing.swing.lookup.client.LookupServerDataLocator;
 import org.jallinone.commons.java.ApplicationConsts;
@@ -18,6 +16,10 @@ import org.openswing.swing.util.client.ClientSettings;
 import org.jallinone.sales.customers.java.CustomerPK;
 import org.openswing.swing.message.receive.java.*;
 import org.jallinone.sales.customers.java.OrganizationCustomerVO;
+import org.jallinone.commons.client.CompaniesComboControl;
+import javax.swing.*;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 /**
   * <p>Title: JAllInOne ERP/CRM application</p>
@@ -73,10 +75,15 @@ public class SaleCustomerHeadPanel extends JPanel {
   LookupServerDataLocator payDataLocator = new LookupServerDataLocator();
   TextControl controlName2 = new TextControl();
 
+  LabelControl companyLabel = new LabelControl();
+  CompaniesComboControl controlCompaniesCombo = new CompaniesComboControl();
 
-  public SaleCustomerHeadPanel(final Form form) {
+  private boolean maybeShowCompaniesCombo = false;
+
+
+  public SaleCustomerHeadPanel(boolean maybeShowCompaniesCombo,final Form form) {
+    this.maybeShowCompaniesCombo = maybeShowCompaniesCombo;
     try {
-      jbInit();
 
       // customer lookup...
       customerDataLocator.setGridMethodName("loadCustomers");
@@ -231,6 +238,8 @@ public class SaleCustomerHeadPanel extends JPanel {
       pricelistController.setPreferredWidthColumn("descriptionSYS10", 250);
       pricelistController.setFramePreferedSize(new Dimension(350,500));
 
+      jbInit();
+
     }
     catch(Exception e) {
       e.printStackTrace();
@@ -239,6 +248,13 @@ public class SaleCustomerHeadPanel extends JPanel {
 
 
   private void jbInit() throws Exception {
+
+    companyLabel.setFont(new java.awt.Font("MS Sans Serif", 0, 11));
+    companyLabel.setLabel("companyCodeSYS01");
+
+    controlCompaniesCombo.setLinkLabel(companyLabel);
+    controlCompaniesCombo.setFunctionCode(customerController.getForm().getFunctionId());
+
     titledBorder1 = new TitledBorder("");
     labelCustomer.setText("customer");
     titledBorder1.setTitle(ClientSettings.getInstance().getResources().getResource("customer data"));
@@ -281,29 +297,52 @@ public class SaleCustomerHeadPanel extends JPanel {
     controlName2.setEnabledOnInsert(false);
     controlName2.setEnabledOnEdit(false);
     controlName2.setAttributeName("name_2REG04");
-    this.add(labelCustomer,        new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+
+    if (maybeShowCompaniesCombo) {
+      this.add(companyLabel,         new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+              ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+      this.add(controlCompaniesCombo,               new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+              ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 70, 0));
+
+      controlCompaniesCombo.setAttributeName("companyCodeSys01DOC01");
+      controlCompaniesCombo.addItemListener(new ItemListener() {
+
+        public void itemStateChanged(ItemEvent e) {
+          Object companyCodeSys01 = controlCompaniesCombo.getValue();
+          if (companyCodeSys01==null)
+            companyCodeSys01 = controlCompaniesCombo.getDomain().getDomainPairList()[0].getCode();
+
+          customerDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,companyCodeSys01);
+          customerDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,companyCodeSys01);
+        }
+
+      });
+
+    }
+
+    this.add(labelCustomer,         new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlCustomerCode,             new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 70, 0));
-    this.add(labelPayment,          new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+    this.add(controlCustomerCode,               new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 70, 0));
+    this.add(labelPayment,           new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlName1,          new GridBagConstraints(2, 0, 1, 1, 1.0, 0.0
+    this.add(controlName1,           new GridBagConstraints(2, 1, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 200, 0));
-    this.add(labelPricelist,      new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+    this.add(labelPricelist,       new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlPricelistCode,     new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 70, 0));
-    this.add(controlPricelistDescr,       new GridBagConstraints(2, 1, 1, 1, 1.0, 0.0
+    this.add(controlPricelistCode,       new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 70, 0));
+    this.add(controlPricelistDescr,        new GridBagConstraints(2, 2, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlPaymentCode,   new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 70, 0));
-    this.add(controlPayDescr,   new GridBagConstraints(2, 2, 1, 1, 1.0, 0.0
+    this.add(controlPaymentCode,     new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 70, 0));
+    this.add(controlPayDescr,    new GridBagConstraints(2, 3, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(labelCurrency,  new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0
+    this.add(labelCurrency,   new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlCurrency,  new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0
+    this.add(controlCurrency,   new GridBagConstraints(4, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 70, 0));
-    this.add(controlName2,   new GridBagConstraints(3, 0, 2, 1, 1.0, 0.0
+    this.add(controlName2,    new GridBagConstraints(3, 1, 2, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 0, 0));
   }
 
@@ -313,6 +352,12 @@ public class SaleCustomerHeadPanel extends JPanel {
   }
   public LookupController getCustomerController() {
     return customerController;
+  }
+  public CompaniesComboControl getControlCompaniesCombo() {
+    return controlCompaniesCombo;
+  }
+  public CodLookupControl getControlCustomerCode() {
+    return controlCustomerCode;
   }
 
 }

@@ -91,7 +91,7 @@ public class InsertLevelPropertiesAction implements Action {
       LevelPropertyVO vo = null;
 
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       BigDecimal progressiveSys10DOC21 = null;
 
       Map attribute2dbField = new HashMap();

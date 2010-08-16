@@ -161,7 +161,7 @@ public class LoadPricesAction implements Action {
       );
 
       if (!res.isError()) {
-        ArrayList rows = ((VOListResponse)res).getRows();
+        java.util.List rows = ((VOListResponse)res).getRows();
         PriceVO vo = null;
         for(int i=0;i<rows.size();i++) {
           vo = (PriceVO)rows.get(i);

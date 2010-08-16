@@ -89,7 +89,7 @@ public class InsertLanguagesAction implements Action {
       BufferedReader br = null;
       ResultSet rset = null;
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       pstmt = conn.prepareStatement(
           "insert into SYS09_LANGUAGES(LANGUAGE_CODE,DESCRIPTION,CLIENT_LANGUAGE_CODE,CREATE_DATE,ENABLED) VALUES(?,?,?,?,'Y')"
       );
@@ -108,7 +108,7 @@ public class InsertLanguagesAction implements Action {
         stmt = conn.createStatement();
         sql.delete(0,sql.length());
         br = new BufferedReader(new InputStreamReader(new FileInputStream(
-            this.getClass().getResource("/").getPath() + "inssql_"+vo.getClientLanguageCodeSYS09()+".ini"
+            this.getClass().getResource("/").getPath().replaceAll("%20"," ") + "inssql_"+vo.getClientLanguageCodeSYS09()+".ini"
         )));
         String line = null;
         while ( (line = br.readLine()) != null) {

@@ -92,8 +92,8 @@ public class PurchaseInvoiceDocFrame extends InternalFrame implements InvoiceDoc
     this.controller = controller;
     try {
       jbInit();
-      setSize(750,630);
-      setMinimumSize(new Dimension(750,630));
+      setSize(790,630);
+      setMinimumSize(new Dimension(790,630));
       setTitle(ClientSettings.getInstance().getResources().getResource("purchase invoice"));
 
 //      CustomizedControls customizedControls = new CustomizedControls(tabbedPane,headerFormPanel,ApplicationConsts.ID_PURCHASE_ESTIMATE);

@@ -81,7 +81,7 @@ public class DeleteSaleDocsAction implements Action {
         null
       ));
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       SaleDocPK pk = null;
 
       pstmt = conn.prepareStatement(

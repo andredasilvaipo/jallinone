@@ -24,6 +24,7 @@ import java.awt.event.*;
 import java.util.HashMap;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JRViewer;
+import org.jallinone.purchases.documents.java.PurchaseDocRowPK;
 
 
 /**
@@ -229,9 +230,7 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
   }
 
 
-  public void loadDataCompleted(boolean error,PurchaseDocPK pk) {
-    DetailPurchaseDocVO vo = (DetailPurchaseDocVO)headerFormPanel.getVOModel().getValueObject();
-
+  public final void updateCurrencySettings(DetailPurchaseDocVO vo) {
     purchaseTotalsPanel1.getControlTaxableIncome().setDecimals(vo.getDecimalsREG03().intValue());
     purchaseTotalsPanel1.getControlTaxableIncome().setCurrencySymbol(vo.getCurrencySymbolREG03());
     purchaseTotalsPanel1.getControlTaxableIncome().setDecimalSymbol(vo.getDecimalSymbolREG03().charAt(0));
@@ -257,6 +256,12 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
     purchaseDiscChargesPanel1.getControlDiscValue().setCurrencySymbol(vo.getCurrencySymbolREG03());
     purchaseDiscChargesPanel1.getControlDiscValue().setDecimalSymbol(vo.getDecimalSymbolREG03().charAt(0));
     purchaseDiscChargesPanel1.getControlDiscValue().setGroupingSymbol(vo.getThousandSymbolREG03().charAt(0));
+  }
+
+
+  public void loadDataCompleted(boolean error,PurchaseDocPK pk) {
+    DetailPurchaseDocVO vo = (DetailPurchaseDocVO)headerFormPanel.getVOModel().getValueObject();
+    updateCurrencySettings(vo);
 
     rowsPanel.setParentVO(vo);
     rowsPanel.getGrid().getOtherGridParams().put(ApplicationConsts.PURCHASE_DOC_PK,pk);
@@ -366,6 +371,7 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
       );
 
   }
+
 
 
 }

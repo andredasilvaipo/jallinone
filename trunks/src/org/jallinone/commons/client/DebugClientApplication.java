@@ -58,13 +58,18 @@ public class DebugClientApplication extends ClientApplet {
    * Method called by Java Web Start to init the application.
    */
   public static void main(String[] argv) {
-    new DebugClientApplication();
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new DebugClientApplication();
+      }
+    });
+
   }
 
 
   public DebugClientApplication() {
     calledAsApplet = false;
-    System.setProperty("SERVERURL","http://localhost:80/jallinone/controller");
+    System.setProperty("SERVERURL","http://localhost:8081/jallinone/controller");
     initApplication();
   }
 
@@ -144,7 +149,7 @@ public class DebugClientApplication extends ClientApplet {
     // add the clock panel to the status panel...
     userPanel.setText(username);
     MDIFrame.addStatusComponent(new Clock());
-    frame.setSize(1024,745);
+    frame.setSize(1280,1024);
   }
 
 

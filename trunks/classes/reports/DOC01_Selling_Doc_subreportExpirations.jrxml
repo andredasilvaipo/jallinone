@@ -24,7 +24,7 @@
 	<import value="net.sf.jasperreports.engine.data.*" />
 
 	<parameter name="DECIMALS_REG03" isForPrompting="false" class="java.math.BigDecimal">
-		<defaultValueExpression ><![CDATA[new java.math.BigDecimal(2)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new java.math.BigDecimal("2")]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_CODE" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["COMP"]]></defaultValueExpression>
@@ -41,27 +41,29 @@
 	<parameter name="DATE_FORMAT" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT * FROM doc19_expirations where 
+	<queryString><![CDATA[SELECT * FROM DOC19_EXPIRATIONS where 
 COMPANY_CODE_SYS01=$P{COMPANY_CODE} and
 DOC_TYPE=$P{DOC_TYPE} and
 DOC_YEAR=$P{DOC_YEAR} and
 DOC_NUMBER=$P{DOC_NUMBER}
-order by expiration_date]]></queryString>
+order by EXPIRATION_DATE]]></queryString>
 
 	<field name="COMPANY_CODE_SYS01" class="java.lang.String"/>
+	<field name="PROGRESSIVE" class="java.math.BigDecimal"/>
 	<field name="DOC_TYPE" class="java.lang.String"/>
 	<field name="DOC_YEAR" class="java.math.BigDecimal"/>
 	<field name="DOC_NUMBER" class="java.math.BigDecimal"/>
 	<field name="DOC_SEQUENCE" class="java.math.BigDecimal"/>
-	<field name="PROGRESSIVE" class="java.math.BigDecimal"/>
-	<field name="EXPIRATION_DATE" class="java.util.Date"/>
-	<field name="DOC_DATE" class="java.util.Date"/>
+	<field name="EXPIRATION_DATE" class="java.sql.Timestamp"/>
+	<field name="DOC_DATE" class="java.sql.Timestamp"/>
 	<field name="NAME_1" class="java.lang.String"/>
 	<field name="NAME_2" class="java.lang.String"/>
 	<field name="VALUE" class="java.math.BigDecimal"/>
 	<field name="PAYED" class="java.lang.String"/>
 	<field name="DESCRIPTION" class="java.lang.String"/>
 	<field name="CURRENCY_CODE_REG03" class="java.lang.String"/>
+	<field name="PROGRESSIVE_REG04" class="java.math.BigDecimal"/>
+	<field name="CUSTOMER_SUPPLIER_CODE" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >

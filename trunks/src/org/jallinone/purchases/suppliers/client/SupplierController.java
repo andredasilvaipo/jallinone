@@ -276,26 +276,31 @@ public class SupplierController extends CompanyFormController implements TreeCon
    * @param node selected node
    */
   public void leftClick(DefaultMutableTreeNode node) {
-    HierarchyLevelVO vo = (HierarchyLevelVO)node.getUserObject();
-    HierarchyLevelVO root = (HierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
-    detailFrame.getItemsGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02HIE01());
-    detailFrame.getItemsGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE01,vo.getProgressiveHIE01());
-    detailFrame.getItemsGrid().getOtherGridParams().put(ApplicationConsts.ROOT_PROGRESSIVE_HIE01,root.getProgressiveHIE01());
-    detailFrame.getItemsGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_REG04,pk.getProgressiveREG04());
-    detailFrame.getItemsGrid().getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,pk.getCompanyCodeSys01REG04());
+    try {
+      HierarchyLevelVO vo = (HierarchyLevelVO)node.getUserObject();
+      HierarchyLevelVO root = (HierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
+      detailFrame.getItemsGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02HIE01());
+      detailFrame.getItemsGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE01,vo.getProgressiveHIE01());
+      detailFrame.getItemsGrid().getOtherGridParams().put(ApplicationConsts.ROOT_PROGRESSIVE_HIE01,root.getProgressiveHIE01());
+      detailFrame.getItemsGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_REG04,pk.getProgressiveREG04());
+      detailFrame.getItemsGrid().getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,pk.getCompanyCodeSys01REG04());
 
 
-    detailFrame.getItemDataLocator().getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,pk.getCompanyCodeSys01REG04());
-    detailFrame.getItemDataLocator().getLookupValidationParameters().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02HIE01());
-    detailFrame.getItemDataLocator().getLookupValidationParameters().put(ApplicationConsts.PROGRESSIVE_HIE01,vo.getProgressiveHIE01());
-    detailFrame.getItemDataLocator().getLookupValidationParameters().put(ApplicationConsts.ROOT_PROGRESSIVE_HIE01,root.getProgressiveHIE01());
-    detailFrame.getItemDataLocator().getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,pk.getCompanyCodeSys01REG04());
-    detailFrame.getItemDataLocator().getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02HIE01());
-    detailFrame.getItemDataLocator().getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_HIE01,vo.getProgressiveHIE01());
-    detailFrame.getItemDataLocator().getLookupFrameParams().put(ApplicationConsts.ROOT_PROGRESSIVE_HIE01,root.getProgressiveHIE01());
+      detailFrame.getItemDataLocator().getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,pk.getCompanyCodeSys01REG04());
+      detailFrame.getItemDataLocator().getLookupValidationParameters().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02HIE01());
+      detailFrame.getItemDataLocator().getLookupValidationParameters().put(ApplicationConsts.PROGRESSIVE_HIE01,vo.getProgressiveHIE01());
+      detailFrame.getItemDataLocator().getLookupValidationParameters().put(ApplicationConsts.ROOT_PROGRESSIVE_HIE01,root.getProgressiveHIE01());
+      detailFrame.getItemDataLocator().getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,pk.getCompanyCodeSys01REG04());
+      detailFrame.getItemDataLocator().getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02HIE01());
+      detailFrame.getItemDataLocator().getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_HIE01,vo.getProgressiveHIE01());
+      detailFrame.getItemDataLocator().getLookupFrameParams().put(ApplicationConsts.ROOT_PROGRESSIVE_HIE01,root.getProgressiveHIE01());
 
 
-    detailFrame.getItemsGrid().reloadData();
+      detailFrame.getItemsGrid().reloadData();
+    }
+    catch (Exception ex) {
+    }
+
   }
 
 

@@ -83,7 +83,7 @@ public class DeleteScheduledItemsAction implements Action {
         "delete from SCH15_SCHEDULED_ITEMS where COMPANY_CODE_SYS01=? and PROGRESSIVE_SCH06=? and ITEM_CODE_ITM01=?"
       );
 
-      ArrayList list =  (ArrayList)inputPar;
+      java.util.List list =  (ArrayList)inputPar;
       ScheduledItemVO vo = null;
       for(int i=0;i<list.size();i++) {
         // phisically delete the record in SCH15...

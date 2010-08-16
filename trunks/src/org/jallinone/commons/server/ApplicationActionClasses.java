@@ -61,6 +61,20 @@ import org.jallinone.production.billsofmaterial.server.*;
 import org.jallinone.production.manufactures.server.*;
 import org.jallinone.production.orders.server.*;
 import org.jallinone.sqltool.server.*;
+import org.jallinone.variants.server.*;
+import org.jallinone.warehouse.movements.server.InsertManualMovementsAction;
+import org.openswing.swing.server.UserSessionParameters;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.ServletContext;
+import org.openswing.swing.message.receive.java.Response;
+import org.openswing.swing.message.receive.java.VOResponse;
+import java.sql.ResultSet;
+import org.openswing.swing.message.receive.java.ErrorResponse;
+import org.openswing.swing.server.ConnectionManager;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 
 /**
@@ -94,6 +108,7 @@ import org.jallinone.sqltool.server.*;
 public class ApplicationActionClasses extends ActionsCollection {
 
   public ApplicationActionClasses() {
+
     Action a = null;
     a = new UserAuthorizationsAction(); put(a.getRequestName(),a);
     a = new UserLoginAction(); put(a.getRequestName(),a);
@@ -688,6 +703,78 @@ public class ApplicationActionClasses extends ActionsCollection {
     a = new UpdateCustomFunctionAction(); put(a.getRequestName(),a);
     a = new ExecuteValidateQueryAction(); put(a.getRequestName(),a);
 
+    a = new LoadVariantsNamesAction(); put(a.getRequestName(),a);
+    a = new LoadItemVariantsAction(); put(a.getRequestName(),a);
+    a = new UpdateItemVariantsAction(); put(a.getRequestName(),a);
+
+    a = new LoadVariantTypesAction(); put(a.getRequestName(),a);
+    a = new InsertVariantTypesAction(); put(a.getRequestName(),a);
+    a = new UpdateVariantTypesAction(); put(a.getRequestName(),a);
+    a = new DeleteVariantTypesAction(); put(a.getRequestName(),a);
+
+    a = new LoadVariantsAction(); put(a.getRequestName(),a);
+    a = new InsertVariantsAction(); put(a.getRequestName(),a);
+    a = new UpdateVariantsAction(); put(a.getRequestName(),a);
+    a = new DeleteVariantsAction(); put(a.getRequestName(),a);
+
+    a = new LoadProductVariantsMatrixAction(); put(a.getRequestName(),a);
+    a = new InsertPurchaseDocRowsAction(); put(a.getRequestName(),a);
+    a = new InsertSaleDocRowsAction(); put(a.getRequestName(),a);
+
+    a = new InsertManualMovementsAction(); put(a.getRequestName(),a);
+
+    a = new LoadStoredSerialNumbersAction(); put(a.getRequestName(),a);
+    a = new ValidateStoredSerialNumberAction(); put(a.getRequestName(),a);
+    a = new LoadVariantBarcodesAction(); put(a.getRequestName(),a);
+    a = new UpdateVariantBarcodesAction(); put(a.getRequestName(),a);
+    a = new ValidateVariantBarcodeAction(); put(a.getRequestName(),a);
+    a = new LoadItemsSoldToOtherCustomersAction(); put(a.getRequestName(),a);
+
+
+    put("changeLanguage",new Action() {
+
+      public String getRequestName() {
+        return "changeLanguage";
+      }
+
+      public Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
+        PreparedStatement pstmt = null;
+        Connection conn = null;
+        try {
+
+          conn = ConnectionManager.getConnection(context);
+          pstmt = conn.prepareStatement(
+              "select LANGUAGE_CODE from SYS09_LANGUAGES where "+
+              "CLIENT_LANGUAGE_CODE=? "
+          );
+          pstmt.setString(1,inputPar.toString());
+          ResultSet rset = pstmt.executeQuery();
+          if (rset.next()) {
+            ((JAIOUserSessionParameters)userSessionPars).setServerLanguageId(rset.getString(1));
+          }
+          rset.close();
+
+          userSessionPars.setLanguageId(inputPar.toString());
+          return new VOResponse(Boolean.TRUE);
+
+        } catch (Exception ex1) {
+          ex1.printStackTrace();
+          return new ErrorResponse(ex1.getMessage());
+        } finally {
+          try {
+            pstmt.close();
+          }
+          catch (Exception ex) {
+          }
+          try {
+            ConnectionManager.releaseConnection(conn,context);
+          }
+          catch (Exception ex2) {
+          }
+        }
+      }
+
+    });
 
   }
 

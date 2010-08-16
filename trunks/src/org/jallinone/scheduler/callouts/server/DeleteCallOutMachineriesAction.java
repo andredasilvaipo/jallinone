@@ -83,7 +83,7 @@ public class DeleteCallOutMachineriesAction implements Action {
         "delete from SCH13_CALL_OUT_MACHINERIES where COMPANY_CODE_SYS01=? and CALL_OUT_CODE_SCH10=? and MACHINERY_CODE_PRO03=?"
       );
 
-      ArrayList list =  (ArrayList)inputPar;
+      java.util.List list =  (ArrayList)inputPar;
       CallOutMachineryVO vo = null;
       for(int i=0;i<list.size();i++) {
         // phisically delete the record in SCH13...

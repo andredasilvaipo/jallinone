@@ -316,4 +316,12 @@ public class ApplicationConsts {
   public static final String TYPE_PROG = "P";
   public static final String TYPE_WHERE = "W";
 
+  public static final String JOLLY = "*";
+  public static final String TABLE_NAME = "TABLE_NAME";
+  public static final String VARIANT_TYPE = "VARIANT_TYPE";
+  public static final String VARIANTS_MATRIX_VO = "VARIANTS_MATRIX_VO";
+  public static final String SHOW_ITEMS_WITHOUT_VARIANTS = "SHOW_ITEMS_WITHOUT_VARIANTS";
+
+  public static final String VALIDATE_BARCODE = "VALIDATE_BARCODE";
+
 }

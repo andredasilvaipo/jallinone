@@ -143,7 +143,7 @@ public class SaleInvoiceDocController extends CompanyFormController {
    */
   public void afterInsertData() {
     if (parentFrame!=null) {
-      parentFrame.getGrid().reloadData();
+      parentFrame.getGrid().reloadCurrentBlockOfData();
     }
 
     DetailSaleDocVO vo = (DetailSaleDocVO)frame.getHeaderFormPanel().getVOModel().getValueObject();
@@ -177,7 +177,7 @@ public class SaleInvoiceDocController extends CompanyFormController {
     Response res = ClientUtils.getData("updateSaleDoc",new ValueObject[]{oldPersistentObject,persistentObject});
     if (!res.isError()) {
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
       }
     }
     return res;

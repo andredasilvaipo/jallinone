@@ -112,7 +112,7 @@ public class LoadCustomerDiscountsAction implements Action {
           CustomerDiscountVO.class
       );
       if (!res.isError()) {
-        ArrayList rows = ((VOListResponse)res).getRows();
+        java.util.List rows = ((VOListResponse)res).getRows();
         for(int i=0;i<rows.size();i++) {
           ((CustomerDiscountVO)rows.get(i)).setProgressiveReg04SAL08(pk.getProgressiveReg04SAL07());
         }

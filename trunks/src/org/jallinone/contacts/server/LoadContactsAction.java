@@ -157,7 +157,7 @@ public class LoadContactsAction implements Action {
       if (res.isError())
         return res;
 
-      ArrayList rows = ((VOListResponse)res).getRows();
+      java.util.List rows = ((VOListResponse)res).getRows();
       GridContactVO vo = null;
       Response contactRes = null;
       SubjectVO subVO = null;

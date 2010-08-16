@@ -84,7 +84,7 @@ public class LoadReportFileNamesAction implements Action {
         null
       ));
 
-      String path = this.getClass().getResource("/").getPath()+"reports/";
+      String path = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"reports/";
       File[] files = new File(path).listFiles(new FileFilter() {
         public boolean accept(File pathname) {
           return pathname.getName().endsWith(".jasper");

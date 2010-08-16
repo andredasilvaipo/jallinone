@@ -18,6 +18,7 @@ import org.openswing.swing.message.receive.java.VOResponse;
 import java.beans.Beans;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.openswing.swing.tree.java.OpenSwingTreeNode;
+import java.util.ArrayList;
 
 
 /**
@@ -53,8 +54,23 @@ public class HierarTreePanel extends TreePanel implements TreeController {
   /** hierarchy identifier */
   private BigDecimal progressiveHIE02 = null;
 
+  /** list of HierarTreeListener objects */
+  private ArrayList hierarTreeListeners = new ArrayList();
+
+
   /** tree data locator */
-  private TreeServerDataLocator treeDataLocator = new TreeServerDataLocator();
+  private TreeServerDataLocator treeDataLocator = new TreeServerDataLocator() {
+
+    /**
+     * Callback method invoked when the data loading is completed.
+     * @param error <code>true</code> if data loading has terminated with errors, <code>false</code> otherwise
+     */
+    public void loadDataCompleted(boolean error) {
+      for(int i=0;i<hierarTreeListeners.size();i++)
+        ((HierarTreeListener)hierarTreeListeners.get(i)).loadDataCompleted(error);
+    }
+
+  };
 
   /** flag use din addNotify method */
   private boolean firstTime = true;
@@ -317,5 +333,12 @@ public class HierarTreePanel extends TreePanel implements TreeController {
     this.companyCode = companyCode;
   }
 
+
+  /**
+   * Add a HierarTreeListener object.
+   */
+  public final void addHierarTreeListener(HierarTreeListener listener) {
+    hierarTreeListeners.add(listener);
+  }
 
 }

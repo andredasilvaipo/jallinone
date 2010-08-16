@@ -220,6 +220,10 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel {
       // item code lookup...
       itemDataLocator.setGridMethodName("loadItems");
       itemDataLocator.setValidationMethodName("validateItemCode");
+
+      itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.SHOW_ITEMS_WITHOUT_VARIANTS,Boolean.TRUE);
+      itemDataLocator.getLookupFrameParams().put(ApplicationConsts.SHOW_ITEMS_WITHOUT_VARIANTS,Boolean.TRUE);
+
       colItemCodeLookup.setLookupController(itemController);
       colItemCodeLookup.setControllerMethodName("getItemsList");
       itemController.setLookupDataLocator(itemDataLocator);
@@ -441,7 +445,7 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel {
     final Domain d = new Domain("ITEM_TYPES");
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (ItemTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());

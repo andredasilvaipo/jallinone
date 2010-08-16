@@ -85,7 +85,7 @@ public class InsertCallOutTasksAction implements Action {
       ));
       CallOutTaskVO vo = null;
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("callOutCodeSch10SCH12","CALL_OUT_CODE_SCH10");

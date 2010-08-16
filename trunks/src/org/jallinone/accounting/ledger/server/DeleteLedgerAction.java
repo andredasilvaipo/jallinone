@@ -98,7 +98,7 @@ public class DeleteLedgerAction implements EventAction {
 
       stmt = conn.createStatement();
 
-      ArrayList list =  (ArrayList)inputPar;
+      java.util.List list =  (ArrayList)inputPar;
       LedgerVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in ACC01...

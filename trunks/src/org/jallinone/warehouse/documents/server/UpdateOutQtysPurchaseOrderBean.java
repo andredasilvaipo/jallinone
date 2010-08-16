@@ -103,10 +103,22 @@ public class UpdateOutQtysPurchaseOrderBean {
       ArrayList values = new ArrayList();
       String sql1 =
           "select QTY,OUT_QTY from DOC02_SELLING_ITEMS where "+
-          "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=?";
+          "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and "+
+          "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+          "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+          "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+          "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+          "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? ";
+
       String sql2 =
           "update DOC02_SELLING_ITEMS set OUT_QTY=? where "+
-          "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and OUT_QTY=?";
+          "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and OUT_QTY=? and "+
+          "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+          "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+          "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+          "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+          "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? ";
+
       pstmt1 = conn.prepareStatement(sql1);
       pstmt2 = conn.prepareStatement(sql2);
 
@@ -124,6 +136,18 @@ public class UpdateOutQtysPurchaseOrderBean {
         pstmt1.setBigDecimal(3,vo.getDocYearDoc01DOC10());
         pstmt1.setBigDecimal(4,vo.getDocNumberDoc01DOC10());
         pstmt1.setString(5,vo.getItemCodeItm01DOC10());
+
+        pstmt1.setString(6,vo.getVariantTypeItm06DOC10());
+        pstmt1.setString(7,vo.getVariantCodeItm11DOC10());
+        pstmt1.setString(8,vo.getVariantTypeItm07DOC10());
+        pstmt1.setString(9,vo.getVariantCodeItm12DOC10());
+        pstmt1.setString(10,vo.getVariantTypeItm08DOC10());
+        pstmt1.setString(11,vo.getVariantCodeItm13DOC10());
+        pstmt1.setString(12,vo.getVariantTypeItm09DOC10());
+        pstmt1.setString(13,vo.getVariantCodeItm14DOC10());
+        pstmt1.setString(14,vo.getVariantTypeItm10DOC10());
+        pstmt1.setString(15,vo.getVariantCodeItm15DOC10());
+
         rset1 = pstmt1.executeQuery();
         if(rset1.next()) {
           qtyDOC02 = rset1.getBigDecimal(1);
@@ -161,7 +185,18 @@ public class UpdateOutQtysPurchaseOrderBean {
             ApplicationConsts.ITEM_GOOD,
             resources.getResource("unload items from sale document")+" "+vo.getDocNumberDoc01DOC10()+"/"+vo.getDocYearDoc01DOC10(),
             vo.getSerialNumbers(),
-            vo.getBarCodes()
+
+            vo.getVariantCodeItm11DOC10(),
+            vo.getVariantCodeItm12DOC10(),
+            vo.getVariantCodeItm13DOC10(),
+            vo.getVariantCodeItm14DOC10(),
+            vo.getVariantCodeItm15DOC10(),
+            vo.getVariantTypeItm06DOC10(),
+            vo.getVariantTypeItm07DOC10(),
+            vo.getVariantTypeItm08DOC10(),
+            vo.getVariantTypeItm09DOC10(),
+            vo.getVariantTypeItm10DOC10()
+
         );
         innerResponse = movBean.addWarehouseMovement(conn,movVO,userSessionPars,request,response,userSession,context);
 

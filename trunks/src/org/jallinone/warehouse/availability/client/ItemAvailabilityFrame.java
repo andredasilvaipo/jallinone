@@ -36,6 +36,7 @@ import org.openswing.swing.mdi.client.InternalFrame;
 import org.jallinone.hierarchies.client.HierarTreePanel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.client.HierarTreeListener;
 
 
 /**
@@ -93,6 +94,7 @@ public class ItemAvailabilityFrame extends InternalFrame {
       if (hierarTreePanel.getSelectedNode()!=null) {
         HierarchyLevelVO levelVO = (HierarchyLevelVO)hierarTreePanel.getSelectedNode().getUserObject();
         availPanel.getGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE01,levelVO.getProgressiveHIE01());
+        availPanel.getGrid().reloadData();
       }
     }
 
@@ -102,6 +104,18 @@ public class ItemAvailabilityFrame extends InternalFrame {
   public ItemAvailabilityFrame() {
     try {
       jbInit();
+
+
+      hierarTreePanel.addHierarTreeListener(new HierarTreeListener(){
+
+        public void loadDataCompleted(boolean error) {
+          if (hierarTreePanel.getTree().getRowCount()>0)
+            hierarTreePanel.getTree().setSelectionRow(0);
+          if (hierarTreePanel.getTree().getSelectionPath()!=null)
+            hierarTreePanel.leftClick((DefaultMutableTreeNode)hierarTreePanel.getTree().getSelectionPath().getLastPathComponent());
+        }
+
+      });
 
 
       // warehouse code lookup...
@@ -165,7 +179,7 @@ public class ItemAvailabilityFrame extends InternalFrame {
       });
 
 
-      setSize(750,500);
+      setSize(800,500);
       MDIFrame.getInstance().add(this);
     }
     catch(Exception e) {

@@ -87,7 +87,7 @@ public class DeleteDocumentsAction implements Action {
       ));
 
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       DocumentPK pk = null;
 
       stmt = conn.createStatement();
@@ -102,7 +102,7 @@ public class DeleteDocumentsAction implements Action {
         res = loadVers.getDocumentVersions(conn,pk,new GridParams(),userSessionPars,request,response,userSession,context);
         if (res.isError())
           return res;
-        versions = ((VOListResponse)res).getRows();
+        versions = new ArrayList(((VOListResponse)res).getRows());
 
         // for each document version: delete record in DOC15 and delete file from file system...
         res = delVers.deleteDocumentVersions(conn,versions,userSessionPars,request,response,userSession,context);

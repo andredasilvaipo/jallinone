@@ -86,7 +86,7 @@ public class DeleteProdOrdersAction implements Action {
       ));
 
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       ProdOrderPK pk = null;
 
       pstmt = conn.prepareStatement(

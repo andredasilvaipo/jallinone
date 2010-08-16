@@ -135,7 +135,7 @@ public class LoadItemImplosionAction implements Action {
 
       // read from ITM03 table...
       Response res = null;
-      ArrayList rows = null;
+      java.util.List rows = null;
       DefaultMutableTreeNode auxnode,auxnode2;
       MaterialVO auxVO = null;
       Hashtable nodes = new Hashtable(); // collections of <item component code,related node>

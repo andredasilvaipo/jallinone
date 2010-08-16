@@ -38,13 +38,40 @@ public class PurchaseDocRowPK implements Serializable {
   private java.math.BigDecimal docNumberDOC07;
   private String itemCodeItm01DOC07;
 
+  private String variantTypeItm06DOC07;
+  private String variantCodeItm11DOC07;
+  private String variantTypeItm07DOC07;
+  private String variantCodeItm12DOC07;
+  private String variantTypeItm08DOC07;
+  private String variantCodeItm13DOC07;
+  private String variantTypeItm09DOC07;
+  private String variantCodeItm14DOC07;
+  private String variantTypeItm10DOC07;
+  private String variantCodeItm15DOC07;
 
-  public PurchaseDocRowPK(String companyCodeSys01DOC07,String docTypeDOC07,java.math.BigDecimal docYearDOC07,java.math.BigDecimal docNumberDOC07,String itemCodeItm01DOC07) {
+
+  public PurchaseDocRowPK(String companyCodeSys01DOC07,String docTypeDOC07,java.math.BigDecimal docYearDOC07,java.math.BigDecimal docNumberDOC07,String itemCodeItm01DOC07,
+                          String variantTypeItm06DOC07,String variantCodeItm11DOC07,
+                          String variantTypeItm07DOC07,String variantCodeItm12DOC07,
+                          String variantTypeItm08DOC07,String variantCodeItm13DOC07,
+                          String variantTypeItm09DOC07,String variantCodeItm14DOC07,
+                          String variantTypeItm10DOC07,String variantCodeItm15DOC07) {
     this.companyCodeSys01DOC07 = companyCodeSys01DOC07;
     this.docTypeDOC07 = docTypeDOC07;
     this.docYearDOC07 = docYearDOC07;
     this.docNumberDOC07 = docNumberDOC07;
     this.itemCodeItm01DOC07 = itemCodeItm01DOC07;
+
+    this.variantTypeItm10DOC07 = variantTypeItm10DOC07;
+    this.variantTypeItm09DOC07 = variantTypeItm09DOC07;
+    this.variantTypeItm08DOC07 = variantTypeItm08DOC07;
+    this.variantTypeItm07DOC07 = variantTypeItm07DOC07;
+    this.variantTypeItm06DOC07 = variantTypeItm06DOC07;
+    this.variantCodeItm15DOC07 = variantCodeItm15DOC07;
+    this.variantCodeItm14DOC07 = variantCodeItm14DOC07;
+    this.variantCodeItm13DOC07 = variantCodeItm13DOC07;
+    this.variantCodeItm12DOC07 = variantCodeItm12DOC07;
+    this.variantCodeItm11DOC07 = variantCodeItm11DOC07;
   }
 
 
@@ -63,6 +90,37 @@ public class PurchaseDocRowPK implements Serializable {
   public String getItemCodeItm01DOC07() {
     return itemCodeItm01DOC07;
   }
+  public String getVariantCodeItm11DOC07() {
+    return variantCodeItm11DOC07;
+  }
+  public String getVariantCodeItm12DOC07() {
+    return variantCodeItm12DOC07;
+  }
+  public String getVariantCodeItm13DOC07() {
+    return variantCodeItm13DOC07;
+  }
+  public String getVariantCodeItm14DOC07() {
+    return variantCodeItm14DOC07;
+  }
+  public String getVariantCodeItm15DOC07() {
+    return variantCodeItm15DOC07;
+  }
+  public String getVariantTypeItm06DOC07() {
+    return variantTypeItm06DOC07;
+  }
+  public String getVariantTypeItm07DOC07() {
+    return variantTypeItm07DOC07;
+  }
+  public String getVariantTypeItm08DOC07() {
+    return variantTypeItm08DOC07;
+  }
+  public String getVariantTypeItm09DOC07() {
+    return variantTypeItm09DOC07;
+  }
+  public String getVariantTypeItm10DOC07() {
+    return variantTypeItm10DOC07;
+  }
+
 
 
 }

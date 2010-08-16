@@ -20,7 +20,9 @@ import org.jallinone.commons.client.ClientApplet;
 import org.jallinone.commons.client.ApplicationClientFacade;
 import org.jallinone.system.java.ButtonCompanyAuthorizations;
 import java.util.HashMap;
-
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
+import org.openswing.swing.lookup.client.*;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -79,6 +81,52 @@ public class SaleDeskDocController extends CompanyFormController {
     }
     else {
       frame.getHeaderFormPanel().insert();
+
+      frame.getSaleCustomerHeadPanel1().getControlCompaniesCombo().addItemListener(new ItemListener() {
+
+        public void itemStateChanged(ItemEvent e) {
+          if (e.getStateChange()==e.SELECTED &&
+              frame.getHeaderFormPanel().getMode()==Consts.INSERT) {
+            Object companyCodeSys01 = frame.getSaleCustomerHeadPanel1().getControlCompaniesCombo().getValue();
+            DetailSaleDocVO vo = (DetailSaleDocVO)frame.getHeaderFormPanel().getVOModel().getValueObject();
+
+            // retrieve default customer code...
+            HashMap map = new HashMap();
+            map.put(ApplicationConsts.COMPANY_CODE_SYS01,companyCodeSys01);
+            map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.CUSTOMER_CODE);
+            Response res = ClientUtils.getData("loadUserParam",map);
+            if (!res.isError()) {
+              String customerCode = (String)((VOResponse)res).getVo();
+              if (customerCode!=null) {
+                vo.setCustomerCodeSAL07(customerCode);
+                vo.setCompanyCodeSys01DOC01(companyCodeSys01.toString());
+                try {
+                  frame.getSaleCustomerHeadPanel1().getControlCustomerCode().validateCode(customerCode);
+                }
+                catch (Exception ex) {
+                }
+              }
+            }
+            // retrieve default warehouse...
+            map.put(ApplicationConsts.COMPANY_CODE_SYS01,companyCodeSys01);
+            map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.WAREHOUSE_CODE);
+            res = ClientUtils.getData("loadUserParam",map);
+            if (!res.isError()) {
+              String warCode = (String)((VOResponse)res).getVo();
+              if (warCode!=null) {
+                vo.setWarehouseCodeWar01DOC01(warCode);
+                try {
+                  frame.getControlWarehouseCode().validateCode(warCode);
+                }
+                catch (Exception ex1) {
+                }
+              }
+            }
+          }
+        }
+
+      });
+
     }
   }
 
@@ -206,6 +254,35 @@ public class SaleDeskDocController extends CompanyFormController {
     vo.setDocTypeDOC01(ApplicationConsts.SALE_DESK_DOC_TYPE);
     vo.setDocStateDOC01(ApplicationConsts.OPENED);
 
+    Object companyCodeSys01 = frame.getSaleCustomerHeadPanel1().getControlCompaniesCombo().getValue();
+
+    // pre-set customer and warehouse codes if previously defined (stored in SYS19 table...)
+    if (companyCodeSys01!=null) {
+      // retrieve default customer code...
+      HashMap map = new HashMap();
+      map.put(ApplicationConsts.COMPANY_CODE_SYS01,companyCodeSys01);
+      map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.CUSTOMER_CODE);
+      Response res = ClientUtils.getData("loadUserParam",map);
+      if (!res.isError()) {
+        String customerCode = (String)((VOResponse)res).getVo();
+        if (customerCode!=null) {
+          vo.setCustomerCodeSAL07(customerCode);
+          vo.setCompanyCodeSys01DOC01(companyCodeSys01.toString());
+        }
+      }
+      // retrieve default warehouse...
+      map.put(ApplicationConsts.COMPANY_CODE_SYS01,companyCodeSys01);
+      map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.WAREHOUSE_CODE);
+      res = ClientUtils.getData("loadUserParam",map);
+      if (!res.isError()) {
+        String warCode = (String)((VOResponse)res).getVo();
+        if (warCode!=null) {
+          vo.setWarehouseCodeWar01DOC01(warCode);
+        }
+      }
+    }
+
+/*
     // pre-set customer and warehouse codes if previously defined (stored in SYS19 table...)
     ClientApplet applet = ( (ApplicationClientFacade) MDIFrame.getInstance().getClientFacade()).getMainClass();
     ButtonCompanyAuthorizations bca = applet.getAuthorizations().getCompanyBa();
@@ -234,6 +311,7 @@ public class SaleDeskDocController extends CompanyFormController {
         }
       }
     }
+*/
   }
 
 

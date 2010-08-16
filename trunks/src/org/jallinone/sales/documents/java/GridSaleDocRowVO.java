@@ -1,6 +1,8 @@
 package org.jallinone.sales.documents.java;
 
 import org.openswing.swing.message.receive.java.*;
+import org.jallinone.commons.java.*;
+
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -48,6 +50,17 @@ public class GridSaleDocRowVO extends ValueObjectImpl {
   private java.math.BigDecimal outQtyDOC02;
   private java.math.BigDecimal totalDiscountDOC02;
   private java.math.BigDecimal invoiceQtyDOC02;
+
+  private String variantTypeItm06DOC02;
+  private String variantCodeItm11DOC02;
+  private String variantTypeItm07DOC02;
+  private String variantCodeItm12DOC02;
+  private String variantTypeItm08DOC02;
+  private String variantCodeItm13DOC02;
+  private String variantTypeItm09DOC02;
+  private String variantCodeItm14DOC02;
+  private String variantTypeItm10DOC02;
+  private String variantCodeItm15DOC02;
 
 
   public GridSaleDocRowVO() {
@@ -110,7 +123,35 @@ public class GridSaleDocRowVO extends ValueObjectImpl {
     this.qtyDOC02 = qtyDOC02;
   }
   public String getDescriptionSYS10() {
-    return descriptionSYS10;
+    String aux = descriptionSYS10;
+    if (aux==null)
+      return null;
+
+    if (variantTypeItm06DOC02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm06DOC02))
+      aux += " "+variantTypeItm06DOC02;
+    if (variantCodeItm11DOC02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm11DOC02))
+      aux += " "+variantCodeItm11DOC02;
+
+    if (variantTypeItm07DOC02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm07DOC02))
+      aux += " "+variantTypeItm07DOC02;
+    if (variantCodeItm12DOC02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm12DOC02))
+      aux += " "+variantCodeItm12DOC02;
+
+    if (variantTypeItm08DOC02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm08DOC02))
+      aux += " "+variantTypeItm08DOC02;
+    if (variantCodeItm13DOC02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm13DOC02))
+      aux += " "+variantCodeItm13DOC02;
+
+    if (variantTypeItm09DOC02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm09DOC02))
+      aux += " "+variantTypeItm09DOC02;
+    if (variantCodeItm14DOC02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm14DOC02))
+      aux += " "+variantCodeItm14DOC02;
+
+    if (variantTypeItm10DOC02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm10DOC02))
+      aux += " "+variantTypeItm10DOC02;
+    if (variantCodeItm15DOC02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm15DOC02))
+      aux += " "+variantCodeItm15DOC02;
+    return aux;
   }
   public void setDescriptionSYS10(String descriptionSYS10) {
     this.descriptionSYS10 = descriptionSYS10;
@@ -144,6 +185,66 @@ public class GridSaleDocRowVO extends ValueObjectImpl {
   }
   public void setInvoiceQtyDOC02(java.math.BigDecimal invoiceQtyDOC02) {
     this.invoiceQtyDOC02 = invoiceQtyDOC02;
+  }
+  public String getVariantCodeItm11DOC02() {
+    return variantCodeItm11DOC02;
+  }
+  public String getVariantCodeItm12DOC02() {
+    return variantCodeItm12DOC02;
+  }
+  public String getVariantCodeItm13DOC02() {
+    return variantCodeItm13DOC02;
+  }
+  public String getVariantCodeItm14DOC02() {
+    return variantCodeItm14DOC02;
+  }
+  public String getVariantCodeItm15DOC02() {
+    return variantCodeItm15DOC02;
+  }
+  public String getVariantTypeItm06DOC02() {
+    return variantTypeItm06DOC02;
+  }
+  public String getVariantTypeItm07DOC02() {
+    return variantTypeItm07DOC02;
+  }
+  public String getVariantTypeItm08DOC02() {
+    return variantTypeItm08DOC02;
+  }
+  public String getVariantTypeItm09DOC02() {
+    return variantTypeItm09DOC02;
+  }
+  public String getVariantTypeItm10DOC02() {
+    return variantTypeItm10DOC02;
+  }
+  public void setVariantTypeItm10DOC02(String variantTypeItm10DOC02) {
+    this.variantTypeItm10DOC02 = variantTypeItm10DOC02;
+  }
+  public void setVariantTypeItm09DOC02(String variantTypeItm09DOC02) {
+    this.variantTypeItm09DOC02 = variantTypeItm09DOC02;
+  }
+  public void setVariantTypeItm08DOC02(String variantTypeItm08DOC02) {
+    this.variantTypeItm08DOC02 = variantTypeItm08DOC02;
+  }
+  public void setVariantTypeItm07DOC02(String variantTypeItm07DOC02) {
+    this.variantTypeItm07DOC02 = variantTypeItm07DOC02;
+  }
+  public void setVariantTypeItm06DOC02(String variantTypeItm06DOC02) {
+    this.variantTypeItm06DOC02 = variantTypeItm06DOC02;
+  }
+  public void setVariantCodeItm15DOC02(String variantCodeItm15DOC02) {
+    this.variantCodeItm15DOC02 = variantCodeItm15DOC02;
+  }
+  public void setVariantCodeItm14DOC02(String variantCodeItm14DOC02) {
+    this.variantCodeItm14DOC02 = variantCodeItm14DOC02;
+  }
+  public void setVariantCodeItm13DOC02(String variantCodeItm13DOC02) {
+    this.variantCodeItm13DOC02 = variantCodeItm13DOC02;
+  }
+  public void setVariantCodeItm12DOC02(String variantCodeItm12DOC02) {
+    this.variantCodeItm12DOC02 = variantCodeItm12DOC02;
+  }
+  public void setVariantCodeItm11DOC02(String variantCodeItm11DOC02) {
+    this.variantCodeItm11DOC02 = variantCodeItm11DOC02;
   }
 
 

@@ -1,6 +1,7 @@
 package org.jallinone.items.java;
 
 import org.openswing.swing.message.receive.java.*;
+import org.jallinone.variants.java.VariantsItemDescriptor;
 
 
 /**
@@ -31,7 +32,7 @@ import org.openswing.swing.message.receive.java.*;
  * @author Mauro Carniel
  * @version 1.0
  */
-public class GridItemVO extends ValueObjectImpl {
+public class GridItemVO extends ValueObjectImpl implements VariantsItemDescriptor {
 
   private String companyCodeSys01ITM01;
   private String itemCodeITM01;
@@ -41,6 +42,13 @@ public class GridItemVO extends ValueObjectImpl {
   private String minSellingQtyUmCodeReg02ITM01;
   private Boolean serialNumberRequiredITM01;
   private java.math.BigDecimal decimalsREG02;
+
+  private Boolean useVariant1ITM01;
+  private Boolean useVariant2ITM01;
+  private Boolean useVariant3ITM01;
+  private Boolean useVariant4ITM01;
+  private Boolean useVariant5ITM01;
+
 
   public GridItemVO() {
   }
@@ -94,5 +102,44 @@ public class GridItemVO extends ValueObjectImpl {
   public void setDecimalsREG02(java.math.BigDecimal decimalsREG02) {
     this.decimalsREG02 = decimalsREG02;
   }
+  public Boolean getUseVariant1ITM01() {
+    return useVariant1ITM01;
+  }
+  public Boolean getUseVariant2ITM01() {
+    return useVariant2ITM01;
+  }
+  public Boolean getUseVariant3ITM01() {
+    return useVariant3ITM01;
+  }
+  public Boolean getUseVariant4ITM01() {
+    return useVariant4ITM01;
+  }
+  public Boolean getUseVariant5ITM01() {
+    return useVariant5ITM01;
+  }
+  public void setUseVariant5ITM01(Boolean useVariant5ITM01) {
+    this.useVariant5ITM01 = useVariant5ITM01;
+  }
+  public void setUseVariant4ITM01(Boolean useVariant4ITM01) {
+    this.useVariant4ITM01 = useVariant4ITM01;
+  }
+  public void setUseVariant3ITM01(Boolean useVariant3ITM01) {
+    this.useVariant3ITM01 = useVariant3ITM01;
+  }
+  public void setUseVariant2ITM01(Boolean useVariant2ITM01) {
+    this.useVariant2ITM01 = useVariant2ITM01;
+  }
+  public void setUseVariant1ITM01(Boolean useVariant1ITM01) {
+    this.useVariant1ITM01 = useVariant1ITM01;
+  }
+
+  public String getCompanyCodeSys01() {
+    return companyCodeSys01ITM01;
+  }
+
+  public String getItemCodeItm01() {
+    return itemCodeITM01;
+  }
+
 
 }

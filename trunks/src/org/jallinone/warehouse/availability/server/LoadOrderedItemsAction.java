@@ -93,8 +93,15 @@ public class LoadOrderedItemsAction implements Action {
       String sql =
           "select DOC07_PURCHASE_ITEMS.DELIVERY_DATE,DOC07_PURCHASE_ITEMS.ORDER_QTY,"+
           "ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,DOC07_PURCHASE_ITEMS.DOC_YEAR,DOC06_PURCHASE.DOC_SEQUENCE,"+
-          "DOC06_PURCHASE.WAREHOUSE_CODE_WAR01,WAR01_WAREHOUSES.DESCRIPTION from "+
-          "DOC07_PURCHASE_ITEMS,DOC06_PURCHASE,ITM01_ITEMS,WAR01_WAREHOUSES where "+
+          "DOC06_PURCHASE.WAREHOUSE_CODE_WAR01,WAR01_WAREHOUSES.DESCRIPTION, "+
+          "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM06,DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM11,"+
+          "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM07,DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM12,"+
+          "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM08,DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM13,"+
+          "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM09,DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM14,"+
+          "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM10,DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM15, "+
+          "SYS10_ITM01.DESCRIPTION "+
+          "from DOC07_PURCHASE_ITEMS,DOC06_PURCHASE,ITM01_ITEMS,WAR01_WAREHOUSES,SYS10_TRANSLATIONS SYS10_ITM01 "+
+          "where "+
           "DOC07_PURCHASE_ITEMS.COMPANY_CODE_SYS01=DOC06_PURCHASE.COMPANY_CODE_SYS01 and "+
           "DOC07_PURCHASE_ITEMS.DOC_TYPE=DOC06_PURCHASE.DOC_TYPE and "+
           "DOC07_PURCHASE_ITEMS.DOC_YEAR=DOC06_PURCHASE.DOC_YEAR and "+
@@ -106,7 +113,9 @@ public class LoadOrderedItemsAction implements Action {
           "DOC07_PURCHASE_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
           "DOC07_PURCHASE_ITEMS.COMPANY_CODE_SYS01=? and "+
           "DOC07_PURCHASE_ITEMS.ITEM_CODE_ITM01=? and "+
-          "DOC07_PURCHASE_ITEMS.ORDER_QTY-DOC07_PURCHASE_ITEMS.IN_QTY>0";
+          "DOC07_PURCHASE_ITEMS.ORDER_QTY-DOC07_PURCHASE_ITEMS.IN_QTY>0 and "+
+          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_ITM01.PROGRESSIVE and "+
+          "SYS10_ITM01.LANGUAGE_CODE=? ";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("deliveryDateDOC07","DOC07_PURCHASE_ITEMS.DELIVERY_DATE");
@@ -117,11 +126,25 @@ public class LoadOrderedItemsAction implements Action {
       attribute2dbField.put("warehouseCodeWar01DOC06","DOC06_PURCHASE.WAREHOUSE_CODE_WAR01");
       attribute2dbField.put("descriptionWAR01","WAR01_WAREHOUSES.DESCRIPTION");
 
+      attribute2dbField.put("variantTypeItm06DOC07","DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM06");
+      attribute2dbField.put("variantCodeItm11DOC07","DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM11");
+      attribute2dbField.put("variantTypeItm07DOC07","DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM07");
+      attribute2dbField.put("variantCodeItm12DOC07","DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM12");
+      attribute2dbField.put("variantTypeItm08DOC07","DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM08");
+      attribute2dbField.put("variantCodeItm13DOC07","DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM13");
+      attribute2dbField.put("variantTypeItm09DOC07","DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM09");
+      attribute2dbField.put("variantCodeItm14DOC07","DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM14");
+      attribute2dbField.put("variantTypeItm10DOC07","DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM10");
+      attribute2dbField.put("variantCodeItm15DOC07","DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM15");
+      attribute2dbField.put("descriptionSYS10","SYS10_ITM01.DESCRIPTION");
+
+
       ItemPK pk = (ItemPK)gridPars.getOtherGridParams().get(ApplicationConsts.ITEM_PK);
       ArrayList pars = new ArrayList();
       pars.add( ApplicationConsts.CONFIRMED );
       pars.add( pk.getCompanyCodeSys01ITM01() );
       pars.add( pk.getItemCodeITM01() );
+      pars.add( serverLanguageId );
 
       if (gridPars.getOtherGridParams().get(ApplicationConsts.WAREHOUSE_CODE)!=null) {
         sql += " and DOC06_PURCHASE.WAREHOUSE_CODE_WAR01=? ";

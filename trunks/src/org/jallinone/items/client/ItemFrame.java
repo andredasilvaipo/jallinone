@@ -36,7 +36,12 @@ import org.jallinone.warehouse.availability.client.*;
 import org.jallinone.production.billsofmaterial.client.ProductPanel;
 import org.jallinone.purchases.pricelist.client.SupplierItemPricesPanel;
 import java.util.HashSet;
-
+import org.openswing.swing.message.receive.java.VOListResponse;
+import org.jallinone.variants.java.VariantNameVO;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import org.jallinone.variants.client.ProductVariantsPanel;
+import org.jallinone.variants.client.ProductVariantsController;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -80,8 +85,6 @@ public class ItemFrame extends InternalFrame {
   SaveButton saveButton1 = new SaveButton();
   ReloadButton reloadButton1 = new ReloadButton();
   DeleteButton deleteButton1 = new DeleteButton();
-  CompaniesComboControl controlCompaniesCombo = new CompaniesComboControl();
-  LabelControl labelCompanyCode = new LabelControl();
   LabelControl labelItemCode = new LabelControl();
   TextControl controlItemCode = new TextControl();
   LabelControl labelDescr = new LabelControl();
@@ -110,12 +113,6 @@ public class ItemFrame extends InternalFrame {
   LabelControl labelH = new LabelControl();
   NumericControl controlH = new NumericControl();
   CodLookupControl controlUMH = new CodLookupControl();
-  LabelControl labelColor = new LabelControl();
-  CodLookupControl controlColorCode = new CodLookupControl();
-  TextControl controlColorDescr = new TextControl();
-  LabelControl labelSize = new LabelControl();
-  CodLookupControl controlSizeCode = new CodLookupControl();
-  TextControl controlSizeDescr = new TextControl();
   NumericControl controlVatValue = new NumericControl();
   TextControl controlVatDescr = new TextControl();
   LabelControl labelNote = new LabelControl();
@@ -136,11 +133,6 @@ public class ItemFrame extends InternalFrame {
   LookupController vatController = new LookupController();
   LookupServerDataLocator vatDataLocator = new LookupServerDataLocator();
 
-  LookupController colorController = new LookupController();
-  LookupServerDataLocator colorDataLocator = new LookupServerDataLocator();
-
-  LookupController sizeController = new LookupController();
-  LookupServerDataLocator sizeDataLocator = new LookupServerDataLocator();
   GridBagLayout gridBagLayout2 = new GridBagLayout();
   JButton smallImageButton = new JButton();
   org.jallinone.commons.client.ImagePanel smallImage = new org.jallinone.commons.client.ImagePanel();
@@ -218,7 +210,21 @@ public class ItemFrame extends InternalFrame {
   private SupplierItemPricesPanel supplierPrices = new SupplierItemPricesPanel(this);
   JSplitPane pricesSplit = new JSplitPane();
   NavigatorBar navigatorBar = new NavigatorBar();
-
+  BorderLayout borderLayout4 = new BorderLayout();
+  JPanel varsPanel = new JPanel();
+  ItemVariantsPanel variantsPanel = new ItemVariantsPanel();
+  FlowLayout flowLayout4 = new FlowLayout();
+  CheckBoxControl checkBoxControl1 = new CheckBoxControl();
+  CheckBoxControl checkBoxControl2 = new CheckBoxControl();
+  CheckBoxControl checkBoxControl3 = new CheckBoxControl();
+  CheckBoxControl checkBoxControl4 = new CheckBoxControl();
+  CheckBoxControl checkBoxControl5 = new CheckBoxControl();
+  private java.util.List variantsNames = new ArrayList();
+  JLabel jLabel1 = new JLabel();
+  BorderLayout borderLayout5 = new BorderLayout();
+  private VariantBarcodesPanel barcodesPanel = new VariantBarcodesPanel();
+  LabelControl labelBarcode = new LabelControl();
+  TextControl controlBarcode = new TextControl();
 
 
   public ItemFrame(ItemController controller,boolean productsOnly) {
@@ -238,6 +244,24 @@ public class ItemFrame extends InternalFrame {
       pk.add("itemCodeITM01");
       formPanel.linkGrid(controller.getParentFrame().getGrid(),pk,true,true,true,navigatorBar);
 
+      tab.addChangeListener(new ChangeListener() {
+
+        public void stateChanged(ChangeEvent e) {
+          if (tab.getSelectedIndex()==8) {
+            DetailItemVO vo = (DetailItemVO)formPanel.getVOModel().getValueObject();
+            getItemVariantsPanel().setContent(vo, getVariantsNames());
+          }
+          else if (tab.getSelectedIndex()==9) {
+            DetailItemVO vo = (DetailItemVO)formPanel.getVOModel().getValueObject();
+            getVariantBarcodesPanel().setItem(formPanel);
+            getVariantBarcodesPanel().revalidate();
+            getVariantBarcodesPanel().repaint();
+            //ItemFrame.this.revalidate();
+            //ItemFrame.this.repaint();
+          }
+        }
+
+      });
 
       controlLevel.setLookupController(levelController);
       levelController.setLookupDataLocator(levelDataLocator);
@@ -420,35 +444,6 @@ public class ItemFrame extends InternalFrame {
       vatController.setFramePreferedSize(new Dimension(510,400));
       CustomizedColumns vatCust = new CustomizedColumns(new BigDecimal(162),vatController);
 
-      // lookup color...
-      colorDataLocator.setGridMethodName("loadColors");
-      colorDataLocator.setValidationMethodName("validateColorCode");
-      controlColorCode.setLookupController(colorController);
-      controlColorCode.setControllerMethodName("getColorsList");
-      colorController.setLookupDataLocator(colorDataLocator);
-      colorController.setFrameTitle("colors");
-      colorController.setLookupValueObjectClassName("org.jallinone.registers.color.java.ColorVO");
-      colorController.addLookup2ParentLink("colorCodeREG13", "colorCodeReg13ITM01");
-      colorController.addLookup2ParentLink("descriptionSYS10", "colorDescriptionSYS10");
-      colorController.setAllColumnVisible(false);
-      colorController.setVisibleColumn("colorCodeREG13", true);
-      colorController.setVisibleColumn("descriptionSYS10", true);
-      CustomizedColumns colorCust = new CustomizedColumns(new BigDecimal(242),colorController);
-
-      // size lookup...
-      sizeDataLocator.setGridMethodName("loadSizes");
-      sizeDataLocator.setValidationMethodName("validateSizeCode");
-      controlSizeCode.setLookupController(sizeController);
-      controlSizeCode.setControllerMethodName("getSizesList");
-      sizeController.setLookupDataLocator(sizeDataLocator);
-      sizeController.setFrameTitle("sizes");
-      sizeController.setLookupValueObjectClassName("org.jallinone.registers.size.java.SizeVO");
-      sizeController.addLookup2ParentLink("sizeCodeREG14", "sizeCodeReg14ITM01");
-      sizeController.addLookup2ParentLink("descriptionSYS10", "sizeDescriptionSYS10");
-      sizeController.setAllColumnVisible(false);
-      sizeController.setVisibleColumn("sizeCodeREG14", true);
-      sizeController.setVisibleColumn("descriptionSYS10", true);
-      CustomizedColumns sizeCust = new CustomizedColumns(new BigDecimal(252),sizeController);
 
       init();
 
@@ -512,12 +507,59 @@ public class ItemFrame extends InternalFrame {
       });
 
 
-
+      if (controller.getPK()!=null)
+        // read only...
+        setVariants(controller.getPK().getCompanyCodeSys01ITM01());
 
     }
     catch(Exception e) {
       e.printStackTrace();
     }
+  }
+
+
+  public final void setVariants(String companyCodeSys01) {
+    Response res = ClientUtils.getData("loadVariantsNames",companyCodeSys01);
+    if (!res.isError()) {
+       variantsNames = ((VOListResponse)res).getRows();
+       VariantNameVO vo = null;
+       boolean atLeastOne = false;
+       CheckBoxControl control = null;
+       for(int i=0;i<variantsNames.size();i++) {
+         vo = (VariantNameVO)variantsNames.get(i);
+
+         switch (i) {
+           case 0: control = checkBoxControl1; break;
+           case 1: control = checkBoxControl2; break;
+           case 2: control = checkBoxControl3; break;
+           case 3: control = checkBoxControl4; break;
+           case 4: control = checkBoxControl5; break;
+         }
+
+         if (vo.getDescriptionSYS10().equals(ApplicationConsts.JOLLY)) {
+           control.setVisible(false);
+           control.setText("");
+         }
+         else {
+           control.setVisible(true);
+           control.setText(vo.getDescriptionSYS10());
+           atLeastOne = true;
+         }
+       } // end for
+
+       if (atLeastOne) {
+         varsPanel.setVisible(true);
+         variantsPanel.setVisible(true);
+       }
+       else {
+         variantsPanel.setVisible(false);
+         varsPanel.setVisible(false);
+       }
+
+       varsPanel.revalidate();
+       varsPanel.repaint();
+
+    } // end if on res.isError (variants...)
   }
 
 
@@ -533,6 +575,7 @@ public class ItemFrame extends InternalFrame {
   public final void loadDataCompleted(boolean error,ItemPK pk) {
     if (error)
       return;
+
     DetailItemVO vo = (DetailItemVO)formPanel.getVOModel().getValueObject();
     controlMinSellQty.setDecimals(vo.getMinSellingQtyDecimalsREG02().intValue());
     if (vo.getGrossWeightDecimalsREG02()!=null)
@@ -545,8 +588,12 @@ public class ItemFrame extends InternalFrame {
       controlH.setDecimals(vo.getHeightDecimalsREG02().intValue());
     if (vo.getSmallImage()!=null)
       smallImage.setImage(vo.getSmallImage());
+    else
+      smallImage.setImage(null);
     if (vo.getLargeImage()!=null)
       largeImage.setImage(vo.getLargeImage());
+    else
+      largeImage.setImage(null);
 
     discountsGrid.getOtherGridParams().put(
       ApplicationConsts.ITEM_PK,
@@ -574,6 +621,30 @@ public class ItemFrame extends InternalFrame {
     getDocsPanel().getDocsGrid().reloadData();
 
     getBomTabbedPane().loadDataCompleted(error,pk);
+
+    setBarcodeControl();
+
+    this.setTitle(ClientSettings.getInstance().getResources().getResource("item detail")+" - "+vo.getItemCodeITM01()+" - "+vo.getDescriptionSYS10());
+
+    //getItemVariantsPanel().setContent(vo,getVariantsNames());
+    //getItemVariantsPanel().repaint();
+
+
+/*
+    new Thread() {
+
+      public void run() {
+        try {
+          sleep(500);
+        }
+        catch (InterruptedException ex) {
+        }
+        formPanel.revalidate();
+        formPanel.repaint();
+      }
+
+    }.start();
+*/
   }
 
 
@@ -584,7 +655,7 @@ public class ItemFrame extends InternalFrame {
     Response res = ClientUtils.getData("loadItemTypes",new GridParams());
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (ItemTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
@@ -595,10 +666,12 @@ public class ItemFrame extends InternalFrame {
       public void itemStateChanged(ItemEvent e) {
         if (e.getStateChange() == e.SELECTED) {
 //          formPanel.getBinding((ValueObject)formPanel.getVOModel().getValueObject(),"progressiveHie02ITM01").push();
+/*
           if (formPanel.getMode()==Consts.EDIT || formPanel.getMode()==Consts.INSERT) {
             controlLevel.getCodBox().setText(null);
             controlLevelDescr.setText("");
           }
+*/
           treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02, controlItemType.getValue());
         }
       }
@@ -635,7 +708,6 @@ public class ItemFrame extends InternalFrame {
     formPanel.setDeleteButton(deleteButton1);
     formPanel.setSaveButton(saveButton1);
     formPanel.setFunctionId("ITM01");
-    labelCompanyCode.setText("companyCode");
     labelItemCode.setText("itemCodeITM01");
     labelDescr.setText("descriptionSYS10");
     labelAddDescr.setText("addDescr");
@@ -647,19 +719,13 @@ public class ItemFrame extends InternalFrame {
     labelNW.setText("netWeightITM01");
     labelW.setText("widthITM01");
     labelH.setText("heightITM01");
-    labelColor.setText("colorCodeREG13");
-    labelSize.setText("sizeCodeREG14");
     labelNote.setText("note");
     controlNote.setAttributeName("noteITM01");
     controlNote.setCanCopy(true);
     controlNote.setLinkLabel(labelNote);
     controlNote.setMaxCharacters(2000);
-    controlCompaniesCombo.setAttributeName("companyCodeSys01ITM01");
-    controlCompaniesCombo.setCanCopy(true);
-    controlCompaniesCombo.setLinkLabel(labelCompanyCode);
-    controlCompaniesCombo.setRequired(true);
-    controlCompaniesCombo.setEnabledOnEdit(false);
     controlItemCode.setAttributeName("itemCodeITM01");
+    controlItemCode.setCanCopy(false);
     controlItemCode.setLinkLabel(labelItemCode);
     controlItemCode.setMaxCharacters(20);
     controlItemCode.setRequired(true);
@@ -677,6 +743,7 @@ public class ItemFrame extends InternalFrame {
     controlLevel.setAttributeName("progressiveHie01ITM01");
     controlLevel.setCanCopy(true);
     controlLevel.setCodBoxVisible(false);
+    controlLevel.setColumns(0);
     controlLevel.setLinkLabel(labelLevel);
     controlLevel.setRequired(true);
     controlLevel.setAllowOnlyNumbers(true);
@@ -696,6 +763,7 @@ public class ItemFrame extends InternalFrame {
     controlUMSellQty.setCanCopy(true);
     controlUMSellQty.setLinkLabel(labelMinSellQty);
     controlUMSellQty.setMaxCharacters(20);
+    controlUMSellQty.setColumns(4);
     controlUMSellQty.setRequired(true);
     controlVat.setAttributeName("vatCodeReg01ITM01");
     controlVat.setCanCopy(true);
@@ -744,24 +812,6 @@ public class ItemFrame extends InternalFrame {
     controlUMH.setCanCopy(true);
     controlUMH.setLinkLabel(labelH);
     controlUMH.setMaxCharacters(20);
-    controlColorCode.setAttributeName("colorCodeReg13ITM01");
-    controlColorCode.setCanCopy(true);
-    controlColorCode.setLinkLabel(labelColor);
-    controlColorCode.setMaxCharacters(20);
-    controlColorDescr.setAttributeName("colorDescriptionSYS10");
-    controlColorDescr.setCanCopy(true);
-    controlColorDescr.setLinkLabel(labelColor);
-    controlColorDescr.setEnabledOnInsert(false);
-    controlColorDescr.setEnabledOnEdit(false);
-    controlSizeCode.setAttributeName("sizeCodeReg14ITM01");
-    controlSizeCode.setCanCopy(true);
-    controlSizeCode.setLinkLabel(labelSize);
-    controlSizeCode.setMaxCharacters(20);
-    controlSizeDescr.setAttributeName("sizeDescriptionSYS10");
-    controlSizeDescr.setCanCopy(true);
-    controlSizeDescr.setLinkLabel(labelSize);
-    controlSizeDescr.setEnabledOnInsert(false);
-    controlSizeDescr.setEnabledOnEdit(false);
     imgPanel.setLayout(gridBagLayout2);
     smallImageButton.setText(ClientSettings.getInstance().getResources().getResource("load small image"));
     smallImageButton.addActionListener(new ItemFrame_smallImageButton_actionAdapter(this));
@@ -826,89 +876,90 @@ public class ItemFrame extends InternalFrame {
     controlSerialNumRequired.setAttributeName("serialNumberRequiredITM01");
     controlSerialNumRequired.setText("serial number required");
     billOfMaterialsPanel.setLayout(borderLayout3);
+    checkBoxControl1.setEnabledOnEdit(false);
+    checkBoxControl1.addItemListener(new ItemFrame_checkBoxControl1_itemAdapter(this));
+
+    checkBoxControl1.setAttributeName("useVariant1ITM01");
+    checkBoxControl2.setAttributeName("useVariant2ITM01");
+    checkBoxControl3.setAttributeName("useVariant3ITM01");
+    checkBoxControl4.setAttributeName("useVariant4ITM01");
+    checkBoxControl5.setAttributeName("useVariant5ITM01");
+
+    varsPanel.setLayout(flowLayout4);
+    flowLayout4.setAlignment(FlowLayout.LEFT);
+    checkBoxControl2.setEnabledOnEdit(false);
+    checkBoxControl2.addItemListener(new ItemFrame_checkBoxControl2_itemAdapter(this));
+    checkBoxControl3.setEnabledOnEdit(false);
+    checkBoxControl3.addItemListener(new ItemFrame_checkBoxControl3_itemAdapter(this));
+    checkBoxControl4.setEnabledOnEdit(false);
+    checkBoxControl4.addItemListener(new ItemFrame_checkBoxControl4_itemAdapter(this));
+    checkBoxControl5.setEnabledOnEdit(false);
+    checkBoxControl5.addItemListener(new ItemFrame_checkBoxControl5_itemAdapter(this));
+    jLabel1.setText("100 x 100 pixels");
+    labelBarcode.setText("barcode");
     this.getContentPane().add(buttonsPanel,  BorderLayout.NORTH);
     this.getContentPane().add(tab, BorderLayout.CENTER);
     tab.add(formPanel,   "detailPanel");
-    formPanel.add(labelCompanyCode,     new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+    formPanel.add(labelItemCode,        new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlCompaniesCombo,       new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
+    formPanel.add(controlItemCode,        new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelItemCode,     new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlItemCode,     new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelDescr,      new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0
+    formPanel.add(labelDescr,         new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlDescr,      new GridBagConstraints(3, 1, 4, 1, 0.0, 0.0
+    formPanel.add(controlDescr,         new GridBagConstraints(3, 0, 4, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlLevelDescr,      new GridBagConstraints(5, 2, 2, 1, 0.0, 0.0
-            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelAddDescr,    new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+    formPanel.add(labelAddDescr,       new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlAddDescr,       new GridBagConstraints(1, 3, 2, 1, 1.0, 0.0
+    formPanel.add(controlAddDescr,          new GridBagConstraints(1, 2, 2, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelitemType,    new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+    formPanel.add(labelitemType,       new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlItemType,    new GridBagConstraints(1, 2, 1, 1, 1.0, 0.0
+    formPanel.add(controlItemType,         new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlLevel,      new GridBagConstraints(4, 2, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.EAST, GridBagConstraints.VERTICAL, new Insets(5, 0, 5, 5), 0, 0));
-    formPanel.add(labelVat,   new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+    formPanel.add(labelVat,      new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlVat,     new GridBagConstraints(1, 4, 1, 1, 1.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelGW,   new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+    formPanel.add(controlVat,         new GridBagConstraints(1, 3, 1, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 50, 0));
+    formPanel.add(labelGW,      new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlGW,    new GridBagConstraints(1, 5, 1, 1, 1.0, 0.0
+    formPanel.add(controlGW,       new GridBagConstraints(1, 4, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlUMGW,    new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0
+    formPanel.add(controlUMGW,       new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 40, 0));
-    formPanel.add(labelNW,   new GridBagConstraints(3, 5, 2, 1, 0.0, 0.0
+    formPanel.add(labelNW,      new GridBagConstraints(3, 4, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlNW,       new GridBagConstraints(6, 5, 1, 1, 0.0, 0.0
+    formPanel.add(controlNW,          new GridBagConstraints(6, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 50, 0));
-    formPanel.add(controlUMNW,     new GridBagConstraints(5, 5, 1, 1, 0.0, 0.0
+    formPanel.add(controlUMNW,        new GridBagConstraints(5, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelW,   new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
+    formPanel.add(labelW,      new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlW,   new GridBagConstraints(1, 6, 1, 1, 1.0, 0.0
+    formPanel.add(controlW,      new GridBagConstraints(1, 5, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlUMW,    new GridBagConstraints(2, 6, 1, 1, 0.0, 0.0
+    formPanel.add(controlUMW,       new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 40, 0));
-    formPanel.add(labelH,   new GridBagConstraints(3, 6, 2, 1, 0.0, 0.0
+    formPanel.add(labelH,      new GridBagConstraints(3, 5, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlH,     new GridBagConstraints(6, 6, 1, 1, 0.0, 0.0
+    formPanel.add(controlH,        new GridBagConstraints(6, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 50, 0));
-    formPanel.add(controlUMH,    new GridBagConstraints(5, 6, 1, 1, 0.0, 0.0
+    formPanel.add(controlUMH,       new GridBagConstraints(5, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 40, 0));
-    formPanel.add(labelColor,   new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlColorCode,    new GridBagConstraints(1, 7, 1, 1, 1.0, 0.0
+    formPanel.add(controlVatValue,        new GridBagConstraints(3, 3, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlColorDescr,   new GridBagConstraints(2, 7, 1, 1, 1.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelSize,   new GridBagConstraints(3, 7, 2, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlSizeCode,    new GridBagConstraints(5, 7, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlSizeDescr,      new GridBagConstraints(6, 7, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 50, 0));
-    formPanel.add(controlVatValue,     new GridBagConstraints(3, 4, 2, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlVatDescr,    new GridBagConstraints(2, 4, 1, 1, 1.0, 0.0
+    formPanel.add(controlVatDescr,       new GridBagConstraints(2, 3, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-    formPanel.add(labelNote,   new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0
+    formPanel.add(labelNote,      new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlNote,   new GridBagConstraints(1, 8, 6, 1, 1.0, 1.0
+    formPanel.add(controlNote,      new GridBagConstraints(1, 7, 6, 1, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
     tab.add(imgPanel,   "imagePanel");
-    imgPanel.add(smallImageButton,   new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 0, 0));
-    imgPanel.add(smallImage,     new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
+    imgPanel.add(smallImageButton,     new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 0), 0, 0));
+    imgPanel.add(smallImage,       new GridBagConstraints(2, 0, 1, 2, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 100, 100));
-    imgPanel.add(largeImageButton,   new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    imgPanel.add(largeImage,   new GridBagConstraints(2, 1, 1, 1, 1.0, 1.0
+    imgPanel.add(largeImageButton,     new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
+    imgPanel.add(largeImage,     new GridBagConstraints(2, 2, 1, 2, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
     buttonsPanel.add(insertButton1, null);
     buttonsPanel.add(copyButton1, null);
@@ -917,22 +968,26 @@ public class ItemFrame extends InternalFrame {
     buttonsPanel.add(reloadButton1, null);
     buttonsPanel.add(deleteButton1, null);
     buttonsPanel.add(navigatorBar, null);
-    formPanel.add(controlUMSellQty,        new GridBagConstraints(5, 3, 1, 1, 0.0, 0.0
+    formPanel.add(controlUMSellQty,             new GridBagConstraints(5, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlMinSellQty,     new GridBagConstraints(6, 3, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 50, 0));
-    formPanel.add(labelMinSellQty,   new GridBagConstraints(3, 3, 2, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlVatDeductible,    new GridBagConstraints(5, 4, 1, 1, 0.0, 0.0
+    formPanel.add(controlMinSellQty,           new GridBagConstraints(6, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelLevel, new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0
+    formPanel.add(labelMinSellQty,      new GridBagConstraints(3, 2, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlSerialNumRequired,  new GridBagConstraints(6, 4, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    imgPanel.add(clearSmallImageButton,  new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+    formPanel.add(controlVatDeductible,       new GridBagConstraints(5, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labelLevel,        new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlSerialNumRequired,      new GridBagConstraints(6, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 20, 0));
+    formPanel.add(varsPanel,              new GridBagConstraints(0, 6, 3, 1, 1.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+    imgPanel.add(clearSmallImageButton,    new GridBagConstraints(1, 0, 1, 2, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    imgPanel.add(clearLargeImageButton,  new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+    imgPanel.add(clearLargeImageButton,    new GridBagConstraints(1, 2, 1, 2, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    imgPanel.add(jLabel1,   new GridBagConstraints(0, 1, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
     tab.add(discountsPanel,   "discountPanel");
     discountsPanel.add(discountsButtonsPanel, BorderLayout.NORTH);
     discountsPanel.add(discountsGrid,  BorderLayout.CENTER);
@@ -1069,6 +1124,9 @@ public class ItemFrame extends InternalFrame {
     pricesButtonsPanel.add(exportButton2, null);
     pricesButtonsPanel.add(navigatorBar2, null);
 
+    tab.add(variantsPanel,   "variantsPanel");
+    tab.add(barcodesPanel,   "barcodesPanel");
+
     tab.setTitleAt(0,ClientSettings.getInstance().getResources().getResource("item detail"));
     tab.setTitleAt(1,ClientSettings.getInstance().getResources().getResource("images"));
     tab.setTitleAt(2,ClientSettings.getInstance().getResources().getResource("discounts"));
@@ -1077,6 +1135,8 @@ public class ItemFrame extends InternalFrame {
     tab.setTitleAt(5,ClientSettings.getInstance().getResources().getResource("bookedItemsPanel"));
     tab.setTitleAt(6,ClientSettings.getInstance().getResources().getResource("orderedItemsPanel"));
     tab.setTitleAt(7,ClientSettings.getInstance().getResources().getResource("billofmaterial"));
+    tab.setTitleAt(8,ClientSettings.getInstance().getResources().getResource("variantsPanel"));
+    tab.setTitleAt(9,ClientSettings.getInstance().getResources().getResource("barcodesPanel"));
 
     colValue.setDecimals(5);
     colValue.setMinValue(0.0);
@@ -1102,7 +1162,22 @@ public class ItemFrame extends InternalFrame {
     pricesGrid.getColumnContainer().add(colPriceStartDate, null);
     pricesGrid.getColumnContainer().add(colPriceEndDate, null);
     billOfMaterialsPanel.add(bomTabbedPane,  BorderLayout.CENTER);
+    varsPanel.add(checkBoxControl1, null);
+    varsPanel.add(checkBoxControl2, null);
+    varsPanel.add(checkBoxControl3, null);
+    varsPanel.add(checkBoxControl4, null);
+    varsPanel.add(checkBoxControl5, null);
+    formPanel.add(controlLevel,   new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 0, 0));
+    formPanel.add(controlLevelDescr,  new GridBagConstraints(5, 1, 2, 1, 1.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labelBarcode,   new GridBagConstraints(3, 6, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlBarcode,  new GridBagConstraints(5, 6, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     pricesSplit.setDividerLocation(250);
+
+    controlBarcode.setAttributeName("barCodeITM01");
 
   }
 
@@ -1238,6 +1313,58 @@ public class ItemFrame extends InternalFrame {
   public SupplierItemPricesPanel getSupplierPrices() {
     return supplierPrices;
   }
+  public ItemVariantsPanel getItemVariantsPanel() {
+    return variantsPanel;
+  }
+  public VariantBarcodesPanel getVariantBarcodesPanel() {
+    return barcodesPanel;
+  }
+  public java.util.List getVariantsNames() {
+    return variantsNames;
+  }
+
+  void checkBoxControl1_itemStateChanged(ItemEvent e) {
+    setBarcodeControl();
+  }
+
+  void checkBoxControl2_itemStateChanged(ItemEvent e) {
+    setBarcodeControl();
+  }
+
+  void checkBoxControl3_itemStateChanged(ItemEvent e) {
+    setBarcodeControl();
+  }
+
+  void checkBoxControl4_itemStateChanged(ItemEvent e) {
+    setBarcodeControl();
+  }
+
+  void checkBoxControl5_itemStateChanged(ItemEvent e) {
+    setBarcodeControl();
+  }
+
+
+  private void setBarcodeControl() {
+    controlBarcode.setEnabledOnEdit(
+      !checkBoxControl1.isSelected() &&
+      !checkBoxControl2.isSelected() &&
+      !checkBoxControl3.isSelected() &&
+      !checkBoxControl4.isSelected() &&
+      !checkBoxControl5.isSelected()
+    );
+
+    if (formPanel.getMode()==Consts.INSERT || formPanel.getMode()==Consts.EDIT) {
+      controlBarcode.setEnabled(
+        !checkBoxControl1.isSelected() &&
+        !checkBoxControl2.isSelected() &&
+        !checkBoxControl3.isSelected() &&
+        !checkBoxControl4.isSelected() &&
+        !checkBoxControl5.isSelected()
+      );
+      if (!controlBarcode.isEnabled())
+        controlBarcode.setValue(null);
+    }
+  }
 
 
 
@@ -1284,5 +1411,60 @@ class ItemFrame_clearLargeImageButton_actionAdapter implements java.awt.event.Ac
   }
   public void actionPerformed(ActionEvent e) {
     adaptee.clearLargeImageButton_actionPerformed(e);
+  }
+}
+
+class ItemFrame_checkBoxControl1_itemAdapter implements java.awt.event.ItemListener {
+  ItemFrame adaptee;
+
+  ItemFrame_checkBoxControl1_itemAdapter(ItemFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void itemStateChanged(ItemEvent e) {
+    adaptee.checkBoxControl1_itemStateChanged(e);
+  }
+}
+
+class ItemFrame_checkBoxControl2_itemAdapter implements java.awt.event.ItemListener {
+  ItemFrame adaptee;
+
+  ItemFrame_checkBoxControl2_itemAdapter(ItemFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void itemStateChanged(ItemEvent e) {
+    adaptee.checkBoxControl2_itemStateChanged(e);
+  }
+}
+
+class ItemFrame_checkBoxControl3_itemAdapter implements java.awt.event.ItemListener {
+  ItemFrame adaptee;
+
+  ItemFrame_checkBoxControl3_itemAdapter(ItemFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void itemStateChanged(ItemEvent e) {
+    adaptee.checkBoxControl3_itemStateChanged(e);
+  }
+}
+
+class ItemFrame_checkBoxControl4_itemAdapter implements java.awt.event.ItemListener {
+  ItemFrame adaptee;
+
+  ItemFrame_checkBoxControl4_itemAdapter(ItemFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void itemStateChanged(ItemEvent e) {
+    adaptee.checkBoxControl4_itemStateChanged(e);
+  }
+}
+
+class ItemFrame_checkBoxControl5_itemAdapter implements java.awt.event.ItemListener {
+  ItemFrame adaptee;
+
+  ItemFrame_checkBoxControl5_itemAdapter(ItemFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void itemStateChanged(ItemEvent e) {
+    adaptee.checkBoxControl5_itemStateChanged(e);
   }
 }

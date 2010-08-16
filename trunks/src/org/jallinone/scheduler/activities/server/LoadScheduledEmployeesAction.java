@@ -141,7 +141,7 @@ public class LoadScheduledEmployeesAction implements Action {
       if (!res.isError()) {
         HashSet taskCodes = new HashSet();
         ScheduledEmployeeVO vo = null;
-        ArrayList rows = ((VOListResponse)res).getRows();
+        java.util.List rows = ((VOListResponse)res).getRows();
         for(int i=0;i<rows.size();i++) {
           vo = (ScheduledEmployeeVO)rows.get(i);
           taskCodes.add(vo.getTaskCodeREG07());

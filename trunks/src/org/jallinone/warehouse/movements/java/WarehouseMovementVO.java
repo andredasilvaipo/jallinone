@@ -42,12 +42,33 @@ public class WarehouseMovementVO extends ValueObjectImpl {
   private String itemTypeWAR04;
   private String noteWAR02;
   private ArrayList serialNumbers;
-  private ArrayList barCodes;
+
+  private String variantTypeItm06WAR02;
+  private String variantCodeItm11WAR02;
+  private String variantTypeItm07WAR02;
+  private String variantCodeItm12WAR02;
+  private String variantTypeItm08WAR02;
+  private String variantCodeItm13WAR02;
+  private String variantTypeItm09WAR02;
+  private String variantCodeItm14WAR02;
+  private String variantTypeItm10WAR02;
+  private String variantCodeItm15WAR02;
 
 
   public WarehouseMovementVO(java.math.BigDecimal progressiveHie01WAR02,java.math.BigDecimal deltaQtyWAR02,String companyCodeSys01WAR02,
-                             String warehouseCodeWar01WAR02,String itemCodeItm01WAR02,String warehouseMotiveWar04WAR02,
-                             String itemTypeWAR04,String noteWAR02,ArrayList serialNumbers,ArrayList barCodes) {
+                            String warehouseCodeWar01WAR02,String itemCodeItm01WAR02,String warehouseMotiveWar04WAR02,
+                            String itemTypeWAR04,String noteWAR02,ArrayList serialNumbers,
+                            String variantCodeItm11WAR02,
+                            String variantCodeItm12WAR02,
+                            String variantCodeItm13WAR02,
+                            String variantCodeItm14WAR02,
+                            String variantCodeItm15WAR02,
+                            String variantTypeItm06WAR02,
+                            String variantTypeItm07WAR02,
+                            String variantTypeItm08WAR02,
+                            String variantTypeItm09WAR02,
+                            String variantTypeItm10WAR02
+) {
     this.progressiveHie01WAR02 = progressiveHie01WAR02;
     this.deltaQtyWAR02 = deltaQtyWAR02;
     this.companyCodeSys01WAR02 = companyCodeSys01WAR02;
@@ -57,7 +78,18 @@ public class WarehouseMovementVO extends ValueObjectImpl {
     this.itemTypeWAR04 = itemTypeWAR04;
     this.noteWAR02 = noteWAR02;
     this.serialNumbers = serialNumbers;
-    this.barCodes = barCodes;
+
+    this.variantTypeItm10WAR02 = variantTypeItm10WAR02;
+    this.variantTypeItm09WAR02 = variantTypeItm09WAR02;
+    this.variantTypeItm08WAR02 = variantTypeItm08WAR02;
+    this.variantTypeItm07WAR02 = variantTypeItm07WAR02;
+    this.variantTypeItm06WAR02 = variantTypeItm06WAR02;
+    this.variantCodeItm15WAR02 = variantCodeItm15WAR02;
+    this.variantCodeItm14WAR02 = variantCodeItm14WAR02;
+    this.variantCodeItm13WAR02 = variantCodeItm13WAR02;
+    this.variantCodeItm12WAR02 = variantCodeItm12WAR02;
+    this.variantCodeItm11WAR02 = variantCodeItm11WAR02;
+
   }
 
 
@@ -89,8 +121,35 @@ public class WarehouseMovementVO extends ValueObjectImpl {
   public ArrayList getSerialNumbers() {
     return serialNumbers;
   }
-  public ArrayList getBarCodes() {
-    return barCodes;
+  public String getVariantCodeItm11WAR02() {
+    return variantCodeItm11WAR02;
+  }
+  public String getVariantCodeItm12WAR02() {
+    return variantCodeItm12WAR02;
+  }
+  public String getVariantCodeItm13WAR02() {
+    return variantCodeItm13WAR02;
+  }
+  public String getVariantCodeItm14WAR02() {
+    return variantCodeItm14WAR02;
+  }
+  public String getVariantCodeItm15WAR02() {
+    return variantCodeItm15WAR02;
+  }
+  public String getVariantTypeItm06WAR02() {
+    return variantTypeItm06WAR02;
+  }
+  public String getVariantTypeItm07WAR02() {
+    return variantTypeItm07WAR02;
+  }
+  public String getVariantTypeItm08WAR02() {
+    return variantTypeItm08WAR02;
+  }
+  public String getVariantTypeItm09WAR02() {
+    return variantTypeItm09WAR02;
+  }
+  public String getVariantTypeItm10WAR02() {
+    return variantTypeItm10WAR02;
   }
 
 }

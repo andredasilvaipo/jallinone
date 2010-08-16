@@ -2,6 +2,7 @@ package org.jallinone.purchases.documents.java;
 
 import org.openswing.swing.message.receive.java.*;
 import org.jallinone.purchases.items.java.SupplierItemVO;
+import org.jallinone.variants.java.VariantsItemDescriptor;
 
 
 /**
@@ -32,7 +33,7 @@ import org.jallinone.purchases.items.java.SupplierItemVO;
  * @author Mauro Carniel
  * @version 1.0
  */
-public class SupplierPriceItemVO extends SupplierItemVO {
+public class SupplierPriceItemVO extends SupplierItemVO implements VariantsItemDescriptor {
 
 
   private String vatCodeReg01ITM01;
@@ -42,6 +43,12 @@ public class SupplierPriceItemVO extends SupplierItemVO {
   private java.math.BigDecimal valuePUR04;
   private java.sql.Date startDatePUR04;
   private java.sql.Date endDatePUR04;
+
+  private Boolean useVariant1ITM01;
+  private Boolean useVariant2ITM01;
+  private Boolean useVariant3ITM01;
+  private Boolean useVariant4ITM01;
+  private Boolean useVariant5ITM01;
 
 
   public SupplierPriceItemVO() {
@@ -89,6 +96,44 @@ public class SupplierPriceItemVO extends SupplierItemVO {
   }
   public java.sql.Date getStartDatePUR04() {
     return startDatePUR04;
+  }
+  public Boolean getUseVariant1ITM01() {
+    return useVariant1ITM01;
+  }
+  public Boolean getUseVariant2ITM01() {
+    return useVariant2ITM01;
+  }
+  public Boolean getUseVariant3ITM01() {
+    return useVariant3ITM01;
+  }
+  public Boolean getUseVariant4ITM01() {
+    return useVariant4ITM01;
+  }
+  public Boolean getUseVariant5ITM01() {
+    return useVariant5ITM01;
+  }
+  public void setUseVariant5ITM01(Boolean useVariant5ITM01) {
+    this.useVariant5ITM01 = useVariant5ITM01;
+  }
+  public void setUseVariant4ITM01(Boolean useVariant4ITM01) {
+    this.useVariant4ITM01 = useVariant4ITM01;
+  }
+  public void setUseVariant3ITM01(Boolean useVariant3ITM01) {
+    this.useVariant3ITM01 = useVariant3ITM01;
+  }
+  public void setUseVariant2ITM01(Boolean useVariant2ITM01) {
+    this.useVariant2ITM01 = useVariant2ITM01;
+  }
+  public void setUseVariant1ITM01(Boolean useVariant1ITM01) {
+    this.useVariant1ITM01 = useVariant1ITM01;
+  }
+
+
+  public String getCompanyCodeSys01() {
+    return getCompanyCodeSys01PUR02();
+  }
+  public String getItemCodeItm01() {
+    return getItemCodeItm01PUR02();
   }
 
 }

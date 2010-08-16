@@ -175,12 +175,12 @@ public class CreateInvoiceFromScheduledActivityAction implements Action {
 
 
       // create invoice item rows...
-      ArrayList rows = ((VOListResponse)res).getRows();
+      java.util.List rows = ((VOListResponse)res).getRows();
       ScheduledItemVO schItemVO = null;
       DetailSaleDocRowVO saleItemVO = null;
       LookupValidationParams lookupPars = null;
       PriceItemVO priceVO = null;
-      ArrayList priceRows = null;
+      java.util.List priceRows = null;
       double vatPerc;
       HashMap map = new HashMap();
       map.put(ApplicationConsts.COMPANY_CODE_SYS01,reqVO.getCompanyCodeSys01SCH03());

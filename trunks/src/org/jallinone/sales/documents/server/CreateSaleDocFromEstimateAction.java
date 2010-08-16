@@ -141,7 +141,7 @@ public class CreateSaleDocFromEstimateAction implements Action {
         conn.rollback();
         return res;
       }
-      ArrayList rows = ((VOListResponse)res).getRows();
+      java.util.List rows = ((VOListResponse)res).getRows();
 
       HashMap map = new HashMap();
       map.put(ApplicationConsts.COMPANY_CODE_SYS01,docVO.getCompanyCodeSys01DOC01());
@@ -169,7 +169,7 @@ public class CreateSaleDocFromEstimateAction implements Action {
       // create rows..
       GridSaleDocRowVO gridRowVO = null;
       DetailSaleDocRowVO rowVO = null;
-      ArrayList discRows = null;
+      java.util.List discRows = null;
       SaleDocRowPK docRowPK = null;
       SaleItemDiscountVO itemDiscVO = null;
       gridParams = new GridParams();
@@ -182,7 +182,18 @@ public class CreateSaleDocFromEstimateAction implements Action {
             gridRowVO.getDocTypeDOC02(),
             gridRowVO.getDocYearDOC02(),
             gridRowVO.getDocNumberDOC02(),
-            gridRowVO.getItemCodeItm01DOC02()
+            gridRowVO.getItemCodeItm01DOC02(),
+            gridRowVO.getVariantTypeItm06DOC02(),
+            gridRowVO.getVariantCodeItm11DOC02(),
+            gridRowVO.getVariantTypeItm07DOC02(),
+            gridRowVO.getVariantCodeItm12DOC02(),
+            gridRowVO.getVariantTypeItm08DOC02(),
+            gridRowVO.getVariantCodeItm13DOC02(),
+            gridRowVO.getVariantTypeItm09DOC02(),
+            gridRowVO.getVariantCodeItm14DOC02(),
+            gridRowVO.getVariantTypeItm10DOC02(),
+            gridRowVO.getVariantCodeItm15DOC02()
+
         );
         res = rowAction.executeCommand(docRowPK,userSessionPars,request,response,userSession,context);
         if (res.isError()) {

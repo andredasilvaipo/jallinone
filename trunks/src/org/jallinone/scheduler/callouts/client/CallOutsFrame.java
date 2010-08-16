@@ -28,6 +28,7 @@ import org.jallinone.scheduler.callouts.java.CallOutTypeVO;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import org.jallinone.commons.java.ApplicationConsts;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 
 /**
@@ -79,7 +80,7 @@ public class CallOutsFrame extends InternalFrame {
   private ServerGridDataLocator gridDataLocator = new ServerGridDataLocator();
 
 
-  public CallOutsFrame(CallOutsController callOutsController) {
+  public CallOutsFrame(final CallOutsController callOutsController) {
     try {
       jbInit();
       setSize(750,550);
@@ -90,6 +91,17 @@ public class CallOutsFrame extends InternalFrame {
       gridDataLocator.setServerMethodName("loadCallOuts");
       hierarTreePanel.setFunctionId("SCH11");
       hierarTreePanel.setTreeController(callOutsController);
+
+      hierarTreePanel.addHierarTreeListener(new HierarTreeListener(){
+
+        public void loadDataCompleted(boolean error) {
+          if (hierarTreePanel.getTree().getRowCount()>0)
+            hierarTreePanel.getTree().setSelectionRow(0);
+          if (hierarTreePanel.getTree().getSelectionPath()!=null)
+            callOutsController.leftClick((DefaultMutableTreeNode)hierarTreePanel.getTree().getSelectionPath().getLastPathComponent());
+        }
+
+      });
 
       init();
 
@@ -108,7 +120,7 @@ public class CallOutsFrame extends InternalFrame {
     Domain d = new Domain("CALL_OUT_TYPES");
     if (!res.isError()) {
       CallOutTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (CallOutTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02SCH11(),vo.getDescriptionSYS10());

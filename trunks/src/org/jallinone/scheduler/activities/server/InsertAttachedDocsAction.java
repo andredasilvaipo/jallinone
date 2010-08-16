@@ -85,7 +85,7 @@ public class InsertAttachedDocsAction implements Action {
       ));
       ActAttachedDocVO vo = null;
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SCH08","COMPANY_CODE_SYS01");

@@ -167,11 +167,16 @@ public class JRProperties
         {
                 try
                 {
+                        System.out.println("initProperties...");
                         Properties defaults = getDefaults();
                         String propFile = System.getProperty(PROPERTIES_FILE);
+                        System.out.println("initProperties: propFile='"+propFile+"'");
                         if (propFile == null)
                         {
+                                System.out.println("initProperties: loading properties '"+propertiesPath+DEFAULT_PROPERTIES_FILE+"'");
                                 props = loadProperties(propertiesPath+DEFAULT_PROPERTIES_FILE, defaults);
+                                System.out.println("initProperties: props='"+props+"'");
+                                System.out.println("initProperties: defaults='"+defaults+"'");
                                 if (props == null)
                                 {
                                         props = defaults;
@@ -190,7 +195,15 @@ public class JRProperties
                 }
                 catch (JRException e)
                 {
+                        System.out.println("initProperties error: "+e.toString());
                         throw new JRRuntimeException("Error loading the properties", e);
+                }
+                catch (Throwable e)
+                {
+                        System.out.println("initProperties error: "+e.toString());
+                        props = getDefaults();
+
+                        //throw new JRRuntimeException("Error loading the properties", e);
                 }
         }
 
@@ -307,6 +320,13 @@ public class JRProperties
          */
         public static String getProperty (String key)
         {
+                if (key==null)
+                  return null;
+                if (props==null) {
+                  System.out.println("JRProperties error: props is null for key '"+key+"'");
+                  return null;
+                }
+
                 return props.getProperty(key);
         }
 

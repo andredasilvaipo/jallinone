@@ -83,7 +83,7 @@ public class DeleteSupplierItemsAction implements Action {
         null
       ));
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       SupplierItemPK pk = null;
 
       stmt = conn.createStatement();

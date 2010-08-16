@@ -74,75 +74,46 @@ public class InsertInSerialNumbersBean {
         vo,
         null
       ));
-       ArrayList serialNums = vo.getSerialNumbers();
-        ArrayList barCodes = vo.getBarCodes();
+      ArrayList serialNums = vo.getSerialNumbers();
 
-        // delete previous serial numbers from DOC11...
-        pstmt = conn.prepareStatement(
-         "delete from DOC11_IN_SERIAL_NUMBERS where "+
-         "COMPANY_CODE_SYS01=? and "+
-         "DOC_TYPE=? and "+
-         "DOC_YEAR=? and "+
-         "DOC_NUMBER=? and "+
-         "DOC_TYPE_DOC06=? and "+
-         "DOC_YEAR_DOC06=? and "+
-         "DOC_NUMBER_DOC06=? and "+
-         "ROW_NUMBER=? and "+
-         "ITEM_CODE_ITM01=?"
-        );
+      // delete previous serial numbers from DOC11...
+      pstmt = conn.prepareStatement(
+       "delete from DOC11_IN_SERIAL_NUMBERS where PROGRESSIVE_DOC09=?  "
+      );
 
-        pstmt.setString(1,vo.getCompanyCodeSys01DOC09());
-        pstmt.setString(2,vo.getDocTypeDOC09());
-        pstmt.setBigDecimal(3,vo.getDocYearDOC09());
-        pstmt.setBigDecimal(4,vo.getDocNumberDOC09());
-        pstmt.setString(5,vo.getDocTypeDoc06DOC09());
-        pstmt.setBigDecimal(6,vo.getDocYearDoc06DOC09());
-        pstmt.setBigDecimal(7,vo.getDocNumberDoc06DOC09());
-        pstmt.setBigDecimal(8,vo.getRowNumberDOC09());
-        pstmt.setString(9,vo.getItemCodeItm01DOC09());
-        pstmt.execute();
-        pstmt.close();
+      pstmt.setBigDecimal(1,vo.getProgressiveDOC09());
+      pstmt.execute();
+      pstmt.close();
 
-        pstmt = conn.prepareStatement(
-          "insert into DOC11_IN_SERIAL_NUMBERS(COMPANY_CODE_SYS01,DOC_TYPE,DOC_YEAR,DOC_NUMBER,DOC_TYPE_DOC06,"+
-          "DOC_YEAR_DOC06,DOC_NUMBER_DOC06,ROW_NUMBER,ITEM_CODE_ITM01,SERIAL_NUMBER,BAR_CODE) values("+
-          "?,?,?,?,?,?,?,?,?,?,?)"
-        );
+      pstmt = conn.prepareStatement(
+        "insert into DOC11_IN_SERIAL_NUMBERS(PROGRESSIVE_DOC09,SERIAL_NUMBER) values(?,?)"
+      );
 
-        for(int i=0;i<serialNums.size();i++) {
-           pstmt.setString(1,vo.getCompanyCodeSys01DOC09());
-           pstmt.setString(2,vo.getDocTypeDOC09());
-           pstmt.setBigDecimal(3,vo.getDocYearDOC09());
-           pstmt.setBigDecimal(4,vo.getDocNumberDOC09());
-           pstmt.setString(5,vo.getDocTypeDoc06DOC09());
-           pstmt.setBigDecimal(6,vo.getDocYearDoc06DOC09());
-           pstmt.setBigDecimal(7,vo.getDocNumberDoc06DOC09());
-           pstmt.setBigDecimal(8,vo.getRowNumberDOC09());
-           pstmt.setString(9,vo.getItemCodeItm01DOC09());
-           pstmt.setString(10,(String)serialNums.get(i));
-           pstmt.setString(11,(String)barCodes.get(i));
-           pstmt.execute();
-        }
+      for(int i=0;i<serialNums.size();i++) {
+         pstmt.setBigDecimal(1,vo.getProgressiveDOC09());
+         pstmt.setString(2,(String)serialNums.get(i));
+         pstmt.execute();
+      }
 
-        Response answer = new VOResponse(Boolean.TRUE);
+      Response answer = new VOResponse(Boolean.TRUE);
 
-        // fires the GenericEvent.BEFORE_COMMIT event...
-        EventsManager.getInstance().processEvent(new GenericEvent(
-          this,
-          "InsertInSerialNumbersBeanre.insertInSerialNumbers",
-          GenericEvent.BEFORE_COMMIT,
-          (JAIOUserSessionParameters)userSessionPars,
-          request,
-          response,
-          userSession,
-          context,
-          conn,
-          vo,
-          answer
-        ));
+      // fires the GenericEvent.BEFORE_COMMIT event...
+      EventsManager.getInstance().processEvent(new GenericEvent(
+        this,
+        "InsertInSerialNumbersBeanre.insertInSerialNumbers",
+        GenericEvent.BEFORE_COMMIT,
+        (JAIOUserSessionParameters)userSessionPars,
+        request,
+        response,
+        userSession,
+        context,
+        conn,
+        vo,
+        answer
+      ));
 
 
-        return answer;
+      return answer;
     }
     catch (Throwable ex) {
       Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"reinsertInSerialNumbers","Error while creating serial numbers in DOC11 table.",ex);

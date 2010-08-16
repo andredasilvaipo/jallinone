@@ -129,12 +129,33 @@ public class UpdateSaleDocRowAction implements Action {
       attribute2dbField.put("discountPercDOC02","DISCOUNT_PERC");
       attribute2dbField.put("invoiceQtyDOC02","INVOICE_QTY");
 
+      attribute2dbField.put("variantTypeItm06DOC02","VARIANT_TYPE_ITM06");
+      attribute2dbField.put("variantCodeItm11DOC02","VARIANT_CODE_ITM11");
+      attribute2dbField.put("variantTypeItm07DOC02","VARIANT_TYPE_ITM07");
+      attribute2dbField.put("variantCodeItm12DOC02","VARIANT_CODE_ITM12");
+      attribute2dbField.put("variantTypeItm08DOC02","VARIANT_TYPE_ITM08");
+      attribute2dbField.put("variantCodeItm13DOC02","VARIANT_CODE_ITM13");
+      attribute2dbField.put("variantTypeItm09DOC02","VARIANT_TYPE_ITM09");
+      attribute2dbField.put("variantCodeItm14DOC02","VARIANT_CODE_ITM14");
+      attribute2dbField.put("variantTypeItm10DOC02","VARIANT_TYPE_ITM10");
+      attribute2dbField.put("variantCodeItm15DOC02","VARIANT_CODE_ITM15");
+
       HashSet pkAttributes = new HashSet();
       pkAttributes.add("companyCodeSys01DOC02");
       pkAttributes.add("docTypeDOC02");
       pkAttributes.add("docYearDOC02");
       pkAttributes.add("docNumberDOC02");
       pkAttributes.add("itemCodeItm01DOC02");
+      pkAttributes.add("variantTypeItm06DOC02");
+      pkAttributes.add("variantCodeItm11DOC02");
+      pkAttributes.add("variantTypeItm07DOC02");
+      pkAttributes.add("variantCodeItm12DOC02");
+      pkAttributes.add("variantTypeItm08DOC02");
+      pkAttributes.add("variantCodeItm13DOC02");
+      pkAttributes.add("variantTypeItm09DOC02");
+      pkAttributes.add("variantCodeItm14DOC02");
+      pkAttributes.add("variantTypeItm10DOC02");
+      pkAttributes.add("variantCodeItm15DOC02");
 
       // update DOC02 table...
       Response res = QueryUtil.updateTable(
@@ -176,10 +197,35 @@ public class UpdateSaleDocRowAction implements Action {
         return totalRes;
       }
 
+      // insert serial numbers...
+      if (newVO.getSerialNumbers().size()>0) {
+        Response serialRes = serialNumBean.reinsertSaleSerialNumbers(newVO,conn,userSessionPars,request,response,userSession,context);
+        if (serialRes.isError()) {
+          conn.rollback();
+          return serialRes;
+        }
+      }
+
       // reload v.o. after updating taxable incomes...
       res = load.loadSaleDocRow(
         conn,
-        new SaleDocRowPK(pk.getCompanyCodeSys01DOC01(),pk.getDocTypeDOC01(),pk.getDocYearDOC01(),pk.getDocNumberDOC01(),newVO.getItemCodeItm01DOC02()),
+        new SaleDocRowPK(
+          pk.getCompanyCodeSys01DOC01(),
+          pk.getDocTypeDOC01(),
+          pk.getDocYearDOC01(),
+          pk.getDocNumberDOC01(),
+          newVO.getItemCodeItm01DOC02(),
+          newVO.getVariantTypeItm06DOC02(),
+          newVO.getVariantCodeItm11DOC02(),
+          newVO.getVariantTypeItm07DOC02(),
+          newVO.getVariantCodeItm12DOC02(),
+          newVO.getVariantTypeItm08DOC02(),
+          newVO.getVariantCodeItm13DOC02(),
+          newVO.getVariantTypeItm09DOC02(),
+          newVO.getVariantCodeItm14DOC02(),
+          newVO.getVariantTypeItm10DOC02(),
+          newVO.getVariantCodeItm15DOC02()
+        ),
         userSessionPars,
         request,
         response,
@@ -191,15 +237,6 @@ public class UpdateSaleDocRowAction implements Action {
         return res;
       }
       newVO = (DetailSaleDocRowVO)((VOResponse)res).getVo();
-
-      // insert serial numbers...
-      if (newVO.getSerialNumbers().size()>0) {
-        Response serialRes = serialNumBean.reinsertSaleSerialNumbers(newVO,conn,userSessionPars,request,response,userSession,context);
-        if (serialRes.isError()) {
-          conn.rollback();
-          return serialRes;
-        }
-      }
 
       Response answer = new VOResponse(newVO);
 

@@ -3,6 +3,9 @@ package org.jallinone.warehouse.tables.movements.java;
 import org.openswing.swing.message.receive.java.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import org.jallinone.commons.java.*;
+
+
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -52,7 +55,17 @@ public class MovementVO extends ValueObjectImpl {
   private String descriptionWAR01;
   private java.math.BigDecimal progressiveHie02ITM01;
   private ArrayList serialNumbers = new ArrayList();
-  private ArrayList barCodes = new ArrayList();
+
+  private String variantTypeItm06WAR02;
+  private String variantCodeItm11WAR02;
+  private String variantTypeItm07WAR02;
+  private String variantCodeItm12WAR02;
+  private String variantTypeItm08WAR02;
+  private String variantCodeItm13WAR02;
+  private String variantTypeItm09WAR02;
+  private String variantCodeItm14WAR02;
+  private String variantTypeItm10WAR02;
+  private String variantCodeItm15WAR02;
 
 
   public MovementVO() {
@@ -144,7 +157,35 @@ public class MovementVO extends ValueObjectImpl {
     this.motiveDescriptionSYS10 = motiveDescriptionSYS10;
   }
   public String getItemDescriptionSYS10() {
-    return itemDescriptionSYS10;
+    String aux = itemDescriptionSYS10;
+    if (aux==null)
+      return null;
+
+    if (variantTypeItm06WAR02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm06WAR02))
+      aux += " "+variantTypeItm06WAR02;
+    if (variantCodeItm11WAR02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm11WAR02))
+      aux += " "+variantCodeItm11WAR02;
+
+    if (variantTypeItm07WAR02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm07WAR02))
+      aux += " "+variantTypeItm07WAR02;
+    if (variantCodeItm12WAR02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm12WAR02))
+      aux += " "+variantCodeItm12WAR02;
+
+    if (variantTypeItm08WAR02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm08WAR02))
+      aux += " "+variantTypeItm08WAR02;
+    if (variantCodeItm13WAR02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm13WAR02))
+      aux += " "+variantCodeItm13WAR02;
+
+    if (variantTypeItm09WAR02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm09WAR02))
+      aux += " "+variantTypeItm09WAR02;
+    if (variantCodeItm14WAR02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm14WAR02))
+      aux += " "+variantCodeItm14WAR02;
+
+    if (variantTypeItm10WAR02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm10WAR02))
+      aux += " "+variantTypeItm10WAR02;
+    if (variantCodeItm15WAR02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm15WAR02))
+      aux += " "+variantCodeItm15WAR02;
+    return aux;
   }
   public void setItemDescriptionSYS10(String itemDescriptionSYS10) {
     this.itemDescriptionSYS10 = itemDescriptionSYS10;
@@ -161,17 +202,71 @@ public class MovementVO extends ValueObjectImpl {
   public void setProgressiveHie02ITM01(java.math.BigDecimal progressiveHie02ITM01) {
     this.progressiveHie02ITM01 = progressiveHie02ITM01;
   }
-  public ArrayList getBarCodes() {
-    return barCodes;
-  }
-  public void setBarCodes(ArrayList barCodes) {
-    this.barCodes = barCodes;
-  }
   public void setSerialNumbers(ArrayList serialNumbers) {
     this.serialNumbers = serialNumbers;
   }
   public ArrayList getSerialNumbers() {
     return serialNumbers;
+  }
+  public String getVariantCodeItm11WAR02() {
+    return variantCodeItm11WAR02;
+  }
+  public String getVariantCodeItm13WAR02() {
+    return variantCodeItm13WAR02;
+  }
+  public String getVariantCodeItm14WAR02() {
+    return variantCodeItm14WAR02;
+  }
+  public String getVariantCodeItm15WAR02() {
+    return variantCodeItm15WAR02;
+  }
+  public String getVariantTypeItm06WAR02() {
+    return variantTypeItm06WAR02;
+  }
+  public String getVariantTypeItm07WAR02() {
+    return variantTypeItm07WAR02;
+  }
+  public String getVariantTypeItm08WAR02() {
+    return variantTypeItm08WAR02;
+  }
+  public String getVariantTypeItm09WAR02() {
+    return variantTypeItm09WAR02;
+  }
+  public String getVariantTypeItm10WAR02() {
+    return variantTypeItm10WAR02;
+  }
+  public void setVariantTypeItm10WAR02(String variantTypeItm10WAR02) {
+    this.variantTypeItm10WAR02 = variantTypeItm10WAR02;
+  }
+  public void setVariantTypeItm09WAR02(String variantTypeItm09WAR02) {
+    this.variantTypeItm09WAR02 = variantTypeItm09WAR02;
+  }
+  public void setVariantTypeItm08WAR02(String variantTypeItm08WAR02) {
+    this.variantTypeItm08WAR02 = variantTypeItm08WAR02;
+  }
+  public void setVariantTypeItm07WAR02(String variantTypeItm07WAR02) {
+    this.variantTypeItm07WAR02 = variantTypeItm07WAR02;
+  }
+  public void setVariantTypeItm06WAR02(String variantTypeItm06WAR02) {
+    this.variantTypeItm06WAR02 = variantTypeItm06WAR02;
+  }
+  public void setVariantCodeItm15WAR02(String variantCodeItm15WAR02) {
+    this.variantCodeItm15WAR02 = variantCodeItm15WAR02;
+  }
+  public void setVariantCodeItm14WAR02(String variantCodeItm14WAR02) {
+    this.variantCodeItm14WAR02 = variantCodeItm14WAR02;
+  }
+  public void setVariantCodeItm13WAR02(String variantCodeItm13WAR02) {
+    this.variantCodeItm13WAR02 = variantCodeItm13WAR02;
+  }
+  public void setVariantCodeItm12WAR02(String variantCodeItm12WAR02) {
+    this.variantCodeItm12WAR02 = variantCodeItm12WAR02;
+  }
+  public void setVariantCodeItm11WAR02(String variantCodeItm11WAR02) {
+    this.variantCodeItm11WAR02 = variantCodeItm11WAR02;
+  }
+  public String getVariantCodeItm12WAR02() {
+    return variantCodeItm12WAR02;
   }
 
 }

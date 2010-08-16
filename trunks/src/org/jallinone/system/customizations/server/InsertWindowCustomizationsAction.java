@@ -96,7 +96,7 @@ public class InsertWindowCustomizationsAction implements Action {
 
 
       String sql = null;
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       stmt = conn.createStatement();
       boolean columnAlreadyExist = false;
       String attrName = null;

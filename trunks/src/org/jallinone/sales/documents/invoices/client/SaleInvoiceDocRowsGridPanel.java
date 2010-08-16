@@ -32,7 +32,8 @@ import org.jallinone.warehouse.availability.client.OrderedItemsPanel;
 import org.jallinone.sales.documents.itemdiscounts.client.*;
 import java.util.HashSet;
 import org.jallinone.sales.documents.client.*;
-
+import org.jallinone.variants.client.ProductVariantsPanel;
+import org.jallinone.variants.client.ProductVariantsController;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -142,7 +143,6 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
   OrderedItemsPanel orderedItemsPanel = new OrderedItemsPanel(false,true);
   SaleDocRowDiscountsPanel discountsPanel;
 
-  BorderLayout borderLayout2 = new BorderLayout();
   JPanel southPanel = new JPanel();
 
   /** used to enable insert/edit of item rows and item discounts */
@@ -150,6 +150,31 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
 
   /** used to enable delete of item rows and item discounts */
   private boolean enabledDelete;
+
+  private int splitDiv = 180;
+
+  private ProductVariantsPanel variantsPanel = new ProductVariantsPanel(
+      new ProductVariantsController() {
+
+        public BigDecimal validateQty(BigDecimal qty) {
+          return qty;
+        }
+
+        public void qtyUpdated(BigDecimal qty) {
+          updateTotals();
+        }
+
+      },
+      detailPanel,
+      controlItemCode,
+      itemController,
+      "loadProductVariantsMatrix",
+      //"loadSaleDocVariantsRow",
+      controlQty,
+      splitPane,
+      splitDiv
+  );
+  GridBagLayout gridBagLayout2 = new GridBagLayout();
 
 
   public SaleInvoiceDocRowsGridPanel(InvoiceDocument frame,Form headerPanel,boolean enabledInsertEdit,boolean enabledDelete) {
@@ -279,7 +304,7 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
     final Domain d = new Domain("ITEM_TYPES");
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (ItemTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
@@ -341,7 +366,7 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
     grid.setValueObjectClassName("org.jallinone.sales.documents.java.GridSaleDocRowVO");
     detailPanel.setLayout(gridBagLayout1);
     detailPanel.setBorder(titledBorder1);
-    detailPanel.setMinimumSize(new Dimension(740, 140));
+    //detailPanel.setMinimumSize(new Dimension(740, 140));
     if (enabledInsertEdit) {
       detailPanel.setInsertButton(insertButton1);
       detailPanel.setEditButton(editButton1);
@@ -520,9 +545,11 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
     grid.getColumnContainer().add(colTotalDisc, null);
     splitPane.add(itemTabbedPane, JSplitPane.BOTTOM);
 
-    southPanel.setLayout(borderLayout2);
-    southPanel.add(detailPanel,BorderLayout.NORTH);
-    southPanel.add(discountsPanel,BorderLayout.CENTER);
+    southPanel.setLayout(gridBagLayout2);
+    southPanel.add(detailPanel,   new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+    southPanel.add(discountsPanel,   new GridBagConstraints(0, 1, 1, 1, 1.0, 1.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
     itemTabbedPane.add(southPanel,"item");
     itemTabbedPane.add(bookedItemsPanel,"booked items and availability");
@@ -533,7 +560,7 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
 
     detailPanel.add(labelItemCode,         new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(controlItemCode,                      new GridBagConstraints(2, 0, 2, 1, 0.0, 0.0
+    detailPanel.add(controlItemCode,                       new GridBagConstraints(2, 0, 2, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 0), 20, 0));
     detailPanel.add(labelInvoiceQty,          new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
@@ -573,12 +600,18 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
     detailPanel.add(controlTotal,       new GridBagConstraints(8, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(controlItemType,     new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+    detailPanel.add(controlItemType,        new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     detailPanel.add(labelDeliveryDate,      new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
     detailPanel.add(controlDeliveryDate,        new GridBagConstraints(1, 4, 2, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 5, 5, 5), 40, 0));
+        ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 5, 5, 5), 40, 0));
+
+    detailPanel.add(variantsPanel,      new GridBagConstraints(0, 1, 9, 1, 1.0, 1.0
+            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+
+    discountsPanel.setMinimumSize(new Dimension(500, 180));
+    discountsPanel.setPreferredSize(new Dimension(700, 180));
 
     splitPane.setDividerLocation(180);
 
@@ -799,6 +832,11 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
    */
   public boolean isButtonDisabled(GenericButton button) {
     return false;
+  }
+
+
+  public ProductVariantsPanel getVariantsPanel() {
+    return variantsPanel;
   }
 
 

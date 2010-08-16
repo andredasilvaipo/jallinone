@@ -31,11 +31,18 @@ import org.jallinone.warehouse.availability.client.BookedItemsPanel;
 import org.jallinone.warehouse.availability.client.OrderedItemsPanel;
 import org.jallinone.sales.documents.itemdiscounts.client.*;
 import java.util.HashSet;
+import org.jallinone.variants.client.ProductVariantsPanel;
+import org.jallinone.variants.client.ProductVariantsController;
+import org.jallinone.warehouse.java.StoredSerialNumberVO;
+import org.openswing.swing.message.send.java.LookupValidationParams;
+import java.util.HashMap;
+import org.jallinone.items.java.VariantBarcodeVO;
 
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
- * <p>Description: Panel that contains the desk selling rows grid + row detail.</p>
+ * <p>Description: Panel that contains the desk selling rows grid + row detail.
+ * CONSTRAINT: items should be stored ONLY in the root location of the specified warehouse</p>
  * <p>Copyright: Copyright (C) 2006 Mauro Carniel</p>
  *
  * <p> This file is part of JAllInOne ERP/CRM application.
@@ -126,6 +133,7 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
 
   LookupServerDataLocator levelDataLocator = new LookupServerDataLocator();
   TreeServerDataLocator treeLevelDataLocator = new TreeServerDataLocator();
+
   ComboBoxControl controlItemType = new ComboBoxControl();
 
   /** header panel */
@@ -142,18 +150,42 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
   JPanel southPanel = new JPanel();
 
   private boolean serialNumberRequired = false;
-  LabelControl labelPos = new LabelControl();
-  CodLookupControl controlPos = new CodLookupControl();
+  LabelControl labelBarcode = new LabelControl();
 
-  /** warehouse position lookup controller */
-  LookupController posController = new LookupController();
-  LookupServerDataLocator posDataLocator = new LookupServerDataLocator();
-  TreeServerDataLocator treeLevelPosDataLocator = new TreeServerDataLocator();
   JPanel voidPanel = new JPanel();
   CurrencyControl controlDiscValue = new CurrencyControl();
   LabelControl labelDiscValue = new LabelControl();
   LabelControl labelDiscPerc = new LabelControl();
   NumericControl controlDiscPerc = new NumericControl();
+
+  private int splitDiv = 260;
+
+  private ProductVariantsPanel variantsPanel = new ProductVariantsPanel(
+      new ProductVariantsController() {
+
+        public BigDecimal validateQty(BigDecimal qty) {
+          return qty;
+        }
+
+        public void qtyUpdated(BigDecimal qty) {
+          updateTotals();
+        }
+
+      },
+      detailPanel,
+      controlItemCode,
+      itemController,
+      "loadProductVariantsMatrix",
+      //"loadSaleDocVariantsRow",
+      controlQty,
+      splitPane,
+      splitDiv
+  );
+  TextControl controlBarCode = new TextControl();
+  LabelControl labelSN = new LabelControl();
+  CodLookupControl controlSN = new CodLookupControl();
+  LookupController serialNumberController = new LookupController();
+  LookupServerDataLocator serialNumberLocator = new LookupServerDataLocator();
 
 
   public SaleDeskDocRowsGridPanel(SaleDeskDocFrame frame,Form headerPanel) {
@@ -263,28 +295,101 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
       });
 
 
-      // warehouse position code lookup...
-      controlPos.setLookupController(posController);
-      posController.setLookupDataLocator(posDataLocator);
-      posController.setFrameTitle("warehouse positions");
+      // barcode validation...
+      controlBarCode.setTrimText(true);
+      controlBarCode.setUpperCase(true);
+      controlBarCode.addFocusListener(new FocusAdapter() {
+        public void focusLost(FocusEvent e) {
+          checkBarcode();
+        }
+      });
+      controlBarCode.addKeyListener(new KeyAdapter() {
+        public void keyPressed(KeyEvent e) {
+          if (e.getKeyCode()==e.VK_ENTER)
+            checkBarcode();
+        }
+      });
 
-      posController.setCodeSelectionWindow(posController.TREE_FRAME);
-      treeLevelPosDataLocator.setServerMethodName("loadHierarchy");
-      posDataLocator.setTreeDataLocator(treeLevelPosDataLocator);
-      posDataLocator.setNodeNameAttribute("descriptionSYS10");
-      posController.setAllowTreeLeafSelectionOnly(false);
-      posController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.HierarchyLevelVO");
-      posController.addLookup2ParentLink("progressiveHIE01", "progressiveHie01DOC02");
-      posController.addLookup2ParentLink("descriptionSYS10","positionDescriptionSYS10");
-      posController.setFramePreferedSize(new Dimension(400,400));
-      posController.addLookupListener(new LookupListener() {
+
+      // serial number lookup...
+      serialNumberLocator.setGridMethodName("loadStoredSerialNumbers");
+      serialNumberLocator.setValidationMethodName("validateStoredSerialNumber");
+
+      controlSN.setAutoCompletitionWaitTime(0);
+      controlSN.setLookupController(serialNumberController);
+      serialNumberController.setLookupDataLocator(serialNumberLocator);
+      serialNumberController.setFrameTitle("serialNumbers");
+      serialNumberController.setLookupValueObjectClassName("org.jallinone.warehouse.java.StoredSerialNumberVO");
+
+      serialNumberController.setAllColumnVisible(false);
+      serialNumberController.setVisibleColumn("itemCodeItm01WAR05", true);
+      serialNumberController.setVisibleColumn("serialNumberWAR05", true);
+      serialNumberController.setVisibleColumn("barCodeWAR05", true);
+      serialNumberController.setFramePreferedSize(new Dimension(350,500));
+      serialNumberController.addLookupListener(new LookupListener() {
 
         public void codeValidated(boolean validated) {}
 
-        public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) { }
+        public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {
+          try {
+            if (controlSN.getValue()==null || controlSN.getValue().equals(""))
+              return;
+
+            DetailSaleDocRowVO vo = (DetailSaleDocRowVO)getDetailPanel().getVOModel().getValueObject();
+
+            if (serialNumberController.getLookupVO()!=null) {
+              // pre-fill qty = 1 in variants panel...
+              StoredSerialNumberVO snVO = (StoredSerialNumberVO)serialNumberController.getLookupVO();
+              variantsPanel.setVariantsBarcode(null);
+              variantsPanel.setSN(snVO);
+
+              ArrayList sn = new ArrayList();
+              sn.add(snVO.getSerialNumberWAR05());
+              vo.setSerialNumbers(sn);
+
+              vo.setCompanyCodeSys01DOC02(snVO.getCompanyCodeSys01WAR05());
+              vo.setItemCodeItm01DOC02(snVO.getItemCodeItm01WAR05());
+              vo.setVariantTypeItm06DOC02(snVO.getVariantTypeItm06WAR05());
+              vo.setVariantCodeItm11DOC02(snVO.getVariantCodeItm11WAR05());
+              vo.setVariantTypeItm07DOC02(snVO.getVariantTypeItm07WAR05());
+              vo.setVariantCodeItm12DOC02(snVO.getVariantCodeItm12WAR05());
+              vo.setVariantTypeItm08DOC02(snVO.getVariantTypeItm08WAR05());
+              vo.setVariantCodeItm13DOC02(snVO.getVariantCodeItm13WAR05());
+              vo.setVariantTypeItm09DOC02(snVO.getVariantTypeItm09WAR05());
+              vo.setVariantCodeItm14DOC02(snVO.getVariantCodeItm14WAR05());
+              vo.setVariantTypeItm10DOC02(snVO.getVariantTypeItm10WAR05());
+              vo.setVariantCodeItm15DOC02(snVO.getVariantCodeItm15WAR05());
+
+            }
+            else {
+              variantsPanel.setVariantsBarcode(null);
+              variantsPanel.setSN(null);
+              vo.setSerialNumbers(new ArrayList());
+              vo.setItemCodeItm01DOC02(null);
+              vo.setVariantTypeItm06DOC02(null);
+              vo.setVariantCodeItm11DOC02(null);
+              vo.setVariantTypeItm07DOC02(null);
+              vo.setVariantCodeItm12DOC02(null);
+              vo.setVariantTypeItm08DOC02(null);
+              vo.setVariantCodeItm13DOC02(null);
+              vo.setVariantTypeItm09DOC02(null);
+              vo.setVariantCodeItm14DOC02(null);
+              vo.setVariantTypeItm10DOC02(null);
+              vo.setVariantCodeItm15DOC02(null);
+            }
+            itemController.forceValidate();
+          }
+          catch (Exception ex) {
+            ex.printStackTrace();
+          }
+        }
 
         public void beforeLookupAction(ValueObject parentVO) {
-          treeLevelPosDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,getParentVO().getProgressiveHie02WAR01());
+          DetailSaleDocVO vo = (DetailSaleDocVO)getParentVO();
+          serialNumberLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC01());
+          serialNumberLocator.getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_HIE01,vo.getProgressiveHie01HIE02());
+          serialNumberLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC01());
+          serialNumberLocator.getLookupValidationParameters().put(ApplicationConsts.PROGRESSIVE_HIE01,vo.getProgressiveHie01HIE02());
         }
 
         public void forceValidate() {}
@@ -305,6 +410,83 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
   }
 
 
+  private void checkBarcode() {
+    if (controlBarCode.getValue()==null || controlBarCode.getValue().equals(""))
+      return;
+
+    try {
+      controlSN.setEnabled(false);
+
+      // validate variants barcode...
+      DetailSaleDocRowVO vo = (DetailSaleDocRowVO)getDetailPanel().getVOModel().getValueObject();
+      LookupValidationParams pars = new LookupValidationParams((String)controlBarCode.getValue(),new HashMap());
+      pars.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,getParentVO().getCompanyCodeSys01DOC01());
+      Response res = ClientUtils.getData("validateVariantBarcode",pars);
+      if (!res.isError()) {
+        java.util.List rows = ( (VOListResponse) res).getRows();
+        if (rows.size() == 1) {
+          // found variants barcode: pre-fill code and qty in variants matrix...
+          VariantBarcodeVO itemVO = (VariantBarcodeVO)rows.get(0);
+          vo.setSerialNumbers(new ArrayList());
+          vo.setCompanyCodeSys01DOC02(itemVO.getCompanyCodeSys01ITM22());
+          vo.setItemCodeItm01DOC02(itemVO.getItemCodeItm01ITM22());
+          vo.setVariantTypeItm06DOC02(itemVO.getVariantTypeItm06ITM22());
+          vo.setVariantCodeItm11DOC02(itemVO.getVariantCodeItm11ITM22());
+          vo.setVariantTypeItm07DOC02(itemVO.getVariantTypeItm07ITM22());
+          vo.setVariantCodeItm12DOC02(itemVO.getVariantCodeItm12ITM22());
+          vo.setVariantTypeItm08DOC02(itemVO.getVariantTypeItm08ITM22());
+          vo.setVariantCodeItm13DOC02(itemVO.getVariantCodeItm13ITM22());
+          vo.setVariantTypeItm09DOC02(itemVO.getVariantTypeItm09ITM22());
+          vo.setVariantCodeItm14DOC02(itemVO.getVariantCodeItm14ITM22());
+          vo.setVariantTypeItm10DOC02(itemVO.getVariantTypeItm10ITM22());
+          vo.setVariantCodeItm15DOC02(itemVO.getVariantCodeItm15ITM22());
+
+          variantsPanel.setVariantsBarcode(itemVO);
+          variantsPanel.setSN(null);
+          controlItemCode.setValue(itemVO.getItemCodeItm01ITM22());
+          itemController.forceValidate();
+          controlBarCode.setValue(null);
+          return;
+        }
+      }
+      else {
+        // validate item barcode...
+        pars = new LookupValidationParams((String)controlBarCode.getValue(),new HashMap());
+        pars.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,getParentVO().getCompanyCodeSys01DOC01());
+        pars.getLookupValidationParameters().put(ApplicationConsts.PRICELIST,getParentVO().getPricelistCodeSal01DOC01());
+        pars.getLookupValidationParameters().put(ApplicationConsts.VALIDATE_BARCODE,Boolean.TRUE);
+        res = ClientUtils.getData("validatePriceItemCode",pars);
+        if (!res.isError()) {
+          java.util.List rows = ((VOListResponse)res).getRows();
+          if (rows.size()==1) {
+            PriceItemVO itemVO = (PriceItemVO)rows.get(0);
+            vo.setSerialNumbers(new ArrayList());
+            vo.setCompanyCodeSys01DOC02(itemVO.getCompanyCodeSys01());
+            vo.setItemCodeItm01DOC02(itemVO.getItemCodeItm01());
+            variantsPanel.setVariantsBarcode(null);
+            variantsPanel.setSN(null);
+            itemController.forceValidate();
+            controlBarCode.setValue(null);
+            return;
+          }
+        }
+      }
+
+      vo.setSerialNumbers(new ArrayList());
+      variantsPanel.setVariantsBarcode(null);
+      variantsPanel.setSN(null);
+      itemController.forceValidate();
+    }
+    catch (Exception ex) {
+      ex.printStackTrace();
+    }
+    finally {
+      controlSN.setEnabled(true);
+    }
+
+  }
+
+
   /**
    * Retrieve item types and fill in the item types combo box and
    * set buttons disabilitation...
@@ -314,7 +496,7 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     final Domain d = new Domain("ITEM_TYPES");
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (ItemTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
@@ -338,6 +520,14 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
           int selIndex = ((JComboBox)e.getSource()).getSelectedIndex();
           Object selValue = d.getDomainPairList()[selIndex].getCode();
           treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,selValue);
+
+          detailPanel.pull(controlItemCode.getAttributeName());
+          try {
+            controlItemCode.validateCode(null);
+          }
+          catch (Exception ex) {
+          }
+
         }
       }
     });
@@ -355,6 +545,10 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
 
 
   private void jbInit() throws Exception {
+
+    controlBarCode.setEnabledOnEdit(false);
+    controlBarCode.setMaxCharacters(255);
+
     titledBorder1 = new TitledBorder("");
     this.setLayout(borderLayout1);
     buttonsPanel.setLayout(flowLayout1);
@@ -516,17 +710,13 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     controlItemType.setRequired(true);
     controlItemType.setEnabledOnEdit(false);
 
-    labelPos.setText("locationDescriptionSYS10");
-    controlPos.setEnableCodBox(false);
-    controlPos.setLinkLabel(labelPos);
-    controlPos.setRequired(true);
-    controlPos.setAttributeName("positionDescriptionSYS10");
+    labelBarcode.setText("barcode");
     controlDiscValue.setDecimals(5);
     controlDiscValue.setCanCopy(true);
-    controlDiscValue.setAttributeName("discountValueDOC02");
+    controlDiscValue.setAttributeName("discountValue");
     controlDiscValue.addFocusListener(new SaleDeskDocRowsGridPanel_controlDiscValue_focusAdapter(this));
     controlDiscValue.setLinkLabel(labelDiscValue);
-    labelDiscValue.setText("discount value");
+    labelDiscValue.setText("net discount value");
     labelDiscPerc.setText("discount perc");
     controlDiscPerc.setMinValue(0.0);
     controlDiscPerc.setMaxValue(100.0);
@@ -535,6 +725,9 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     controlDiscPerc.setCanCopy(true);
     controlDiscPerc.setAttributeName("discountPercDOC02");
     controlDiscPerc.addFocusListener(new SaleDeskDocRowsGridPanel_controlDiscPerc_focusAdapter(this));
+    labelSN.setText("serial number");
+    controlSN.setEnabledOnEdit(false);
+    controlSN.setLookupButtonVisible(false);
     this.add(buttonsPanel, BorderLayout.NORTH);
     this.add(splitPane,  BorderLayout.CENTER);
     buttonsPanel.add(insertButton1, null);
@@ -568,64 +761,70 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     itemTabbedPane.setTitleAt(1,ClientSettings.getInstance().getResources().getResource("booked items and availability"));
     itemTabbedPane.setTitleAt(2,ClientSettings.getInstance().getResources().getResource("future item availability"));
 
-    detailPanel.add(labelItemCode,                               new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(10, 5, 5, 5), 0, 0));
-    detailPanel.add(controlItemCode,                                            new GridBagConstraints(2, 0, 2, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(10, 0, 5, 0), 20, 0));
-    detailPanel.add(labelQty,                                new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+    detailPanel.add(labelItemCode,                                 new GridBagConstraints(0, 1, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 0, 0));
+    detailPanel.add(controlItemCode,                                                  new GridBagConstraints(3, 1, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 30, 0));
+    detailPanel.add(labelQty,                                  new GridBagConstraints(0, 4, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlQty,                                 new GridBagConstraints(1, 2, 2, 1, 0.0, 0.0
+    detailPanel.add(controlQty,                                   new GridBagConstraints(2, 4, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 20, 0));
-    detailPanel.add(labelVat,                              new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+    detailPanel.add(labelVat,                                new GridBagConstraints(0, 3, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlVatCode,                                  new GridBagConstraints(1, 1, 2, 1, 0.0, 0.0
+    detailPanel.add(controlVatCode,                                    new GridBagConstraints(2, 3, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(controlVatDescr,                                new GridBagConstraints(3, 1, 2, 1, 0.0, 0.0
+    detailPanel.add(controlVatDescr,                                  new GridBagConstraints(4, 3, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 5, 5), 70, 0));
-    detailPanel.add(labelValueReg01,                              new GridBagConstraints(5, 1, 1, 1, 0.0, 0.0
+    detailPanel.add(labelValueReg01,                                new GridBagConstraints(6, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlValueReg01,                                 new GridBagConstraints(6, 1, 1, 1, 0.0, 0.0
+    detailPanel.add(controlValueReg01,                                   new GridBagConstraints(7, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(labelDeductibleReg01,                              new GridBagConstraints(7, 1, 1, 1, 0.0, 0.0
+    detailPanel.add(labelDeductibleReg01,                                new GridBagConstraints(8, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlDeductibleReg01,                               new GridBagConstraints(8, 1, 1, 1, 0.0, 0.0
+    detailPanel.add(controlDeductibleReg01,                                 new GridBagConstraints(9, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(controlItemDescr,                             new GridBagConstraints(4, 0, 5, 1, 1.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(10, 5, 5, 5), 0, 0));
-    detailPanel.add(controlUmCode,                               new GridBagConstraints(3, 2, 2, 1, 0.0, 0.0
+    detailPanel.add(controlItemDescr,                                  new GridBagConstraints(5, 1, 5, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 0, 0));
+    detailPanel.add(controlUmCode,                                 new GridBagConstraints(4, 4, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 5, 5), 70, 0));
-    detailPanel.add(labelPriceUnit,                           new GridBagConstraints(5, 2, 1, 2, 0.0, 0.0
+    detailPanel.add(labelPriceUnit,                             new GridBagConstraints(6, 4, 1, 2, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlPriceUnit,                            new GridBagConstraints(6, 2, 1, 2, 0.0, 0.0
+    detailPanel.add(controlPriceUnit,                              new GridBagConstraints(7, 4, 1, 2, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(labelVatValue,                           new GridBagConstraints(7, 2, 1, 2, 0.0, 0.0
+    detailPanel.add(labelVatValue,                             new GridBagConstraints(8, 4, 1, 2, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlTotalDisc,                              new GridBagConstraints(6, 5, 1, 1, 0.0, 0.0
+    detailPanel.add(controlTotalDisc,                                new GridBagConstraints(7, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 10, 5), 20, 0));
-    detailPanel.add(labelTotalDisc,                             new GridBagConstraints(5, 5, 1, 1, 0.0, 0.0
+    detailPanel.add(labelTotalDisc,                               new GridBagConstraints(6, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 10, 5), 0, 0));
-    detailPanel.add(controlVatValue,                            new GridBagConstraints(8, 2, 1, 2, 0.0, 0.0
+    detailPanel.add(controlVatValue,                              new GridBagConstraints(9, 4, 1, 2, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(labelTotal,                             new GridBagConstraints(7, 5, 1, 1, 0.0, 0.0
+    detailPanel.add(labelTotal,                               new GridBagConstraints(8, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 10, 5), 0, 0));
-    detailPanel.add(controlTotal,                              new GridBagConstraints(8, 5, 1, 1, 0.0, 0.0
+    detailPanel.add(controlTotal,                                new GridBagConstraints(9, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 10, 5), 20, 0));
-    detailPanel.add(controlItemType,                           new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(10, 5, 5, 5), 0, 0));
-    detailPanel.add(voidPanel,                      new GridBagConstraints(0, 6, 1, 1, 0.0, 1.0
+    detailPanel.add(controlItemType,                                new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    detailPanel.add(voidPanel,                        new GridBagConstraints(0, 8, 2, 1, 0.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-    detailPanel.add(controlDiscPerc,   new GridBagConstraints(8, 4, 1, 1, 0.0, 0.0
+    detailPanel.add(controlDiscPerc,     new GridBagConstraints(9, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(labelDiscPerc, new GridBagConstraints(7, 4, 1, 1, 0.0, 0.0
+    detailPanel.add(labelDiscPerc,   new GridBagConstraints(8, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlDiscValue,  new GridBagConstraints(6, 4, 1, 1, 0.0, 0.0
+    detailPanel.add(controlDiscValue,    new GridBagConstraints(7, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(labelDiscValue, new GridBagConstraints(5, 4, 1, 1, 0.0, 0.0
+    detailPanel.add(labelDiscValue,   new GridBagConstraints(6, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(labelPos,  new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlPos,   new GridBagConstraints(1, 4, 3, 1, 1.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 5, 5, 5), 0, 0));
+    detailPanel.add(variantsPanel,    new GridBagConstraints(0, 2, 10, 1, 1.0, 1.0
+            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+    detailPanel.add(labelBarcode,    new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE, new Insets(10, 5, 5, 5), 0, 0));
+    detailPanel.add(controlBarCode,       new GridBagConstraints(2, 0, 3, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(10, 5, 0, 0), 0, 0));
+    detailPanel.add(labelSN,    new GridBagConstraints(5, 0, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.SOUTHEAST, GridBagConstraints.NONE, new Insets(10, 5, 5, 5), 0, 0));
+    detailPanel.add(controlSN,    new GridBagConstraints(7, 0, 3, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(10, 0, 0, 5), 0, 0));
 
     splitPane.setDividerLocation(250);
 
@@ -843,6 +1042,12 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     return frame.getHeaderFormPanel();
   }
 
+
+  public ProductVariantsPanel getVariantsPanel() {
+    return variantsPanel;
+  }
+
+
   /**
    * Method NOT supported.
    */
@@ -863,7 +1068,23 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     DetailSaleDocRowVO vo = (DetailSaleDocRowVO)detailPanel.getVOModel().getValueObject();
     if (controlDiscPerc.getValue()!=null && controlDiscValue.getValue()!=null)
       vo.setDiscountPercDOC02(null);
-    vo.setDiscountValueDOC02(controlDiscValue.getBigDecimal());
+
+    //BigDecimal imp = controlPriceUnit.getBigDecimal().multiply(controlQty.getBigDecimal());
+    BigDecimal vat = controlValueReg01.getBigDecimal();
+    BigDecimal x = controlDiscValue.getBigDecimal();
+    BigDecimal d = null;
+    if (x!=null)
+      d = x.divide(
+        new BigDecimal(1).add(
+          vat.divide(
+            new BigDecimal(100),
+            BigDecimal.ROUND_HALF_UP
+          )
+        ),
+        controlDiscValue.getDecimals(),
+        BigDecimal.ROUND_HALF_UP
+      );
+    vo.setDiscountValueDOC02(d);
     updateTotals();
   }
 
@@ -874,6 +1095,12 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
       vo.setDiscountValueDOC02(null);
     vo.setDiscountPercDOC02(controlDiscPerc.getBigDecimal());
     updateTotals();
+  }
+  public TextControl getControlBarCode() {
+    return controlBarCode;
+  }
+  public CodLookupControl getControlSN() {
+    return controlSN;
   }
 
 

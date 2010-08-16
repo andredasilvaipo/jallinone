@@ -40,6 +40,7 @@ public class ComponentVO extends ValueObjectImpl {
   private java.math.BigDecimal versionITM03;
   private java.math.BigDecimal revisionITM03;
   private java.math.BigDecimal qtyITM03;
+  private String minSellingQtyUmCodeReg02ITM01;
   private java.sql.Date startDateITM03;
   private java.sql.Date endDateITM03;
   private String descriptionSYS10;
@@ -125,6 +126,12 @@ public class ComponentVO extends ValueObjectImpl {
   }
   public void setEnabledITM03(String enabledITM03) {
     this.enabledITM03 = enabledITM03;
+  }
+  public String getMinSellingQtyUmCodeReg02ITM01() {
+    return minSellingQtyUmCodeReg02ITM01;
+  }
+  public void setMinSellingQtyUmCodeReg02ITM01(String minSellingQtyUmCodeReg02ITM01) {
+    this.minSellingQtyUmCodeReg02ITM01 = minSellingQtyUmCodeReg02ITM01;
   }
 
 

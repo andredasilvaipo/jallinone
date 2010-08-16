@@ -82,7 +82,7 @@ public class DeleteVatsAction implements Action {
         null
       ));
 
-      ArrayList list =  (ArrayList)inputPar;
+      java.util.List list =  (ArrayList)inputPar;
       VatVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in REG01...

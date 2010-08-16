@@ -92,7 +92,7 @@ public class BanksController extends GridController {
     frame.getFormPanel().setMode(Consts.READONLY);
 //    frame.getFormPanel().reload();
     frame.getFormPanel().executeReload();
-    frame.getFormPanel().setCurrentFocusedForm(frame.getFormPanel());
+    frame.getFormPanel().setFocusOnForm();
   }
 
 

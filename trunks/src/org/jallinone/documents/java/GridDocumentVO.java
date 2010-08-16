@@ -35,6 +35,7 @@ public class GridDocumentVO extends BaseValueObject {
 
   private String companyCodeSys01DOC14;
   private String descriptionDOC14;
+  private String filenameDOC14;
   private java.math.BigDecimal progressiveDOC14;
   private java.math.BigDecimal progressiveHie02HIE01;
   private java.math.BigDecimal progressiveHie01DOC17;
@@ -73,6 +74,12 @@ public class GridDocumentVO extends BaseValueObject {
   }
   public void setProgressiveHie02HIE01(java.math.BigDecimal progressiveHie02HIE01) {
     this.progressiveHie02HIE01 = progressiveHie02HIE01;
+  }
+  public String getFilenameDOC14() {
+    return filenameDOC14;
+  }
+  public void setFilenameDOC14(String filenameDOC14) {
+    this.filenameDOC14 = filenameDOC14;
   }
 
 

@@ -115,16 +115,20 @@ public class UpdateInDeliveryNoteRowsAction implements Action {
         attribute2dbField.put("progressiveHie01DOC09","PROGRESSIVE_HIE01");
         attribute2dbField.put("invoiceQtyDOC09","INVOICE_QTY");
 
+        attribute2dbField.put("progressiveDOC09","PROGRESSIVE");
+        attribute2dbField.put("variantTypeItm06DOC09","VARIANT_TYPE_ITM06");
+        attribute2dbField.put("variantCodeItm11DOC09","VARIANT_CODE_ITM11");
+        attribute2dbField.put("variantTypeItm07DOC09","VARIANT_TYPE_ITM07");
+        attribute2dbField.put("variantCodeItm12DOC09","VARIANT_CODE_ITM12");
+        attribute2dbField.put("variantTypeItm08DOC09","VARIANT_TYPE_ITM08");
+        attribute2dbField.put("variantCodeItm13DOC09","VARIANT_CODE_ITM13");
+        attribute2dbField.put("variantTypeItm09DOC09","VARIANT_TYPE_ITM09");
+        attribute2dbField.put("variantCodeItm14DOC09","VARIANT_CODE_ITM14");
+        attribute2dbField.put("variantTypeItm10DOC09","VARIANT_TYPE_ITM10");
+        attribute2dbField.put("variantCodeItm15DOC09","VARIANT_CODE_ITM15");
+
         HashSet pkAttributes = new HashSet();
-        pkAttributes.add("companyCodeSys01DOC09");
-        pkAttributes.add("docTypeDOC09");
-        pkAttributes.add("docYearDOC09");
-        pkAttributes.add("docNumberDOC09");
-        pkAttributes.add("docTypeDoc06DOC09");
-        pkAttributes.add("docYearDoc06DOC09");
-        pkAttributes.add("docNumberDoc06DOC09");
-        pkAttributes.add("rowNumberDOC09");
-        pkAttributes.add("itemCodeItm01DOC09");
+        pkAttributes.add("progressiveDOC09");
 
         // update DOC09 table...
         res = QueryUtil.updateTable(

@@ -118,7 +118,7 @@ public class JasperReportAction implements Action {
         new ErrorResponse(res.getResource("jasper file not found: report generation is not possible."));
       }
 
-      String path = this.getClass().getResource("/").getPath();
+      String path = this.getClass().getResource("/").getPath().replaceAll("%20"," ");
       String reportName = path+"reports/"+baseName.substring(0,baseName.lastIndexOf("."));
 
       File file = new File(reportName+".jasper");

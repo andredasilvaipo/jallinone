@@ -84,7 +84,7 @@ public class InsertHierarItemDiscountsAction implements Action {
         inputPar,
         null
       ));
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
 
       HierarItemDiscountVO vo = null;
       ResultSet rset = null;

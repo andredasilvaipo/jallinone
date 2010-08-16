@@ -78,7 +78,7 @@ public class DocumentsController extends CompanyGridController implements TreeCo
       }
 
       HierarchyLevelVO levelVO = (HierarchyLevelVO)node.getUserObject();
-      new DocumentController(frame,null,levelVO.getProgressiveHIE01());
+      new DocumentController(frame,null, frame.getSelectedDocumentType().getCompanyCodeSys01DOC16(),levelVO.getProgressiveHIE01());
     }
     return false;
   }
@@ -93,7 +93,7 @@ public class DocumentsController extends CompanyGridController implements TreeCo
     // create document detail frame in READONLY mode...
     GridDocumentVO vo = (GridDocumentVO)persistentObject;
     DocumentPK pk = new DocumentPK(vo.getCompanyCodeSys01DOC14(),vo.getProgressiveDOC14());
-    new DocumentController(frame,pk,null); /*@todo... */
+    new DocumentController(frame,pk,null,null); /*@todo... */
   }
 
 

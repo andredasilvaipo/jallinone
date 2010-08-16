@@ -197,6 +197,91 @@ public class InsertCompanyAction implements Action {
       );
 
 
+      // insert company variants definitions...
+      cloneRecordsAndDescriptions(
+          conn,
+          "TABLE_NAME,PROGRESSIVE_SYS10,USE_VARIANT_TYPE",
+          "ITM21_VARIANTS",
+          companyCode,
+          vo.getCompanyCodeSys01REG04()
+      );
+
+
+      // insert company variant types...
+      cloneRecordsAndDescriptions(
+          conn,
+          "VARIANT_TYPE,PROGRESSIVE_SYS10,ENABLED",
+              "ITM06_VARIANT_TYPES_1",
+              companyCode,
+              vo.getCompanyCodeSys01REG04()
+          );
+      cloneRecordsAndDescriptions(
+          conn,
+          "VARIANT_TYPE,PROGRESSIVE_SYS10,ENABLED",
+          "ITM07_VARIANT_TYPES_2",
+          companyCode,
+          vo.getCompanyCodeSys01REG04()
+      );
+      cloneRecordsAndDescriptions(
+          conn,
+          "VARIANT_TYPE,PROGRESSIVE_SYS10,ENABLED",
+          "ITM08_VARIANT_TYPES_3",
+          companyCode,
+          vo.getCompanyCodeSys01REG04()
+      );
+      cloneRecordsAndDescriptions(
+          conn,
+          "VARIANT_TYPE,PROGRESSIVE_SYS10,ENABLED",
+          "ITM09_VARIANT_TYPES_4",
+          companyCode,
+          vo.getCompanyCodeSys01REG04()
+      );
+      cloneRecordsAndDescriptions(
+          conn,
+          "VARIANT_TYPE,PROGRESSIVE_SYS10,ENABLED",
+          "ITM10_VARIANT_TYPES_5",
+          companyCode,
+          vo.getCompanyCodeSys01REG04()
+      );
+
+
+      // insert company variant types...
+      cloneRecordsAndDescriptions(
+           conn,
+           "VARIANT_CODE,VARIANT_TYPE_ITM06,PROGRESSIVE_SYS10,ENABLED",
+           "ITM11_VARIANTS_1",
+           companyCode,
+           vo.getCompanyCodeSys01REG04()
+      );
+      cloneRecordsAndDescriptions(
+           conn,
+           "VARIANT_CODE,VARIANT_TYPE_ITM07,PROGRESSIVE_SYS10,ENABLED",
+           "ITM12_VARIANTS_2",
+           companyCode,
+           vo.getCompanyCodeSys01REG04()
+      );
+      cloneRecordsAndDescriptions(
+           conn,
+           "VARIANT_CODE,VARIANT_TYPE_ITM08,PROGRESSIVE_SYS10,ENABLED",
+           "ITM13_VARIANTS_3",
+           companyCode,
+           vo.getCompanyCodeSys01REG04()
+      );
+      cloneRecordsAndDescriptions(
+           conn,
+           "VARIANT_CODE,VARIANT_TYPE_ITM09,PROGRESSIVE_SYS10,ENABLED",
+           "ITM14_VARIANTS_4",
+           companyCode,
+           vo.getCompanyCodeSys01REG04()
+      );
+      cloneRecordsAndDescriptions(
+           conn,
+           "VARIANT_CODE,VARIANT_TYPE_ITM10,PROGRESSIVE_SYS10,ENABLED",
+           "ITM15_VARIANTS_5",
+           companyCode,
+           vo.getCompanyCodeSys01REG04()
+      );
+
       Response answer = new VOResponse(vo);
 
       // fires the GenericEvent.BEFORE_COMMIT event...

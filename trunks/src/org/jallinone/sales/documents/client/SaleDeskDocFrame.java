@@ -88,7 +88,7 @@ public class SaleDeskDocFrame extends InternalFrame implements SaleDocument {
   DeleteButton deleteButton1 = new DeleteButton();
   GridBagLayout gridBagLayout1 = new GridBagLayout();
   SaleIdHeadPanel saleIdHeadPanel1 = new SaleIdHeadPanel(headerFormPanel,false,false);
-  SaleCustomerHeadPanel saleCustomerHeadPanel1 = new SaleCustomerHeadPanel(headerFormPanel);
+  SaleCustomerHeadPanel saleCustomerHeadPanel1 = new SaleCustomerHeadPanel(true,headerFormPanel);
   SaleTotalsPanel saleTotalsPanel1 = new SaleTotalsPanel(headerFormPanel);
   SaleDeskDocRowsGridPanel rowsPanel = new SaleDeskDocRowsGridPanel(this,headerFormPanel);
   GenericButton confirmButton = new GenericButton(new ImageIcon(ClientUtils.getImage("workflow.gif")));
@@ -141,6 +141,7 @@ public class SaleDeskDocFrame extends InternalFrame implements SaleDocument {
       wareController.addLookup2ParentLink("warehouseCodeWAR01", "warehouseCodeWar01DOC01");
       wareController.addLookup2ParentLink("descriptionWAR01","descriptionWar01DOC01");
       wareController.addLookup2ParentLink("progressiveHie02WAR01","progressiveHie02WAR01");
+      wareController.addLookup2ParentLink("progressiveHie01HIE02","progressiveHie01HIE02");
       wareController.setAllColumnVisible(false);
       wareController.setVisibleColumn("warehouseCodeWAR01", true);
       wareController.setVisibleColumn("descriptionWAR01", true);
@@ -284,8 +285,8 @@ public class SaleDeskDocFrame extends InternalFrame implements SaleDocument {
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
     warePanel.add(controlDescr,   new GridBagConstraints(2, 0, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    warePanel.add(controlWarehouseCode,  new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    warePanel.add(controlWarehouseCode,   new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 20, 0));
     warePanel.add(labelWarehouseCode,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     headerFormPanel.add(discPanel,    new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0
@@ -429,7 +430,7 @@ public class SaleDeskDocFrame extends InternalFrame implements SaleDocument {
         if (!res.isError()) {
           headerFormPanel.setMode(Consts.READONLY);
           headerFormPanel.executeReload();
-          getDesks().reloadData();
+          getDesks().reloadCurrentBlockOfData();
 
           // prompt user if a sale invoice must be created...
           if (JOptionPane.showConfirmDialog(ClientUtils.getParentFrame(this),
@@ -538,6 +539,9 @@ public class SaleDeskDocFrame extends InternalFrame implements SaleDocument {
         JOptionPane.ERROR_MESSAGE
       );
 
+  }
+  public CodLookupControl getControlWarehouseCode() {
+    return controlWarehouseCode;
   }
 
 }

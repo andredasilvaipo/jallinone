@@ -80,7 +80,7 @@ public class SaleOrderDocFrame extends InternalFrame implements SaleDocument {
   DeleteButton deleteButton1 = new DeleteButton();
   GridBagLayout gridBagLayout1 = new GridBagLayout();
   SaleIdHeadPanel saleIdHeadPanel1 = new SaleIdHeadPanel(headerFormPanel,false,false);
-  SaleCustomerHeadPanel saleCustomerHeadPanel1 = new SaleCustomerHeadPanel(headerFormPanel);
+  SaleCustomerHeadPanel saleCustomerHeadPanel1 = new SaleCustomerHeadPanel(false,headerFormPanel);
   SaleAgentPanel saleAgentPanel = new SaleAgentPanel(headerFormPanel);
   SaleNotesPanel saleNotesPanel = new SaleNotesPanel();
   SaleTotalsPanel saleTotalsPanel1 = new SaleTotalsPanel(headerFormPanel);
@@ -100,8 +100,8 @@ public class SaleOrderDocFrame extends InternalFrame implements SaleDocument {
     this.controller = controller;
     try {
       jbInit();
-      setSize(750,630);
-      setMinimumSize(new Dimension(750,630));
+      setSize(750,680);
+      setMinimumSize(new Dimension(750,680));
       setTitle(ClientSettings.getInstance().getResources().getResource("sale order"));
 
       CustomizedControls customizedControls = new CustomizedControls(tabbedPane,headerFormPanel,ApplicationConsts.ID_SALE_ORDER);

@@ -151,7 +151,7 @@ public class ClosePurchaseDocAction implements Action {
       res = rowsAction.executeCommand(gridParams,userSessionPars,request,response,userSession,context);
       if (res.isError())
         return res;
-      ArrayList rows = ((VOListResponse)res).getRows();
+      java.util.List rows = ((VOListResponse)res).getRows();
 
       // check if this document is a purchase invoice and has a linked purchase order document:
       // if this is the case, then the linked document will be updated...
@@ -183,7 +183,17 @@ public class ClosePurchaseDocAction implements Action {
                 docVO.getDocTypeDoc06DOC06(),
                 docVO.getDocYearDoc06DOC06(),
                 docVO.getDocNumberDoc06DOC06(),
-                vo.getItemCodeItm01DOC07()
+                vo.getItemCodeItm01DOC07(),
+                vo.getVariantTypeItm06DOC07(),
+                vo.getVariantCodeItm11DOC07(),
+                vo.getVariantTypeItm07DOC07(),
+                vo.getVariantCodeItm12DOC07(),
+                vo.getVariantTypeItm08DOC07(),
+                vo.getVariantCodeItm13DOC07(),
+                vo.getVariantTypeItm09DOC07(),
+                vo.getVariantCodeItm14DOC07(),
+                vo.getVariantTypeItm10DOC07(),
+                vo.getVariantCodeItm15DOC07()
               ),
               userSessionPars,
               request,
@@ -205,7 +215,12 @@ public class ClosePurchaseDocAction implements Action {
             // update ref. item row...
           pstmt = conn.prepareStatement(
             "update DOC07_PURCHASE_ITEMS set INVOICE_QTY=? where "+
-            "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=?"
+            "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and "+
+            "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+            "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+            "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+            "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+            "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? "
           );
           pstmt.setBigDecimal(1,refDetailVO.getInvoiceQtyDOC07());
           pstmt.setString(2,refDetailVO.getCompanyCodeSys01DOC07());
@@ -213,13 +228,30 @@ public class ClosePurchaseDocAction implements Action {
           pstmt.setBigDecimal(4,refDetailVO.getDocYearDOC07());
           pstmt.setBigDecimal(5,refDetailVO.getDocNumberDOC07());
           pstmt.setString(6,refDetailVO.getItemCodeItm01DOC07());
+
+          pstmt.setString(7,refDetailVO.getVariantTypeItm06DOC07());
+          pstmt.setString(8,refDetailVO.getVariantCodeItm11DOC07());
+          pstmt.setString(9,refDetailVO.getVariantTypeItm07DOC07());
+          pstmt.setString(10,refDetailVO.getVariantCodeItm12DOC07());
+          pstmt.setString(11,refDetailVO.getVariantTypeItm08DOC07());
+          pstmt.setString(12,refDetailVO.getVariantCodeItm13DOC07());
+          pstmt.setString(13,refDetailVO.getVariantTypeItm09DOC07());
+          pstmt.setString(14,refDetailVO.getVariantCodeItm14DOC07());
+          pstmt.setString(15,refDetailVO.getVariantTypeItm10DOC07());
+          pstmt.setString(16,refDetailVO.getVariantCodeItm15DOC07());
+
           pstmt.execute();
           pstmt.close();
 
           // update ref. item row in the in delivery note...
           pstmt2 = conn.prepareStatement(
             "select QTY,INVOICE_QTY,DOC_TYPE,DOC_YEAR,DOC_NUMBER,ROW_NUMBER from DOC09_IN_DELIVERY_NOTE_ITEMS where "+
-            "COMPANY_CODE_SYS01=? and DOC_TYPE_DOC06=? and DOC_YEAR_DOC06=? and DOC_NUMBER_DOC06=? and ITEM_CODE_ITM01=? and INVOICE_QTY<QTY"
+            "COMPANY_CODE_SYS01=? and DOC_TYPE_DOC06=? and DOC_YEAR_DOC06=? and DOC_NUMBER_DOC06=? and ITEM_CODE_ITM01=? and INVOICE_QTY<QTY and "+
+            "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+            "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+            "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+            "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+            "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? "
           );
           qty = null;
           invoiceQty = null;
@@ -229,6 +261,18 @@ public class ClosePurchaseDocAction implements Action {
           pstmt2.setBigDecimal(3,refDetailVO.getDocYearDOC07());
           pstmt2.setBigDecimal(4,refDetailVO.getDocNumberDOC07());
           pstmt2.setString(5,refDetailVO.getItemCodeItm01DOC07());
+
+          pstmt2.setString(6,refDetailVO.getVariantTypeItm06DOC07());
+          pstmt2.setString(7,refDetailVO.getVariantCodeItm11DOC07());
+          pstmt2.setString(8,refDetailVO.getVariantTypeItm07DOC07());
+          pstmt2.setString(9,refDetailVO.getVariantCodeItm12DOC07());
+          pstmt2.setString(10,refDetailVO.getVariantTypeItm08DOC07());
+          pstmt2.setString(11,refDetailVO.getVariantCodeItm13DOC07());
+          pstmt2.setString(12,refDetailVO.getVariantTypeItm09DOC07());
+          pstmt2.setString(13,refDetailVO.getVariantCodeItm14DOC07());
+          pstmt2.setString(14,refDetailVO.getVariantTypeItm10DOC07());
+          pstmt2.setString(15,refDetailVO.getVariantCodeItm15DOC07());
+
           rset = pstmt2.executeQuery();
 
           // it only updates one row, that matches the where clause...
@@ -250,7 +294,12 @@ public class ClosePurchaseDocAction implements Action {
             pstmt = conn.prepareStatement(
               "update DOC09_IN_DELIVERY_NOTE_ITEMS set INVOICE_QTY=? where "+
               "COMPANY_CODE_SYS01=? and DOC_TYPE_DOC06=? and DOC_YEAR_DOC06=? and DOC_NUMBER_DOC06=? and ITEM_CODE_ITM01=? and "+
-              "DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ROW_NUMBER=?"
+              "DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ROW_NUMBER=? and "+
+              "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+              "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+              "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+              "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+              "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? "
             );
             pstmt.setBigDecimal(1,qty);
             pstmt.setString(2,refDetailVO.getCompanyCodeSys01DOC07());
@@ -262,6 +311,18 @@ public class ClosePurchaseDocAction implements Action {
             pstmt.setBigDecimal(8,docYear);
             pstmt.setBigDecimal(9,docNumber);
             pstmt.setBigDecimal(10,rowNumber);
+
+            pstmt.setString(11,refDetailVO.getVariantTypeItm06DOC07());
+            pstmt.setString(12,refDetailVO.getVariantCodeItm11DOC07());
+            pstmt.setString(13,refDetailVO.getVariantTypeItm07DOC07());
+            pstmt.setString(14,refDetailVO.getVariantCodeItm12DOC07());
+            pstmt.setString(15,refDetailVO.getVariantTypeItm08DOC07());
+            pstmt.setString(16,refDetailVO.getVariantCodeItm13DOC07());
+            pstmt.setString(17,refDetailVO.getVariantTypeItm09DOC07());
+            pstmt.setString(18,refDetailVO.getVariantCodeItm14DOC07());
+            pstmt.setString(19,refDetailVO.getVariantTypeItm10DOC07());
+            pstmt.setString(20,refDetailVO.getVariantCodeItm15DOC07());
+
             pstmt.execute();
             pstmt.close();
           }
@@ -477,7 +538,7 @@ public class ClosePurchaseDocAction implements Action {
          }
 
          // add taxable income rows to the accounting item...
-         ArrayList taxableIncomes = ((VOListResponse)res).getRows();
+         java.util.List taxableIncomes = ((VOListResponse)res).getRows();
          TaxableIncomeVO tVO = null;
          JournalRowVO jrVO = null;
          BigDecimal totalVat = new BigDecimal(0);

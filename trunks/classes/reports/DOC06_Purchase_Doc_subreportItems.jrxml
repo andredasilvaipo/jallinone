@@ -53,7 +53,13 @@ DOC07_PURCHASE_ITEMS.MIN_PURCHASE_QTY_PUR02,DOC07_PURCHASE_ITEMS.MULTIPLE_QTY_PU
 DOC07_PURCHASE_ITEMS.VALUE_REG01,DOC07_PURCHASE_ITEMS.DEDUCTIBLE_REG01,
 DOC07_PURCHASE_ITEMS.TAXABLE_INCOME,DOC07_PURCHASE_ITEMS.PROGRESSIVE_HIE02,
 DOC07_PURCHASE_ITEMS.DELIVERY_DATE,DOC07_PURCHASE_ITEMS.IN_QTY,DOC07_PURCHASE_ITEMS.ORDER_QTY,
-DOC06_PURCHASE.CURRENCY_CODE_REG03,DOC07_PURCHASE_ITEMS.INVOICE_QTY  from DOC07_PURCHASE_ITEMS,
+DOC06_PURCHASE.CURRENCY_CODE_REG03,DOC07_PURCHASE_ITEMS.INVOICE_QTY,
+DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM06,DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM11,
+DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM07,DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM12,
+DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM08,DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM13,
+DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM09,DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM14,
+DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM10,DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM15
+from DOC07_PURCHASE_ITEMS,
 ITM01_ITEMS,SYS10_TRANSLATIONS,DOC06_PURCHASE where
 DOC07_PURCHASE_ITEMS.COMPANY_CODE_SYS01=DOC06_PURCHASE.COMPANY_CODE_SYS01 and 
 DOC07_PURCHASE_ITEMS.DOC_TYPE=DOC06_PURCHASE.DOC_TYPE and 
@@ -81,8 +87,8 @@ DOC07_PURCHASE_ITEMS.DOC_YEAR=$P{DOC_YEAR} and DOC07_PURCHASE_ITEMS.DOC_NUMBER=$
 	<field name="DESCRIPTION" class="java.lang.String"/>
 	<field name="VAT_VALUE" class="java.math.BigDecimal"/>
 	<field name="VAT_DESCRIPTION" class="java.lang.String"/>
-	<field name="START_DATE_PUR04" class="java.sql.Date"/>
-	<field name="END_DATE_PUR04" class="java.sql.Date"/>
+	<field name="START_DATE_PUR04" class="java.sql.Timestamp"/>
+	<field name="END_DATE_PUR04" class="java.sql.Timestamp"/>
 	<field name="UM_CODE_PUR02" class="java.lang.String"/>
 	<field name="DECIMALS_REG02" class="java.math.BigDecimal"/>
 	<field name="MIN_PURCHASE_QTY_PUR02" class="java.math.BigDecimal"/>
@@ -91,11 +97,21 @@ DOC07_PURCHASE_ITEMS.DOC_YEAR=$P{DOC_YEAR} and DOC07_PURCHASE_ITEMS.DOC_NUMBER=$
 	<field name="DEDUCTIBLE_REG01" class="java.math.BigDecimal"/>
 	<field name="TAXABLE_INCOME" class="java.math.BigDecimal"/>
 	<field name="PROGRESSIVE_HIE02" class="java.math.BigDecimal"/>
-	<field name="DELIVERY_DATE" class="java.sql.Date"/>
+	<field name="DELIVERY_DATE" class="java.sql.Timestamp"/>
 	<field name="IN_QTY" class="java.math.BigDecimal"/>
 	<field name="ORDER_QTY" class="java.math.BigDecimal"/>
 	<field name="CURRENCY_CODE_REG03" class="java.lang.String"/>
 	<field name="INVOICE_QTY" class="java.math.BigDecimal"/>
+	<field name="VARIANT_TYPE_ITM06" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM11" class="java.lang.String"/>
+	<field name="VARIANT_TYPE_ITM07" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM12" class="java.lang.String"/>
+	<field name="VARIANT_TYPE_ITM08" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM13" class="java.lang.String"/>
+	<field name="VARIANT_TYPE_ITM09" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM14" class="java.lang.String"/>
+	<field name="VARIANT_TYPE_ITM10" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM15" class="java.lang.String"/>
 
 		<background>
 			<band height="71"  isSplitAllowed="true" >
@@ -359,7 +375,17 @@ $F{DECIMALS_REG02}
 					<textElement>
 						<font fontName="Courier New" size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRIPTION}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRIPTION}+
+($F{VARIANT_TYPE_ITM06}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM06})+
+($F{VARIANT_CODE_ITM11}.equals("*")?"":" "+$F{VARIANT_CODE_ITM11})+
+($F{VARIANT_TYPE_ITM07}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM07})+
+($F{VARIANT_CODE_ITM12}.equals("*")?"":" "+$F{VARIANT_CODE_ITM12})+
+($F{VARIANT_TYPE_ITM08}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM08})+
+($F{VARIANT_CODE_ITM13}.equals("*")?"":" "+$F{VARIANT_CODE_ITM13})+
+($F{VARIANT_TYPE_ITM09}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM09})+
+($F{VARIANT_CODE_ITM14}.equals("*")?"":" "+$F{VARIANT_CODE_ITM14})+
+($F{VARIANT_TYPE_ITM10}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM10})+
+($F{VARIANT_CODE_ITM15}.equals("*")?"":" "+$F{VARIANT_CODE_ITM15})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="-##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

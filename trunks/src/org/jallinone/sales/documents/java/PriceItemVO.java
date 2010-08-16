@@ -2,6 +2,8 @@ package org.jallinone.sales.documents.java;
 
 import org.openswing.swing.message.receive.java.*;
 import org.jallinone.sales.pricelist.java.PriceVO;
+import org.jallinone.variants.java.VariantsItemDescriptor;
+import java.math.BigDecimal;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -31,7 +33,7 @@ import org.jallinone.sales.pricelist.java.PriceVO;
  * @author Mauro Carniel
  * @version 1.0
  */
-public class PriceItemVO extends PriceVO {
+public class PriceItemVO extends PriceVO implements VariantsItemDescriptor {
 
 
   private String vatCodeReg01ITM01;
@@ -43,6 +45,12 @@ public class PriceItemVO extends PriceVO {
   private String minSellingQtyUmCodeReg02ITM01;
   private java.math.BigDecimal progressiveHie01ITM01;
   private Boolean serialNumberRequiredITM01;
+
+  private Boolean useVariant1ITM01;
+  private Boolean useVariant2ITM01;
+  private Boolean useVariant3ITM01;
+  private Boolean useVariant4ITM01;
+  private Boolean useVariant5ITM01;
 
 
   public PriceItemVO() {
@@ -103,6 +111,45 @@ public class PriceItemVO extends PriceVO {
   public void setSerialNumberRequiredITM01(Boolean serialNumberRequiredITM01) {
     this.serialNumberRequiredITM01 = serialNumberRequiredITM01;
   }
+  public Boolean getUseVariant1ITM01() {
+    return useVariant1ITM01;
+  }
+  public Boolean getUseVariant2ITM01() {
+    return useVariant2ITM01;
+  }
+  public Boolean getUseVariant3ITM01() {
+    return useVariant3ITM01;
+  }
+  public Boolean getUseVariant4ITM01() {
+    return useVariant4ITM01;
+  }
+  public Boolean getUseVariant5ITM01() {
+    return useVariant5ITM01;
+  }
+  public void setUseVariant5ITM01(Boolean useVariant5ITM01) {
+    this.useVariant5ITM01 = useVariant5ITM01;
+  }
+  public void setUseVariant4ITM01(Boolean useVariant4ITM01) {
+    this.useVariant4ITM01 = useVariant4ITM01;
+  }
+  public void setUseVariant3ITM01(Boolean useVariant3ITM01) {
+    this.useVariant3ITM01 = useVariant3ITM01;
+  }
+  public void setUseVariant2ITM01(Boolean useVariant2ITM01) {
+    this.useVariant2ITM01 = useVariant2ITM01;
+  }
+  public void setUseVariant1ITM01(Boolean useVariant1ITM01) {
+    this.useVariant1ITM01 = useVariant1ITM01;
+  }
+
+
+  public String getCompanyCodeSys01() {
+    return getCompanyCodeSys01SAL02();
+  }
+  public String getItemCodeItm01() {
+    return getItemCodeItm01SAL02();
+  }
+
 
 
 }

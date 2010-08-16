@@ -147,7 +147,7 @@ public class DebitCreditFilterFrame extends InternalFrame {
     }
 
     HashMap params = new HashMap();
-    params.put("COMPANY_CODE",controlCompaniesCombo.getValue());
+    params.put("COMPANY_CODE_SYS01",controlCompaniesCombo.getValue());
     params.put("START_DATE",controlFromDate.getValue());
     params.put("END_DATE",controlToDate.getValue());
     params.put("ACCOUNT_TYPE",ApplicationConsts.PATRIMONIAL_ACCOUNT);

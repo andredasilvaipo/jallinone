@@ -84,7 +84,7 @@ public class DeleteAttachedDocsAction implements Action {
       );
 
 
-      ArrayList list =  (ArrayList)inputPar;
+      java.util.List list =  (ArrayList)inputPar;
       ActAttachedDocVO vo = null;
       for(int i=0;i<list.size();i++) {
         // phisically delete the record in SCH08...

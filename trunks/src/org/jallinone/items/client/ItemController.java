@@ -14,6 +14,8 @@ import org.jallinone.items.java.DetailItemVO;
 import org.openswing.swing.form.client.Form;
 import org.jallinone.commons.java.ApplicationConsts;
 import java.math.BigDecimal;
+import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.openswing.swing.util.client.ClientSettings;
 
 
 /**
@@ -77,9 +79,13 @@ public class ItemController extends CompanyFormController {
   }
 
 
+  public ItemPK getPK() {
+    return pk;
+  }
+
+
   /**
-   * Callback method invoked before saving data when the form was in EDIT mode (on pressing save button).
-   * @return <code>true</code> allows to go to EDIT mode, <code>false</code> the mode change is interrupted
+   * Callback method invoked before going in INSERT mode.
    */
   public boolean beforeInsertData(Form form) {
     boolean ok = super.beforeInsertData(form);
@@ -105,6 +111,11 @@ public class ItemController extends CompanyFormController {
       frame.getSupplierPrices().setButtonsEnabled(false);
 
       frame.setButtonsEnabled(false);
+
+      frame.getItemVariantsPanel().clearData();
+      frame.getVariantBarcodesPanel().clearData();
+      frame.setTitle(ClientSettings.getInstance().getResources().getResource("item detail"));
+
     }
     return ok;
   }
@@ -168,6 +179,7 @@ public class ItemController extends CompanyFormController {
       frame.getBookedItemsPanel().getGrid().getOtherGridParams().put(ApplicationConsts.ITEM_PK,new ItemPK(vo.getCompanyCodeSys01ITM01(),vo.getItemCodeITM01()));
       frame.getOrderedItemsPanel().getGrid().getOtherGridParams().put(ApplicationConsts.ITEM_PK,new ItemPK(vo.getCompanyCodeSys01ITM01(),vo.getItemCodeITM01()));
       frame.getDocsPanel().setItemVO(vo);
+//      frame.getItemVariantsPanel().setContent(vo,frame.getVariantsNames());
 
 
       frame.getBomTabbedPane().getComponentsGrid().getOtherGridParams().put(
@@ -246,6 +258,8 @@ public class ItemController extends CompanyFormController {
       frame.getBookedItemsPanel().getGrid().clearData();
       frame.getOrderedItemsPanel().getGrid().clearData();
       frame.getDocsPanel().getDocsGrid().clearData();
+      frame.getItemVariantsPanel().clearData();
+      frame.getVariantBarcodesPanel().clearData();
 
       frame.getSupplierPrices().setButtonsEnabled(false);
       frame.getSupplierPrices().getPricesGrid().clearData();
@@ -269,6 +283,16 @@ public class ItemController extends CompanyFormController {
     vo.setStartDateITM01(new java.sql.Date(System.currentTimeMillis()));
     vo.setVersionITM01(new BigDecimal(1));
     vo.setRevisionITM01(new BigDecimal(1));
+
+    HierarchyLevelVO levelVO = (HierarchyLevelVO)parentFrame.getHierarTreePanel().getSelectedNode().getUserObject();
+    vo.setProgressiveHie01ITM01(levelVO.getProgressiveHIE01());
+    vo.setProgressiveHie02ITM01(levelVO.getProgressiveHie02HIE01());
+    vo.setLevelDescriptionSYS10(levelVO.getDescriptionSYS10());
+
+    vo.setCompanyCodeSys01ITM01(parentFrame.getSelectedItemType().getCompanyCodeSys01ITM02());
+
+    frame.setVariants(vo.getCompanyCodeSys01ITM01());
+
   }
 
 

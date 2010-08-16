@@ -87,7 +87,7 @@ public class InsertCustomerDiscountsAction implements Action {
         inputPar,
         null
       ));
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
 
       CustomerDiscountVO vo = null;
       for(int i=0;i<list.size();i++) {

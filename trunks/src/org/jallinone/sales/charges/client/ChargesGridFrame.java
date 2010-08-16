@@ -191,7 +191,7 @@ public class ChargesGridFrame extends InternalFrame {
     colPerc.setColumnSortable(true);
     colPerc.setEditableOnEdit(true);
     colPerc.setEditableOnInsert(true);
-    colPerc.setHeaderTextAlignment(SwingConstants.CENTER);
+    colPerc.setHeaderTextHorizontalAlignment(SwingConstants.CENTER);
     colPerc.setPreferredWidth(60);
     colCurrencyCod.setColumnDuplicable(true);
     colCurrencyCod.setColumnFilterable(true);

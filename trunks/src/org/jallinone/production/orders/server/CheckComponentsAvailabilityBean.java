@@ -158,7 +158,7 @@ public class CheckComponentsAvailabilityBean {
         if (res.isError())
           return res;
 
-        availList = ((VOListResponse)res).getRows();
+        availList = new ArrayList(((VOListResponse)res).getRows());
         componentVO.setAvailabilities(availList);
         availability = new BigDecimal(0);
         for(int i=0;i<availList.size();i++) {
@@ -172,14 +172,14 @@ public class CheckComponentsAvailabilityBean {
           res = altComps.executeCommand(gridParams,userSessionPars,request,response,userSession,context);
           if (res.isError())
             return res;
-          list = ((VOListResponse)res).getRows();
+          list = new ArrayList(((VOListResponse)res).getRows());
           for(int i=0;i<list.size();i++) {
             altVO = (AltComponentVO)list.get(i);
             gridParams.getOtherGridParams().put(ApplicationConsts.ITEM_PK,new ItemPK(prodVO.getCompanyCodeSys01DOC23(),altVO.getItemCodeItm01ITM04()));
             res = avail.executeCommand(gridParams,userSessionPars,request,response,userSession,context);
             if (res.isError())
               return res;
-            availList = ((VOListResponse)res).getRows();
+            availList = new ArrayList(((VOListResponse)res).getRows());
             altAvailability = new BigDecimal(0);
             for(int j=0;j<availList.size();j++) {
               availVO = (ItemAvailabilityVO)availList.get(j);

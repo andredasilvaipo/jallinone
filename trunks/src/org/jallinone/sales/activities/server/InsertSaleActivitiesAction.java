@@ -88,7 +88,7 @@ public class InsertSaleActivitiesAction implements Action {
       ));
       SaleActivityVO vo = null;
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SAL09","COMPANY_CODE_SYS01");
       attribute2dbField.put("activityCodeSAL09","ACTIVITY_CODE");

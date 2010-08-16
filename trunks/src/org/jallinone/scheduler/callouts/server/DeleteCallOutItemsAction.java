@@ -83,7 +83,7 @@ public class DeleteCallOutItemsAction implements Action {
         "delete from SCH14_CALL_OUT_ITEMS where COMPANY_CODE_SYS01=? and CALL_OUT_CODE_SCH10=? and ITEM_CODE_ITM01=?"
       );
 
-      ArrayList list =  (ArrayList)inputPar;
+      java.util.List list =  (ArrayList)inputPar;
       CallOutItemVO vo = null;
       for(int i=0;i<list.size();i++) {
         // phisically delete the record in SCH14...

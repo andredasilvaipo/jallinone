@@ -9,6 +9,10 @@ import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.awt.event.*;
 import org.openswing.swing.client.GenericButton;
+import org.jallinone.variants.java.VariantsMatrixVO;
+import java.math.BigDecimal;
+import org.jallinone.variants.java.VariantsMatrixRowVO;
+import org.jallinone.variants.java.VariantsMatrixColumnVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -45,23 +49,38 @@ public class SerialNumberDialog extends JDialog {
   JScrollPane scrollPane = new JScrollPane();
   GenericButton closeButton = new GenericButton(new ImageIcon(ClientUtils.getImage("sizes.gif")));
   DefaultTableModel model = new DefaultTableModel(new String[]{
-    ClientSettings.getInstance().getResources().getResource("serial number"),
-    ClientSettings.getInstance().getResources().getResource("bar code")
-  },0);
+    ClientSettings.getInstance().getResources().getResource("item"),
+    ClientSettings.getInstance().getResources().getResource("serial number")
+  },0) {
+
+    public boolean isCellEditable(int row, int column) {
+      if (column==0)
+        return false;
+      return true;
+    }
+
+  };
   JTable serialNumsGrid = new JTable(model);
 
   private ArrayList serialNums = null;
-  private ArrayList barCodes = null;
+  private Object[][] cells = null;
+  private VariantsMatrixVO matrixVO = null;
 
 
-  public SerialNumberDialog(ArrayList serialNums,ArrayList barCodes,String item) {
+  public SerialNumberDialog(Object[][] cells,VariantsMatrixVO matrixVO,ArrayList serialNums,String item) {
     super(MDIFrame.getInstance(),ClientSettings.getInstance().getResources().getResource("serial numbers from item")+" "+item,true);
+    this.cells = cells;
+    this.matrixVO = matrixVO;
     this.serialNums = serialNums;
-    this.barCodes = barCodes;
     try {
       jbInit();
       init();
-      setSize(600,200);
+
+      int w = 350;
+      if (cells!=null && matrixVO!=null)
+        w += 200;
+      setSize(w,200);
+
       ClientUtils.centerDialog(MDIFrame.getInstance(),this);
       setVisible(true);
     }
@@ -75,8 +94,34 @@ public class SerialNumberDialog extends JDialog {
    * Fill in the table.
    */
   private void init() {
-    for(int i=0;i<serialNums.size();i++) {
-      model.addRow(new Object[]{serialNums.get(i),barCodes.get(i)});
+    if (cells!=null && matrixVO!=null) {
+      serialNumsGrid.getColumnModel().getColumn(0).setPreferredWidth(200);
+
+      Object[] row = null;
+      BigDecimal qty = null;
+      int pos = 0;
+      for(int i=0;i<cells.length;i++) {
+        row = cells[i];
+        for(int j=0;j<row.length;j++)
+          if (cells[i][j]!=null) {
+            qty = (BigDecimal)cells[i][j];
+            for(int k=0;k<qty.intValue();k++) {
+              model.addRow(new Object[] {
+                 ((VariantsMatrixRowVO)matrixVO.getRowDescriptors().get(i)).getRowDescription()+" "+((VariantsMatrixColumnVO)matrixVO.getColumnDescriptors().get(j)).getColumnDescription(),
+                 serialNums.get(pos)
+              });
+              pos++;
+            }
+          }
+      }
+
+    }
+    else {
+      serialNumsGrid.getColumnModel().removeColumn(serialNumsGrid.getColumnModel().getColumn(0));
+
+      for(int i=0;i<serialNums.size();i++) {
+        model.addRow(new Object[]{"",serialNums.get(i)});
+      }
     }
   }
 
@@ -109,8 +154,7 @@ public class SerialNumberDialog extends JDialog {
       serialNumsGrid.getCellEditor().stopCellEditing();
 
     for(int i=0;i<serialNums.size();i++) {
-      serialNums.set(i,model.getValueAt(i,0));
-      barCodes.set(i,model.getValueAt(i,1));
+      serialNums.set(i,model.getValueAt(i,1));
     }
     for(int i=0;i<serialNums.size();i++) {
       if (serialNums.get(i)==null) {

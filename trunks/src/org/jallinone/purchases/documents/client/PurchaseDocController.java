@@ -139,11 +139,13 @@ public class PurchaseDocController extends CompanyFormController {
    * Callback method called after saving SUCCESSFULLY data in INSERT mode.
    */
   public void afterInsertData() {
-    if (parentFrame!=null) {
-//      parentFrame.getGrid().reloadData();
-    }
+//    if (parentFrame!=null) {
+//      parentFrame.getGrid().reloadCurrentBlockOfData();
+//    }
 
     DetailPurchaseDocVO vo = (DetailPurchaseDocVO)frame.getHeaderFormPanel().getVOModel().getValueObject();
+    frame.updateCurrencySettings(vo);
+
     frame.getRowsPanel().setParentVO(vo);
     frame.getRowsPanel().getGrid().getOtherGridParams().put(ApplicationConsts.PURCHASE_DOC_PK,pk);
     frame.getRowsPanel().getGrid().reloadData();

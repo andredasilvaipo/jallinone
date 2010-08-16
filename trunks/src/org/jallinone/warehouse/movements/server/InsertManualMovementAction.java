@@ -98,7 +98,18 @@ public class InsertManualMovementAction implements Action {
           vo.getItemTypeWAR04(),
           vo.getNoteWAR02(),
           vo.getSerialNumbers(),
-          vo.getBarCodes()
+
+          vo.getVariantCodeItm11WAR02(),
+          vo.getVariantCodeItm12WAR02(),
+          vo.getVariantCodeItm13WAR02(),
+          vo.getVariantCodeItm14WAR02(),
+          vo.getVariantCodeItm15WAR02(),
+          vo.getVariantTypeItm06WAR02(),
+          vo.getVariantTypeItm07WAR02(),
+          vo.getVariantTypeItm08WAR02(),
+          vo.getVariantTypeItm09WAR02(),
+          vo.getVariantTypeItm10WAR02()
+
       );
 
       Response res = movBean.addWarehouseMovement(conn,movVO,userSessionPars,request,response,userSession,context);

@@ -89,7 +89,7 @@ public class InsertMeasuresAction implements Action {
       ));
       MeasureVO vo = null;
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("umCodeREG02","UM_CODE");

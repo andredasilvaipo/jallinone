@@ -46,7 +46,7 @@ public class CompanyDetailFrame extends InternalFrame {
   SaveButton saveButton = new SaveButton();
   ReloadButton reloadButton = new ReloadButton();
   DeleteButton deleteButton = new DeleteButton();
-  OrganizationPanel organizationPanel = new OrganizationPanel();
+  OrganizationPanel organizationPanel = new OrganizationPanel(false);
   LabelControl labelCompanyCode = new LabelControl();
   TextControl controlCompanyCode = new TextControl();
   LabelControl labelCurrency = new LabelControl();

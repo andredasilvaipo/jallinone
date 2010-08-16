@@ -345,7 +345,7 @@ public class CallOutFrame extends InternalFrame {
     Domain d = new Domain("ITEM_TYPES");
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (ItemTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
@@ -357,7 +357,7 @@ public class CallOutFrame extends InternalFrame {
     d = new Domain("CALL_OUT_TYPES");
     if (!res.isError()) {
       CallOutTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (CallOutTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02SCH11(),vo.getDescriptionSYS10());

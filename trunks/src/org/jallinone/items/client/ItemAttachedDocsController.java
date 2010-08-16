@@ -102,6 +102,7 @@ public class ItemAttachedDocsController extends GridController {
     new DocumentController(
       null,
       new DocumentPK(vo.getCompanyCodeSys01ITM05(),vo.getProgressiveDoc14ITM05()),
+      vo.getCompanyCodeSys01ITM05(),
       null
     );
   }

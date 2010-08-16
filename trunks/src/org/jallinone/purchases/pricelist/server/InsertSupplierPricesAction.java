@@ -110,7 +110,7 @@ public class InsertSupplierPricesAction implements Action {
       attribute2dbField.put("endDatePUR04","END_DATE");
 
       // insert into PUR04...
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       SupplierPriceVO vo = null;
       Response res = null;
       ArrayList items = new ArrayList();

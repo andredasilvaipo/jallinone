@@ -87,7 +87,7 @@ public class InsertAgentTypesAction implements Action {
       ));
       AgentTypeVO vo = null;
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       BigDecimal progressiveSYS10 = null;
 
       Map attribute2dbField = new HashMap();

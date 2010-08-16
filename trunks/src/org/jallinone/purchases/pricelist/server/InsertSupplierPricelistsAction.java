@@ -89,7 +89,7 @@ public class InsertSupplierPricelistsAction implements Action {
         inputPar,
         null
       ));
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       SupplierPricelistVO vo = null;
       BigDecimal progressiveSYS10 = null;
 

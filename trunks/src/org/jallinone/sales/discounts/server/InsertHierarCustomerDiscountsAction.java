@@ -84,7 +84,7 @@ public class InsertHierarCustomerDiscountsAction implements Action {
         inputPar,
         null
       ));
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
 
       HierarCustomerDiscountVO vo = null;
       stmt = conn.createStatement();

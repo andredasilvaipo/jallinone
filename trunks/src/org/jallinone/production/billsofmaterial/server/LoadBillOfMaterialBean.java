@@ -132,8 +132,8 @@ public class LoadBillOfMaterialBean {
 
       // read from ITM03 table...
       Response res = null;
-      ArrayList rows = null;
-      ArrayList auxlist = null;
+      java.util.List rows = null;
+      java.util.List auxlist = null;
       DefaultMutableTreeNode auxnode,auxnode2 = null;
       String currentItemCode = null;
 

@@ -6,6 +6,7 @@ import javax.swing.border.*;
 import org.openswing.swing.util.client.ClientSettings;
 import javax.swing.*;
 import org.openswing.swing.client.*;
+import org.jallinone.commons.client.CompaniesComboControl;
 
 
 /**
@@ -71,8 +72,13 @@ public class OrganizationPanel extends Form {
   LabelControl labelNote = new LabelControl();
   TextAreaControl controlNote = new TextAreaControl();
 
+  LabelControl companyLabel = new LabelControl();
+  CompaniesComboControl companiesComboControl = new CompaniesComboControl();
+  private boolean addCompaniesCombo;
 
-  public OrganizationPanel() {
+
+  public OrganizationPanel(boolean addCompaniesCombo) {
+    this.addCompaniesCombo = addCompaniesCombo;
     try {
       jbInit();
     }
@@ -83,6 +89,7 @@ public class OrganizationPanel extends Form {
 
 
   private void jbInit() throws Exception {
+
     this.setVOClassName("org.jallinone.subjects.java.OrganizationVO");
     titledBorder1 = new TitledBorder("");
     titledBorder1.setTitle(ClientSettings.getInstance().getResources().getResource("organization data"));
@@ -141,7 +148,27 @@ public class OrganizationPanel extends Form {
     controlNote.setAttributeName("noteREG04");
     controlNote.setLinkLabel(labelNote);
     controlNote.setMaxCharacters(2000);
-    this.add(controlCorpName1,      new GridBagConstraints(1, 1, 5, 1, 1.0, 0.0
+
+    if (addCompaniesCombo) {
+      companyLabel.setFont(new java.awt.Font("MS Sans Serif", 0, 11));
+      companyLabel.setLabel("companyCodeSYS01");
+
+      companiesComboControl.setLinkLabel(companyLabel);
+      companiesComboControl.setFunctionCode(this.getFunctionId());
+
+      this.add(companyLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+              ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+      this.add(companiesComboControl, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
+              ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+
+      companiesComboControl.setAttributeName("companyCodeSys01REG04");
+      companiesComboControl.setRequired(true);
+
+    }
+
+
+
+    this.add(controlCorpName1,       new GridBagConstraints(1, 1, 3, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     this.add(controlCorpName2,         new GridBagConstraints(1, 2, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 200, 0));

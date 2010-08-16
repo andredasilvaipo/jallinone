@@ -82,7 +82,7 @@ public class DeleteVatRegistersAction implements Action {
 
       stmt = conn.createStatement();
 
-      ArrayList list =  (ArrayList)inputPar;
+      java.util.List list =  (ArrayList)inputPar;
       VatRegisterVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in ACC04...

@@ -197,8 +197,8 @@ public class SaleIdHeadPanel extends JPanel {
     controlSectional.setTextAlignment(SwingConstants.RIGHT);
     this.add(labelDocNum,         new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlDocNumber,                new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 30, 0));
+    this.add(controlDocNumber,                 new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 20, 0));
 
     if (showDocRefLookup) {
       this.add(labelDocRif,         new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
@@ -209,26 +209,26 @@ public class SaleIdHeadPanel extends JPanel {
               ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 0, 0));
       this.add(controlDocYearRef,         new GridBagConstraints(5, 1, 3, 1, 1.0, 0.0
               ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 40, 0));
-      this.add(new JPanel(),  new GridBagConstraints(8, 0, 1, 1, 1.0, 0.0
+      this.add(new JPanel(),  new GridBagConstraints(9, 0, 1, 1, 1.0, 0.0
           ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
     }
     else {
-      this.add(labelDocRefNr,  new GridBagConstraints(8, 0, 1, 1, 0.0, 0.0
+      this.add(labelDocRefNr,  new GridBagConstraints(9, 0, 1, 1, 0.0, 0.0
               ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-      this.add(controlDofRef,  new GridBagConstraints(9, 0, 1, 1, 1.0, 0.0
+      this.add(controlDofRef,  new GridBagConstraints(10, 0, 1, 1, 1.0, 0.0
               ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 10, 0));
     }
 
-    this.add(controlDocYear,            new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 30, 0));
+    this.add(controlDocYear,             new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 20, 0));
     this.add(labelDocYear,       new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
 
     this.add(labelDocDate,      new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlDocDate,          new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 60, 0));
+    this.add(controlDocDate,           new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 30, 0));
     this.add(labelDocState,     new GridBagConstraints(7, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     this.add(controlDocState,         new GridBagConstraints(8, 0, 1, 1, 0.0, 0.0

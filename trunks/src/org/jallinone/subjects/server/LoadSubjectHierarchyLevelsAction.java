@@ -121,7 +121,7 @@ public class LoadSubjectHierarchyLevelsAction implements Action {
       if (res.isError())
         return res;
 
-      ArrayList rows = ((VOListResponse)res).getRows();
+     java.util.List rows = ((VOListResponse)res).getRows();
       Hashtable hash = new Hashtable();
       SubjectHierarchyLevelVO vo = null;
       for(int i=0;i<rows.size();i++) {

@@ -84,24 +84,15 @@ public class DeleteInDeliveryNoteRowsAction implements Action {
         null
       ));
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       InDeliveryNoteRowPK rowPK = null;
 
       pstmt = conn.prepareStatement(
-          "delete from DOC09_IN_DELIVERY_NOTE_ITEMS where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and DOC_TYPE_DOC06=? and DOC_YEAR_DOC06=? and DOC_NUMBER_DOC06=? and ROW_NUMBER=? and ITEM_CODE_ITM01=?"
+        "delete from DOC09_IN_DELIVERY_NOTE_ITEMS where PROGRESSIVE=?"
       );
 
       pstmt2 = conn.prepareStatement(
-       "delete from DOC11_IN_SERIAL_NUMBERS where "+
-       "COMPANY_CODE_SYS01=? and "+
-       "DOC_TYPE=? and "+
-       "DOC_YEAR=? and "+
-       "DOC_NUMBER=? and "+
-       "DOC_TYPE_DOC06=? and "+
-       "DOC_YEAR_DOC06=? and "+
-       "DOC_NUMBER_DOC06=? and "+
-       "ROW_NUMBER=? and "+
-       "ITEM_CODE_ITM01=?"
+       "delete from DOC11_IN_SERIAL_NUMBERS where PROGRESSIVE_DOC09=? "
       );
 
       Response res = null;
@@ -109,27 +100,11 @@ public class DeleteInDeliveryNoteRowsAction implements Action {
         rowPK = (InDeliveryNoteRowPK)list.get(i);
 
         // delete previous serial numbers from DOC11...
-        pstmt2.setString(1,rowPK.getCompanyCodeSys01DOC09());
-        pstmt2.setString(2,rowPK.getDocTypeDOC09());
-        pstmt2.setBigDecimal(3,rowPK.getDocYearDOC09());
-        pstmt2.setBigDecimal(4,rowPK.getDocNumberDOC09());
-        pstmt2.setString(5,rowPK.getDocTypeDoc06DOC09());
-        pstmt2.setBigDecimal(6,rowPK.getDocYearDoc06DOC09());
-        pstmt2.setBigDecimal(7,rowPK.getDocNumberDoc06DOC09());
-        pstmt2.setBigDecimal(8,rowPK.getRowNumberDOC09());
-        pstmt2.setString(9,rowPK.getItemCodeItm01DOC09());
+        pstmt2.setBigDecimal(1,rowPK.getProgressiveDOC09());
         pstmt2.execute();
 
         // phisically delete the record in DOC09...
-        pstmt.setString(1,rowPK.getCompanyCodeSys01DOC09());
-        pstmt.setString(2,rowPK.getDocTypeDOC09());
-        pstmt.setBigDecimal(3,rowPK.getDocYearDOC09());
-        pstmt.setBigDecimal(4,rowPK.getDocNumberDOC09());
-        pstmt.setString(5,rowPK.getDocTypeDoc06DOC09());
-        pstmt.setBigDecimal(6,rowPK.getDocYearDoc06DOC09());
-        pstmt.setBigDecimal(7,rowPK.getDocNumberDoc06DOC09());
-        pstmt.setBigDecimal(8,rowPK.getRowNumberDOC09());
-        pstmt.setString(9,rowPK.getItemCodeItm01DOC09());
+        pstmt.setBigDecimal(1,rowPK.getProgressiveDOC09());
         pstmt.execute();
       }
 

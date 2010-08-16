@@ -16,6 +16,7 @@ import org.jallinone.subjects.java.SubjectPK;
 import org.jallinone.warehouse.tables.movements.java.MovementVO;
 import java.util.ArrayList;
 import org.jallinone.warehouse.documents.client.SerialNumberDialog;
+import org.jallinone.variants.java.VariantsMatrixVO;
 
 
 /**
@@ -68,28 +69,49 @@ public class ManualMovementController extends CompanyFormController {
   public Response insertRecord(ValueObject newPersistentObject) throws Exception {
 
     if (detailFrame.isSerialNumbersRequired() &&
-        !promptSerialNumbers((MovementVO)newPersistentObject)) {
+        !promptSerialNumbers(detailFrame.getVariantsPanel().getCells(),detailFrame.getVariantsPanel().getVariantsMatrixVO(),(MovementVO)newPersistentObject)) {
       return new ErrorResponse("insert not allowed until serial numbers are not defined");
     }
 
-    return ClientUtils.getData("insertManualMovement",newPersistentObject);
+    Response res = null;
+
+    if (detailFrame.getVariantsPanel().getVariantsMatrixVO()==null) {
+      // no variants...
+      res = ClientUtils.getData("insertManualMovement",newPersistentObject);
+    }
+    else {
+      // the item has variants...
+      res = ClientUtils.getData(
+        "insertManualMovements",
+        new Object[]{
+          newPersistentObject,
+          detailFrame.getVariantsPanel().getVariantsMatrixVO(),
+          detailFrame.getVariantsPanel().getCells()
+        }
+      );
+    }
+
+    return res;
+    //return ClientUtils.getData("insertManualMovement",newPersistentObject);
   }
 
 
   /**
    * Show an input dialog to insert serial numbers.
    */
-  private boolean promptSerialNumbers(MovementVO vo) {
+  private boolean promptSerialNumbers(Object[][] cells,VariantsMatrixVO matrixVO,MovementVO vo) {
     // define serial numbers and bar codes list to the right size...
     ArrayList list = new ArrayList(vo.getDeltaQtyWAR02().intValue());
+    for(int i=0;i<vo.getDeltaQtyWAR02().intValue();i++) {
+      list.add(null);
+    }
     vo.setSerialNumbers(list);
-    list = new ArrayList(vo.getDeltaQtyWAR02().intValue());
-    vo.setBarCodes(list);
 
     // show input dialog...
     SerialNumberDialog d = new SerialNumberDialog(
+        cells,
+        matrixVO,
         vo.getSerialNumbers(),
-        vo.getBarCodes(),
         vo.getItemCodeItm01WAR02()+" - "+vo.getItemDescriptionSYS10()
     );
 

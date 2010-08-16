@@ -2,6 +2,7 @@ package org.jallinone.warehouse.documents.java;
 
 import org.openswing.swing.message.receive.java.*;
 import java.util.ArrayList;
+import org.jallinone.commons.java.*;
 
 
 /**
@@ -34,6 +35,8 @@ import java.util.ArrayList;
  */
 public class GridOutDeliveryNoteRowVO extends ValueObjectImpl {
 
+  private java.math.BigDecimal progressiveDOC10;
+
   private String companyCodeSys01DOC10;
   private String docTypeDOC10;
   private java.math.BigDecimal docYearDOC10;
@@ -54,11 +57,20 @@ public class GridOutDeliveryNoteRowVO extends ValueObjectImpl {
   private java.math.BigDecimal qtyDOC02;
   private java.math.BigDecimal outQtyDOC02;
   private ArrayList serialNumbers = new ArrayList();
-  private ArrayList barCodes = new ArrayList();
   private Boolean serialNumberRequiredITM01;
   private java.math.BigDecimal docSequenceDoc01DOC10;
   private java.math.BigDecimal invoiceQtyDOC10;
 
+  private String variantTypeItm06DOC10;
+  private String variantCodeItm11DOC10;
+  private String variantTypeItm07DOC10;
+  private String variantCodeItm12DOC10;
+  private String variantTypeItm08DOC10;
+  private String variantCodeItm13DOC10;
+  private String variantTypeItm09DOC10;
+  private String variantCodeItm14DOC10;
+  private String variantTypeItm10DOC10;
+  private String variantCodeItm15DOC10;
 
   public GridOutDeliveryNoteRowVO() {
   }
@@ -89,7 +101,35 @@ public class GridOutDeliveryNoteRowVO extends ValueObjectImpl {
     this.itemCodeItm01DOC10 = itemCodeItm01DOC10;
   }
   public String getDescriptionSYS10() {
-    return descriptionSYS10;
+    String aux = descriptionSYS10;
+    if (aux==null)
+      return null;
+
+    if (variantTypeItm06DOC10!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm06DOC10))
+      aux += " "+variantTypeItm06DOC10;
+    if (variantCodeItm11DOC10!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm11DOC10))
+      aux += " "+variantCodeItm11DOC10;
+
+    if (variantTypeItm07DOC10!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm07DOC10))
+      aux += " "+variantTypeItm07DOC10;
+    if (variantCodeItm12DOC10!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm12DOC10))
+      aux += " "+variantCodeItm12DOC10;
+
+    if (variantTypeItm08DOC10!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm08DOC10))
+      aux += " "+variantTypeItm08DOC10;
+    if (variantCodeItm13DOC10!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm13DOC10))
+      aux += " "+variantCodeItm13DOC10;
+
+    if (variantTypeItm09DOC10!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm09DOC10))
+      aux += " "+variantTypeItm09DOC10;
+    if (variantCodeItm14DOC10!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm14DOC10))
+      aux += " "+variantCodeItm14DOC10;
+
+    if (variantTypeItm10DOC10!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm10DOC10))
+      aux += " "+variantTypeItm10DOC10;
+    if (variantCodeItm15DOC10!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm15DOC10))
+      aux += " "+variantCodeItm15DOC10;
+    return aux;
   }
   public void setDescriptionSYS10(String descriptionSYS10) {
     this.descriptionSYS10 = descriptionSYS10;
@@ -184,12 +224,6 @@ public class GridOutDeliveryNoteRowVO extends ValueObjectImpl {
   public void setSerialNumbers(ArrayList serialNumbers) {
     this.serialNumbers = serialNumbers;
   }
-  public ArrayList getBarCodes() {
-    return barCodes;
-  }
-  public void setBarCodes(ArrayList barCodes) {
-    this.barCodes = barCodes;
-  }
   public Boolean getSerialNumberRequiredITM01() {
     return serialNumberRequiredITM01;
   }
@@ -207,6 +241,72 @@ public class GridOutDeliveryNoteRowVO extends ValueObjectImpl {
   }
   public void setInvoiceQtyDOC10(java.math.BigDecimal invoiceQtyDOC10) {
     this.invoiceQtyDOC10 = invoiceQtyDOC10;
+  }
+  public java.math.BigDecimal getProgressiveDOC10() {
+    return progressiveDOC10;
+  }
+  public void setProgressiveDOC10(java.math.BigDecimal progressiveDOC10) {
+    this.progressiveDOC10 = progressiveDOC10;
+  }
+  public String getVariantCodeItm11DOC10() {
+    return variantCodeItm11DOC10;
+  }
+  public String getVariantCodeItm12DOC10() {
+    return variantCodeItm12DOC10;
+  }
+  public String getVariantCodeItm13DOC10() {
+    return variantCodeItm13DOC10;
+  }
+  public String getVariantCodeItm14DOC10() {
+    return variantCodeItm14DOC10;
+  }
+  public String getVariantCodeItm15DOC10() {
+    return variantCodeItm15DOC10;
+  }
+  public String getVariantTypeItm06DOC10() {
+    return variantTypeItm06DOC10;
+  }
+  public String getVariantTypeItm07DOC10() {
+    return variantTypeItm07DOC10;
+  }
+  public String getVariantTypeItm08DOC10() {
+    return variantTypeItm08DOC10;
+  }
+  public String getVariantTypeItm09DOC10() {
+    return variantTypeItm09DOC10;
+  }
+  public String getVariantTypeItm10DOC10() {
+    return variantTypeItm10DOC10;
+  }
+  public void setVariantTypeItm10DOC10(String variantTypeItm10DOC10) {
+    this.variantTypeItm10DOC10 = variantTypeItm10DOC10;
+  }
+  public void setVariantTypeItm09DOC10(String variantTypeItm09DOC10) {
+    this.variantTypeItm09DOC10 = variantTypeItm09DOC10;
+  }
+  public void setVariantTypeItm08DOC10(String variantTypeItm08DOC10) {
+    this.variantTypeItm08DOC10 = variantTypeItm08DOC10;
+  }
+  public void setVariantTypeItm07DOC10(String variantTypeItm07DOC10) {
+    this.variantTypeItm07DOC10 = variantTypeItm07DOC10;
+  }
+  public void setVariantTypeItm06DOC10(String variantTypeItm06DOC10) {
+    this.variantTypeItm06DOC10 = variantTypeItm06DOC10;
+  }
+  public void setVariantCodeItm15DOC10(String variantCodeItm15DOC10) {
+    this.variantCodeItm15DOC10 = variantCodeItm15DOC10;
+  }
+  public void setVariantCodeItm14DOC10(String variantCodeItm14DOC10) {
+    this.variantCodeItm14DOC10 = variantCodeItm14DOC10;
+  }
+  public void setVariantCodeItm13DOC10(String variantCodeItm13DOC10) {
+    this.variantCodeItm13DOC10 = variantCodeItm13DOC10;
+  }
+  public void setVariantCodeItm12DOC10(String variantCodeItm12DOC10) {
+    this.variantCodeItm12DOC10 = variantCodeItm12DOC10;
+  }
+  public void setVariantCodeItm11DOC10(String variantCodeItm11DOC10) {
+    this.variantCodeItm11DOC10 = variantCodeItm11DOC10;
   }
 
 }

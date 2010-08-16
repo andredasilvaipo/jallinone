@@ -88,7 +88,7 @@ public class InsertItemDiscountsAction implements Action {
       ItemDiscountVO vo = null;
 
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       stmt = conn.createStatement();
 
       for(int i=0;i<list.size();i++) {

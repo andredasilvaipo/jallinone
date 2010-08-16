@@ -296,7 +296,7 @@ public class SupplierItemPricesPanel extends JPanel {
 
   public final void setButtonsEnabled(boolean enabled) {
     insertButton1.setEnabled(enabled);
-    copyButton1.setEnabled(copyButton1.getOldValue());
+    copyButton1.setEnabled(enabled);
     editButton1.setEnabled(enabled);
     deleteButton1.setEnabled(enabled);
     exportButton1.setEnabled(enabled);

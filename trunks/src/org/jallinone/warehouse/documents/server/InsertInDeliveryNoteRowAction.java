@@ -110,8 +110,34 @@ public class InsertInDeliveryNoteRowAction implements Action {
       attribute2dbField.put("docSequenceDoc06DOC09","DOC_SEQUENCE_DOC06");
       attribute2dbField.put("invoiceQtyDOC09","INVOICE_QTY");
 
-      vo.setRowNumberDOC09( progBean.getInternalProgressive("DOC09_IN_DELIVERY_NOTE_ITEMS","ROW_NUMBER",conn) );
+      attribute2dbField.put("progressiveDOC09","PROGRESSIVE");
+      attribute2dbField.put("variantTypeItm06DOC09","VARIANT_TYPE_ITM06");
+      attribute2dbField.put("variantCodeItm11DOC09","VARIANT_CODE_ITM11");
+      attribute2dbField.put("variantTypeItm07DOC09","VARIANT_TYPE_ITM07");
+      attribute2dbField.put("variantCodeItm12DOC09","VARIANT_CODE_ITM12");
+      attribute2dbField.put("variantTypeItm08DOC09","VARIANT_TYPE_ITM08");
+      attribute2dbField.put("variantCodeItm13DOC09","VARIANT_CODE_ITM13");
+      attribute2dbField.put("variantTypeItm09DOC09","VARIANT_TYPE_ITM09");
+      attribute2dbField.put("variantCodeItm14DOC09","VARIANT_CODE_ITM14");
+      attribute2dbField.put("variantTypeItm10DOC09","VARIANT_TYPE_ITM10");
+      attribute2dbField.put("variantCodeItm15DOC09","VARIANT_CODE_ITM15");
 
+      vo.setProgressiveDOC09( progBean.getInternalProgressive("DOC09_IN_DELIVERY_NOTE_ITEMS","PROGRESSIVE",conn) );
+      vo.setRowNumberDOC09( progBean.getInternalProgressive("DOC09_IN_DELIVERY_NOTE_ITEMS","ROW_NUMBER",conn) );
+/*
+      vo.setVariantCodeItm11DOC09(ApplicationConsts.JOLLY);
+      vo.setVariantTypeItm06DOC09(ApplicationConsts.JOLLY);
+
+      vo.setVariantCodeItm12DOC09(ApplicationConsts.JOLLY);
+      vo.setVariantCodeItm13DOC09(ApplicationConsts.JOLLY);
+      vo.setVariantCodeItm14DOC09(ApplicationConsts.JOLLY);
+      vo.setVariantCodeItm15DOC09(ApplicationConsts.JOLLY);
+
+      vo.setVariantTypeItm07DOC09(ApplicationConsts.JOLLY);
+      vo.setVariantTypeItm08DOC09(ApplicationConsts.JOLLY);
+      vo.setVariantTypeItm09DOC09(ApplicationConsts.JOLLY);
+      vo.setVariantTypeItm10DOC09(ApplicationConsts.JOLLY);
+*/
       // insert into DOC09...
       Response res = QueryUtil.insertTable(
           conn,

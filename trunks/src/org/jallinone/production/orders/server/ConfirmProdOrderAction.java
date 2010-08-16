@@ -134,14 +134,14 @@ public class ConfirmProdOrderAction implements Action {
       Response res = rowsAction.executeCommand(gridParams,userSessionPars,request,response,userSession,context);
       if (res.isError())
         return res;
-      ArrayList products = ((VOListResponse)res).getRows();
+      ArrayList products = new ArrayList(((VOListResponse)res).getRows());
       Hashtable compAltCodes = new Hashtable(); // collection of <component item code,HashSet of alternative component item codes>
 
       // retrieve components availabilities required in the specified production order...
       res = check.checkComponentsAvailability(conn,compAltCodes,products,userSessionPars,request,response,userSession,context);
       if (res.isError())
         return res;
-      ArrayList components = ((VOListResponse)res).getRows();
+      ArrayList components = new ArrayList(((VOListResponse)res).getRows());
 
 
       // remove all components previously saved in DOC24 for the specified production order...
@@ -190,13 +190,12 @@ public class ConfirmProdOrderAction implements Action {
 
       // check components availability in the specified warehouse and remove components from it...
       ItemAvailabilityVO availVO = null;
-      ArrayList list = null;
+      java.util.List list = null;
       BigDecimal availability = new BigDecimal(0);
       BigDecimal qty,delta;
       WarehouseMovementVO movVO = null;
       int i;
       ArrayList serialNumbers = new ArrayList();
-      ArrayList barCodes = new ArrayList();
       for(int j=0;j<components.size();j++) {
         compVO = (ProdOrderComponentVO)components.get(j);
         qty = compVO.getQtyDOC24();
@@ -250,7 +249,18 @@ public class ConfirmProdOrderAction implements Action {
             ApplicationConsts.ITEM_GOOD,
             resources.getResource("unload items from production order")+" "+vo.getDocSequenceDOC22()+"/"+vo.getDocYearDOC22(),
             serialNumbers,
-            barCodes
+
+            compVO.getVariantCodeItm11DOC24(),
+            compVO.getVariantCodeItm12DOC24(),
+            compVO.getVariantCodeItm13DOC24(),
+            compVO.getVariantCodeItm14DOC24(),
+            compVO.getVariantCodeItm15DOC24(),
+            compVO.getVariantTypeItm06DOC24(),
+            compVO.getVariantTypeItm07DOC24(),
+            compVO.getVariantTypeItm08DOC24(),
+            compVO.getVariantTypeItm09DOC24(),
+            compVO.getVariantTypeItm10DOC24()
+
           );
           res = mov.addWarehouseMovement(conn,movVO,userSessionPars,request,response,userSession,context);
           if (res.isError()) {
@@ -530,7 +540,7 @@ public class ConfirmProdOrderAction implements Action {
     res = ops.executeCommand(gridParams,userSessionPars,request,response,userSession,context);
     if (res.isError())
       throw new Exception(res.getErrorMessage());
-    ArrayList list = ((VOListResponse)res).getRows();
+    java.util.List list = ((VOListResponse)res).getRows();
     ManufacturePhaseVO phaseVO = null;
 
     if (subProductsAlreadyAdded.contains(prodVO.getItemCodeItm01ITM03()))

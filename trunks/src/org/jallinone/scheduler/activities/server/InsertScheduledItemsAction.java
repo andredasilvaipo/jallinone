@@ -86,7 +86,7 @@ public class InsertScheduledItemsAction implements Action {
       ));
       ScheduledItemVO vo = null;
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("progressiveSch06SCH15","PROGRESSIVE_SCH06");

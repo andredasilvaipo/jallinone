@@ -90,7 +90,7 @@ public class InsertComponentsAction implements Action {
       ));
 
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       ComponentVO vo = null;
 
       Map attribute2dbField = new HashMap();

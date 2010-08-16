@@ -82,7 +82,7 @@ public class DeleteSupplierPricelistAction implements Action {
       ));
       stmt = conn.createStatement();
 
-      ArrayList list =  (ArrayList)inputPar;
+      java.util.List list =  (ArrayList)inputPar;
       SupplierPricelistVO vo = null;
       for(int i=0;i<list.size();i++) {
         // phisically delete records from PUR04...

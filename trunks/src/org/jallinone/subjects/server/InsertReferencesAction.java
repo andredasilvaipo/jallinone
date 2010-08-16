@@ -87,7 +87,7 @@ public class InsertReferencesAction implements Action {
       ));
       ReferenceVO vo = null;
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01REG15","COMPANY_CODE_SYS01");

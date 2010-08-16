@@ -95,7 +95,7 @@ public class InsertVatsAction implements Action {
       attribute2dbField.put("deductibleREG01","DEDUCTIBLE");
       attribute2dbField.put("enabledREG01","ENABLED");
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       BigDecimal progressiveSYS10 = null;
       Response res = null;
 

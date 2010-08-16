@@ -82,7 +82,7 @@ public class UploadReportFilesAction implements Action {
         null
       ));
 
-      String path = this.getClass().getResource("/").getPath()+"reports/";
+      String path = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"reports/";
       Hashtable bytes = (Hashtable)inputPar;
       Enumeration en = bytes.keys();
       String fileName = null;

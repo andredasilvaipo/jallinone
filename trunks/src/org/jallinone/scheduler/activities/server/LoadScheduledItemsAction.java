@@ -131,7 +131,7 @@ public class LoadScheduledItemsAction implements Action {
       if (!res.isError()) {
         HashSet itemCodes = new HashSet();
         ScheduledItemVO vo = null;
-        ArrayList rows = ((VOListResponse)res).getRows();
+        java.util.List rows = ((VOListResponse)res).getRows();
         for(int i=0;i<rows.size();i++) {
           vo = (ScheduledItemVO)rows.get(i);
           itemCodes.add(vo.getItemCodeItm01SCH15());

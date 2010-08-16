@@ -39,6 +39,7 @@ import org.jallinone.sales.documents.headerdiscounts.server.InsertSaleDocDiscoun
 import org.jallinone.sales.documents.itemdiscounts.server.InsertSaleDocRowDiscountsAction;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.variants.java.VariantItemPK;
 
 
 /**
@@ -150,7 +151,13 @@ public class CreateInvoiceFromOutDelivNotesAction implements Action {
       Hashtable selectedItems = new Hashtable(); // collection of pairs <itemcode,qty>
       BigDecimal qty = null;
       pstmt = conn.prepareStatement(
-        "select DOC10_OUT_DELIVERY_NOTE_ITEMS.QTY,DOC10_OUT_DELIVERY_NOTE_ITEMS.ITEM_CODE_ITM01 from DOC10_OUT_DELIVERY_NOTE_ITEMS where "+
+        "select DOC10_OUT_DELIVERY_NOTE_ITEMS.QTY,DOC10_OUT_DELIVERY_NOTE_ITEMS.ITEM_CODE_ITM01,"+
+        "VARIANT_TYPE_ITM06,VARIANT_CODE_ITM11, "+
+        "VARIANT_TYPE_ITM07,VARIANT_CODE_ITM12, "+
+        "VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13, "+
+        "VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14, "+
+        "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15  "+
+        "from DOC10_OUT_DELIVERY_NOTE_ITEMS where "+
         "DOC10_OUT_DELIVERY_NOTE_ITEMS.COMPANY_CODE_SYS01=? and "+
         "DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_TYPE=? and "+
         "DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_YEAR=? and "+
@@ -161,6 +168,7 @@ public class CreateInvoiceFromOutDelivNotesAction implements Action {
       );
       ResultSet rset = null;
       OutDeliveryNotesVO delivVO = null;
+      VariantItemPK variantItemPK = null;
       for(int i=0;i<delivNotes.size();i++) {
         delivVO = (OutDeliveryNotesVO)delivNotes.get(i);
         pstmt.setString(1,delivVO.getCompanyCodeSys01DOC08());
@@ -172,10 +180,26 @@ public class CreateInvoiceFromOutDelivNotesAction implements Action {
         pstmt.setBigDecimal(7,refPK.getDocNumberDOC01());
         rset = pstmt.executeQuery();
         while(rset.next()) {
+
+          variantItemPK = new VariantItemPK(
+            delivVO.getCompanyCodeSys01DOC08(),
+            rset.getString(2),
+            rset.getString(3),
+            rset.getString(4),
+            rset.getString(5),
+            rset.getString(6),
+            rset.getString(7),
+            rset.getString(8),
+            rset.getString(9),
+            rset.getString(10),
+            rset.getString(11),
+            rset.getString(12)
+          );
+
           qty = rset.getBigDecimal(1);
-          if (selectedItems.contains(rset.getString(2)))
-            qty = qty.add( (BigDecimal)selectedItems.get(rset.getString(2)) );
-          selectedItems.put(rset.getString(2),qty);
+          if (selectedItems.contains(variantItemPK))
+            qty = qty.add( (BigDecimal)selectedItems.get(variantItemPK) );
+          selectedItems.put(variantItemPK,qty);
         }
         rset.close();
       }
@@ -190,14 +214,14 @@ public class CreateInvoiceFromOutDelivNotesAction implements Action {
         conn.rollback();
         return res;
       }
-      ArrayList rows = ((VOListResponse)res).getRows();
+      java.util.List rows = ((VOListResponse)res).getRows();
 
 
 
       // create invoice items rows..
       GridSaleDocRowVO gridRowVO = null;
       DetailSaleDocRowVO rowVO = null;
-      ArrayList discRows = null;
+      java.util.List discRows = null;
       SaleDocRowPK docRowPK = null;
       SaleItemDiscountVO itemDiscVO = null;
       gridParams = new GridParams();
@@ -210,7 +234,18 @@ public class CreateInvoiceFromOutDelivNotesAction implements Action {
             gridRowVO.getDocTypeDOC02(),
             gridRowVO.getDocYearDOC02(),
             gridRowVO.getDocNumberDOC02(),
-            gridRowVO.getItemCodeItm01DOC02()
+            gridRowVO.getItemCodeItm01DOC02(),
+            gridRowVO.getVariantTypeItm06DOC02(),
+            gridRowVO.getVariantCodeItm11DOC02(),
+            gridRowVO.getVariantTypeItm07DOC02(),
+            gridRowVO.getVariantCodeItm12DOC02(),
+            gridRowVO.getVariantTypeItm08DOC02(),
+            gridRowVO.getVariantCodeItm13DOC02(),
+            gridRowVO.getVariantTypeItm09DOC02(),
+            gridRowVO.getVariantCodeItm14DOC02(),
+            gridRowVO.getVariantTypeItm10DOC02(),
+            gridRowVO.getVariantCodeItm15DOC02()
+
         );
         res = rowAction.executeCommand(docRowPK,userSessionPars,request,response,userSession,context);
         if (res.isError()) {
@@ -220,7 +255,7 @@ public class CreateInvoiceFromOutDelivNotesAction implements Action {
         rowVO = (DetailSaleDocRowVO)((VOResponse)res).getVo();
 
         // check if the row to be inserted is in the selected delivery notes...
-        if (!selectedItems.containsKey(rowVO.getItemCodeItm01DOC02()))
+        if (!selectedItems.containsKey(getVariantItemPK(rowVO)))
           continue;
 
         rowVO.setDocTypeDOC02(docVO.getDocTypeDOC01());
@@ -229,7 +264,7 @@ public class CreateInvoiceFromOutDelivNotesAction implements Action {
         if (rowVO.getInvoiceQtyDOC02().doubleValue()<rowVO.getQtyDOC02().doubleValue()) {
 
           // this is the invoice qty to set
-          qty = (BigDecimal)selectedItems.get(rowVO.getItemCodeItm01DOC02());
+          qty = (BigDecimal)selectedItems.get(getVariantItemPK(rowVO));
 
           // check if the invoice qty is less or equals to max invoice qty...
           if (qty.doubleValue()<=rowVO.getQtyDOC02().subtract(rowVO.getInvoiceQtyDOC02()).doubleValue())
@@ -427,6 +462,23 @@ public class CreateInvoiceFromOutDelivNotesAction implements Action {
     }
   }
 
+
+  private VariantItemPK getVariantItemPK(DetailSaleDocRowVO vo) {
+    return new VariantItemPK(
+      vo.getCompanyCodeSys01DOC02(),
+      vo.getItemCodeItm01DOC02(),
+      vo.getVariantTypeItm06DOC02(),
+      vo.getVariantCodeItm11DOC02(),
+      vo.getVariantTypeItm07DOC02(),
+      vo.getVariantCodeItm12DOC02(),
+      vo.getVariantTypeItm08DOC02(),
+      vo.getVariantCodeItm13DOC02(),
+      vo.getVariantTypeItm09DOC02(),
+      vo.getVariantCodeItm14DOC02(),
+      vo.getVariantTypeItm10DOC02(),
+      vo.getVariantCodeItm15DOC02()
+    );
+  }
 
 
 }

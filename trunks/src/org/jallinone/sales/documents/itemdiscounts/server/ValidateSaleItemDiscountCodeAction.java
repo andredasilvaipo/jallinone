@@ -134,7 +134,7 @@ public class ValidateSaleItemDiscountCodeAction implements Action {
       );
 
       if (!res.isError()) {
-        ArrayList list = ((VOListResponse)res).getRows();
+        java.util.List list = ((VOListResponse)res).getRows();
         DiscountVO vo = null;
         int i=0;
         while(i<list.size()) {

@@ -346,7 +346,7 @@ public class EmployeeAppointmentsFrame extends InternalFrame {
       );
     }
     else {
-      day.setEmpCalendar( ((VOListResponse)res).getRows() );
+      day.setEmpCalendar( new ArrayList(((VOListResponse)res).getRows()) );
     }
 
     day.setEmployeeVO(empVO);
@@ -460,7 +460,7 @@ public class EmployeeAppointmentsFrame extends InternalFrame {
       return;
     }
 
-    ArrayList rows = ((VOListResponse)res).getRows();
+    java.util.List rows = ((VOListResponse)res).getRows();
     if (rows.size()>0) {
       EmployeeActivityVO vo = (EmployeeActivityVO)rows.get(0);
       Calendar cal = Calendar.getInstance();

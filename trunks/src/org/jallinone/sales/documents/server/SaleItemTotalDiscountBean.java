@@ -93,7 +93,12 @@ public class SaleItemTotalDiscountBean{
       pstmt = conn.prepareStatement(
         "select VALUE,PERC,MIN_QTY,MULTIPLE_QTY from DOC04_SELLING_ITEM_DISCOUNTS where "+
         "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and "+
-        "START_DATE<=? and END_DATE>=? order by DISCOUNT_CODE_SAL03 "
+        "START_DATE<=? and END_DATE>=? order by DISCOUNT_CODE_SAL03 and "+
+        "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+        "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+        "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+        "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+        "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? "
       );
       pstmt.setString(1,vo.getCompanyCodeSys01DOC02());
       pstmt.setString(2,vo.getDocTypeDOC02());
@@ -102,6 +107,18 @@ public class SaleItemTotalDiscountBean{
       pstmt.setString(5,vo.getItemCodeItm01DOC02());
       pstmt.setDate(6,new java.sql.Date(System.currentTimeMillis()));
       pstmt.setDate(7,new java.sql.Date(System.currentTimeMillis()));
+
+      pstmt.setString(8,vo.getVariantTypeItm06DOC02());
+      pstmt.setString(9,vo.getVariantCodeItm11DOC02());
+      pstmt.setString(10,vo.getVariantTypeItm07DOC02());
+      pstmt.setString(11,vo.getVariantCodeItm12DOC02());
+      pstmt.setString(12,vo.getVariantTypeItm08DOC02());
+      pstmt.setString(13,vo.getVariantCodeItm13DOC02());
+      pstmt.setString(14,vo.getVariantTypeItm09DOC02());
+      pstmt.setString(15,vo.getVariantCodeItm14DOC02());
+      pstmt.setString(16,vo.getVariantTypeItm10DOC02());
+      pstmt.setString(17,vo.getVariantCodeItm15DOC02());
+
       ResultSet rset = pstmt.executeQuery();
       BigDecimal valueDOC04 = null;
       BigDecimal percDOC04 = null;

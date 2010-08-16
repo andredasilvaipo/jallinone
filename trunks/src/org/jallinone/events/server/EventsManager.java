@@ -73,7 +73,7 @@ public class EventsManager {
        // get an input stream to a fetch XML ruleset...
        String urlString = "Rules.xml";
 
-       InputStream inStream = new FileInputStream(this.getClass().getResource("/").getPath()+urlString);
+       InputStream inStream = this.getClass().getResourceAsStream("/"+urlString);
 
        // parse the ruleset from the XML document...
        RuleExecutionSet res1 = ruleAdministrator.getLocalRuleExecutionSetProvider( new HashMap() ).createRuleExecutionSet( inStream, new HashMap() );

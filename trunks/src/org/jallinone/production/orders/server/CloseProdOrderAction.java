@@ -130,7 +130,7 @@ public class CloseProdOrderAction implements Action {
         conn.rollback();
         return res;
       }
-      ArrayList products = ((VOListResponse)res).getRows();
+      java.util.List products = ((VOListResponse)res).getRows();
 
 
       // add created products to warehouse locations...
@@ -138,7 +138,6 @@ public class CloseProdOrderAction implements Action {
       ProdOrderProductVO prodVO = null;
       WarehouseMovementVO movVO = null;
       ArrayList serialNumbers = new ArrayList();
-      ArrayList barCodes = new ArrayList();
       for(int i=0;i<products.size();i++) {
         prodVO = (ProdOrderProductVO)products.get(i);
 
@@ -153,7 +152,30 @@ public class CloseProdOrderAction implements Action {
           ApplicationConsts.ITEM_GOOD,
           resources.getResource("load items from production order")+" "+vo.getDocSequenceDOC22()+"/"+vo.getDocYearDOC22(),
           serialNumbers,
-          barCodes
+
+         ApplicationConsts.JOLLY,
+         ApplicationConsts.JOLLY,
+         ApplicationConsts.JOLLY,
+         ApplicationConsts.JOLLY,
+         ApplicationConsts.JOLLY,
+         ApplicationConsts.JOLLY,
+         ApplicationConsts.JOLLY,
+         ApplicationConsts.JOLLY,
+         ApplicationConsts.JOLLY,
+         ApplicationConsts.JOLLY
+
+          /*
+          prodVO.getVariantCodeItm11DOC23(),
+          prodVO.getVariantCodeItm12DOC23(),
+          prodVO.getVariantCodeItm13DOC23(),
+          prodVO.getVariantCodeItm14DOC23(),
+          prodVO.getVariantCodeItm15DOC23(),
+          prodVO.getVariantTypeItm06DOC23(),
+          prodVO.getVariantTypeItm07DOC23(),
+          prodVO.getVariantTypeItm08DOC23(),
+          prodVO.getVariantTypeItm09DOC23(),
+          prodVO.getVariantTypeItm10DOC23()
+          */
         );
         res = mov.addWarehouseMovement(conn,movVO,userSessionPars,request,response,userSession,context);
         if (res.isError()) {

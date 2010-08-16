@@ -10,6 +10,7 @@ import org.openswing.swing.permissions.client.LoginDialog;
 import org.jallinone.commons.client.ClientApplet;
 import org.openswing.swing.util.client.ClientSettings;
 import java.math.BigDecimal;
+import org.openswing.swing.client.*;
 
 
 /**
@@ -138,6 +139,28 @@ public class StartupFrame extends JFrame {
   JLabel maxDecSymLabel = new JLabel();
   JLabel maxThLabel = new JLabel();
   JLabel maxCurrSymLabel = new JLabel();
+  JPanel variantsPanel = new JPanel();
+  JPanel titlePanel = new JPanel();
+  JPanel varPanel = new JPanel();
+  BorderLayout borderLayout1 = new BorderLayout();
+  FlowLayout flowLayout2 = new FlowLayout();
+  GridBagLayout gridBagLayout8 = new GridBagLayout();
+  JLabel vartitleLabel = new JLabel();
+  JLabel var1Label = new JLabel();
+  JLabel var2Label = new JLabel();
+  JLabel var3Label = new JLabel();
+  JLabel var4Label = new JLabel();
+  JLabel var5Label = new JLabel();
+  TextControl controlVar1 = new TextControl();
+  TextControl controlVar2 = new TextControl();
+  TextControl controlVar3 = new TextControl();
+  TextControl controlVar4 = new TextControl();
+  TextControl controlVar5 = new TextControl();
+  JCheckBox varCheckBox1 = new JCheckBox();
+  JCheckBox varCheckBox2 = new JCheckBox();
+  JCheckBox varCheckBox3 = new JCheckBox();
+  JCheckBox varCheckBox4 = new JCheckBox();
+  JCheckBox varCheckBox5 = new JCheckBox();
 
 
   public StartupFrame(ClientApplet clientApplet) {
@@ -160,6 +183,7 @@ public class StartupFrame extends JFrame {
       clientLanguageCodeComboBox.addItem("English");
       clientLanguageCodeComboBox.addItem("Italiano");
       clientLanguageCodeComboBox.addItem("Espanol");
+      clientLanguageCodeComboBox.addItem("Portuguese/Brazilian");
       clientLanguageCodeComboBox.setSelectedIndex(0);
 
       setVisible(true);
@@ -273,10 +297,26 @@ public class StartupFrame extends JFrame {
     decTF.setColumns(10);
     symbTF.setText(new Character((char)8364).toString());
     symbTF.setColumns(10);
-    maxCurrCodeLabel.setText("(20character)");
-    maxDecSymLabel.setText("(1character)");
+    maxCurrCodeLabel.setText("(20 character)");
+    maxDecSymLabel.setText("(1 character)");
     maxThLabel.setText("(1character)");
-    maxCurrSymLabel.setText("(3characters)");
+    maxCurrSymLabel.setText("(3 characters)");
+    variantsPanel.setLayout(borderLayout1);
+    titlePanel.setLayout(flowLayout2);
+    flowLayout2.setAlignment(FlowLayout.LEFT);
+    varPanel.setLayout(gridBagLayout8);
+    vartitleLabel.setText("Now you can define the variants names for the products, if needed (up to 5).");
+    var1Label.setText("Variant name 1");
+    var2Label.setText("Variant name 2");
+    var3Label.setText("Variant name 3");
+    var4Label.setText("Variant name 4");
+    var5Label.setText("Variant name 5");
+    controlVar1.setMaxCharacters(255);
+    varCheckBox1.setText("Define also sub variant");
+    varCheckBox2.setText("Define also sub variant");
+    varCheckBox3.setText("Define also sub variant");
+    varCheckBox4.setText("Define also sub variant");
+    varCheckBox5.setText("Define also sub variant");
     this.getContentPane().add(northPanel, BorderLayout.NORTH);
     this.getContentPane().add(mainPanel, BorderLayout.CENTER);
     northPanel.add(titleLabel, null);
@@ -395,6 +435,40 @@ public class StartupFrame extends JFrame {
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     mainPanel.add(endPanel,  "END");
     endPanel.add(endLabel,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    mainPanel.add(variantsPanel,  "VARIANTS");
+    variantsPanel.add(titlePanel,  BorderLayout.NORTH);
+    titlePanel.add(varPanel, null);
+    variantsPanel.add(varPanel, BorderLayout.CENTER);
+    varPanel.add(var1Label,             new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    varPanel.add(var2Label,            new GridBagConstraints(0, 1, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 0, 0));
+    varPanel.add(var3Label,            new GridBagConstraints(0, 2, 3, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 0, 0));
+    varPanel.add(var4Label,            new GridBagConstraints(0, 3, 4, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 0, 0));
+    varPanel.add(var5Label,             new GridBagConstraints(0, 4, 5, 1, 0.0, 1.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 0, 0));
+    varPanel.add(controlVar1,             new GridBagConstraints(1, 0, 5, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    varPanel.add(controlVar2,           new GridBagConstraints(2, 1, 5, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    varPanel.add(controlVar3,           new GridBagConstraints(3, 2, 5, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    varPanel.add(controlVar4,         new GridBagConstraints(4, 3, 5, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    varPanel.add(controlVar5,        new GridBagConstraints(5, 4, 5, 1, 1.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    varPanel.add(varCheckBox1,     new GridBagConstraints(6, 0, 5, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+    varPanel.add(varCheckBox2,    new GridBagConstraints(7, 1, 4, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+    varPanel.add(varCheckBox3,   new GridBagConstraints(8, 2, 3, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+    varPanel.add(varCheckBox4,  new GridBagConstraints(9, 3, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+    varPanel.add(varCheckBox5,   new GridBagConstraints(10, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     this.getContentPane().add(buttonsPanel,  BorderLayout.SOUTH);
     buttonsPanel.add(exitButton, null);
@@ -518,7 +592,10 @@ public class StartupFrame extends JFrame {
         );
         return;
       }
-
+      pos++;
+      cardLayout1.show(mainPanel,"VARIANTS");
+    }
+    else if (pos==3) {
       pos++;
       cardLayout1.show(mainPanel,"END");
       dxButton.setEnabled(false);
@@ -539,7 +616,7 @@ public class StartupFrame extends JFrame {
         }
       }.start();
     }
-    else if (pos==3) {
+    else if (pos==4) {
       setVisible(false);
       // view the login window before viewing MDI frame...
       LoginDialog d = new LoginDialog(null,false,clientApplet);
@@ -565,14 +642,20 @@ public class StartupFrame extends JFrame {
       dbConnVO.setDriverName("com.microsoft.jdbc.sqlserver.SQLServerDriver");
       dbConnVO.setPassword(passwordTF.getText().trim());
       dbConnVO.setUsername(usernameTF.getText().trim());
-      dbConnVO.setUrl("jdbc:microsoft:sqlserver://"+hostTF.getText().trim()+":"+portTF.getText().trim()+";DatabaseName="+sidTF.getText().trim()+";SelectMethod=cursor");
+      if (portTF.getText().trim().length()>0)
+        dbConnVO.setUrl("jdbc:microsoft:sqlserver://"+hostTF.getText().trim()+":"+portTF.getText().trim()+";DatabaseName="+sidTF.getText().trim()+";SelectMethod=cursor");
+      else
+        dbConnVO.setUrl("jdbc:microsoft:sqlserver://"+hostTF.getText().trim()+";DatabaseName="+sidTF.getText().trim()+";SelectMethod=cursor");
     }
     else if (dbTypeComboBox.getSelectedIndex()==2) {
       // MySQL database...
       dbConnVO.setDriverName("com.mysql.jdbc.Driver");
       dbConnVO.setPassword(passwordTF.getText().trim());
       dbConnVO.setUsername(usernameTF.getText().trim());
-      dbConnVO.setUrl("jdbc:mysql://"+hostTF.getText().trim()+":"+portTF.getText().trim()+"/"+sidTF.getText().trim());
+      if (portTF.getText().trim().length()>0)
+        dbConnVO.setUrl("jdbc:mysql://"+hostTF.getText().trim()+":"+portTF.getText().trim()+"/"+sidTF.getText().trim());
+      else
+        dbConnVO.setUrl("jdbc:mysql://"+hostTF.getText().trim()+"/"+sidTF.getText().trim());
     }
     else if (dbTypeComboBox.getSelectedIndex()==3) {
       // other database...
@@ -600,12 +683,45 @@ public class StartupFrame extends JFrame {
     dbConnVO.setDecimalSymbolREG03(decSymTF.getText().trim().substring(0,1));
     dbConnVO.setThousandSymbolREG03(thTF.getText().trim().substring(0,1));
 
+    if (controlVar1.getValue()==null || controlVar1.getValue().toString().trim().equals(""))
+        dbConnVO.setVariant1("*");
+    else
+      dbConnVO.setVariant1(controlVar1.getValue().toString().trim());
+
+    if (controlVar2.getValue()==null || controlVar2.getValue().toString().trim().equals(""))
+        dbConnVO.setVariant2("*");
+    else
+      dbConnVO.setVariant2(controlVar2.getValue().toString().trim());
+
+    if (controlVar3.getValue()==null || controlVar3.getValue().toString().trim().equals(""))
+        dbConnVO.setVariant3("*");
+    else
+      dbConnVO.setVariant3(controlVar3.getValue().toString().trim());
+
+    if (controlVar4.getValue()==null || controlVar4.getValue().toString().trim().equals(""))
+        dbConnVO.setVariant4("*");
+    else
+      dbConnVO.setVariant4(controlVar4.getValue().toString().trim());
+
+    if (controlVar5.getValue()==null || controlVar5.getValue().toString().trim().equals(""))
+        dbConnVO.setVariant5("*");
+    else
+      dbConnVO.setVariant5(controlVar5.getValue().toString().trim());
+
+    dbConnVO.setUseVariantType1(varCheckBox1.isSelected()?"Y":"N");
+    dbConnVO.setUseVariantType2(varCheckBox2.isSelected()?"Y":"N");
+    dbConnVO.setUseVariantType3(varCheckBox3.isSelected()?"Y":"N");
+    dbConnVO.setUseVariantType4(varCheckBox4.isSelected()?"Y":"N");
+    dbConnVO.setUseVariantType5(varCheckBox5.isSelected()?"Y":"N");
+
     if (clientLanguageCodeComboBox.getSelectedIndex()==0)
       dbConnVO.setClientLanguageCode("EN");
     else if (clientLanguageCodeComboBox.getSelectedIndex()==1)
       dbConnVO.setClientLanguageCode("IT");
-    else
+    else if (clientLanguageCodeComboBox.getSelectedIndex()==2)
       dbConnVO.setClientLanguageCode("ES");
+    else
+      dbConnVO.setClientLanguageCode("PTBR");
     dbConnVO.setAdminPassword(adminPasswdTF.getText().trim());
     Response response = ClientUtils.getData("createConfigFile",dbConnVO);
     if (response.isError()) {

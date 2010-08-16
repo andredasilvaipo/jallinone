@@ -15,6 +15,7 @@ import org.jallinone.commons.client.ClientApplet;
 import org.jallinone.commons.client.ApplicationClientFacade;
 import org.jallinone.system.java.ButtonCompanyAuthorizations;
 import java.math.BigDecimal;
+import org.openswing.swing.client.GridControl;
 
 
 /**
@@ -67,6 +68,26 @@ public class SubjectHierarchiesController extends CompanyGridController implemen
     this.idGrid = idGrid;
     this.frame = new SubjectHierarchiesFrame(this,functionId,title,subjectTypeREG08,loadCurrentLevel);
     MDIFrame.add(frame,true);
+  }
+
+
+  /**
+   * Callback method invoked after saving data when the grid was in INSERT mode (on pressing save button).
+   * The method is called ONLY if the operation is successfully completed.
+   */
+  public void afterInsertGrid(GridControl grid) {
+    doubleClick(grid.getSelectedRow(),grid.getVOListTableModel().getObjectForRow(grid.getSelectedRow()));
+  }
+
+
+  /**
+   * Callback method invoked when the data loading is completed.
+   * @param error <code>true</code> if data loading has terminated with errors, <code>false</code> otherwise
+   */
+  public void loadDataCompleted(boolean error) {
+    int selRow = frame.getSubjectHierarchiesGrid().getSelectedRow();
+    if (selRow!=-1)
+      doubleClick(selRow,frame.getSubjectHierarchiesGrid().getVOListTableModel().getObjectForRow(selRow));
   }
 
 

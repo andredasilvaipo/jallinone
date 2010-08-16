@@ -30,6 +30,7 @@ import org.jallinone.events.server.GenericEvent;
  * License as published by the Free Software Foundation;
  *
  *                GNU LESSER GENERAL PUBLIC LICENSE
+
  *                 Version 2.1, February 1999
  *
  * This application is distributed in the hope that it will be useful,
@@ -116,8 +117,6 @@ public class LoadItemAction implements Action {
 //      attribute2dbField.put("heightDecimalsREG02","REG02_E.DECIMALS");
       attribute2dbField.put("heightUmCodeReg02ITM01","ITM01_ITEMS.HEIGHT_UM_CODE_REG02");
       attribute2dbField.put("noteITM01","ITM01_ITEMS.NOTE");
-      attribute2dbField.put("colorCodeReg13ITM01","ITM01_ITEMS.COLOR_CODE_REG13");
-      attribute2dbField.put("sizeCodeReg14ITM01","ITM01_ITEMS.SIZE_CODE_REG14");
       attribute2dbField.put("levelDescriptionSYS10","C.DESCRIPTION");
       attribute2dbField.put("largeImageITM01","ITM01_ITEMS.LARGE_IMAGE");
       attribute2dbField.put("smallImageITM01","ITM01_ITEMS.SMALL_IMAGE");
@@ -135,20 +134,29 @@ public class LoadItemAction implements Action {
       attribute2dbField.put("startDateITM01","ITM01_ITEMS.START_DATE");
       attribute2dbField.put("manufactureDescriptionSYS10","PRO01.DESCRIPTION");
 
+      attribute2dbField.put("useVariant1ITM01","ITM01_ITEMS.USE_VARIANT_1");
+      attribute2dbField.put("useVariant2ITM01","ITM01_ITEMS.USE_VARIANT_2");
+      attribute2dbField.put("useVariant3ITM01","ITM01_ITEMS.USE_VARIANT_3");
+      attribute2dbField.put("useVariant4ITM01","ITM01_ITEMS.USE_VARIANT_4");
+      attribute2dbField.put("useVariant5ITM01","ITM01_ITEMS.USE_VARIANT_5");
+
+      attribute2dbField.put("barCodeITM01","ITM01_ITEMS.BAR_CODE");
+
       HashSet pkAttributes = new HashSet();
       pkAttributes.add("companyCodeSys01ITM01");
       pkAttributes.add("itemCodeITM01");
 
       String baseSQL =
           "select "+
-          "ITM01_ITEMS.COMPANY_CODE_SYS01,ITM01_ITEMS.ITEM_CODE,A.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,ITM01_ITEMS.PROGRESSIVE_HIE01,"+
+          "ITM01_ITEMS.COMPANY_CODE_SYS01,ITM01_ITEMS.ITEM_CODE,ITM01_ITEMS.BAR_CODE,A.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,ITM01_ITEMS.PROGRESSIVE_HIE01,"+
           "ITM01_ITEMS.ADD_PROGRESSIVE_SYS10,ITM01_ITEMS.PROGRESSIVE_SYS10,ITM01_ITEMS.MIN_SELLING_QTY,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,"+
           "REG02_A.DECIMALS,ITM01_ITEMS.VAT_CODE_REG01,B.DESCRIPTION,ITM01_ITEMS.GROSS_WEIGHT,ITM01_ITEMS.GROSS_WEIGHT_UM_CODE_REG02,"+
           "ITM01_ITEMS.NET_WEIGHT,ITM01_ITEMS.NET_WEIGHT_UM_CODE_REG02,ITM01_ITEMS.WIDTH,"+
           "ITM01_ITEMS.WIDTH_UM_CODE_REG02,ITM01_ITEMS.HEIGHT,ITM01_ITEMS.HEIGHT_UM_CODE_REG02,ITM01_ITEMS.NOTE,"+
-          "ITM01_ITEMS.COLOR_CODE_REG13,ITM01_ITEMS.SIZE_CODE_REG14,ITM01_ITEMS.LARGE_IMAGE,ITM01_ITEMS.SMALL_IMAGE,REG01_VATS.VALUE,REG01_VATS.DEDUCTIBLE,"+
+          "ITM01_ITEMS.LARGE_IMAGE,ITM01_ITEMS.SMALL_IMAGE,REG01_VATS.VALUE,REG01_VATS.DEDUCTIBLE,"+
           "C.DESCRIPTION,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,PRO01.DESCRIPTION,ITM01_ITEMS.VERSION,ITM01_ITEMS.REVISION, "+
-          "ITM01_ITEMS.START_DATE,ITM01_ITEMS.MANUFACTURE_CODE_PRO01 "+
+          "ITM01_ITEMS.START_DATE,ITM01_ITEMS.MANUFACTURE_CODE_PRO01, "+
+          "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 "+
           " from "+
           "SYS10_TRANSLATIONS A,SYS10_TRANSLATIONS B,REG01_VATS,REG02_MEASURE_UNITS REG02_A,SYS10_TRANSLATIONS C,HIE01_LEVELS,ITM01_ITEMS "+
           "LEFT OUTER JOIN "+
@@ -207,30 +215,6 @@ public class LoadItemAction implements Action {
           rset.close();
         }
 
-        if (vo.getColorCodeReg13ITM01()!=null) {
-          // retrieve color description...
-          rset = stmt.executeQuery(
-              "select DESCRIPTION from REG13_COLORS,SYS10_TRANSLATIONS where "+
-              "REG13_COLORS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-              "COLOR_CODE='"+vo.getColorCodeReg13ITM01()+"' and LANGUAGE_CODE='"+serverLanguageId+"'"
-          );
-          if (rset.next())
-            vo.setColorDescriptionSYS10(rset.getString(1));
-          rset.close();
-        }
-
-        if (vo.getSizeCodeReg14ITM01()!=null) {
-          // retrieve size description...
-          rset = stmt.executeQuery(
-              "select DESCRIPTION from REG14_SIZES,SYS10_TRANSLATIONS where "+
-              "REG14_SIZES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-              "SIZE_CODE='"+vo.getSizeCodeReg14ITM01()+"' and LANGUAGE_CODE='"+serverLanguageId+"'"
-          );
-          if (rset.next())
-            vo.setSizeDescriptionSYS10(rset.getString(1));
-          rset.close();
-        }
-
         if (vo.getGrossWeightUmCodeReg02ITM01()!=null) {
           // retrieve gross weight decimals...
           rset = stmt.executeQuery(
@@ -283,7 +267,7 @@ public class LoadItemAction implements Action {
             appPath += "/";
           if (!new File(appPath).isAbsolute()) {
             // relative path (to "WEB-INF/classes/" folder)
-            appPath = this.getClass().getResource("/").getPath()+appPath;
+            appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
           }
           File f = new File(appPath+vo.getSmallImageITM01());
           byte[] bytes = new byte[(int)f.length()];
@@ -301,7 +285,7 @@ public class LoadItemAction implements Action {
             appPath += "/";
           if (!new File(appPath).isAbsolute()) {
             // relative path (to "WEB-INF/classes/" folder)
-            appPath = this.getClass().getResource("/").getPath()+appPath;
+            appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
           }
           File f = new File(appPath+vo.getLargeImageITM01());
           byte[] bytes = new byte[(int)f.length()];

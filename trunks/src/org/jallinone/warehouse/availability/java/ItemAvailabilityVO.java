@@ -1,6 +1,8 @@
 package org.jallinone.warehouse.availability.java;
 
 import org.openswing.swing.message.receive.java.*;
+import org.jallinone.commons.java.*;
+
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -40,6 +42,17 @@ public class ItemAvailabilityVO extends ValueObjectImpl {
   private java.math.BigDecimal damagedQtyWAR03;
   private java.math.BigDecimal progressiveHie01WAR03;
 
+  private String variantTypeItm06WAR03;
+  private String variantCodeItm11WAR03;
+  private String variantTypeItm07WAR03;
+  private String variantCodeItm12WAR03;
+  private String variantTypeItm08WAR03;
+  private String variantCodeItm13WAR03;
+  private String variantTypeItm09WAR03;
+  private String variantCodeItm14WAR03;
+  private String variantTypeItm10WAR03;
+  private String variantCodeItm15WAR03;
+
 
   public ItemAvailabilityVO() {
   }
@@ -64,7 +77,35 @@ public class ItemAvailabilityVO extends ValueObjectImpl {
     this.locationDescriptionSYS10 = locationDescriptionSYS10;
   }
   public String getDescriptionSYS10() {
-    return descriptionSYS10;
+    String aux = descriptionSYS10;
+    if (aux==null)
+      return null;
+
+    if (variantTypeItm06WAR03!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm06WAR03))
+      aux += " "+variantTypeItm06WAR03;
+    if (variantCodeItm11WAR03!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm11WAR03))
+      aux += " "+variantCodeItm11WAR03;
+
+    if (variantTypeItm07WAR03!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm07WAR03))
+      aux += " "+variantTypeItm07WAR03;
+    if (variantCodeItm12WAR03!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm12WAR03))
+      aux += " "+variantCodeItm12WAR03;
+
+    if (variantTypeItm08WAR03!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm08WAR03))
+      aux += " "+variantTypeItm08WAR03;
+    if (variantCodeItm13WAR03!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm13WAR03))
+      aux += " "+variantCodeItm13WAR03;
+
+    if (variantTypeItm09WAR03!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm09WAR03))
+      aux += " "+variantTypeItm09WAR03;
+    if (variantCodeItm14WAR03!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm14WAR03))
+      aux += " "+variantCodeItm14WAR03;
+
+    if (variantTypeItm10WAR03!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm10WAR03))
+      aux += " "+variantTypeItm10WAR03;
+    if (variantCodeItm15WAR03!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm15WAR03))
+      aux += " "+variantCodeItm15WAR03;
+    return aux;
   }
   public void setDescriptionSYS10(String descriptionSYS10) {
     this.descriptionSYS10 = descriptionSYS10;
@@ -86,6 +127,66 @@ public class ItemAvailabilityVO extends ValueObjectImpl {
   }
   public void setProgressiveHie01WAR03(java.math.BigDecimal progressiveHie01WAR03) {
     this.progressiveHie01WAR03 = progressiveHie01WAR03;
+  }
+  public String getVariantCodeItm11WAR03() {
+    return variantCodeItm11WAR03;
+  }
+  public String getVariantCodeItm12WAR03() {
+    return variantCodeItm12WAR03;
+  }
+  public String getVariantCodeItm13WAR03() {
+    return variantCodeItm13WAR03;
+  }
+  public String getVariantCodeItm14WAR03() {
+    return variantCodeItm14WAR03;
+  }
+  public String getVariantCodeItm15WAR03() {
+    return variantCodeItm15WAR03;
+  }
+  public String getVariantTypeItm06WAR03() {
+    return variantTypeItm06WAR03;
+  }
+  public String getVariantTypeItm07WAR03() {
+    return variantTypeItm07WAR03;
+  }
+  public String getVariantTypeItm08WAR03() {
+    return variantTypeItm08WAR03;
+  }
+  public String getVariantTypeItm09WAR03() {
+    return variantTypeItm09WAR03;
+  }
+  public String getVariantTypeItm10WAR03() {
+    return variantTypeItm10WAR03;
+  }
+  public void setVariantTypeItm10WAR03(String variantTypeItm10WAR03) {
+    this.variantTypeItm10WAR03 = variantTypeItm10WAR03;
+  }
+  public void setVariantTypeItm09WAR03(String variantTypeItm09WAR03) {
+    this.variantTypeItm09WAR03 = variantTypeItm09WAR03;
+  }
+  public void setVariantTypeItm08WAR03(String variantTypeItm08WAR03) {
+    this.variantTypeItm08WAR03 = variantTypeItm08WAR03;
+  }
+  public void setVariantTypeItm07WAR03(String variantTypeItm07WAR03) {
+    this.variantTypeItm07WAR03 = variantTypeItm07WAR03;
+  }
+  public void setVariantTypeItm06WAR03(String variantTypeItm06WAR03) {
+    this.variantTypeItm06WAR03 = variantTypeItm06WAR03;
+  }
+  public void setVariantCodeItm15WAR03(String variantCodeItm15WAR03) {
+    this.variantCodeItm15WAR03 = variantCodeItm15WAR03;
+  }
+  public void setVariantCodeItm14WAR03(String variantCodeItm14WAR03) {
+    this.variantCodeItm14WAR03 = variantCodeItm14WAR03;
+  }
+  public void setVariantCodeItm13WAR03(String variantCodeItm13WAR03) {
+    this.variantCodeItm13WAR03 = variantCodeItm13WAR03;
+  }
+  public void setVariantCodeItm12WAR03(String variantCodeItm12WAR03) {
+    this.variantCodeItm12WAR03 = variantCodeItm12WAR03;
+  }
+  public void setVariantCodeItm11WAR03(String variantCodeItm11WAR03) {
+    this.variantCodeItm11WAR03 = variantCodeItm11WAR03;
   }
 
 }

@@ -390,7 +390,18 @@ public class SaleDocRowDiscountsPanel extends JPanel implements CurrencyColumnSe
         parentVO.getDocTypeDOC02(),
         parentVO.getDocYearDOC02(),
         parentVO.getDocNumberDOC02(),
-        parentVO.getItemCodeItm01DOC02()
+        parentVO.getItemCodeItm01DOC02(),
+        parentVO.getVariantTypeItm06DOC02(),
+        parentVO.getVariantCodeItm11DOC02(),
+        parentVO.getVariantTypeItm07DOC02(),
+        parentVO.getVariantCodeItm12DOC02(),
+        parentVO.getVariantTypeItm08DOC02(),
+        parentVO.getVariantCodeItm13DOC02(),
+        parentVO.getVariantTypeItm09DOC02(),
+        parentVO.getVariantCodeItm14DOC02(),
+        parentVO.getVariantTypeItm10DOC02(),
+        parentVO.getVariantCodeItm15DOC02()
+
     ));
   }
 

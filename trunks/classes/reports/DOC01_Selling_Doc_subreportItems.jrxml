@@ -51,7 +51,14 @@ DOC02_SELLING_ITEMS.DECIMALS_REG02,DOC02_SELLING_ITEMS.MIN_SELLING_QTY_ITM01,DOC
 DOC02_SELLING_ITEMS.DEDUCTIBLE_REG01,DOC02_SELLING_ITEMS.TAXABLE_INCOME,DOC02_SELLING_ITEMS.PROGRESSIVE_HIE02,
 DOC02_SELLING_ITEMS.DELIVERY_DATE,DOC02_SELLING_ITEMS.OUT_QTY,DOC01_SELLING.CURRENCY_CODE_REG03,
 DOC02_SELLING_ITEMS.PROGRESSIVE_HIE01, DOC02_SELLING_ITEMS.DISCOUNT_VALUE,DOC02_SELLING_ITEMS.DISCOUNT_PERC,
-DOC02_SELLING_ITEMS.INVOICE_QTY  from DOC02_SELLING_ITEMS,ITM01_ITEMS,SYS10_TRANSLATIONS,DOC01_SELLING where 
+DOC02_SELLING_ITEMS.INVOICE_QTY,
+DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM06,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM11,
+DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM07,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM12,
+DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM08,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM13,
+DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM09,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM14,
+DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM10,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM15 
+from DOC02_SELLING_ITEMS,ITM01_ITEMS,SYS10_TRANSLATIONS,DOC01_SELLING
+where 
 DOC01_SELLING.COMPANY_CODE_SYS01=DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01 and 
 DOC01_SELLING.DOC_TYPE=DOC02_SELLING_ITEMS.DOC_TYPE and DOC01_SELLING.DOC_YEAR=DOC02_SELLING_ITEMS.DOC_YEAR and 
 DOC01_SELLING.DOC_NUMBER=DOC02_SELLING_ITEMS.DOC_NUMBER and 
@@ -77,8 +84,8 @@ ORDER BY DOC02_SELLING_ITEMS.ROW_NUMBER ASC]]></queryString>
 	<field name="DESCRIPTION" class="java.lang.String"/>
 	<field name="VAT_VALUE" class="java.math.BigDecimal"/>
 	<field name="VAT_DESCRIPTION" class="java.lang.String"/>
-	<field name="START_DATE_SAL02" class="java.sql.Date"/>
-	<field name="END_DATE_SAL02" class="java.sql.Date"/>
+	<field name="START_DATE_SAL02" class="java.sql.Timestamp"/>
+	<field name="END_DATE_SAL02" class="java.sql.Timestamp"/>
 	<field name="MIN_SELLING_QTY_UM_CODE_REG02" class="java.lang.String"/>
 	<field name="DECIMALS_REG02" class="java.math.BigDecimal"/>
 	<field name="MIN_SELLING_QTY_ITM01" class="java.math.BigDecimal"/>
@@ -86,12 +93,22 @@ ORDER BY DOC02_SELLING_ITEMS.ROW_NUMBER ASC]]></queryString>
 	<field name="DEDUCTIBLE_REG01" class="java.math.BigDecimal"/>
 	<field name="TAXABLE_INCOME" class="java.math.BigDecimal"/>
 	<field name="PROGRESSIVE_HIE02" class="java.math.BigDecimal"/>
-	<field name="DELIVERY_DATE" class="java.sql.Date"/>
+	<field name="DELIVERY_DATE" class="java.sql.Timestamp"/>
 	<field name="OUT_QTY" class="java.math.BigDecimal"/>
 	<field name="CURRENCY_CODE_REG03" class="java.lang.String"/>
 	<field name="DISCOUNT_VALUE" class="java.math.BigDecimal"/>
 	<field name="DISCOUNT_PERC" class="java.math.BigDecimal"/>
 	<field name="INVOICE_QTY" class="java.math.BigDecimal"/>
+	<field name="VARIANT_TYPE_ITM06" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM11" class="java.lang.String"/>
+	<field name="VARIANT_TYPE_ITM07" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM12" class="java.lang.String"/>
+	<field name="VARIANT_TYPE_ITM08" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM13" class="java.lang.String"/>
+	<field name="VARIANT_TYPE_ITM09" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM14" class="java.lang.String"/>
+	<field name="VARIANT_TYPE_ITM10" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM15" class="java.lang.String"/>
 
 		<background>
 			<band height="71"  isSplitAllowed="true" >
@@ -185,7 +202,7 @@ ORDER BY DOC02_SELLING_ITEMS.ROW_NUMBER ASC]]></queryString>
 					<reportElement
 						x="63"
 						y="0"
-						width="0"
+						width="1"
 						height="16"
 						key="line-19"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -194,7 +211,7 @@ ORDER BY DOC02_SELLING_ITEMS.ROW_NUMBER ASC]]></queryString>
 					<reportElement
 						x="320"
 						y="0"
-						width="0"
+						width="1"
 						height="16"
 						key="line-20"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -203,7 +220,7 @@ ORDER BY DOC02_SELLING_ITEMS.ROW_NUMBER ASC]]></queryString>
 					<reportElement
 						x="367"
 						y="0"
-						width="0"
+						width="1"
 						height="16"
 						key="line-21"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -212,7 +229,7 @@ ORDER BY DOC02_SELLING_ITEMS.ROW_NUMBER ASC]]></queryString>
 					<reportElement
 						x="432"
 						y="0"
-						width="0"
+						width="1"
 						height="16"
 						key="line-22"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -221,7 +238,7 @@ ORDER BY DOC02_SELLING_ITEMS.ROW_NUMBER ASC]]></queryString>
 					<reportElement
 						x="497"
 						y="0"
-						width="0"
+						width="1"
 						height="16"
 						key="line-23"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -231,7 +248,7 @@ ORDER BY DOC02_SELLING_ITEMS.ROW_NUMBER ASC]]></queryString>
 						x="0"
 						y="0"
 						width="534"
-						height="0"
+						height="1"
 						key="line-24"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -239,7 +256,7 @@ ORDER BY DOC02_SELLING_ITEMS.ROW_NUMBER ASC]]></queryString>
 					<reportElement
 						x="0"
 						y="0"
-						width="0"
+						width="1"
 						height="16"
 						key="line-25"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -248,7 +265,7 @@ ORDER BY DOC02_SELLING_ITEMS.ROW_NUMBER ASC]]></queryString>
 					<reportElement
 						x="533"
 						y="0"
-						width="0"
+						width="1"
 						height="16"
 						key="line-26"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -258,7 +275,7 @@ ORDER BY DOC02_SELLING_ITEMS.ROW_NUMBER ASC]]></queryString>
 						x="0"
 						y="15"
 						width="533"
-						height="0"
+						height="1"
 						key="line-27"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -355,7 +372,17 @@ $F{DECIMALS_REG02}
 					<textElement>
 						<font fontName="Courier New" size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRIPTION}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRIPTION}+" "+
+($F{VARIANT_TYPE_ITM06}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM06})+
+($F{VARIANT_CODE_ITM11}.equals("*")?"":" "+$F{VARIANT_CODE_ITM11})+
+($F{VARIANT_TYPE_ITM07}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM07})+
+($F{VARIANT_CODE_ITM12}.equals("*")?"":" "+$F{VARIANT_CODE_ITM12})+
+($F{VARIANT_TYPE_ITM08}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM08})+
+($F{VARIANT_CODE_ITM13}.equals("*")?"":" "+$F{VARIANT_CODE_ITM13})+
+($F{VARIANT_TYPE_ITM09}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM09})+
+($F{VARIANT_CODE_ITM14}.equals("*")?"":" "+$F{VARIANT_CODE_ITM14})+
+($F{VARIANT_TYPE_ITM10}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM10})+
+($F{VARIANT_CODE_ITM15}.equals("*")?"":" "+$F{VARIANT_CODE_ITM15})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="-##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -393,7 +420,7 @@ $F{TOTAL_DISCOUNT}.doubleValue()>0
 					<reportElement
 						x="63"
 						y="0"
-						width="0"
+						width="1"
 						height="36"
 						key="line-11"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -402,7 +429,7 @@ $F{TOTAL_DISCOUNT}.doubleValue()>0
 					<reportElement
 						x="320"
 						y="0"
-						width="0"
+						width="1"
 						height="36"
 						key="line-12"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -411,7 +438,7 @@ $F{TOTAL_DISCOUNT}.doubleValue()>0
 					<reportElement
 						x="367"
 						y="0"
-						width="0"
+						width="1"
 						height="36"
 						key="line-13"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -420,7 +447,7 @@ $F{TOTAL_DISCOUNT}.doubleValue()>0
 					<reportElement
 						x="432"
 						y="0"
-						width="0"
+						width="1"
 						height="36"
 						key="line-14"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -429,7 +456,7 @@ $F{TOTAL_DISCOUNT}.doubleValue()>0
 					<reportElement
 						x="497"
 						y="0"
-						width="0"
+						width="1"
 						height="36"
 						key="line-15"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -438,7 +465,7 @@ $F{TOTAL_DISCOUNT}.doubleValue()>0
 					<reportElement
 						x="0"
 						y="0"
-						width="0"
+						width="1"
 						height="36"
 						key="line-16"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -447,7 +474,7 @@ $F{TOTAL_DISCOUNT}.doubleValue()>0
 					<reportElement
 						x="533"
 						y="0"
-						width="0"
+						width="1"
 						height="36"
 						key="line-17"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -482,7 +509,7 @@ $P{DECIMALS_REG03}
 						x="0"
 						y="0"
 						width="534"
-						height="0"
+						height="1"
 						key="line-28"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>

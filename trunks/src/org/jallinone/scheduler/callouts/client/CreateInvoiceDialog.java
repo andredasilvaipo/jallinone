@@ -723,7 +723,7 @@ public class CreateInvoiceDialog extends JDialog {
            );
            return;
         }
-        tasks = ((VOListResponse)res).getRows();
+        tasks = new ArrayList(((VOListResponse)res).getRows());
         if (tasks.size()!=1) {
            JOptionPane.showMessageDialog(
                ClientUtils.getParentFrame(frame),

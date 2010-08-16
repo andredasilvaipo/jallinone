@@ -49,9 +49,9 @@ public class XMLResources extends ServerResourcesFactory {
    */
   public void init(ServletContext context) {
     Hashtable xmlFiles = new Hashtable();
-    xmlFiles.put("EN",this.getClass().getResource("/").getPath()+"Resources_en.xml");
-    xmlFiles.put("IT",this.getClass().getResource("/").getPath()+"Resources_it.xml");
-    xmlFiles.put("ES",this.getClass().getResource("/").getPath()+"Resources_es.xml");
+    xmlFiles.put("EN",this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"Resources_en.xml");
+    xmlFiles.put("IT",this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"Resources_it.xml");
+    xmlFiles.put("ES",this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"Resources_es.xml");
     factory = new XMLResourcesFactory(xmlFiles,false);
   }
 

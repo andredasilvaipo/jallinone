@@ -85,17 +85,35 @@ public class DeleteSaleDocRowsAction implements Action {
         null
       ));
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       SaleDocRowPK rowPK = null;
 
       pstmt1 = conn.prepareStatement(
-          "delete from DOC18_SELLING_SERIAL_NUMBERS where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=?"
+          "delete from DOC18_SELLING_SERIAL_NUMBERS where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and "+
+          "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+          "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+          "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+          "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+          "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? "
+
       );
       pstmt2 = conn.prepareStatement(
-          "delete from DOC04_SELLING_ITEM_DISCOUNTS where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=?"
+          "delete from DOC04_SELLING_ITEM_DISCOUNTS where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and "+
+          "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+          "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+          "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+          "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+          "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? "
+
       );
       pstmt3 = conn.prepareStatement(
-          "delete from DOC02_SELLING_ITEMS where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=?"
+          "delete from DOC02_SELLING_ITEMS where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and "+
+          "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+          "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+          "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+          "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+          "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? "
+
       );
 
       for(int i=0;i<list.size();i++) {
@@ -107,6 +125,18 @@ public class DeleteSaleDocRowsAction implements Action {
         pstmt1.setBigDecimal(3,rowPK.getDocYearDOC02());
         pstmt1.setBigDecimal(4,rowPK.getDocNumberDOC02());
         pstmt1.setString(5,rowPK.getItemCodeItm01DOC02());
+
+        pstmt1.setString(6,rowPK.getVariantTypeItm06DOC02());
+        pstmt1.setString(7,rowPK.getVariantCodeItm11DOC02());
+        pstmt1.setString(8,rowPK.getVariantTypeItm07DOC02());
+        pstmt1.setString(9,rowPK.getVariantCodeItm12DOC02());
+        pstmt1.setString(10,rowPK.getVariantTypeItm08DOC02());
+        pstmt1.setString(11,rowPK.getVariantCodeItm13DOC02());
+        pstmt1.setString(12,rowPK.getVariantTypeItm09DOC02());
+        pstmt1.setString(13,rowPK.getVariantCodeItm14DOC02());
+        pstmt1.setString(14,rowPK.getVariantTypeItm10DOC02());
+        pstmt1.setString(15,rowPK.getVariantCodeItm15DOC02());
+
         pstmt1.execute();
 
         // phisically delete records in DOC04...
@@ -115,6 +145,18 @@ public class DeleteSaleDocRowsAction implements Action {
         pstmt2.setBigDecimal(3,rowPK.getDocYearDOC02());
         pstmt2.setBigDecimal(4,rowPK.getDocNumberDOC02());
         pstmt2.setString(5,rowPK.getItemCodeItm01DOC02());
+
+        pstmt1.setString(6,rowPK.getVariantTypeItm06DOC02());
+        pstmt1.setString(7,rowPK.getVariantCodeItm11DOC02());
+        pstmt1.setString(8,rowPK.getVariantTypeItm07DOC02());
+        pstmt1.setString(9,rowPK.getVariantCodeItm12DOC02());
+        pstmt1.setString(10,rowPK.getVariantTypeItm08DOC02());
+        pstmt1.setString(11,rowPK.getVariantCodeItm13DOC02());
+        pstmt1.setString(12,rowPK.getVariantTypeItm09DOC02());
+        pstmt1.setString(13,rowPK.getVariantCodeItm14DOC02());
+        pstmt1.setString(14,rowPK.getVariantTypeItm10DOC02());
+        pstmt1.setString(15,rowPK.getVariantCodeItm15DOC02());
+
         pstmt2.execute();
 
         // phisically delete the record in DOC02...
@@ -123,6 +165,18 @@ public class DeleteSaleDocRowsAction implements Action {
         pstmt3.setBigDecimal(3,rowPK.getDocYearDOC02());
         pstmt3.setBigDecimal(4,rowPK.getDocNumberDOC02());
         pstmt3.setString(5,rowPK.getItemCodeItm01DOC02());
+
+        pstmt1.setString(6,rowPK.getVariantTypeItm06DOC02());
+        pstmt1.setString(7,rowPK.getVariantCodeItm11DOC02());
+        pstmt1.setString(8,rowPK.getVariantTypeItm07DOC02());
+        pstmt1.setString(9,rowPK.getVariantCodeItm12DOC02());
+        pstmt1.setString(10,rowPK.getVariantTypeItm08DOC02());
+        pstmt1.setString(11,rowPK.getVariantCodeItm13DOC02());
+        pstmt1.setString(12,rowPK.getVariantTypeItm09DOC02());
+        pstmt1.setString(13,rowPK.getVariantCodeItm14DOC02());
+        pstmt1.setString(14,rowPK.getVariantTypeItm10DOC02());
+        pstmt1.setString(15,rowPK.getVariantCodeItm15DOC02());
+
         pstmt3.execute();
       }
 

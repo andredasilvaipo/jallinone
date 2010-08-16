@@ -94,7 +94,7 @@ public class InsertPricesAction implements Action {
       attribute2dbField.put("endDateSAL02","END_DATE");
 
       // insert into SAL02...
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       PriceVO vo = null;
       Response res = null;
       for(int i=0;i<list.size();i++) {

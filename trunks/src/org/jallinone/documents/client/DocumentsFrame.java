@@ -25,6 +25,7 @@ import org.jallinone.documents.java.DocumentTypeVO;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import org.jallinone.commons.java.ApplicationConsts;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 
 /**
@@ -70,18 +71,31 @@ public class DocumentsFrame extends InternalFrame {
   GridControl grid = new GridControl();
   TextColumn colCod = new TextColumn();
   TextColumn colDescr = new TextColumn();
+  TextColumn colFile = new TextColumn();
   TextColumn colCompany = new TextColumn();
   JSplitPane subsplit = new JSplitPane();
   DocFilterPanel filterPanel = new DocFilterPanel();
+  private java.util.List docTypeList = null;
 
   private ServerGridDataLocator gridDataLocator = new ServerGridDataLocator();
 
 
-  public DocumentsFrame(DocumentsController documentsController) {
+  public DocumentsFrame(final DocumentsController documentsController) {
     try {
       jbInit();
       setSize(750,550);
       setMinimumSize(new Dimension(750,500));
+
+      hierarTreePanel.addHierarTreeListener(new HierarTreeListener(){
+
+        public void loadDataCompleted(boolean error) {
+          if (hierarTreePanel.getTree().getRowCount()>0)
+            hierarTreePanel.getTree().setSelectionRow(0);
+          if (hierarTreePanel.getTree().getSelectionPath()!=null)
+            documentsController.leftClick((DefaultMutableTreeNode)hierarTreePanel.getTree().getSelectionPath().getLastPathComponent());
+        }
+
+      });
 
       grid.setController(documentsController);
       grid.setGridDataLocator(gridDataLocator);
@@ -101,6 +115,13 @@ public class DocumentsFrame extends InternalFrame {
   }
 
 
+  public DocumentTypeVO getSelectedDocumentType() {
+    if (comboBoxControl1.getSelectedIndex()==-1)
+      return null;
+    return (DocumentTypeVO)docTypeList.get(comboBoxControl1.getSelectedIndex());
+  }
+
+
   /**
    * Retrieve document types and fill in the document types combo box.
    */
@@ -109,9 +130,9 @@ public class DocumentsFrame extends InternalFrame {
     Domain d = new Domain("DOCUMENT_TYPES");
     if (!res.isError()) {
       DocumentTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
-      for(int i=0;i<list.size();i++) {
-        vo = (DocumentTypeVO)list.get(i);
+      docTypeList = ((VOListResponse)res).getRows();
+      for(int i=0;i<docTypeList.size();i++) {
+        vo = (DocumentTypeVO)docTypeList.get(i);
         d.addDomainPair(vo.getProgressiveHie02DOC16(),vo.getDescriptionSYS10());
       }
     }
@@ -152,10 +173,17 @@ public class DocumentsFrame extends InternalFrame {
     colDescr.setSortingOrder(0);
     colDescr.setSortVersus(org.openswing.swing.util.java.Consts.ASC_SORTED);
     colCompany.setColumnFilterable(true);
+    colCompany.setPreferredWidth(110);
     colCompany.setColumnName("companyCodeSys01DOC14");
     colCompany.setColumnSortable(true);
     colCompany.setSortVersus(org.openswing.swing.util.java.Consts.ASC_SORTED);
     colCompany.setSortingOrder(1);
+
+    colFile.setColumnFilterable(true);
+    colFile.setPreferredWidth(150);
+    colFile.setColumnName("filenameDOC14");
+    colFile.setColumnSortable(true);
+
     grid.setAutoLoadData(false);
     grid.setDeleteButton(deleteButton1);
     grid.setExportButton(exportButton1);
@@ -191,6 +219,7 @@ public class DocumentsFrame extends InternalFrame {
     grid.getColumnContainer().add(colCompany, null);
     grid.getColumnContainer().add(colCod, null);
     grid.getColumnContainer().add(colDescr, null);
+    grid.getColumnContainer().add(colFile, null);
     split.setDividerLocation(210);
   }
 

@@ -74,6 +74,8 @@ public class UserParametersFrame extends InternalFrame {
 
   LookupController customerController = new LookupController();
   LookupServerDataLocator customerDataLocator = new LookupServerDataLocator();
+  LookupController warehouseController = new LookupController();
+  LookupServerDataLocator warehouseDataLocator = new LookupServerDataLocator();
   TextControl controlPath = new TextControl();
   JButton buttonPath = new JButton();
   LabelControl labelReceiptMan = new LabelControl();
@@ -93,6 +95,7 @@ public class UserParametersFrame extends InternalFrame {
   LabelControl labelCase = new LabelControl();
   LabelControl labelBank = new LabelControl();
   LabelControl labelVatEnd = new LabelControl();
+
   CodLookupControl controlCreditsCode = new CodLookupControl();
   TextControl controlCreditsDescr = new TextControl();
   CodLookupControl controlItemsCode = new CodLookupControl();
@@ -130,6 +133,9 @@ public class UserParametersFrame extends InternalFrame {
   LookupServerDataLocator bankDataLocator = new LookupServerDataLocator();
   LookupController vatEndController = new LookupController();
   LookupServerDataLocator vatEndDataLocator = new LookupServerDataLocator();
+  LabelControl labelWarehouse = new LabelControl();
+  CodLookupControl controlWarehouse = new CodLookupControl();
+  TextControl controlWareDescr = new TextControl();
 
 
   public UserParametersFrame(UserParametersController controller) {
@@ -174,6 +180,43 @@ public class UserParametersFrame extends InternalFrame {
       customerDataLocator.getLookupValidationParameters().put(ApplicationConsts.SUBJECT_TYPE,ApplicationConsts.SUBJECT_PEOPLE_CUSTOMER);
 
 
+      // warehouse lookup...
+      warehouseDataLocator.setGridMethodName("loadWarehouses");
+      warehouseDataLocator.setValidationMethodName("validateWarehouseCode");
+
+      controlWarehouse.setLookupController(warehouseController);
+      controlWarehouse.setControllerMethodName("getWarehousesList");
+      warehouseController.setLookupDataLocator(warehouseDataLocator);
+      warehouseController.setFrameTitle("warehouses");
+      warehouseController.setLookupValueObjectClassName("org.jallinone.warehouse.java.WarehouseVO");
+      warehouseController.addLookup2ParentLink("warehouseCodeWAR01","warehouseCodeWAR01");
+      warehouseController.addLookup2ParentLink("descriptionWAR01", "warehouseDescriptionSYS10");
+      warehouseController.setAllColumnVisible(false);
+      warehouseController.setVisibleColumn("companyCodeSys01WAR01", true);
+      warehouseController.setVisibleColumn("warehouseCodeWAR01", true);
+      warehouseController.setVisibleColumn("descriptionWAR01", true);
+      warehouseController.setPreferredWidthColumn("warehouseCodeWAR01", 100);
+      warehouseController.setPreferredWidthColumn("descriptionWAR01", 250);
+      warehouseController.setFramePreferedSize(new Dimension(400,500));
+      warehouseController.addLookupListener(new LookupListener() {
+
+        public void beforeLookupAction(ValueObject parentVO) {
+          UserParametersVO vo = (UserParametersVO)retailPanel.getVOModel().getValueObject();
+          if (vo!=null) {
+            warehouseDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01SYS19());
+            warehouseDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01SYS19());
+          }
+        }
+
+        public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) { }
+
+        public void codeValidated(boolean validated) { }
+
+        public void forceValidate() { }
+
+      });
+
+
       // credit account code lookup...
       controlCreditsCode.setLookupController(creditController);
       controlCreditsCode.setControllerMethodName("getAccounts");
@@ -188,6 +231,11 @@ public class UserParametersFrame extends InternalFrame {
       creditController.setAllColumnVisible(false);
       creditController.setVisibleColumn("accountCodeACC02", true);
       creditController.setVisibleColumn("descriptionSYS10", true);
+      creditController.setFilterableColumn("accountCodeACC02", true);
+      creditController.setFilterableColumn("descriptionSYS10", true);
+      creditController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      creditController.setSortableColumn("accountCodeACC02", true);
+      creditController.setSortableColumn("descriptionSYS10", true);
       creditController.setPreferredWidthColumn("accountCodeACC02",100);
       creditController.setPreferredWidthColumn("descriptionSYS10",290);
       creditController.addLookupListener(new LookupListener() {
@@ -218,6 +266,11 @@ public class UserParametersFrame extends InternalFrame {
       itemsController.addLookup2ParentLink("descriptionSYS10","itemsAccountDescrSAL07");
       itemsController.setFramePreferedSize(new Dimension(400,400));
       itemsController.setAllColumnVisible(false);
+      itemsController.setFilterableColumn("accountCodeACC02", true);
+      itemsController.setFilterableColumn("descriptionSYS10", true);
+      itemsController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      itemsController.setSortableColumn("accountCodeACC02", true);
+      itemsController.setSortableColumn("descriptionSYS10", true);
       itemsController.setVisibleColumn("accountCodeACC02", true);
       itemsController.setVisibleColumn("descriptionSYS10", true);
       itemsController.setPreferredWidthColumn("accountCodeACC02",100);
@@ -250,6 +303,11 @@ public class UserParametersFrame extends InternalFrame {
       actController.addLookup2ParentLink("descriptionSYS10","activitiesAccountDescrSAL07");
       actController.setFramePreferedSize(new Dimension(400,400));
       actController.setAllColumnVisible(false);
+      actController.setFilterableColumn("accountCodeACC02", true);
+      actController.setFilterableColumn("descriptionSYS10", true);
+      actController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      actController.setSortableColumn("accountCodeACC02", true);
+      actController.setSortableColumn("descriptionSYS10", true);
       actController.setVisibleColumn("accountCodeACC02", true);
       actController.setVisibleColumn("descriptionSYS10", true);
       actController.setPreferredWidthColumn("accountCodeACC02",100);
@@ -282,6 +340,11 @@ public class UserParametersFrame extends InternalFrame {
       chargesController.addLookup2ParentLink("descriptionSYS10","chargesAccountDescrSAL07");
       chargesController.setFramePreferedSize(new Dimension(400,400));
       chargesController.setAllColumnVisible(false);
+      chargesController.setFilterableColumn("accountCodeACC02", true);
+      chargesController.setFilterableColumn("descriptionSYS10", true);
+      chargesController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      chargesController.setSortableColumn("accountCodeACC02", true);
+      chargesController.setSortableColumn("descriptionSYS10", true);
       chargesController.setVisibleColumn("accountCodeACC02", true);
       chargesController.setVisibleColumn("descriptionSYS10", true);
       chargesController.setPreferredWidthColumn("accountCodeACC02",100);
@@ -316,6 +379,11 @@ public class UserParametersFrame extends InternalFrame {
       debitController.setAllColumnVisible(false);
       debitController.setVisibleColumn("accountCodeACC02", true);
       debitController.setVisibleColumn("descriptionSYS10", true);
+      debitController.setFilterableColumn("accountCodeACC02", true);
+      debitController.setFilterableColumn("descriptionSYS10", true);
+      debitController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      debitController.setSortableColumn("accountCodeACC02", true);
+      debitController.setSortableColumn("descriptionSYS10", true);
       debitController.setPreferredWidthColumn("accountCodeACC02",100);
       debitController.setPreferredWidthColumn("descriptionSYS10",290);
       debitController.addLookupListener(new LookupListener() {
@@ -348,6 +416,11 @@ public class UserParametersFrame extends InternalFrame {
       costsController.setAllColumnVisible(false);
       costsController.setVisibleColumn("accountCodeACC02", true);
       costsController.setVisibleColumn("descriptionSYS10", true);
+      costsController.setFilterableColumn("accountCodeACC02", true);
+      costsController.setFilterableColumn("descriptionSYS10", true);
+      costsController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      costsController.setSortableColumn("accountCodeACC02", true);
+      costsController.setSortableColumn("descriptionSYS10", true);
       costsController.setPreferredWidthColumn("accountCodeACC02",100);
       costsController.setPreferredWidthColumn("descriptionSYS10",290);
       costsController.addLookupListener(new LookupListener() {
@@ -380,6 +453,11 @@ public class UserParametersFrame extends InternalFrame {
       caseController.setAllColumnVisible(false);
       caseController.setVisibleColumn("accountCodeACC02", true);
       caseController.setVisibleColumn("descriptionSYS10", true);
+      caseController.setFilterableColumn("accountCodeACC02", true);
+      caseController.setFilterableColumn("descriptionSYS10", true);
+      caseController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      caseController.setSortableColumn("accountCodeACC02", true);
+      caseController.setSortableColumn("descriptionSYS10", true);
       caseController.setPreferredWidthColumn("accountCodeACC02",100);
       caseController.setPreferredWidthColumn("descriptionSYS10",290);
       caseController.addLookupListener(new LookupListener() {
@@ -411,6 +489,11 @@ public class UserParametersFrame extends InternalFrame {
       bankController.setAllColumnVisible(false);
       bankController.setVisibleColumn("accountCodeACC02", true);
       bankController.setVisibleColumn("descriptionSYS10", true);
+      bankController.setFilterableColumn("accountCodeACC02", true);
+      bankController.setFilterableColumn("descriptionSYS10", true);
+      bankController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      bankController.setSortableColumn("accountCodeACC02", true);
+      bankController.setSortableColumn("descriptionSYS10", true);
       bankController.setPreferredWidthColumn("accountCodeACC02",100);
       bankController.setPreferredWidthColumn("descriptionSYS10",290);
       bankController.addLookupListener(new LookupListener() {
@@ -442,6 +525,11 @@ public class UserParametersFrame extends InternalFrame {
       vatEndController.setAllColumnVisible(false);
       vatEndController.setVisibleColumn("accountCodeACC02", true);
       vatEndController.setVisibleColumn("descriptionSYS10", true);
+      vatEndController.setFilterableColumn("accountCodeACC02", true);
+      vatEndController.setFilterableColumn("descriptionSYS10", true);
+      vatEndController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      vatEndController.setSortableColumn("accountCodeACC02", true);
+      vatEndController.setSortableColumn("descriptionSYS10", true);
       vatEndController.setPreferredWidthColumn("accountCodeACC02",100);
       vatEndController.setPreferredWidthColumn("descriptionSYS10",290);
       vatEndController.addLookupListener(new LookupListener() {
@@ -463,7 +551,7 @@ public class UserParametersFrame extends InternalFrame {
 
       init();
 
-      setSize(650,600);
+      setSize(650,630);
     }
     catch(Exception e) {
       e.printStackTrace();
@@ -479,7 +567,7 @@ public class UserParametersFrame extends InternalFrame {
     final Domain d = new Domain("COMPANIES");
     if (!res.isError()) {
       CompanyVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (CompanyVO)list.get(i);
         d.addDomainPair(vo.getCompanyCodeSYS01(),vo.getName_1REG04());
@@ -589,6 +677,13 @@ public class UserParametersFrame extends InternalFrame {
     controlVatEndDescr.setEnabledOnInsert(false);
     controlVatEndDescr.setEnabledOnEdit(false);
 
+    labelWarehouse.setText("retail warehouse");
+    controlWarehouse.setLinkLabel(labelWarehouse);
+    controlWarehouse.setMaxCharacters(20);
+    controlWareDescr.setEnabledOnInsert(false);
+    controlWareDescr.setEnabledOnEdit(false);
+    controlWareDescr.setAttributeName("warehouseDescriptionSYS10");
+    controlWarehouse.setAttributeName("warehouseCodeWAR01");
     topPanel.add(buttonsPanel,      new GridBagConstraints(0, 1, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
@@ -622,20 +717,22 @@ public class UserParametersFrame extends InternalFrame {
 
     controlPath.setAttributeName("receiptPath");
 
-    retailPanel.add(labelCustomer,   new GridBagConstraints(0, 0, 2, 1, 0.0, 0.0
+    retailPanel.add(labelCustomer,     new GridBagConstraints(0, 0, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    retailPanel.add(controlCustomer,    new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
+    retailPanel.add(controlCustomer,      new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    retailPanel.add(controlName1,    new GridBagConstraints(3, 0, 1, 1, 1.0, 0.0
+    retailPanel.add(controlName1,      new GridBagConstraints(3, 0, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    retailPanel.add(controlName2,      new GridBagConstraints(4, 0, 1, 1, 1.0, 0.0
+    retailPanel.add(controlName2,        new GridBagConstraints(4, 0, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 0, 0));
-    retailPanel.add(controlPath,   new GridBagConstraints(2, 1, 2, 1, 1.0, 0.0
+    retailPanel.add(controlPath,    new GridBagConstraints(2, 2, 2, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    retailPanel.add(buttonPath,  new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0
+    retailPanel.add(buttonPath,   new GridBagConstraints(4, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
-    retailPanel.add(labelReceiptMan,  new GridBagConstraints(0, 1, 2, 1, 0.0, 0.0
+    retailPanel.add(labelReceiptMan,   new GridBagConstraints(0, 2, 2, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    retailPanel.add(labelWarehouse,  new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     this.getContentPane().add(accountPanel,    new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0
             ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
     accountPanel.add(labelCreditAccount,   new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
@@ -693,6 +790,10 @@ public class UserParametersFrame extends InternalFrame {
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     accountPanel.add(controlVatEndDescr,  new GridBagConstraints(2, 8, 1, 1, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    retailPanel.add(controlWarehouse,  new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    retailPanel.add(controlWareDescr,  new GridBagConstraints(3, 1, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 
     retailPanel.addLinkedPanel(accountPanel);
 

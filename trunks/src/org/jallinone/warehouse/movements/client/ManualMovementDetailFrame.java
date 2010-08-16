@@ -32,6 +32,9 @@ import org.jallinone.items.java.GridItemVO;
 import org.openswing.swing.util.java.Consts;
 import org.jallinone.hierarchies.java.HierarchyLevelVO;
 import org.openswing.swing.message.receive.java.VOResponse;
+import org.jallinone.variants.client.ProductVariantsPanel;
+import org.jallinone.variants.client.ProductVariantsController;
+import javax.swing.JSplitPane;
 
 
 /**
@@ -125,12 +128,34 @@ public class ManualMovementDetailFrame extends InternalFrame {
 
   private boolean serialNumbersRequired = false;
 
+  private ProductVariantsPanel variantsPanel = new ProductVariantsPanel(
+      new ProductVariantsController() {
+
+        public BigDecimal validateQty(BigDecimal qty) {
+          return qty;
+        }
+
+        public void qtyUpdated(BigDecimal qty) {
+          //updateTotals();
+        }
+
+      },
+      manualMovForm,
+      controlItem,
+      itemController,
+      "loadProductVariantsMatrix",
+      //"loadSaleDocVariantsRow",
+      controlQty,
+      null,
+      0
+  );
+
 
   public ManualMovementDetailFrame(ManualMovementController controller) {
     try {
       jbInit();
-      setSize(620,350);
-      setMinimumSize(new Dimension(620,350));
+      setSize(620,550);
+      setMinimumSize(new Dimension(620,550));
 
       manualMovForm.setFormController(controller);
 
@@ -151,6 +176,8 @@ public class ManualMovementDetailFrame extends InternalFrame {
       warController.addLookup2ParentLink("companyCodeSys01WAR01", "companyCodeSys01WAR02");
       warController.addLookup2ParentLink("warehouseCodeWAR01", "warehouseCodeWar01WAR02");
       warController.addLookup2ParentLink("descriptionWAR01", "descriptionWAR01");
+      warController.addLookup2ParentLink("progressiveHie01HIE02", "progressiveHie01WAR02");
+      warController.addLookup2ParentLink("descriptionWAR01", "locationDescriptionSYS10");
 
       warController.setAllColumnVisible(false);
       warController.setVisibleColumn("companyCodeSys01WAR01", true);
@@ -329,7 +356,7 @@ public class ManualMovementDetailFrame extends InternalFrame {
     final Domain d = new Domain("ITEM_TYPES");
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (ItemTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
@@ -411,44 +438,46 @@ public class ManualMovementDetailFrame extends InternalFrame {
     manualMovPanel.add(buttonsPanel, BorderLayout.NORTH);
     buttonsPanel.add(saveButton, null);
     manualMovPanel.add(manualMovForm,  BorderLayout.CENTER);
-    manualMovForm.add(labelWarehouse,      new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+    manualMovForm.add(labelWarehouse,       new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    manualMovForm.add(controlWarehouseCode,       new GridBagConstraints(1, 0, 2, 1, 0.0, 0.0
+    manualMovForm.add(controlWarehouseCode,        new GridBagConstraints(1, 0, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    manualMovForm.add(controlWarehouseDescr,       new GridBagConstraints(3, 0, 3, 1, 1.0, 0.0
+    manualMovForm.add(controlWarehouseDescr,        new GridBagConstraints(3, 0, 3, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 0, 0));
-    manualMovForm.add(labelItem,      new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+    manualMovForm.add(labelItem,       new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
+    manualMovForm.add(controlItemType,        new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    manualMovForm.add(controlItemType,      new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+    manualMovForm.add(controlItem,        new GridBagConstraints(2, 1, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    manualMovForm.add(controlItem,      new GridBagConstraints(2, 1, 2, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    manualMovForm.add(controlItemDescr,     new GridBagConstraints(4, 1, 2, 1, 1.0, 0.0
+    manualMovForm.add(controlItemDescr,       new GridBagConstraints(4, 1, 2, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 0, 0));
-    manualMovForm.add(labelPosition,     new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+    manualMovForm.add(labelPosition,      new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    manualMovForm.add(controlPositionCode,       new GridBagConstraints(1, 2, 5, 1, 0.0, 0.0
+    manualMovForm.add(controlPositionCode,        new GridBagConstraints(1, 3, 5, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    manualMovForm.add(labelWarItemType,     new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+    manualMovForm.add(labelWarItemType,      new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    manualMovForm.add(controlWarItemType,    new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
+    manualMovForm.add(controlWarItemType,     new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-    manualMovForm.add(labelQty,     new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0
+    manualMovForm.add(labelQty,      new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    manualMovForm.add(controlQty,     new GridBagConstraints(3, 3, 2, 1, 0.0, 0.0
+    manualMovForm.add(controlQty,      new GridBagConstraints(3, 4, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 0, 0));
-    manualMovForm.add(labelMotive,     new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+    manualMovForm.add(labelMotive,      new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    manualMovForm.add(controlMotiveCode,      new GridBagConstraints(1, 4, 2, 1, 0.0, 0.0
+    manualMovForm.add(controlMotiveCode,       new GridBagConstraints(1, 5, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    manualMovForm.add(controlMotiveDescr,     new GridBagConstraints(3, 4, 3, 1, 1.0, 0.0
+    manualMovForm.add(controlMotiveDescr,      new GridBagConstraints(3, 5, 3, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    manualMovForm.add(labelNote,      new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+    manualMovForm.add(labelNote,       new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    manualMovForm.add(controlNote,      new GridBagConstraints(1, 5, 5, 1, 1.0, 1.0
+    manualMovForm.add(controlNote,       new GridBagConstraints(1, 6, 5, 1, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
-    manualMovForm.add(controlUmCode,   new GridBagConstraints(5, 3, 1, 1, 0.0, 0.0
+    manualMovForm.add(controlUmCode,    new GridBagConstraints(5, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    manualMovForm.add(variantsPanel,   new GridBagConstraints(0, 2, 6, 1, 1.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
     tabbedPane.setTitleAt(0,ClientSettings.getInstance().getResources().getResource("manual movement"));
   }
 
@@ -470,6 +499,9 @@ public class ManualMovementDetailFrame extends InternalFrame {
     return manualMovForm;
   }
 
+  public ProductVariantsPanel getVariantsPanel() {
+    return variantsPanel;
+  }
 
 
 

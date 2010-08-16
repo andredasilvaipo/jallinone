@@ -88,6 +88,7 @@ public class PeopleContactsPanel extends JPanel {
 
 
   private void jbInit() throws Exception {
+
     grid.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     grid.setValueObjectClassName("org.jallinone.contacts.java.GridContactVO");
     grid.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

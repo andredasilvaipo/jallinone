@@ -134,7 +134,7 @@ public class PurchaseSupplierHeadPanel extends JPanel {
 
             Response res = ClientUtils.getData("loadSupplierPricelists",gridParams);
             if (!res.isError()) {
-              ArrayList rows = ((VOListResponse)res).getRows();
+              java.util.List rows = ((VOListResponse)res).getRows();
               if (rows.size()>0) {
                 SupplierPricelistVO pricelistVO = (SupplierPricelistVO)rows.get(0);
                 controlPricelistCode.setValue(pricelistVO.getPricelistCodePUR03());
@@ -269,12 +269,12 @@ public class PurchaseSupplierHeadPanel extends JPanel {
     controlPayDescr.setAttributeName("paymentDescriptionDOC06");
     this.add(labelSupplier,    new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlSupplierCode,         new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 70, 0));
+    this.add(controlSupplierCode,            new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 70, 0));
     this.add(labelPricelist,     new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlPricelistCode,      new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 70, 0));
+    this.add(controlPricelistCode,       new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 70, 0));
     this.add(controlPricelistDescr,     new GridBagConstraints(5, 0, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     this.add(labelCurrency,     new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
@@ -283,8 +283,8 @@ public class PurchaseSupplierHeadPanel extends JPanel {
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 70, 0));
     this.add(labelPayment,     new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlPaymentCode,      new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 70, 0));
+    this.add(controlPaymentCode,       new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 70, 0));
     this.add(controlPayDescr,     new GridBagConstraints(5, 1, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     this.add(labelNote,     new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0

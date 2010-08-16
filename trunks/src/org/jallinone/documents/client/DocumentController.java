@@ -57,11 +57,15 @@ public class DocumentController extends CompanyFormController {
   /** used to link the document to the specified tree level (on insert) */
   private BigDecimal progressiveHie01DOC17 = null;
 
+  /** used to link the document to the specified company code (on insert) */
+  private String companyCodeSys01DOC16 = null;
 
-  public DocumentController(DocumentsFrame parentFrame,DocumentPK pk,BigDecimal progressiveHie01DOC17) {
+
+  public DocumentController(DocumentsFrame parentFrame,DocumentPK pk,String companyCodeSys01DOC16,BigDecimal progressiveHie01DOC17) {
     this.parentFrame = parentFrame;
     this.pk = pk;
     this.progressiveHie01DOC17 = progressiveHie01DOC17;
+    this.companyCodeSys01DOC16 = companyCodeSys01DOC16;
     this.frame = new DocumentFrame(this);
     MDIFrame.add(frame);
 
@@ -121,6 +125,7 @@ public class DocumentController extends CompanyFormController {
    */
   public Response insertRecord(ValueObject newPersistentObject) throws Exception {
     DetailDocumentVO vo = (DetailDocumentVO)newPersistentObject;
+    vo.setCompanyCodeSys01DOC14(companyCodeSys01DOC16);
     vo.setProgressiveHie01DOC17(progressiveHie01DOC17);
     if (vo.getDocument()==null) {
       return new ErrorResponse("you must attach a file");

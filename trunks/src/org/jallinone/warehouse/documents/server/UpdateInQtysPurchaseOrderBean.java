@@ -103,10 +103,22 @@ public class UpdateInQtysPurchaseOrderBean {
       ArrayList values = new ArrayList();
       String sql1 =
           "select QTY,IN_QTY,ORDER_QTY from DOC07_PURCHASE_ITEMS where "+
-          "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=?";
+          "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and "+
+          "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+          "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+          "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+          "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+          "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? ";
+
       String sql2 =
           "update DOC07_PURCHASE_ITEMS set IN_QTY=?,ORDER_QTY=? where "+
-          "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and IN_QTY=?";
+          "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and IN_QTY=? and "+
+          "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+          "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+          "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+          "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+          "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? ";
+
       pstmt1 = conn.prepareStatement(sql1);
       pstmt2 = conn.prepareStatement(sql2);
 
@@ -125,6 +137,18 @@ public class UpdateInQtysPurchaseOrderBean {
         pstmt1.setBigDecimal(3,vo.getDocYearDoc06DOC09());
         pstmt1.setBigDecimal(4,vo.getDocNumberDoc06DOC09());
         pstmt1.setString(5,vo.getItemCodeItm01DOC09());
+
+        pstmt1.setString(6,vo.getVariantTypeItm06DOC09());
+        pstmt1.setString(7,vo.getVariantCodeItm11DOC09());
+        pstmt1.setString(8,vo.getVariantTypeItm07DOC09());
+        pstmt1.setString(9,vo.getVariantCodeItm12DOC09());
+        pstmt1.setString(10,vo.getVariantTypeItm08DOC09());
+        pstmt1.setString(11,vo.getVariantCodeItm13DOC09());
+        pstmt1.setString(12,vo.getVariantTypeItm09DOC09());
+        pstmt1.setString(13,vo.getVariantCodeItm14DOC09());
+        pstmt1.setString(14,vo.getVariantTypeItm10DOC09());
+        pstmt1.setString(15,vo.getVariantCodeItm15DOC09());
+
         rset1 = pstmt1.executeQuery();
         if(rset1.next()) {
           qtyDOC07 = rset1.getBigDecimal(1);
@@ -151,6 +175,18 @@ public class UpdateInQtysPurchaseOrderBean {
           pstmt2.setBigDecimal(6,vo.getDocNumberDoc06DOC09());
           pstmt2.setString(7,vo.getItemCodeItm01DOC09());
           pstmt2.setBigDecimal(8,inQtyDOC07);
+
+          pstmt2.setString(9,vo.getVariantTypeItm06DOC09());
+          pstmt2.setString(10,vo.getVariantCodeItm11DOC09());
+          pstmt2.setString(11,vo.getVariantTypeItm07DOC09());
+          pstmt2.setString(12,vo.getVariantCodeItm12DOC09());
+          pstmt2.setString(13,vo.getVariantTypeItm08DOC09());
+          pstmt2.setString(14,vo.getVariantCodeItm13DOC09());
+          pstmt2.setString(15,vo.getVariantTypeItm09DOC09());
+          pstmt2.setString(16,vo.getVariantCodeItm14DOC09());
+          pstmt2.setString(17,vo.getVariantTypeItm10DOC09());
+          pstmt2.setString(18,vo.getVariantCodeItm15DOC09());
+
           if (pstmt2.executeUpdate()==0)
             return new ErrorResponse("Updating not performed: the record was previously updated.");
         }
@@ -168,7 +204,17 @@ public class UpdateInQtysPurchaseOrderBean {
             ApplicationConsts.ITEM_GOOD,
             resources.getResource("load items from purchase order")+" "+vo.getDocNumberDoc06DOC09()+"/"+vo.getDocYearDoc06DOC09(),
             vo.getSerialNumbers(),
-            vo.getBarCodes()
+
+            vo.getVariantCodeItm11DOC09(),
+            vo.getVariantCodeItm12DOC09(),
+            vo.getVariantCodeItm13DOC09(),
+            vo.getVariantCodeItm14DOC09(),
+            vo.getVariantCodeItm15DOC09(),
+            vo.getVariantTypeItm06DOC09(),
+            vo.getVariantTypeItm07DOC09(),
+            vo.getVariantTypeItm08DOC09(),
+            vo.getVariantTypeItm09DOC09(),
+            vo.getVariantTypeItm10DOC09()
         );
         innerResponse = movBean.addWarehouseMovement(conn,movVO,userSessionPars,request,response,userSession,context);
 

@@ -134,7 +134,7 @@ public class LoadScheduledMachineriesAction implements Action {
       if (!res.isError()) {
         HashSet macCodes = new HashSet();
         ScheduledMachineriesVO vo = null;
-        ArrayList rows = ((VOListResponse)res).getRows();
+        java.util.List rows = ((VOListResponse)res).getRows();
         for(int i=0;i<rows.size();i++) {
           vo = (ScheduledMachineriesVO)rows.get(i);
           macCodes.add(vo.getMachineryCodePro03SCH09());

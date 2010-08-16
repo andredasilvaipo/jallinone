@@ -19,6 +19,7 @@ import org.jallinone.commons.client.CustomizedColumns;
 import org.jallinone.hierarchies.client.*;
 import org.jallinone.commons.client.CompaniesComboColumn;
 import org.jallinone.commons.java.ApplicationConsts;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 
 /**
@@ -84,6 +85,17 @@ public class CallOutTypesFrame extends InternalFrame {
       jbInit();
       setSize(500,560);
       setMinimumSize(new Dimension(500,560));
+
+      hierarTreePanel.addHierarTreeListener(new HierarTreeListener(){
+
+        public void loadDataCompleted(boolean error) {
+          if (hierarTreePanel.getTree().getRowCount()>0)
+            hierarTreePanel.getTree().setSelectionRow(0);
+          if (hierarTreePanel.getTree().getSelectionPath()!=null)
+            hierarTreePanel.leftClick((DefaultMutableTreeNode)hierarTreePanel.getTree().getSelectionPath().getLastPathComponent());
+        }
+
+      });
 
     }
     catch(Exception e) {

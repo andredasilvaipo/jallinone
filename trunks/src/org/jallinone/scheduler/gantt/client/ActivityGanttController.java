@@ -59,20 +59,32 @@ public class ActivityGanttController implements AppointmentChangeListener {
    * Method called by the gantt control when changing its content.
    */
   public void appointmentChange(AppointmentChangeEvent event) {
-    if (event.getEventType()==event.NEW_APPOINTMENT) {
-      empVO.setEmployeeCodeSCH01((String)frame.getGantt().getValueAt(event.getRowNumber(),0));
-      empColumn.forceValidate();
-      empVO.setProgressiveReg04SCH07((BigDecimal)frame.getGantt().getValueAt(event.getRowNumber(),1));
-      empVO.setStartDateSCH07(((ScheduledEmployeeVO)event.getOldAppointment()).getStartDateSCH07());
-      empVO.setEndDateSCH07(((ScheduledEmployeeVO)event.getOldAppointment()).getEndDateSCH07());
-      empVO.setDurationSCH07(((ScheduledEmployeeVO)event.getOldAppointment()).getDurationSCH07());
-      frame.closeFrame();
+    try {
+      if (event.getEventType() == event.NEW_APPOINTMENT) {
+        empVO.setEmployeeCodeSCH01( (String) frame.getGantt().getValueAt(event.
+            getRowNumber(), 0));
+        empColumn.forceValidate();
+        empVO.setProgressiveReg04SCH07( (BigDecimal) frame.getGantt().
+                                       getValueAt(event.getRowNumber(), 1));
+        empVO.setStartDateSCH07( ( (ScheduledEmployeeVO) event.
+                                  getOldAppointment()).getStartDateSCH07());
+        empVO.setEndDateSCH07( ( (ScheduledEmployeeVO) event.getOldAppointment()).
+                              getEndDateSCH07());
+        empVO.setDurationSCH07( ( (ScheduledEmployeeVO) event.getOldAppointment()).
+                               getDurationSCH07());
+        frame.closeFrame();
+      }
+      else if (event.getEventType() == event.APPOINTMENT_CHANGED) {
+        empVO.setStartDateSCH07( ( (ScheduledEmployeeVO) event.
+                                  getNewAppointment()).getStartDateSCH07());
+        empVO.setEndDateSCH07( ( (ScheduledEmployeeVO) event.getNewAppointment()).
+                              getEndDateSCH07());
+        empVO.setDurationSCH07( ( (ScheduledEmployeeVO) event.getNewAppointment()).
+                               getDurationSCH07());
+        frame.closeFrame();
+      }
     }
-    else if (event.getEventType()==event.APPOINTMENT_CHANGED) {
-      empVO.setStartDateSCH07(((ScheduledEmployeeVO)event.getNewAppointment()).getStartDateSCH07());
-      empVO.setEndDateSCH07(((ScheduledEmployeeVO)event.getNewAppointment()).getEndDateSCH07());
-      empVO.setDurationSCH07(((ScheduledEmployeeVO)event.getNewAppointment()).getDurationSCH07());
-      frame.closeFrame();
+    catch (Exception ex) {
     }
   }
 

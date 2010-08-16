@@ -85,6 +85,24 @@ public class UpdateUserParamsAction implements Action {
         pstmt.executeUpdate();
       }
 
+      // update warehouse code...
+      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+      pstmt.setString(1,vo.getWarehouseCodeWAR01());
+      pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
+      pstmt.setString(3,userSessionPars.getUsername());
+      pstmt.setString(4,ApplicationConsts.WAREHOUSE_CODE);
+      rows = pstmt.executeUpdate();
+      pstmt.close();
+      if (rows==0) {
+        // record not yet exists: it will be inserted...
+        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
+        pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
+        pstmt.setString(2,userSessionPars.getUsername());
+        pstmt.setString(3,ApplicationConsts.WAREHOUSE_CODE);
+        pstmt.setString(4,vo.getWarehouseCodeWAR01());
+        pstmt.executeUpdate();
+      }
+
       // update receipts management program path...
       pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getReceiptPath());

@@ -370,7 +370,7 @@ public class ScheduledResourcesPanel extends JPanel {
       Domain d = new Domain("ITEM_TYPES");
       if (!res.isError()) {
         ItemTypeVO vo = null;
-        ArrayList list = ((VOListResponse)res).getRows();
+        java.util.List list = ((VOListResponse)res).getRows();
         for(int i=0;i<list.size();i++) {
           vo = (ItemTypeVO)list.get(i);
           d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
@@ -384,7 +384,7 @@ public class ScheduledResourcesPanel extends JPanel {
       d = new Domain("DOC_TYPES_DOC16");
       if (!res.isError()) {
         DocumentTypeVO vo = null;
-        ArrayList list = ((VOListResponse)res).getRows();
+        java.util.List list = ((VOListResponse)res).getRows();
         for(int i=0;i<list.size();i++) {
           vo = (DocumentTypeVO)list.get(i);
           d.addDomainPair(vo.getProgressiveHie02DOC16(),vo.getDescriptionSYS10());

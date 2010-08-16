@@ -131,13 +131,31 @@ public class AddMovementBean {
       else if (itemType.equals(ApplicationConsts.ITEM_DAMAGED))
         sql += "DAMAGED_QTY=DAMAGED_QTY";
       sql += qtySign+vo.getDeltaQtyWAR02();
-      sql += " where COMPANY_CODE_SYS01=? and WAREHOUSE_CODE_WAR01=? and PROGRESSIVE_HIE01=? and ITEM_CODE_ITM01=?";
+      sql +=
+          " where COMPANY_CODE_SYS01=? and WAREHOUSE_CODE_WAR01=? and PROGRESSIVE_HIE01=? and ITEM_CODE_ITM01=? and "+
+          "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
+          "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
+          "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
+          "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
+          "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? ";
 
       pstmt = conn.prepareStatement(sql);
       pstmt.setString(1,vo.getCompanyCodeSys01WAR02());
       pstmt.setString(2,vo.getWarehouseCodeWar01WAR02());
       pstmt.setBigDecimal(3,vo.getProgressiveHie01WAR02());
       pstmt.setString(4,vo.getItemCodeItm01WAR02());
+
+      pstmt.setString(5,vo.getVariantTypeItm06WAR02());
+      pstmt.setString(6,vo.getVariantCodeItm11WAR02());
+      pstmt.setString(7,vo.getVariantTypeItm07WAR02());
+      pstmt.setString(8,vo.getVariantCodeItm12WAR02());
+      pstmt.setString(9,vo.getVariantTypeItm08WAR02());
+      pstmt.setString(10,vo.getVariantCodeItm13WAR02());
+      pstmt.setString(11,vo.getVariantTypeItm09WAR02());
+      pstmt.setString(12,vo.getVariantCodeItm14WAR02());
+      pstmt.setString(13,vo.getVariantTypeItm10WAR02());
+      pstmt.setString(14,vo.getVariantCodeItm15WAR02());
+
       rows = pstmt.executeUpdate();
     }
     catch (Throwable ex){
@@ -155,7 +173,13 @@ public class AddMovementBean {
     if (rows==0)
       try {
         sql = "insert into WAR03_ITEMS_AVAILABILITY(COMPANY_CODE_SYS01,ITEM_CODE_ITM01,PROGRESSIVE_HIE01,WAREHOUSE_CODE_WAR01,"+
-              "AVAILABLE_QTY,DAMAGED_QTY) values(?,?,?,?,?,?)";
+              "AVAILABLE_QTY,DAMAGED_QTY,"+
+              "VARIANT_TYPE_ITM06,VARIANT_CODE_ITM11,"+
+              "VARIANT_TYPE_ITM07,VARIANT_CODE_ITM12,"+
+              "VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13,"+
+              "VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14,"+
+              "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15 "+
+              ") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1,vo.getCompanyCodeSys01WAR02());
         pstmt.setString(2,vo.getItemCodeItm01WAR02());
@@ -175,6 +199,17 @@ public class AddMovementBean {
           pstmt.setBigDecimal(5,new BigDecimal(0));
           pstmt.setBigDecimal(6,vo.getDeltaQtyWAR02().multiply(sign));
         }
+
+        pstmt.setString(7,vo.getVariantTypeItm06WAR02());
+        pstmt.setString(8,vo.getVariantCodeItm11WAR02());
+        pstmt.setString(9,vo.getVariantTypeItm07WAR02());
+        pstmt.setString(10,vo.getVariantCodeItm12WAR02());
+        pstmt.setString(11,vo.getVariantTypeItm08WAR02());
+        pstmt.setString(12,vo.getVariantCodeItm13WAR02());
+        pstmt.setString(13,vo.getVariantTypeItm09WAR02());
+        pstmt.setString(14,vo.getVariantCodeItm14WAR02());
+        pstmt.setString(15,vo.getVariantTypeItm10WAR02());
+        pstmt.setString(16,vo.getVariantCodeItm15WAR02());
 
         pstmt.execute();
       }
@@ -197,7 +232,13 @@ public class AddMovementBean {
     // insert movement in WAR02...
     try {
       sql = "insert into WAR02_WAREHOUSE_MOVEMENTS(PROGRESSIVE,COMPANY_CODE_SYS01,WAREHOUSE_CODE_WAR01,"+
-            "ITEM_CODE_ITM01,DELTA_QTY,WAREHOUSE_MOTIVE_WAR04,PROGRESSIVE_HIE01,MOVEMENT_DATE,USERNAME,NOTE) values(?,?,?,?,?,?,?,?,?,?)";
+            "ITEM_CODE_ITM01,DELTA_QTY,WAREHOUSE_MOTIVE_WAR04,PROGRESSIVE_HIE01,MOVEMENT_DATE,USERNAME,NOTE,"+
+            "VARIANT_TYPE_ITM06,VARIANT_CODE_ITM11,"+
+            "VARIANT_TYPE_ITM07,VARIANT_CODE_ITM12,"+
+            "VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13,"+
+            "VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14,"+
+            "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15 "+
+            ") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       pstmt = conn.prepareStatement(sql);
       BigDecimal progressiveWAR02 = ProgressiveUtils.getInternalProgressive("WAR02_WAREHOUSE_MOVEMENTS","PROGRESSIVE",conn);
       pstmt.setBigDecimal(1,progressiveWAR02);
@@ -210,6 +251,18 @@ public class AddMovementBean {
       pstmt.setTimestamp(8,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.setString(9,userSessionPars.getUsername());
       pstmt.setString(10,vo.getNoteWAR02());
+
+      pstmt.setString(11,vo.getVariantTypeItm06WAR02());
+      pstmt.setString(12,vo.getVariantCodeItm11WAR02());
+      pstmt.setString(13,vo.getVariantTypeItm07WAR02());
+      pstmt.setString(14,vo.getVariantCodeItm12WAR02());
+      pstmt.setString(15,vo.getVariantTypeItm08WAR02());
+      pstmt.setString(16,vo.getVariantCodeItm13WAR02());
+      pstmt.setString(17,vo.getVariantTypeItm09WAR02());
+      pstmt.setString(18,vo.getVariantCodeItm14WAR02());
+      pstmt.setString(19,vo.getVariantTypeItm10WAR02());
+      pstmt.setString(20,vo.getVariantCodeItm15WAR02());
+
       pstmt.execute();
     }
     catch (Throwable ex){
@@ -225,19 +278,43 @@ public class AddMovementBean {
 
     // insert serial numbers and bar codes in WAR05...
     try {
-      if (qtySign.equals(ApplicationConsts.QTY_SIGN_PLUS))
-        sql = "insert into WAR05_STORED_SERIAL_NUMBERS(SERIAL_NUMBER,COMPANY_CODE_SYS01,ITEM_CODE_ITM01,PROGRESSIVE_HIE01,BAR_CODE) values(?,?,?,?,?)";
-      else
-        sql = "delete from WAR05_STORED_SERIAL_NUMBERS where SERIAL_NUMBER=? and COMPANY_CODE_SYS01=? and ITEM_CODE_ITM01=? and PROGRESSIVE_HIE01=? and BAR_CODE=?";
+      if (qtySign.equals(ApplicationConsts.QTY_SIGN_PLUS)) {
+        sql =
+            "insert into WAR05_STORED_SERIAL_NUMBERS(SERIAL_NUMBER,COMPANY_CODE_SYS01,ITEM_CODE_ITM01,PROGRESSIVE_HIE01,"+
+            "VARIANT_TYPE_ITM06,VARIANT_CODE_ITM11,"+
+            "VARIANT_TYPE_ITM07,VARIANT_CODE_ITM12,"+
+            "VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13,"+
+            "VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14,"+
+            "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15 "+
+            ") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        pstmt = conn.prepareStatement(sql);
+        for(int i=0;i<vo.getSerialNumbers().size();i++) {
+          pstmt.setString(1,vo.getSerialNumbers().get(i).toString());
+          pstmt.setString(2,vo.getCompanyCodeSys01WAR02());
+          pstmt.setString(3,vo.getItemCodeItm01WAR02());
+          pstmt.setBigDecimal(4,vo.getProgressiveHie01WAR02());
 
-      pstmt = conn.prepareStatement(sql);
-      for(int i=0;i<vo.getSerialNumbers().size();i++) {
-        pstmt.setString(1,vo.getSerialNumbers().get(i).toString());
-        pstmt.setString(2,vo.getCompanyCodeSys01WAR02());
-        pstmt.setString(3,vo.getItemCodeItm01WAR02());
-        pstmt.setBigDecimal(4,vo.getProgressiveHie01WAR02());
-        pstmt.setString(5,(String)vo.getBarCodes().get(i));
-        pstmt.execute();
+          pstmt.setString(5,vo.getVariantTypeItm06WAR02());
+          pstmt.setString(6,vo.getVariantCodeItm11WAR02());
+          pstmt.setString(7,vo.getVariantTypeItm07WAR02());
+          pstmt.setString(8,vo.getVariantCodeItm12WAR02());
+          pstmt.setString(9,vo.getVariantTypeItm08WAR02());
+          pstmt.setString(10,vo.getVariantCodeItm13WAR02());
+          pstmt.setString(11,vo.getVariantTypeItm09WAR02());
+          pstmt.setString(12,vo.getVariantCodeItm14WAR02());
+          pstmt.setString(13,vo.getVariantTypeItm10WAR02());
+          pstmt.setString(14,vo.getVariantCodeItm15WAR02());
+
+          pstmt.execute();
+        }
+      }
+      else {
+        sql = "delete from WAR05_STORED_SERIAL_NUMBERS where SERIAL_NUMBER=? ";
+        pstmt = conn.prepareStatement(sql);
+        for(int i=0;i<vo.getSerialNumbers().size();i++) {
+          pstmt.setString(1,vo.getSerialNumbers().get(i).toString());
+          pstmt.execute();
+        }
       }
     }
     catch (Throwable ex){

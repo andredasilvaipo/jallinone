@@ -136,7 +136,7 @@ public class LoadSaleDocActivitiesBean {
       if (res.isError())
         return res;
 
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       SaleDocActivityVO vo = null;
       sql =
          "select SCH06_SCHEDULED_ACTIVITIES.DESCRIPTION "+

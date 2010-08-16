@@ -81,7 +81,7 @@ public class DeleteDeliveryNotesAction implements Action {
         null
       ));
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       DeliveryNotePK pk = null;
 
       pstmt = conn.prepareStatement(

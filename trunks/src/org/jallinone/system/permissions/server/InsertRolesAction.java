@@ -91,7 +91,7 @@ public class InsertRolesAction implements Action {
       BigDecimal oldProgressiveSYS04 = null;
       BigDecimal progressiveSYS04 = null;
       BigDecimal progressiveSys10SYS04 = null;
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
 
       for(int i=0;i<list.size();i++) {
         vo = (RoleVO)list.get(i);

@@ -16,6 +16,7 @@ import org.openswing.swing.form.client.Form;
 import org.openswing.swing.util.java.Consts;
 import org.jallinone.hierarchies.client.*;
 import org.jallinone.commons.client.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 
 /**
@@ -84,21 +85,31 @@ public class DocumentTypesFrame extends InternalFrame {
   ComboColumn colPropType = new ComboColumn();
   TextColumn colPropDescr = new TextColumn();
   private ServerGridDataLocator propsgridDataLocator = new ServerGridDataLocator();
-  CompaniesComboColumn colCompany = new CompaniesComboColumn();
 
 
-  public DocumentTypesFrame(DocumentTypesController controller) {
-    grid.setController(controller);
-    grid.setGridDataLocator(gridDataLocator);
-    gridDataLocator.setServerMethodName("loadDocumentTypes");
-
-    hierarTreePanel.setTreeController(controller);
-
-    propsgrid.setController(new LevelPropertiesController(this));
-    propsgrid.setGridDataLocator(propsgridDataLocator);
-    propsgridDataLocator.setServerMethodName("loadLevelProperties");
-
+  public DocumentTypesFrame(final DocumentTypesController controller) {
     try {
+      grid.setController(controller);
+      grid.setGridDataLocator(gridDataLocator);
+      gridDataLocator.setServerMethodName("loadDocumentTypes");
+
+      hierarTreePanel.setTreeController(controller);
+
+      propsgrid.setController(new LevelPropertiesController(this));
+      propsgrid.setGridDataLocator(propsgridDataLocator);
+      propsgridDataLocator.setServerMethodName("loadLevelProperties");
+
+      hierarTreePanel.addHierarTreeListener(new HierarTreeListener(){
+
+        public void loadDataCompleted(boolean error) {
+          if (hierarTreePanel.getTree().getRowCount()>0)
+            hierarTreePanel.getTree().setSelectionRow(0);
+          if (hierarTreePanel.getTree().getSelectionPath()!=null)
+            controller.leftClick((DefaultMutableTreeNode)hierarTreePanel.getTree().getSelectionPath().getLastPathComponent());
+        }
+
+      });
+
       jbInit();
       setSize(750,560);
       setMinimumSize(new Dimension(750,560));
@@ -176,9 +187,6 @@ public class DocumentTypesFrame extends InternalFrame {
     colPropDescr.setEditableOnEdit(true);
     colPropDescr.setEditableOnInsert(true);
     colPropDescr.setPreferredWidth(200);
-    colCompany.setColumnName("companyCodeSys01DOC21");
-    colCompany.setFunctionCode("DOC16");
-    colCompany.setEditableOnInsert(true);
     propsPanel.setBorder(titledBorder2);
     this.getContentPane().add(buttonsPanel, BorderLayout.NORTH);
     buttonsPanel.add(insertButton, null);
@@ -200,7 +208,6 @@ public class DocumentTypesFrame extends InternalFrame {
     propsButtonsPanel.add(reloadButton1, null);
     propsButtonsPanel.add(deleteButton1, null);
     propsPanel.add(propsgrid,BorderLayout.CENTER);
-    propsgrid.getColumnContainer().add(colCompany, null);
     propsgrid.getColumnContainer().add(colPropType, null);
 
     detailPanel.setDividerLocation(290);

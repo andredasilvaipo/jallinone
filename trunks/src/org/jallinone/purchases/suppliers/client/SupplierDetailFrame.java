@@ -33,6 +33,7 @@ import org.openswing.swing.message.send.java.GridParams;
 import org.jallinone.items.java.GridItemVO;
 import org.jallinone.purchases.pricelist.client.*;
 import java.util.HashSet;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 
 /**
@@ -71,7 +72,7 @@ public class SupplierDetailFrame extends InternalFrame {
   SaveButton saveButton = new SaveButton();
   ReloadButton reloadButton = new ReloadButton();
   DeleteButton deleteButton = new DeleteButton();
-  OrganizationPanel organizationPanel = new OrganizationPanel();
+  OrganizationPanel organizationPanel = new OrganizationPanel(false);
   LabelControl labelCompanyCode = new LabelControl();
   CompaniesComboControl controlCompanyCode = new CompaniesComboControl();
   JTabbedPane tabbedPane = new JTabbedPane();
@@ -159,7 +160,7 @@ public class SupplierDetailFrame extends InternalFrame {
   NavigatorBar navigatorBar = new NavigatorBar();
 
 
-  public SupplierDetailFrame(SupplierController controller) {
+  public SupplierDetailFrame(final SupplierController controller) {
     try {
       jbInit();
       setSize(750,550);
@@ -293,6 +294,17 @@ public class SupplierDetailFrame extends InternalFrame {
       itemsGrid.setGridDataLocator(itemsGridDataLocator);
       itemsGridDataLocator.setServerMethodName("loadSupplierItems");
 
+      treePanel.addHierarTreeListener(new HierarTreeListener(){
+
+        public void loadDataCompleted(boolean error) {
+          if (treePanel.getTree().getRowCount()>0)
+            treePanel.getTree().setSelectionRow(0);
+          if (treePanel.getTree().getSelectionPath()!=null)
+            controller.leftClick((DefaultMutableTreeNode)treePanel.getTree().getSelectionPath().getLastPathComponent());
+        }
+
+      });
+
       treePanel.setTreeController(controller);
       treePanel.setFunctionId("PUR01");
 
@@ -316,6 +328,11 @@ public class SupplierDetailFrame extends InternalFrame {
       debitController.setAllColumnVisible(false);
       debitController.setVisibleColumn("accountCodeACC02", true);
       debitController.setVisibleColumn("descriptionSYS10", true);
+      debitController.setFilterableColumn("accountCodeACC02", true);
+      debitController.setFilterableColumn("descriptionSYS10", true);
+      debitController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      debitController.setSortableColumn("accountCodeACC02", true);
+      debitController.setSortableColumn("descriptionSYS10", true);
       debitController.setPreferredWidthColumn("accountCodeACC02", 100);
       debitController.setPreferredWidthColumn("descriptionSYS10", 290);
       debitController.addLookupListener(new LookupListener() {
@@ -349,6 +366,11 @@ public class SupplierDetailFrame extends InternalFrame {
       costsController.setAllColumnVisible(false);
       costsController.setVisibleColumn("accountCodeACC02", true);
       costsController.setVisibleColumn("descriptionSYS10", true);
+      costsController.setFilterableColumn("accountCodeACC02", true);
+      costsController.setFilterableColumn("descriptionSYS10", true);
+      costsController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      costsController.setSortableColumn("accountCodeACC02", true);
+      costsController.setSortableColumn("descriptionSYS10", true);
       costsController.setPreferredWidthColumn("accountCodeACC02", 100);
       costsController.setPreferredWidthColumn("descriptionSYS10", 290);
       costsController.addLookupListener(new LookupListener() {
@@ -384,7 +406,7 @@ public class SupplierDetailFrame extends InternalFrame {
     Domain d = new Domain("ITEM_TYPES");
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (ItemTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
@@ -565,16 +587,16 @@ public class SupplierDetailFrame extends InternalFrame {
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     supplierPanel.add(labelPay,       new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    supplierPanel.add(controlPayment,             new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    supplierPanel.add(controlPayment,              new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 40, 0));
     supplierPanel.add(controlPayDescr,       new GridBagConstraints(2, 2, 2, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     supplierPanel.add(labelPricelist,       new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     supplierPanel.add(labelBank,         new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
-    supplierPanel.add(controlBank,          new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    supplierPanel.add(controlBank,           new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 40, 0));
     supplierPanel.add(controlBankDescr,       new GridBagConstraints(2, 4, 2, 3, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 0, 5), 0, 0));
 
@@ -582,12 +604,12 @@ public class SupplierDetailFrame extends InternalFrame {
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     supplierPanel.add(labelPurchase,            new GridBagConstraints(0, 6, 1, 1, 0.0, 1.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 15, 5), 0, 0));
-    supplierPanel.add(controlDebitsCode,        new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    supplierPanel.add(controlDebitsCode,         new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 40, 0));
     supplierPanel.add(controlDebitsDescr,           new GridBagConstraints(2, 5, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 0, 5), 0, 0));
-    supplierPanel.add(controlCostsCode,         new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    supplierPanel.add(controlCostsCode,          new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 40, 0));
     supplierPanel.add(controlCostsDescr,       new GridBagConstraints(2, 6, 2, 3, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 0, 5), 0, 0));
 

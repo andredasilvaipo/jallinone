@@ -27,7 +27,7 @@
 		<defaultValueExpression ><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="COMPANY_CODE_SYS01" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["COMP"]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA["ABC"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="START_DATE" isForPrompting="false" class="java.util.Date">
 		<defaultValueExpression ><![CDATA[new java.util.Date(System.currentTimeMillis()-864000000)]]></defaultValueExpression>
@@ -45,7 +45,7 @@
 		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<parameter name="DECIMALS" isForPrompting="false" class="java.math.BigDecimal">
-		<defaultValueExpression ><![CDATA[new java.math.BigDecimal(2)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new java.math.BigDecimal("2")]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[select COMPANY_CODE_SYS01,ITEM_YEAR,PROGRESSIVE,ITEM_DATE,ACCOUNTING_MOTIVE_CODE_ACC03,
 DESCRIPTION,MOTIVE_DESCR from (
@@ -60,7 +60,7 @@ ACC05_JOURNAL_HEADER.ITEM_DATE<=$P{END_DATE} and
 ACC05_JOURNAL_HEADER.ACCOUNTING_MOTIVE_CODE_ACC03=ACC03_ACCOUNTING_MOTIVES.ACCOUNTING_MOTIVE_CODE and
 ACC03_ACCOUNTING_MOTIVES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and
 SYS10_TRANSLATIONS.LANGUAGE_CODE=$P{LANGUAGE_CODE}
-$P!{FROM_PROGRESSIVE}
+$P{FROM_PROGRESSIVE}
 ) AUX]]></queryString>
 
 	<field name="COMPANY_CODE_SYS01" class="java.lang.String"/>

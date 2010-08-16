@@ -83,7 +83,7 @@ public class DeleteItemsAction implements Action {
       ));
 
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       ItemPK pk = null;
 
       stmt = conn.createStatement();

@@ -177,7 +177,7 @@ public class ItemAvailabilityPanel extends JPanel {
     final Domain d = new Domain("ITEM_TYPES");
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (ItemTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
@@ -213,7 +213,7 @@ public class ItemAvailabilityPanel extends JPanel {
     colLocationDescription.setColumnFilterable(true);
     colLocationDescription.setColumnName("locationDescriptionSYS10");
     colLocationDescription.setColumnSortable(true);
-    colLocationDescription.setPreferredWidth(150);
+    colLocationDescription.setPreferredWidth(120);
     colItemCode.setColumnFilterable(true);
     colItemCode.setColumnName("itemCodeItm01WAR03");
     colItemCode.setColumnSortable(true);
@@ -223,7 +223,7 @@ public class ItemAvailabilityPanel extends JPanel {
     colItemDescr.setColumnName("descriptionSYS10");
     colItemDescr.setColumnSortable(true);
     colItemDescr.setHeaderColumnName("itemDescriptionSYS10");
-    colItemDescr.setPreferredWidth(150);
+    colItemDescr.setPreferredWidth(200);
     colAvailQty.setColumnFilterable(true);
     colAvailQty.setColumnName("availableQtyWAR03");
     colAvailQty.setColumnSortable(true);

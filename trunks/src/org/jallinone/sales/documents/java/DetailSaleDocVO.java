@@ -91,6 +91,7 @@ public class DetailSaleDocVO extends BaseValueObject {
   private String descriptionWkf01DOC01;
   private String customerVatCodeReg01DOC01;
   private java.math.BigDecimal progressiveHie02WAR01;
+  private java.math.BigDecimal progressiveHie01HIE02;
   private java.math.BigDecimal discountValueDOC01;
   private java.math.BigDecimal discountPercDOC01;
   private java.math.BigDecimal docSequenceDOC01;
@@ -473,6 +474,12 @@ public class DetailSaleDocVO extends BaseValueObject {
   }
   public void setSectionalDOC01(String sectionalDOC01) {
     this.sectionalDOC01 = sectionalDOC01;
+  }
+  public java.math.BigDecimal getProgressiveHie01HIE02() {
+    return progressiveHie01HIE02;
+  }
+  public void setProgressiveHie01HIE02(java.math.BigDecimal progressiveHie01HIE02) {
+    this.progressiveHie01HIE02 = progressiveHie01HIE02;
   }
 
 }

@@ -82,7 +82,7 @@ public class DeleteProdOrderProductsAction implements Action {
       ));
 
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
       ProdOrderProductVO rowVO = null;
 
       pstmt = conn.prepareStatement(

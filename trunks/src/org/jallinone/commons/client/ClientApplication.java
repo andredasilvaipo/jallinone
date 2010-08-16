@@ -56,7 +56,11 @@ public class ClientApplication extends ClientApplet {
    * Method called by Java Web Start to init the application.
    */
   public static void main(String[] argv) {
-    new ClientApplication();
+    SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        new ClientApplication();
+      }
+    });
   }
 
 

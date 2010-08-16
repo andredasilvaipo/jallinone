@@ -84,6 +84,8 @@ import org.jallinone.system.permissions.client.FunctionController;
 import org.jallinone.sqltool.client.SqlToolFrame;
 import org.jallinone.system.customizations.client.CustomFunctionsController;
 import org.jallinone.system.customizations.client.ShowCustomFunctionFrame;
+import org.jallinone.variants.client.*;
+import org.jallinone.sales.pos.client.*;
 
 
 /**
@@ -920,6 +922,20 @@ public class ApplicationClientFacade implements ClientFacade {
    */
   public void executeCustomFunction(String functionId) {
     new ShowCustomFunctionFrame(functionId);
+  }
+
+
+  public void getVariantTypesList() {
+    new VariantTypesController();
+  }
+
+  public void getVariantsList() {
+    new VariantsController();
+  }
+
+
+  public void getPOS() {
+    new SaleDeskCompanySelDialog();
   }
 
 

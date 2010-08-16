@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.math.BigDecimal;
 import org.jallinone.sales.documents.java.DetailSaleDocVO;
 import org.jallinone.warehouse.documents.client.SerialNumberDialog;
+import org.jallinone.variants.java.VariantsMatrixVO;
 
 
 /**
@@ -81,11 +82,89 @@ public class SaleDeskDocRowController extends CompanyFormController {
    */
   public Response insertRecord(ValueObject newPersistentObject) throws Exception {
     if (panel.isSerialNumberRequired() &&
-        !promptSerialNumbers((DetailSaleDocRowVO)newPersistentObject)) {
+        !promptSerialNumbers(panel.getVariantsPanel().getCells(),panel.getVariantsPanel().getVariantsMatrixVO(),(DetailSaleDocRowVO)newPersistentObject)) {
       return new ErrorResponse("insert not allowed until serial numbers are not defined");
     }
 
-    Response res = ClientUtils.getData("insertSaleDocRow",newPersistentObject);
+    Response res = null;
+
+    if (panel.getVariantsPanel().getVariantsMatrixVO()==null) {
+      // no variants...
+      res = ClientUtils.getData("insertSaleDocRow",newPersistentObject);
+    }
+    else {
+      // check for already existing item for qty 1 and serial num enabled...
+      if (panel.isSerialNumberRequired()) {
+        DetailSaleDocRowVO itemVO = (DetailSaleDocRowVO)newPersistentObject;
+
+        for(int i=0;i<panel.getGrid().getVOListTableModel().getRowCount();i++) {
+          GridSaleDocRowVO vo =(GridSaleDocRowVO)panel.getGrid().getVOListTableModel().getObjectForRow(i);
+          if (vo.getItemCodeItm01DOC02().equals(itemVO.getItemCodeItm01DOC02()) &&
+              vo.getVariantCodeItm11DOC02().equals(itemVO.getVariantCodeItm11DOC02()) &&
+              vo.getVariantCodeItm12DOC02().equals(itemVO.getVariantCodeItm12DOC02()) &&
+              vo.getVariantCodeItm13DOC02().equals(itemVO.getVariantCodeItm13DOC02()) &&
+              vo.getVariantCodeItm14DOC02().equals(itemVO.getVariantCodeItm14DOC02()) &&
+              vo.getVariantCodeItm15DOC02().equals(itemVO.getVariantCodeItm15DOC02()) &&
+              vo.getVariantTypeItm06DOC02().equals(itemVO.getVariantTypeItm06DOC02()) &&
+              vo.getVariantTypeItm07DOC02().equals(itemVO.getVariantTypeItm07DOC02()) &&
+              vo.getVariantTypeItm08DOC02().equals(itemVO.getVariantTypeItm08DOC02()) &&
+              vo.getVariantTypeItm09DOC02().equals(itemVO.getVariantTypeItm09DOC02()) &&
+              vo.getVariantTypeItm10DOC02().equals(itemVO.getVariantTypeItm10DOC02())) {
+
+            // load old row..
+            SaleDocRowPK pk = new SaleDocRowPK(
+              vo.getCompanyCodeSys01DOC02(),
+              vo.getDocTypeDOC02(),vo.getDocYearDOC02(),
+              vo.getDocNumberDOC02(),
+              vo.getItemCodeItm01DOC02(),
+              vo.getVariantTypeItm06DOC02(),
+              vo.getVariantCodeItm11DOC02(),
+              vo.getVariantTypeItm07DOC02(),
+              vo.getVariantCodeItm12DOC02(),
+              vo.getVariantTypeItm08DOC02(),
+              vo.getVariantCodeItm13DOC02(),
+              vo.getVariantTypeItm09DOC02(),
+              vo.getVariantCodeItm14DOC02(),
+              vo.getVariantTypeItm10DOC02(),
+              vo.getVariantCodeItm15DOC02()
+            );
+            res = ClientUtils.getData("loadSaleDocRow",pk);
+            if (res.isError())
+              return res;
+            DetailSaleDocRowVO oldVO = (DetailSaleDocRowVO)((VOResponse)res).getVo();
+            DetailSaleDocRowVO newVO = (DetailSaleDocRowVO)oldVO.clone();
+            newVO.setQtyDOC02(oldVO.getQtyDOC02().add(new BigDecimal(1)));
+            newVO.setSerialNumbers(itemVO.getSerialNumbers());
+            newVO.getSerialNumbers().addAll(oldVO.getSerialNumbers());
+
+            // update qty...
+            res = ClientUtils.getData(
+              "updateSaleDocRow",
+              new ValueObject[]{
+                oldVO,
+                newVO
+              }
+            );
+            return res;
+          }
+        }
+      }
+
+
+      // the item has variants...
+      res = ClientUtils.getData(
+        "insertSaleDocRows",
+        new Object[]{
+          newPersistentObject,
+          panel.getVariantsPanel().getVariantsMatrixVO(),
+          panel.getVariantsPanel().getCells(),
+          panel.getParentVO().getDecimalsREG03()
+        }
+      );
+    }
+
+
+    //Response res = ClientUtils.getData("insertSaleDocRow",newPersistentObject);
     if (!res.isError()) {
       DetailSaleDocRowVO vo = (DetailSaleDocRowVO)((VOResponse)res).getVo();
       pk = new SaleDocRowPK(
@@ -93,7 +172,18 @@ public class SaleDeskDocRowController extends CompanyFormController {
           vo.getDocTypeDOC02(),
           vo.getDocYearDOC02(),
           vo.getDocNumberDOC02(),
-          vo.getItemCodeItm01DOC02()
+          vo.getItemCodeItm01DOC02(),
+          vo.getVariantTypeItm06DOC02(),
+          vo.getVariantCodeItm11DOC02(),
+          vo.getVariantTypeItm07DOC02(),
+          vo.getVariantCodeItm12DOC02(),
+          vo.getVariantTypeItm08DOC02(),
+          vo.getVariantCodeItm13DOC02(),
+          vo.getVariantTypeItm09DOC02(),
+          vo.getVariantCodeItm14DOC02(),
+          vo.getVariantTypeItm10DOC02(),
+          vo.getVariantCodeItm15DOC02()
+
       );
     }
     return res;
@@ -107,7 +197,7 @@ public class SaleDeskDocRowController extends CompanyFormController {
     panel.getGrid().reloadData();
     panel.getHeaderPanel().setMode(Consts.READONLY);
     panel.getHeaderPanel().executeReload();
-    panel.getDesks().reloadData();
+    panel.getDesks().reloadCurrentBlockOfData();
     panel.getFrame().enabledConfirmButton();
   }
 
@@ -122,6 +212,11 @@ public class SaleDeskDocRowController extends CompanyFormController {
 
     DetailSaleDocRowVO vo = (DetailSaleDocRowVO)panel.getDetailPanel().getVOModel().getValueObject();
 
+    panel.getControlBarCode().setValue(null);
+    panel.getControlSN().setValue(null);
+
+    if (vo==null || vo.getCompanyCodeSys01DOC02()==null)
+      return;
 
     panel.getBookedItemsPanel().getControlItemType().setValue(vo.getProgressiveHie02DOC02());
     panel.getBookedItemsPanel().getControlItemCode().setValue(vo.getItemCodeItm01DOC02());
@@ -143,7 +238,7 @@ public class SaleDeskDocRowController extends CompanyFormController {
    */
   public Response updateRecord(ValueObject oldPersistentObject,ValueObject persistentObject) throws Exception {
     if (panel.isSerialNumberRequired() &&
-        !promptSerialNumbers((DetailSaleDocRowVO)persistentObject)) {
+        !promptSerialNumbers(panel.getVariantsPanel().getCells(),panel.getVariantsPanel().getVariantsMatrixVO(),(DetailSaleDocRowVO)persistentObject)) {
       return new ErrorResponse("update not allowed until serial numbers are not defined");
     }
 
@@ -152,7 +247,7 @@ public class SaleDeskDocRowController extends CompanyFormController {
       panel.getGrid().reloadData();
       panel.getHeaderPanel().setMode(Consts.READONLY);
       panel.getHeaderPanel().executeReload();
-      panel.getDesks().reloadData();
+      panel.getDesks().reloadCurrentBlockOfData();
     }
     return res;
   }
@@ -195,7 +290,7 @@ public class SaleDeskDocRowController extends CompanyFormController {
     vo.setDocNumberDOC02(parentVO.getDocNumberDOC01());
     vo.setDeliveryDateDOC02(new java.sql.Date(System.currentTimeMillis()));
     vo.setCurrencyCodeReg03DOC01(panel.getParentVO().getCurrencyCodeReg03DOC01());
-
+    vo.setProgressiveHie01DOC02(panel.getParentVO().getProgressiveHie01HIE02());
   }
 
 
@@ -220,6 +315,9 @@ public class SaleDeskDocRowController extends CompanyFormController {
    * @return <code>true</code> allows to go to INSERT mode, <code>false</code> the mode change is interrupted
    */
   public boolean beforeInsertData(Form form) {
+    panel.getControlBarCode().setValue(null);
+    panel.getControlSN().setValue(null);
+
     if (!super.beforeInsertData(form))
       return false;
     return !panel.getParentVO().getDocStateDOC01().equals(ApplicationConsts.CLOSED);
@@ -240,35 +338,55 @@ public class SaleDeskDocRowController extends CompanyFormController {
   /**
    * Show an input dialog to insert serial numbers.
    */
-  private boolean promptSerialNumbers(DetailSaleDocRowVO vo) {
+  private boolean promptSerialNumbers(Object[][] cells,VariantsMatrixVO matrixVO,DetailSaleDocRowVO vo) {
 
     // define serial numbers and bar codes list to the right size...
     ArrayList list = (ArrayList)vo.getSerialNumbers();
     if (list==null) {
       list = new ArrayList(vo.getQtyDOC02().intValue());
+      for(int i=0;i<vo.getQtyDOC02().intValue();i++) {
+        list.add(null);
+      }
       vo.setSerialNumbers(list);
-      list = new ArrayList(vo.getQtyDOC02().intValue());
-      vo.setBarCodes(list);
     }
     else {
       if (vo.getSerialNumbers().size()<vo.getQtyDOC02().intValue()) {
         for(int i=vo.getSerialNumbers().size();i<vo.getQtyDOC02().intValue();i++) {
           vo.getSerialNumbers().add(null);
-          vo.getBarCodes().add(null);
         }
       }
       else if (vo.getSerialNumbers().size()>vo.getQtyDOC02().intValue()) {
         while(vo.getSerialNumbers().size()>vo.getQtyDOC02().intValue()) {
           vo.getSerialNumbers().remove(vo.getSerialNumbers().size()-1);
-          vo.getBarCodes().remove(vo.getBarCodes().size()-1);
         }
       }
     }
 
+    boolean open = false;
+    for(int i=0;i<vo.getSerialNumbers().size();i++)
+      if (vo.getSerialNumbers().get(i)==null) {
+        open = true;
+        break;
+      }
+    if (!open)
+      return true;
+
     // show input dialog...
-    new SerialNumberDialog(vo.getSerialNumbers(),vo.getBarCodes(),vo.getItemCodeItm01DOC02()+" - "+vo.getDescriptionSYS10());
+    new SerialNumberDialog(
+      cells,
+      matrixVO,
+      vo.getSerialNumbers(),
+      vo.getItemCodeItm01DOC02()+" - "+vo.getDescriptionSYS10(
+    ));
 
     return true;
+  }
+
+
+  public void modeChanged(int mode) {
+    if (mode!=Consts.INSERT) {
+      panel.getVariantsPanel().codeChanged(null,null);
+    }
   }
 
 

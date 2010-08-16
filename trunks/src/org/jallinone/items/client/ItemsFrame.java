@@ -28,6 +28,7 @@ import org.jallinone.items.java.ItemTypeVO;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import org.jallinone.commons.java.ApplicationConsts;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 
 /**
@@ -74,13 +75,14 @@ public class ItemsFrame extends InternalFrame {
   TextColumn colCod = new TextColumn();
   TextColumn colDescr = new TextColumn();
   TextColumn colCompany = new TextColumn();
+  private java.util.List itemTypesList = null;
 
   /** grid data locator */
   private ServerGridDataLocator gridDataLocator = new ServerGridDataLocator();
   private boolean productsOnly;
 
 
-  public ItemsFrame(ItemsController itemsController,boolean productsOnly) {
+  public ItemsFrame(final ItemsController itemsController,boolean productsOnly) {
     this.productsOnly = productsOnly;
     try {
       jbInit();
@@ -95,6 +97,17 @@ public class ItemsFrame extends InternalFrame {
 
       grid.enableDrag(ApplicationConsts.ID_ITEMS_GRID.toString());
 
+      hierarTreePanel.addHierarTreeListener(new HierarTreeListener(){
+
+        public void loadDataCompleted(boolean error) {
+          if (hierarTreePanel.getTree().getRowCount()>0)
+            hierarTreePanel.getTree().setSelectionRow(0);
+          if (hierarTreePanel.getTree().getSelectionPath()!=null)
+            itemsController.leftClick((DefaultMutableTreeNode)hierarTreePanel.getTree().getSelectionPath().getLastPathComponent());
+        }
+
+      });
+
       init();
 
       grid.getOtherGridParams().put(ApplicationConsts.PRODUCTS_ONLY,new Boolean(productsOnly));
@@ -106,6 +119,13 @@ public class ItemsFrame extends InternalFrame {
   }
 
 
+  public final ItemTypeVO getSelectedItemType() {
+    if (comboBoxControl1.getSelectedIndex()==-1)
+      return null;
+    return (ItemTypeVO)itemTypesList.get(comboBoxControl1.getSelectedIndex());
+  }
+
+
   /**
    * Retrieve item types and fill in the item types combo box.
    */
@@ -114,9 +134,9 @@ public class ItemsFrame extends InternalFrame {
     Domain d = new Domain("ITEM_TYPES");
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
-      for(int i=0;i<list.size();i++) {
-        vo = (ItemTypeVO)list.get(i);
+      itemTypesList = ((VOListResponse)res).getRows();
+      for(int i=0;i<itemTypesList.size();i++) {
+        vo = (ItemTypeVO)itemTypesList.get(i);
         d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
       }
     }

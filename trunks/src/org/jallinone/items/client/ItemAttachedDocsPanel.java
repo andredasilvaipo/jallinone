@@ -149,7 +149,7 @@ public class ItemAttachedDocsPanel extends JPanel {
       Domain d = new Domain("DOC_TYPES_DOC16");
       if (!res.isError()) {
         DocumentTypeVO vo = null;
-        ArrayList list = ((VOListResponse)res).getRows();
+        java.util.List list = ((VOListResponse)res).getRows();
         for(int i=0;i<list.size();i++) {
           vo = (DocumentTypeVO)list.get(i);
           d.addDomainPair(vo.getProgressiveHie02DOC16(),vo.getDescriptionSYS10());

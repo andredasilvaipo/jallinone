@@ -85,7 +85,7 @@ public class InsertScheduledMachineriesAction implements Action {
       ));
       ScheduledMachineriesVO vo = null;
 
-      ArrayList list = (ArrayList)inputPar;
+      java.util.List list = (ArrayList)inputPar;
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("progressiveSch06SCH09","PROGRESSIVE_SCH06");

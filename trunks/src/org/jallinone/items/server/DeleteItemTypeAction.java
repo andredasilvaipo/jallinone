@@ -82,13 +82,9 @@ public class DeleteItemTypeAction implements Action {
 
       stmt = conn.createStatement();
 
-      ArrayList list =  (ArrayList)inputPar;
-      ItemTypeVO vo = null;
-      for(int i=0;i<list.size();i++) {
-        // logically delete the record in ITM02...
-        vo = (ItemTypeVO)list.get(i);
-        stmt.execute("update ITM02_ITEM_TYPES set ENABLED='N' where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ITM02()+"' and PROGRESSIVE_HIE02="+vo.getProgressiveHie02ITM02());
-      }
+      ItemTypeVO vo = (ItemTypeVO)inputPar;
+      // logically delete the record in ITM02...
+      stmt.execute("update ITM02_ITEM_TYPES set ENABLED='N' where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ITM02()+"' and PROGRESSIVE_HIE02="+vo.getProgressiveHie02ITM02());
 
       Response answer = new VOResponse(new Boolean(true));
 

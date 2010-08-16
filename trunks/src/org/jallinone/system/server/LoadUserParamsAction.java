@@ -17,6 +17,8 @@ import org.openswing.swing.message.send.java.LookupValidationParams;
 import org.jallinone.sales.customers.java.GridCustomerVO;
 import org.jallinone.sales.pricelist.server.ValidatePricelistCodeAction;
 import org.jallinone.sales.pricelist.java.PricelistVO;
+import org.jallinone.warehouse.server.ValidateWarehouseCodeAction;
+import org.jallinone.warehouse.java.WarehouseVO;
 
 
 /**
@@ -50,6 +52,7 @@ import org.jallinone.sales.pricelist.java.PricelistVO;
 public class LoadUserParamsAction implements Action {
 
   private ValidateCustomerCodeAction custBean = new ValidateCustomerCodeAction();
+  private ValidateWarehouseCodeAction wareBean = new ValidateWarehouseCodeAction();
 
 
   public LoadUserParamsAction() {
@@ -104,11 +107,42 @@ public class LoadUserParamsAction implements Action {
         );
         if (res.isError())
           return res;
-        ArrayList list = ((VOListResponse)res).getRows();
+        java.util.List list = ((VOListResponse)res).getRows();
         if (list.size()>0) {
           GridCustomerVO custVO = (GridCustomerVO)list.get(0);
           vo.setName_1REG04(custVO.getName_1REG04());
           vo.setName_2REG04(custVO.getName_2REG04());
+        }
+      }
+
+      // retrieve warehouse...
+      pstmt = conn.prepareStatement("select VALUE from SYS19_USER_PARAMS where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+      pstmt.setString(1,companyCode);
+      pstmt.setString(2,userSessionPars.getUsername());
+      pstmt.setString(3,ApplicationConsts.WAREHOUSE_CODE);
+      rset = pstmt.executeQuery();
+      while(rset.next()) {
+        vo.setWarehouseCodeWAR01(rset.getString(1));
+      }
+      rset.close();
+      if (vo.getWarehouseCodeWAR01()!=null) {
+        HashMap map = new HashMap();
+        map.put(ApplicationConsts.COMPANY_CODE_SYS01,companyCode);
+        LookupValidationParams pars = new LookupValidationParams(vo.getWarehouseCodeWAR01(),map);
+        res = wareBean.executeCommand(
+            pars,
+            userSessionPars,
+            request,
+            response,
+            userSession,
+            context
+        );
+        if (res.isError())
+          return res;
+        java.util.List list = ((VOListResponse)res).getRows();
+        if (list.size()>0) {
+          WarehouseVO wareVO = (WarehouseVO)list.get(0);
+          vo.setWarehouseDescriptionSYS10(wareVO.getDescriptionWAR01());
         }
       }
 

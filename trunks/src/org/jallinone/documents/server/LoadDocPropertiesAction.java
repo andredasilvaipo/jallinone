@@ -101,7 +101,7 @@ public class LoadDocPropertiesAction implements Action {
         return res;
 
       // for each document link retrieve ancient progressiveHIE01s...
-      ArrayList linkVOs = ((VOListResponse)res).getRows();
+      java.util.List linkVOs = ((VOListResponse)res).getRows();
       DocumentLinkVO linkVO = null;
       pstmt = conn.prepareStatement(
         "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01 from HIE01_LEVELS "+
@@ -154,7 +154,7 @@ public class LoadDocPropertiesAction implements Action {
       while(it.hasNext())
         where += it.next()+",";
       if (progressiveHIE01s.size()>0)
-        where = sql.substring(0,sql.length()-1);
+        where = where.substring(0,where.length()-1);
       if (where.length()>0)
         sql += "("+where+")";
       else
@@ -194,7 +194,7 @@ public class LoadDocPropertiesAction implements Action {
       );
 
       if (!res.isError()) {
-        ArrayList rows = ((VOListResponse)res).getRows();
+        java.util.List rows = ((VOListResponse)res).getRows();
         for(int i=0;i<rows.size();i++)
           ((DocPropertyVO)rows.get(i)).setProgressiveDoc14DOC20(pk.getProgressiveDOC14());
       }

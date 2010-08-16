@@ -96,7 +96,7 @@ public class UpdateItemTypesAction implements Action {
       pk.add("progressiveHie02ITM02");
 
       CustomizedWindows cust = ((JAIOUserSessionParameters)userSessionPars).getCustomizedWindows();
-      ArrayList list = cust.getCustomizedFields(new BigDecimal(272));
+      java.util.List list = cust.getCustomizedFields(new BigDecimal(272));
 
       for(int i=0;i<oldVOs.size();i++) {
         oldVO = (ItemTypeVO)oldVOs.get(i);

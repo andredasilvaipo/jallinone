@@ -51,6 +51,16 @@ public class DbConnVO extends ValueObjectImpl {
   private String thousandSymbolREG03;
   private java.math.BigDecimal decimalsREG03;
 
+  private String variant1;
+  private String variant2;
+  private String variant3;
+  private String variant4;
+  private String variant5;
+  private String useVariantType1;
+  private String useVariantType2;
+  private String useVariantType3;
+  private String useVariantType4;
+  private String useVariantType5;
 
 
   public DbConnVO() {
@@ -160,6 +170,66 @@ public class DbConnVO extends ValueObjectImpl {
   }
   public void setCurrencyCodeREG03(String currencyCodeREG03) {
     this.currencyCodeREG03 = currencyCodeREG03;
+  }
+  public String getVariant1() {
+    return variant1;
+  }
+  public String getVariant2() {
+    return variant2;
+  }
+  public String getVariant3() {
+    return variant3;
+  }
+  public String getVariant4() {
+    return variant4;
+  }
+  public String getVariant5() {
+    return variant5;
+  }
+  public void setVariant5(String variant5) {
+    this.variant5 = variant5;
+  }
+  public void setVariant4(String variant4) {
+    this.variant4 = variant4;
+  }
+  public void setVariant3(String variant3) {
+    this.variant3 = variant3;
+  }
+  public void setVariant2(String variant2) {
+    this.variant2 = variant2;
+  }
+  public void setVariant1(String variant1) {
+    this.variant1 = variant1;
+  }
+  public String getUseVariantType1() {
+    return useVariantType1;
+  }
+  public String getUseVariantType2() {
+    return useVariantType2;
+  }
+  public String getUseVariantType3() {
+    return useVariantType3;
+  }
+  public String getUseVariantType4() {
+    return useVariantType4;
+  }
+  public String getUseVariantType5() {
+    return useVariantType5;
+  }
+  public void setUseVariantType5(String useVariantType5) {
+    this.useVariantType5 = useVariantType5;
+  }
+  public void setUseVariantType4(String useVariantType4) {
+    this.useVariantType4 = useVariantType4;
+  }
+  public void setUseVariantType3(String useVariantType3) {
+    this.useVariantType3 = useVariantType3;
+  }
+  public void setUseVariantType2(String useVariantType2) {
+    this.useVariantType2 = useVariantType2;
+  }
+  public void setUseVariantType1(String useVariantType1) {
+    this.useVariantType1 = useVariantType1;
   }
 
 }

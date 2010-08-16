@@ -239,7 +239,7 @@ public class Day extends JPanel {
         else {
           // reset the panel content
           selectedApp = null;
-          rows = ((VOListResponse)res).getRows();
+          rows = new ArrayList(((VOListResponse)res).getRows());
         }
         repaint();
       }

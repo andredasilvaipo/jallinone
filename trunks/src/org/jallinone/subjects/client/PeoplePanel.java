@@ -6,6 +6,7 @@ import javax.swing.border.*;
 import org.openswing.swing.util.client.ClientSettings;
 import javax.swing.*;
 import org.openswing.swing.client.*;
+import org.jallinone.commons.client.CompaniesComboControl;
 
 
 /**
@@ -81,6 +82,9 @@ public class PeoplePanel extends Form {
   TextControl controlNationality = new TextControl();
   DateControl controlBirthday = new DateControl();
 
+  LabelControl companyLabel = new LabelControl();
+  CompaniesComboControl companiesComboControl = new CompaniesComboControl();
+
 
   public PeoplePanel() {
     try {
@@ -93,6 +97,12 @@ public class PeoplePanel extends Form {
 
 
   private void jbInit() throws Exception {
+    companyLabel.setFont(new java.awt.Font("MS Sans Serif", 0, 11));
+    companyLabel.setLabel("companyCodeSYS01");
+
+    companiesComboControl.setLinkLabel(companyLabel);
+    companiesComboControl.setFunctionCode(this.getFunctionId());
+
     this.setVOClassName("org.jallinone.subjects.java.PeopleVO");
     titledBorder1 = new TitledBorder("");
     titledBorder1.setTitle(ClientSettings.getInstance().getResources().getResource("personal data"));
@@ -178,6 +188,15 @@ public class PeoplePanel extends Form {
     controlBirthday.setAttributeName("birthdayREG04");
     controlBirthday.setCanCopy(false);
     controlBirthday.setLinkLabel(labelBirthday);
+
+    companiesComboControl.setAttributeName("companyCodeSys01REG04");
+    companiesComboControl.setRequired(true);
+
+    this.add(companyLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    this.add(companiesComboControl, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+
     this.add(controlCorpName1,            new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     this.add(controlCorpName2,                new GridBagConstraints(3, 1, 3, 1, 0.0, 0.0

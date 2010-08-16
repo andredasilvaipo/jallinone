@@ -88,8 +88,8 @@ public class CurrenciesGridFrame extends InternalFrame {
     gridDataLocator.setServerMethodName("loadCurrencies");
     try {
       jbInit();
-      setSize(590,550);
-      setMinimumSize(new Dimension(590,550));
+      setSize(600,550);
+      setMinimumSize(new Dimension(600,550));
 
       convGridControl.setController(new CurrenciesConvController(this));
       convGridControl.setGridDataLocator(convGridDataLocator);

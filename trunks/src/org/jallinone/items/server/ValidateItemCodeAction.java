@@ -99,12 +99,21 @@ public class ValidateItemCodeAction implements Action {
 
       String sql =
           "select ITM01_ITEMS.COMPANY_CODE_SYS01,ITM01_ITEMS.ITEM_CODE,SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,"+
-          "ITM01_ITEMS.PROGRESSIVE_HIE01,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,REG02_MEASURE_UNITS.DECIMALS "+
+          "ITM01_ITEMS.PROGRESSIVE_HIE01,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,REG02_MEASURE_UNITS.DECIMALS, "+
+          "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 "+
           " from ITM01_ITEMS,SYS10_TRANSLATIONS,REG02_MEASURE_UNITS where "+
           "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
-          "ITM01_ITEMS.COMPANY_CODE_SYS01 ='"+companyCodeSYS10+"' and "+
-          "ITM01_ITEMS.ITEM_CODE ='"+pars.getCode()+"' and "+
+          "ITM01_ITEMS.COMPANY_CODE_SYS01 ='"+companyCodeSYS10+"' and ";
+
+          if (Boolean.TRUE.equals(pars.getLookupValidationParameters().get(ApplicationConsts.VALIDATE_BARCODE))) {
+            sql += "ITM01_ITEMS.BAR_CODE = '"+pars.getCode()+"' and ";
+          }
+          else {
+            sql += "ITM01_ITEMS.ITEM_CODE = '"+pars.getCode()+"' and ";
+          }
+
+      sql +=
           "ITM01_ITEMS.ENABLED='Y' and "+
           "ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02=REG02_MEASURE_UNITS.UM_CODE ";
 
@@ -117,6 +126,13 @@ public class ValidateItemCodeAction implements Action {
       if (compsOnly!=null && compsOnly.booleanValue())
         sql += " and ITM01_ITEMS.MANUFACTURE_CODE_PRO01 is null ";
 
+      if (Boolean.TRUE.equals(pars.getLookupValidationParameters().get(ApplicationConsts.SHOW_ITEMS_WITHOUT_VARIANTS)))
+          sql +=
+            " and ITM01_ITEMS.USE_VARIANT_1='N' "+
+            " and ITM01_ITEMS.USE_VARIANT_2='N' "+
+            " and ITM01_ITEMS.USE_VARIANT_3='N' "+
+            " and ITM01_ITEMS.USE_VARIANT_4='N' "+
+            " and ITM01_ITEMS.USE_VARIANT_5='N' ";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01ITM01","ITM01_ITEMS.COMPANY_CODE_SYS01");
@@ -127,6 +143,13 @@ public class ValidateItemCodeAction implements Action {
       attribute2dbField.put("progressiveHie01ITM01","ITM01_ITEMS.PROGRESSIVE_HIE01");
       attribute2dbField.put("serialNumberRequiredITM01","ITM01_ITEMS.SERIAL_NUMBER_REQUIRED");
       attribute2dbField.put("decimalsREG02","REG02_MEASURE_UNITS.DECIMALS");
+
+      attribute2dbField.put("useVariant1ITM01","ITM01_ITEMS.USE_VARIANT_1");
+      attribute2dbField.put("useVariant2ITM01","ITM01_ITEMS.USE_VARIANT_2");
+      attribute2dbField.put("useVariant3ITM01","ITM01_ITEMS.USE_VARIANT_3");
+      attribute2dbField.put("useVariant4ITM01","ITM01_ITEMS.USE_VARIANT_4");
+      attribute2dbField.put("useVariant5ITM01","ITM01_ITEMS.USE_VARIANT_5");
+
 
       ArrayList values = new ArrayList();
       values.add(serverLanguageId);

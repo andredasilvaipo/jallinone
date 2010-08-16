@@ -105,7 +105,7 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
   ReloadButton reloadButton5 = new ReloadButton();
   LabelControl labelSubjectType = new LabelControl();
   ComboBoxControl controlSubjectType = new ComboBoxControl();
-  OrganizationPanel organizationPanel = new OrganizationPanel();
+  OrganizationPanel organizationPanel = new OrganizationPanel(false);
   PeoplePanel peoplePanel = new PeoplePanel();
   CardLayout cardLayout1 = new CardLayout();
   CodLookupControl filterPeopleButton = new CodLookupControl();
@@ -499,7 +499,7 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
     Domain d = new Domain("CALL_OUT_TYPES");
     if (!res.isError()) {
       CallOutTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (CallOutTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02SCH11(),vo.getDescriptionSYS10());
@@ -577,7 +577,7 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
     gridParams.getOtherGridParams().put(ApplicationConsts.NAME_2,name_2);
     Response res = ClientUtils.getData("loadSubjectPerName",gridParams);
     if (!res.isError()) {
-      ArrayList vos = ((VOListResponse)res).getRows();
+      java.util.List vos = ((VOListResponse)res).getRows();
       if (vos.size()==1) {
         // person found...
         PeopleVO vo = (PeopleVO)vos.get(0);
@@ -603,7 +603,7 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
     gridParams.getOtherGridParams().put(ApplicationConsts.NAME_1,corporateName);
     Response res = ClientUtils.getData("loadSubjectPerName",gridParams);
     if (!res.isError()) {
-      ArrayList vos = ((VOListResponse)res).getRows();
+      java.util.List vos = ((VOListResponse)res).getRows();
       if (vos.size()==1) {
         // organization found...
         OrganizationVO vo = (OrganizationVO)vos.get(0);

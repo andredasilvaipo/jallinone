@@ -27,6 +27,9 @@ import org.jallinone.items.java.ItemTypeVO;
 import java.util.ArrayList;
 import java.beans.Beans;
 import java.util.HashSet;
+import org.jallinone.variants.client.ProductVariantsPanel;
+import org.openswing.swing.table.client.GridController;
+import org.jallinone.variants.client.ProductVariantsController;
 
 
 /**
@@ -69,7 +72,7 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
   ReloadButton reloadButton1 = new ReloadButton();
   DeleteButton deleteButton1 = new DeleteButton();
   NavigatorBar navigatorBar1 = new NavigatorBar();
-  CopyButton copyButton1 = new CopyButton();
+  //CopyButton copyButton1 = new CopyButton();
   GridControl grid = new GridControl();
   Form detailPanel = new Form();
   GridBagLayout gridBagLayout1 = new GridBagLayout();
@@ -138,6 +141,30 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
 
   LabelControl labelDeliveryDate = new LabelControl();
   DateControl controlDeliveryDate = new DateControl();
+
+  private int splitDiv = 320;
+
+  private ProductVariantsPanel variantsPanel = new ProductVariantsPanel(
+      new ProductVariantsController() {
+
+        public BigDecimal validateQty(BigDecimal qty) {
+          return PurchaseDocRowsGridPanel.this.validateQty(qty);
+        }
+
+        public void qtyUpdated(BigDecimal qty) {
+          updateTotals();
+        }
+
+      },
+      detailPanel,
+      controlItemCode,
+      itemController,
+      "loadProductVariantsMatrix",
+      //"loadPurchaseDocVariantsRow",
+      controlQty,
+      splitPane,
+      splitDiv
+  );
 
 
   public PurchaseDocRowsGridPanel(PurchaseDocFrame frame,Form headerPanel) {
@@ -256,7 +283,7 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     final Domain d = new Domain("ITEM_TYPES");
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (ItemTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
@@ -281,6 +308,14 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
           int selIndex = ((JComboBox)e.getSource()).getSelectedIndex();
           Object selValue = d.getDomainPairList()[selIndex].getCode();
           treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,selValue);
+
+          detailPanel.pull(controlItemCode.getAttributeName());
+          try {
+            controlItemCode.validateCode(null);
+          }
+          catch (Exception ex) {
+          }
+
         }
       }
     });
@@ -291,7 +326,7 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     buttonsToDisable.add(insertButton1);
     buttonsToDisable.add(editButton1);
     buttonsToDisable.add(deleteButton1);
-    buttonsToDisable.add(copyButton1);
+    //buttonsToDisable.add(copyButton1);
     detailPanel.addButtonsNotEnabled(buttonsToDisable,frame);
     grid.addButtonsNotEnabled(buttonsToDisable,frame);
 
@@ -306,7 +341,7 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     flowLayout1.setAlignment(FlowLayout.LEFT);
     splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
     grid.setAutoLoadData(false);
-    grid.setCopyButton(copyButton1);
+    //grid.setCopyButton(copyButton1);
     grid.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     grid.setDeleteButton(deleteButton1);
     grid.setExportButton(exportButton1);
@@ -319,7 +354,7 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     detailPanel.setBorder(titledBorder1);
     detailPanel.setMinimumSize(new Dimension(740, 140));
     detailPanel.setInsertButton(insertButton1);
-    detailPanel.setCopyButton(copyButton1);
+    //detailPanel.setCopyButton(copyButton1);
     detailPanel.setEditButton(editButton1);
     detailPanel.setReloadButton(reloadButton1);
     detailPanel.setSaveButton(saveButton1);
@@ -477,7 +512,7 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     controlDeliveryDate.setRequired(true);
 
     insertButton1.setEnabled(false);
-    copyButton1.setEnabled(false);
+    //copyButton1.setEnabled(false);
     saveButton1.setEnabled(false);
     deleteButton1.setEnabled(false);
     exportButton1.setEnabled(false);
@@ -491,7 +526,7 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     this.add(buttonsPanel, BorderLayout.NORTH);
     this.add(splitPane,  BorderLayout.CENTER);
     buttonsPanel.add(insertButton1, null);
-    buttonsPanel.add(copyButton1, null);
+    //buttonsPanel.add(copyButton1, null);
     buttonsPanel.add(editButton1, null);
     buttonsPanel.add(saveButton1, null);
     buttonsPanel.add(reloadButton1, null);
@@ -512,64 +547,66 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     grid.getColumnContainer().add(colInQty, null);
     splitPane.add(detailPanel, JSplitPane.BOTTOM);
     grid.getColumnContainer().add(colDiscPerc, null);
-    detailPanel.add(labelItemCode,        new GridBagConstraints(0, 0, 2, 1, 0.0, 0.0
+    detailPanel.add(labelItemCode,          new GridBagConstraints(0, 0, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 1, 5), 0, 0));
+    detailPanel.add(controlItemCode,                         new GridBagConstraints(3, 0, 2, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 0, 5, 0), 20, 0));
+    detailPanel.add(labelQty,         new GridBagConstraints(0, 4, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(controlItemCode,                     new GridBagConstraints(3, 0, 2, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 0), 20, 0));
-    detailPanel.add(labelQty,        new GridBagConstraints(0, 3, 2, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(controlQty,          new GridBagConstraints(2, 3, 2, 1, 0.0, 0.0
+    detailPanel.add(controlQty,           new GridBagConstraints(2, 4, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 20, 0));
-    detailPanel.add(labelVat,        new GridBagConstraints(0, 2, 2, 1, 0.0, 0.0
+    detailPanel.add(labelVat,         new GridBagConstraints(0, 3, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlVatCode,           new GridBagConstraints(2, 2, 2, 1, 0.0, 0.0
+    detailPanel.add(controlVatCode,            new GridBagConstraints(2, 3, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 20, 0));
-    detailPanel.add(controlVatDescr,        new GridBagConstraints(4, 2, 2, 1, 0.0, 0.0
+    detailPanel.add(controlVatDescr,         new GridBagConstraints(4, 3, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 70, 0));
-    detailPanel.add(labelValueReg01,       new GridBagConstraints(6, 2, 1, 1, 0.0, 0.0
+    detailPanel.add(labelValueReg01,        new GridBagConstraints(6, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(controlValueReg01,          new GridBagConstraints(7, 2, 1, 1, 0.0, 0.0
+    detailPanel.add(controlValueReg01,           new GridBagConstraints(7, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 20, 0));
-    detailPanel.add(labelDeductibleReg01,       new GridBagConstraints(8, 2, 1, 1, 0.0, 0.0
+    detailPanel.add(labelDeductibleReg01,        new GridBagConstraints(8, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(controlDeductibleReg01,        new GridBagConstraints(9, 2, 1, 1, 0.0, 0.0
+    detailPanel.add(controlDeductibleReg01,         new GridBagConstraints(9, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 20, 0));
-    detailPanel.add(labelDiscValue,      new GridBagConstraints(0, 4, 2, 1, 0.0, 0.0
+    detailPanel.add(labelDiscValue,       new GridBagConstraints(0, 5, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(controlDiscValue,        new GridBagConstraints(2, 4, 2, 1, 0.0, 0.0
+    detailPanel.add(controlDiscValue,         new GridBagConstraints(2, 5, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 20, 0));
-    detailPanel.add(controlItemDescr,      new GridBagConstraints(5, 0, 5, 1, 1.0, 0.0
+    detailPanel.add(controlItemDescr,        new GridBagConstraints(5, 0, 5, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(controlUmCode,       new GridBagConstraints(4, 3, 2, 1, 0.0, 0.0
+    detailPanel.add(controlUmCode,        new GridBagConstraints(4, 4, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 70, 0));
-    detailPanel.add(labelPriceUnit,    new GridBagConstraints(6, 3, 1, 1, 0.0, 0.0
+    detailPanel.add(labelPriceUnit,     new GridBagConstraints(6, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(controlPriceUnit,     new GridBagConstraints(7, 3, 1, 1, 0.0, 0.0
+    detailPanel.add(controlPriceUnit,      new GridBagConstraints(7, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 20, 0));
-    detailPanel.add(labelVatValue,    new GridBagConstraints(8, 3, 1, 1, 0.0, 0.0
+    detailPanel.add(labelVatValue,     new GridBagConstraints(8, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(controlDiscPerc,     new GridBagConstraints(7, 4, 1, 1, 0.0, 0.0
+    detailPanel.add(controlDiscPerc,      new GridBagConstraints(7, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 20, 0));
-    detailPanel.add(labelDiscPerc,    new GridBagConstraints(6, 4, 1, 1, 0.0, 0.0
+    detailPanel.add(labelDiscPerc,     new GridBagConstraints(6, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(controlVatValue,     new GridBagConstraints(9, 3, 1, 1, 0.0, 0.0
+    detailPanel.add(controlVatValue,      new GridBagConstraints(9, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 20, 0));
-    detailPanel.add(labelTotal,    new GridBagConstraints(8, 4, 1, 1, 0.0, 0.0
+    detailPanel.add(labelTotal,     new GridBagConstraints(8, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(controlTotal,     new GridBagConstraints(9, 4, 1, 1, 0.0, 0.0
+    detailPanel.add(controlTotal,      new GridBagConstraints(9, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 20, 0));
-    detailPanel.add(controlItemType,    new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
+    detailPanel.add(controlItemType,      new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(labelSupplierItemCode,  new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+    detailPanel.add(labelSupplierItemCode,   new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(controlSupplierItemCode, new GridBagConstraints(2, 1, 2, 1, 0.0, 0.0
+    detailPanel.add(controlSupplierItemCode,  new GridBagConstraints(2, 2, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 20, 0));
-    detailPanel.add(labelDeliveryDate,   new GridBagConstraints(6, 1, 1, 1, 0.0, 0.0
+    detailPanel.add(labelDeliveryDate,    new GridBagConstraints(6, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(controlDeliveryDate,    new GridBagConstraints(7, 1, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    detailPanel.add(controlDeliveryDate,      new GridBagConstraints(7, 2, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 40, 0));
+    detailPanel.add(variantsPanel,       new GridBagConstraints(0, 1, 10, 1, 1.0, 1.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
-    splitPane.setDividerLocation(270);
+    splitPane.setDividerLocation(300);
   }
 
 
@@ -594,7 +631,7 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     }
     else {
       insertButton1.setEnabled(enabled);
-      copyButton1.setEnabled(enabled);
+      //copyButton1.setEnabled(enabled);
       editButton1.setEnabled(enabled);
       saveButton1.setEnabled(enabled);
       deleteButton1.setEnabled(enabled);
@@ -654,14 +691,20 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
   }
 
 
+  private BigDecimal validateQty(BigDecimal qtyDOC07) {
+    DetailPurchaseDocRowVO vo = (DetailPurchaseDocRowVO)detailPanel.getVOModel().getValueObject();
+    if (qtyDOC07==null)
+      qtyDOC07 = new BigDecimal(0);
+    double qty = qtyDOC07.doubleValue();
+    int minMultipleQty = (int)(qty/vo.getMultipleQtyPur02DOC07().doubleValue());
+    return new BigDecimal(((double)minMultipleQty)*vo.getMultipleQtyPur02DOC07().doubleValue()).setScale(vo.getDecimalsReg02DOC07().intValue(),BigDecimal.ROUND_HALF_UP);
+  }
+
+
   void controlQty_focusLost(FocusEvent e) {
     if (controlQty.getValue()!=null) {
       DetailPurchaseDocRowVO vo = (DetailPurchaseDocRowVO)detailPanel.getVOModel().getValueObject();
-      if (vo.getQtyDOC07()==null)
-        vo.setQtyDOC07(new BigDecimal(0));
-      double qty = vo.getQtyDOC07().doubleValue();
-      int minMultipleQty = (int)(qty/vo.getMultipleQtyPur02DOC07().doubleValue());
-      vo.setQtyDOC07(new BigDecimal(((double)minMultipleQty)*vo.getMultipleQtyPur02DOC07().doubleValue()).setScale(vo.getDecimalsReg02DOC07().intValue(),BigDecimal.ROUND_HALF_UP));
+      vo.setQtyDOC07(validateQty(vo.getQtyDOC07()));
     }
 
     updateTotals();
@@ -691,40 +734,13 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
       );
       return;
     }
-
-
-    if (vo.getQtyDOC07()!=null && vo.getValueReg01DOC07()!=null && vo.getValuePur04DOC07()!=null) {
-      vo.setTaxableIncomeDOC07(vo.getQtyDOC07().multiply(vo.getValuePur04DOC07()).setScale(parentVO.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP));
-
-      // apply percentage discount...
-      if (vo.getDiscountPercDOC07()!=null) {
-        double taxtable = vo.getTaxableIncomeDOC07().doubleValue()-vo.getTaxableIncomeDOC07().doubleValue()*vo.getDiscountPercDOC07().doubleValue()/100d;
-        vo.setTaxableIncomeDOC07(new BigDecimal(taxtable).setScale(parentVO.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP));
-      }
-
-      // apply value discount...
-      if (vo.getDiscountValueDOC07()!=null) {
-        vo.setTaxableIncomeDOC07(vo.getTaxableIncomeDOC07().subtract(vo.getDiscountValueDOC07()).setScale(parentVO.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP));
-      }
-
-      // calculate row vat...
-      double vatPerc = vo.getValueReg01DOC07().doubleValue()*(1d-vo.getDeductibleReg01DOC07().doubleValue()/100d)/100;
-      vo.setVatValueDOC07(vo.getTaxableIncomeDOC07().multiply(new BigDecimal(vatPerc)).setScale(parentVO.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP));
-
-      // calculate row total...
-      vo.setValueDOC07(vo.getTaxableIncomeDOC07().add(vo.getVatValueDOC07()));
+    if (PurchaseUtils.updateTotals(vo,parentVO.getDecimalsREG03().intValue())) {
       detailPanel.pull("valueDOC07");
       detailPanel.pull("taxableIncomeDOC07");
       detailPanel.pull("vatValueDOC07");
       detailPanel.pull("discountValueDOC07");
       detailPanel.pull("discountPercDOC07");
       detailPanel.pull("qtyDOC07");
-
-    }
-    else {
-      vo.setTaxableIncomeDOC07(null);
-      vo.setVatValueDOC07(null);
-      vo.setValueDOC07(null);
     }
   }
 
@@ -769,6 +785,12 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     else
     return "E";
   }
+
+
+  public ProductVariantsPanel getVariantsPanel() {
+    return variantsPanel;
+  }
+
 
 
 }

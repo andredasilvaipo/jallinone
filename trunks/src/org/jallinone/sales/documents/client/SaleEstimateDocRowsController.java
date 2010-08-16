@@ -83,7 +83,18 @@ public class SaleEstimateDocRowsController extends CompanyGridController {
         vo.getDocTypeDOC02(),
         vo.getDocYearDOC02(),
         vo.getDocNumberDOC02(),
-        vo.getItemCodeItm01DOC02()
+        vo.getItemCodeItm01DOC02(),
+        vo.getVariantTypeItm06DOC02(),
+        vo.getVariantCodeItm11DOC02(),
+        vo.getVariantTypeItm07DOC02(),
+        vo.getVariantCodeItm12DOC02(),
+        vo.getVariantTypeItm08DOC02(),
+        vo.getVariantCodeItm13DOC02(),
+        vo.getVariantTypeItm09DOC02(),
+        vo.getVariantCodeItm14DOC02(),
+        vo.getVariantTypeItm10DOC02(),
+        vo.getVariantCodeItm15DOC02()
+
     );
     ((SaleEstimateDocRowController)panel.getDetailPanel().getFormController()).setPk(pk);
     panel.getDetailPanel().setMode(Consts.READONLY);
@@ -107,7 +118,18 @@ public class SaleEstimateDocRowsController extends CompanyGridController {
           vo.getDocTypeDOC02(),
           vo.getDocYearDOC02(),
           vo.getDocNumberDOC02(),
-          vo.getItemCodeItm01DOC02()
+          vo.getItemCodeItm01DOC02(),
+          vo.getVariantTypeItm06DOC02(),
+          vo.getVariantCodeItm11DOC02(),
+          vo.getVariantTypeItm07DOC02(),
+          vo.getVariantCodeItm12DOC02(),
+          vo.getVariantTypeItm08DOC02(),
+          vo.getVariantCodeItm13DOC02(),
+          vo.getVariantTypeItm09DOC02(),
+          vo.getVariantCodeItm14DOC02(),
+          vo.getVariantTypeItm10DOC02(),
+          vo.getVariantCodeItm15DOC02()
+
       );
       pks.add(pk);
     }

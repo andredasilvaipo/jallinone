@@ -137,7 +137,7 @@ public class AgentsGridFrame extends InternalFrame {
     Domain d = new Domain("AGENT_TYPES");
     if (!res.isError()) {
       AgentTypeVO vo = null;
-      ArrayList list = ((VOListResponse)res).getRows();
+      java.util.List list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (AgentTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveSys10REG19(),vo.getDescriptionSYS10());

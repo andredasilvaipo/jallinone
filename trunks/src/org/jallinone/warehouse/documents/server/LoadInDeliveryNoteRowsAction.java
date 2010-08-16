@@ -93,12 +93,17 @@ public class LoadInDeliveryNoteRowsAction implements Action {
       DeliveryNotePK pk = (DeliveryNotePK)pars.getOtherGridParams().get(ApplicationConsts.DELIVERY_NOTE_PK);
 
       String sql =
-          "select DOC09_IN_DELIVERY_NOTE_ITEMS.COMPANY_CODE_SYS01,DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_TYPE,DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_YEAR,DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_NUMBER,"+
+          "select DOC09_IN_DELIVERY_NOTE_ITEMS.PROGRESSIVE,DOC09_IN_DELIVERY_NOTE_ITEMS.COMPANY_CODE_SYS01,DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_TYPE,DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_YEAR,DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_NUMBER,"+
           "DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_TYPE_DOC06,DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_YEAR_DOC06,DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_NUMBER_DOC06,DOC09_IN_DELIVERY_NOTE_ITEMS.ROW_NUMBER,"+
           "DOC09_IN_DELIVERY_NOTE_ITEMS.ITEM_CODE_ITM01,PUR02_SUPPLIER_ITEMS.SUPPLIER_ITEM_CODE,SYS10_TRANSLATIONS.DESCRIPTION,DOC09_IN_DELIVERY_NOTE_ITEMS.QTY,"+
           "DOC09_IN_DELIVERY_NOTE_ITEMS.SUPPLIER_QTY,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,REG02_ALIAS1.DECIMALS,REG02_ALIAS2.DECIMALS,PUR02_SUPPLIER_ITEMS.UM_CODE_REG02,"+
           "DOC09_IN_DELIVERY_NOTE_ITEMS.PROGRESSIVE_HIE02,DOC09_IN_DELIVERY_NOTE_ITEMS.PROGRESSIVE_HIE01,SYS10_LOC.DESCRIPTION,DOC08_DELIVERY_NOTES.WAREHOUSE_CODE_WAR01,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED, "+
-          "DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_SEQUENCE_DOC06,DOC09_IN_DELIVERY_NOTE_ITEMS.INVOICE_QTY "+
+          "DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_SEQUENCE_DOC06,DOC09_IN_DELIVERY_NOTE_ITEMS.INVOICE_QTY, "+
+          "DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_TYPE_ITM06,DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_CODE_ITM11,"+
+          "DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_TYPE_ITM07,DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_CODE_ITM12,"+
+          "DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_TYPE_ITM08,DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_CODE_ITM13,"+
+          "DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_TYPE_ITM09,DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_CODE_ITM14,"+
+          "DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_TYPE_ITM10,DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_CODE_ITM15 "+
           " from DOC08_DELIVERY_NOTES,DOC09_IN_DELIVERY_NOTE_ITEMS,ITM01_ITEMS,SYS10_TRANSLATIONS,PUR02_SUPPLIER_ITEMS,REG02_MEASURE_UNITS REG02_ALIAS1,REG02_MEASURE_UNITS REG02_ALIAS2,SYS10_TRANSLATIONS SYS10_LOC where "+
           "DOC09_IN_DELIVERY_NOTE_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
           "DOC09_IN_DELIVERY_NOTE_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
@@ -121,6 +126,7 @@ public class LoadInDeliveryNoteRowsAction implements Action {
           "DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_NUMBER=? ";
 
       Map attribute2dbField = new HashMap();
+      attribute2dbField.put("progressiveDOC09","DOC09_IN_DELIVERY_NOTE_ITEMS.PROGRESSIVE");
       attribute2dbField.put("companyCodeSys01DOC09","DOC09_IN_DELIVERY_NOTE_ITEMS.COMPANY_CODE_SYS01");
       attribute2dbField.put("docTypeDOC09","DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_TYPE");
       attribute2dbField.put("docYearDOC09","DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_YEAR");
@@ -146,6 +152,17 @@ public class LoadInDeliveryNoteRowsAction implements Action {
       attribute2dbField.put("docSequenceDoc06DOC09","DOC09_IN_DELIVERY_NOTE_ITEMS.DOC_SEQUENCE_DOC06");
       attribute2dbField.put("invoiceQtyDOC09","DOC09_IN_DELIVERY_NOTE_ITEMS.INVOICE_QTY");
 
+      attribute2dbField.put("variantTypeItm06DOC09","DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_TYPE_ITM06");
+      attribute2dbField.put("variantCodeItm11DOC09","DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_CODE_ITM11");
+      attribute2dbField.put("variantTypeItm07DOC09","DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_TYPE_ITM07");
+      attribute2dbField.put("variantCodeItm12DOC09","DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_CODE_ITM12");
+      attribute2dbField.put("variantTypeItm08DOC09","DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_TYPE_ITM08");
+      attribute2dbField.put("variantCodeItm13DOC09","DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_CODE_ITM13");
+      attribute2dbField.put("variantTypeItm09DOC09","DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_TYPE_ITM09");
+      attribute2dbField.put("variantCodeItm14DOC09","DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_CODE_ITM14");
+      attribute2dbField.put("variantTypeItm10DOC09","DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_TYPE_ITM10");
+      attribute2dbField.put("variantCodeItm15DOC09","DOC09_IN_DELIVERY_NOTE_ITEMS.VARIANT_CODE_ITM15");
+
       ArrayList values = new ArrayList();
       values.add(serverLanguageId);
       values.add(serverLanguageId);
@@ -170,21 +187,14 @@ public class LoadInDeliveryNoteRowsAction implements Action {
      );
      if (!res.isError()) {
        ArrayList serialNums = null;
-       ArrayList barCodes = null;
-       ArrayList rows = ((VOListResponse)res).getRows();
+       java.util.List rows = ((VOListResponse)res).getRows();
        GridInDeliveryNoteRowVO vo = null;
 
        pstmt = conn.prepareStatement(
-         "select SERIAL_NUMBER,BAR_CODE from DOC11_IN_SERIAL_NUMBERS where "+
-         "COMPANY_CODE_SYS01=? and "+
-         "DOC_TYPE=? and "+
-         "DOC_YEAR=? and "+
-         "DOC_NUMBER=? and "+
-         "DOC_TYPE_DOC06=? and "+
-         "DOC_YEAR_DOC06=? and "+
-         "DOC_NUMBER_DOC06=? and "+
-         "ROW_NUMBER=? and "+
-         "ITEM_CODE_ITM01=?"
+         "select SERIAL_NUMBER "+
+         "from DOC11_IN_SERIAL_NUMBERS "+
+         "where "+
+         "PROGRESSIVE_DOC09=? "
         );
 
         for(int i=0;i<rows.size();i++) {
@@ -203,24 +213,14 @@ public class LoadInDeliveryNoteRowsAction implements Action {
 
           // retrieve serial numbers...
           serialNums = new ArrayList();
-          barCodes = new ArrayList();
           vo.setSerialNumbers(serialNums);
-          vo.setBarCodes(barCodes);
-          pstmt.setString(1,vo.getCompanyCodeSys01DOC09());
-          pstmt.setString(2,vo.getDocTypeDOC09());
-          pstmt.setBigDecimal(3,vo.getDocYearDOC09());
-          pstmt.setBigDecimal(4,vo.getDocNumberDOC09());
-          pstmt.setString(5,vo.getDocTypeDoc06DOC09());
-          pstmt.setBigDecimal(6,vo.getDocYearDoc06DOC09());
-          pstmt.setBigDecimal(7,vo.getDocNumberDoc06DOC09());
-          pstmt.setBigDecimal(8,vo.getRowNumberDOC09());
-          pstmt.setString(9,vo.getItemCodeItm01DOC09());
+          pstmt.setBigDecimal(1,vo.getProgressiveDOC09());
+
           ResultSet rset = null;
           try {
             rset = pstmt.executeQuery();
             while(rset.next()) {
               serialNums.add(rset.getString(1));
-              barCodes.add(rset.getString(2));
             }
           }
           catch (Exception ex3) {

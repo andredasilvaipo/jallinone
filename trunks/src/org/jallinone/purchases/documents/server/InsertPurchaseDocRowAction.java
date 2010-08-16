@@ -131,6 +131,40 @@ public class InsertPurchaseDocRowAction implements Action {
       attribute2dbField.put("orderQtyDOC07","ORDER_QTY");
       attribute2dbField.put("invoiceQtyDOC07","INVOICE_QTY");
 
+      attribute2dbField.put("variantTypeItm06DOC07","VARIANT_TYPE_ITM06");
+      attribute2dbField.put("variantCodeItm11DOC07","VARIANT_CODE_ITM11");
+      attribute2dbField.put("variantTypeItm07DOC07","VARIANT_TYPE_ITM07");
+      attribute2dbField.put("variantCodeItm12DOC07","VARIANT_CODE_ITM12");
+      attribute2dbField.put("variantTypeItm08DOC07","VARIANT_TYPE_ITM08");
+      attribute2dbField.put("variantCodeItm13DOC07","VARIANT_CODE_ITM13");
+      attribute2dbField.put("variantTypeItm09DOC07","VARIANT_TYPE_ITM09");
+      attribute2dbField.put("variantCodeItm14DOC07","VARIANT_CODE_ITM14");
+      attribute2dbField.put("variantTypeItm10DOC07","VARIANT_TYPE_ITM10");
+      attribute2dbField.put("variantCodeItm15DOC07","VARIANT_CODE_ITM15");
+
+      if (vo.getVariantCodeItm11DOC07()==null)
+        vo.setVariantCodeItm11DOC07(ApplicationConsts.JOLLY);
+      if (vo.getVariantTypeItm06DOC07()==null)
+        vo.setVariantTypeItm06DOC07(ApplicationConsts.JOLLY);
+
+      if (vo.getVariantCodeItm12DOC07()==null)
+        vo.setVariantCodeItm12DOC07(ApplicationConsts.JOLLY);
+      if (vo.getVariantCodeItm13DOC07()==null)
+        vo.setVariantCodeItm13DOC07(ApplicationConsts.JOLLY);
+      if (vo.getVariantCodeItm14DOC07()==null)
+        vo.setVariantCodeItm14DOC07(ApplicationConsts.JOLLY);
+      if (vo.getVariantCodeItm15DOC07()==null)
+        vo.setVariantCodeItm15DOC07(ApplicationConsts.JOLLY);
+
+      if (vo.getVariantTypeItm07DOC07()==null)
+        vo.setVariantTypeItm07DOC07(ApplicationConsts.JOLLY);
+      if (vo.getVariantTypeItm08DOC07()==null)
+        vo.setVariantTypeItm08DOC07(ApplicationConsts.JOLLY);
+      if (vo.getVariantTypeItm09DOC07()==null)
+        vo.setVariantTypeItm09DOC07(ApplicationConsts.JOLLY);
+      if (vo.getVariantTypeItm10DOC07()==null)
+        vo.setVariantTypeItm10DOC07(ApplicationConsts.JOLLY);
+
       vo.setRowNumberDOC07( progBean.getInternalProgressive("DOC07_PURCHASE_ITEMS","ROW_NUMBER",conn) );
 
       // insert into DOC07...

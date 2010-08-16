@@ -84,7 +84,7 @@ public class SaleInvoiceDocFromSaleDocFrame extends InternalFrame implements Inv
   DeleteButton deleteButton1 = new DeleteButton();
   GridBagLayout gridBagLayout1 = new GridBagLayout();
   SaleIdHeadPanel saleIdHeadPanel1 = new SaleIdHeadPanel(headerFormPanel,true,true);
-  SaleCustomerHeadPanel saleCustomerHeadPanel1 = new SaleCustomerHeadPanel(headerFormPanel);
+  SaleCustomerHeadPanel saleCustomerHeadPanel1 = new SaleCustomerHeadPanel(false,headerFormPanel);
   SaleAgentPanel saleAgentPanel = new SaleAgentPanel(headerFormPanel);
   SaleNotesPanel saleNotesPanel = new SaleNotesPanel();
   SaleTotalsPanel saleTotalsPanel1 = new SaleTotalsPanel(headerFormPanel);
