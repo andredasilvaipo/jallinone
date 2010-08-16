@@ -69,6 +69,7 @@ public class LoadItemAction implements Action {
     String serverLanguageId = ((JAIOUserSessionParameters)userSessionPars).getServerLanguageId();
     Connection conn = null;
     Statement stmt = null;
+    PreparedStatement pstmt = null;
     try {
       conn = ConnectionManager.getConnection(context);
 
@@ -295,7 +296,76 @@ public class LoadItemAction implements Action {
           vo.setLargeImage(bytes);
         }
 
-      }
+
+        // retrieve last purchase cost...
+        String sql =
+            "SELECT DOC06_PURCHASE.DOC_DATE,(DOC07_PURCHASE_ITEMS.VALUE-DOC07_PURCHASE_ITEMS.VAT_VALUE)/QTY,"+
+            "REG03_CURRENCIES.DECIMALS,REG03_CURRENCIES.CURRENCY_SYMBOL,REG03_CURRENCIES.DECIMAL_SYMBOL,REG03_CURRENCIES.THOUSAND_SYMBOL,REG03_CURRENCIES.CURRENCY_CODE "+
+            "FROM DOC07_PURCHASE_ITEMS,DOC06_PURCHASE,REG03_CURRENCIES "+
+            "WHERE DOC07_PURCHASE_ITEMS.COMPANY_CODE_SYS01=? AND "+
+            "DOC07_PURCHASE_ITEMS.ITEM_CODE_ITM01=? AND "+
+            "DOC07_PURCHASE_ITEMS.COMPANY_CODE_SYS01=DOC06_PURCHASE.COMPANY_CODE_SYS01 AND "+
+            "DOC07_PURCHASE_ITEMS.DOC_TYPE=DOC06_PURCHASE.DOC_TYPE AND "+
+            "DOC07_PURCHASE_ITEMS.DOC_YEAR=DOC06_PURCHASE.DOC_YEAR AND "+
+            "DOC07_PURCHASE_ITEMS.DOC_NUMBER=DOC06_PURCHASE.DOC_NUMBER AND "+
+            "DOC06_PURCHASE.DOC_TYPE='P' AND "+
+            "DOC06_PURCHASE.ENABLED='Y' AND "+
+            "REG03_CURRENCIES.CURRENCY_CODE=DOC06_PURCHASE.CURRENCY_CODE_REG03 "+
+            "ORDER BY DOC06_PURCHASE.DOC_DATE DESC ";
+        pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1,pk.getCompanyCodeSys01ITM01());
+        pstmt.setString(2,pk.getItemCodeITM01());
+        rset = pstmt.executeQuery();
+        BigDecimal decimals = new BigDecimal("2");
+        String currencyCode = null;
+        if(rset.next()) {
+          vo.setLastPurchaseDate(rset.getDate(1));
+          vo.setLastPurchaseCost(rset.getBigDecimal(2));
+          decimals = rset.getBigDecimal(3);
+          vo.setLastPurchaseCostDecimals(decimals);
+          if (decimals!=null && vo.getLastPurchaseCost()!=null) {
+            vo.setLastPurchaseCost(vo.getLastPurchaseCost().setScale(decimals.intValue(),BigDecimal.ROUND_HALF_UP));
+            vo.setLastPurchaseCostCurrencySymbol(rset.getString(4));
+            vo.setLastPurchaseCostDecimalSymbol(rset.getString(5));
+            vo.setLastPurchaseCostThousandSymbol(rset.getString(6));
+            currencyCode = rset.getString(7);
+          }
+        }
+        rset.close();
+        pstmt.close();
+
+        if (currencyCode!=null) {
+          // retrieve avg purchase cost...
+          sql =
+              "SELECT SUM((DOC07_PURCHASE_ITEMS.VALUE-DOC07_PURCHASE_ITEMS.VAT_VALUE)/QTY)/COUNT(*) "+
+              "FROM DOC07_PURCHASE_ITEMS,DOC06_PURCHASE "+
+              "WHERE DOC07_PURCHASE_ITEMS.COMPANY_CODE_SYS01=? AND "+
+              "DOC07_PURCHASE_ITEMS.ITEM_CODE_ITM01=? AND "+
+              "DOC07_PURCHASE_ITEMS.COMPANY_CODE_SYS01=DOC06_PURCHASE.COMPANY_CODE_SYS01 AND "+
+              "DOC07_PURCHASE_ITEMS.DOC_TYPE=DOC06_PURCHASE.DOC_TYPE AND "+
+              "DOC07_PURCHASE_ITEMS.DOC_YEAR=DOC06_PURCHASE.DOC_YEAR AND "+
+              "DOC07_PURCHASE_ITEMS.DOC_NUMBER=DOC06_PURCHASE.DOC_NUMBER AND "+
+              "DOC06_PURCHASE.DOC_TYPE='P' AND "+
+              "DOC06_PURCHASE.ENABLED='Y' AND "+
+              "DOC06_PURCHASE.CURRENCY_CODE_REG03=? ";
+          pstmt = conn.prepareStatement(sql);
+          pstmt.setString(1,pk.getCompanyCodeSys01ITM01());
+          pstmt.setString(2,pk.getItemCodeITM01());
+          pstmt.setString(3,currencyCode);
+          rset = pstmt.executeQuery();
+          if(rset.next()) {
+            vo.setAvgPurchaseCost(rset.getBigDecimal(1));
+            if (decimals!=null && vo.getAvgPurchaseCost()!=null)
+              vo.setAvgPurchaseCost(vo.getAvgPurchaseCost().setScale(decimals.intValue(),BigDecimal.ROUND_HALF_UP));
+          }
+          rset.close();
+        }
+
+
+      } // end if on isError
+
+
+
 
       Response answer = res;
 
@@ -328,6 +398,11 @@ public class LoadItemAction implements Action {
     finally {
       try {
         stmt.close();
+      }
+      catch (Exception ex2) {
+      }
+      try {
+        pstmt.close();
       }
       catch (Exception ex2) {
       }

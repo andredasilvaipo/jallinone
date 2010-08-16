@@ -3,6 +3,7 @@ package org.jallinone.items.java;
 import org.jallinone.system.customizations.java.BaseValueObject;
 import org.jallinone.variants.java.VariantsItemDescriptor;
 import java.math.BigDecimal;
+import java.sql.Date;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -85,6 +86,16 @@ public class DetailItemVO extends BaseValueObject implements VariantsItemDescrip
   private Boolean useVariant5ITM01;
 
   private String barCodeITM01;
+
+  private Date lastPurchaseDate;
+  private java.math.BigDecimal lastPurchaseCost;
+  private java.math.BigDecimal lastPurchaseCostDecimals;
+  private String lastPurchaseCostCurrencySymbol;
+  private String lastPurchaseCostDecimalSymbol;
+  private String lastPurchaseCostThousandSymbol;
+
+
+  private java.math.BigDecimal avgPurchaseCost;
 
 
   public DetailItemVO() {
@@ -407,6 +418,48 @@ public class DetailItemVO extends BaseValueObject implements VariantsItemDescrip
   }
   public void setBarCodeITM01(String barCodeITM01) {
     this.barCodeITM01 = barCodeITM01;
+  }
+  public java.math.BigDecimal getAvgPurchaseCost() {
+    return avgPurchaseCost;
+  }
+  public void setAvgPurchaseCost(java.math.BigDecimal avgPurchaseCost) {
+    this.avgPurchaseCost = avgPurchaseCost;
+  }
+  public java.math.BigDecimal getLastPurchaseCost() {
+    return lastPurchaseCost;
+  }
+  public Date getLastPurchaseDate() {
+    return lastPurchaseDate;
+  }
+  public void setLastPurchaseDate(Date lastPurchaseDate) {
+    this.lastPurchaseDate = lastPurchaseDate;
+  }
+  public void setLastPurchaseCost(java.math.BigDecimal lastPurchaseCost) {
+    this.lastPurchaseCost = lastPurchaseCost;
+  }
+  public String getLastPurchaseCostCurrencySymbol() {
+    return lastPurchaseCostCurrencySymbol;
+  }
+  public java.math.BigDecimal getLastPurchaseCostDecimals() {
+    return lastPurchaseCostDecimals;
+  }
+  public String getLastPurchaseCostDecimalSymbol() {
+    return lastPurchaseCostDecimalSymbol;
+  }
+  public String getLastPurchaseCostThousandSymbol() {
+    return lastPurchaseCostThousandSymbol;
+  }
+  public void setLastPurchaseCostThousandSymbol(String lastPurchaseCostThousandSymbol) {
+    this.lastPurchaseCostThousandSymbol = lastPurchaseCostThousandSymbol;
+  }
+  public void setLastPurchaseCostDecimalSymbol(String lastPurchaseCostDecimalSymbol) {
+    this.lastPurchaseCostDecimalSymbol = lastPurchaseCostDecimalSymbol;
+  }
+  public void setLastPurchaseCostDecimals(java.math.BigDecimal lastPurchaseCostDecimals) {
+    this.lastPurchaseCostDecimals = lastPurchaseCostDecimals;
+  }
+  public void setLastPurchaseCostCurrencySymbol(String lastPurchaseCostCurrencySymbol) {
+    this.lastPurchaseCostCurrencySymbol = lastPurchaseCostCurrencySymbol;
   }
 
 }
