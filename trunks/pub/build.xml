@@ -143,7 +143,10 @@
   </target>
 
   <target name="war">
-    <war warfile="${pub}/jallinone.war" webxml="${webapps}/jallinone/WEB-INF/web.xml" basedir="${webapps}/jAllInOne/"/>
+    <delete>
+      <fileset dir="${pub}" includes="*.war"/>
+    </delete>
+    <war warfile="${pub}/jallinone.war" excludes="**/pooler.*,**/*.sh" webxml="${webapps}/jallinone/WEB-INF/web.xml" basedir="${webapps}/jAllInOne/"/>
   </target>
 
 
@@ -310,6 +313,7 @@
         <include name="reports/**"/>
         <include name="*.ini"/>
         <include name="*.jnlp"/>
+        <exclude name="pooler.*"/>
       </fileset>
     </copy>
     <copy todir="${tmp}/src" >
