@@ -75,6 +75,7 @@ import org.openswing.swing.message.receive.java.ErrorResponse;
 import org.openswing.swing.server.ConnectionManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import org.jallinone.ordertracking.server.LoadOrderTrackingAction;
 
 
 /**
@@ -729,6 +730,11 @@ public class ApplicationActionClasses extends ActionsCollection {
     a = new UpdateVariantBarcodesAction(); put(a.getRequestName(),a);
     a = new ValidateVariantBarcodeAction(); put(a.getRequestName(),a);
     a = new LoadItemsSoldToOtherCustomersAction(); put(a.getRequestName(),a);
+    a = new LoadOrderTrackingAction(); put(a.getRequestName(),a);
+
+
+
+
 
 
     put("changeLanguage",new Action() {

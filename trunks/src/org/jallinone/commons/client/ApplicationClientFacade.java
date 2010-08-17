@@ -86,6 +86,7 @@ import org.jallinone.system.customizations.client.CustomFunctionsController;
 import org.jallinone.system.customizations.client.ShowCustomFunctionFrame;
 import org.jallinone.variants.client.*;
 import org.jallinone.sales.pos.client.*;
+import org.jallinone.ordertracking.client.OrderTrackingFrame;
 
 
 /**
@@ -936,6 +937,11 @@ public class ApplicationClientFacade implements ClientFacade {
 
   public void getPOS() {
     new SaleDeskCompanySelDialog();
+  }
+
+
+  public void getOrderTracking() {
+    new OrderTrackingFrame();
   }
 
 
