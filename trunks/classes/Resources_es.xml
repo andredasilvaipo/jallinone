@@ -1500,6 +1500,9 @@
   <object key="last purchase cost" value="Last purchase cost" />
   <object key="last purchase date" value="Last purchase date" />
   <object key="order tracking" value="Order tracking" />
+  <object key="docSequence" value="Doc.Nr." />
+  <object key="customerSupplierCode" value="C/S Code" />
+  <object key="docTypeDescr" value="Doc. Type" />
 
 
 

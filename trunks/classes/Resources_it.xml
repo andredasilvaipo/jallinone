@@ -608,7 +608,7 @@
   <object key="totalVat" value="Totale Iva" />
   <object key="total" value="Totale" />
   <object key="purchase orders" value="Ordini di Acq." />
-  <object key="purchase order" value="Dettaglio ordine di acq." />
+  <object key="purchase order" value="Ordine di acq." />
   <object key="header" value="Testata" />
   <object key="lines" value="Righe" />
   <object key="opened" value="Aperto" />
@@ -1458,6 +1458,9 @@
   <object key="last purchase cost" value="Ultimo costo di acq." />
   <object key="last purchase date" value="Data ultimo acq." />
   <object key="order tracking" value="Tracking ordini" />
+  <object key="docSequence" value="Num.Doc." />
+  <object key="customerSupplierCode" value="Cod. C/F" />
+  <object key="docTypeDescr" value="Tipo Doc." />
 
 
 <!-- application translations -->
