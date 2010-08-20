@@ -1,5 +1,33 @@
 
 
+Release Notes 1.0
+---------------------
+
+Updated OpenSwing library version to 2.2.4.
+Added "Orders tracking" feature
+Added costs calculus to item detail
+Major bug fixes:
+- fixed problem when deleting an item type
+- fixed problem when creating customers (private or companies)
+- fixed problem when adding new languages
+- fixed problem when changing language
+- fixed problem on db schema creation with Postgresql db
+- fixed problem with reports translation and accounting reports
+- fixed some translations in english, italian, portuguese/brazilian, spanish within xml files
+- fixed problem on defining customer and warehouse codes for retail sale
+- fixed problem in many frames related to company selection
+- fixed problemwhen attaching documents in document management
+Other improvements:
+- improved layout of item detail and sale and purchase documents
+- added sub variants and variants for items
+- association variants combination to item
+- variants support in sale documents, purchase documents and warehouse documents
+- added "point of sale" frame, to use with  POS hardware
+- improved layout and usage of warehouse detail folders
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+
 Release Notes 0.9.23
 ---------------------
 
