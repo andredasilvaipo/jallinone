@@ -3,7 +3,7 @@
 Release Notes 1.0
 ---------------------
 
-Updated OpenSwing library version to 2.2.4.
+Updated OpenSwing library version to 2.2.5.
 Added "Orders tracking" feature
 Added costs calculus to item detail
 Major bug fixes:
