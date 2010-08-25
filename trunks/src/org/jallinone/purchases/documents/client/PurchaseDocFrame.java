@@ -102,7 +102,8 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
       pk.add("docTypeDOC06");
       pk.add("docYearDOC06");
       pk.add("docNumberDOC06");
-      headerFormPanel.linkGrid(controller.getParentFrame().getGrid(),pk,true,true,true,navigatorBar);
+      if (controller.getParentFrame()!=null)
+        headerFormPanel.linkGrid(controller.getParentFrame().getGrid(),pk,true,true,true,navigatorBar);
 
 
       CustomizedControls customizedControls = new CustomizedControls(tabbedPane,headerFormPanel,ApplicationConsts.ID_PURCHASE_ORDER);

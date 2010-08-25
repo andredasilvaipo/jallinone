@@ -116,7 +116,8 @@ public class SaleContractDocFrame extends InternalFrame implements SaleDocument 
       pk.add("docTypeDOC01");
       pk.add("docYearDOC01");
       pk.add("docNumberDOC01");
-      headerFormPanel.linkGrid(controller.getParentFrame().getGrid(),pk,true,true,true,navigatorBar);
+      if (controller.getParentFrame()!=null)
+        headerFormPanel.linkGrid(controller.getParentFrame().getGrid(),pk,true,true,true,navigatorBar);
 
 
       init();

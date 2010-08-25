@@ -157,33 +157,33 @@ public class InDeliveryNoteIdPanel extends JPanel {
     controlDelivDate.setRequired(true);
     this.add(labelDocNum,       new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlDocNumber,              new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 30, 0));
+    this.add(controlDocNumber,               new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     this.add(labelDocRif,          new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     this.add(controlDocRif,              new GridBagConstraints(1, 1, 3, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlDocYear,          new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 30, 0));
+    this.add(controlDocYear,           new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
     this.add(labelDocYear,     new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     this.add(labelDocDate,    new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlDocDate,        new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0
+    this.add(controlDocDate,          new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 60, 0));
     this.add(labelDocState,   new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlDocState,      new GridBagConstraints(7, 0, 1, 1, 1.0, 0.0
-            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 10, 0));
+    this.add(controlDocState,        new GridBagConstraints(7, 0, 1, 1, 1.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 60, 0));
     this.add(labelSupplierCode,    new GridBagConstraints(4, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlSupplierCode,       new GridBagConstraints(5, 2, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 70, 0));
+    this.add(controlSupplierCode,         new GridBagConstraints(5, 2, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     this.add(controlSupplierDescr,    new GridBagConstraints(6, 2, 2, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 0, 0));
     this.add(labelDelivDate,   new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlDelivDate,    new GridBagConstraints(5, 1, 1, 1, 0.0, 0.0
+    this.add(controlDelivDate,      new GridBagConstraints(5, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 60, 0));
   }
 

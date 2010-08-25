@@ -38,6 +38,15 @@ import java.awt.event.*;
 import org.openswing.swing.table.model.client.VOListTableModel;
 import org.jallinone.ordertracking.java.DocumentTrackingVO;
 import org.openswing.swing.internationalization.java.Resources;
+import org.openswing.swing.message.receive.java.ValueObject;
+import org.jallinone.purchases.documents.invoices.client.*;
+import org.jallinone.purchases.documents.java.PurchaseDocPK;
+import org.jallinone.purchases.documents.client.PurchaseDocController;
+import org.jallinone.sales.documents.java.SaleDocPK;
+import org.jallinone.sales.documents.invoices.client.*;
+import org.jallinone.sales.documents.client.*;
+import org.jallinone.warehouse.documents.client.*;
+import org.jallinone.warehouse.documents.java.DeliveryNotePK;
 
 
 /**
@@ -166,6 +175,186 @@ public class OrderTrackingGridPanel extends JPanel {
        */
       public Color getBackgroundColor(int row,String attributeName,Object value) {
         return color;
+      }
+
+
+      /**
+       * Callback method invoked when the user has double clicked on the selected row of the grid.
+       * @param rowNumber selected row index
+       * @param persistentObject v.o. related to the selected row
+       */
+      public void doubleClick(int rowNumber,ValueObject persistentObject) {
+        DocumentTrackingVO vo = (DocumentTrackingVO)persistentObject;
+        String docTypeDescr = vo.getDocTypeDescr();
+        Resources res = ClientSettings.getInstance().getResources();
+
+        if (docTypeDescr.equals(res.getResource("debiting note"))) {
+          new PurchaseDebitingDocController(
+            null,
+            new PurchaseDocPK(
+              vo.getCompanyCodeSYS01(),
+              vo.getDocType(),
+              vo.getDocYear(),
+              vo.getDocNumber()
+            )
+          );
+        }
+        else if (docTypeDescr.equals(res.getResource("purchase invoice")) ||
+                 docTypeDescr.equals(res.getResource("purchase generic document"))) {
+           new PurchaseInvoiceDocController(
+             null,
+             new PurchaseDocPK(
+               vo.getCompanyCodeSYS01(),
+               vo.getDocType(),
+               vo.getDocYear(),
+               vo.getDocNumber()
+             )
+           );
+        }
+        else if (docTypeDescr.equals(res.getResource("purchase invoice from delivery notes"))) {
+           new PurchaseInvoiceDocFromDelivNotesController(
+             null,
+             new PurchaseDocPK(
+               vo.getCompanyCodeSYS01(),
+               vo.getDocType(),
+               vo.getDocYear(),
+               vo.getDocNumber()
+             )
+           );
+        }
+        else if (docTypeDescr.equals(res.getResource("purchase invoice from purchase document"))) {
+           new PurchaseInvoiceDocFromPurchaseDocController(
+             null,
+             new PurchaseDocPK(
+               vo.getCompanyCodeSYS01(),
+               vo.getDocType(),
+               vo.getDocYear(),
+               vo.getDocNumber()
+             )
+           );
+        }
+        else if (docTypeDescr.equals(res.getResource("purchase order"))) {
+          new PurchaseDocController(
+            null,
+            new PurchaseDocPK(
+              vo.getCompanyCodeSYS01(),
+              vo.getDocType(),
+              vo.getDocYear(),
+              vo.getDocNumber()
+            )
+          );
+        }
+        else if (docTypeDescr.equals(res.getResource("sale invoice")) ||
+                 docTypeDescr.equals(res.getResource("sale generic document"))) {
+          new SaleInvoiceDocController(
+            null,
+            new SaleDocPK(
+              vo.getCompanyCodeSYS01(),
+              vo.getDocType(),
+              vo.getDocYear(),
+              vo.getDocNumber()
+            )
+          );
+        }
+        else if (docTypeDescr.equals(res.getResource("sale invoice from delivery notes"))) {
+          new SaleInvoiceDocFromDelivNotesController(
+            null,
+            new SaleDocPK(
+              vo.getCompanyCodeSYS01(),
+              vo.getDocType(),
+              vo.getDocYear(),
+              vo.getDocNumber()
+            )
+          );
+        }
+        else if (docTypeDescr.equals(res.getResource("sale invoice from sale document"))) {
+          new SaleInvoiceDocFromSaleDocController(
+            null,
+            new SaleDocPK(
+              vo.getCompanyCodeSYS01(),
+              vo.getDocType(),
+              vo.getDocYear(),
+              vo.getDocNumber()
+            )
+          );
+        }
+        else if (docTypeDescr.equals(res.getResource("credit note"))) {
+          new SaleCreditDocController(
+            null,
+            new SaleDocPK(
+              vo.getCompanyCodeSYS01(),
+              vo.getDocType(),
+              vo.getDocYear(),
+              vo.getDocNumber()
+            )
+          );
+        }
+        else if (docTypeDescr.equals(res.getResource("sale order"))) {
+          new SaleOrderDocController(
+            null,
+            new SaleDocPK(
+              vo.getCompanyCodeSYS01(),
+              vo.getDocType(),
+              vo.getDocYear(),
+              vo.getDocNumber()
+            )
+          );
+        }
+        else if (docTypeDescr.equals(res.getResource("sale contract"))) {
+          new SaleContractDocController(
+            null,
+            new SaleDocPK(
+              vo.getCompanyCodeSYS01(),
+              vo.getDocType(),
+              vo.getDocYear(),
+              vo.getDocNumber()
+            )
+          );
+        }
+        else if (docTypeDescr.equals(res.getResource("desk selling"))) {
+          new SaleDeskDocController(
+            null,
+            new SaleDocPK(
+              vo.getCompanyCodeSYS01(),
+              vo.getDocType(),
+              vo.getDocYear(),
+              vo.getDocNumber()
+            )
+          );
+        }
+        else if (docTypeDescr.equals(res.getResource("sale estimate"))) {
+          new SaleEstimateDocController(
+            null,
+            new SaleDocPK(
+              vo.getCompanyCodeSYS01(),
+              vo.getDocType(),
+              vo.getDocYear(),
+              vo.getDocNumber()
+            )
+          );
+        }
+        else if (docTypeDescr.equals(res.getResource("in delivery note"))) {
+          new InDeliveryNoteController(
+            null,
+            new DeliveryNotePK(
+              vo.getCompanyCodeSYS01(),
+              vo.getDocType(),
+              vo.getDocYear(),
+              vo.getDocNumber()
+            )
+          );
+        }
+        else if (docTypeDescr.equals(res.getResource("out delivery note"))) {
+          new OutDeliveryNoteController(
+            null,
+            new DeliveryNotePK(
+              vo.getCompanyCodeSYS01(),
+              vo.getDocType(),
+              vo.getDocYear(),
+              vo.getDocNumber()
+            )
+          );
+        }
       }
 
     });

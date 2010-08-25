@@ -104,10 +104,12 @@ public class PurchaseDocController extends CompanyFormController {
   public Response loadData(Class valueObjectClass) {
     // since this method could be invoked also when selecting another row on the linked grid,
     // the pk attribute must be recalculated from the grid...
-    int row = parentFrame.getGrid().getSelectedRow();
-    if (row!=-1) {
-      GridPurchaseDocVO gridVO = (GridPurchaseDocVO)parentFrame.getGrid().getVOListTableModel().getObjectForRow(row);
-      pk = new PurchaseDocPK(gridVO.getCompanyCodeSys01DOC06(),gridVO.getDocTypeDOC06(),gridVO.getDocYearDOC06(),gridVO.getDocNumberDOC06());
+    if (getParentFrame()!=null) {
+      int row = parentFrame.getGrid().getSelectedRow();
+      if (row!=-1) {
+        GridPurchaseDocVO gridVO = (GridPurchaseDocVO)parentFrame.getGrid().getVOListTableModel().getObjectForRow(row);
+        pk = new PurchaseDocPK(gridVO.getCompanyCodeSys01DOC06(),gridVO.getDocTypeDOC06(),gridVO.getDocYearDOC06(),gridVO.getDocNumberDOC06());
+      }
     }
 
     return ClientUtils.getData("loadPurchaseDoc",pk);

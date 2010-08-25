@@ -111,10 +111,12 @@ public class SaleOrderDocController extends CompanyFormController {
   public Response loadData(Class valueObjectClass) {
     // since this method could be invoked also when selecting another row on the linked grid,
     // the pk attribute must be recalculated from the grid...
-    int row = parentFrame.getGrid().getSelectedRow();
-    if (row!=-1) {
-      GridSaleDocVO gridVO = (GridSaleDocVO)parentFrame.getGrid().getVOListTableModel().getObjectForRow(row);
-      pk = new SaleDocPK(gridVO.getCompanyCodeSys01DOC01(),gridVO.getDocTypeDOC01(),gridVO.getDocYearDOC01(),gridVO.getDocNumberDOC01());
+    if (getParentFrame()!=null) {
+      int row = parentFrame.getGrid().getSelectedRow();
+      if (row!=-1) {
+        GridSaleDocVO gridVO = (GridSaleDocVO)parentFrame.getGrid().getVOListTableModel().getObjectForRow(row);
+        pk = new SaleDocPK(gridVO.getCompanyCodeSys01DOC01(),gridVO.getDocTypeDOC01(),gridVO.getDocYearDOC01(),gridVO.getDocNumberDOC01());
+      }
     }
 
     return ClientUtils.getData("loadSaleDoc",pk);
