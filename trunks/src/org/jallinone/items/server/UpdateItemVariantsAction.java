@@ -18,6 +18,9 @@ import org.jallinone.system.translations.server.TranslationUtils;
 import org.jallinone.system.java.CustomizedWindows;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.variants.server.LoadProductVariantsMatrixBean;
+import org.jallinone.variants.java.VariantsItemDescriptor;
+import org.jallinone.variants.java.VariantsMatrixVO;
 
 
 /**
@@ -55,6 +58,9 @@ public class UpdateItemVariantsAction implements Action {
   private HashMap variantTypes = new HashMap();
   private HashMap variantTypeJoins = new HashMap();
   private HashMap variantCodeJoins = new HashMap();
+  private UpdateVariantBarcodesBean bean = new UpdateVariantBarcodesBean();
+  private LoadProductVariantsMatrixBean matrixBean = new LoadProductVariantsMatrixBean();
+  private LoadItemBean itemBean = new LoadItemBean();
 
 
   public UpdateItemVariantsAction() {
@@ -133,7 +139,6 @@ public class UpdateItemVariantsAction implements Action {
         String variantTypeJoin = (String)variantTypeJoins.get(tableName);
         String variantCodeJoin = (String)variantCodeJoins.get(tableName);
         String productVariant = (String)productVariants.get(tableName);
-        String variantType = (String)variantTypes.get(tableName);
 
         pstmtIns = conn.prepareStatement(
             "insert into " + productVariant + "(COMPANY_CODE_SYS01,ITEM_CODE_ITM01,"+variantTypeJoin+","+variantCodeJoin+",VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED) "+
@@ -181,6 +186,7 @@ public class UpdateItemVariantsAction implements Action {
             pstmtUpd.setString(4,newVO.getVariantType());
             pstmtUpd.setString(5,newVO.getVariantCode());
             pstmtUpd.executeUpdate();
+
           }
 
         } // end for
@@ -204,6 +210,64 @@ public class UpdateItemVariantsAction implements Action {
         inputPar,
         answer
       ));
+
+
+      // re-create item's barcodes...
+      if (newVOs.size()>0) {
+        final ItemVariantVO vo  = (ItemVariantVO)newVOs.get(0);
+
+        Response res = itemBean.loadItem(
+          conn,
+          new ItemPK(vo.getCompanyCodeSys01(),vo.getItemCodeItm01()),
+          (JAIOUserSessionParameters)userSessionPars,
+          request,
+          response,
+          userSession,
+          context
+        );
+        if (!res.isError()) {
+          DetailItemVO itemVO = (DetailItemVO)((VOResponse)res).getVo();
+          res = matrixBean.getVariantsMatrix(
+            conn,
+            itemVO,
+            userSessionPars,
+            request,
+            response,
+            userSession,
+            context
+          );
+          if (!res.isError()) {
+            VariantsMatrixVO matrixVO = (VariantsMatrixVO) ( (VOResponse) res).getVo();
+
+            // only if item's variants has been defined in ITM16-20,
+            // then barcodes are inserted...
+            if (matrixVO.getManagedVariants().size()==1 ||
+                matrixVO.getManagedVariants().size()-1<=matrixVO.getColumnDescriptors().size()) {
+              Object[][] cells = new Object[matrixVO.getRowDescriptors().size()][
+                  matrixVO.getColumnDescriptors().size() == 0 ? 1 :
+                  matrixVO.getColumnDescriptors().size()];
+
+              res = bean.updateBarcodes(
+                  conn,
+                  matrixVO,
+                  cells,
+                  userSessionPars,
+                  request,
+                  response,
+                  userSession,
+                  context
+              );
+              if (res.isError()) {
+                conn.rollback();
+                return res;
+              }
+            }
+
+          }
+        }
+      }
+
+
 
       conn.commit();
 

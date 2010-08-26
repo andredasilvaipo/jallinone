@@ -18,6 +18,8 @@ import org.jallinone.system.java.ApplicationParametersVO;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.openswing.swing.internationalization.server.ServerResourcesFactory;
+import org.openswing.swing.internationalization.java.Resources;
 
 
 /**
@@ -87,8 +89,30 @@ public class InsertItemAction implements Action {
       ));
 
       String companyCode = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("ITM01").get(0).toString();
-
       DetailItemVO vo = (DetailItemVO)inputPar;
+
+      if (vo.getBarCodeITM01()==null) {
+        new BarCodeGeneratorImpl().calculateBarCode(conn,vo);
+      }
+
+      // check for barcode uniqueness...
+      if (vo.getBarCodeITM01()!=null && !vo.getBarCodeITM01().trim().equals("")) {
+        stmt = conn.createStatement();
+        ResultSet rset = stmt.executeQuery("select * from ITM01_ITEMS where COMPANY_CODE_SYS01='"+companyCode+"' and BAR_CODE='"+vo.getBarCodeITM01()+"'");
+        boolean barCodeFound = false;
+        if (rset.next()) {
+          barCodeFound = true;
+        }
+        rset.close();
+        stmt.close();
+        if (barCodeFound) {
+          ServerResourcesFactory factory = (ServerResourcesFactory)context.getAttribute(Controller.RESOURCES_FACTORY);
+          Resources res = factory.getResources(userSessionPars.getLanguageId());
+          return new ErrorResponse(res.getResource("barcode already assigned to another item"));
+        }
+      }
+
+
       vo.setEnabledITM01("Y");
       if (vo.getCompanyCodeSys01ITM01()==null)
         vo.setCompanyCodeSys01ITM01(companyCode);

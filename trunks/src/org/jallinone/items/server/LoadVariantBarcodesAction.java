@@ -114,9 +114,39 @@ public class LoadVariantBarcodesAction implements Action {
           "VARIANT_CODE_ITM12,VARIANT_CODE_ITM13,VARIANT_CODE_ITM14,VARIANT_CODE_ITM15,"+
           "BAR_CODE from ITM22_VARIANT_BARCODES where "+
           "COMPANY_CODE_SYS01=? AND "+
-          "ITEM_CODE_ITM01=? AND "+
-          "VARIANT_TYPE_ITM06=? AND "+
-          "VARIANT_CODE_ITM11=? ";
+          "ITEM_CODE_ITM01=? AND ";
+
+      if (matrixVO.getColumnDescriptors().size()==0) {
+        if (containsVariant(matrixVO,"ITM11_VARIANTS_1")) {
+          sql +=
+              "VARIANT_TYPE_ITM06=? AND "+
+              "VARIANT_CODE_ITM11=? ";
+        }
+        else if (containsVariant(matrixVO,"ITM12_VARIANTS_2")) {
+          sql +=
+              "VARIANT_TYPE_ITM07=? AND "+
+              "VARIANT_CODE_ITM12=? ";
+        }
+        else if (containsVariant(matrixVO,"ITM13_VARIANTS_3")) {
+          sql +=
+              "VARIANT_TYPE_ITM08=? AND "+
+              "VARIANT_CODE_ITM13=? ";
+        }
+        else if (containsVariant(matrixVO,"ITM14_VARIANTS_4")) {
+          sql +=
+              "VARIANT_TYPE_ITM09=? AND "+
+              "VARIANT_CODE_ITM14=? ";
+        }
+        else if (containsVariant(matrixVO,"ITM15_VARIANTS_5")) {
+          sql +=
+              "VARIANT_TYPE_ITM10=? AND "+
+              "VARIANT_CODE_ITM15=? ";
+        }
+      }
+      else
+        sql +=
+            "VARIANT_TYPE_ITM06=? AND "+
+            "VARIANT_CODE_ITM11=? ";
       pstmt = conn.prepareStatement(sql);
 
       ArrayList rows = new ArrayList();
@@ -220,6 +250,14 @@ public class LoadVariantBarcodesAction implements Action {
   }
 
 
+  private boolean containsVariant(VariantsMatrixVO vo,String tableName) {
+    for(int i=0;i<vo.getManagedVariants().size();i++)
+      if (((VariantNameVO)vo.getManagedVariants().get(i)).getTableName().equals(tableName))
+        return true;
+    return false;
+  }
+
+
   class ColPK {
 
     private String variantTypeITM07;
@@ -300,7 +338,7 @@ public class LoadVariantBarcodesAction implements Action {
           variantCodeITM15).hashCode();
     }
 
-  }
+  } // end inner class
 
 
 }

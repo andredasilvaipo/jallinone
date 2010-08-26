@@ -18,6 +18,8 @@ import org.jallinone.system.java.ApplicationParametersVO;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.openswing.swing.internationalization.server.ServerResourcesFactory;
+import org.openswing.swing.internationalization.java.Resources;
 
 
 /**
@@ -91,6 +93,26 @@ public class UpdateItemAction implements Action {
       DetailItemVO oldVO = (DetailItemVO)((ValueObject[])inputPar)[0];
       DetailItemVO newVO = (DetailItemVO)((ValueObject[])inputPar)[1];
 
+      if (newVO.getBarCodeITM01()==null) {
+        new BarCodeGeneratorImpl().calculateBarCode(conn,newVO);
+      }
+
+      // check for barcode uniqueness...
+      if (newVO.getBarCodeITM01()!=null && !newVO.getBarCodeITM01().trim().equals("")) {
+        stmt = conn.createStatement();
+        ResultSet rset = stmt.executeQuery("select * from ITM01_ITEMS where COMPANY_CODE_SYS01='"+newVO.getCompanyCodeSys01()+"' and BAR_CODE='"+newVO.getBarCodeITM01()+"' and NOT ITEM_CODE='"+newVO.getItemCodeItm01()+"'");
+        boolean barCodeFound = false;
+        if (rset.next()) {
+          barCodeFound = true;
+        }
+        rset.close();
+        stmt.close();
+        if (barCodeFound) {
+          ServerResourcesFactory factory = (ServerResourcesFactory)context.getAttribute(Controller.RESOURCES_FACTORY);
+          Resources res = factory.getResources(userSessionPars.getLanguageId());
+          return new ErrorResponse(res.getResource("barcode already assigned to another item"));
+        }
+      }
 
       // update item description...
       TranslationUtils.updateTranslation(

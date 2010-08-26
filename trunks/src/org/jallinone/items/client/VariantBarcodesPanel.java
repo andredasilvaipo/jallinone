@@ -161,7 +161,7 @@ public class VariantBarcodesPanel extends JPanel {
         col.setHeaderColumnName(colVO.getColumnDescription());
         col.setColumnName("attributeNameS"+(i+1));
         col.setColumnRequired(false);
-        //col.setPreferredWidth(110*(vo.getManagedVariants().size()-1));
+        col.setMinWidth(90);
 
         col.setPreferredWidth(20+this.getFontMetrics(this.getFont()).stringWidth(col.getHeaderColumnName()));
 

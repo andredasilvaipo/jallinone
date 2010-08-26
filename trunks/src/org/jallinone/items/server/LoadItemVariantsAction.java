@@ -54,6 +54,7 @@ public class LoadItemVariantsAction implements Action {
   private HashMap variantTypes = new HashMap();
   private HashMap variantTypeJoins = new HashMap();
   private HashMap variantCodeJoins = new HashMap();
+  private LoadItemVariantsBean bean = new LoadItemVariantsBean();
 
 
   public LoadItemVariantsAction() {
@@ -95,8 +96,6 @@ public class LoadItemVariantsAction implements Action {
    */
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
     String serverLanguageId = ((JAIOUserSessionParameters)userSessionPars).getServerLanguageId();
-
-    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       conn = ConnectionManager.getConnection(context);
@@ -119,92 +118,7 @@ public class LoadItemVariantsAction implements Action {
 
 
       GridParams pars = (GridParams)inputPar;
-      String tableName = (String)pars.getOtherGridParams().get(ApplicationConsts.TABLE_NAME);
-      ItemPK pk = (ItemPK)pars.getOtherGridParams().get(ApplicationConsts.ITEM_PK);
-      String productVariant = (String)productVariants.get(tableName);
-      String variantType = (String)variantTypes.get(tableName);
-      String variantTypeJoin = (String)variantTypeJoins.get(tableName);
-      String variantCodeJoin = (String)variantCodeJoins.get(tableName);
-
-      String sql =
-          "select "+tableName+"."+variantTypeJoin+","+tableName+".VARIANT_CODE,A.DESCRIPTION,B.DESCRIPTION, "+
-          tableName+".PROGRESSIVE_SYS10,"+variantType+".PROGRESSIVE_SYS10 "+
-          "from "+tableName+","+variantType+",SYS10_TRANSLATIONS A,SYS10_TRANSLATIONS B "+
-          "where "+
-          tableName+".COMPANY_CODE_SYS01=? and "+
-          tableName+".COMPANY_CODE_SYS01="+variantType+".COMPANY_CODE_SYS01 and "+
-          tableName+"."+variantTypeJoin+"="+variantType+".VARIANT_TYPE and "+
-          tableName+".PROGRESSIVE_SYS10=A.PROGRESSIVE and A.LANGUAGE_CODE=? and "+
-          variantType+".PROGRESSIVE_SYS10=B.PROGRESSIVE and B.LANGUAGE_CODE=? and "+
-          tableName+".ENABLED='Y' and "+
-          variantType+".ENABLED='Y' and "+//and not "+tableName+"."+variantTypeJoin+"=? and "+
-          "not "+tableName+".VARIANT_CODE=? "+
-          "order by "+tableName+"."+variantTypeJoin+","+tableName+".CODE_ORDER";
-
-      Map attribute2dbField = new HashMap();
-      attribute2dbField.put("variantType",tableName+"."+variantTypeJoin);
-      attribute2dbField.put("variantCode",tableName+".VARIANT_CODE");
-      attribute2dbField.put("variantDesc","A.DESCRIPTION");
-      attribute2dbField.put("variantTypeDesc","B.DESCRIPTION");
-      attribute2dbField.put("variantProgressiveSys10",tableName+".PROGRESSIVE_SYS10");
-      attribute2dbField.put("variantTypeProgressiveSys10",variantType+".PROGRESSIVE_SYS10");
-
-      ArrayList values = new ArrayList();
-      values.add(pk.getCompanyCodeSys01ITM01());
-      values.add(serverLanguageId);
-      values.add(serverLanguageId);
-      //values.add(ApplicationConsts.JOLLY);
-      values.add(ApplicationConsts.JOLLY);
-
-      // read from ITMxxx table...
-      Response answer = QueryUtil.getQuery(
-          conn,
-          userSessionPars,
-          sql,
-          values,
-          attribute2dbField,
-          ItemVariantVO.class,
-          "Y",
-          "N",
-          context,
-          pars,
-          50,
-          true
-      );
-
-      if (!answer.isError()) {
-        java.util.List vos = ((VOListResponse)answer).getRows();
-        HashMap map = new HashMap();
-        ItemVariantVO vo = null;
-        for(int i=0;i<vos.size();i++) {
-          vo = (ItemVariantVO)vos.get(i);
-          vo.setCompanyCodeSys01(pk.getCompanyCodeSys01ITM01());
-          vo.setItemCodeItm01(pk.getItemCodeITM01());
-          vo.setTableName(tableName);
-          map.put(vo.getVariantType()+"."+vo.getVariantCode(),vo);
-        }
-
-        pstmt = conn.prepareStatement(
-            "select "+productVariant+"."+variantTypeJoin+","+productVariant+"."+variantCodeJoin+" "+
-            "from "+productVariant+" "+
-            "where "+
-            productVariant+".COMPANY_CODE_SYS01=? and "+
-            productVariant+".ITEM_CODE_ITM01=? and "+
-            productVariant+".ENABLED='Y' "
-        );
-        pstmt.setString(1,pk.getCompanyCodeSys01ITM01());
-        pstmt.setString(2,pk.getItemCodeITM01());
-        ResultSet rset = pstmt.executeQuery();
-
-        while(rset.next()) {
-          vo = (ItemVariantVO)map.get(rset.getString(1)+"."+rset.getString(2));
-          if (vo!=null)
-            vo.setSelected(Boolean.TRUE);
-        }
-        rset.close();
-        pstmt.close();
-
-      }
+      Response answer = bean.getItemVariants(conn,pars,userSessionPars,request, response,userSession,context);
 
       // fires the GenericEvent.BEFORE_COMMIT event...
       EventsManager.getInstance().processEvent(new GenericEvent(
@@ -228,11 +142,6 @@ public class LoadItemVariantsAction implements Action {
       return new ErrorResponse(ex.getMessage());
     }
     finally {
-      try {
-        pstmt.close();
-      }
-      catch (Exception ex2) {
-      }
       try {
         ConnectionManager.releaseConnection(conn, context);
       }

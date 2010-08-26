@@ -18,6 +18,9 @@ import org.jallinone.events.server.GenericEvent;
 import org.jallinone.variants.java.*;
 import org.openswing.swing.customvo.java.CustomValueObject;
 import org.jallinone.commons.java.ApplicationConsts;
+import org.openswing.swing.internationalization.server.ServerResourcesFactory;
+import org.openswing.swing.internationalization.java.Resources;
+import org.jallinone.items.java.VariantBarcodeVO;
 
 
 /**
@@ -50,6 +53,8 @@ import org.jallinone.commons.java.ApplicationConsts;
  */
 public class UpdateVariantBarcodesAction implements Action {
 
+  private UpdateVariantBarcodesBean bean = new UpdateVariantBarcodesBean();
+
 
   public UpdateVariantBarcodesAction() {
   }
@@ -67,107 +72,30 @@ public class UpdateVariantBarcodesAction implements Action {
    */
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
     Connection conn = null;
-    PreparedStatement pstmt = null;
     try {
       conn = ConnectionManager.getConnection(context);
-
-      // fires the GenericEvent.CONNECTION_CREATED event...
-      EventsManager.getInstance().processEvent(new GenericEvent(
-        this,
-        getRequestName(),
-        GenericEvent.CONNECTION_CREATED,
-        (JAIOUserSessionParameters)userSessionPars,
-        request,
-        response,
-        userSession,
-        context,
-        conn,
-        inputPar,
-        null
-      ));
 
       Object[] objs = (Object[])inputPar;
       VariantsMatrixVO matrixVO = (VariantsMatrixVO)objs[0];
       Object[][] cells = (Object[][])objs[1];
 
-      String sql =
-          "delete from ITM22_VARIANT_BARCODES where "+
-          "COMPANY_CODE_SYS01=? AND "+
-          "ITEM_CODE_ITM01=? ";
-      pstmt = conn.prepareStatement(sql);
-      pstmt.setString(1,matrixVO.getItemPK().getCompanyCodeSys01ITM01());
-      pstmt.setString(2,matrixVO.getItemPK().getItemCodeITM01());
-      pstmt.execute();
-      pstmt.close();
+      Response res = bean.updateBarcodes(
+        conn,
+        matrixVO,
+        cells,
+        userSessionPars,
+        request,
+        response,
+        userSession,
+        context
+      );
 
-      sql =
-          "insert into ITM22_VARIANT_BARCODES("+
-          "COMPANY_CODE_SYS01,ITEM_CODE_ITM01,"+
-          "VARIANT_TYPE_ITM06,VARIANT_TYPE_ITM07,VARIANT_TYPE_ITM08,VARIANT_TYPE_ITM09,VARIANT_TYPE_ITM10,"+
-          "VARIANT_CODE_ITM11,VARIANT_CODE_ITM12,VARIANT_CODE_ITM13,VARIANT_CODE_ITM14,VARIANT_CODE_ITM15,"+
-          "BAR_CODE) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
-      pstmt = conn.prepareStatement(sql);
-
-      VariantsMatrixRowVO rowVO = null;
-      VariantsMatrixColumnVO colVO = null;
-      Object[] row = null;
-      for(int i=0;i<cells.length;i++) {
-        rowVO = (VariantsMatrixRowVO)matrixVO.getRowDescriptors().get(i);
-        row = cells[i];
-
-        if (matrixVO.getColumnDescriptors().size()==0) {
-          pstmt.setString(1,matrixVO.getItemPK().getCompanyCodeSys01ITM01());
-          pstmt.setString(2,matrixVO.getItemPK().getItemCodeITM01());
-
-          pstmt.setString(3,rowVO.getVariantTypeITM06()==null?ApplicationConsts.JOLLY:rowVO.getVariantTypeITM06());
-          pstmt.setString(4,ApplicationConsts.JOLLY);
-          pstmt.setString(5,ApplicationConsts.JOLLY);
-          pstmt.setString(6,ApplicationConsts.JOLLY);
-          pstmt.setString(7,ApplicationConsts.JOLLY);
-
-          pstmt.setString(8,rowVO.getVariantCodeITM11()==null?ApplicationConsts.JOLLY:rowVO.getVariantCodeITM11());
-          pstmt.setString(9,ApplicationConsts.JOLLY);
-          pstmt.setString(10,ApplicationConsts.JOLLY);
-          pstmt.setString(11,ApplicationConsts.JOLLY);
-          pstmt.setString(12,ApplicationConsts.JOLLY);
-
-          pstmt.setString(13,row[0].toString());
-
-          pstmt.execute();
-        }
-        else {
-          for(int j=0;j<row.length;j++) {
-            if (row[j]!=null) {
-              colVO = (VariantsMatrixColumnVO)matrixVO.getColumnDescriptors().get(j);
-
-              pstmt.setString(1,matrixVO.getItemPK().getCompanyCodeSys01ITM01());
-              pstmt.setString(2,matrixVO.getItemPK().getItemCodeITM01());
-
-              pstmt.setString(3,rowVO.getVariantTypeITM06()==null?ApplicationConsts.JOLLY:rowVO.getVariantTypeITM06());
-              pstmt.setString(4,colVO.getVariantTypeITM07()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM07());
-              pstmt.setString(5,colVO.getVariantTypeITM08()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM08());
-              pstmt.setString(6,colVO.getVariantTypeITM09()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM09());
-              pstmt.setString(7,colVO.getVariantTypeITM10()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM10());
-
-              pstmt.setString(8,rowVO.getVariantCodeITM11()==null?ApplicationConsts.JOLLY:rowVO.getVariantCodeITM11());
-              pstmt.setString(9,colVO.getVariantCodeITM12()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM12());
-              pstmt.setString(10,colVO.getVariantCodeITM13()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM13());
-              pstmt.setString(11,colVO.getVariantCodeITM14()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM14());
-              pstmt.setString(12,colVO.getVariantCodeITM15()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM15());
-
-              pstmt.setString(13,row[j].toString());
-
-              pstmt.execute();
-            }
-          } // end inner for
-        }
-      } // end outer for
-
-      conn.commit();
-
+      if (!res.isError())
+        conn.commit();
+      else
+        conn.rollback();
 
       // fires the GenericEvent.BEFORE_COMMIT event...
-      VOListResponse res = new VOListResponse(new ArrayList(),false,0);
       EventsManager.getInstance().processEvent(new GenericEvent(
         this,
         getRequestName(),
@@ -194,11 +122,6 @@ public class UpdateVariantBarcodesAction implements Action {
       return new ErrorResponse(ex.getMessage());
     }
     finally {
-      try {
-        pstmt.close();
-      }
-      catch (Exception ex1) {
-      }
       try {
         ConnectionManager.releaseConnection(conn, context);
       }
