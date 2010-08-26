@@ -178,6 +178,7 @@ public class PurchaseInvoiceDocFrame extends InternalFrame implements InvoiceDoc
     mainPanel.add(tabbedPane,  BorderLayout.CENTER);
     tabbedPane.add(headerPanel,   "header");
     headerPanel.add(headerButtonsPanel,  BorderLayout.NORTH);
+    headerPanel.add(headerFormPanel,  BorderLayout.CENTER);
     headerButtonsPanel.add(insertButton1, null);
     headerButtonsPanel.add(editButton1, null);
     headerButtonsPanel.add(saveButton1, null);
@@ -187,14 +188,13 @@ public class PurchaseInvoiceDocFrame extends InternalFrame implements InvoiceDoc
     printButton.setEnabled(false);
     headerButtonsPanel.add(printButton, null);
     linesPanel.add(rowsPanel, BorderLayout.CENTER);
-    headerPanel.add(headerFormPanel,  BorderLayout.CENTER);
     headerFormPanel.add(purchaseIdHeadPanel1,   new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-    headerFormPanel.add(purchaseSupplierHeadPanel1,     new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0
+    headerFormPanel.add(purchaseSupplierHeadPanel1,        new GridBagConstraints(0, 1, 1, 1, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
     headerFormPanel.add(warePanel,   new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-    headerFormPanel.add(purchaseTotalsPanel1,    new GridBagConstraints(0, 3, 1, 1, 1.0, 1.0
+    headerFormPanel.add(purchaseTotalsPanel1,     new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 
     confirmButton.setToolTipText(ClientSettings.getInstance().getResources().getResource("invoice closing"));

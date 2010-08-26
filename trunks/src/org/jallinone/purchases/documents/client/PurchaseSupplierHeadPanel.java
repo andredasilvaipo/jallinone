@@ -244,11 +244,14 @@ public class PurchaseSupplierHeadPanel extends JPanel {
     controlSupplierDescr.setEnabledOnEdit(false);
     controlSupplierDescr.setAttributeName("name_1REG04");
     controlPricelistCode.setCanCopy(true);
+    controlPricelistCode.setColumns(5);
+    controlPricelistCode.setControllerClassName("");
     controlPricelistCode.setLinkLabel(labelPricelist);
     controlPricelistCode.setMaxCharacters(20);
     controlPricelistCode.setRequired(true);
     controlPricelistCode.setAttributeName("pricelistCodePur03DOC06");
     controlPaymentCode.setCanCopy(true);
+    controlPaymentCode.setColumns(5);
     controlPaymentCode.setLinkLabel(labelPayment);
     controlPaymentCode.setMaxCharacters(20);
     controlPaymentCode.setRequired(true);
@@ -269,30 +272,30 @@ public class PurchaseSupplierHeadPanel extends JPanel {
     controlPayDescr.setAttributeName("paymentDescriptionDOC06");
     this.add(labelSupplier,    new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlSupplierCode,            new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 70, 0));
+    this.add(controlSupplierCode,             new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
     this.add(labelPricelist,     new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlPricelistCode,       new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 70, 0));
-    this.add(controlPricelistDescr,     new GridBagConstraints(5, 0, 1, 1, 1.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    this.add(controlPricelistCode,        new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+    this.add(controlPricelistDescr,      new GridBagConstraints(5, 0, 1, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 70, 0));
     this.add(labelCurrency,     new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlCurrency,       new GridBagConstraints(1, 1, 2, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 70, 0));
+    this.add(controlCurrency,        new GridBagConstraints(1, 1, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     this.add(labelPayment,     new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlPaymentCode,       new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 70, 0));
-    this.add(controlPayDescr,     new GridBagConstraints(5, 1, 1, 1, 1.0, 0.0
+    this.add(controlPaymentCode,        new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+    this.add(controlPayDescr,       new GridBagConstraints(5, 1, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     this.add(labelNote,     new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     this.add(controlNote,     new GridBagConstraints(1, 2, 5, 1, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlSupplierDescr,  new GridBagConstraints(2, 0, 1, 1, 1.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    this.add(controlSupplierDescr,   new GridBagConstraints(2, 0, 1, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 70, 0));
   }
 
 }
