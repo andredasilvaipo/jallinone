@@ -1379,6 +1379,7 @@
         <object key="docSequence" value="Doc.Nr." />
         <object key="customerSupplierCode" value="C/S Code" />
         <object key="docTypeDescr" value="Doc. Type" />
+        <object key="barcode already assigned to another item" value="Barcode already assigned to another item" />
 
 
 

@@ -294,7 +294,7 @@
   <object key="companyCodeSys01SYS03" value="" />
   <object key="progressiveReg04SYS03" value="" />
   <object key="roleDescription" value="Descriz.Ruolo" />
-  <object key="selected" value="Selezionato" />
+  <object key="selected" value="Selez." />
   <object key="you cannot delete administrator user" value="Non e' consentito cancellare l'utente amministratore." />
   <object key="user roles" value="Ruoli utente" />
   <object key="you must specify a date greater than today." value="E' necessario specificare una data maggiore di oggi." />
@@ -1461,6 +1461,7 @@
   <object key="docSequence" value="Num.Doc." />
   <object key="customerSupplierCode" value="Cod. C/F" />
   <object key="docTypeDescr" value="Tipo Doc." />
+  <object key="barcode already assigned to another item" value="Barcode gi&#224; associato ad un altro articolo" />
 
 
 <!-- application translations -->
