@@ -402,7 +402,7 @@
   <object key="generic data" value="Dati generici" />
   <object key="customer data" value="Dati cliente" />
   <object key="pricelist" value="Listino" />
-  <object key="payment terms" value="Forme di pagamento" />
+  <object key="payment terms" value="Pagamento" />
   <object key="customer" value="Cliente" />
   <object key="sex" value="Sesso" />
   <object key="destinations" value="Destinazioni" />
@@ -1462,7 +1462,8 @@
   <object key="customerSupplierCode" value="Cod. C/F" />
   <object key="docTypeDescr" value="Tipo Doc." />
   <object key="barcode already assigned to another item" value="Barcode gi&#224; associato ad un altro articolo" />
-
+  <object key="print barcode labels" value="Stampa etichette" />
+  <object key="qty" value="Qt&#224;" />
 
 <!-- application translations -->
 

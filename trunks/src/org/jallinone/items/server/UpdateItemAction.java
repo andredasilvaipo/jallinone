@@ -256,6 +256,7 @@ public class UpdateItemAction implements Action {
       attribute2dbField.put("useVariant5ITM01","USE_VARIANT_5");
 
       attribute2dbField.put("barCodeITM01","BAR_CODE");
+      attribute2dbField.put("barcodeTypeITM01","BARCODE_TYPE");
 
       HashSet pkAttributes = new HashSet();
       pkAttributes.add("companyCodeSys01ITM01");

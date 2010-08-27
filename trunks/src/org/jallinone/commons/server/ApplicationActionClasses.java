@@ -76,6 +76,8 @@ import org.openswing.swing.server.ConnectionManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import org.jallinone.ordertracking.server.LoadOrderTrackingAction;
+import org.jallinone.items.server.DeleteBarcodeLabelsDataAction;
+import org.jallinone.purchases.documents.server.CreateBarcodeLabelsDataFromPurchaseDocAction;
 
 
 /**
@@ -731,6 +733,10 @@ public class ApplicationActionClasses extends ActionsCollection {
     a = new ValidateVariantBarcodeAction(); put(a.getRequestName(),a);
     a = new LoadItemsSoldToOtherCustomersAction(); put(a.getRequestName(),a);
     a = new LoadOrderTrackingAction(); put(a.getRequestName(),a);
+
+    a = new DeleteBarcodeLabelsDataAction(); put(a.getRequestName(),a);
+    a = new CreateBarcodeLabelsDataAction(); put(a.getRequestName(),a);
+    a = new CreateBarcodeLabelsDataFromPurchaseDocAction(); put(a.getRequestName(),a);
 
 
 

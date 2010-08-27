@@ -3,8 +3,10 @@
 Release Notes 1.0
 ---------------------
 
-Updated OpenSwing library version to 2.2.5.
-Added "Orders tracking" feature
+Updated OpenSwing library version to 2.2.6
+Added "Orders tracking" feature with links to tracked documents
+Added support for barcodes at item level and at level of combination of item variants; supported barcode formats: EAN13, EAN128, Code128/A/B/C, Code39 Extended
+Added print barcode labels feature, in order to print barcodes from a purchase order or from a list of specified items
 Added costs calculus to item detail
 Major bug fixes:
 - fixed problem when deleting an item type
@@ -18,6 +20,7 @@ Major bug fixes:
 - fixed problem in many frames related to company selection
 - fixed problemwhen attaching documents in document management
 Other improvements:
+- simplified features: activities, duties and rates
 - improved layout of item detail and sale and purchase documents
 - added sub variants and variants for items
 - association variants combination to item

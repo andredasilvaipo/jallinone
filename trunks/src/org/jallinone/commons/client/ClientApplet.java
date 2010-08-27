@@ -460,6 +460,19 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     );
 
 
+    Domain barcodeTypeDomain = new Domain("BARCODE_TYPES");
+    barcodeTypeDomain.addDomainPair(ApplicationConsts.BAR_CODE_EAN13,ApplicationConsts.BAR_CODE_EAN13);
+    barcodeTypeDomain.addDomainPair(ApplicationConsts.BAR_CODE_EAN128,ApplicationConsts.BAR_CODE_EAN128);
+    barcodeTypeDomain.addDomainPair(ApplicationConsts.BAR_CODE_128,ApplicationConsts.BAR_CODE_128);
+    barcodeTypeDomain.addDomainPair(ApplicationConsts.BAR_CODE_128A,ApplicationConsts.BAR_CODE_128A);
+    barcodeTypeDomain.addDomainPair(ApplicationConsts.BAR_CODE_128B,ApplicationConsts.BAR_CODE_128B);
+    barcodeTypeDomain.addDomainPair(ApplicationConsts.BAR_CODE_128C,ApplicationConsts.BAR_CODE_128C);
+    barcodeTypeDomain.addDomainPair(ApplicationConsts.BAR_CODE_39E,ApplicationConsts.BAR_CODE_39E);
+    domains.put(
+      barcodeTypeDomain.getDomainId(),
+      barcodeTypeDomain
+    );
+
   }
 
 

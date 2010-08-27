@@ -84,6 +84,7 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
   GenericButton confirmButton = new GenericButton(new ImageIcon(ClientUtils.getImage("workflow.gif")));
   PurchaseWarehousePanel warePanel = new PurchaseWarehousePanel(headerFormPanel);
   GenericButton printButton = new GenericButton(new ImageIcon(ClientUtils.getImage("printer.gif")));
+  GenericButton printLabelsButton = new GenericButton(new ImageIcon(ClientUtils.getImage("barcode.gif")));
   NavigatorBar navigatorBar = new NavigatorBar();
 
 
@@ -164,6 +165,9 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
     printButton.setToolTipText(ClientSettings.getInstance().getResources().getResource("print document"));
     printButton.addActionListener(new PurchaseDocFrame_printButton_actionAdapter(this));
 
+    printLabelsButton.setToolTipText(ClientSettings.getInstance().getResources().getResource("print barcode labels"));
+    printLabelsButton.addActionListener(new PurchaseDocFrame_printLabelsButton_actionAdapter(this));
+
     headerFormPanel.setFunctionId("DOC06_ORDERS");
     headerFormPanel.setFormController(controller);
     headerFormPanel.setVOClassName("org.jallinone.purchases.documents.java.DetailPurchaseDocVO");
@@ -195,7 +199,9 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
     headerButtonsPanel.add(deleteButton1, null);
     headerButtonsPanel.add(confirmButton, null);
     printButton.setEnabled(false);
+    printLabelsButton.setEnabled(false);
     headerButtonsPanel.add(printButton, null);
+    headerButtonsPanel.add(printLabelsButton, null);
     headerButtonsPanel.add(navigatorBar, null);
     tabbedPane.add(linesPanel,   "lines");
     linesPanel.add(rowsPanel, BorderLayout.CENTER);
@@ -284,9 +290,11 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
         vo.getDocStateDOC06().equals(ApplicationConsts.CLOSED) ||
         vo.getDocStateDOC06().equals(ApplicationConsts.HEADER_BLOCKED)) {
       printButton.setEnabled(true);
+      printLabelsButton.setEnabled(true);
     }
     else {
       printButton.setEnabled(false);
+      printLabelsButton.setEnabled(false);
     }
 
   }
@@ -340,6 +348,62 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
     }
 
   }
+
+
+  void printLabelsButton_actionPerformed(ActionEvent e) {
+    DetailPurchaseDocVO vo = (DetailPurchaseDocVO)headerFormPanel.getVOModel().getValueObject();
+
+    HashMap map = new HashMap();
+    map.put(
+      ApplicationConsts.PURCHASE_DOC_PK,
+      new PurchaseDocPK(
+        vo.getCompanyCodeSys01DOC06(),
+        vo.getDocTypeDOC06(),
+        vo.getDocYearDOC06(),
+        vo.getDocNumberDOC06()
+      )
+    );
+    Response res = ClientUtils.getData("createBarcodeLabelsDataFromPurchaseDoc",map);
+    if (res.isError()) {
+      JOptionPane.showMessageDialog(
+        ClientUtils.getParentFrame(this),
+        res.getErrorMessage(),
+        ClientSettings.getInstance().getResources().getResource("print barcode labels"),
+        JOptionPane.ERROR_MESSAGE
+      );
+    }
+    else {
+      Object reportId = ((VOResponse)res).getVo();
+
+
+      HashMap params = new HashMap();
+      params.put("REPORT_ID",reportId);
+
+      map = new HashMap();
+      map.put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC06());
+      map.put(ApplicationConsts.FUNCTION_CODE_SYS06,"BARCODE_LABELS");
+      map.put(ApplicationConsts.EXPORT_PARAMS,params);
+      res = ClientUtils.getData("getJasperReport",map);
+      if (!res.isError()) {
+        JasperPrint print = (JasperPrint)((VOResponse)res).getVo();
+        JRViewer viewer = new JRViewer(print);
+        JFrame frame = new JFrame();
+        frame.setSize(MDIFrame.getInstance().getSize());
+        frame.setContentPane(viewer);
+        frame.setTitle(this.getTitle());
+        frame.setIconImage(MDIFrame.getInstance().getIconImage());
+        frame.setVisible(true);
+        res = ClientUtils.getData("deleteBarcodeLabelsData",reportId);
+      } else
+        JOptionPane.showMessageDialog(
+          ClientUtils.getParentFrame(this),
+          res.getErrorMessage(),
+          ClientSettings.getInstance().getResources().getResource("print barcode labels"),
+          JOptionPane.ERROR_MESSAGE
+        );
+    }
+  }
+
 
   void printButton_actionPerformed(ActionEvent e) {
     DetailPurchaseDocVO vo = (DetailPurchaseDocVO)headerFormPanel.getVOModel().getValueObject();
@@ -396,5 +460,16 @@ class PurchaseDocFrame_printButton_actionAdapter implements java.awt.event.Actio
   }
   public void actionPerformed(ActionEvent e) {
     adaptee.printButton_actionPerformed(e);
+  }
+}
+
+class PurchaseDocFrame_printLabelsButton_actionAdapter implements java.awt.event.ActionListener {
+  PurchaseDocFrame adaptee;
+
+  PurchaseDocFrame_printLabelsButton_actionAdapter(PurchaseDocFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.printLabelsButton_actionPerformed(e);
   }
 }

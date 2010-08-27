@@ -1,10 +1,7 @@
 package org.jallinone.purchases.documents.java;
 
-import org.openswing.swing.message.receive.java.*;
-import org.jallinone.system.customizations.java.BaseValueObject;
-import org.jallinone.variants.java.VariantsMatrixVO;
-import java.util.Vector;
 import org.jallinone.commons.java.*;
+import org.jallinone.system.customizations.java.*;
 
 
 /**

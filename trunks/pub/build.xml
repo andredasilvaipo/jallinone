@@ -106,6 +106,8 @@
       <fileset dir="${lib}">
         <include name="serverjaio.jar"/>
         <include name="pooler.jar"/>
+        <include name="barbecue-1.1.jar"/>
+        <include name="BcImage.jar"/>
         <include name="jnlp-servlet.jar"/>
         <include name="log4j-1.2.7.jar"/>
         <include name="poi-2.0-RC2-20040102.jar"/>
@@ -235,6 +237,8 @@
       <fileset dir="${lib}">
         <include name="serverjaio.jar"/>
         <include name="pooler.jar"/>
+        <include name="barbecue-1.1.jar"/>
+        <include name="BcImage.jar"/>
         <include name="log4j-1.2.7.jar"/>
         <include name="poi-2.0-RC2-20040102.jar"/>
         <include name="mysql-connector-java-5.0.3-bin.jar"/>

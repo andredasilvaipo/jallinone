@@ -172,6 +172,7 @@ public class InsertItemAction implements Action {
       attribute2dbField.put("useVariant5ITM01","USE_VARIANT_5");
 
       attribute2dbField.put("barCodeITM01","BAR_CODE");
+      attribute2dbField.put("barcodeTypeITM01","BARCODE_TYPE");
 
       if (vo.getSmallImage()!=null) {
         BigDecimal imageProgressive = ProgressiveUtils.getInternalProgressive("ITM01_ITEMS","SMALL_IMG",conn);

@@ -324,4 +324,16 @@ public class ApplicationConsts {
 
   public static final String VALIDATE_BARCODE = "VALIDATE_BARCODE";
 
+  public static final String ITEMS = "ITEMS";
+
+  public static final String BAR_CODE_EAN13 = "EAN13";
+  public static final String BAR_CODE_EAN128 = "EAN128";
+  public static final String BAR_CODE_128 = "Code128";
+  public static final String BAR_CODE_128A = "Code128A";
+  public static final String BAR_CODE_128B = "Code128B";
+  public static final String BAR_CODE_128C = "Code128C";
+  public static final String BAR_CODE_39E = "Code39E";
+
+
+
 }

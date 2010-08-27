@@ -138,7 +138,7 @@ public class DeleteBillOfMaterialsDataAction implements Action {
 
       return answer;
     } catch (Exception ex1) {
-      Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"executeCommand","Error while fetching bill of materials and fill in TMP01 table",ex1);
+      Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"executeCommand","Error while removing data from TMP01 table",ex1);
       try {
         conn.rollback();
       }

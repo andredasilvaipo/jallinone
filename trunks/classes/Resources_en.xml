@@ -1465,8 +1465,8 @@
   <object key="customerSupplierCode" value="C/S Code" />
   <object key="docTypeDescr" value="Doc. Type" />
   <object key="barcode already assigned to another item" value="Barcode already assigned to another item" />
-  <object key="" value="" />
-  <object key="" value="" />
+  <object key="print barcode labels" value="Print barcode labels" />
+  <object key="qty" value="Qty" />
   <object key="" value="" />
   <object key="" value="" />
   <object key="" value="" />

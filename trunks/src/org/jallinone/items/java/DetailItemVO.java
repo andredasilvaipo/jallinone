@@ -86,6 +86,7 @@ public class DetailItemVO extends BaseValueObject implements VariantsItemDescrip
   private Boolean useVariant5ITM01;
 
   private String barCodeITM01;
+  private String barcodeTypeITM01;
 
   private Date lastPurchaseDate;
   private java.math.BigDecimal lastPurchaseCost;
@@ -461,5 +462,12 @@ public class DetailItemVO extends BaseValueObject implements VariantsItemDescrip
   public void setLastPurchaseCostCurrencySymbol(String lastPurchaseCostCurrencySymbol) {
     this.lastPurchaseCostCurrencySymbol = lastPurchaseCostCurrencySymbol;
   }
+  public String getBarcodeTypeITM01() {
+    return barcodeTypeITM01;
+  }
+  public void setBarcodeTypeITM01(String barcodeTypeITM01) {
+    this.barcodeTypeITM01 = barcodeTypeITM01;
+  }
+
 
 }

@@ -87,6 +87,7 @@ import org.jallinone.system.customizations.client.ShowCustomFunctionFrame;
 import org.jallinone.variants.client.*;
 import org.jallinone.sales.pos.client.*;
 import org.jallinone.ordertracking.client.OrderTrackingFrame;
+import org.jallinone.items.client.PrintBarcodeLabelsFrame;
 
 
 /**
@@ -942,6 +943,11 @@ public class ApplicationClientFacade implements ClientFacade {
 
   public void getOrderTracking() {
     new OrderTrackingFrame();
+  }
+
+
+  public void printBarcodeLabels() {
+    new PrintBarcodeLabelsFrame();
   }
 
 

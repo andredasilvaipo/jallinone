@@ -64,6 +64,9 @@ public class GridPurchaseDocRowVO extends ValueObjectImpl {
   private String variantTypeItm10DOC07;
   private String variantCodeItm15DOC07;
 
+  private String barCodeITM01;
+  private String barcodeTypeITM01;
+
 
   public GridPurchaseDocRowVO() {
   }
@@ -267,6 +270,18 @@ public class GridPurchaseDocRowVO extends ValueObjectImpl {
   }
   public void setVariantCodeItm11DOC07(String variantCodeItm11DOC07) {
     this.variantCodeItm11DOC07 = variantCodeItm11DOC07;
+  }
+  public String getBarCodeITM01() {
+    return barCodeITM01;
+  }
+  public void setBarCodeITM01(String barCodeITM01) {
+    this.barCodeITM01 = barCodeITM01;
+  }
+  public String getBarcodeTypeITM01() {
+    return barcodeTypeITM01;
+  }
+  public void setBarcodeTypeITM01(String barcodeTypeITM01) {
+    this.barcodeTypeITM01 = barcodeTypeITM01;
   }
 
 

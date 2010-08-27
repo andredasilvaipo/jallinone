@@ -231,6 +231,7 @@ public class ItemFrame extends InternalFrame {
   CurrencyControl controlLastPurCost = new CurrencyControl();
   LabelControl labeLstPur = new LabelControl();
   DateControl controlLastPurDate = new DateControl();
+  ComboBoxControl controlBarcodeType = new ComboBoxControl();
 
 
   public ItemFrame(ItemController controller,boolean productsOnly) {
@@ -946,6 +947,9 @@ public class ItemFrame extends InternalFrame {
     controlAvgPurCost.setAttributeName("avgPurchaseCost");
     controlAvgPurCost.setEnabledOnInsert(false);
     controlAvgPurCost.setEnabledOnEdit(false);
+    controlBarcodeType.setAttributeName("barcodeTypeITM01");
+    controlBarcodeType.setDomainId("BARCODE_TYPES");
+    controlBarcodeType.setRequired(true);
     this.getContentPane().add(buttonsPanel,  BorderLayout.NORTH);
     this.getContentPane().add(tab, BorderLayout.CENTER);
     tab.add(formPanel,   "detailPanel");
@@ -1029,7 +1033,7 @@ public class ItemFrame extends InternalFrame {
             ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
     formPanel.add(controlSerialNumRequired,          new GridBagConstraints(6, 3, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 120, 0));
-    formPanel.add(varsPanel,               new GridBagConstraints(0, 7, 3, 1, 1.0, 0.0
+    formPanel.add(varsPanel,                new GridBagConstraints(0, 7, 2, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
     imgPanel.add(clearSmallImageButton,    new GridBagConstraints(1, 0, 1, 2, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
@@ -1220,7 +1224,7 @@ public class ItemFrame extends InternalFrame {
             ,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 0, 0));
     formPanel.add(controlLevelDescr,   new GridBagConstraints(5, 1, 2, 1, 1.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelBarcode,    new GridBagConstraints(3, 7, 2, 1, 0.0, 0.0
+    formPanel.add(labelBarcode,     new GridBagConstraints(2, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     formPanel.add(controlBarcode,   new GridBagConstraints(5, 7, 2, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
@@ -1236,6 +1240,8 @@ public class ItemFrame extends InternalFrame {
             ,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     formPanel.add(controlLastPurDate,       new GridBagConstraints(6, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 100, 0));
+    formPanel.add(controlBarcodeType,   new GridBagConstraints(3, 7, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     pricesSplit.setDividerLocation(250);
 
     controlBarcode.setAttributeName("barCodeITM01");
