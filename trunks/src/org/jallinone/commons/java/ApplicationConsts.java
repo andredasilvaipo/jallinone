@@ -326,6 +326,8 @@ public class ApplicationConsts {
 
   public static final String ITEMS = "ITEMS";
 
+  public static final String BARCODE = "BARCODE";
+
   public static final String BAR_CODE_EAN13 = "EAN13";
   public static final String BAR_CODE_EAN128 = "EAN128";
   public static final String BAR_CODE_128 = "Code128";

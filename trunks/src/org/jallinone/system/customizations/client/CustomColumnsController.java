@@ -126,6 +126,12 @@ public class CustomColumnsController extends GridController {
   public boolean validateCell(int rowNumber,String attributeName,Object oldValue,Object newValue) {
     CustomColumnVO colVO = (CustomColumnVO)grid.getVOListTableModel().getObjectForRow(rowNumber);
 
+    if (attributeName.equals("columnNameSYS22") &&
+        newValue!=null &&
+        newValue.toString().length()>0 &&
+        !Character.isLetter(newValue.toString().charAt(0)))
+      return false;
+
     if (attributeName.equals("columnTypeSYS22") &&
         oldValue.equals(ApplicationConsts.TYPE_TEXT) &&
         !newValue.equals(ApplicationConsts.TYPE_ENUM))

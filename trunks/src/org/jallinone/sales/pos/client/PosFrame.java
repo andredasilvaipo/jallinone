@@ -40,6 +40,7 @@ import org.jallinone.sales.documents.java.SaleDocPK;
 import org.jallinone.sales.documents.invoices.client.SaleInvoiceDocFromSaleDocController;
 import org.openswing.swing.client.MultiLineLabelControl;
 import org.jallinone.sales.documents.java.ItemSoldToOtherCustomersVO;
+import org.jallinone.sales.pricelist.java.VariantsPriceVO;
 
 
 /**
@@ -786,6 +787,23 @@ public class PosFrame extends JFrame {
       vo.setVariantTypeItm10DOC02(ApplicationConsts.JOLLY);
     }
 
+    // check for variants level price...
+    if (priceItemVO.getUseVariant1ITM01().equals(Boolean.TRUE) ||
+        priceItemVO.getUseVariant2ITM01().equals(Boolean.TRUE) ||
+        priceItemVO.getUseVariant3ITM01().equals(Boolean.TRUE) ||
+        priceItemVO.getUseVariant4ITM01().equals(Boolean.TRUE) ||
+        priceItemVO.getUseVariant5ITM01().equals(Boolean.TRUE)) {
+      Response res = ClientUtils.getData("loadVariantsPrice",new Object[]{barcodeVO,customerVO.getPricelistCodeSal01SAL07()});
+      if (!res.isError()) {
+        java.util.List rows = ((VOListResponse)res).getRows();
+        if (rows.size()==1) {
+          VariantsPriceVO vpVO = (VariantsPriceVO)rows.get(0);
+          priceItemVO.setValueSAL02(vpVO.getValueSAL11());
+        }
+      }
+    }
+
+
     vo.setCompanyCodeSys01DOC02(priceItemVO.getCompanyCodeSys01());
     Calendar cal = Calendar.getInstance();
     vo.setDocYearDOC02(new BigDecimal(cal.get(cal.YEAR)));
@@ -805,7 +823,7 @@ public class PosFrame extends JFrame {
     vo.setStartDateSal02DOC02(priceItemVO.getStartDateSAL02());
     vo.setEndDateSal02DOC02(priceItemVO.getEndDateSAL02());
     vo.setValueReg01DOC02(priceItemVO.getValueREG01());
-    vo.setValueSal02DOC02(priceItemVO.getValueREG01());
+    vo.setValueSal02DOC02(priceItemVO.getValueSAL02());
     vo.setVatCodeItm01DOC02(priceItemVO.getVatCodeReg01ITM01());
     vo.setVatDescriptionDOC02(priceItemVO.getVatDescriptionSYS10());
     vo.setDeductibleReg01DOC02(priceItemVO.getDeductibleREG01());
@@ -1031,8 +1049,10 @@ public class PosFrame extends JFrame {
     controlSubtotal.setColumns(15);
     controlSubtotal.setEnabled(false);
     controlDiscount.setColumns(15);
+    controlDiscount.setEnabled(false);
     controlDiscount.addFocusListener(new PosFrame_controlDiscount_focusAdapter(this));
     controlPayed.setColumns(15);
+    controlPayed.setEnabled(false);
     controlPayed.addFocusListener(new PosFrame_controlPayed_focusAdapter(this));
     controlTotal.setColumns(15);
     controlTotal.setFont(new java.awt.Font("Dialog", 1, 14));
@@ -1726,6 +1746,8 @@ public class PosFrame extends JFrame {
     rows.clear();
     grid.reloadData();
     controlBarcode.setEnabled(true);
+    controlDiscount.setEnabled(true);
+    controlPayed.setEnabled(true);
     state = INS_BARCODE;
     updateContext();
 
