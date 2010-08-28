@@ -172,7 +172,8 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
       //"loadSaleDocVariantsRow",
       controlQty,
       splitPane,
-      splitDiv
+      splitDiv,
+      true
   );
   GridBagLayout gridBagLayout2 = new GridBagLayout();
 

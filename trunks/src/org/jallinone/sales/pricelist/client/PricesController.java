@@ -16,6 +16,11 @@ import org.jallinone.items.java.GridItemVO;
 import org.openswing.swing.util.client.ClientSettings;
 import org.jallinone.items.client.ItemsFrame;
 import java.beans.PropertyVetoException;
+import org.openswing.swing.client.SaveButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import org.jallinone.variants.client.ProductVariantsPanel;
+import org.jallinone.items.java.ItemPK;
 
 
 /**
@@ -199,6 +204,90 @@ public class PricesController extends CompanyGridController implements ImportIte
     }
     return false;
   }
+
+
+  /**
+   * Callback method invoked when the user has selected another row.
+   * @param rowNumber selected row index
+   */
+  public void rowChanged(int rowNumber) {
+    if (rowNumber!=-1)
+      reloadVariantsPrices(rowNumber);
+    else
+      frame.getVariantsPricesPanel().removeAll();
+    frame.getVariantsPricesPanel().revalidate();
+    frame.getVariantsPricesPanel().repaint();
+  }
+
+
+  private void reloadVariantsPrices(int rowNumber) {
+    final PriceVO priceVO = (PriceVO)frame.getPricesGrid().getVOListTableModel().getObjectForRow(rowNumber);
+    final ProductVariantsPanel variantsPricesPanel = frame.getVariantsPricesPanel();
+
+    if(!Boolean.TRUE.equals(priceVO.getUseVariant1ITM01()) &&
+       !Boolean.TRUE.equals(priceVO.getUseVariant2ITM01()) &&
+       !Boolean.TRUE.equals(priceVO.getUseVariant3ITM01()) &&
+       !Boolean.TRUE.equals(priceVO.getUseVariant4ITM01()) &&
+       !Boolean.TRUE.equals(priceVO.getUseVariant5ITM01()))
+      variantsPricesPanel.removeAll();
+    else {
+      variantsPricesPanel.removeAll();
+      variantsPricesPanel.getOtherGridParams().put(ApplicationConsts.ITEM,new ItemPK(priceVO.getCompanyCodeSys01SAL02(),priceVO.getItemCodeItm01SAL02()));
+      variantsPricesPanel.getOtherGridParams().put(ApplicationConsts.PRICELIST,priceVO.getPricelistCodeSal01SAL02());
+      variantsPricesPanel.initGrid(priceVO);
+      variantsPricesPanel.revalidate();
+      variantsPricesPanel.repaint();
+
+      SaveButton saveButton = new SaveButton();
+      saveButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          Response res = ClientUtils.getData("updateVariantsPrices",new Object[]{
+             variantsPricesPanel.getVariantsMatrixVO(),
+             variantsPricesPanel.getCells(),
+             priceVO.getPricelistCodeSal01SAL02(),
+             priceVO.getStartDateSAL02(),
+             priceVO.getEndDateSAL02()
+          });
+          if (res.isError()) {
+            JOptionPane.showMessageDialog(
+              ClientUtils.getParentFrame(frame),
+              res.getErrorMessage(),
+              ClientSettings.getInstance().getResources().getResource("Error while saving"),
+              JOptionPane.ERROR_MESSAGE
+            );
+          }
+          else
+            JOptionPane.showMessageDialog(
+              ClientUtils.getParentFrame(frame),
+              ClientSettings.getInstance().getResources().getResource("prices saved"),
+              ClientSettings.getInstance().getResources().getResource("Attention"),
+              JOptionPane.INFORMATION_MESSAGE
+            );
+
+        }
+      });
+      variantsPricesPanel.getButtonsPanel().add(saveButton);
+    }
+    variantsPricesPanel.revalidate();
+    variantsPricesPanel.repaint();
+  }
+
+
+  /**
+   * Callback method invoked when the data loading is completed.
+   * @param error <code>true</code> if data loading has terminated with errors, <code>false</code> otherwise
+   */
+  public void loadDataCompleted(boolean error) {
+    frame.getVariantsPricesPanel().removeAll();
+    frame.getVariantsPricesPanel().revalidate();
+    frame.getVariantsPricesPanel().repaint();
+    int rowNumber = frame.getPricesGrid().getSelectedRow();
+    if (rowNumber!=-1)
+      reloadVariantsPrices(rowNumber);
+    else
+      frame.getVariantsPricesPanel().removeAll();
+  }
+
 
 
 }

@@ -131,7 +131,8 @@ public class PrintBarcodeLabelsFrame extends InternalFrame {
       "loadProductVariantsMatrix",
       controlQty,
       splitPane,
-      splitDiv
+      splitDiv,
+      true
   );
   DeleteButton deleteButton = new DeleteButton();
   InsertButton insertButton = new InsertButton();

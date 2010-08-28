@@ -209,6 +209,7 @@ public class ItemFrame extends InternalFrame {
   private ProductPanel bomTabbedPane = new ProductPanel(this);
   private SupplierItemPricesPanel supplierPrices = new SupplierItemPricesPanel(this);
   JSplitPane pricesSplit = new JSplitPane();
+  JSplitPane prices2Split = new JSplitPane();
   NavigatorBar navigatorBar = new NavigatorBar();
   BorderLayout borderLayout4 = new BorderLayout();
   JPanel varsPanel = new JPanel();
@@ -232,6 +233,30 @@ public class ItemFrame extends InternalFrame {
   LabelControl labeLstPur = new LabelControl();
   DateControl controlLastPurDate = new DateControl();
   ComboBoxControl controlBarcodeType = new ComboBoxControl();
+
+  private int splitDiv = 250;
+
+  private ProductVariantsPanel variantsPricesPanel = new ProductVariantsPanel(
+      new ProductVariantsController() {
+
+        public BigDecimal validateQty(BigDecimal qty) {
+          return qty;
+        }
+
+        public void qtyUpdated(BigDecimal qty) {
+        }
+
+      },
+      new Form(),//detailPanel,
+      null,//controlItemCode,
+      null,//itemController,
+      "loadProductVariantsMatrix",
+      null,//controlQty,
+      prices2Split,
+      splitDiv,
+      true
+  );
+
 
 
   public ItemFrame(ItemController controller,boolean productsOnly) {
@@ -576,6 +601,11 @@ public class ItemFrame extends InternalFrame {
   }
 
 
+  public ProductVariantsPanel getVariantsPricesPanel() {
+    return variantsPricesPanel;
+  }
+
+
   /**
    * Callback method called when the data loading is completed.
    * @param error <code>true</code> if an error occours during data loading, <code>false</code> if data loading is successfully completed
@@ -610,6 +640,7 @@ public class ItemFrame extends InternalFrame {
     discountsGrid.reloadData();
     setButtonsEnabled(true);
 
+    variantsPricesPanel.removeAll();
     pricesGrid.getOtherGridParams().put(ApplicationConsts.ITEM,vo);
     pricesGrid.reloadData();
 
@@ -660,24 +691,6 @@ public class ItemFrame extends InternalFrame {
       //ItemFrame.this.revalidate();
       //ItemFrame.this.repaint();
     }
-
-
-
-/*
-    new Thread() {
-
-      public void run() {
-        try {
-          sleep(500);
-        }
-        catch (InterruptedException ex) {
-        }
-        formPanel.revalidate();
-        formPanel.repaint();
-      }
-
-    }.start();
-*/
   }
 
 
@@ -719,6 +732,7 @@ public class ItemFrame extends InternalFrame {
   private void jbInit() throws Exception {
     pricesGrid.setVisibleStatusPanel(false);
     pricesSplit.setOrientation(JSplitPane.VERTICAL_SPLIT);
+    prices2Split.setOrientation(JSplitPane.VERTICAL_SPLIT);
     discountsGrid.setMaxNumberOfRowsOnInsert(50);
     discountsGrid.setValueObjectClassName("org.jallinone.sales.discounts.java.ItemDiscountVO");
 
@@ -1157,7 +1171,10 @@ public class ItemFrame extends InternalFrame {
     discountsGrid.getColumnContainer().add(colEndDate, null);
     discountsGrid.getColumnContainer().add(colMinQty, null);
     discountsGrid.getColumnContainer().add(colMultipleQty, null);
-    pricesSplit.add(pricesPanel,JSplitPane.TOP);
+    prices2Split.add(pricesPanel,JSplitPane.TOP);
+    variantsPricesPanel.setServerGridMethodName("loadVariantsPrices");
+    prices2Split.add(variantsPricesPanel,JSplitPane.BOTTOM);
+    pricesSplit.add(prices2Split,JSplitPane.TOP);
     pricesSplit.add(supplierPrices,JSplitPane.BOTTOM);
     tab.add(pricesSplit,   "pricePanel");
 
@@ -1242,7 +1259,8 @@ public class ItemFrame extends InternalFrame {
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 100, 0));
     formPanel.add(controlBarcodeType,   new GridBagConstraints(3, 7, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    pricesSplit.setDividerLocation(250);
+    prices2Split.setDividerLocation(splitDiv);
+    pricesSplit.setDividerLocation(280);
 
     controlBarcode.setAttributeName("barCodeITM01");
 

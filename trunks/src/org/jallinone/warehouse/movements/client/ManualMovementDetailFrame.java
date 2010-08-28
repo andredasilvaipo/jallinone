@@ -136,7 +136,6 @@ public class ManualMovementDetailFrame extends InternalFrame {
         }
 
         public void qtyUpdated(BigDecimal qty) {
-          //updateTotals();
         }
 
       },
@@ -147,7 +146,8 @@ public class ManualMovementDetailFrame extends InternalFrame {
       //"loadSaleDocVariantsRow",
       controlQty,
       null,
-      0
+      0,
+      true
   );
 
 

@@ -1,6 +1,8 @@
 package org.jallinone.sales.pricelist.java;
 
 import org.jallinone.system.customizations.java.BaseValueObject;
+import org.jallinone.variants.java.VariantsItemDescriptor;
+import java.math.BigDecimal;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -30,7 +32,7 @@ import org.jallinone.system.customizations.java.BaseValueObject;
  * @author Mauro Carniel
  * @version 1.0
  */
-public class PriceVO extends BaseValueObject {
+public class PriceVO extends BaseValueObject implements VariantsItemDescriptor {
 
   private String pricelistCodeSal01SAL02;
   private String companyCodeSys01SAL02;
@@ -41,6 +43,12 @@ public class PriceVO extends BaseValueObject {
   private String itemDescriptionSYS10;
   private String pricelistDescriptionSYS10;
   private java.math.BigDecimal progressiveHie02ITM01;
+
+  private Boolean useVariant1ITM01;
+  private Boolean useVariant2ITM01;
+  private Boolean useVariant3ITM01;
+  private Boolean useVariant4ITM01;
+  private Boolean useVariant5ITM01;
 
 
   public PriceVO() {
@@ -101,6 +109,48 @@ public class PriceVO extends BaseValueObject {
   public void setProgressiveHie02ITM01(java.math.BigDecimal progressiveHie02ITM01) {
     this.progressiveHie02ITM01 = progressiveHie02ITM01;
   }
+  public Boolean getUseVariant1ITM01() {
+    return useVariant1ITM01;
+  }
+  public Boolean getUseVariant2ITM01() {
+    return useVariant2ITM01;
+  }
+  public Boolean getUseVariant3ITM01() {
+    return useVariant3ITM01;
+  }
+  public Boolean getUseVariant5ITM01() {
+    return useVariant5ITM01;
+  }
+  public Boolean getUseVariant4ITM01() {
+    return useVariant4ITM01;
+  }
+  public void setUseVariant1ITM01(Boolean useVariant1ITM01) {
+    this.useVariant1ITM01 = useVariant1ITM01;
+  }
+  public void setUseVariant2ITM01(Boolean useVariant2ITM01) {
+    this.useVariant2ITM01 = useVariant2ITM01;
+  }
+  public void setUseVariant3ITM01(Boolean useVariant3ITM01) {
+    this.useVariant3ITM01 = useVariant3ITM01;
+  }
+  public void setUseVariant4ITM01(Boolean useVariant4ITM01) {
+    this.useVariant4ITM01 = useVariant4ITM01;
+  }
+  public void setUseVariant5ITM01(Boolean useVariant5ITM01) {
+    this.useVariant5ITM01 = useVariant5ITM01;
+  }
 
+  public String getCompanyCodeSys01() {
+    return companyCodeSys01SAL02;
+  }
+
+  public String getItemCodeItm01() {
+    return itemCodeItm01SAL02;
+  }
+  public BigDecimal getDecimalsREG02() {
+    return new BigDecimal(0); // not used;
+  }
+  public void setDecimalsREG02(BigDecimal decimalsREG02) {
+  }
 
 }

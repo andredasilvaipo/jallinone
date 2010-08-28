@@ -91,12 +91,14 @@ public class LoadPricesAction implements Action {
       String companyCodeSYS01 = null;
       String sql = null;
 
+
       if (gridParams.getOtherGridParams().get(ApplicationConsts.PRICELIST)!=null) {
         PricelistVO vo = (PricelistVO)gridParams.getOtherGridParams().get(ApplicationConsts.PRICELIST);
         companyCodeSYS01 = vo.getCompanyCodeSys01SAL01();
 
         sql =
-            "select SAL02_PRICES.COMPANY_CODE_SYS01,SAL02_PRICES.PRICELIST_CODE_SAL01,SAL02_PRICES.ITEM_CODE_ITM01,SAL02_PRICES.VALUE,SAL02_PRICES.START_DATE,SAL02_PRICES.END_DATE,A.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02"+
+            "select SAL02_PRICES.COMPANY_CODE_SYS01,SAL02_PRICES.PRICELIST_CODE_SAL01,SAL02_PRICES.ITEM_CODE_ITM01,SAL02_PRICES.VALUE,SAL02_PRICES.START_DATE,SAL02_PRICES.END_DATE,A.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,"+
+            "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 "+
             " from SAL02_PRICES,SYS10_TRANSLATIONS A,ITM01_ITEMS where "+
             "SAL02_PRICES.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
             "SAL02_PRICES.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
@@ -109,13 +111,16 @@ public class LoadPricesAction implements Action {
         companyCodeSYS01 = vo.getCompanyCodeSys01ITM01();
 
         sql =
-            "select SAL02_PRICES.COMPANY_CODE_SYS01,SAL02_PRICES.PRICELIST_CODE_SAL01,SAL02_PRICES.ITEM_CODE_ITM01,SAL02_PRICES.VALUE,SAL02_PRICES.START_DATE,SAL02_PRICES.END_DATE,B.DESCRIPTION"+
-            " from SAL02_PRICES,SYS10_TRANSLATIONS B,SAL01_PRICELISTS where "+
+            "select SAL02_PRICES.COMPANY_CODE_SYS01,SAL02_PRICES.PRICELIST_CODE_SAL01,SAL02_PRICES.ITEM_CODE_ITM01,SAL02_PRICES.VALUE,SAL02_PRICES.START_DATE,SAL02_PRICES.END_DATE,B.DESCRIPTION,"+
+            "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 "+
+            " from SAL02_PRICES,SYS10_TRANSLATIONS B,SAL01_PRICELISTS,ITM01_ITEMS where "+
             "SAL02_PRICES.COMPANY_CODE_SYS01=SAL01_PRICELISTS.COMPANY_CODE_SYS01 and "+
             "SAL02_PRICES.PRICELIST_CODE_SAL01=SAL01_PRICELISTS.PRICELIST_CODE and "+
             "SAL01_PRICELISTS.PROGRESSIVE_SYS10=B.PROGRESSIVE and "+
             "B.LANGUAGE_CODE=? and SAL02_PRICES.COMPANY_CODE_SYS01=? and "+
-            "SAL02_PRICES.ITEM_CODE_ITM01='"+vo.getItemCodeITM01()+"'";
+            "SAL02_PRICES.ITEM_CODE_ITM01='"+vo.getItemCodeITM01()+"' and "+
+            "SAL02_PRICES.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
+            "SAL02_PRICES.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE";
       }
 
       java.sql.Date filterDate = null;
@@ -123,7 +128,6 @@ public class LoadPricesAction implements Action {
         filterDate = new java.sql.Date( ((java.util.Date)gridParams.getOtherGridParams().get(ApplicationConsts.DATE_FILTER)).getTime() );
         sql += " and START_DATE<=? and END_DATE>=?";
       }
-
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SAL02","SAL02_PRICES.COMPANY_CODE_SYS01");
@@ -135,6 +139,12 @@ public class LoadPricesAction implements Action {
       attribute2dbField.put("itemDescriptionSYS10","A.DESCRIPTION");
       attribute2dbField.put("pricelistDescriptionSYS10","B.DESCRIPTION");
       attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
+
+      attribute2dbField.put("useVariant1ITM01","ITM01_ITEMS.USE_VARIANT_1");
+      attribute2dbField.put("useVariant2ITM01","ITM01_ITEMS.USE_VARIANT_2");
+      attribute2dbField.put("useVariant3ITM01","ITM01_ITEMS.USE_VARIANT_3");
+      attribute2dbField.put("useVariant4ITM01","ITM01_ITEMS.USE_VARIANT_4");
+      attribute2dbField.put("useVariant5ITM01","ITM01_ITEMS.USE_VARIANT_5");
 
       ArrayList values = new ArrayList();
       values.add(serverLanguageId);

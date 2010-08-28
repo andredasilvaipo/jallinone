@@ -428,7 +428,8 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
       frame.setTitle(this.getTitle());
       frame.setIconImage(MDIFrame.getInstance().getIconImage());
       frame.setVisible(true);
-    } else JOptionPane.showMessageDialog(
+    } else
+      JOptionPane.showMessageDialog(
         ClientUtils.getParentFrame(this),
         res.getErrorMessage(),
         ClientSettings.getInstance().getResources().getResource("print document"),

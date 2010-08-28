@@ -29,6 +29,9 @@ import java.util.Date;
 import org.jallinone.sales.pricelist.java.PricelistChanges;
 import org.openswing.swing.lookup.client.LookupListener;
 import java.util.Collection;
+import org.jallinone.variants.client.ProductVariantsPanel;
+import org.jallinone.variants.client.ProductVariantsController;
+import org.openswing.swing.form.client.Form;
 
 
 /**
@@ -79,6 +82,7 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
   TextColumn colDescr = new TextColumn();
   ExportButton exportButton = new ExportButton();
   JSplitPane split = new JSplitPane();
+  JSplitPane prices2Split = new JSplitPane();
   CompaniesComboColumn colCompany = new CompaniesComboColumn();
   CodLookupColumn colCurrencyCode = new CodLookupColumn();
   GridBagLayout gridBagLayout1 = new GridBagLayout();
@@ -120,6 +124,30 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
   CopyButton copyButton2 = new CopyButton();
   GenericButton advancedButton = new GenericButton(new ImageIcon(ClientUtils.getImage("work2.gif")));
   GenericButton impAllButton = new GenericButton(new ImageIcon(ClientUtils.getImage("doc3.gif")));
+
+  private int splitDiv = 550;
+
+  private ProductVariantsPanel variantsPricesPanel = new ProductVariantsPanel(
+      new ProductVariantsController() {
+
+        public BigDecimal validateQty(BigDecimal qty) {
+          return qty;
+        }
+
+        public void qtyUpdated(BigDecimal qty) {
+        }
+
+      },
+      new Form(),//detailPanel,
+      null,//controlItemCode,
+      null,//itemController,
+      "loadProductVariantsMatrix",
+      null,//controlQty,
+      prices2Split,
+      splitDiv,
+      true
+  );
+
 
 
   public PricelistFrame(GridController controller) {
@@ -198,6 +226,11 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
     catch(Exception e) {
       e.printStackTrace();
     }
+  }
+
+
+  public ProductVariantsPanel getVariantsPricesPanel() {
+    return variantsPricesPanel;
   }
 
 
@@ -360,9 +393,15 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
     advancedButton.addActionListener(new PricelistFrame_advancedButton_actionAdapter(this));
     impAllButton.addActionListener(new PricelistFrame_impAllButton_actionAdapter(this));
 
+    prices2Split.setOrientation(JSplitPane.VERTICAL_SPLIT);
+    prices2Split.add(pricesPanel,JSplitPane.TOP);
+    prices2Split.add(variantsPricesPanel,JSplitPane.BOTTOM);
+    variantsPricesPanel.setServerGridMethodName("loadVariantsPrices");
+
     this.getContentPane().add(split,BorderLayout.CENTER);
     split.add(pricelistsPanel,JSplitPane.TOP);
-    split.add(pricesPanel,JSplitPane.BOTTOM);
+    split.add(prices2Split,JSplitPane.BOTTOM);
+
     pricesPanel.add(labelDateFilter,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     pricesPanel.add(controlDate,    new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
@@ -402,6 +441,7 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
     pricesGrid.getColumnContainer().add(colStartDate, null);
     pricesGrid.getColumnContainer().add(colEndDate, null);
     split.setDividerLocation(200);
+    prices2Split.setDividerLocation(splitDiv);
   }
 
 

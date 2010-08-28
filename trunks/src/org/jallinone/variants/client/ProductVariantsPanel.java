@@ -42,6 +42,9 @@ import org.jallinone.variants.java.VariantsItemDescriptor;
 import org.jallinone.warehouse.java.StoredSerialNumberVO;
 import java.lang.reflect.*;
 import org.jallinone.items.java.VariantBarcodeVO;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -81,8 +84,6 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
   private LookupController lookupController = null;
   /** form panel that contains the item lookup */
   private Form form = null;
-  /** grid server method name */
-  private String serverGridMethodName = null;
   /** matrix server method name */
   private String serverMatrixMethodName = null;
   /** qty control */
@@ -104,6 +105,21 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
   /** variants barcode (optional) */
   private VariantBarcodeVO barcodeVO = null;
 
+  private boolean showButtons;
+
+  /** server grid method name (optional); used for instance when loading variants prices */
+  private String serverGridMethodName = null;
+
+  private HashMap otherGridParams = new HashMap();
+
+  private JPanel buttonsPanel = new JPanel();
+
+  /** optional panel's controller */
+  private ProductVariantsPanelController variantsPanelController;
+
+  /** flag used to avoid infinitive loops */
+  private boolean onValidating = false;
+
 
   public ProductVariantsPanel(
       ProductVariantsController controller,
@@ -111,10 +127,10 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
       CodLookupControl controlItemCode,
       LookupController lookupController,
       String serverMatrixMethodName,
-      //String serverGridMethodName,
       NumericControl controlQty,
       JSplitPane splitPane,
-      int initialDiv
+      int initialDiv,
+      boolean showButtons
   ) {
     try {
       this.controller = controller;
@@ -122,12 +138,13 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
       this.controlItemCode = controlItemCode;
       this.lookupController = lookupController;
       this.serverMatrixMethodName = serverMatrixMethodName;
-      //this.serverGridMethodName = serverGridMethodName;
       this.controlQty = controlQty;
       this.splitPane = splitPane;
       this.initialDiv = initialDiv;
+      this.showButtons = showButtons;
       this.formHeight = form.getPreferredSize().height;
-      lookupController.addLookupListener(this);
+      if (lookupController!=null)
+        lookupController.addLookupListener(this);
       jbInit();
 
     }
@@ -137,12 +154,32 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
   }
 
 
+  public Form getForm() {
+    return form;
+  }
+
+
+  public LookupController getLookupController() {
+    return lookupController;
+  }
+
+
   private void jbInit() throws Exception {
     this.setLayout(new BorderLayout());
   }
 
 
-  private void initGrid(VariantsItemDescriptor lookupVO) {
+  public final JPanel getButtonsPanel() {
+    return buttonsPanel;
+  }
+
+
+  public final void setServerGridMethodName(String serverGridMethodName) {
+    this.serverGridMethodName = serverGridMethodName;
+  }
+
+
+  public final void initGrid(VariantsItemDescriptor lookupVO) {
 
     Response res = ClientUtils.getData(serverMatrixMethodName,lookupVO);
     if (!res.isError()) {
@@ -151,6 +188,7 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
 
       // create grid...
       grid = new GridControl();
+      grid.getOtherGridParams().putAll(otherGridParams);
       grid.setController(new GridController() {
 
         /**
@@ -181,73 +219,104 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
           }
           else if (snVO!=null)
             updateMatrixWithSN();
-          else
+          else {
             grid.setMode(Consts.EDIT);
+          }
+
+          if (variantsPanelController!=null)
+            variantsPanelController.loadDataCompleted(error);
+
+          grid.revalidate();
+          grid.repaint();
         }
 
         public boolean validateCell(int rowNumber,String attributeName,Object oldValue,Object newValue) {
-          if (newValue!=null && ((Number)newValue).doubleValue()<=0)
-            return false;
+          try {
+            onValidating = true;
 
-          if (newValue!=null) {
-              BigDecimal correctValue = controller.validateQty((BigDecimal)newValue);
-              if (!correctValue.equals(newValue))
-                // in case of multiple qty not correct...
+            if (variantsPanelController!=null)
+              if (!variantsPanelController.validateCell(rowNumber,grid.getTable().getGrid().getColumnIndex(attributeName),attributeName,(Number)oldValue,(Number)newValue))
                 return false;
-          }
-          SwingUtilities.invokeLater(new Runnable() {
 
-            public void run() {
-              BigDecimal tot = new BigDecimal(0);
-              for(int i=0;i<grid.getVOListTableModel().getRowCount();i++)
-                for(int k=1;k<grid.getTable().getGrid().getColumnCount();k++)
-                  if (grid.getVOListTableModel().getValueAt(i,k)!=null)
-                    tot = tot.add((BigDecimal)grid.getVOListTableModel().getValueAt(i,k));
-              if (tot.doubleValue()==0)
-                controlQty.setText("");
-              else {
-                controlQty.setEnabled(true);
-                controlQty.setValue(tot);
+            if (newValue!=null && ((Number)newValue).doubleValue()<=0)
+              return false;
 
-                FocusListener[] ll = controlQty.getBindingComponent().getFocusListeners();
-                for(int i=0;i<ll.length;i++)
-                  ll[i].focusLost(new FocusEvent(controlQty,FocusEvent.FOCUS_LOST));
+            if (newValue!=null) {
+                BigDecimal correctValue = controller.validateQty((BigDecimal)newValue);
+                if (!correctValue.equals(newValue))
+                  // in case of multiple qty not correct...
+                  return false;
+            }
+            SwingUtilities.invokeLater(new Runnable() {
 
-                controller.qtyUpdated(tot);
-                controlQty.setEnabled(false);
+              public void run() {
+                BigDecimal tot = new BigDecimal(0);
+                for(int i=0;i<grid.getVOListTableModel().getRowCount();i++)
+                  for(int k=1;k<grid.getTable().getGrid().getColumnCount();k++)
+                    if (grid.getVOListTableModel().getValueAt(i,k)!=null)
+                      tot = tot.add((BigDecimal)grid.getVOListTableModel().getValueAt(i,k));
+                if (tot.doubleValue()==0)
+                  controlQty.setText("");
+                else {
+                  controlQty.setEnabled(true);
+                  controlQty.setValue(tot);
+
+                  FocusListener[] ll = controlQty.getBindingComponent().getFocusListeners();
+                  for(int i=0;i<ll.length;i++)
+                    ll[i].focusLost(new FocusEvent(controlQty,FocusEvent.FOCUS_LOST));
+
+                  controller.qtyUpdated(tot);
+                  controlQty.setEnabled(false);
+                }
+
               }
 
-            }
+            });
 
-          });
-
-          return true;
-        }
-
-      });
-      grid.setGridDataLocator(new GridDataLocator() {
-
-        public Response loadData(int action, int startIndex,
-                                 Map filteredColumns,
-                                 ArrayList currentSortedColumns,
-                                 ArrayList currentSortedVersusColumns,
-                                 Class valueObjectType, Map otherGridParams) {
-          VariantsMatrixVO matrixVO = (VariantsMatrixVO)otherGridParams.get(ApplicationConsts.VARIANTS_MATRIX_VO);
-          ArrayList rows = new ArrayList();
-          CustomValueObject vo = null;
-          VariantsMatrixRowVO rowVO = null;
-          for(int i=0;i<matrixVO.getRowDescriptors().size();i++) {
-            rowVO = (VariantsMatrixRowVO)matrixVO.getRowDescriptors().get(i);
-
-            vo = new CustomValueObject();
-            vo.setAttributeNameS0(rowVO.getRowDescription());
-            rows.add(vo);
+            return true;
           }
-          return new VOListResponse(rows,false,rows.size());
+          catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+          }
+          finally {
+            onValidating = false;
+          }
         }
 
       });
-      //gridDataLocator.setServerMethodName(serverGridMethodName);
+
+
+      // set grid's data locator...
+      if (serverGridMethodName!=null && !serverGridMethodName.equals("")) {
+        ServerGridDataLocator gridDataLocator = new ServerGridDataLocator();
+        gridDataLocator.setServerMethodName(serverGridMethodName);
+        grid.setGridDataLocator(gridDataLocator);
+      }
+      else
+        grid.setGridDataLocator(new GridDataLocator() {
+
+          public Response loadData(int action, int startIndex,
+                                   Map filteredColumns,
+                                   ArrayList currentSortedColumns,
+                                   ArrayList currentSortedVersusColumns,
+                                   Class valueObjectType, Map otherGridParams) {
+            VariantsMatrixVO matrixVO = (VariantsMatrixVO)otherGridParams.get(ApplicationConsts.VARIANTS_MATRIX_VO);
+            ArrayList rows = new ArrayList();
+            CustomValueObject vo = null;
+            VariantsMatrixRowVO rowVO = null;
+            for(int i=0;i<matrixVO.getRowDescriptors().size();i++) {
+              rowVO = (VariantsMatrixRowVO)matrixVO.getRowDescriptors().get(i);
+
+              vo = new CustomValueObject();
+              vo.setAttributeNameS0(rowVO.getRowDescription());
+              rows.add(vo);
+            }
+            return new VOListResponse(rows,false,rows.size());
+          }
+
+        });
+
       grid.setValueObjectClassName("org.openswing.swing.customvo.java.CustomValueObject");
       grid.getOtherGridParams().put(ApplicationConsts.VARIANTS_MATRIX_VO,vo);
       grid.setReorderingAllowed(false);
@@ -295,6 +364,115 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
         grid.getColumnContainer().add(col,null);
       }
 
+      grid.addFocusListener(new FocusAdapter() {
+        public void focusLost(FocusEvent e) {
+          if (!onValidating)
+            grid.getTable().getGrid().stopCellEditing();
+        }
+      });
+
+
+      buttonsPanel.removeAll();
+      buttonsPanel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
+      if (showButtons && vo.getManagedVariants().size()>1) {
+        // create a buttons panel used to copy the same qty for all cells matching the same variant value...
+        for(int i=0;i<vo.getManagedVariants().size();i++) {
+          GenericButton btn = new GenericButton(new ImageIcon(ClientUtils.getImage("copy.gif")));
+          final VariantNameVO vnVO = (VariantNameVO)vo.getManagedVariants().get(i);
+          btn.setButtonBehavior(Consts.BUTTON_IMAGE_AND_TEXT);
+          btn.setHorizontalTextPosition(SwingConstants.LEADING);
+          btn.setVerticalTextPosition(SwingConstants.CENTER);
+          btn.setText(vnVO.getDescriptionSYS10());
+          btn.setToolTipText(ClientSettings.getInstance().getResources().getResource("set the same value when matching the same")+" "+vnVO.getDescriptionSYS10());
+          btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+             if (!onValidating)
+               grid.getTable().getGrid().stopCellEditing();
+             int row = grid.getSelectedRow();
+             int col = grid.getTable().getGrid().getSelectedColumn();
+             if (row!=-1 && col!=-1 && grid.getTable().getGrid().getValueAt(row,col)!=null) {
+               BigDecimal qty = (BigDecimal)grid.getTable().getGrid().getValueAt(row,col);
+               VariantsMatrixRowVO currentRowVO = (VariantsMatrixRowVO)getVariantsMatrixVO().getRowDescriptors().get(row);
+               VariantsMatrixColumnVO currentColVO = (VariantsMatrixColumnVO)getVariantsMatrixVO().getColumnDescriptors().get(col-1);
+               String rowtype = null,rowcode = null;
+               String coltype = null,colcode = null;
+               String rowtypename = null,rowcodename = null;
+               String coltypename = null,colcodename = null;
+
+               if (getVariantsMatrixVO().getColumnDescriptors().size()==0) {
+                 rowtype = currentRowVO.getVariantTypeITM06();
+                 rowcode = currentRowVO.getVariantCodeITM11();
+                 rowtypename = "getVariantTypeITM06";
+                 rowcodename = "getVariantCodeITM11";
+               }
+               else {
+                 if (vnVO.getTableName().equals("ITM11_VARIANTS_1")) {
+                   rowtype = currentRowVO.getVariantTypeITM06();
+                   rowcode = currentRowVO.getVariantCodeITM11();
+                   rowtypename = "getVariantTypeITM06";
+                   rowcodename = "getVariantCodeITM11";
+                 }
+                 else if (vnVO.getTableName().equals("ITM12_VARIANTS_2")) {
+                   coltype = currentColVO.getVariantTypeITM07();
+                   colcode = currentColVO.getVariantCodeITM12();
+                   coltypename = "getVariantTypeITM07";
+                   colcodename = "getVariantCodeITM12";
+                 }
+                 else if (vnVO.getTableName().equals("ITM13_VARIANTS_3")) {
+                   coltype = currentColVO.getVariantTypeITM08();
+                   colcode = currentColVO.getVariantCodeITM13();
+                   coltypename = "getVariantTypeITM08";
+                   colcodename = "getVariantCodeITM13";
+                 }
+                 else if (vnVO.getTableName().equals("ITM14_VARIANTS_4")) {
+                   coltype = currentColVO.getVariantTypeITM09();
+                   colcode = currentColVO.getVariantCodeITM14();
+                   coltypename = "getVariantTypeITM09";
+                   colcodename = "getVariantCodeITM14";
+                 }
+                 else if (vnVO.getTableName().equals("ITM15_VARIANTS_5")) {
+                   coltype = currentColVO.getVariantTypeITM10();
+                   colcode = currentColVO.getVariantCodeITM15();
+                   coltypename = "getVariantTypeITM10";
+                   colcodename = "getVariantCodeITM15";
+                 }
+               }
+
+
+               VariantsMatrixRowVO rowVO = null;
+               VariantsMatrixColumnVO colVO = null;
+               for(int r=0;r<grid.getVOListTableModel().getRowCount();r++) {
+                 rowVO = (VariantsMatrixRowVO)getVariantsMatrixVO().getRowDescriptors().get(r);
+                 for (int c = 0;c < getVariantsMatrixVO().getColumnDescriptors().size();c++)
+                   if (! (r == row && c + 1 == col)) {
+                     colVO = (VariantsMatrixColumnVO) getVariantsMatrixVO().getColumnDescriptors().get(c);
+                    try {
+                      if (rowtype!=null && rowcode!=null) {
+                        if (rowtype.equals(rowVO.getClass().getMethod(rowtypename,new Class[0]).invoke(rowVO,new Object[0])) &&
+                            rowcode.equals(rowVO.getClass().getMethod(rowcodename,new Class[0]).invoke(rowVO,new Object[0])))
+                          grid.getVOListTableModel().setValueAt(qty, r, c + 1);
+                      }
+                      else if (coltype!=null && colcode!=null) {
+                        if (coltype.equals(colVO.getClass().getMethod(coltypename,new Class[0]).invoke(colVO,new Object[0])) &&
+                            colcode.equals(colVO.getClass().getMethod(colcodename,new Class[0]).invoke(colVO,new Object[0])))
+                         grid.getVOListTableModel().setValueAt(qty, r, c + 1);
+                      }
+                    }
+                    catch (Exception ex) {
+                      ex.printStackTrace();
+                    }
+                   }
+               }
+               grid.repaint();
+             }
+            }
+          });
+          buttonsPanel.add(btn);
+        }
+      }
+      this.add(buttonsPanel,BorderLayout.NORTH);
+
+
       // add grid to panel...
       this.add(grid,BorderLayout.CENTER);
       //grid.setSize(new Dimension(form.getWidth(),(splitPane==null?20:0)+40+vo.getRowDescriptors().size()*20));
@@ -320,10 +498,7 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
 
 
   /**
-   * codeChanged
-   *
-   * @param parentVO ValueObject
-   * @param parentChangedAttributes Collection
+   * Lookup code has been changed.
    */
   public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {
     VariantsItemDescriptor lookupVO = (VariantsItemDescriptor)lookupController.getLookupVO();
@@ -394,6 +569,9 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
 
 
   private void updateMatrixWithSN() {
+    if (!onValidating)
+      grid.getTable().getGrid().stopCellEditing();
+
     VariantsMatrixRowVO rowVO = null;
     VariantsMatrixColumnVO colVO = null;
     CustomValueObject vo = null;
@@ -432,6 +610,9 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
 
 
   private void updateMatrixWithBarcode() {
+    if (!onValidating)
+      grid.getTable().getGrid().stopCellEditing();
+
     VariantsMatrixRowVO rowVO = null;
     VariantsMatrixColumnVO colVO = null;
     CustomValueObject vo = null;
@@ -474,6 +655,9 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
    * @return list of objects stored withing the grid
    */
   public Object[][] getCells() {
+    if (!onValidating)
+      grid.getTable().getGrid().stopCellEditing();
+
     if (grid==null)
       return null;
 
@@ -498,6 +682,24 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
     return grid==null?null:(VariantsMatrixVO)grid.getOtherGridParams().get(ApplicationConsts.VARIANTS_MATRIX_VO);
 
   }
+
+
+  private boolean containsVariant(VariantsMatrixVO vo,String tableName) {
+  for(int i=0;i<vo.getManagedVariants().size();i++)
+    if (((VariantNameVO)vo.getManagedVariants().get(i)).getTableName().equals(tableName))
+      return true;
+  return false;
+}
+  public HashMap getOtherGridParams() {
+    return otherGridParams;
+  }
+  public ProductVariantsPanelController getVariantsPanelController() {
+    return variantsPanelController;
+  }
+  public void setVariantsPanelController(ProductVariantsPanelController variantsPanelController) {
+    this.variantsPanelController = variantsPanelController;
+  }
+
 
 
 }

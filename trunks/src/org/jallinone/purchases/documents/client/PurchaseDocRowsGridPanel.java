@@ -163,7 +163,8 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
       //"loadPurchaseDocVariantsRow",
       controlQty,
       splitPane,
-      splitDiv
+      splitDiv,
+      true
   );
 
 

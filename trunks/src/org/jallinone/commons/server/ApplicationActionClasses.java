@@ -738,6 +738,8 @@ public class ApplicationActionClasses extends ActionsCollection {
     a = new CreateBarcodeLabelsDataAction(); put(a.getRequestName(),a);
     a = new CreateBarcodeLabelsDataFromPurchaseDocAction(); put(a.getRequestName(),a);
 
+    a = new LoadVariantsPricesAction(); put(a.getRequestName(),a);
+    a = new UpdateVariantsPricesAction(); put(a.getRequestName(),a);
 
 
 

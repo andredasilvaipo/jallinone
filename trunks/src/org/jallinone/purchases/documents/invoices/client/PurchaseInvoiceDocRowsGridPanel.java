@@ -177,7 +177,8 @@ public class PurchaseInvoiceDocRowsGridPanel extends JPanel implements CurrencyC
       //"loadPurchaseDocVariantsRow",
       controlQty,
       splitPane,
-      splitDiv
+      splitDiv,
+      true
   );
 
 
