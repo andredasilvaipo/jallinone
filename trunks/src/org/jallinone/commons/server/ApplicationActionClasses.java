@@ -740,7 +740,8 @@ public class ApplicationActionClasses extends ActionsCollection {
 
     a = new LoadVariantsPricesAction(); put(a.getRequestName(),a);
     a = new UpdateVariantsPricesAction(); put(a.getRequestName(),a);
-
+    a = new LoadSupplierVariantsPricesAction(); put(a.getRequestName(),a);
+    a = new UpdateSupplierVariantsPricesAction(); put(a.getRequestName(),a);
 
 
 

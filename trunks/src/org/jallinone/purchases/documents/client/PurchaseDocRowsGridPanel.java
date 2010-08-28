@@ -30,6 +30,8 @@ import java.util.HashSet;
 import org.jallinone.variants.client.ProductVariantsPanel;
 import org.openswing.swing.table.client.GridController;
 import org.jallinone.variants.client.ProductVariantsController;
+import org.jallinone.variants.client.ProductVariantsPanelController;
+import org.openswing.swing.customvo.java.CustomValueObject;
 
 
 /**
@@ -143,6 +145,9 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
   DateControl controlDeliveryDate = new DateControl();
 
   private int splitDiv = 320;
+
+  /** list of CustomValueObject objects, related to prices associated to item's variants, if any */
+  private java.util.List pricesMatrix = null;
 
   private ProductVariantsPanel variantsPanel = new ProductVariantsPanel(
       new ProductVariantsController() {
@@ -330,6 +335,84 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     //buttonsToDisable.add(copyButton1);
     detailPanel.addButtonsNotEnabled(buttonsToDisable,frame);
     grid.addButtonsNotEnabled(buttonsToDisable,frame);
+
+
+    variantsPanel.setVariantsPanelController(new ProductVariantsPanelController() {
+
+      public boolean validateCell(int rowNumber,int colNumber,String attributeName,Number oldValue,Number newValue) {
+
+        if (newValue==null)
+          return true;
+
+        if (pricesMatrix!=null) {
+          CustomValueObject vo = (CustomValueObject)pricesMatrix.get(rowNumber);
+          Object lastPrice = null;
+          Object currentPrice = null;
+          try {
+            lastPrice = CustomValueObject.class.getMethod("getAttributeNameN"+(colNumber-1),new Class[0]).invoke(vo,new Object[0]);
+          }
+          catch (Exception ex) {
+          }
+          Object[][] cells = variantsPanel.getCells();
+          for(int i=0;i<cells.length;i++) {
+            vo = (CustomValueObject)pricesMatrix.get(i);
+            for(int j=0;j<cells[i].length;j++) {
+
+              if (i==rowNumber && colNumber-1==j)
+                continue;
+              if (cells[i][j]==null)
+                continue;
+
+              try {
+                currentPrice = CustomValueObject.class.getMethod("getAttributeNameN"+j,new Class[0]).invoke(vo,new Object[0]);
+              }
+              catch (Exception ex) {
+              }
+              if (currentPrice!=null && lastPrice==null ||
+                  currentPrice==null && lastPrice!=null ||
+                  currentPrice!=null && !currentPrice.equals(lastPrice)) {
+                JOptionPane.showMessageDialog(
+                    ClientUtils.getParentFrame(variantsPanel),
+                    ClientSettings.getInstance().getResources().getResource("it is not allowed to insert variants having different unit prices"),
+                    ClientSettings.getInstance().getResources().getResource("Attention"),
+                    JOptionPane.WARNING_MESSAGE
+                );
+                return false;
+              }
+            } // end innner for
+          } // end outer for
+
+          if(lastPrice!=null) {
+            controlPriceUnit.setValue(lastPrice);
+            variantsPanel.getForm().getVOModel().setValue(controlPriceUnit.getAttributeName(),lastPrice);
+          }
+          else {
+            lastPrice = ((SupplierPriceItemVO)variantsPanel.getLookupController().getLookupVO()).getValuePUR04();
+            controlPriceUnit.setValue(lastPrice);
+            variantsPanel.getForm().getVOModel().setValue(controlPriceUnit.getAttributeName(),lastPrice);
+          }
+        }
+
+        return true;
+      }
+
+      public void loadDataCompleted(boolean error) {
+        if (!error) {
+          // load also variants prices, if available...
+          GridParams gridParams = new GridParams();
+          gridParams.getOtherGridParams().put(ApplicationConsts.VARIANTS_MATRIX_VO,variantsPanel.getVariantsMatrixVO());
+          gridParams.getOtherGridParams().put(ApplicationConsts.PRICELIST,parentVO.getPricelistCodePur03DOC06());
+          gridParams.getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_REG04,parentVO.getProgressiveReg04DOC06());
+          Response res = ClientUtils.getData("loadSupplierVariantsPrices",gridParams);
+          if (!res.isError()) {
+            pricesMatrix = ((VOListResponse)res).getRows();
+          }
+          else
+            pricesMatrix = null;
+        }
+      }
+
+    });
 
   }
 

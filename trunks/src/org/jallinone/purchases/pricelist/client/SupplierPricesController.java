@@ -20,6 +20,11 @@ import java.awt.Container;
 import org.openswing.swing.mdi.client.InternalFrame;
 import org.jallinone.purchases.items.java.SupplierItemVO;
 import org.jallinone.purchases.suppliers.client.SupplierDetailFrame;
+import org.openswing.swing.client.SaveButton;
+import java.awt.event.ActionListener;
+import org.jallinone.variants.client.ProductVariantsPanel;
+import org.jallinone.items.java.ItemPK;
+import java.awt.event.ActionEvent;
 
 
 /**
@@ -207,6 +212,93 @@ public class SupplierPricesController extends CompanyGridController implements S
       return true;
     }
     return false;
+  }
+
+
+
+
+  /**
+   * Callback method invoked when the user has selected another row.
+   * @param rowNumber selected row index
+   */
+  public void rowChanged(int rowNumber) {
+    if (rowNumber!=-1)
+      reloadVariantsPrices(rowNumber);
+    else
+      panel.getVariantsPricesPanel().removeAll();
+    panel.getVariantsPricesPanel().revalidate();
+    panel.getVariantsPricesPanel().repaint();
+  }
+
+
+  private void reloadVariantsPrices(int rowNumber) {
+    final SupplierPriceVO priceVO = (SupplierPriceVO)panel.getPricesGrid().getVOListTableModel().getObjectForRow(rowNumber);
+    final ProductVariantsPanel variantsPricesPanel = panel.getVariantsPricesPanel();
+
+    if(!Boolean.TRUE.equals(priceVO.getUseVariant1ITM01()) &&
+       !Boolean.TRUE.equals(priceVO.getUseVariant2ITM01()) &&
+       !Boolean.TRUE.equals(priceVO.getUseVariant3ITM01()) &&
+       !Boolean.TRUE.equals(priceVO.getUseVariant4ITM01()) &&
+       !Boolean.TRUE.equals(priceVO.getUseVariant5ITM01()))
+      variantsPricesPanel.removeAll();
+    else {
+      variantsPricesPanel.removeAll();
+      variantsPricesPanel.getOtherGridParams().put(ApplicationConsts.ITEM,new ItemPK(priceVO.getCompanyCodeSys01PUR04(),priceVO.getItemCodeItm01PUR04()));
+      variantsPricesPanel.getOtherGridParams().put(ApplicationConsts.PRICELIST,priceVO.getPricelistCodePur03PUR04());
+      variantsPricesPanel.getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_REG04,priceVO.getProgressiveReg04PUR04());
+      variantsPricesPanel.initGrid(priceVO);
+      variantsPricesPanel.revalidate();
+      variantsPricesPanel.repaint();
+
+      SaveButton saveButton = new SaveButton();
+      saveButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          Response res = ClientUtils.getData("updateSupplierVariantsPrices",new Object[]{
+             variantsPricesPanel.getVariantsMatrixVO(),
+             variantsPricesPanel.getCells(),
+             priceVO.getPricelistCodePur03PUR04(),
+             priceVO.getStartDatePUR04(),
+             priceVO.getEndDatePUR04(),
+             priceVO.getProgressiveReg04PUR04()
+          });
+          if (res.isError()) {
+            JOptionPane.showMessageDialog(
+              ClientUtils.getParentFrame(panel),
+              res.getErrorMessage(),
+              ClientSettings.getInstance().getResources().getResource("Error while saving"),
+              JOptionPane.ERROR_MESSAGE
+            );
+          }
+          else
+            JOptionPane.showMessageDialog(
+              ClientUtils.getParentFrame(panel),
+              ClientSettings.getInstance().getResources().getResource("prices saved"),
+              ClientSettings.getInstance().getResources().getResource("Attention"),
+              JOptionPane.INFORMATION_MESSAGE
+            );
+
+        }
+      });
+      variantsPricesPanel.getButtonsPanel().add(saveButton);
+    }
+    variantsPricesPanel.revalidate();
+    variantsPricesPanel.repaint();
+  }
+
+
+  /**
+   * Callback method invoked when the data loading is completed.
+   * @param error <code>true</code> if data loading has terminated with errors, <code>false</code> otherwise
+   */
+  public void loadDataCompleted(boolean error) {
+    panel.getVariantsPricesPanel().removeAll();
+    panel.getVariantsPricesPanel().revalidate();
+    panel.getVariantsPricesPanel().repaint();
+    int rowNumber = panel.getPricesGrid().getSelectedRow();
+    if (rowNumber!=-1)
+      reloadVariantsPrices(rowNumber);
+    else
+      panel.getVariantsPricesPanel().removeAll();
   }
 
 
