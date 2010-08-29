@@ -20,6 +20,7 @@ import org.jallinone.commons.client.ClientApplet;
 import org.jallinone.commons.client.ApplicationClientFacade;
 import org.jallinone.system.java.ButtonCompanyAuthorizations;
 import java.util.HashMap;
+import org.openswing.swing.util.client.ClientSettings;
 
 
 /**
@@ -98,6 +99,7 @@ public class SaleEstimateDocController extends CompanyFormController {
       frame.getChargePanel().getGrid().clearData();
       frame.getActPanel().getGrid().clearData();
       frame.setButtonsEnabled(false);
+      frame.setTitle(ClientSettings.getInstance().getResources().getResource("sale estimate"));
     }
     return ok;
   }

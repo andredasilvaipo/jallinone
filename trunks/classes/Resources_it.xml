@@ -272,8 +272,8 @@
   <object key="warehouseCodeWar01WAR03" value="Cod.Magaz." />
 
   <object key="roles" value="Ruoli" />
-  <object key="you cannot change the administrator role" value="Non e' consentito cancellare il ruolo di amministratore." />
-  <object key="you cannot delete the administrator role" value="Non e' consentito cancellare il ruolo di amministratore." />
+  <object key="you cannot change the administrator role" value="Non &#232; consentito cancellare il ruolo di amministratore." />
+  <object key="you cannot delete the administrator role" value="Non &#232; consentito cancellare il ruolo di amministratore." />
   <object key="function" value="Funzionalit&#224;" />
   <object key="canView" value="Visib." />
   <object key="canInsSYS07" value="Ins." />
@@ -295,7 +295,7 @@
   <object key="progressiveReg04SYS03" value="" />
   <object key="roleDescription" value="Descriz.Ruolo" />
   <object key="selected" value="Selez." />
-  <object key="you cannot delete administrator user" value="Non e' consentito cancellare l'utente amministratore." />
+  <object key="you cannot delete administrator user" value="Non &#232; consentito cancellare l'utente amministratore." />
   <object key="user roles" value="Ruoli utente" />
   <object key="you must specify a date greater than today." value="E' necessario specificare una data maggiore di oggi." />
 
@@ -470,7 +470,7 @@
   <object key="vatDescriptionSYS10" value="Descriz.Iva" />
   <object key="you must define a value or a percentage charge." value="E' necessario definire una spesa a valore o a percentuale." />
   <object key="a charge must be define as a value or as a percentage." value="Una spese deve essere definita come un valore o come una percentuale." />
-  <object key="vat code is required for a charge expressed as a value." value="Il cod.iva e' obbligatorio nel caso di spesa espressa a valore." />
+  <object key="vat code is required for a charge expressed as a value." value="Il cod.iva &#232; obbligatorio nel caso di spesa espressa a valore." />
 
   <object key="customer hierarchies" value="Gerarchie clienti" />
   <object key="subjectTypeREG04" value="Tipo" />
@@ -514,8 +514,8 @@
   <object key="import all items" value="Importa tutti gli articoli" />
   <object key="import all supplier items" value="Importa tutti gli art.fornitore" />
   <object key="validation dates are required." value="Le date di valid. sono obbligatorie." />
-  <object key="price value is required." value="Il prezzo a valore e' obbligatorio." />
-  <object key="price % is required." value="Il prezzo espresso a % e' obbligatorio." />
+  <object key="price value is required." value="Il prezzo a valore &#232; obbligatorio." />
+  <object key="price % is required." value="Il prezzo espresso a % &#232; obbligatorio." />
   <object key="pricelistCodeSal01SAL02" value="Cod.Listino" />
   <object key="pricelistDescriptionSYS10" value="Descrizione listino" />
 
@@ -628,7 +628,7 @@
   <object key="vatValueDOC07" value="Tot.Iva" />
   <object key="valueReg01DOC07" value="% Iva" />
   <object key="deductibleReg01DOC07" value="% Ded.Iva" />
-  <object key="the price is no more valid" value="Il prezzo non e' piu' valido." />
+  <object key="the price is no more valid" value="Il prezzo non &#232; piu' valido." />
   <object key="itemCodeItm01PUR02" value="Cod.Art." />
   <object key="item" value="Articolo" />
   <object key="confirm purchase order?" value="Conferma ordine di acquisto?&#10;Dopo la conferma l'ordine non sar&#224; piu' modificabile." />
@@ -662,7 +662,7 @@
   <object key="record not found" value="Record non trovato" />
   <object key="locationDescriptionSYS10" value="Posizione" />
   <object key="warehouse positions" value="Posizioni in magazzino" />
-  <object key="the warehouse motive specified is not defined" value="La causale di magazzino specificata non e' definita" />
+  <object key="the warehouse motive specified is not defined" value="La causale di magazzino specificata non &#232; definita" />
   <object key="load items from purchase order" value="Caricamento articoli da OdA" />
   <object key="purchase order rows" value="Righe OdA" />
   <object key="import purchase order rows" value="Importa righe OdA" />
@@ -832,7 +832,7 @@
   <object key="desk sellings" value="Vendite al dettaglio" />
   <object key="confirm desk selling?" value="Chiudere la vendita al dettaglio e scaricare gli articoli dal magazzino?" />
   <object key="desk selling confirmation" value="Chiusura vendita al dettaglio e scarico articoli da magazzino" />
-  <object key="document closing not allowed: item not available in warehouse" value="La chiusura del documento non e' consentita: articolo non disponibile in magazzino" />
+  <object key="document closing not allowed: item not available in warehouse" value="La chiusura del documento non &#232; consentita: articolo non disponibile in magazzino" />
   <object key="create sale invoice?" value="Creare la fattura di vendita?" />
   <object key="desk selling invoice" value="Fattura da vendita al dettaglio" />
   <object key="manually created" value="Creazione manuale" />
@@ -846,7 +846,7 @@
   <object key="retail warehouse" value="Magazzino usato in vendita al dettaglio" />
   <object key="receipt manager" value="Gestore ricevute" />
   <object key="receipts management program selection" value="Selezione applicazione per la gestione ricevute" />
-  <object key="retail sale export non allowed: receipt path has not been defined as user parameter." value="Esportazione vendita al dettaglio non consentita:&#10;il path per l'esecuzione di un'applicazione non e' stato definito come parametro utente." />
+  <object key="retail sale export non allowed: receipt path has not been defined as user parameter." value="Esportazione vendita al dettaglio non consentita:&#10;il path per l'esecuzione di un'applicazione non &#232; stato definito come parametro utente." />
   <object key="company not found." value="Organizzazione non trovata." />
   <object key="error while executing external application; return code:" value="Errore durante l'esecuzione dell'applicazione esterna; codice di ritorno:" />
 
@@ -1201,16 +1201,16 @@
   <object key="you must select a pricelist" value="E' necessario selezionare un listino" />
   <object key="invoice from call-out request nr." value="Fattura da richiesta di inverv.num." />
   <object key="you must select a payment" value="E' necessario selezionare una forma di pagamento" />
-  <object key="no price defined for the scheduled item" value="Non e' stato definito un prezzo per l'articolo schedulato." />
-  <object key="no task defined for the scheduled employee" value="Non e' stata definita una mansione per il dipendente schedulato." />
+  <object key="no price defined for the scheduled item" value="Non &#232; stato definito un prezzo per l'articolo schedulato." />
+  <object key="no task defined for the scheduled employee" value="Non &#232; stata definita una mansione per il dipendente schedulato." />
   <object key="you must select all account codes" value="E' necessario selzionare tutti i codici conto" />
-  <object key="no sale activity code linked to the task" value="Non e' stato associato un codice attivit&#224; all'attivit&#224;." />
+  <object key="no sale activity code linked to the task" value="Non &#232; stato associato un codice attivit&#224; all'attivit&#224;." />
   <object key="you must select a warehouse" value="E' necessario selezionare un magazzino" />
   <object key="view invoice" value="Visualizza fattura" />
 
   <object key="day appointments" value="Agenda" />
-  <object key="no employee code linked to the current user" value="Non e' stato associato un codice dipendente all'utente corrente." />
-  <object key="appointments cannot be viewed" value="Non e' possibile visualizzare gli appuntamenti" />
+  <object key="no employee code linked to the current user" value="Non &#232; stato associato un codice dipendente all'utente corrente." />
+  <object key="appointments cannot be viewed" value="Non &#232; possibile visualizzare gli appuntamenti" />
   <object key="absences" value="Assenze" />
   <object key="find next appointment" value="Trova il prossimo appuntamento" />
   <object key="find appointment" value="Trova appuntamento" />
@@ -1235,8 +1235,8 @@
   <object key="document properties" value="Propriet&#224; documento" />
   <object key="documentType" value="Tipo Documento" />
   <object key="you must attach a file" value="E' necessario allegare un file" />
-  <object key="you are not allowed to delete all document versions" value="Non e' consentito cancellare tutte le versioni del documento." />
-  <object key="you are not allowed to delete all document links" value="Non e' consentito cancellare tutti i collegamenti al documento." />
+  <object key="you are not allowed to delete all document versions" value="Non &#232; consentito cancellare tutte le versioni del documento." />
+  <object key="you are not allowed to delete all document links" value="Non &#232; consentito cancellare tutti i collegamenti al documento." />
   <object key="you must select a tree level before inserting new document" value="E' necessario selezionare un livello gerarchico prima di inserire un nuovo documento." />
   <object key="uploaded document" value="Documento caricato" />
   <object key="progressiveHie01DOC17" value="Liv." />
@@ -1303,7 +1303,7 @@
   <object key="currencyCodeReg03PRO01" value="Cod.Valuta" />
   <object key="manufactureCodePRO01" value="Cod." />
   <object key="completion % must be between 0 and 100" value="La % di completam. deve essere compresa tra 0 e 100." />
-  <object key="specified item already defined as product" value="L'articolo specificato e' gi&#224; stato definito come prodotto." />
+  <object key="specified item already defined as product" value="L'articolo specificato &#232; gi&#224; stato definito come prodotto." />
   <object key="implosionPanel" value="Implosione prodotto" />
   <object key="explosionPanel" value="Esplosione prodotto" />
   <object key="productInfo" value="Informazioni prodotto" />
@@ -1313,7 +1313,7 @@
   <object key="supplierDescription" value="Fornitore" />
   <object key="pricelistCodePur03PUR04" value="Cod.Listino" />
   <object key="purchase item prices" value="Prezzi art.in acq." />
-  <object key="the selected item requires serial number definition: this kind of item is not allowed" value="L'art. selezionato richiede la definiz. dei numeri di serie: questo tipo di articolo non e' consentito." />
+  <object key="the selected item requires serial number definition: this kind of item is not allowed" value="L'art. selezionato richiede la definiz. dei numeri di serie: questo tipo di articolo non &#232; consentito." />
   <object key="a product cannot require serial number definition" value="Un prodotto non puo' richiedere la definizione di numeri di serie." />
 
   <object key="component is not available in the specified warehouse" value="componente non disponibile nel magazzino specificato." />
@@ -1345,10 +1345,10 @@
   <object key="close production order?" value="Chiudere ordine di produzione?" />
   <object key="print bill of materials" value="Stampa distinta base" />
   <object key="alternativeComponents" value="Componenti alternativi" />
-  <object key="you cannot define this item as a product because there are alternative components defined." value="Non e' possibile definire questo articolo come prodotto, perche' sono definiti dei componenti alternativi." />
+  <object key="you cannot define this item as a product because there are alternative components defined." value="Non &#232; possibile definire questo articolo come prodotto, perch&#232; sono definiti dei componenti alternativi." />
   <object key="itemCodeItm01ITM04" value="Cod.Art.Alt." />
-  <object key="you cannot set the current item as alternative component" value="Non e' possibile impostare l'articolo corrente come componente alternativo." />
-  <object key="you cannot set the current item as a product, because it has alternative components" value="Non e' possibile definire questo articolo come prodotto, perche' ha dei componenti alternativi." />
+  <object key="you cannot set the current item as alternative component" value="Non &#232; possibile impostare l'articolo corrente come componente alternativo." />
+  <object key="you cannot set the current item as a product, because it has alternative components" value="Non &#232; possibile definire questo articolo come prodotto, perch&#232; ha dei componenti alternativi." />
 
   <object key="application functions" value="Funzioni applicative" />
   <object key="new description:" value="Nuova descrizione:" />
@@ -1370,9 +1370,9 @@
   <object key="sql tool" value="Tool SQL" />
   <object key="you must define a sql statement!" value="E' necessario define un'istruzione SQL!" />
   <object key="rows affected." value="righe aggiornate." />
-  <object key="select has not been correctly parsed" value="La clausola di select non e' stata correttamente analizzata" />
-  <object key="no pk defined: delete not allowed" value="La primary key non e' definita: cancellazione non consentita" />
-  <object key="no pk defined: update not allowed" value="La primary key non e' definita: aggiornamento non consentito" />
+  <object key="select has not been correctly parsed" value="La clausola di select non &#232; stata correttamente analizzata" />
+  <object key="no pk defined: delete not allowed" value="La primary key non &#232; definita: cancellazione non consentita" />
+  <object key="no pk defined: update not allowed" value="La primary key non &#232; definita: aggiornamento non consentito" />
   <object key="columnNameWithoutTable" value="Nome Campo" />
   <object key="columnType" value="Tipo Campo" />
   <object key="primaryKey" value="PK" />
@@ -1464,6 +1464,12 @@
   <object key="barcode already assigned to another item" value="Barcode gi&#224; associato ad un altro articolo" />
   <object key="print barcode labels" value="Stampa etichette" />
   <object key="qty" value="Qt&#224;" />
+  <object key="set the same value when matching the same" value="Imposta lo stesso valore a parit&#224; di" />
+  <object key="prices saved" value="Salvataggio prezzi completato." />
+  <object key="it is not allowed to insert variants having different unit prices" value="Non &#232; consentito specificare varianti aventi prezzi diversi" />
+  <object key="supplierCustomerCodeDOC08" value="Codice cliente/forn." />
+  <object key="Error while validating data:" value="I seguenti controlli di input non sono validi:" />
+  <object key="Validation Error" value="Dati non corretti" />
 
 <!-- application translations -->
 

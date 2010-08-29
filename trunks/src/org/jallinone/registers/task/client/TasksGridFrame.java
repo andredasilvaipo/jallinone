@@ -72,7 +72,6 @@ public class TasksGridFrame extends InternalFrame {
   TextColumn colTask = new TextColumn();
   TextColumn colDescr = new TextColumn();
   ExportButton exportButton = new ExportButton();
-  CodLookupColumn colCurrency = new CodLookupColumn();
   CheckBoxColumn colFiniteCap = new CheckBoxColumn();
 
   CodLookupColumn colActCode = new CodLookupColumn();
@@ -80,12 +79,6 @@ public class TasksGridFrame extends InternalFrame {
 
   /** grid data locator */
   private ServerGridDataLocator gridDataLocator = new ServerGridDataLocator();
-
-  /** currency lookup controller */
-  private LookupController currLookupController = new LookupController();
-
-  /** currency lookup data locator */
-  private LookupServerDataLocator currDataLocator = new LookupServerDataLocator();
 
   LookupController actController = new LookupController();
   LookupServerDataLocator actDataLocator = new LookupServerDataLocator();
@@ -101,21 +94,6 @@ public class TasksGridFrame extends InternalFrame {
       setSize(750,400);
       setMinimumSize(new Dimension(750,400));
 
-      colCurrency.setLookupController(currLookupController);
-      colCurrency.setControllerMethodName("getCurrenciesList");
-      currLookupController.setLookupDataLocator(currDataLocator);
-      currDataLocator.setGridMethodName("loadCurrencies");
-      currDataLocator.setValidationMethodName("validateCurrencyCode");
-      currLookupController.setAllColumnVisible(true);
-      currLookupController.setFrameTitle("currencies");
-      currLookupController.setLookupValueObjectClassName("org.jallinone.registers.currency.java.CurrencyVO");
-      currLookupController.addLookup2ParentLink("currencyCodeREG03","currencyCodeReg03REG07");
-      currLookupController.setAllColumnVisible(false);
-      currLookupController.setVisibleColumn("currencyCodeREG03",true);
-      currLookupController.setVisibleColumn("currencySymbolREG03",true);
-      currLookupController.setVisibleColumn("decimalSymbolREG03",true);
-      currLookupController.setVisibleColumn("thousandSymbolREG03",true);
-      CustomizedColumns currCust = new CustomizedColumns(new BigDecimal(182),currLookupController);
 
       CustomizedColumns cust = new CustomizedColumns(new BigDecimal(192),grid);
 
@@ -217,16 +195,10 @@ public class TasksGridFrame extends InternalFrame {
     colDescr.setEditableOnInsert(true);
     colDescr.setHeaderColumnName("taskDescription");
     colDescr.setPreferredWidth(240);
-    colCurrency.setColumnDuplicable(true);
-    colCurrency.setColumnFilterable(true);
-    colCurrency.setColumnName("currencyCodeReg03REG07");
-    colCurrency.setColumnSortable(true);
-    colCurrency.setEditableOnEdit(true);
-    colCurrency.setEditableOnInsert(true);
-    colCurrency.setMaxCharacters(20);
 
     colActCode.setColumnDuplicable(true);
     colActCode.setColumnFilterable(true);
+    colActCode.setColumnRequired(false);
     colActCode.setColumnName("activityCodeSal09REG07");
     colActCode.setColumnSortable(true);
     colActCode.setEditableOnEdit(true);
@@ -235,6 +207,7 @@ public class TasksGridFrame extends InternalFrame {
 
     colActDescr.setColumnDuplicable(true);
     colActDescr.setColumnFilterable(true);
+    colActDescr.setColumnRequired(false);
     colActDescr.setColumnName("activityDescriptionREG07");
     colActDescr.setColumnSortable(true);
     colActDescr.setEditableOnEdit(false);
@@ -268,10 +241,12 @@ public class TasksGridFrame extends InternalFrame {
     grid.getColumnContainer().add(colCompany, null);
     grid.getColumnContainer().add(colTask, null);
     grid.getColumnContainer().add(colDescr, null);
-    grid.getColumnContainer().add(colCurrency, null);
     grid.getColumnContainer().add(colActCode, null);
     grid.getColumnContainer().add(colActDescr, null);
     grid.getColumnContainer().add(colFiniteCap, null);
+  }
+  public GridControl getGrid() {
+    return grid;
   }
 
 }

@@ -532,33 +532,39 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
 
 
   /**
-   * Toggle between the two the subject panels, according to the subject type.
+   * Toggle between the two subject panels, according to the subject type.
    */
   public final void subjectChanged(String subjectTypeREG04) {
     cardLayout1.show(cardPanel,subjectTypeREG04);
     if (controlSubjectType.getValue()==null ||
         !controlSubjectType.getValue().equals(subjectTypeREG04)) {
       controlSubjectType.setValue(subjectTypeREG04);
-      organizationPanel.setInsertButton(insertButton5);
-      organizationPanel.setEditButton(editButton5);
-      organizationPanel.setSaveButton(saveButton5);
-      organizationPanel.setReloadButton(reloadButton5);
-      peoplePanel.setInsertButton(null);
-      peoplePanel.setEditButton(null);
-      peoplePanel.setSaveButton(null);
-      peoplePanel.setReloadButton(null);
+
+      if (ApplicationConsts.SUBJECT_ORGANIZATION.equals(subjectTypeREG04)) {
+        organizationPanel.setInsertButton(insertButton5);
+        organizationPanel.setEditButton(editButton5);
+        organizationPanel.setSaveButton(saveButton5);
+        organizationPanel.setReloadButton(reloadButton5);
+        peoplePanel.setInsertButton(null);
+        peoplePanel.setEditButton(null);
+        peoplePanel.setSaveButton(null);
+        peoplePanel.setReloadButton(null);
+      }
+      else {
+        organizationPanel.setInsertButton(null);
+        organizationPanel.setEditButton(null);
+        organizationPanel.setSaveButton(null);
+        organizationPanel.setReloadButton(null);
+        peoplePanel.setInsertButton(insertButton5);
+        peoplePanel.setEditButton(editButton5);
+        peoplePanel.setSaveButton(saveButton5);
+        peoplePanel.setReloadButton(reloadButton5);
+      }
     }
+
     if (controlSubjectType.getValue()!=null) {
       DetailCallOutRequestVO vo = (DetailCallOutRequestVO)calloutPanel.getVOModel().getValueObject();
       vo.setSubjectTypeReg04SCH03(subjectTypeREG04);
-      organizationPanel.setInsertButton(null);
-      organizationPanel.setEditButton(null);
-      organizationPanel.setSaveButton(null);
-      organizationPanel.setReloadButton(null);
-      peoplePanel.setInsertButton(insertButton5);
-      peoplePanel.setEditButton(editButton5);
-      peoplePanel.setSaveButton(saveButton5);
-      peoplePanel.setReloadButton(reloadButton5);
     }
 
   }

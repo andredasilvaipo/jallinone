@@ -109,7 +109,8 @@ public class CloseDeliveryNoteAction implements Action {
         docSequenceDOC08 = rset.getInt(1)+1;
       rset.close();
 
-      // update delivery note state...
+
+      // update delivery note state and note...
       pstmt = conn.prepareStatement("update DOC08_DELIVERY_NOTES set DOC_STATE=?,DOC_SEQUENCE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and DOC_STATE=?");
       pstmt.setString(1,ApplicationConsts.CLOSED);
       pstmt.setInt(2,docSequenceDOC08);

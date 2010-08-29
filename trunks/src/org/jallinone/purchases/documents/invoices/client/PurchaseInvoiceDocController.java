@@ -22,6 +22,7 @@ import org.jallinone.system.java.ButtonCompanyAuthorizations;
 import java.util.HashMap;
 import org.jallinone.purchases.documents.client.PurchaseDocument;
 import org.openswing.swing.mdi.client.InternalFrame;
+import org.openswing.swing.util.client.ClientSettings;
 
 
 /**
@@ -99,6 +100,7 @@ public class PurchaseInvoiceDocController extends CompanyFormController {
       frame.getRowsPanel().getDetailPanel().getVOModel().setValueObject(new DetailPurchaseDocRowVO());
       frame.getRowsPanel().getDetailPanel().pull();
       frame.setButtonsEnabled(false);
+      frame.setTitle(ClientSettings.getInstance().getResources().getResource("purchase invoice"));
     }
     return ok;
   }

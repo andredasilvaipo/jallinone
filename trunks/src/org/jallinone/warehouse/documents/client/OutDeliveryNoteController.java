@@ -13,6 +13,7 @@ import org.openswing.swing.form.client.Form;
 import org.jallinone.commons.java.ApplicationConsts;
 import java.util.Calendar;
 import java.math.BigDecimal;
+import org.openswing.swing.util.client.ClientSettings;
 
 
 /**
@@ -86,6 +87,7 @@ public class OutDeliveryNoteController extends CompanyFormController {
     if (ok) {
       frame.getRowsPanel().getGrid().clearData();
       frame.setButtonsEnabled(false);
+      frame.setTitle(ClientSettings.getInstance().getResources().getResource("out delivery note"));
     }
     return ok;
   }

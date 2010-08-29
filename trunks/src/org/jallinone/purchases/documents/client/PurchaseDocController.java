@@ -16,6 +16,7 @@ import org.jallinone.commons.java.ApplicationConsts;
 import java.util.Calendar;
 import java.math.BigDecimal;
 import org.jallinone.purchases.documents.java.DetailPurchaseDocRowVO;
+import org.openswing.swing.util.client.ClientSettings;
 
 
 /**
@@ -91,6 +92,7 @@ public class PurchaseDocController extends CompanyFormController {
       frame.getRowsPanel().getDetailPanel().getVOModel().setValueObject(new DetailPurchaseDocRowVO());
       frame.getRowsPanel().getDetailPanel().pull();
       frame.setButtonsEnabled(false);
+      frame.setTitle(ClientSettings.getInstance().getResources().getResource("purchase order"));
     }
     return ok;
   }

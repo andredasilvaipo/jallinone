@@ -96,7 +96,6 @@ public class InsertTasksAction implements Action {
       attribute2dbField.put("taskCodeREG07","TASK_CODE");
       attribute2dbField.put("progressiveSys10REG07","PROGRESSIVE_SYS10");
       attribute2dbField.put("enabledREG07","ENABLED");
-      attribute2dbField.put("currencyCodeReg03REG07","CURRENCY_CODE_REG03");
       attribute2dbField.put("finiteCapacityREG07","FINITE_CAPACITY");
       attribute2dbField.put("activityCodeSal09REG07","ACTIVITY_CODE_SAL09");
 

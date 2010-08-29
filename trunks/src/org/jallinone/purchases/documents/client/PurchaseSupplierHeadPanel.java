@@ -96,6 +96,7 @@ public class PurchaseSupplierHeadPanel extends JPanel {
       supplierController.addLookup2ParentLink("name_1REG04", "name_1REG04");
       supplierController.addLookup2ParentLink("paymentCodeReg10PUR01", "paymentCodeReg10DOC06");
       supplierController.addLookup2ParentLink("paymentDescriptionPUR01", "paymentDescriptionDOC06");
+      supplierController.addLookup2ParentLink("noteREG04", "noteDOC06");
       supplierController.setAllColumnVisible(false);
       supplierController.setVisibleColumn("companyCodeSys01REG04", true);
       supplierController.setVisibleColumn("supplierCodePUR01", true);

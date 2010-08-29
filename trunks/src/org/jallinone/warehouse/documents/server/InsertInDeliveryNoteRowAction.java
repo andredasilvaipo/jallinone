@@ -93,6 +93,69 @@ public class InsertInDeliveryNoteRowAction implements Action {
       GridInDeliveryNoteRowVO vo = (GridInDeliveryNoteRowVO)inputPar;
       vo.setInvoiceQtyDOC09(new BigDecimal(0));
 
+      // check if note in DOC08 must be updated with delivery note defined in DOC01/DOC06...
+
+      String note = "";
+      pstmt = conn.prepareStatement(
+        "select NOTE FROM DOC06_PURCHASE WHERE COMPANY_CODE_SYS01=? AND DOC_TYPE=? AND DOC_YEAR=? AND DOC_NUMBER=? AND "+
+        "NOT EXISTS(SELECT * FROM DOC09_IN_DELIVERY_NOTE_ITEMS WHERE "+
+        "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? AND "+
+        "DOC_TYPE_DOC06=? and DOC_YEAR_DOC06=? and DOC_NUMBER_DOC06=? )"
+      );
+      pstmt.setString(1,vo.getCompanyCodeSys01DOC09());
+      pstmt.setString(2,vo.getDocTypeDoc06DOC09());
+      pstmt.setBigDecimal(3,vo.getDocYearDoc06DOC09());
+      pstmt.setBigDecimal(4,vo.getDocNumberDoc06DOC09());
+      pstmt.setString(5,vo.getCompanyCodeSys01DOC09());
+      pstmt.setString(6,vo.getDocTypeDOC09());
+      pstmt.setBigDecimal(7,vo.getDocYearDOC09());
+      pstmt.setBigDecimal(8,vo.getDocNumberDOC09());
+      pstmt.setString(9,vo.getDocTypeDoc06DOC09());
+      pstmt.setString(10,vo.getDocTypeDoc06DOC09());
+      pstmt.setBigDecimal(11,vo.getDocNumberDoc06DOC09());
+      ResultSet rset = pstmt.executeQuery();
+      if (rset.next()) {
+        note = rset.getString(1);
+      }
+      rset.close();
+      pstmt.close();
+      if (note!=null && !note.equals("")) {
+        // retrieve current note...
+        pstmt = conn.prepareStatement(
+          "SELECT NOTE FROM DOC08_DELIVERY_NOTES "+
+          "WHERE COMPANY_CODE_SYS01=? AND DOC_TYPE=? AND DOC_YEAR=? AND DOC_NUMBER=? "
+        );
+        pstmt.setString(1,vo.getCompanyCodeSys01DOC09());
+        pstmt.setString(2,vo.getDocTypeDOC09());
+        pstmt.setBigDecimal(3,vo.getDocYearDOC09());
+        pstmt.setBigDecimal(4,vo.getDocNumberDOC09());
+        rset = pstmt.executeQuery();
+        String currentNote = null;
+        if (rset.next()) {
+          currentNote = rset.getString(1);
+        }
+        rset.close();
+        pstmt.close();
+        if (currentNote==null)
+          currentNote = note;
+        else
+          currentNote = currentNote+"\n"+note;
+
+        // update note...
+        pstmt = conn.prepareStatement(
+          "UPDATE DOC08_DELIVERY_NOTES SET NOTE=? "+
+          "WHERE COMPANY_CODE_SYS01=? AND DOC_TYPE=? AND DOC_YEAR=? AND DOC_NUMBER=? "
+        );
+        pstmt.setString(1,currentNote);
+        pstmt.setString(2,vo.getCompanyCodeSys01DOC09());
+        pstmt.setString(3,vo.getDocTypeDOC09());
+        pstmt.setBigDecimal(4,vo.getDocYearDOC09());
+        pstmt.setBigDecimal(5,vo.getDocNumberDOC09());
+        pstmt.execute();
+        pstmt.close();
+
+      }
+
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01DOC09","COMPANY_CODE_SYS01");
       attribute2dbField.put("docTypeDOC09","DOC_TYPE");

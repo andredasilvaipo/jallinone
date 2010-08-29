@@ -85,6 +85,7 @@ public class OutDeliveryNoteIdPanel extends JPanel {
       customerController.addLookup2ParentLink("progressiveREG04","progressiveReg04DOC08");
       customerController.addLookup2ParentLink("name_1REG04", "name_1REG04");
       customerController.addLookup2ParentLink("name_2REG04", "name_2REG04");
+      customerController.addLookup2ParentLink("noteREG04", "noteDOC08");
       customerController.setAllColumnVisible(false);
       customerController.setVisibleColumn("companyCodeSys01REG04", true);
       customerController.setVisibleColumn("customerCodeSAL07", true);

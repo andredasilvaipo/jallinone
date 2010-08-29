@@ -1,15 +1,15 @@
 package org.jallinone.registers.task.client;
 
-import org.openswing.swing.table.client.GridController;
 import java.util.*;
-import org.openswing.swing.message.receive.java.*;
-import org.openswing.swing.message.send.java.FilterWhereClause;
-import org.openswing.swing.table.java.GridDataLocator;
-import org.openswing.swing.mdi.client.MDIFrame;
-import org.openswing.swing.util.client.ClientUtils;
+
+import org.jallinone.commons.client.*;
 import org.jallinone.registers.task.java.*;
-import java.math.BigDecimal;
-import javax.swing.*;
+import org.jallinone.subjects.java.*;
+import org.jallinone.system.java.*;
+import org.openswing.swing.mdi.client.*;
+import org.openswing.swing.message.receive.java.*;
+import org.openswing.swing.table.client.*;
+import org.openswing.swing.util.client.*;
 
 
 /**
@@ -84,6 +84,8 @@ public class TasksController extends GridController {
   public Response deleteRecords(ArrayList persistentObjects) throws Exception {
     return ClientUtils.getData("deleteTasks",persistentObjects);
   }
+
+
 
 
 

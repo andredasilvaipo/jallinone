@@ -221,6 +221,8 @@ public class PurchaseDebitingDocFrame extends InternalFrame implements InvoiceDo
   public void loadDataCompleted(boolean error,PurchaseDocPK pk) {
     DetailPurchaseDocVO vo = (DetailPurchaseDocVO)headerFormPanel.getVOModel().getValueObject();
 
+    this.setTitle(ClientSettings.getInstance().getResources().getResource("debiting note")+(vo.getDocSequenceDOC06()!=null?" - "+vo.getDocYearDOC06()+"/"+vo.getDocSequenceDOC06():"")+" - "+vo.getName_1REG04()+" "+(vo.getName_2REG04()==null?"":vo.getName_2REG04()));
+
     purchaseTotalsPanel1.getControlTaxableIncome().setDecimals(vo.getDecimalsREG03().intValue());
     purchaseTotalsPanel1.getControlTaxableIncome().setCurrencySymbol(vo.getCurrencySymbolREG03());
     purchaseTotalsPanel1.getControlTaxableIncome().setDecimalSymbol(vo.getDecimalSymbolREG03().charAt(0));
@@ -274,7 +276,9 @@ public class PurchaseDebitingDocFrame extends InternalFrame implements InvoiceDo
     if (headerFormPanel.getVOModel()==null)
       return false;
     DetailPurchaseDocVO vo = (DetailPurchaseDocVO)headerFormPanel.getVOModel().getValueObject();
-    if (vo!=null && vo.getDocStateDOC06()!=null && vo.getDocStateDOC06().equals(ApplicationConsts.CLOSED))
+    if (vo!=null && vo.getDocStateDOC06()!=null &&
+        (vo.getDocStateDOC06().equals(ApplicationConsts.CONFIRMED) ||
+         vo.getDocStateDOC06().equals(ApplicationConsts.CLOSED)))
       return true;
     else
       return false;

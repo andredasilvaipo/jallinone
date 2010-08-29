@@ -209,8 +209,8 @@ public class PeoplePanel extends Form {
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     this.add(labelProv,           new GridBagConstraints(4, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlProv,            new GridBagConstraints(5, 3, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 50, 0));
+    this.add(controlProv,             new GridBagConstraints(5, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 30, 0));
     this.add(labelCountry,           new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     this.add(controlCountry,             new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0

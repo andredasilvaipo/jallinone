@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import org.openswing.swing.lookup.client.*;
+import org.openswing.swing.util.client.ClientSettings;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -143,6 +144,7 @@ public class SaleDeskDocController extends CompanyFormController {
       frame.getRowsPanel().getDetailPanel().getVOModel().setValueObject(new DetailSaleDocRowVO());
       frame.getRowsPanel().getDetailPanel().pull();
       frame.setButtonsEnabled(false);
+      frame.setTitle(ClientSettings.getInstance().getResources().getResource("desk selling"));
     }
     return ok;
   }

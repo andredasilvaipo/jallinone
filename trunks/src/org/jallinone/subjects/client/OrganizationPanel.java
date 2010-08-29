@@ -168,7 +168,7 @@ public class OrganizationPanel extends Form {
 
 
 
-    this.add(controlCorpName1,       new GridBagConstraints(1, 1, 3, 1, 1.0, 0.0
+    this.add(controlCorpName1,        new GridBagConstraints(1, 1, 5, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     this.add(controlCorpName2,         new GridBagConstraints(1, 2, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 200, 0));

@@ -92,7 +92,7 @@ public class DeleteOutDeliveryNoteRowsAction implements Action {
       );
 
       pstmt2 = conn.prepareStatement(
-       "delete from DOC12_OUT_SERIAL_NUMBERS where PROGRESSIVE_DOC09=?"
+       "delete from DOC12_OUT_SERIAL_NUMBERS where PROGRESSIVE_DOC10=?"
       );
 
       Response res = null;

@@ -270,11 +270,14 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
     DetailPurchaseDocVO vo = (DetailPurchaseDocVO)headerFormPanel.getVOModel().getValueObject();
     updateCurrencySettings(vo);
 
+    this.setTitle(ClientSettings.getInstance().getResources().getResource("purchase order")+(vo.getDocSequenceDOC06()!=null?" - "+vo.getDocYearDOC06()+"/"+vo.getDocSequenceDOC06():"")+" - "+vo.getName_1REG04()+" "+(vo.getName_2REG04()==null?"":vo.getName_2REG04()));
+
     rowsPanel.setParentVO(vo);
     rowsPanel.getGrid().getOtherGridParams().put(ApplicationConsts.PURCHASE_DOC_PK,pk);
     rowsPanel.getGrid().reloadData();
 
-    if (vo.getDocStateDOC06().equals(ApplicationConsts.CONFIRMED)) {
+    if (vo.getDocStateDOC06().equals(ApplicationConsts.CONFIRMED) ||
+        vo.getDocStateDOC06().equals(ApplicationConsts.CLOSED)) {
       confirmButton.setEnabled(false);
       setButtonsEnabled(false);
       rowsPanel.setButtonsEnabled(false);
@@ -309,7 +312,9 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
     DetailPurchaseDocVO vo = null;
     if (headerFormPanel!=null && headerFormPanel.getVOModel()!=null)
       vo = (DetailPurchaseDocVO)headerFormPanel.getVOModel().getValueObject();
-    if (vo!=null && vo.getDocStateDOC06()!=null && vo.getDocStateDOC06().equals(ApplicationConsts.CONFIRMED))
+    if (vo!=null && vo.getDocStateDOC06()!=null &&
+        (vo.getDocStateDOC06().equals(ApplicationConsts.CONFIRMED) ||
+         vo.getDocStateDOC06().equals(ApplicationConsts.CLOSED)))
       return true;
     else
       return false;

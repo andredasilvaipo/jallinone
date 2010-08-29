@@ -72,6 +72,17 @@ public class SaleDeskDocRowsController extends CompanyGridController {
 
 
   /**
+   * Callback method invoked when the data loading is completed.
+   * @param error <code>true</code> if data loading has terminated with errors, <code>false</code> otherwise
+   */
+  public void loadDataCompleted(boolean error) {
+    if (panel.getGrid().getVOListTableModel().getRowCount()>0) {
+      doubleClick(0,panel.getGrid().getVOListTableModel().getObjectForRow(0));
+    }
+  }
+
+
+  /**
    * Callback method invoked when the user has double clicked on the selected row of the grid.
    * @param rowNumber selected row index
    * @param persistentObject v.o. related to the selected row

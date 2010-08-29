@@ -107,7 +107,6 @@ public class UpdateTasksAction implements Action {
         attr2dbFields.put("taskCodeREG07","TASK_CODE");
         attr2dbFields.put("progressiveSys10REG07","PROGRESSIVE_SYS10");
         attr2dbFields.put("enabledREG07","ENABLED");
-        attr2dbFields.put("currencyCodeReg03REG07","CURRENCY_CODE_REG03");
         attr2dbFields.put("finiteCapacityREG07","FINITE_CAPACITY");
         attr2dbFields.put("activityCodeSal09REG07","ACTIVITY_CODE_SAL09");
 

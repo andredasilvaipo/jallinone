@@ -67,7 +67,7 @@ public class LoadCompanyAction implements Action {
     Connection conn = null;
     Statement stmt = null;
     try {
-      SubjectPK pk = (SubjectPK)inputPar;
+      String companyCode = (String)inputPar;
 
       conn = ConnectionManager.getConnection(context);
 
@@ -91,15 +91,16 @@ public class LoadCompanyAction implements Action {
           "select REG04_SUBJECTS.SUBJECT_TYPE,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,REG04_SUBJECTS.ADDRESS,"+
           "REG04_SUBJECTS.CITY,REG04_SUBJECTS.ZIP,REG04_SUBJECTS.PROVINCE,REG04_SUBJECTS.COUNTRY,REG04_SUBJECTS.TAX_CODE,"+
           "REG04_SUBJECTS.PHONE_NUMBER,REG04_SUBJECTS.FAX_NUMBER,REG04_SUBJECTS.EMAIL_ADDRESS,REG04_SUBJECTS.WEB_SITE,"+
-          "REG04_SUBJECTS.LAWFUL_SITE,REG04_SUBJECTS.NOTE,SYS01_COMPANIES.CURRENCY_CODE_REG03 "+
+          "REG04_SUBJECTS.LAWFUL_SITE,REG04_SUBJECTS.NOTE,SYS01_COMPANIES.CURRENCY_CODE_REG03,REG04_SUBJECTS.PROGRESSIVE_REG04 "+
           "from REG04_SUBJECTS,SYS01_COMPANIES where "+
-          "COMPANY_CODE_SYS01='"+pk.getCompanyCodeSys01REG04()+"' and PROGRESSIVE="+pk.getProgressiveREG04()+" and "+
-          "REG04_SUBJECTS.COMPANY_CODE_SYS01=SYS01_COMPANIES.COMPANY_CODE "
+          "COMPANY_CODE_SYS01='"+companyCode+"' and "+
+          "REG04_SUBJECTS.COMPANY_CODE_SYS01=SYS01_COMPANIES.COMPANY_CODE and "+
+          "SYS01_COMPANIES.ENABLED='Y' and "+
+          "REG04_SUBJECTS.SUBJECT_TYPE='M'"
       );
       OrganizationVO vo = new OrganizationVO();
       if(rset.next()) {
-        vo.setCompanyCodeSys01REG04(pk.getCompanyCodeSys01REG04());
-        vo.setProgressiveREG04(pk.getProgressiveREG04());
+        vo.setCompanyCodeSys01REG04(companyCode);
         vo.setSubjectTypeREG04(rset.getString(1));
         vo.setName_1REG04(rset.getString(2));
         vo.setName_2REG04(rset.getString(3));
@@ -117,6 +118,7 @@ public class LoadCompanyAction implements Action {
         vo.setLawfulSiteREG04(rset.getString(14));
         vo.setNoteREG04(rset.getString(15));
         vo.setCurrencyCodeReg03(rset.getString(16));
+        vo.setProgressiveREG04(rset.getBigDecimal(17));
         rset.close();
 
       }

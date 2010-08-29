@@ -38,7 +38,6 @@ public class TaskVO extends BaseValueObject {
   private java.math.BigDecimal progressiveSys10REG07;
   private String enabledREG07;
   private String descriptionSYS10;
-  private String currencyCodeReg03REG07;
   private Boolean finiteCapacityREG07;
   private String activityDescriptionREG07;
   private String activityCodeSal09REG07;
@@ -78,12 +77,6 @@ public class TaskVO extends BaseValueObject {
   }
   public void setFiniteCapacityREG07(Boolean finiteCapacityREG07) {
     this.finiteCapacityREG07 = finiteCapacityREG07;
-  }
-  public String getCurrencyCodeReg03REG07() {
-    return currencyCodeReg03REG07;
-  }
-  public void setCurrencyCodeReg03REG07(String currencyCodeReg03REG07) {
-    this.currencyCodeReg03REG07 = currencyCodeReg03REG07;
   }
   public String getActivityDescriptionREG07() {
     return activityDescriptionREG07;

@@ -34,6 +34,7 @@ import org.openswing.swing.table.client.GridController;
 import org.jallinone.purchases.documents.java.GridPurchaseDocRowVO;
 import org.jallinone.purchases.items.java.SupplierItemVO;
 import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import java.util.HashSet;
 
 
 /**
@@ -64,7 +65,7 @@ import org.jallinone.hierarchies.java.HierarchyLevelVO;
  * @author Mauro Carniel
  * @version 1.0
  */
-public class InDeliveryNoteRowsGridPanel extends JPanel {
+public class InDeliveryNoteRowsGridPanel extends JPanel implements GenericButtonController {
 
   BorderLayout borderLayout1 = new BorderLayout();
   JPanel buttonsPanel = new JPanel();
@@ -435,6 +436,19 @@ public class InDeliveryNoteRowsGridPanel extends JPanel {
 
 
   /**
+   * Method called by GenericButton.setEnabled method to check if the button must be disabled.
+   * @param button button whose abilitation must be checked
+   * @return <code>true</code> if no policy is defined in the form/grid for the specified button, <code>false</code> if there exists a disabilitation policy for the specified button (through addButtonsNotEnabledOnState form/grid method)
+   */
+  public boolean isButtonDisabled(GenericButton button) {
+    if (parentVO!=null && parentVO.getDocStateDOC08()!=null && parentVO.getDocStateDOC08().equals(ApplicationConsts.CLOSED))
+      return true;
+    else
+      return false;
+  }
+
+
+  /**
    * Retrieve item types and fill in the item types combo box.
    */
   private void init() {
@@ -469,6 +483,14 @@ public class InDeliveryNoteRowsGridPanel extends JPanel {
         }
       }
     });
+
+    HashSet buttonsToDisable = new HashSet();
+    buttonsToDisable.add(insertButton1);
+    buttonsToDisable.add(copyButton1);
+    buttonsToDisable.add(editButton1);
+    buttonsToDisable.add(deleteButton1);
+    grid.addButtonsNotEnabled(buttonsToDisable,this);
+
   }
 
 
@@ -853,6 +875,7 @@ public class InDeliveryNoteRowsGridPanel extends JPanel {
           }
           else {
             getFrame().enabledConfirmButton();
+            frame.getHeaderFormPanel().reload();
           }
         }
         catch (Exception ex) {

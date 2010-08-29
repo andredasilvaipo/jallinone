@@ -103,6 +103,7 @@ public class SaleCustomerHeadPanel extends JPanel {
       customerController.addLookup2ParentLink("paymentCodeReg10SAL07", "paymentCodeReg10DOC01");
       customerController.addLookup2ParentLink("paymentDescriptionSAL07", "paymentDescriptionDOC01");
       customerController.addLookup2ParentLink("vatCodeReg01SAL07", "customerVatCodeReg01DOC01");
+      customerController.addLookup2ParentLink("noteREG04", "deliveryNoteDOC01");
       customerController.setAllColumnVisible(false);
       customerController.setVisibleColumn("companyCodeSys01REG04", true);
       customerController.setFilterableColumn("companyCodeSys01REG04", true);

@@ -52,7 +52,7 @@ import net.sf.jasperreports.view.JRViewer;
  * @author Mauro Carniel
  * @version 1.0
  */
-public class OutDeliveryNoteFrame extends InternalFrame {
+public class OutDeliveryNoteFrame extends InternalFrame implements GenericButtonController  {
 
   /** detail form controller */
   private OutDeliveryNoteController controller = null;
@@ -99,6 +99,22 @@ public class OutDeliveryNoteFrame extends InternalFrame {
 
 
   /**
+   * Method called by GenericButton.setEnabled method to check if the button must be disabled.
+   * @param button button whose abilitation must be checked
+   * @return <code>true</code> if no policy is defined in the form/grid for the specified button, <code>false</code> if there exists a disabilitation policy for the specified button (through addButtonsNotEnabledOnState form/grid method)
+   */
+  public boolean isButtonDisabled(GenericButton button) {
+    DetailDeliveryNoteVO vo = null;
+    if (headerFormPanel!=null && headerFormPanel.getVOModel()!=null)
+      vo = (DetailDeliveryNoteVO)headerFormPanel.getVOModel().getValueObject();
+    if (vo!=null && vo.getDocStateDOC08()!=null && vo.getDocStateDOC08().equals(ApplicationConsts.CLOSED))
+      return true;
+    else
+      return false;
+  }
+
+
+  /**
    * Define input controls editable settings according to the document state.
    */
   private void init() {
@@ -125,6 +141,12 @@ public class OutDeliveryNoteFrame extends InternalFrame {
     attributeNameToDisable.add("countryDOC08");
     attributeNameToDisable.add("zipDOC08");
     headerFormPanel.addInputControlAttributesNotEditableOnState(attributeNameToDisable,"docStateDOC08",ApplicationConsts.CLOSED);
+
+
+    HashSet buttonsToDisable = new HashSet();
+    buttonsToDisable.add(editButton1);
+    buttonsToDisable.add(deleteButton1);
+    headerFormPanel.addButtonsNotEnabled(buttonsToDisable,this);
 
   }
 
@@ -197,6 +219,8 @@ public class OutDeliveryNoteFrame extends InternalFrame {
 
   public void loadDataCompleted(boolean error,DeliveryNotePK pk) {
     DetailDeliveryNoteVO vo = (DetailDeliveryNoteVO)headerFormPanel.getVOModel().getValueObject();
+
+    this.setTitle(ClientSettings.getInstance().getResources().getResource("out delivery note")+(vo.getDocSequenceDOC08()!=null?" - "+vo.getDocYearDOC08()+"/"+vo.getDocSequenceDOC08():"")+" - "+vo.getName_1REG04()+" "+(vo.getName_2REG04()==null?"":vo.getName_2REG04()));
 
     rowsPanel.setParentVO(vo);
     rowsPanel.getGrid().getOtherGridParams().put(ApplicationConsts.DELIVERY_NOTE_PK,pk);

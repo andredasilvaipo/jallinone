@@ -48,7 +48,7 @@ public class GridCustomerVO extends ValueObjectImpl implements Subject {
   private String paymentDescriptionSAL07;
   private String vatCodeReg01SAL07;
   private String creditAccountCodeAcc02SAL07;
-
+  private String noteREG04;
 
 
   public GridCustomerVO() {
@@ -138,6 +138,12 @@ public class GridCustomerVO extends ValueObjectImpl implements Subject {
   }
   public void setCreditAccountCodeAcc02SAL07(String creditAccountCodeAcc02SAL07) {
     this.creditAccountCodeAcc02SAL07 = creditAccountCodeAcc02SAL07;
+  }
+  public String getNoteREG04() {
+    return noteREG04;
+  }
+  public void setNoteREG04(String noteREG04) {
+    this.noteREG04 = noteREG04;
   }
 
 }

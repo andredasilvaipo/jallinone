@@ -22,6 +22,7 @@ import org.jallinone.system.java.ButtonCompanyAuthorizations;
 import java.util.HashMap;
 import org.jallinone.sales.documents.client.SaleDocument;
 import org.openswing.swing.mdi.client.InternalFrame;
+import org.openswing.swing.util.client.ClientSettings;
 
 
 /**
@@ -102,6 +103,7 @@ public class SaleCreditDocController extends CompanyFormController {
       frame.getChargePanel().getGrid().clearData();
       frame.getActPanel().getGrid().clearData();
       frame.setButtonsEnabled(false);
+      frame.setTitle(ClientSettings.getInstance().getResources().getResource("credit note"));
     }
     return ok;
   }

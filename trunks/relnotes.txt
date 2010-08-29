@@ -6,8 +6,17 @@ Release Notes 1.0
 Updated OpenSwing library version to 2.2.6
 Added "Orders tracking" feature with links to tracked documents
 Added support for barcodes at item level and at level of combination of item variants; supported barcode formats: EAN13, EAN128, Code128/A/B/C, Code39 Extended
-Added print barcode labels feature, in order to print barcodes from a purchase order or from a list of specified items
-Added costs calculus to item detail
+Added "print barcode labels" feature, in order to print barcodes from a purchase order or from a list of specified items
+Added prices definition for sales and purchases at variants level: it is possible to define a price for a combination of item's variants
+Added average/last costs calculus to item detail
+Other improvements:
+- added "point of sale" frame, to use with PCs POS 
+- added sub variants and variants for items
+- association variants combination to item
+- added variants support in sale documents, purchase documents and warehouse documents
+- improved the content of item detail and sale and purchase documents (title, input controls layout)
+- improved layout and usage of warehouse detail folders
+- improved in/out delivery notes (D.N.): now notes included in customer/supplier/orders related to the D.N. are automatically reported in D.N.
 Major bug fixes:
 - fixed problem when deleting an item type
 - fixed problem when creating customers (private or companies)
@@ -18,15 +27,9 @@ Major bug fixes:
 - fixed some translations in english, italian, portuguese/brazilian, spanish within xml files
 - fixed problem on defining customer and warehouse codes for retail sale
 - fixed problem in many frames related to company selection
-- fixed problemwhen attaching documents in document management
-Other improvements:
-- simplified features: activities, duties and rates
-- improved layout of item detail and sale and purchase documents
-- added sub variants and variants for items
-- association variants combination to item
-- variants support in sale documents, purchase documents and warehouse documents
-- added "point of sale" frame, to use with  POS hardware
-- improved layout and usage of warehouse detail folders
+- fixed problem when attaching documents in document management
+- fixed problem when creating call-out requests
+- fixed problem with toolbars in all documents when they are in closed/confirmed state
 This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
 
 

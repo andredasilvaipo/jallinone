@@ -16,6 +16,7 @@ import org.jallinone.system.java.ButtonCompanyAuthorizations;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.commons.client.CompanyGridController;
 import org.openswing.swing.client.GridControl;
+import org.jallinone.subjects.java.OrganizationVO;
 
 
 /**
@@ -118,6 +119,33 @@ public class SaleActivitiesController extends CompanyGridController {
     return grid.isFieldEditable(row,attributeName);
   }
 
+
+  /**
+   * Callback method invoked when the user has clicked on the insert button
+   * @param valueObject empty value object just created: the user can manage it to fill some attribute values
+   */
+  public void createValueObject(ValueObject valueObject) throws Exception {
+    SaleActivityVO vo = (SaleActivityVO)valueObject;
+    if (vo.getCompanyCodeSys01SAL09()==null) {
+      // retrieve company code...
+      ClientApplet applet = ( (ApplicationClientFacade) MDIFrame.getInstance().getClientFacade()).getMainClass();
+      ButtonCompanyAuthorizations bca = applet.getAuthorizations().getCompanyBa();
+      ArrayList companiesList = bca.getCompaniesList(gridFrame.getGrid().getFunctionId());
+      if (companiesList.size()==1) {
+        vo.setCompanyCodeSys01SAL09(companiesList.get(0).toString());
+      }
+
+      if (vo.getCompanyCodeSys01SAL09()!=null) {
+        // set default currency code...
+        Response res = ClientUtils.getData("loadCompany",vo.getCompanyCodeSys01SAL09());
+        if (!res.isError()) {
+          OrganizationVO compVO = (OrganizationVO)((VOResponse)res).getVo();
+          vo.setCurrencyCodeReg03SAL09(compVO.getCurrencyCodeReg03());
+        }
+      }
+    }
+
+  }
 
 
 }

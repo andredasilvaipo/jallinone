@@ -89,7 +89,7 @@ public class CompanyController extends FormController {
    * @return a VOResponse object if data loading is successfully completed, or an ErrorResponse object if an error occours
    */
   public Response loadData(Class valueObjectClass) {
-    return ClientUtils.getData("loadCompany",new SubjectPK(companyCodeSys01REG04,progressiveREG04));
+    return ClientUtils.getData("loadCompany",companyCodeSys01REG04);
   }
 
 
