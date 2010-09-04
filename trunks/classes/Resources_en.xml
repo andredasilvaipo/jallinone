@@ -1473,7 +1473,19 @@
   <object key="supplierCustomerCodeDOC08" value="Customer/Supplier code" />
   <object key="Error while validating data:" value="The following input controls are not valid:" />
   <object key="Validation Error" value="Data not correct" />
-  <object key="" value="" />
+  <object key="pivot table for sales" value="Pivot table for sales" />
+  <object key="sellAmount" value="Amount" />
+  <object key="sellQty" value="Qty" />
+  <object key="data fields" value="Data fields" />
+  <object key="row fields" value="Row fields" />
+  <object key="column fields" value="Column fields" />
+  <object key="warehouseCodeWar01DOC01" value="Warehouse" />
+  <object key="year" value="Year" />
+  <object key="quarter" value="Quarter" />
+  <object key="pivot table settings" value="Pivot table settings" />
+  <object key="field" value="Field" />
+  <object key="checked" value="Checked" />
+  <object key="Error on reading data in input." value="Error on reading data in input." />
   <object key="" value="" />
   <object key="" value="" />
   <object key="" value="" />

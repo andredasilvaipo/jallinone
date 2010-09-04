@@ -78,6 +78,7 @@ import java.sql.PreparedStatement;
 import org.jallinone.ordertracking.server.LoadOrderTrackingAction;
 import org.jallinone.items.server.DeleteBarcodeLabelsDataAction;
 import org.jallinone.purchases.documents.server.CreateBarcodeLabelsDataFromPurchaseDocAction;
+import org.jallinone.sales.reports.server.SalesPivotAction;
 
 
 /**
@@ -743,6 +744,8 @@ public class ApplicationActionClasses extends ActionsCollection {
     a = new LoadSupplierVariantsPricesAction(); put(a.getRequestName(),a);
     a = new UpdateSupplierVariantsPricesAction(); put(a.getRequestName(),a);
     a = new LoadVariantsPriceAction(); put(a.getRequestName(),a);
+
+    a = new SalesPivotAction(); put(a.getRequestName(),a);
 
 
 

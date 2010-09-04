@@ -1470,6 +1470,20 @@
   <object key="supplierCustomerCodeDOC08" value="Codice cliente/forn." />
   <object key="Error while validating data:" value="I seguenti controlli di input non sono validi:" />
   <object key="Validation Error" value="Dati non corretti" />
+  <object key="pivot table for sales" value="Tabella pivot delle vendite" />
+  <object key="sellAmount" value="Importo" />
+  <object key="sellQty" value="Qt&#224;" />
+  <object key="data fields" value="Campi dato" />
+  <object key="row fields" value="Campi riga" />
+  <object key="column fields" value="Campi colonna" />
+  <object key="warehouseCodeWar01DOC01" value="Magazzino" />
+  <object key="year" value="Anno" />
+  <object key="quarter" value="Trimestre" />
+  <object key="pivot table settings" value="Impostazioni tabella pivot" />
+  <object key="field" value="Campo" />
+  <object key="checked" value="Selez." />
+  <object key="Error on reading data in input." value="Errore durante la lettura dei dati dalla sorgente di input." />
+
 
 <!-- application translations -->
 

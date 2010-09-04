@@ -88,6 +88,7 @@ import org.jallinone.variants.client.*;
 import org.jallinone.sales.pos.client.*;
 import org.jallinone.ordertracking.client.OrderTrackingFrame;
 import org.jallinone.items.client.PrintBarcodeLabelsFrame;
+import org.jallinone.sales.reports.client.SalesPivotFrame;
 
 
 /**
@@ -948,6 +949,11 @@ public class ApplicationClientFacade implements ClientFacade {
 
   public void printBarcodeLabels() {
     new PrintBarcodeLabelsFrame();
+  }
+
+
+  public void getSalesPivotFrame() {
+    new SalesPivotFrame();
   }
 
 
