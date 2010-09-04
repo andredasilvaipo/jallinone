@@ -33,7 +33,7 @@ import java.math.BigDecimal;
  */
 public class ApplicationConsts {
 
-  public static final String DB_VERSION = "1.0";
+  public static final int DB_VERSION = 2;
 
   public static final String DO_NOT_ADD_ENABLED = "DO_NOT_ADD_ENABLED";
 
@@ -235,6 +235,7 @@ public class ApplicationConsts {
   public static final String IN_DELIVERY_NOTE_DOC_TYPE = "I";
   public static final String OUT_DELIVERY_NOTE_DOC_TYPE = "O";
 
+  public static final String DELIVERY_REQUEST_DOC_TYPE = "Y";
   public static final String SALE_ORDER_DOC_TYPE = "O";
   public static final String SALE_CONTRACT_DOC_TYPE = "C";
   public static final String SALE_ESTIMATE_DOC_TYPE = "E";
@@ -264,6 +265,7 @@ public class ApplicationConsts {
   public static final String WAREHOUSE_MOTIVE_LOAD_BY_ORDER = "L";
   public static final String WAREHOUSE_MOTIVE_UNLOAD_BY_ORDER = "U";
   public static final String WAREHOUSE_MOTIVE_UNLOAD_BY_CONTRACT = "C";
+  public static final String WAREHOUSE_MOTIVE_UNLOAD_BY_DELIV_REQ = "Y";
   public static final String WAREHOUSE_MOTIVE_DIRECTLY_UNLOAD = "D";
   public static final String WAREHOUSE_MOTIVE_UNLOAD_BY_PRODUCTION = "P";
   public static final String WAREHOUSE_MOTIVE_LOAD_BY_PRODUCTION = "R";

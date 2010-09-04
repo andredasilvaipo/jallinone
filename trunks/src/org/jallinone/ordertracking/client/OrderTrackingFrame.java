@@ -136,6 +136,7 @@ public class OrderTrackingFrame extends InternalFrame {
     docTypeDomain.addDomainPair(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE,"sale estimate");
     docTypeDomain.addDomainPair(ApplicationConsts.PURCHASE_ORDER_DOC_TYPE,"purchase order");
     docTypeDomain.addDomainPair(ApplicationConsts.IN_DELIVERY_NOTE_DOC_TYPE,"in delivery note");
+    docTypeDomain.addDomainPair(ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE,"delivery request");
     docTypeDomain.addDomainPair(ApplicationConsts.OUT_DELIVERY_NOTE_DOC_TYPE,"out delivery note");
     docTypeDomain.addDomainPair(ApplicationConsts.SALE_INVOICE_DOC_TYPE,"sale invoice");
     docTypeDomain.addDomainPair(ApplicationConsts.SALE_INVOICE_FROM_DN_DOC_TYPE,"sale invoice from delivery notes");

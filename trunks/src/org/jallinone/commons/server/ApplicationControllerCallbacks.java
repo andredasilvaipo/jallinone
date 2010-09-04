@@ -4,6 +4,7 @@ import org.openswing.swing.server.*;
 import javax.servlet.ServletContext;
 import java.sql.*;
 import org.jallinone.events.server.EventsManager;
+import org.jallinone.startup.server.UpgradeBean;
 //import net.sf.jasperreports.engine.util.JRProperties;
 
 
@@ -46,6 +47,12 @@ public class ApplicationControllerCallbacks extends ControllerCallbacks {
    */
   public void afterInit(ServletContext context) {
     EventsManager.getInstance();
+
+    // check for additional sql scripts...
+    if (ConnectionManager.isConnectionSourceCreated()) {
+      new UpgradeBean().maybeUpgradeDB(context);
+    }
+
 //    JRProperties.setPropertiesPath(context.getRealPath("/"));
 //    System.out.println("->"+context.getRealPath("/"));
   }

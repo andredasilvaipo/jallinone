@@ -1,5 +1,18 @@
 
 
+Release Notes 1.1
+---------------------
+
+Now it is possible to automatically upgrade from database/application from 1.0 version, 
+simply by replacing the new .war file and reusing WEB-INF/classes/pooler.ini existing file
+Updated OpenSwing library version to 2.2.7
+Added "pivot table for sales" functionality
+Added "delivery requests" functionality, binded to sales orders/contracts
+Added a report for the delivery request document
+Added creation of out delivery notes starting from a collection of delivery requests
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
 Release Notes 1.0
 ---------------------
 

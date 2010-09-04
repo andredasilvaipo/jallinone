@@ -69,13 +69,9 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
   JPanel buttonsPanel = new JPanel();
   JSplitPane splitPane = new JSplitPane();
   FlowLayout flowLayout1 = new FlowLayout();
-  InsertButton insertButton1 = new InsertButton();
-  EditButton editButton1 = new EditButton();
-  SaveButton saveButton1 = new SaveButton();
   ReloadButton reloadButton1 = new ReloadButton();
   DeleteButton deleteButton1 = new DeleteButton();
   NavigatorBar navigatorBar1 = new NavigatorBar();
-  CopyButton copyButton1 = new CopyButton();
   GridControl grid = new GridControl();
   GridBagLayout gridBagLayout1 = new GridBagLayout();
   ExportButton exportButton1 = new ExportButton();
@@ -90,14 +86,6 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
   /** grid data locator */
   private ServerGridDataLocator gridDataLocator = new ServerGridDataLocator();
 
-  /** item code lookup controller */
-  LookupController itemController = new LookupController();
-
-  /** item code lookup data locator */
-  LookupServerDataLocator itemDataLocator = new LookupServerDataLocator();
-
-  LookupServerDataLocator levelDataLocator = new LookupServerDataLocator();
-  TreeServerDataLocator treeLevelDataLocator = new TreeServerDataLocator();
 
   /** header panel */
   private Form headerPanel = null;
@@ -108,8 +96,8 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
   private Form detailPanel = new Form();
 
   IntegerColumn colYear = new IntegerColumn();
-  CodLookupColumn colDocNumLookup = new CodLookupColumn();
-  CodLookupColumn colItemCodeLookup = new CodLookupColumn();
+  IntegerColumn colDocNum = new IntegerColumn();
+  TextColumn colItemCode = new TextColumn();
   ComboColumn colItemType = new ComboColumn();
 
   LookupController docRefController = new LookupController();
@@ -123,7 +111,7 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
   TreeServerDataLocator treeLevelPosDataLocator = new TreeServerDataLocator();
   GridBagLayout gridBagLayout2 = new GridBagLayout();
   TitledBorder titledBorder2;
-  LabelControl labelSaleDocNr = new LabelControl();
+  LabelControl labelDelivReq = new LabelControl();
   CodLookupControl controlSaleDocNr = new CodLookupControl();
   LabelControl labelDocYear = new LabelControl();
   NumericControl controlDocYear = new NumericControl();
@@ -153,7 +141,6 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
   private boolean serialNumberRequired = false;
 
   ComboColumn colDocType = new ComboColumn();
-  ComboBoxControl controlDocType = new ComboBoxControl();
 
 
 
@@ -177,11 +164,11 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
       docRefDataLocator.setGridMethodName("loadSaleDocs");
       docRefDataLocator.setValidationMethodName("validateSaleDocNumber");
       docRefController.setLookupDataLocator(docRefDataLocator);
+      docRefDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_TYPE,ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE);
+      docRefDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_TYPE,ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE);
       docRefDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CONFIRMED);
       docRefDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CONFIRMED);
 
-      colDocNumLookup.setAllowOnlyNumbers(true);
-      colDocNumLookup.setLookupController(docRefController);
       docRefController.setFrameTitle("confirmed sale documents");
       docRefController.setLookupValueObjectClassName("org.jallinone.sales.documents.java.GridSaleDocVO");
       docRefController.addLookup2ParentLink("docTypeDOC01","docTypeDoc01DOC10");
@@ -217,63 +204,6 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
 
       });
 
-
-      // item code lookup...
-      itemDataLocator.setGridMethodName("loadItems");
-      itemDataLocator.setValidationMethodName("validateItemCode");
-
-      itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.SHOW_ITEMS_WITHOUT_VARIANTS,Boolean.TRUE);
-      itemDataLocator.getLookupFrameParams().put(ApplicationConsts.SHOW_ITEMS_WITHOUT_VARIANTS,Boolean.TRUE);
-
-      colItemCodeLookup.setLookupController(itemController);
-      colItemCodeLookup.setControllerMethodName("getItemsList");
-      itemController.setLookupDataLocator(itemDataLocator);
-      itemController.setFrameTitle("items");
-      itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
-      treeLevelDataLocator.setServerMethodName("loadHierarchy");
-      itemDataLocator.setTreeDataLocator(treeLevelDataLocator);
-      itemDataLocator.setNodeNameAttribute("descriptionSYS10");
-      itemController.setLookupValueObjectClassName("org.jallinone.items.java.GridItemVO");
-      itemController.addLookup2ParentLink("itemCodeITM01", "itemCodeItm01DOC10");
-      itemController.addLookup2ParentLink("descriptionSYS10", "descriptionSYS10");
-      itemController.addLookup2ParentLink("minSellingQtyUmCodeReg02ITM01","umCodeREG02");
-      itemController.addLookup2ParentLink("decimalsREG02","decimalsREG02");
-      itemController.setAllColumnVisible(false);
-      itemController.setVisibleColumn("itemCodeITM01", true);
-      itemController.setVisibleColumn("descriptionSYS10", true);
-      itemController.setPreferredWidthColumn("descriptionSYS10", 200);
-      itemController.setFramePreferedSize(new Dimension(650,500));
-      itemController.addLookupListener(new LookupListener() {
-
-        public void codeValidated(boolean validated) {}
-
-        public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {
-
-          // fill in the grid v.o., according to the selected item settings...
-          GridOutDeliveryNoteRowVO vo = (GridOutDeliveryNoteRowVO)grid.getVOListTableModel().getObjectForRow(grid.getSelectedRow());
-          if (vo.getItemCodeItm01DOC10()==null || vo.getItemCodeItm01DOC10().equals("")) {
-            vo.setDescriptionSYS10(null);
-            vo.setUmCodeREG02(null);
-            vo.setQtyDOC10(null);
-            vo.setQtyDOC10(null);
-            serialNumberRequired = false;
-          }
-          else {
-            grid.repaint();
-            serialNumberRequired = ((GridItemVO)itemController.getLookupVO()).getSerialNumberRequiredITM01().booleanValue();
-          }
-
-        }
-
-        public void beforeLookupAction(ValueObject parentVO) {
-          GridOutDeliveryNoteRowVO vo = (GridOutDeliveryNoteRowVO)grid.getVOListTableModel().getObjectForRow(grid.getSelectedRow());
-          treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02DOC10());
-          itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02DOC10());
-        }
-
-        public void forceValidate() {}
-
-      });
 
       // warehouse position code lookup...
       colPositionLookup.setLookupController(posController);
@@ -311,6 +241,8 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
       saleDocDataLocator.setGridMethodName("loadSaleDocs");
       saleDocDataLocator.setValidationMethodName("validateSaleDocNumber");
       saleDocController.setLookupDataLocator(saleDocDataLocator);
+      saleDocDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_TYPE,ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE);
+      saleDocDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_TYPE,ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE);
       saleDocDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CONFIRMED);
       saleDocDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CONFIRMED);
 
@@ -360,9 +292,12 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
         }
 
         public void beforeLookupAction(ValueObject parentVO) {
-          GridOutDeliveryNoteRowVO vo = (GridOutDeliveryNoteRowVO)detailPanel.getVOModel().getValueObject();
-          saleDocDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_TYPE,vo.getDocTypeDoc01DOC10());
-          saleDocDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_TYPE,vo.getDocTypeDoc01DOC10());
+          saleDocDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_TYPE,ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE);
+          saleDocDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_TYPE,ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE);
+
+//          GridOutDeliveryNoteRowVO vo = (GridOutDeliveryNoteRowVO)detailPanel.getVOModel().getValueObject();
+//          saleDocDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_TYPE,vo.getDocTypeDoc01DOC10());
+//          saleDocDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_TYPE,vo.getDocTypeDoc01DOC10());
         }
 
         public void forceValidate() {}
@@ -465,37 +400,11 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
         d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
       }
     }
-
     colItemType.setDomain(d);
-    colItemType.addItemListener(new ItemListener() {
-      public void itemStateChanged(ItemEvent e) {
-
-        if (e.getStateChange()==e.SELECTED && grid.getMode()!=Consts.READONLY) {
-          GridOutDeliveryNoteRowVO vo = (GridOutDeliveryNoteRowVO)grid.getVOListTableModel().getObjectForRow(grid.getSelectedRow());
-          vo.setItemCodeItm01DOC10(null);
-          vo.setDescriptionSYS10(null);
-          vo.setUmCodeREG02(null);
-          vo.setQtyDOC10(null);
-          vo.setQtyDOC10(null);
-
-          int selIndex = ((JComboBox)e.getSource()).getSelectedIndex();
-          Object selValue = d.getDomainPairList()[selIndex].getCode();
-          treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,selValue);
-          itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_HIE02,selValue);
-        }
-
-      }
-
-    });
-
 
     HashSet buttonsToDisable = new HashSet();
-    buttonsToDisable.add(insertButton1);
-    buttonsToDisable.add(copyButton1);
-    buttonsToDisable.add(editButton1);
     buttonsToDisable.add(deleteButton1);
     grid.addButtonsNotEnabled(buttonsToDisable,this);
-
   }
 
 
@@ -503,7 +412,7 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
   private void jbInit() throws Exception {
     controlDocYear.setEnabled(false);
     titledBorder2 = new TitledBorder("");
-    titledBorder2.setTitle(ClientSettings.getInstance().getResources().getResource("unload items from sale document"));
+    titledBorder2.setTitle(ClientSettings.getInstance().getResources().getResource("unload items from delivery request"));
     titledBorder2.setTitleColor(Color.blue);
     this.setLayout(borderLayout1);
     buttonsPanel.setLayout(flowLayout1);
@@ -511,16 +420,12 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
     splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
     grid.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     grid.setAutoLoadData(false);
-    grid.setCopyButton(copyButton1);
     grid.setDeleteButton(deleteButton1);
-    grid.setEditButton(editButton1);
     grid.setExportButton(exportButton1);
     grid.setFunctionId("DOC08_OUT");
     grid.setMaxSortedColumns(3);
-    grid.setInsertButton(insertButton1);
     grid.setNavBar(navigatorBar1);
     grid.setReloadButton(reloadButton1);
-    grid.setSaveButton(saveButton1);
     detailPanel.setVOClassName("org.jallinone.warehouse.documents.java.GridOutDeliveryNoteRowVO");
     grid.setValueObjectClassName("org.jallinone.warehouse.documents.java.GridOutDeliveryNoteRowVO");
     colRowNum.setColumnFilterable(false);
@@ -540,21 +445,23 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
     colQty.setColumnSortable(false);
     colQty.setEditableOnEdit(true);
     colQty.setEditableOnInsert(true);
-    colQty.setPreferredWidth(50);
+    colQty.setPreferredWidth(65);
 
     colUmCode.setColumnName("umCodeREG02");
     colUmCode.setHeaderColumnName("um");
     colUmCode.setColumnSortable(false);
     colUmCode.setPreferredWidth(40);
 
-    insertButton1.setEnabled(false);
-    copyButton1.setEnabled(false);
-    saveButton1.setEnabled(false);
     deleteButton1.setEnabled(false);
     exportButton1.setEnabled(false);
-    editButton1.setEnabled(false);
 
-    colDocType.setDomainId("SALE_DOC_TYPE");
+    Domain saleDocTypeDomain = new Domain("SALE_DOC_TYPE_2");
+    saleDocTypeDomain.addDomainPair(ApplicationConsts.SALE_ORDER_DOC_TYPE,"sale order");
+    saleDocTypeDomain.addDomainPair(ApplicationConsts.SALE_CONTRACT_DOC_TYPE,"sale contract");
+    saleDocTypeDomain.addDomainPair(ApplicationConsts.SALE_DESK_DOC_TYPE,"desk selling");
+    saleDocTypeDomain.addDomainPair(ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE,"delivery request");
+
+    colDocType.setDomain(saleDocTypeDomain);
     colDocType.setColumnDuplicable(true);
     colDocType.setColumnFilterable(true);
     colDocType.setColumnName("docTypeDoc01DOC10");
@@ -562,7 +469,7 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
     colDocType.setEditableOnInsert(true);
     colDocType.setEditableOnEdit(false);
     colDocType.setHeaderColumnName("docType");
-    colDocType.setPreferredWidth(85);
+    colDocType.setPreferredWidth(110);
 
     colYear.setColumnDuplicable(true);
     colYear.setColumnFilterable(true);
@@ -571,21 +478,20 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
     colYear.setEditableOnEdit(false);
     colYear.setHeaderColumnName("docYearDoc01DOC10");
     colYear.setPreferredWidth(70);
-    colDocNumLookup.setColumnDuplicable(true);
-    colDocNumLookup.setColumnFilterable(true);
-    colDocNumLookup.setColumnName("docSequenceDoc01DOC10");
-    colDocNumLookup.setColumnSortable(true);
-    colDocNumLookup.setEditableOnEdit(false);
-    colDocNumLookup.setEditableOnInsert(true);
-    colDocNumLookup.setHeaderColumnName("docSequenceDoc01DOC10");
-    colDocNumLookup.setPreferredWidth(70);
-    colDocNumLookup.setSortVersus(org.openswing.swing.util.java.Consts.NO_SORTED);
-    colDocNumLookup.setAllowOnlyNumbers(true);
-    colItemCodeLookup.setColumnName("itemCodeItm01DOC10");
-    colItemCodeLookup.setEditableOnEdit(false);
-    colItemCodeLookup.setEditableOnInsert(true);
-    colItemCodeLookup.setPreferredWidth(90);
-    colItemCodeLookup.setMaxCharacters(20);
+    colDocNum.setColumnDuplicable(true);
+    colDocNum.setColumnFilterable(true);
+    colDocNum.setColumnName("docSequenceDoc01DOC10");
+    colDocNum.setColumnSortable(true);
+    colDocNum.setEditableOnEdit(false);
+    colDocNum.setEditableOnInsert(true);
+    colDocNum.setHeaderColumnName("docSequenceDoc01DOC10");
+    colDocNum.setPreferredWidth(70);
+    colDocNum.setSortVersus(org.openswing.swing.util.java.Consts.NO_SORTED);
+    colItemCode.setColumnName("itemCodeItm01DOC10");
+    colItemCode.setEditableOnEdit(false);
+    colItemCode.setEditableOnInsert(true);
+    colItemCode.setPreferredWidth(90);
+    colItemCode.setMaxCharacters(20);
     colItemType.setColumnName("progressiveHie02DOC10");
     colItemType.setEditableOnInsert(true);
     colItemType.setPreferredWidth(80);
@@ -600,15 +506,14 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
     colPositionLookup.setEnableCodBox(false);
     detailPanel.setLayout(gridBagLayout2);
     detailPanel.setBorder(titledBorder2);
-    labelSaleDocNr.setText("docSequenceDoc01DOC10");
+    labelDelivReq.setLabel("delivery request");
     labelDocYear.setText("docYearDoc01DOC10");
-    labelGrid.setText("sale document rows");
-    importButton.setToolTipText(ClientSettings.getInstance().getResources().getResource("import sale document rows"));
-    importButton.setText(ClientSettings.getInstance().getResources().getResource("import sale document rows"));
+    labelGrid.setText("delivery request rows");
+    importButton.setToolTipText(ClientSettings.getInstance().getResources().getResource("import delivery request rows"));
     importButton.setEnabled(false);
     importButton.addActionListener(new OutDeliveryNoteRowsGridPanel_importButton_actionAdapter(this));
     controlSaleDocNr.setEnabledOnEdit(true);
-    controlSaleDocNr.setLinkLabel(labelSaleDocNr);
+    controlSaleDocNr.setLinkLabel(labelDelivReq);
     controlSaleDocNr.setMaxCharacters(20);
     controlSaleDocNr.setAttributeName("docSequenceDoc01DOC10");
     controlDocYear.setLinkLabel(labelDocYear);
@@ -620,10 +525,6 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
     colSaleOutQty.setEditableOnEdit(false);
     this.add(buttonsPanel, BorderLayout.NORTH);
     this.add(splitPane,  BorderLayout.CENTER);
-    buttonsPanel.add(insertButton1, null);
-    buttonsPanel.add(copyButton1, null);
-    buttonsPanel.add(editButton1, null);
-    buttonsPanel.add(saveButton1, null);
     buttonsPanel.add(reloadButton1, null);
     buttonsPanel.add(exportButton1, null);
     buttonsPanel.add(deleteButton1, null);
@@ -632,22 +533,18 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
     grid.getColumnContainer().add(colRowNum, null);
     grid.getColumnContainer().add(colDocType, null);
     grid.getColumnContainer().add(colYear, null);
-    grid.getColumnContainer().add(colDocNumLookup, null);
+    grid.getColumnContainer().add(colDocNum, null);
     grid.getColumnContainer().add(colItemType, null);
-    grid.getColumnContainer().add(colItemCodeLookup, null);
+    grid.getColumnContainer().add(colItemCode, null);
     grid.getColumnContainer().add(colItemDescr, null);
     grid.getColumnContainer().add(colQty, null);
     grid.getColumnContainer().add(colUmCode, null);
     splitPane.add(detailPanel, JSplitPane.BOTTOM);
 
-    controlDocType.setDomainId("SALE_DOC_TYPE");
-    controlDocType.setAttributeName("docTypeDoc01DOC10");
 
-    detailPanel.add(labelSaleDocNr,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+    detailPanel.add(labelDelivReq,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
-    detailPanel.add(controlDocType,  new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
     detailPanel.add(controlSaleDocNr,   new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 70, 0));
@@ -714,15 +611,9 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
 
   public void setButtonsEnabled(boolean enabled) {
     if (enabled) {
-      insertButton1.setEnabled(enabled);
       reloadButton1.setEnabled(enabled);
-      copyButton1.setEnabled(enabled);
     }
     else {
-      copyButton1.setEnabled(enabled);
-      insertButton1.setEnabled(enabled);
-      editButton1.setEnabled(enabled);
-      saveButton1.setEnabled(enabled);
       deleteButton1.setEnabled(enabled);
       exportButton1.setEnabled(enabled);
       reloadButton1.setEnabled(enabled);
@@ -733,9 +624,6 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
 
   public void setParentVO(DetailDeliveryNoteVO parentVO) {
     this.parentVO = parentVO;
-
-    itemDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC08());
-    itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC08());
 
     docRefDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC08());
     docRefDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC08());
@@ -760,12 +648,9 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
 
     if (parentVO.getDocStateDOC08().equals(ApplicationConsts.CLOSED)) {
       controlSaleDocNr.setEnabled(false);
-      controlDocType.setEnabled(false);
     }
     else {
       controlSaleDocNr.setEnabled(true);
-      controlDocType.setEnabled(true);
-      controlDocType.getComboBox().setSelectedIndex(0);
     }
   }
 

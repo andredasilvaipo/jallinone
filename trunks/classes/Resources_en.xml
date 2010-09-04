@@ -675,7 +675,7 @@
   <object key="import purchase order rows" value="Import Buying Order Rows" />
   <object key="purchaseOrder" value="Buying Order" />
   <object key="confirmed purchase orders" value="Confirmed buying orders" />
-  <object key="unload items from sale document" value="Unload items from sale document" />
+  <object key="unload items from delivery request" value="Unload items from delivery request" />
   <object key="docSequenceDoc01DOC01" value="Sell.Doc. Nr." />
   <object key="docSequenceDOC01" value="Sell.Doc. Nr." />
   <object key="docSequenceDoc06DOC06" value="Pur.Doc. Nr." />
@@ -697,7 +697,7 @@
   <object key="itemCodeItm01DOC10" value="Item Code" />
   <object key="confirmed sale documents" value="Confirmed sale documents" />
   <object key="sale document rows" value="Sale document rows" />
-  <object key="import sale document rows" value="Import sale document rows" />
+  <object key="import delivery request rows" value="Import delivery request rows" />
 
   <object key="locationDescriptionSYS10" value="Item bin" />
   <object key="itemCodeItm01WAR03" value="Item Code" />
@@ -1486,10 +1486,10 @@
   <object key="field" value="Field" />
   <object key="checked" value="Checked" />
   <object key="Error on reading data in input." value="Error on reading data in input." />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
+  <object key="delivery request" value="Delivery request" />
+  <object key="delivery requests" value="Delivery requests" />
+  <object key="deliveryDateDOC01" value="Delivery Date" />
+  <object key="delivery request rows" value="Delivery request rows" />
   <object key="" value="" />
   <object key="" value="" />
   <object key="" value="" />

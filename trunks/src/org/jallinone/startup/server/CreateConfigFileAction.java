@@ -109,14 +109,18 @@ public class CreateConfigFileAction implements Action {
         return new ErrorResponse("Error while creating database structures:\n"+ex.getMessage());
       }
       try {
+        SQLExecutionBean executer = new SQLExecutionBean();
 
         // read file of database structures...
-        executeSQL(conn,vo,"defsql.ini");
+        executer.executeSQL(conn,vo,"defsql.ini");
 
         // read file of insert statements...
-        executeSQL(conn,vo,"inssql_"+vo.getClientLanguageCode()+".ini");
+        executer.executeSQL(conn,vo,"inssql_"+vo.getClientLanguageCode()+".ini");
 
         conn.commit();
+
+        new UpgradeBean().maybeUpgradeDB(servletContext);
+
       }
       catch (Throwable ex) {
         Logger.error("NONAME",this.getClass().getName(),"executeCommand","Error while creating database structures",ex);
@@ -138,273 +142,8 @@ public class CreateConfigFileAction implements Action {
 
 
 
-  /**
-   * Execute the SQL scripts contained in the specified file.
-   * @param fileName file to read
-   */
-  private void executeSQL(Connection conn,DbConnVO vo,String fileName) throws Throwable {
-    PreparedStatement pstmt = null;
-    StringBuffer sql = new StringBuffer("");
-    try {
-      BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/" + fileName)));
-      String line = null;
-      ArrayList vals = new ArrayList();
-      int pos = -1;
-      String oldfk = null;
-      String oldIndex = null;
-      StringBuffer newIndex = null;
-      StringBuffer newfk = null;
-      ArrayList fks = new ArrayList();
-      ArrayList indexes = new ArrayList();
-      boolean fkFound = false;
-      boolean indexFound = false;
-      String defaultValue = null;
-      boolean useDefaultValue =
-          conn.getMetaData().getDriverName().equals("oracle.jdbc.driver.OracleDriver") ||
-          conn.getMetaData().getDriverName().equals("com.microsoft.jdbc.sqlserver.SQLServerDriver") ||
-          conn.getMetaData().getDriverName().equals("com.mysql.jdbc.Driver");
-      while ( (line = br.readLine()) != null) {
-        sql.append(' ').append(line);
-        if (line.endsWith(";")) {
-          if (vo.getDriverName().equals("oracle.jdbc.driver.OracleDriver")) {
-            sql = replace(sql, " VARCHAR(", " VARCHAR2(");
-            sql = replace(sql, " NUMERIC(", " NUMBER(");
-            sql = replace(sql, " DECIMAL(", " NUMBER(");
-            sql = replace(sql, " TIMESTAMP ", " DATE ");
-            sql = replace(sql, " DATETIME ", " DATE ");
-          }
-          else if (vo.getDriverName().equals("com.microsoft.jdbc.sqlserver.SQLServerDriver")) {
-            sql = replace(sql, " TIMESTAMP ", " DATETIME ");
-            sql = replace(sql, " DATE ", " DATETIME  ");
-          }
-          else if (vo.getDriverName().toLowerCase().indexOf("postgres")!=-1) {
-            sql = replace(sql, " DATETIME ", " TIMESTAMP ");
-            sql = replace(sql, " DATE ", " TIMESTAMP ");
-          }
-          else {
-            sql = replace(sql, " DATE ", " DATETIME ");
-          }
 
 
-          sql = replace(sql,"ON DELETE NO ACTION","");
-          sql = replace(sql,"ON UPDATE NO ACTION","");
-
-          if (sql.indexOf(":COMPANY_CODE") != -1) {
-            sql = replace(sql, ":COMPANY_CODE", "'" + vo.getCompanyCode() + "'");
-          }
-          if (sql.indexOf(":COMPANY_DESCRIPTION") != -1) {
-            sql = replace(sql, ":COMPANY_DESCRIPTION",
-                          "'" + vo.getCompanyDescription() + "'");
-          }
-          if (sql.indexOf(":LANGUAGE_CODE") != -1) {
-            sql = replace(sql, ":LANGUAGE_CODE",
-                          "'" + vo.getLanguageCode() + "'");
-          }
-          if (sql.indexOf(":LANGUAGE_DESCRIPTION") != -1) {
-            sql = replace(sql, ":LANGUAGE_DESCRIPTION",
-                          "'" + vo.getLanguageDescription() + "'");
-          }
-          if (sql.indexOf(":CLIENT_LANGUAGE_CODE") != -1) {
-            sql = replace(sql, ":CLIENT_LANGUAGE_CODE",
-                          "'" + vo.getClientLanguageCode() + "'");
-          }
-          if (sql.indexOf(":PASSWORD") != -1) {
-            sql = replace(sql, ":PASSWORD", "'" + vo.getAdminPassword() + "'");
-          }
-          if (sql.indexOf(":DATE") != -1) {
-            sql = replace(sql, ":DATE", "?");
-            vals.add(new Date(System.currentTimeMillis()));
-          }
-
-          if (sql.indexOf(":CURRENCY_CODE") != -1) {
-            sql = replace(sql, ":CURRENCY_CODE", "'" + vo.getCurrencyCodeREG03() + "'");
-          }
-          if (sql.indexOf(":CURRENCY_SYMBOL") != -1) {
-            sql = replace(sql, ":CURRENCY_SYMBOL", "'" + vo.getCurrencySymbolREG03() + "'");
-          }
-          if (sql.indexOf(":DECIMALS") != -1) {
-            sql = replace(sql, ":DECIMALS", vo.getDecimalsREG03().toString());
-          }
-          if (sql.indexOf(":DECIMAL_SYMBOL") != -1) {
-            sql = replace(sql, ":DECIMAL_SYMBOL", "'" + vo.getDecimalSymbolREG03() + "'");
-          }
-          if (sql.indexOf(":THOUSAND_SYMBOL") != -1) {
-            sql = replace(sql, ":THOUSAND_SYMBOL", "'" + vo.getThousandSymbolREG03() + "'");
-          }
-
-          if (sql.indexOf(":USE_VARIANT_TYPE_1") != -1) {
-            sql = replace(sql, ":USE_VARIANT_TYPE_1", "'" + vo.getUseVariantType1() + "'");
-          }
-          if (sql.indexOf(":USE_VARIANT_TYPE_2") != -1) {
-            sql = replace(sql, ":USE_VARIANT_TYPE_2", "'" + vo.getUseVariantType2() + "'");
-          }
-          if (sql.indexOf(":USE_VARIANT_TYPE_3") != -1) {
-            sql = replace(sql, ":USE_VARIANT_TYPE_3", "'" + vo.getUseVariantType3() + "'");
-          }
-          if (sql.indexOf(":USE_VARIANT_TYPE_4") != -1) {
-            sql = replace(sql, ":USE_VARIANT_TYPE_4", "'" + vo.getUseVariantType4() + "'");
-          }
-          if (sql.indexOf(":USE_VARIANT_TYPE_5") != -1) {
-            sql = replace(sql, ":USE_VARIANT_TYPE_5", "'" + vo.getUseVariantType5() + "'");
-          }
-
-          if (sql.indexOf(":VARIANT_1") != -1) {
-            sql = replace(sql, ":VARIANT_1", "'" + (vo.getVariant1()==null || vo.getVariant1().trim().equals("")?ApplicationConsts.JOLLY:vo.getVariant1()) + "'");
-          }
-          if (sql.indexOf(":VARIANT_2") != -1) {
-            sql = replace(sql, ":VARIANT_2", "'" + (vo.getVariant2()==null || vo.getVariant2().trim().equals("")?ApplicationConsts.JOLLY:vo.getVariant2()) + "'");
-          }
-          if (sql.indexOf(":VARIANT_3") != -1) {
-            sql = replace(sql, ":VARIANT_3", "'" + (vo.getVariant3()==null || vo.getVariant3().trim().equals("")?ApplicationConsts.JOLLY:vo.getVariant3()) + "'");
-          }
-          if (sql.indexOf(":VARIANT_4") != -1) {
-            sql = replace(sql, ":VARIANT_4", "'" + (vo.getVariant4()==null || vo.getVariant4().trim().equals("")?ApplicationConsts.JOLLY:vo.getVariant4()) + "'");
-          }
-          if (sql.indexOf(":VARIANT_5") != -1) {
-            sql = replace(sql, ":VARIANT_5", "'" + (vo.getVariant5()==null || vo.getVariant5().trim().equals("")?ApplicationConsts.JOLLY:vo.getVariant5()) + "'");
-          }
-
-          if (!useDefaultValue)
-            while((pos=sql.indexOf("DEFAULT "))!=-1) {
-              defaultValue = sql.substring(pos, sql.indexOf(",", pos));
-              sql = replace(
-                  sql,
-                  defaultValue,
-                  ""
-              );
-            }
-
-          fkFound = false;
-          while((pos=sql.indexOf("FOREIGN KEY"))!=-1) {
-            oldfk = sql.substring(pos,sql.indexOf(")",sql.indexOf(")",pos)+1)+1);
-            sql = replace(
-                sql,
-                oldfk,
-                ""
-            );
-            newfk = new StringBuffer("ALTER TABLE ");
-            newfk.append(sql.substring(sql.indexOf(" TABLE ")+7,sql.indexOf("(")).trim());
-            newfk.append(" ADD ");
-            newfk.append(oldfk);
-            fks.add(newfk);
-            fkFound = true;
-          }
-
-          if (fkFound)
-            sql = removeCommasAtEnd(sql);
-
-          indexFound = false;
-          while((pos=sql.indexOf("INDEX "))!=-1) {
-            oldIndex = sql.substring(pos,sql.indexOf(")",pos)+1);
-            sql = replace(
-                sql,
-                oldIndex,
-                ""
-            );
-            newIndex = new StringBuffer("CREATE ");
-            newIndex.append(oldIndex.substring(0,oldIndex.indexOf("(")));
-            newIndex.append(" ON ");
-            newIndex.append(sql.substring(sql.indexOf(" TABLE ")+7,sql.indexOf("(")).trim());
-            newIndex.append( oldIndex.substring(oldIndex.indexOf("(")) );
-            indexes.add(newIndex);
-            indexFound = true;
-          }
-
-          if (indexFound)
-            sql = removeCommasAtEnd(sql);
-
-
-          if (sql.toString().trim().length()>0) {
-            pstmt = conn.prepareStatement(sql.toString().substring(0,sql.length() - 1));
-            for (int i = 0; i < vals.size(); i++) {
-              pstmt.setObject(i + 1, vals.get(i));
-            }
-            pstmt.execute();
-            pstmt.close();
-          }
-
-          sql.delete(0, sql.length());
-          vals.clear();
-        }
-      }
-      br.close();
-
-      for(int i=0;i<fks.size();i++) {
-        sql = (StringBuffer)fks.get(i);
-        pstmt = conn.prepareStatement(sql.toString());
-        try {
-          pstmt.execute();
-        }
-        catch (SQLException ex4) {
-          System.out.println(ex4.toString());
-        }
-        pstmt.close();
-      }
-
-      for(int i=0;i<indexes.size();i++) {
-        sql = (StringBuffer)indexes.get(i);
-        pstmt = conn.prepareStatement(sql.toString());
-        try {
-          pstmt.execute();
-        }
-        catch (SQLException ex3) {
-          System.out.println(ex3.toString());
-        }
-        pstmt.close();
-      }
-
-    }
-    catch (Throwable ex) {
-      try {
-        Logger.error("NONAME", this.getClass().getName(), "executeSQL",
-                     "Invalid SQL: " + sql, null);
-      }
-      catch (Exception ex2) {
-      }
-      throw ex;
-    }
-    finally {
-      try {
-        if (pstmt!=null)
-          pstmt.close();
-      }
-      catch (SQLException ex1) {
-      }
-    }
-  }
-
-
-  /**
-   * Remove "," symbols at the end of the script.
-   * Example: "INDEX WKF10_INSTANCE_PROPERTIES_FKIndex2(PROGRESSIVE_WKF01, PROGRESSIVE_WKF08),  , );
-   * @param sql script to analyze
-   * @return sql script, without "," symbols at the end
-   */
-  private StringBuffer removeCommasAtEnd(StringBuffer sql) {
-    int i=sql.length()-3;
-    while(i>0 && (sql.charAt(i)==' ' || sql.charAt(i)==','))
-      i--;
-    sql = sql.replace(i+1,sql.length()-2," ");
-
-    return sql;
-  }
-
-
-  /**
-   * Replace the specified pattern with the new one.
-   * @param b sql script
-   * @param oldPattern pattern to replace
-   * @param newPattern new pattern
-   * @return sql script with substitutions
-   */
-  private StringBuffer replace(StringBuffer b,String oldPattern,String newPattern) {
-    int i = 0;
-    while((i=b.indexOf(oldPattern,i))!=-1) {
-      b.replace(i,i+oldPattern.length(),newPattern);
-      i = i+oldPattern.length();
-    }
-    return b;
-  }
 
 
   /**
@@ -421,7 +160,6 @@ public class CreateConfigFileAction implements Action {
       props.setProperty("user", user);
       props.setProperty("password", password);
       props.setProperty("url", url);
-      props.setProperty("dbversion", ApplicationConsts.DB_VERSION);
       FileOutputStream out = new FileOutputStream(this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"pooler.ini");
       props.save(out,"POOLER PROPERTIES");
       try {

@@ -98,6 +98,8 @@ public class DetailSaleDocVO extends BaseValueObject {
   private java.math.BigDecimal docSequenceDoc01DOC01;
   private String sectionalDOC01;
 
+  private java.sql.Date deliveryDateDOC01;
+
 
   public DetailSaleDocVO() {
   }
@@ -480,6 +482,12 @@ public class DetailSaleDocVO extends BaseValueObject {
   }
   public void setProgressiveHie01HIE02(java.math.BigDecimal progressiveHie01HIE02) {
     this.progressiveHie01HIE02 = progressiveHie01HIE02;
+  }
+  public java.sql.Date getDeliveryDateDOC01() {
+    return deliveryDateDOC01;
+  }
+  public void setDeliveryDateDOC01(java.sql.Date deliveryDateDOC01) {
+    this.deliveryDateDOC01 = deliveryDateDOC01;
   }
 
 }

@@ -53,6 +53,7 @@ public class GridSaleDocVO extends ValueObjectImpl {
   private String decimalSymbolREG03;
   private java.math.BigDecimal docSequenceDOC01;
   private String sectionalDOC01;
+  private java.sql.Date deliveryDateDOC01;
 
 
   public GridSaleDocVO() {
@@ -184,6 +185,12 @@ public class GridSaleDocVO extends ValueObjectImpl {
   }
   public void setSectionalDOC01(String sectionalDOC01) {
     this.sectionalDOC01 = sectionalDOC01;
+  }
+  public java.sql.Date getDeliveryDateDOC01() {
+    return deliveryDateDOC01;
+  }
+  public void setDeliveryDateDOC01(java.sql.Date deliveryDateDOC01) {
+    this.deliveryDateDOC01 = deliveryDateDOC01;
   }
 
 }

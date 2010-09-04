@@ -632,7 +632,7 @@
   <object key="docSequenceDOC08" value="Del.Note Nr. "/>
   <object key="sectionalDOC01" value="Seccional"/>
   <object key="close out delivery note?" value="Fechar a nota de entrega e descarga de itens do armazém? "/>
-  <object key="unload items from sale document" value="Descarregar documento itens de venda"/>
+  <object key="unload items from delivery request" value="Unload items from delivery request" />
   <object key="out delivery notes" value="Entrega Notas Out"/>
   <object key="out delivery note" value="Fora de entrega Nota"/>
   <object key="docYearDoc01DOC10" value="Doutor. Ano"/>
@@ -644,7 +644,7 @@
   <object key="itemCodeItm01DOC10" value="Código do item"/>
   <object key="confirmed sale documents" value="Confirmado venda documentos"/>
   <object key="sale document rows" value="Venda documento fileiras"/>
-  <object key="import sale document rows" value="Importar documento venda fileiras"/>
+  <object key="import delivery request rows" value="Import delivery request rows" />
   <object key="itemCodeItm01WAR03" value="Código do item"/>
   <object key="availableQtyWAR03" value="Disponível. Qty. "/>
   <object key="damagedQtyWAR03" value="Danificado Qtd. "/>
@@ -1401,6 +1401,10 @@
   <object key="field" value="Field" />
   <object key="checked" value="Checked" />
   <object key="Error on reading data in input." value="Error on reading data in input." />
+  <object key="delivery request" value="Delivery request" />
+  <object key="delivery requests" value="Delivery requests" />
+  <object key="deliveryDateDOC01" value="Delivery Date" />
+  <object key="delivery request rows" value="Delivery request rows" />
 
 
 

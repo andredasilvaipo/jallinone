@@ -134,9 +134,10 @@ public class OrderTrackingGridPanel extends JPanel {
                  docTypeDescr.equals(res.getResource("sale generic document")))
           return false;
         if (docTypeDescr.equals(res.getResource("sale order")) ||
-                 docTypeDescr.equals(res.getResource("sale contract")) ||
-                 docTypeDescr.equals(res.getResource("desk selling")) ||
-                 docTypeDescr.equals(res.getResource("sale estimate")))
+            docTypeDescr.equals(res.getResource("sale contract")) ||
+            docTypeDescr.equals(res.getResource("desk selling")) ||
+            docTypeDescr.equals(res.getResource("sale estimate")) ||
+            docTypeDescr.equals(res.getResource("delivery request")))
           return true;
         return false;
       }
@@ -348,6 +349,17 @@ public class OrderTrackingGridPanel extends JPanel {
           new OutDeliveryNoteController(
             null,
             new DeliveryNotePK(
+              vo.getCompanyCodeSYS01(),
+              vo.getDocType(),
+              vo.getDocYear(),
+              vo.getDocNumber()
+            )
+          );
+        }
+        else if (docTypeDescr.equals(res.getResource("delivery request"))) {
+          new DeliveryRequestController(
+            null,
+            new SaleDocPK(
               vo.getCompanyCodeSYS01(),
               vo.getDocType(),
               vo.getDocYear(),

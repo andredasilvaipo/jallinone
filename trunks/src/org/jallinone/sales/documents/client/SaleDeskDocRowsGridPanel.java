@@ -976,7 +976,7 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
 
     orderedItemsPanel.getGrid().getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC01());
     orderedItemsPanel.getGrid().getOtherGridParams().put(ApplicationConsts.WAREHOUSE_CODE,parentVO.getWarehouseCodeWar01DOC01());
-    bookedItemsPanel.setEnabled(true);
+    orderedItemsPanel.setEnabled(true);
 
     setButtonsEnabled(true);
     detailPanel.setMode(Consts.READONLY);

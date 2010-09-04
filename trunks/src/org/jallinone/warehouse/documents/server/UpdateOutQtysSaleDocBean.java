@@ -23,12 +23,15 @@ import org.openswing.swing.internationalization.server.ServerResourcesFactory;
 import org.openswing.swing.internationalization.java.Resources;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.sales.documents.server.LoadSaleDocBean;
+import org.jallinone.sales.documents.java.SaleDocPK;
+import org.jallinone.sales.documents.java.DetailSaleDocVO;
 
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
  * <p>Description: Bean called on closing a delivery note to update out qty in
- * a sale document and warehouse available quantities.</p>
+ * a delivery request/sale document and warehouse available quantities.</p>
  * <p>Copyright: Copyright (C) 2006 Mauro Carniel</p>
  *
  * <p> This file is part of JAllInOne ERP/CRM application.
@@ -56,6 +59,7 @@ import org.jallinone.events.server.GenericEvent;
  */
 public class UpdateOutQtysSaleDocBean {
 
+  LoadSaleDocBean loadSaleDocBean = new LoadSaleDocBean();
   LoadOutDeliveryNoteRowsAction rowsAction = new LoadOutDeliveryNoteRowsAction();
   AddMovementBean movBean = new AddMovementBean();
 
@@ -65,7 +69,7 @@ public class UpdateOutQtysSaleDocBean {
 
 
   /**
-   * Update out qty in referred sale documents when closing an out delivery note.
+   * Update out qty in referred delivery requests/sale documents when closing an out delivery note.
    * It update warehouse available quantities too.
    * No commit/rollback is executed.
    * @return ErrorResponse in case of errors, new VOResponse(Boolean.TRUE) if qtys updating was correctly executed
@@ -73,6 +77,7 @@ public class UpdateOutQtysSaleDocBean {
   public final Response updateOutQuantities(Connection conn,DeliveryNotePK pk,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
     PreparedStatement pstmt1 = null;
     PreparedStatement pstmt2 = null;
+    PreparedStatement pstmt3 = null;
     try {
 
       // fires the GenericEvent.CONNECTION_CREATED event...
@@ -119,8 +124,17 @@ public class UpdateOutQtysSaleDocBean {
           "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
           "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? ";
 
+      String sql3 =
+          "update DOC01_SELLING set DOC_STATE=? where "+
+          "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and "+
+          " EXISTS(SELECT * FROM DOC02_SELLING_ITEMS WHERE "+
+          " COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? "+
+          " GROUP BY COMPANY_CODE_SYS01,DOC_TYPE,DOC_YEAR,DOC_NUMBER "+
+          " HAVING SUM(QTY-OUT_QTY)=0 )";
+
       pstmt1 = conn.prepareStatement(sql1);
       pstmt2 = conn.prepareStatement(sql2);
+      pstmt3 = conn.prepareStatement(sql3);
 
       // for each item row it will be updated the related sale document row and warehouse available quantities...
       GridOutDeliveryNoteRowVO vo = null;
@@ -129,8 +143,12 @@ public class UpdateOutQtysSaleDocBean {
       BigDecimal outQtyDOC02 = null;
       BigDecimal qtyToAdd = null;
       Response innerResponse = null;
+      Response saleDocRes = null;
+      DetailSaleDocVO saleDocVO = null;
       for(int i=0;i<((VOListResponse)res).getRows().size();i++) {
         vo = (GridOutDeliveryNoteRowVO)((VOListResponse)res).getRows().get(i);
+
+        // update delivery request...
         pstmt1.setString(1,vo.getCompanyCodeSys01DOC10());
         pstmt1.setString(2,vo.getDocTypeDoc01DOC10());
         pstmt1.setBigDecimal(3,vo.getDocYearDoc01DOC10());
@@ -184,11 +202,97 @@ public class UpdateOutQtysSaleDocBean {
         else
           rset1.close();
 
+        pstmt3.setString(1,ApplicationConsts.CLOSED);
+        pstmt3.setString(2,vo.getCompanyCodeSys01DOC10());
+        pstmt3.setString(3,vo.getDocTypeDoc01DOC10());
+        pstmt3.setBigDecimal(4,vo.getDocYearDoc01DOC10());
+        pstmt3.setBigDecimal(5,vo.getDocNumberDoc01DOC10());
+        pstmt3.setString(6,vo.getCompanyCodeSys01DOC10());
+        pstmt3.setString(7,vo.getDocTypeDoc01DOC10());
+        pstmt3.setBigDecimal(8,vo.getDocYearDoc01DOC10());
+        pstmt3.setBigDecimal(9,vo.getDocNumberDoc01DOC10());
+        int processedRows = pstmt3.executeUpdate();
+
+
+        // update sale document...
+        if (vo.getDocTypeDoc01DOC10().equals(ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE)) {
+          saleDocRes = loadSaleDocBean.loadSaleDoc(
+            conn,
+            new SaleDocPK(vo.getCompanyCodeSys01DOC10(),vo.getDocTypeDoc01DOC10(),vo.getDocYearDoc01DOC10(),vo.getDocNumberDoc01DOC10()),
+            userSessionPars,
+            request,
+            response,
+            userSession,
+            context
+          );
+          if (saleDocRes.isError())
+            return saleDocRes;
+          saleDocVO = (DetailSaleDocVO)((VOResponse)saleDocRes).getVo();
+
+          pstmt1.setString(1,saleDocVO.getCompanyCodeSys01DOC01());
+          pstmt1.setString(2,saleDocVO.getDocTypeDoc01DOC01());
+          pstmt1.setBigDecimal(3,saleDocVO.getDocYearDoc01DOC01());
+          pstmt1.setBigDecimal(4,saleDocVO.getDocNumberDoc01DOC01());
+          pstmt1.setString(5,vo.getItemCodeItm01DOC10());
+
+          pstmt1.setString(6,vo.getVariantTypeItm06DOC10());
+          pstmt1.setString(7,vo.getVariantCodeItm11DOC10());
+          pstmt1.setString(8,vo.getVariantTypeItm07DOC10());
+          pstmt1.setString(9,vo.getVariantCodeItm12DOC10());
+          pstmt1.setString(10,vo.getVariantTypeItm08DOC10());
+          pstmt1.setString(11,vo.getVariantCodeItm13DOC10());
+          pstmt1.setString(12,vo.getVariantTypeItm09DOC10());
+          pstmt1.setString(13,vo.getVariantCodeItm14DOC10());
+          pstmt1.setString(14,vo.getVariantTypeItm10DOC10());
+          pstmt1.setString(15,vo.getVariantCodeItm15DOC10());
+
+          rset1 = pstmt1.executeQuery();
+          if(rset1.next()) {
+            qtyDOC02 = rset1.getBigDecimal(1);
+            outQtyDOC02 = rset1.getBigDecimal(2);
+            rset1.close();
+
+            // update out qty in the sale document row...
+            if (vo.getQtyDOC10().doubleValue()<qtyDOC02.subtract(outQtyDOC02).doubleValue())
+              qtyToAdd = vo.getQtyDOC10();
+            else
+              qtyToAdd = qtyDOC02.subtract(outQtyDOC02);
+            pstmt2.setBigDecimal(1,outQtyDOC02.add(qtyToAdd).setScale(vo.getDecimalsREG02().intValue(),BigDecimal.ROUND_HALF_UP));
+            pstmt2.setString(2,saleDocVO.getCompanyCodeSys01DOC01());
+            pstmt2.setString(3,saleDocVO.getDocTypeDoc01DOC01());
+            pstmt2.setBigDecimal(4,saleDocVO.getDocYearDoc01DOC01());
+            pstmt2.setBigDecimal(5,saleDocVO.getDocNumberDoc01DOC01());
+            pstmt2.setString(6,vo.getItemCodeItm01DOC10());
+            pstmt2.setBigDecimal(7,outQtyDOC02);
+
+            pstmt2.setString(8,vo.getVariantTypeItm06DOC10());
+            pstmt2.setString(9,vo.getVariantCodeItm11DOC10());
+            pstmt2.setString(10,vo.getVariantTypeItm07DOC10());
+            pstmt2.setString(11,vo.getVariantCodeItm12DOC10());
+            pstmt2.setString(12,vo.getVariantTypeItm08DOC10());
+            pstmt2.setString(13,vo.getVariantCodeItm13DOC10());
+            pstmt2.setString(14,vo.getVariantTypeItm09DOC10());
+            pstmt2.setString(15,vo.getVariantCodeItm14DOC10());
+            pstmt2.setString(16,vo.getVariantTypeItm10DOC10());
+            pstmt2.setString(17,vo.getVariantCodeItm15DOC10());
+
+            if (pstmt2.executeUpdate()==0)
+              return new ErrorResponse("Updating not performed: the record was previously updated.");
+          }
+          else
+            rset1.close();
+
+        } // end if on deliv.req.doc.
+
+
+
         String motive = null;
         if (vo.getDocTypeDoc01DOC10().equals(ApplicationConsts.SALE_ORDER_DOC_TYPE))
           motive = ApplicationConsts.WAREHOUSE_MOTIVE_UNLOAD_BY_ORDER;
         else if (vo.getDocTypeDoc01DOC10().equals(ApplicationConsts.SALE_CONTRACT_DOC_TYPE))
           motive = ApplicationConsts.WAREHOUSE_MOTIVE_UNLOAD_BY_CONTRACT;
+        else if (vo.getDocTypeDoc01DOC10().equals(ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE))
+          motive = ApplicationConsts.WAREHOUSE_MOTIVE_UNLOAD_BY_DELIV_REQ;
 
         // update warehouse available qty..
         WarehouseMovementVO movVO = new WarehouseMovementVO(
@@ -199,9 +303,8 @@ public class UpdateOutQtysSaleDocBean {
             vo.getItemCodeItm01DOC10(),
             motive,
             ApplicationConsts.ITEM_GOOD,
-            resources.getResource("unload items from sale document")+" "+vo.getDocTypeDoc01DOC10()+"/"+vo.getDocNumberDoc01DOC10()+"/"+vo.getDocYearDoc01DOC10(),
+            resources.getResource("unload items from delivery request")+" "+vo.getDocSequenceDoc01DOC10()+"/"+vo.getDocYearDoc01DOC10(),
             vo.getSerialNumbers(),
-
             vo.getVariantCodeItm11DOC10(),
             vo.getVariantCodeItm12DOC10(),
             vo.getVariantCodeItm13DOC10(),
@@ -252,6 +355,11 @@ public class UpdateOutQtysSaleDocBean {
       }
       try {
         pstmt2.close();
+      }
+      catch (Exception ex1) {
+      }
+      try {
+        pstmt3.close();
       }
       catch (Exception ex1) {
       }

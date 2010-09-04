@@ -200,6 +200,8 @@ public class InsertSaleDocBean {
       attribute2dbField.put("docSequenceDoc01DOC01","DOC_SEQUENCE_DOC01");
       attribute2dbField.put("sectionalDOC01","DOC01_SELLING.SECTIONAL");
 
+      attribute2dbField.put("deliveryDateDOC01","DOC01_SELLING.DELIVERY_DATE");
+
       // insert into DOC01...
       Response res = CustomizeQueryUtil.insertTable(
           conn,

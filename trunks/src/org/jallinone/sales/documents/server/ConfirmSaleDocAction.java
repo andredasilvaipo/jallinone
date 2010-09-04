@@ -21,6 +21,10 @@ import org.jallinone.sales.documents.java.SaleDocPK;
 import org.jallinone.sales.documents.java.DetailSaleDocVO;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import java.sql.Date;
+import org.openswing.swing.message.send.java.GridParams;
+import org.jallinone.sales.documents.java.GridSaleDocRowVO;
+import org.jallinone.sales.documents.java.SaleDocRowPK;
 
 
 /**
@@ -53,6 +57,12 @@ import org.jallinone.events.server.GenericEvent;
  * @version 1.0
  */
 public class ConfirmSaleDocAction implements Action {
+
+  private LoadSaleDocBean bean = new LoadSaleDocBean();
+  private LoadSaleDocRowsBean rowsBean = new LoadSaleDocRowsBean();
+  private InsertSaleDocBean insBean = new InsertSaleDocBean();
+  private InsertSaleDocRowBean insRowBean = new InsertSaleDocRowBean();
+  private LoadSaleDocRowBean rowBean = new LoadSaleDocRowBean();
 
 
   public ConfirmSaleDocAction() {
@@ -93,7 +103,6 @@ public class ConfirmSaleDocAction implements Action {
 
       SaleDocPK pk = (SaleDocPK)inputPar;
 
-
       // generate progressive for doc. sequence...
       pstmt = conn.prepareStatement(
         "select max(DOC_SEQUENCE) from DOC01_SELLING where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_SEQUENCE is not null"
@@ -108,6 +117,164 @@ public class ConfirmSaleDocAction implements Action {
       rset.close();
       pstmt.close();
 
+
+      // create delivery requests from sale orders/contracts...
+      if (pk.getDocTypeDOC01().equals(ApplicationConsts.SALE_ORDER_DOC_TYPE) ||
+          pk.getDocTypeDOC01().equals(ApplicationConsts.SALE_CONTRACT_DOC_TYPE)) {
+
+        // retrieve doc header...
+        Response res = bean.loadSaleDoc(
+          conn,
+          pk,
+          userSessionPars,
+          request,
+          response,
+          userSession,
+          context
+        );
+        if (res.isError())
+          return res;
+        DetailSaleDocVO originalVO = (DetailSaleDocVO)((VOResponse)res).getVo();
+
+        // retrieve doc rows...
+        GridParams gridParams = new GridParams();
+        gridParams.getOtherGridParams().put(ApplicationConsts.SALE_DOC_PK,pk);
+        res = rowsBean.loadSaleDocRows(
+          conn,
+          gridParams,
+          userSessionPars,
+          request,
+          response,
+          userSession,
+          context
+        );
+        if (res.isError())
+          return res;
+        java.util.List rows = ((VOListResponse)res).getRows();
+
+        // group rows per delivery date...
+        GridSaleDocRowVO gridRowVO = null;
+        HashMap map = new HashMap(); // collection of couples <delivery date,list of DetailSaleDocRowVO objects having that date>
+        ArrayList dates = new ArrayList(); // list of delivery dates (to sort...)
+        ArrayList aux = null;
+        for(int i=0;i<rows.size();i++) {
+          gridRowVO = (GridSaleDocRowVO)rows.get(i);
+          aux = (ArrayList)map.get(gridRowVO.getDeliveryDateDOC02());
+          if (aux==null) {
+            aux = new ArrayList();
+            map.put(gridRowVO.getDeliveryDateDOC02(),aux);
+            dates.add(gridRowVO.getDeliveryDateDOC02());
+          }
+          aux.add(gridRowVO);
+        }
+        Date[] datesToSort = (Date[])dates.toArray(new Date[dates.size()]);
+        Arrays.sort(datesToSort);
+
+        // create delivery requests for each delivery date, ordered by date...
+        DetailSaleDocRowVO rowVO = null;
+        DetailSaleDocVO vo = null;
+        for(int i=0;i<datesToSort.length;i++) {
+          vo = (DetailSaleDocVO)originalVO.clone();
+          vo.setDocTypeDoc01DOC01(vo.getDocTypeDOC01());
+          vo.setDocYearDoc01DOC01(vo.getDocYearDOC01());
+          vo.setDocNumberDoc01DOC01(vo.getDocNumberDOC01());
+          vo.setDocSequenceDoc01DOC01(new BigDecimal(docSequenceDOC01));
+          vo.setDocRefNumberDOC01(docSequenceDOC01+"/"+vo.getDocYearDOC01());
+          vo.setDocTypeDOC01(ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE);
+          vo.setDeliveryDateDOC01(datesToSort[i]);
+          vo.setDocStateDOC01(ApplicationConsts.CONFIRMED);
+
+          // generate progressive for doc. sequence...
+          pstmt = conn.prepareStatement(
+            "select max(DOC_SEQUENCE) from DOC01_SELLING where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_SEQUENCE is not null"
+          );
+          pstmt.setString(1,pk.getCompanyCodeSys01DOC01());
+          pstmt.setString(2,vo.getDocTypeDOC01());
+          pstmt.setBigDecimal(3,pk.getDocYearDOC01());
+          rset = pstmt.executeQuery();
+          int docSequence = 1;
+          if (rset.next())
+            docSequence = rset.getInt(1)+1;
+          rset.close();
+          pstmt.close();
+
+          vo.setDocSequenceDOC01(new BigDecimal(docSequence));
+
+          res = insBean.insertSaleDoc(
+            conn,
+            vo,
+            userSessionPars,
+            request,
+            response,
+            userSession,
+            context
+          );
+          if (res.isError()) {
+            conn.rollback();
+            return res;
+          }
+
+
+          // insert rows related to the current delivery date...
+          aux = (ArrayList)map.get(datesToSort[i]);
+          for(int k=0;k<aux.size();k++) {
+            gridRowVO = (GridSaleDocRowVO)aux.get(k);
+
+            // retrieve detail...
+            res = rowBean.loadSaleDocRow(
+                conn,
+                new SaleDocRowPK(
+                  gridRowVO.getCompanyCodeSys01DOC02(),
+                  gridRowVO.getDocTypeDOC02(),
+                  gridRowVO.getDocYearDOC02(),
+                  gridRowVO.getDocNumberDOC02(),
+                  gridRowVO.getItemCodeItm01DOC02(),
+                  gridRowVO.getVariantTypeItm06DOC02(),
+                  gridRowVO.getVariantCodeItm11DOC02(),
+                  gridRowVO.getVariantTypeItm07DOC02(),
+                  gridRowVO.getVariantCodeItm12DOC02(),
+                  gridRowVO.getVariantTypeItm08DOC02(),
+                  gridRowVO.getVariantCodeItm13DOC02(),
+                  gridRowVO.getVariantTypeItm09DOC02(),
+                  gridRowVO.getVariantCodeItm14DOC02(),
+                  gridRowVO.getVariantTypeItm10DOC02(),
+                  gridRowVO.getVariantCodeItm15DOC02()
+                ),
+                userSessionPars,
+                request,
+                response,
+                userSession,
+                context
+            );
+            if (res.isError()) {
+              conn.rollback();
+              return res;
+            }
+            rowVO = (DetailSaleDocRowVO)((VOResponse)res).getVo();
+            rowVO.setDocTypeDOC02(vo.getDocTypeDOC01());
+            rowVO.setDocNumberDOC02(vo.getDocNumberDOC01());
+
+            insRowBean.insertSaleItem(
+                conn,
+                rowVO,
+                userSessionPars,
+                request,
+                response,
+                userSession,
+                context
+            );
+            if (res.isError()) {
+              conn.rollback();
+              return res;
+            }
+
+          } // end for on rows for a specified deliv.date
+
+        } // end for on delivery dates...
+
+      } // end del.req. creation for sale orders/contracts...
+
+
       pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=?,DOC_SEQUENCE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
       pstmt.setString(1,ApplicationConsts.CONFIRMED);
       pstmt.setInt(2,docSequenceDOC01);
@@ -118,21 +285,6 @@ public class ConfirmSaleDocAction implements Action {
       pstmt.execute();
 
       Response answer = new VOResponse(new BigDecimal(docSequenceDOC01));
-
-      // fires the GenericEvent.BEFORE_COMMIT event...
-      EventsManager.getInstance().processEvent(new GenericEvent(
-        this,
-        getRequestName(),
-        GenericEvent.BEFORE_COMMIT,
-        (JAIOUserSessionParameters)userSessionPars,
-        request,
-        response,
-        userSession,
-        context,
-        conn,
-        inputPar,
-        answer
-      ));
 
       conn.commit();
 

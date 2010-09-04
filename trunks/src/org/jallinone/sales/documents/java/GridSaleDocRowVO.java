@@ -62,6 +62,8 @@ public class GridSaleDocRowVO extends ValueObjectImpl {
   private String variantTypeItm10DOC02;
   private String variantCodeItm15DOC02;
 
+  private java.sql.Date deliveryDateDOC02;
+
 
   public GridSaleDocRowVO() {
   }
@@ -245,6 +247,12 @@ public class GridSaleDocRowVO extends ValueObjectImpl {
   }
   public void setVariantCodeItm11DOC02(String variantCodeItm11DOC02) {
     this.variantCodeItm11DOC02 = variantCodeItm11DOC02;
+  }
+  public java.sql.Date getDeliveryDateDOC02() {
+    return deliveryDateDOC02;
+  }
+  public void setDeliveryDateDOC02(java.sql.Date deliveryDateDOC02) {
+    this.deliveryDateDOC02 = deliveryDateDOC02;
   }
 
 

@@ -16,6 +16,7 @@ import org.jallinone.commons.java.ApplicationConsts;
 import java.util.Calendar;
 import java.math.BigDecimal;
 import org.jallinone.sales.documents.java.DetailSaleDocVO;
+import org.jallinone.items.java.ItemPK;
 
 
 /**
@@ -153,12 +154,19 @@ public class SaleEstimateDocRowController extends CompanyFormController {
     panel.getDiscountsPanel().setParentVO(panel.getParentVO(),vo);
     panel.getDiscountsPanel().getGrid().reloadData();
 
+    panel.getBookedItemsPanel().getGrid().getOtherGridParams().put(ApplicationConsts.ITEM_PK,new ItemPK(vo.getCompanyCodeSys01DOC02(),vo.getItemCodeItm01DOC02()));
     panel.getBookedItemsPanel().getControlItemType().setValue(vo.getProgressiveHie02DOC02());
     panel.getBookedItemsPanel().getControlItemCode().setValue(vo.getItemCodeItm01DOC02());
+    panel.getBookedItemsPanel().getControlItemCode().getLookupController().getLookupDataLocator().getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC02());
+    panel.getBookedItemsPanel().getControlItemCode().getLookupController().getLookupDataLocator().getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC02());
     panel.getBookedItemsPanel().getControlItemCode().getLookupController().forceValidate();
     panel.getBookedItemsPanel().getGrid().reloadData();
+
+    panel.getOrderedItemsPanel().getGrid().getOtherGridParams().put(ApplicationConsts.ITEM_PK,new ItemPK(vo.getCompanyCodeSys01DOC02(),vo.getItemCodeItm01DOC02()));
     panel.getOrderedItemsPanel().getControlItemType().setValue(vo.getProgressiveHie02DOC02());
     panel.getOrderedItemsPanel().getControlItemCode().setValue(vo.getItemCodeItm01DOC02());
+    panel.getOrderedItemsPanel().getControlItemCode().getLookupController().getLookupDataLocator().getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC02());
+    panel.getOrderedItemsPanel().getControlItemCode().getLookupController().getLookupDataLocator().getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC02());
     panel.getOrderedItemsPanel().getControlItemCode().getLookupController().forceValidate();
     panel.getOrderedItemsPanel().getGrid().reloadData();
 

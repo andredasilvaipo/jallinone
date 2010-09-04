@@ -12,6 +12,7 @@ import org.jallinone.system.server.JAIOUserSessionParameters;
 import org.jallinone.system.languages.java.*;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.commons.java.ApplicationConsts;
 
 
 /**
@@ -107,25 +108,42 @@ public class InsertLanguagesAction implements Action {
         // insert translations in SYS10...
         stmt = conn.createStatement();
         sql.delete(0,sql.length());
-        br = new BufferedReader(new InputStreamReader(new FileInputStream(
-            this.getClass().getResource("/").getPath().replaceAll("%20"," ") + "inssql_"+vo.getClientLanguageCodeSYS09()+".ini"
-        )));
-        String line = null;
-        while ( (line = br.readLine()) != null) {
-          sql.append(' ').append(line);
-          if (line.endsWith(";")) {
-            if (sql.indexOf(":LANGUAGE_CODE") != -1) {
-              sql = replace(sql, ":LANGUAGE_CODE",
-                            "'" + vo.getLanguageCodeSYS09() + "'");
-            }
-            if (sql.toString().trim().length()>0) {
-              stmt.execute(sql.toString().substring(0,sql.length() - 1));
-            }
-            sql.delete(0, sql.length());
-          }
 
+        String fileName = null;
+        String aux = "";
+
+        for(int k=1;k<=ApplicationConsts.DB_VERSION;k++) {
+          if (k>1)
+            aux = String.valueOf(k);
+
+          fileName = "inssql"+k+"_"+vo.getClientLanguageCodeSYS09()+".ini";
+          InputStream in = null;
+          try {
+            in = this.getClass().getResourceAsStream("/" + fileName);
+          }
+          catch (Exception ex5) {
+          }
+          if (in==null)
+            in = new FileInputStream(this.getClass().getResource("/").getPath().replaceAll("%20"," ") + fileName);
+
+          br = new BufferedReader(new InputStreamReader(in));
+          String line = null;
+          while ( (line = br.readLine()) != null) {
+            sql.append(' ').append(line);
+            if (line.endsWith(";")) {
+              if (sql.indexOf(":LANGUAGE_CODE") != -1) {
+                sql = replace(sql, ":LANGUAGE_CODE","'" + vo.getLanguageCodeSYS09() + "'");
+              }
+              if (sql.toString().trim().length()>0) {
+                stmt.execute(sql.toString().substring(0,sql.length() - 1));
+              }
+              sql.delete(0, sql.length());
+            }
+
+          }
+          br.close();
         }
-        br.close();
+
 
         // insert all other translations...
         rset = stmt.executeQuery("select LANGUAGE_CODE from SYS09_LANGUAGES where ENABLED='Y' order by CREATE_DATE ASC");

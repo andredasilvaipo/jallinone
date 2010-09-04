@@ -668,7 +668,7 @@
   <object key="import purchase order rows" value="Importa righe OdA" />
   <object key="purchaseOrder" value="Ordine di Acquisto" />
   <object key="confirmed purchase orders" value="Ordini di Acq. confermati" />
-  <object key="unload items from sale document" value="Scarico articoli da doc. di vendita" />
+  <object key="unload items from delivery request" value="Scarico articoli da richiesta di consegna" />
   <object key="docSequenceDoc01DOC01" value="Num.Doc.di vend." />
   <object key="docSequenceDOC01" value="Num.Doc.di vend." />
   <object key="docSequenceDoc06DOC06" value="Num.Doc.di acq." />
@@ -690,7 +690,7 @@
   <object key="itemCodeItm01DOC10" value="Cod.Art." />
   <object key="confirmed sale documents" value="Documenti di vendita confermati" />
   <object key="sale document rows" value="Righe doc. di vendita" />
-  <object key="import sale document rows" value="Importa righe doc. di vend." />
+  <object key="import delivery request rows" value="Importa righe dalla richiesta di consegna" />
 
   <object key="itemCodeItm01WAR03" value="Cod.Art." />
   <object key="availableQtyWAR03" value="Qt&#224; dispon." />
@@ -1483,6 +1483,10 @@
   <object key="field" value="Campo" />
   <object key="checked" value="Selez." />
   <object key="Error on reading data in input." value="Errore durante la lettura dei dati dalla sorgente di input." />
+  <object key="delivery request" value="Richiesta di consegna" />
+  <object key="delivery requests" value="Richieste di consegna" />
+  <object key="deliveryDateDOC01" value="Data consegna" />
+  <object key="delivery request rows" value="Righe richiesta di consegna" />
 
 
 <!-- application translations -->

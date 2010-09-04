@@ -283,7 +283,7 @@ public class InDeliveryNoteFrame extends InternalFrame implements GenericButtonC
         getOrders().reloadData();
       }
       else
-        JOptionPane.showConfirmDialog(
+        JOptionPane.showMessageDialog(
             ClientUtils.getParentFrame(this),
             res.getErrorMessage(),
             ClientSettings.getInstance().getResources().getResource("Error"),

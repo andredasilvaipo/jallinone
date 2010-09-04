@@ -182,6 +182,8 @@ public class UpdateSaleDocAction implements Action {
       attribute2dbField.put("discountPercDOC01","DISCOUNT_PERC");
       attribute2dbField.put("docSequenceDOC01","DOC_SEQUENCE");
 
+      attribute2dbField.put("deliveryDateDOC01","DELIVERY_DATE");
+
       HashSet pkAttributes = new HashSet();
       pkAttributes.add("companyCodeSys01DOC01");
       pkAttributes.add("docTypeDOC01");

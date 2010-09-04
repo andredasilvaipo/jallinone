@@ -374,7 +374,8 @@ public class LoadOrderTrackingAction implements Action {
              docType.equals(ApplicationConsts.SALE_ORDER_DOC_TYPE) ||
              docType.equals(ApplicationConsts.SALE_CONTRACT_DOC_TYPE) ||
              docType.equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
-             docType.equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE))
+             docType.equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE) ||
+             docType.equals(ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE))
       return "DOC01_SELLING";
     else if (docType.equals(ApplicationConsts.IN_DELIVERY_NOTE_DOC_TYPE) ||
              docType.equals(ApplicationConsts.OUT_DELIVERY_NOTE_DOC_TYPE))
@@ -417,6 +418,8 @@ public class LoadOrderTrackingAction implements Action {
         return res.getResource("desk selling");
       else if (docType.equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE))
         return res.getResource("sale estimate");
+      else if (docType.equals(ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE))
+        return res.getResource("delivery request");
     }
     else if (tableName.equals("DOC08_DELIVERY_NOTES")) {
       if (docType.equals(ApplicationConsts.IN_DELIVERY_NOTE_DOC_TYPE))
@@ -444,7 +447,8 @@ public class LoadOrderTrackingAction implements Action {
              docType.equals(ApplicationConsts.SALE_ORDER_DOC_TYPE) ||
              docType.equals(ApplicationConsts.SALE_CONTRACT_DOC_TYPE) ||
              docType.equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
-             docType.equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE))
+             docType.equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE) ||
+             docType.equals(ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE))
       return "DOC10_OUT_DELIVERY_NOTE_ITEMS";
     return null;
   }
@@ -467,7 +471,8 @@ public class LoadOrderTrackingAction implements Action {
              docType.equals(ApplicationConsts.SALE_ORDER_DOC_TYPE) ||
              docType.equals(ApplicationConsts.SALE_CONTRACT_DOC_TYPE) ||
              docType.equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
-             docType.equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE))
+             docType.equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE) ||
+             docType.equals(ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE))
       return "_DOC01";
     else if (docType.equals(ApplicationConsts.IN_DELIVERY_NOTE_DOC_TYPE))
       return "_DOC06";
@@ -493,7 +498,8 @@ public class LoadOrderTrackingAction implements Action {
              docType.equals(ApplicationConsts.SALE_ORDER_DOC_TYPE) ||
              docType.equals(ApplicationConsts.SALE_CONTRACT_DOC_TYPE) ||
              docType.equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
-             docType.equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE))
+             docType.equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE) ||
+             docType.equals(ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE))
       return "SAL07_CUSTOMERS";
     else if (docType.equals(ApplicationConsts.IN_DELIVERY_NOTE_DOC_TYPE))
       return "PUR01_SUPPLIERS";
@@ -519,7 +525,8 @@ public class LoadOrderTrackingAction implements Action {
              docType.equals(ApplicationConsts.SALE_ORDER_DOC_TYPE) ||
              docType.equals(ApplicationConsts.SALE_CONTRACT_DOC_TYPE) ||
              docType.equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
-             docType.equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE))
+             docType.equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE) ||
+             docType.equals(ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE))
       return "CUSTOMER_CODE";
     else if (docType.equals(ApplicationConsts.IN_DELIVERY_NOTE_DOC_TYPE))
       return "SUPPLIER_CODE";

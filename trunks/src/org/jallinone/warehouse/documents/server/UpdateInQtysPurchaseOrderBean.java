@@ -202,7 +202,7 @@ public class UpdateInQtysPurchaseOrderBean {
             vo.getItemCodeItm01DOC09(),
             ApplicationConsts.WAREHOUSE_MOTIVE_LOAD_BY_ORDER,
             ApplicationConsts.ITEM_GOOD,
-            resources.getResource("load items from purchase order")+" "+vo.getDocNumberDoc06DOC09()+"/"+vo.getDocYearDoc06DOC09(),
+            resources.getResource("load items from purchase order")+" "+vo.getDocSequenceDoc06DOC09()+"/"+vo.getDocYearDoc06DOC09(),
             vo.getSerialNumbers(),
 
             vo.getVariantCodeItm11DOC09(),
