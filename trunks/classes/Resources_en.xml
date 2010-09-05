@@ -1490,8 +1490,8 @@
   <object key="delivery requests" value="Delivery requests" />
   <object key="deliveryDateDOC01" value="Delivery Date" />
   <object key="delivery request rows" value="Delivery request rows" />
-  <object key="" value="" />
-  <object key="" value="" />
+  <object key="delivreqnr" value="Deliv.Req.Nr." />
+  <object key="until date" value="Until date" />
   <object key="" value="" />
   <object key="" value="" />
 

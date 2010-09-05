@@ -51,6 +51,7 @@ public class ApplicationConsts {
   public static final String TREE_FILTER = "TREE_FILTER";
   public static final String DATE_FILTER = "DATE_FILTER";
   public static final String PROPERTIES_FILTER = "PROPERTIES_FILTER";
+  public static final String DELIV_DATE_LESS_OR_EQUALS_TO = "DELIV_DATE_LESS_OR_EQUALS_TO";
 
   public static final String TASK_CODE_REG07 = "TASK_CODE_REG07";
   public static final String PROGRESSIVE_SYS04 = "PROGRESSIVE_SYS04";

@@ -148,9 +148,9 @@ ORDER BY DOC02_SELLING_ITEMS.ROW_NUMBER ASC]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="321"
-						y="4"
-						width="43"
+						x="446"
+						y="2"
+						width="86"
 						height="11"
 						key="textField-4"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -158,45 +158,6 @@ ORDER BY DOC02_SELLING_ITEMS.ROW_NUMBER ASC]]></queryString>
 						<font size="7"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$R{qty}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="369"
-						y="5"
-						width="60"
-						height="10"
-						key="textField-5"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="7"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{unitprice}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="435"
-						y="5"
-						width="60"
-						height="9"
-						key="textField-6"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="7"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{price}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="499"
-						y="4"
-						width="31"
-						height="10"
-						key="textField-7"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center">
-						<font size="7"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{vat}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
@@ -209,34 +170,7 @@ ORDER BY DOC02_SELLING_ITEMS.ROW_NUMBER ASC]]></queryString>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="320"
-						y="0"
-						width="1"
-						height="16"
-						key="line-20"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="367"
-						y="0"
-						width="1"
-						height="16"
-						key="line-21"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="432"
-						y="0"
-						width="1"
-						height="16"
-						key="line-22"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="497"
+						x="445"
 						y="0"
 						width="1"
 						height="16"
@@ -286,7 +220,7 @@ ORDER BY DOC02_SELLING_ITEMS.ROW_NUMBER ASC]]></queryString>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="36"  isSplitAllowed="true" >
+			<band height="18"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="2"
@@ -302,52 +236,7 @@ ORDER BY DOC02_SELLING_ITEMS.ROW_NUMBER ASC]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="498"
-						y="2"
-						width="35"
-						height="13"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement>
-						<font fontName="Courier New" size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{VAT_CODE_ITM01}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="368"
-						y="2"
-						width="64"
-						height="14"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right">
-						<font fontName="Courier New" size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
-$F{VALUE_SAL02},
-$P{DECIMALS_REG03}
-)]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="433"
-						y="2"
-						width="64"
-						height="15"
-						key="textField"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right">
-						<font fontName="Courier New" size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
-$F{QTY}.multiply($F{VALUE_SAL02}),
-$P{DECIMALS_REG03}
-)]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="322"
+						x="472"
 						y="2"
 						width="45"
 						height="14"
@@ -365,7 +254,7 @@ $F{DECIMALS_REG02}
 					<reportElement
 						x="66"
 						y="2"
-						width="231"
+						width="378"
 						height="14"
 						key="textField"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
@@ -384,28 +273,9 @@ $F{DECIMALS_REG02}
 ($F{VARIANT_TYPE_ITM10}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM10})+
 ($F{VARIANT_CODE_ITM15}.equals("*")?"":" "+$F{VARIANT_CODE_ITM15})]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="-##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="69"
-						y="18"
-						width="229"
-						height="12"
-						key="textField"
-						isRemoveLineWhenBlank="true">
-							<printWhenExpression><![CDATA[new Boolean(
-$F{TOTAL_DISCOUNT}!=null &&
-$F{TOTAL_DISCOUNT}.doubleValue()>0
-)]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left">
-						<font fontName="Courier New" size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{discount}]]></textFieldExpression>
-				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="296"
+						x="447"
 						y="2"
 						width="21"
 						height="13"
@@ -421,43 +291,16 @@ $F{TOTAL_DISCOUNT}.doubleValue()>0
 						x="63"
 						y="0"
 						width="1"
-						height="36"
+						height="18"
 						key="line-11"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="320"
+						x="445"
 						y="0"
 						width="1"
-						height="36"
-						key="line-12"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="367"
-						y="0"
-						width="1"
-						height="36"
-						key="line-13"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="432"
-						y="0"
-						width="1"
-						height="36"
-						key="line-14"/>
-					<graphicElement stretchType="NoStretch"/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="497"
-						y="0"
-						width="1"
-						height="36"
+						height="17"
 						key="line-15"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -466,7 +309,7 @@ $F{TOTAL_DISCOUNT}.doubleValue()>0
 						x="0"
 						y="0"
 						width="1"
-						height="36"
+						height="18"
 						key="line-16"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -475,31 +318,10 @@ $F{TOTAL_DISCOUNT}.doubleValue()>0
 						x="533"
 						y="0"
 						width="1"
-						height="36"
+						height="18"
 						key="line-17"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="435"
-						y="17"
-						width="60"
-						height="16"
-						key="textField-8">
-							<printWhenExpression><![CDATA[new Boolean(
-$F{TOTAL_DISCOUNT}!=null &&
-$F{TOTAL_DISCOUNT}.doubleValue()>0
-)]]></printWhenExpression>
-						</reportElement>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right">
-						<font fontName="Courier New" size="8"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["-"+org.jallinone.reports.utils.server.ReportUtils.formatNumber(
-$F{TOTAL_DISCOUNT},
-$P{DECIMALS_REG03}
-)]]></textFieldExpression>
-				</textField>
 			</band>
 		</detail>
 		<columnFooter>

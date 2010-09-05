@@ -10,6 +10,8 @@ Added "pivot table for sales" functionality
 Added "delivery requests" functionality, binded to sales orders/contracts
 Added a report for the delivery request document
 Added creation of out delivery notes starting from a collection of delivery requests
+Fixed confirmation problem in retail sale 
+Fixed a not blocking problem when opening sale documents
 This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
 
 

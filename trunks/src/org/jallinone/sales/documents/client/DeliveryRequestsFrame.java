@@ -1,34 +1,20 @@
 package org.jallinone.sales.documents.client;
 
-import org.openswing.swing.mdi.client.InternalFrame;
-import org.openswing.swing.tree.client.*;
 import java.awt.*;
-import org.openswing.swing.mdi.client.MDIFrame;
 import javax.swing.*;
+
+import org.jallinone.commons.java.*;
+import org.jallinone.sales.documents.java.*;
 import org.openswing.swing.client.*;
-import org.openswing.swing.table.java.ServerGridDataLocator;
+import org.openswing.swing.mdi.client.*;
 import org.openswing.swing.table.columns.client.*;
-import org.openswing.swing.util.client.ClientSettings;
-import org.openswing.swing.table.client.GridController;
-import java.math.BigDecimal;
-import javax.swing.border.*;
-import org.openswing.swing.form.client.Form;
-import org.jallinone.commons.client.CustomizedControls;
-import org.openswing.swing.util.java.Consts;
-import org.jallinone.commons.client.CustomizedColumns;
-import org.jallinone.hierarchies.client.*;
-import org.jallinone.commons.client.CompaniesComboColumn;
-import org.openswing.swing.message.send.java.GridParams;
-import org.openswing.swing.util.client.ClientUtils;
-import org.openswing.swing.message.receive.java.Response;
-import java.util.ArrayList;
-import org.openswing.swing.message.receive.java.VOListResponse;
-import org.openswing.swing.domains.java.*;
+import org.openswing.swing.table.java.*;
+import org.openswing.swing.util.client.*;
+import org.openswing.swing.domains.java.Domain;
+import java.sql.Date;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
-import org.jallinone.commons.java.ApplicationConsts;
-import org.jallinone.sales.documents.java.GridSaleDocVO;
-
+import org.openswing.swing.client.DateChangedListener;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -60,7 +46,7 @@ import org.jallinone.sales.documents.java.GridSaleDocVO;
  */
 public class DeliveryRequestsFrame extends InternalFrame implements CurrencyColumnSettings {
 
-  JPanel buttonsPanel = new JPanel();
+  JPanel topPanel = new JPanel();
   ReloadButton reloadButton1 = new ReloadButton();
   ExportButton exportButton1 = new ExportButton();
   NavigatorBar navigatorBar1 = new NavigatorBar();
@@ -78,6 +64,14 @@ public class DeliveryRequestsFrame extends InternalFrame implements CurrencyColu
   TextColumn colCust = new TextColumn();
   TextColumn colName1 = new TextColumn();
   TextColumn colName2 = new TextColumn();
+  JPanel filterPanel = new JPanel();
+  JPanel bPanel = new JPanel();
+  GridBagLayout gridBagLayout2 = new GridBagLayout();
+  FlowLayout flowLayout1 = new FlowLayout();
+  LabelControl labelDocState = new LabelControl();
+  LabelControl labelUntil = new LabelControl();
+  ComboBoxControl controlDocState = new ComboBoxControl();
+  DateControl controlDate = new DateControl();
 
 
   public DeliveryRequestsFrame(DeliveryRequestsController itemsController) {
@@ -85,6 +79,8 @@ public class DeliveryRequestsFrame extends InternalFrame implements CurrencyColu
       jbInit();
       setSize(750,550);
       setMinimumSize(new Dimension(750,500));
+
+      init();
 
       grid.setController(itemsController);
       grid.setGridDataLocator(gridDataLocator);
@@ -98,12 +94,41 @@ public class DeliveryRequestsFrame extends InternalFrame implements CurrencyColu
   }
 
 
+  private void init() {
+    controlDocState.addItemListener(new ItemListener() {
+
+      public void itemStateChanged(ItemEvent e) {
+        if (e.getStateChange()==e.SELECTED) {
+          grid.getOtherGridParams().put(ApplicationConsts.DOC_STATE,controlDocState.getValue());
+          grid.reloadData();
+        }
+      }
+
+    });
+    Domain saleDocStateDomain = new Domain("DELIV_REQ_STATES");
+    saleDocStateDomain.addDomainPair(ApplicationConsts.CONFIRMED,"confirmed");
+    saleDocStateDomain.addDomainPair(ApplicationConsts.CLOSED,"closed");
+    controlDocState.setDomain(saleDocStateDomain);
+    controlDocState.setValue(ApplicationConsts.CONFIRMED);
+
+    controlDate.addDateChangedListener(new DateChangedListener() {
+
+      public void dateChanged(java.util.Date oldDate, java.util.Date newDate) {
+        grid.getOtherGridParams().put(ApplicationConsts.DELIV_DATE_LESS_OR_EQUALS_TO,controlDate.getValue());
+        grid.reloadData();
+      }
+
+    });
+    controlDate.setDate(new Date(System.currentTimeMillis()));
+  }
+
+
   private void jbInit() throws Exception {
     this.setTitle(ClientSettings.getInstance().getResources().getResource("delivery requests"));
     grid.setValueObjectClassName("org.jallinone.sales.documents.java.GridSaleDocVO");
     reloadButton1.setText("reloadButton1");
     exportButton1.setText("exportButton1");
-    buttonsPanel.setLayout(gridBagLayout1);
+    topPanel.setLayout(gridBagLayout1);
     grid.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     colCompany.setColumnFilterable(true);
     colCompany.setColumnName("companyCodeSys01DOC01");
@@ -111,6 +136,7 @@ public class DeliveryRequestsFrame extends InternalFrame implements CurrencyColu
     colCompany.setPreferredWidth(100);
     colCompany.setSortVersus(org.openswing.swing.util.java.Consts.ASC_SORTED);
     colCompany.setSortingOrder(0);
+    grid.setAutoLoadData(false);
     grid.setExportButton(exportButton1);
     grid.setFunctionId("DELIV_REQ_LIST");
     grid.setLockedColumns(3);
@@ -120,12 +146,14 @@ public class DeliveryRequestsFrame extends InternalFrame implements CurrencyColu
     colDocYear.setColumnFilterable(true);
     colDocYear.setColumnName("docYearDOC01");
     colDocYear.setColumnSortable(true);
-    colDocYear.setPreferredWidth(50);
+    colDocYear.setPreferredWidth(60);
     colDocYear.setSortingOrder(1);
     colDocYear.setSortVersus(org.openswing.swing.util.java.Consts.DESC_SORTED);
     colDocNr.setColumnFilterable(true);
     colDocNr.setColumnName("docSequenceDOC01");
+    colDocNr.setAdditionalHeaderColumnName("");
     colDocNr.setColumnSortable(true);
+    colDocNr.setHeaderColumnName("delivreqnr");
     colDocNr.setPreferredWidth(80);
     colDocNr.setSortVersus(org.openswing.swing.util.java.Consts.NO_SORTED);
     colDocNr.setSortingOrder(0);
@@ -139,22 +167,25 @@ public class DeliveryRequestsFrame extends InternalFrame implements CurrencyColu
     colDocState.setPreferredWidth(80);
     colDelivDate.setColumnName("deliveryDateDOC01");
     colDelivDate.setStrictUsage(false);
+    colDelivDate.setPreferredWidth(110);
     colDelivDate.setSortVersus(org.openswing.swing.util.java.Consts.DESC_SORTED);
     colDelivDate.setSortingOrder(2);
     colCust.setColumnName("customerCodeSAL07");
     colCust.setColumnRequired(true);
+    colCust.setPreferredWidth(80);
     colName1.setColumnName("name_1REG04");
     colName1.setPreferredWidth(200);
     colName2.setColumnName("name_2REG04");
     colName2.setPreferredWidth(170);
-    this.getContentPane().add(buttonsPanel, BorderLayout.NORTH);
+    filterPanel.setLayout(gridBagLayout2);
+    bPanel.setLayout(flowLayout1);
+    flowLayout1.setAlignment(FlowLayout.LEFT);
+    labelDocState.setLabel("docStateDOC01");
+    labelDocState.setText("docStateDOC01");
+    labelUntil.setLabel("until date");
+    labelUntil.setText("until date");
+    this.getContentPane().add(topPanel, BorderLayout.NORTH);
     this.getContentPane().add(grid, BorderLayout.CENTER);
-    buttonsPanel.add(reloadButton1,      new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
-    buttonsPanel.add(exportButton1,      new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
-    buttonsPanel.add(navigatorBar1,       new GridBagConstraints(7, 0, 1, 1, 1.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
     grid.getColumnContainer().add(colCompany, null);
     grid.getColumnContainer().add(colDocYear, null);
     grid.getColumnContainer().add(colDocNr, null);
@@ -164,6 +195,21 @@ public class DeliveryRequestsFrame extends InternalFrame implements CurrencyColu
     grid.getColumnContainer().add(colCust, null);
     grid.getColumnContainer().add(colName1, null);
     grid.getColumnContainer().add(colName2, null);
+    topPanel.add(filterPanel,      new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+    topPanel.add(bPanel,    new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+    bPanel.add(exportButton1, null);
+    bPanel.add(reloadButton1, null);
+    bPanel.add(navigatorBar1, null);
+    filterPanel.add(labelDocState,   new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    filterPanel.add(controlDocState,   new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 60, 0));
+    filterPanel.add(labelUntil,   new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 15, 5, 5), 0, 0));
+    filterPanel.add(controlDate,    new GridBagConstraints(3, 0, 1, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
   }
 
 

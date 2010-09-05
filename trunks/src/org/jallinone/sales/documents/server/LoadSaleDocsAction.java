@@ -174,6 +174,12 @@ public class LoadSaleDocsAction implements Action {
       if (pars.getOtherGridParams().get(ApplicationConsts.WAREHOUSE_CODE)!=null) {
         sql += " and DOC01_SELLING.WAREHOUSE_CODE_WAR01='"+pars.getOtherGridParams().get(ApplicationConsts.WAREHOUSE_CODE)+"'";
       }
+      if (pars.getOtherGridParams().get(ApplicationConsts.DELIV_DATE_LESS_OR_EQUALS_TO)!=null) {
+        sql += " and DOC01_SELLING.DELIVERY_DATE<=? ";
+        values.add(pars.getOtherGridParams().get(ApplicationConsts.DELIV_DATE_LESS_OR_EQUALS_TO));
+      }
+
+
 
 
       // read from DOC01 table...

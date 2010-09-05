@@ -125,8 +125,8 @@ public class ExportRetailSaleOnFileBean  {
       }
 
       // retrieve company data...
-      SubjectPK subjectPK = new SubjectPK(pk.getCompanyCodeSys01DOC01(),progressiveREG04);
-      Response companyRes = companyAction.executeCommand(subjectPK,userSessionPars,request,response,userSession,context);
+      //SubjectPK subjectPK = new SubjectPK(pk.getCompanyCodeSys01DOC01(),progressiveREG04);
+      Response companyRes = companyAction.executeCommand(pk.getCompanyCodeSys01DOC01(),userSessionPars,request,response,userSession,context);
       if (companyRes.isError())
         return companyRes;
       OrganizationVO companyVO = (OrganizationVO)((VOResponse)companyRes).getVo();

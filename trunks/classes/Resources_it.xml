@@ -1487,6 +1487,8 @@
   <object key="delivery requests" value="Richieste di consegna" />
   <object key="deliveryDateDOC01" value="Data consegna" />
   <object key="delivery request rows" value="Righe richiesta di consegna" />
+  <object key="delivreqnr" value="N.Rich.Cons." />
+  <object key="until date" value="Fino alla data" />
 
 
 <!-- application translations -->

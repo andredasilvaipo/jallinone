@@ -110,7 +110,7 @@ public class SalesPivotFrame extends InternalFrame {
     try {
       jbInit();
       setSize(700,600);
-      setTitle("pivot table for sales");
+      this.setTitle(ClientSettings.getInstance().getResources().getResource("pivot table for sales"));
       init();
 
       filterPanel.setMode(Consts.INSERT);
