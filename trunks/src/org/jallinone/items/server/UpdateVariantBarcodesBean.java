@@ -127,49 +127,8 @@ public class UpdateVariantBarcodesBean {
         row = cells[i];
 
         if (matrixVO.getColumnDescriptors().size()==0) {
-
-          if (!containsVariant(matrixVO,"ITM11_VARIANTS_1")) {
             // e.g. color but not no size...
-            vo.setVariantCodeItm11ITM22(ApplicationConsts.JOLLY);
-            vo.setVariantTypeItm06ITM22(ApplicationConsts.JOLLY);
-          }
-          else {
-            vo.setVariantCodeItm11ITM22(rowVO.getVariantCodeITM11());
-            vo.setVariantTypeItm06ITM22(rowVO.getVariantTypeITM06());
-          }
-          if (!containsVariant(matrixVO,"ITM12_VARIANTS_2")) {
-            vo.setVariantCodeItm12ITM22(ApplicationConsts.JOLLY);
-            vo.setVariantTypeItm07ITM22(ApplicationConsts.JOLLY);
-          }
-          else {
-            vo.setVariantCodeItm12ITM22(rowVO.getVariantCodeITM11());
-            vo.setVariantTypeItm07ITM22(rowVO.getVariantTypeITM06());
-          }
-          if (!containsVariant(matrixVO,"ITM13_VARIANTS_3")) {
-            vo.setVariantCodeItm13ITM22(ApplicationConsts.JOLLY);
-            vo.setVariantTypeItm08ITM22(ApplicationConsts.JOLLY);
-          }
-          else {
-            vo.setVariantCodeItm13ITM22(rowVO.getVariantCodeITM11());
-            vo.setVariantTypeItm08ITM22(rowVO.getVariantTypeITM06());
-          }
-          if (!containsVariant(matrixVO,"ITM14_VARIANTS_4")) {
-            vo.setVariantCodeItm14ITM22(ApplicationConsts.JOLLY);
-            vo.setVariantTypeItm09ITM22(ApplicationConsts.JOLLY);
-          }
-          else {
-            vo.setVariantCodeItm14ITM22(rowVO.getVariantCodeITM11());
-            vo.setVariantTypeItm09ITM22(rowVO.getVariantTypeITM06());
-          }
-          if (!containsVariant(matrixVO,"ITM15_VARIANTS_5")) {
-            vo.setVariantCodeItm15ITM22(ApplicationConsts.JOLLY);
-            vo.setVariantTypeItm10ITM22(ApplicationConsts.JOLLY);
-          }
-          else {
-            vo.setVariantCodeItm15ITM22(rowVO.getVariantCodeITM11());
-            vo.setVariantTypeItm10ITM22(rowVO.getVariantTypeITM06());
-          }
-
+          VariantsMatrixUtils.setVariantTypesAndCodes(vo,"ITM22",matrixVO,rowVO,null);
 
           if (row[0]==null) {
             // auto-create a barcode...
@@ -211,64 +170,53 @@ public class UpdateVariantBarcodesBean {
           pstmt.setString(13,(String)row[0]);
 
           pstmt.execute();
+
         }
         else {
+          // e.g. color and size...
           for(int j=0;j<row.length;j++) {
             colVO = (VariantsMatrixColumnVO)matrixVO.getColumnDescriptors().get(j);
+            VariantsMatrixUtils.setVariantTypesAndCodes(vo,"ITM22",matrixVO,rowVO,colVO);
 
             if (row[j]==null) {
               // auto-create a barcode...
-              vo.setVariantTypeItm06ITM22(rowVO.getVariantTypeITM06()==null?ApplicationConsts.JOLLY:rowVO.getVariantTypeITM06());
-              vo.setVariantTypeItm07ITM22(colVO.getVariantTypeITM07()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM07());
-              vo.setVariantTypeItm08ITM22(colVO.getVariantTypeITM08()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM08());
-              vo.setVariantTypeItm09ITM22(colVO.getVariantTypeITM09()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM09());
-              vo.setVariantTypeItm10ITM22(colVO.getVariantTypeITM10()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM10());
-              vo.setVariantCodeItm11ITM22(rowVO.getVariantCodeITM11()==null?ApplicationConsts.JOLLY:rowVO.getVariantCodeITM11());
-              vo.setVariantCodeItm12ITM22(colVO.getVariantCodeITM12()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM12());
-              vo.setVariantCodeItm13ITM22(colVO.getVariantCodeITM13()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM13());
-              vo.setVariantCodeItm14ITM22(colVO.getVariantCodeITM14()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM14());
-              vo.setVariantCodeItm15ITM22(colVO.getVariantCodeITM15()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM15());
               new BarCodeGeneratorImpl().calculateBarCode(conn,vo);
               row[j] = vo.getBarCodeITM22();
             }
 
-            if (row[j]!=null) {
-
-              // check for barcode uniqueness...
-              if (row[j]!=null) {
-                pstmt2.setString(1,matrixVO.getItemPK().getCompanyCodeSys01ITM01());
-                pstmt2.setString(2,row[j].toString().toString());
-                rset2 = pstmt2.executeQuery();
-                barCodeFound = false;
-                if (rset2.next()) {
-                  barCodeFound = true;
-                }
-                rset2.close();
-                if (barCodeFound) {
-                  conn.rollback();
-                  return new ErrorResponse(resources.getResource("barcode already assigned to another item"));
-                }
-              }
-
-              pstmt.setString(1,matrixVO.getItemPK().getCompanyCodeSys01ITM01());
-              pstmt.setString(2,matrixVO.getItemPK().getItemCodeITM01());
-
-              pstmt.setString(3,rowVO.getVariantTypeITM06()==null?ApplicationConsts.JOLLY:rowVO.getVariantTypeITM06());
-              pstmt.setString(4,colVO.getVariantTypeITM07()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM07());
-              pstmt.setString(5,colVO.getVariantTypeITM08()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM08());
-              pstmt.setString(6,colVO.getVariantTypeITM09()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM09());
-              pstmt.setString(7,colVO.getVariantTypeITM10()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM10());
-
-              pstmt.setString(8,rowVO.getVariantCodeITM11()==null?ApplicationConsts.JOLLY:rowVO.getVariantCodeITM11());
-              pstmt.setString(9,colVO.getVariantCodeITM12()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM12());
-              pstmt.setString(10,colVO.getVariantCodeITM13()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM13());
-              pstmt.setString(11,colVO.getVariantCodeITM14()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM14());
-              pstmt.setString(12,colVO.getVariantCodeITM15()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM15());
-
-              pstmt.setString(13,(String)row[j]);
-
-              pstmt.execute();
+            // check for barcode uniqueness...
+            pstmt2.setString(1,matrixVO.getItemPK().getCompanyCodeSys01ITM01());
+            pstmt2.setString(2,row[j].toString().toString());
+            rset2 = pstmt2.executeQuery();
+            barCodeFound = false;
+            if (rset2.next()) {
+              barCodeFound = true;
             }
+            rset2.close();
+            if (barCodeFound) {
+              conn.rollback();
+              return new ErrorResponse(resources.getResource("barcode already assigned to another item"));
+            }
+
+            pstmt.setString(1,matrixVO.getItemPK().getCompanyCodeSys01ITM01());
+            pstmt.setString(2,matrixVO.getItemPK().getItemCodeITM01());
+
+            pstmt.setString(3,vo.getVariantTypeItm06ITM22());
+            pstmt.setString(4,vo.getVariantTypeItm07ITM22());
+            pstmt.setString(5,vo.getVariantTypeItm08ITM22());
+            pstmt.setString(6,vo.getVariantTypeItm09ITM22());
+            pstmt.setString(7,vo.getVariantTypeItm10ITM22());
+
+            pstmt.setString(8, vo.getVariantCodeItm11ITM22());
+            pstmt.setString(9, vo.getVariantCodeItm12ITM22());
+            pstmt.setString(10,vo.getVariantCodeItm13ITM22());
+            pstmt.setString(11,vo.getVariantCodeItm14ITM22());
+            pstmt.setString(12,vo.getVariantCodeItm15ITM22());
+
+            pstmt.setString(13,(String)row[j]);
+
+            pstmt.execute();
+
           } // end inner for
         }
       } // end outer for

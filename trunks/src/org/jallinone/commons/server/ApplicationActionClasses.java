@@ -68,6 +68,7 @@ import org.jallinone.warehouse.tables.motives.server.*;
 import org.jallinone.warehouse.tables.movements.server.*;
 import org.openswing.swing.message.receive.java.*;
 import org.openswing.swing.server.*;
+import org.jallinone.system.translations.server.*;
 
 
 /**
@@ -736,6 +737,8 @@ public class ApplicationActionClasses extends ActionsCollection {
 
     a = new SalesPivotAction(); put(a.getRequestName(),a);
 
+    a = new LoadTranslationsAction(); put(a.getRequestName(),a);
+    a = new UpdateTranslationsAction(); put(a.getRequestName(),a);
 
 
     put("changeLanguage",new Action() {

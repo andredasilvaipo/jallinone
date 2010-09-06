@@ -1,3 +1,4 @@
+
 package org.jallinone.variants.java;
 
 import java.io.Serializable;

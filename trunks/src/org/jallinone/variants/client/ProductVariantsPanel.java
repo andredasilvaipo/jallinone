@@ -45,6 +45,7 @@ import org.jallinone.items.java.VariantBarcodeVO;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
+import org.jallinone.variants.java.VariantsMatrixUtils;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -344,7 +345,7 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
         col.setColumnName("attributeNameN"+i);
         col.setColumnRequired(false);
         col.setDecimals(vo.getDecimals());
-        //col.setPreferredWidth(110*(vo.getManagedVariants().size()-1));
+        col.setMinWidth(50);
 
         col.setPreferredWidth(20+this.getFontMetrics(this.getFont()).stringWidth(col.getHeaderColumnName()));
 
@@ -373,6 +374,7 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
 
 
       buttonsPanel.removeAll();
+      final VariantNameVO varVO = (VariantNameVO)getVariantsMatrixVO().getManagedVariants().get(0);
       buttonsPanel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
       if (showButtons && vo.getManagedVariants().size()>1) {
         // create a buttons panel used to copy the same qty for all cells matching the same variant value...
@@ -388,84 +390,112 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
             public void actionPerformed(ActionEvent e) {
              if (!onValidating)
                grid.getTable().getGrid().stopCellEditing();
-             int row = grid.getSelectedRow();
-             int col = grid.getTable().getGrid().getSelectedColumn();
-             if (row!=-1 && col!=-1 && grid.getTable().getGrid().getValueAt(row,col)!=null) {
-               BigDecimal qty = (BigDecimal)grid.getTable().getGrid().getValueAt(row,col);
-               VariantsMatrixRowVO currentRowVO = (VariantsMatrixRowVO)getVariantsMatrixVO().getRowDescriptors().get(row);
-               VariantsMatrixColumnVO currentColVO = (VariantsMatrixColumnVO)getVariantsMatrixVO().getColumnDescriptors().get(col-1);
-               String rowtype = null,rowcode = null;
-               String coltype = null,colcode = null;
-               String rowtypename = null,rowcodename = null;
-               String coltypename = null,colcodename = null;
-
-               if (getVariantsMatrixVO().getColumnDescriptors().size()==0) {
-                 rowtype = currentRowVO.getVariantTypeITM06();
-                 rowcode = currentRowVO.getVariantCodeITM11();
-                 rowtypename = "getVariantTypeITM06";
-                 rowcodename = "getVariantCodeITM11";
-               }
-               else {
-                 if (vnVO.getTableName().equals("ITM11_VARIANTS_1")) {
-                   rowtype = currentRowVO.getVariantTypeITM06();
-                   rowcode = currentRowVO.getVariantCodeITM11();
-                   rowtypename = "getVariantTypeITM06";
-                   rowcodename = "getVariantCodeITM11";
-                 }
-                 else if (vnVO.getTableName().equals("ITM12_VARIANTS_2")) {
-                   coltype = currentColVO.getVariantTypeITM07();
-                   colcode = currentColVO.getVariantCodeITM12();
-                   coltypename = "getVariantTypeITM07";
-                   colcodename = "getVariantCodeITM12";
-                 }
-                 else if (vnVO.getTableName().equals("ITM13_VARIANTS_3")) {
-                   coltype = currentColVO.getVariantTypeITM08();
-                   colcode = currentColVO.getVariantCodeITM13();
-                   coltypename = "getVariantTypeITM08";
-                   colcodename = "getVariantCodeITM13";
-                 }
-                 else if (vnVO.getTableName().equals("ITM14_VARIANTS_4")) {
-                   coltype = currentColVO.getVariantTypeITM09();
-                   colcode = currentColVO.getVariantCodeITM14();
-                   coltypename = "getVariantTypeITM09";
-                   colcodename = "getVariantCodeITM14";
-                 }
-                 else if (vnVO.getTableName().equals("ITM15_VARIANTS_5")) {
-                   coltype = currentColVO.getVariantTypeITM10();
-                   colcode = currentColVO.getVariantCodeITM15();
-                   coltypename = "getVariantTypeITM10";
-                   colcodename = "getVariantCodeITM15";
-                 }
-               }
+            try {
+               int row = grid.getSelectedRow();
+               int col = grid.getTable().getGrid().getSelectedColumn();
+               if (row!=-1 && col!=-1 && grid.getTable().getGrid().getValueAt(row,col)!=null) {
+                 BigDecimal qty = (BigDecimal)grid.getTable().getGrid().getValueAt(row,col);
+                 VariantsMatrixRowVO currentRowVO = (VariantsMatrixRowVO)getVariantsMatrixVO().getRowDescriptors().get(row);
+                 VariantsMatrixColumnVO currentColVO = (VariantsMatrixColumnVO)getVariantsMatrixVO().getColumnDescriptors().get(col-1);
+                 String rowtype = null,rowcode = null;
+                 String coltype = null,colcode = null;
+                 String rowtypename = null,rowcodename = null;
+                 String coltypename = null,colcodename = null;
 
 
-               VariantsMatrixRowVO rowVO = null;
-               VariantsMatrixColumnVO colVO = null;
-               for(int r=0;r<grid.getVOListTableModel().getRowCount();r++) {
-                 rowVO = (VariantsMatrixRowVO)getVariantsMatrixVO().getRowDescriptors().get(r);
-                 for (int c = 0;c < getVariantsMatrixVO().getColumnDescriptors().size();c++)
-                   if (! (r == row && c + 1 == col)) {
-                     colVO = (VariantsMatrixColumnVO) getVariantsMatrixVO().getColumnDescriptors().get(c);
-                    try {
-                      if (rowtype!=null && rowcode!=null) {
-                        if (rowtype.equals(rowVO.getClass().getMethod(rowtypename,new Class[0]).invoke(rowVO,new Object[0])) &&
-                            rowcode.equals(rowVO.getClass().getMethod(rowcodename,new Class[0]).invoke(rowVO,new Object[0])))
-                          grid.getVOListTableModel().setValueAt(qty, r, c + 1);
-                      }
-                      else if (coltype!=null && colcode!=null) {
-                        if (coltype.equals(colVO.getClass().getMethod(coltypename,new Class[0]).invoke(colVO,new Object[0])) &&
-                            colcode.equals(colVO.getClass().getMethod(colcodename,new Class[0]).invoke(colVO,new Object[0])))
-                         grid.getVOListTableModel().setValueAt(qty, r, c + 1);
-                      }
-                    }
-                    catch (Exception ex) {
-                      ex.printStackTrace();
-                    }
+                 if (getVariantsMatrixVO().getColumnDescriptors().size()==0 ||
+                     varVO.getTableName().equals(vnVO.getTableName())) {
+                   rowtype = VariantsMatrixUtils.getVariantType(getVariantsMatrixVO(),currentRowVO);
+                   rowcode = VariantsMatrixUtils.getVariantCode(getVariantsMatrixVO(),currentRowVO);
+
+                   if (varVO.getTableName().equals("ITM11_VARIANTS_1")) {
+                     rowtypename = "getVariantTypeITM06";
+                     rowcodename = "getVariantCodeITM11";
                    }
+                   else if (varVO.getTableName().equals("ITM12_VARIANTS_2")) {
+                     rowtypename = "getVariantTypeITM07";
+                     rowcodename = "getVariantCodeITM12";
+                   }
+                   else if (varVO.getTableName().equals("ITM13_VARIANTS_3")) {
+                     rowtypename = "getVariantTypeITM08";
+                     rowcodename = "getVariantCodeITM13";
+                   }
+                   else if (varVO.getTableName().equals("ITM14_VARIANTS_4")) {
+                     rowtypename = "getVariantTypeITM09";
+                     rowcodename = "getVariantCodeITM14";
+                   }
+                   else if (varVO.getTableName().equals("ITM15_VARIANTS_5")) {
+                     rowtypename = "getVariantTypeITM10";
+                     rowcodename = "getVariantCodeITM15";
+                   }
+
+                 }
+                 else {
+                   if (vnVO.getTableName().equals("ITM11_VARIANTS_1")) {
+                     rowtype = currentRowVO.getVariantTypeITM06();
+                     rowcode = currentRowVO.getVariantCodeITM11();
+                     rowtypename = "getVariantTypeITM06";
+                     rowcodename = "getVariantCodeITM11";
+                   }
+                   else if (vnVO.getTableName().equals("ITM12_VARIANTS_2")) {
+                     coltype = currentColVO.getVariantTypeITM07();
+                     colcode = currentColVO.getVariantCodeITM12();
+                     coltypename = "getVariantTypeITM07";
+                     colcodename = "getVariantCodeITM12";
+                   }
+                   else if (vnVO.getTableName().equals("ITM13_VARIANTS_3")) {
+                     coltype = currentColVO.getVariantTypeITM08();
+                     colcode = currentColVO.getVariantCodeITM13();
+                     coltypename = "getVariantTypeITM08";
+                     colcodename = "getVariantCodeITM13";
+                   }
+                   else if (vnVO.getTableName().equals("ITM14_VARIANTS_4")) {
+                     coltype = currentColVO.getVariantTypeITM09();
+                     colcode = currentColVO.getVariantCodeITM14();
+                     coltypename = "getVariantTypeITM09";
+                     colcodename = "getVariantCodeITM14";
+                   }
+                   else if (vnVO.getTableName().equals("ITM15_VARIANTS_5")) {
+                     coltype = currentColVO.getVariantTypeITM10();
+                     colcode = currentColVO.getVariantCodeITM15();
+                     coltypename = "getVariantTypeITM10";
+                     colcodename = "getVariantCodeITM15";
+                   }
+                 }
+
+
+                 VariantsMatrixRowVO rowVO = null;
+                 VariantsMatrixColumnVO colVO = null;
+                 for(int r=0;r<grid.getVOListTableModel().getRowCount();r++) {
+                   rowVO = (VariantsMatrixRowVO)getVariantsMatrixVO().getRowDescriptors().get(r);
+                   for (int c = 0;c < getVariantsMatrixVO().getColumnDescriptors().size();c++)
+                     if (! (r == row && c + 1 == col)) {
+                       colVO = (VariantsMatrixColumnVO) getVariantsMatrixVO().getColumnDescriptors().get(c);
+                      try {
+                        if (rowtype!=null && rowcode!=null) {
+                          if (rowtype.equals(rowVO.getClass().getMethod(rowtypename,new Class[0]).invoke(rowVO,new Object[0])) &&
+                              rowcode.equals(rowVO.getClass().getMethod(rowcodename,new Class[0]).invoke(rowVO,new Object[0])))
+                            grid.getVOListTableModel().setValueAt(qty, r, c + 1);
+                        }
+                        else if (coltype!=null && colcode!=null) {
+                          if (coltype.equals(colVO.getClass().getMethod(coltypename,new Class[0]).invoke(colVO,new Object[0])) &&
+                              colcode.equals(colVO.getClass().getMethod(colcodename,new Class[0]).invoke(colVO,new Object[0])))
+                           grid.getVOListTableModel().setValueAt(qty, r, c + 1);
+                        }
+                      }
+                      catch (Exception ex) {
+                        ex.printStackTrace();
+                      }
+                     }
+                 }
+                 grid.repaint();
                }
-               grid.repaint();
-             }
-            }
+
+              }
+              catch (Throwable t) {
+                t.printStackTrace();
+              }
+            } // end actionPerformed
           });
           buttonsPanel.add(btn);
         }

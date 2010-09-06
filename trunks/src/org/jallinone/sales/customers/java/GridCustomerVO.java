@@ -49,6 +49,9 @@ public class GridCustomerVO extends ValueObjectImpl implements Subject {
   private String vatCodeReg01SAL07;
   private String creditAccountCodeAcc02SAL07;
   private String noteREG04;
+  private java.math.BigDecimal valueREG01;
+  private java.math.BigDecimal deductibleREG01;
+  private String vatDescriptionSYS10;
 
 
   public GridCustomerVO() {
@@ -144,6 +147,24 @@ public class GridCustomerVO extends ValueObjectImpl implements Subject {
   }
   public void setNoteREG04(String noteREG04) {
     this.noteREG04 = noteREG04;
+  }
+  public java.math.BigDecimal getValueREG01() {
+    return valueREG01;
+  }
+  public void setValueREG01(java.math.BigDecimal valueREG01) {
+    this.valueREG01 = valueREG01;
+  }
+  public java.math.BigDecimal getDeductibleREG01() {
+    return deductibleREG01;
+  }
+  public void setDeductibleREG01(java.math.BigDecimal deductibleREG01) {
+    this.deductibleREG01 = deductibleREG01;
+  }
+  public String getVatDescriptionSYS10() {
+    return vatDescriptionSYS10;
+  }
+  public void setVatDescriptionSYS10(String vatDescriptionSYS10) {
+    this.vatDescriptionSYS10 = vatDescriptionSYS10;
   }
 
 }

@@ -149,7 +149,7 @@ public class SaleContractDocRowsController extends CompanyGridController {
       panel.getGrid().reloadData();
       panel.getHeaderPanel().setMode(Consts.READONLY);
       panel.getHeaderPanel().executeReload();
-      panel.getContracts().reloadData();
+      panel.getContracts().reloadCurrentBlockOfData();
     }
     return res;
   }

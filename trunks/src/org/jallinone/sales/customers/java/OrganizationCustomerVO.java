@@ -62,6 +62,7 @@ public class OrganizationCustomerVO extends OrganizationVO implements Subject {
   private String currencyCodeReg03SAL01;
 
 
+
   public OrganizationCustomerVO() {
   }
 
@@ -223,5 +224,6 @@ public class OrganizationCustomerVO extends OrganizationVO implements Subject {
   public void setCurrencyCodeReg03SAL01(String currencyCodeReg03SAL01) {
     this.currencyCodeReg03SAL01 = currencyCodeReg03SAL01;
   }
+
 
 }

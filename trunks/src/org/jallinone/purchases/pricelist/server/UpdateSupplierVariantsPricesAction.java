@@ -150,48 +150,7 @@ public class UpdateSupplierVariantsPricesAction implements Action {
             vo.setValuePUR05((BigDecimal)cells[i][0]);
             vo.setStartDatePUR05(startDate);
             vo.setEndDatePUR05(endDate);
-
-            if (!containsVariant(matrixVO,"ITM11_VARIANTS_1")) {
-              // e.g. color but not no size...
-              vo.setVariantCodeItm11PUR05(ApplicationConsts.JOLLY);
-              vo.setVariantTypeItm06PUR05(ApplicationConsts.JOLLY);
-            }
-            else {
-              vo.setVariantCodeItm11PUR05(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm06PUR05(rowVO.getVariantTypeITM06());
-            }
-            if (!containsVariant(matrixVO,"ITM12_VARIANTS_2")) {
-              vo.setVariantCodeItm12PUR05(ApplicationConsts.JOLLY);
-              vo.setVariantTypeItm07PUR05(ApplicationConsts.JOLLY);
-            }
-            else {
-              vo.setVariantCodeItm12PUR05(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm07PUR05(rowVO.getVariantTypeITM06());
-            }
-            if (!containsVariant(matrixVO,"ITM13_VARIANTS_3")) {
-              vo.setVariantCodeItm13PUR05(ApplicationConsts.JOLLY);
-              vo.setVariantTypeItm08PUR05(ApplicationConsts.JOLLY);
-            }
-            else {
-              vo.setVariantCodeItm13PUR05(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm08PUR05(rowVO.getVariantTypeITM06());
-            }
-            if (!containsVariant(matrixVO,"ITM14_VARIANTS_4")) {
-              vo.setVariantCodeItm14PUR05(ApplicationConsts.JOLLY);
-              vo.setVariantTypeItm09PUR05(ApplicationConsts.JOLLY);
-            }
-            else {
-              vo.setVariantCodeItm14PUR05(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm09PUR05(rowVO.getVariantTypeITM06());
-            }
-            if (!containsVariant(matrixVO,"ITM15_VARIANTS_5")) {
-              vo.setVariantCodeItm15PUR05(ApplicationConsts.JOLLY);
-              vo.setVariantTypeItm10PUR05(ApplicationConsts.JOLLY);
-            }
-            else {
-              vo.setVariantCodeItm15PUR05(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm10PUR05(rowVO.getVariantTypeITM06());
-            }
+            VariantsMatrixUtils.setVariantTypesAndCodes(vo,"PUR05",matrixVO,rowVO,null);
 
             res = QueryUtil.insertTable(
                 conn,
@@ -225,19 +184,7 @@ public class UpdateSupplierVariantsPricesAction implements Action {
               vo.setValuePUR05((BigDecimal)cells[i][k]);
               vo.setStartDatePUR05(startDate);
               vo.setEndDatePUR05(endDate);
-
-              vo.setVariantCodeItm11PUR05(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm06PUR05(rowVO.getVariantTypeITM06());
-
-              vo.setVariantCodeItm12PUR05(colVO.getVariantCodeITM12()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM12());
-              vo.setVariantCodeItm13PUR05(colVO.getVariantCodeITM13()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM13());
-              vo.setVariantCodeItm14PUR05(colVO.getVariantCodeITM14()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM14());
-              vo.setVariantCodeItm15PUR05(colVO.getVariantCodeITM15()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM15());
-
-              vo.setVariantTypeItm07PUR05(colVO.getVariantTypeITM07()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM07());
-              vo.setVariantTypeItm08PUR05(colVO.getVariantTypeITM08()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM08());
-              vo.setVariantTypeItm09PUR05(colVO.getVariantTypeITM09()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM09());
-              vo.setVariantTypeItm10PUR05(colVO.getVariantTypeITM10()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM10());
+              VariantsMatrixUtils.setVariantTypesAndCodes(vo,"PUR05",matrixVO,rowVO,colVO);
 
               res = QueryUtil.insertTable(
                   conn,

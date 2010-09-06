@@ -103,6 +103,10 @@ public class VatsController extends GridController {
     VatVO vo = (VatVO)gridFrame.getGrid().getVOListTableModel().getObjectForRow(rowNumber);
     if (attributeName.equals("valueREG01") && newValue!=null && newValue.equals(new BigDecimal(0)))
       vo.setDeductibleREG01(new BigDecimal(100));
+    if ("valueREG01".equals(attributeName) && newValue!=null && ((BigDecimal)newValue).doubleValue()>100)
+      return false;
+    if ("deductibleREG01".equals(attributeName) && newValue!=null && ((BigDecimal)newValue).doubleValue()>100)
+      return false;
 
     return true;
   }

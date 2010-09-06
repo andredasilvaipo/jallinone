@@ -20,6 +20,7 @@ import org.jallinone.commons.client.CompaniesComboControl;
 import javax.swing.*;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.math.BigDecimal;
 
 /**
   * <p>Title: JAllInOne ERP/CRM application</p>
@@ -79,6 +80,13 @@ public class SaleCustomerHeadPanel extends JPanel {
   CompaniesComboControl controlCompaniesCombo = new CompaniesComboControl();
 
   private boolean maybeShowCompaniesCombo = false;
+  LabelControl labelVat = new LabelControl();
+  TextControl controlD = new TextControl();
+  LabelControl labelDeductible = new LabelControl();
+  NumericControl controlDed = new NumericControl();
+  NumericControl controlVatValue = new NumericControl();
+  TextControl controlVatCode = new TextControl();
+  LabelControl labelPerc = new LabelControl();
 
 
   public SaleCustomerHeadPanel(boolean maybeShowCompaniesCombo,final Form form) {
@@ -103,6 +111,9 @@ public class SaleCustomerHeadPanel extends JPanel {
       customerController.addLookup2ParentLink("paymentCodeReg10SAL07", "paymentCodeReg10DOC01");
       customerController.addLookup2ParentLink("paymentDescriptionSAL07", "paymentDescriptionDOC01");
       customerController.addLookup2ParentLink("vatCodeReg01SAL07", "customerVatCodeReg01DOC01");
+      customerController.addLookup2ParentLink("valueREG01", "valueREG01");
+      customerController.addLookup2ParentLink("deductibleREG01", "deductibleREG01");
+      customerController.addLookup2ParentLink("vatDescriptionSYS10", "vatDescriptionSYS10");
       customerController.addLookup2ParentLink("noteREG04", "deliveryNoteDOC01");
       customerController.setAllColumnVisible(false);
       customerController.setVisibleColumn("companyCodeSys01REG04", true);
@@ -299,6 +310,11 @@ public class SaleCustomerHeadPanel extends JPanel {
     controlName2.setEnabledOnEdit(false);
     controlName2.setAttributeName("name_2REG04");
 
+    controlD.setEnabledOnInsert(false);
+    controlD.setEnabledOnEdit(false);
+    controlD.setAttributeName("vatDescriptionSYS10");
+
+
     if (maybeShowCompaniesCombo) {
       this.add(companyLabel,         new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
               ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
@@ -321,30 +337,56 @@ public class SaleCustomerHeadPanel extends JPanel {
 
     }
 
-    this.add(labelCustomer,         new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+    labelVat.setText("vatCodeREG01");
+    labelDeductible.setText("deductibleREG01");
+    controlDed.setEnabledOnInsert(false);
+    controlDed.setEnabledOnEdit(false);
+    controlDed.setAttributeName("deductibleREG01");
+    controlVatValue.setEnabledOnInsert(false);
+    controlVatValue.setAttributeName("valueREG01");
+    controlVatValue.setEnabledOnEdit(false);
+    controlVatCode.setAttributeName("customerVatCodeReg01DOC01");
+    controlVatCode.setEnabledOnInsert(false);
+    controlVatCode.setEnabledOnEdit(false);
+    labelPerc.setText("valueREG01");
+    this.add(labelCustomer,            new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlCustomerCode,               new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+    this.add(controlCustomerCode,                  new GridBagConstraints(1, 0, 3, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 70, 0));
-    this.add(labelPayment,           new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+    this.add(labelPayment,              new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlName1,           new GridBagConstraints(2, 1, 1, 1, 1.0, 0.0
+    this.add(controlName1,              new GridBagConstraints(4, 0, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 200, 0));
-    this.add(labelPricelist,       new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+    this.add(labelPricelist,          new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlPricelistCode,       new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0
+    this.add(controlPricelistCode,          new GridBagConstraints(1, 1, 3, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 70, 0));
-    this.add(controlPricelistDescr,        new GridBagConstraints(2, 2, 1, 1, 1.0, 0.0
+    this.add(controlPricelistDescr,           new GridBagConstraints(4, 1, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlPaymentCode,     new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
+    this.add(controlPaymentCode,        new GridBagConstraints(1, 2, 3, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 70, 0));
-    this.add(controlPayDescr,    new GridBagConstraints(2, 3, 1, 1, 1.0, 0.0
+    this.add(controlPayDescr,        new GridBagConstraints(4, 2, 3, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(labelCurrency,   new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0
+    this.add(labelCurrency,      new GridBagConstraints(5, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlCurrency,   new GridBagConstraints(4, 2, 1, 1, 0.0, 0.0
+    this.add(controlCurrency,      new GridBagConstraints(6, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 70, 0));
-    this.add(controlName2,    new GridBagConstraints(3, 1, 2, 1, 1.0, 0.0
+    this.add(controlName2,       new GridBagConstraints(5, 0, 2, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 0, 0));
+    this.add(labelVat,       new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    this.add(controlD,      new GridBagConstraints(4, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 70, 0));
+    this.add(labelDeductible,     new GridBagConstraints(5, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    this.add(controlDed,    new GridBagConstraints(6, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    this.add(controlVatValue,    new GridBagConstraints(3, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 0, 0));
+    this.add(controlVatCode,    new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 0, 0));
+    this.add(labelPerc,   new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 10, 5, 5), 0, 0));
   }
 
 
@@ -360,5 +402,6 @@ public class SaleCustomerHeadPanel extends JPanel {
   public CodLookupControl getControlCustomerCode() {
     return controlCustomerCode;
   }
+
 
 }

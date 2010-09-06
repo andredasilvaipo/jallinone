@@ -176,34 +176,48 @@ public class LoadSupplierVariantsPricesAction implements Action {
         customVO = new CustomValueObject();
         customVO.setAttributeNameS0(rowVO.getRowDescription());
         matrixRows.add(customVO);
-        indexes.put(rowVO.getVariantTypeITM06()+" "+rowVO.getVariantCodeITM11(),customVO);
+        indexes.put(
+          VariantsMatrixUtils.getVariantType(matrixVO,rowVO)+" "+VariantsMatrixUtils.getVariantCode(matrixVO,rowVO),
+          customVO
+        );
       }
+      VariantNameVO varVO = (VariantNameVO)matrixVO.getManagedVariants().get(0);
       for(int i=0;i<rows.size();i++) {
         vo = (SupplierVariantsPriceVO)rows.get(i);
-        customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm06PUR05()+" "+vo.getVariantCodeItm11PUR05());
+
+        if (varVO.getTableName().equals("ITM11_VARIANTS_1")) {
+          customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm06PUR05()+" "+vo.getVariantCodeItm11PUR05());
+        }
+        else if (varVO.getTableName().equals("ITM12_VARIANTS_2")) {
+          customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm07PUR05()+" "+vo.getVariantCodeItm12PUR05());
+        }
+        else if (varVO.getTableName().equals("ITM13_VARIANTS_3")) {
+          customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm08PUR05()+" "+vo.getVariantCodeItm13PUR05());
+        }
+        else if (varVO.getTableName().equals("ITM14_VARIANTS_4")) {
+          customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm09PUR05()+" "+vo.getVariantCodeItm14PUR05());
+        }
+        else if (varVO.getTableName().equals("ITM15_VARIANTS_5")) {
+          customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm10PUR05()+" "+vo.getVariantCodeItm15PUR05());
+        }
+
         if (matrixVO.getColumnDescriptors().size()==0) {
-          if (customVO==null)
-            customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm07PUR05()+" "+vo.getVariantCodeItm12PUR05());
-          if (customVO==null)
-            customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm08PUR05()+" "+vo.getVariantCodeItm13PUR05());
-          if (customVO==null)
-            customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm09PUR05()+" "+vo.getVariantCodeItm14PUR05());
-          if (customVO==null)
-            customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm10PUR05()+" "+vo.getVariantCodeItm15PUR05());
           customVO.setAttributeNameN0(vo.getValuePUR05());
         }
-        else if (customVO!=null) {
+        else {
 
           for(int j=0;j<cols;j++) {
             colVO = (VariantsMatrixColumnVO)matrixVO.getColumnDescriptors().get(j);
-            if ((colVO.getVariantCodeITM12()==null && vo.getVariantCodeItm12PUR05().equals(ApplicationConsts.JOLLY) || colVO.getVariantCodeITM12().equals(vo.getVariantCodeItm12PUR05())) &&
-                (colVO.getVariantCodeITM13()==null && vo.getVariantCodeItm13PUR05().equals(ApplicationConsts.JOLLY) || colVO.getVariantCodeITM13().equals(vo.getVariantCodeItm13PUR05())) &&
-                (colVO.getVariantCodeITM14()==null && vo.getVariantCodeItm14PUR05().equals(ApplicationConsts.JOLLY) || colVO.getVariantCodeITM14().equals(vo.getVariantCodeItm14PUR05())) &&
-                (colVO.getVariantCodeITM15()==null && vo.getVariantCodeItm15PUR05().equals(ApplicationConsts.JOLLY) || colVO.getVariantCodeITM15().equals(vo.getVariantCodeItm15PUR05())) &&
-                (colVO.getVariantTypeITM07()==null && vo.getVariantTypeItm07PUR05().equals(ApplicationConsts.JOLLY) || colVO.getVariantTypeITM07().equals(vo.getVariantTypeItm07PUR05())) &&
-                (colVO.getVariantTypeITM08()==null && vo.getVariantTypeItm08PUR05().equals(ApplicationConsts.JOLLY) || colVO.getVariantTypeITM08().equals(vo.getVariantTypeItm08PUR05())) &&
-                (colVO.getVariantTypeITM09()==null && vo.getVariantTypeItm09PUR05().equals(ApplicationConsts.JOLLY) || colVO.getVariantTypeITM09().equals(vo.getVariantTypeItm09PUR05())) &&
-                (colVO.getVariantTypeITM10()==null && vo.getVariantTypeItm10PUR05().equals(ApplicationConsts.JOLLY) || colVO.getVariantTypeITM10().equals(vo.getVariantTypeItm10PUR05()))) {
+            if ((varVO.getTableName().equals("ITM11_VARIANTS_1")?true:colVO.getVariantCodeITM11().equals(vo.getVariantCodeItm11PUR05())) &&
+                (varVO.getTableName().equals("ITM12_VARIANTS_2")?true:colVO.getVariantCodeITM12().equals(vo.getVariantCodeItm12PUR05())) &&
+                (varVO.getTableName().equals("ITM13_VARIANTS_3")?true:colVO.getVariantCodeITM13().equals(vo.getVariantCodeItm13PUR05())) &&
+                (varVO.getTableName().equals("ITM14_VARIANTS_4")?true:colVO.getVariantCodeITM14().equals(vo.getVariantCodeItm14PUR05())) &&
+                (varVO.getTableName().equals("ITM15_VARIANTS_5")?true:colVO.getVariantCodeITM15().equals(vo.getVariantCodeItm15PUR05())) &&
+                (varVO.getTableName().equals("ITM11_VARIANTS_1")?true:colVO.getVariantTypeITM06().equals(vo.getVariantTypeItm06PUR05())) &&
+                (varVO.getTableName().equals("ITM12_VARIANTS_2")?true:colVO.getVariantTypeITM07().equals(vo.getVariantTypeItm07PUR05())) &&
+                (varVO.getTableName().equals("ITM13_VARIANTS_3")?true:colVO.getVariantTypeITM08().equals(vo.getVariantTypeItm08PUR05())) &&
+                (varVO.getTableName().equals("ITM14_VARIANTS_4")?true:colVO.getVariantTypeITM09().equals(vo.getVariantTypeItm09PUR05())) &&
+                (varVO.getTableName().equals("ITM15_VARIANTS_5")?true:colVO.getVariantTypeITM10().equals(vo.getVariantTypeItm10PUR05()))) {
               try {
                 CustomValueObject.class.getMethod("setAttributeNameN" + j,new Class[] {BigDecimal.class}).invoke(customVO, new Object[] {vo.getValuePUR05()});
               }

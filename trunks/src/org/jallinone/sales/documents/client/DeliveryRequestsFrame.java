@@ -84,6 +84,8 @@ public class DeliveryRequestsFrame extends InternalFrame implements CurrencyColu
 
       grid.setController(itemsController);
       grid.setGridDataLocator(gridDataLocator);
+      grid.getOtherGridParams().put(ApplicationConsts.DOC_STATE,controlDocState.getValue());
+      grid.getOtherGridParams().put(ApplicationConsts.DELIV_DATE_LESS_OR_EQUALS_TO,controlDate.getValue());
       grid.getOtherGridParams().put(ApplicationConsts.DOC_TYPE,ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE);
       gridDataLocator.setServerMethodName("loadSaleDocs");
 
@@ -95,6 +97,12 @@ public class DeliveryRequestsFrame extends InternalFrame implements CurrencyColu
 
 
   private void init() {
+
+    Domain saleDocStateDomain = new Domain("DELIV_REQ_STATES");
+    saleDocStateDomain.addDomainPair(ApplicationConsts.CONFIRMED,"confirmed");
+    saleDocStateDomain.addDomainPair(ApplicationConsts.CLOSED,"closed");
+    controlDocState.setDomain(saleDocStateDomain);
+    controlDocState.setValue(ApplicationConsts.CONFIRMED);
     controlDocState.addItemListener(new ItemListener() {
 
       public void itemStateChanged(ItemEvent e) {
@@ -105,12 +113,9 @@ public class DeliveryRequestsFrame extends InternalFrame implements CurrencyColu
       }
 
     });
-    Domain saleDocStateDomain = new Domain("DELIV_REQ_STATES");
-    saleDocStateDomain.addDomainPair(ApplicationConsts.CONFIRMED,"confirmed");
-    saleDocStateDomain.addDomainPair(ApplicationConsts.CLOSED,"closed");
-    controlDocState.setDomain(saleDocStateDomain);
-    controlDocState.setValue(ApplicationConsts.CONFIRMED);
 
+
+    controlDate.setDate(new Date(System.currentTimeMillis()));
     controlDate.addDateChangedListener(new DateChangedListener() {
 
       public void dateChanged(java.util.Date oldDate, java.util.Date newDate) {
@@ -119,7 +124,6 @@ public class DeliveryRequestsFrame extends InternalFrame implements CurrencyColu
       }
 
     });
-    controlDate.setDate(new Date(System.currentTimeMillis()));
   }
 
 
@@ -136,7 +140,6 @@ public class DeliveryRequestsFrame extends InternalFrame implements CurrencyColu
     colCompany.setPreferredWidth(100);
     colCompany.setSortVersus(org.openswing.swing.util.java.Consts.ASC_SORTED);
     colCompany.setSortingOrder(0);
-    grid.setAutoLoadData(false);
     grid.setExportButton(exportButton1);
     grid.setFunctionId("DELIV_REQ_LIST");
     grid.setLockedColumns(3);

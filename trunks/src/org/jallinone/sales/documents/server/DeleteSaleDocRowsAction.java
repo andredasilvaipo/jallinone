@@ -146,16 +146,16 @@ public class DeleteSaleDocRowsAction implements Action {
         pstmt2.setBigDecimal(4,rowPK.getDocNumberDOC02());
         pstmt2.setString(5,rowPK.getItemCodeItm01DOC02());
 
-        pstmt1.setString(6,rowPK.getVariantTypeItm06DOC02());
-        pstmt1.setString(7,rowPK.getVariantCodeItm11DOC02());
-        pstmt1.setString(8,rowPK.getVariantTypeItm07DOC02());
-        pstmt1.setString(9,rowPK.getVariantCodeItm12DOC02());
-        pstmt1.setString(10,rowPK.getVariantTypeItm08DOC02());
-        pstmt1.setString(11,rowPK.getVariantCodeItm13DOC02());
-        pstmt1.setString(12,rowPK.getVariantTypeItm09DOC02());
-        pstmt1.setString(13,rowPK.getVariantCodeItm14DOC02());
-        pstmt1.setString(14,rowPK.getVariantTypeItm10DOC02());
-        pstmt1.setString(15,rowPK.getVariantCodeItm15DOC02());
+        pstmt2.setString(6,rowPK.getVariantTypeItm06DOC02());
+        pstmt2.setString(7,rowPK.getVariantCodeItm11DOC02());
+        pstmt2.setString(8,rowPK.getVariantTypeItm07DOC02());
+        pstmt2.setString(9,rowPK.getVariantCodeItm12DOC02());
+        pstmt2.setString(10,rowPK.getVariantTypeItm08DOC02());
+        pstmt2.setString(11,rowPK.getVariantCodeItm13DOC02());
+        pstmt2.setString(12,rowPK.getVariantTypeItm09DOC02());
+        pstmt2.setString(13,rowPK.getVariantCodeItm14DOC02());
+        pstmt2.setString(14,rowPK.getVariantTypeItm10DOC02());
+        pstmt2.setString(15,rowPK.getVariantCodeItm15DOC02());
 
         pstmt2.execute();
 
@@ -166,16 +166,16 @@ public class DeleteSaleDocRowsAction implements Action {
         pstmt3.setBigDecimal(4,rowPK.getDocNumberDOC02());
         pstmt3.setString(5,rowPK.getItemCodeItm01DOC02());
 
-        pstmt1.setString(6,rowPK.getVariantTypeItm06DOC02());
-        pstmt1.setString(7,rowPK.getVariantCodeItm11DOC02());
-        pstmt1.setString(8,rowPK.getVariantTypeItm07DOC02());
-        pstmt1.setString(9,rowPK.getVariantCodeItm12DOC02());
-        pstmt1.setString(10,rowPK.getVariantTypeItm08DOC02());
-        pstmt1.setString(11,rowPK.getVariantCodeItm13DOC02());
-        pstmt1.setString(12,rowPK.getVariantTypeItm09DOC02());
-        pstmt1.setString(13,rowPK.getVariantCodeItm14DOC02());
-        pstmt1.setString(14,rowPK.getVariantTypeItm10DOC02());
-        pstmt1.setString(15,rowPK.getVariantCodeItm15DOC02());
+        pstmt3.setString(6,rowPK.getVariantTypeItm06DOC02());
+        pstmt3.setString(7,rowPK.getVariantCodeItm11DOC02());
+        pstmt3.setString(8,rowPK.getVariantTypeItm07DOC02());
+        pstmt3.setString(9,rowPK.getVariantCodeItm12DOC02());
+        pstmt3.setString(10,rowPK.getVariantTypeItm08DOC02());
+        pstmt3.setString(11,rowPK.getVariantCodeItm13DOC02());
+        pstmt3.setString(12,rowPK.getVariantTypeItm09DOC02());
+        pstmt3.setString(13,rowPK.getVariantCodeItm14DOC02());
+        pstmt3.setString(14,rowPK.getVariantTypeItm10DOC02());
+        pstmt3.setString(15,rowPK.getVariantCodeItm15DOC02());
 
         pstmt3.execute();
       }

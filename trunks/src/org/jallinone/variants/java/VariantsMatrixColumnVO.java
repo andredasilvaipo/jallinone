@@ -4,11 +4,15 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import org.openswing.swing.message.receive.java.*;
+import org.jallinone.commons.java.ApplicationConsts;
 
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
- * <p>Description: Value object used to store the column descriptor of the variants matrix for a specified item code.</p>
+ * <p>Description: Value object used to store the column descriptor of the variants matrix for a specified item code.
+ * Almost all attributes will be used only in case of an item having more than one variant associated:
+ * in this case a specific row in the matrix implies a different variantTypeXX/variantCodeXX and
+ * the corresponding attribute XX in VariantsMatrixColumnVO object must be ignored (it is always to "JOLLY" value).</p>
  * <p>Copyright: Copyright (C) 2006 Mauro Carniel</p>
  *
  * <p> This file is part of JAllInOne ERP/CRM application.
@@ -36,15 +40,18 @@ import org.openswing.swing.message.receive.java.*;
  */
 public class VariantsMatrixColumnVO extends ValueObjectImpl {
 
-  private String variantTypeITM07;
-  private String variantTypeITM08;
-  private String variantTypeITM09;
-  private String variantTypeITM10;
+  private String variantTypeITM06 = ApplicationConsts.JOLLY;
+  private String variantTypeITM07 = ApplicationConsts.JOLLY;
+  private String variantTypeITM08 = ApplicationConsts.JOLLY;
+  private String variantTypeITM09 = ApplicationConsts.JOLLY;
+  private String variantTypeITM10 = ApplicationConsts.JOLLY;
 
-  private String variantCodeITM12;
-  private String variantCodeITM13;
-  private String variantCodeITM14;
-  private String variantCodeITM15;
+  private String variantCodeITM11 = ApplicationConsts.JOLLY;
+  private String variantCodeITM12 = ApplicationConsts.JOLLY;
+  private String variantCodeITM13 = ApplicationConsts.JOLLY;
+  private String variantCodeITM14 = ApplicationConsts.JOLLY;
+  private String variantCodeITM15 = ApplicationConsts.JOLLY;
+
 
   private String columnDescription;
 
@@ -52,56 +59,70 @@ public class VariantsMatrixColumnVO extends ValueObjectImpl {
   public VariantsMatrixColumnVO() {}
 
 
-  public String getColumnDescription() {
-    return columnDescription;
-  }
   public String getVariantCodeITM12() {
     return variantCodeITM12;
   }
-  public String getVariantCodeITM13() {
-    return variantCodeITM13;
-  }
-  public String getVariantCodeITM14() {
-    return variantCodeITM14;
-  }
-  public String getVariantCodeITM15() {
-    return variantCodeITM15;
-  }
-  public String getVariantTypeITM07() {
-    return variantTypeITM07;
-  }
-  public String getVariantTypeITM08() {
-    return variantTypeITM08;
-  }
-  public String getVariantTypeITM09() {
-    return variantTypeITM09;
+  public String getVariantCodeITM11() {
+    return variantCodeITM11;
   }
   public String getVariantTypeITM10() {
     return variantTypeITM10;
   }
-  public void setVariantTypeITM10(String variantTypeITM10) {
-    this.variantTypeITM10 = variantTypeITM10;
+  public String getVariantTypeITM09() {
+    return variantTypeITM09;
   }
-  public void setVariantTypeITM09(String variantTypeITM09) {
-    this.variantTypeITM09 = variantTypeITM09;
+  public String getVariantTypeITM08() {
+    return variantTypeITM08;
   }
-  public void setVariantTypeITM08(String variantTypeITM08) {
-    this.variantTypeITM08 = variantTypeITM08;
+  public String getVariantTypeITM07() {
+    return variantTypeITM07;
   }
-  public void setVariantTypeITM07(String variantTypeITM07) {
-    this.variantTypeITM07 = variantTypeITM07;
+  public String getVariantTypeITM06() {
+    return variantTypeITM06;
   }
-  public void setVariantCodeITM15(String variantCodeITM15) {
-    this.variantCodeITM15 = variantCodeITM15;
+  public String getVariantCodeITM15() {
+    return variantCodeITM15;
   }
-  public void setVariantCodeITM14(String variantCodeITM14) {
-    this.variantCodeITM14 = variantCodeITM14;
+  public String getVariantCodeITM14() {
+    return variantCodeITM14;
+  }
+  public String getVariantCodeITM13() {
+    return variantCodeITM13;
+  }
+  public void setVariantCodeITM11(String variantCodeITM11) {
+    this.variantCodeITM11 = variantCodeITM11;
+  }
+  public void setVariantCodeITM12(String variantCodeITM12) {
+    this.variantCodeITM12 = variantCodeITM12;
   }
   public void setVariantCodeITM13(String variantCodeITM13) {
     this.variantCodeITM13 = variantCodeITM13;
   }
-  public void setVariantCodeITM12(String variantCodeITM12) {
-    this.variantCodeITM12 = variantCodeITM12;
+  public void setVariantCodeITM14(String variantCodeITM14) {
+    this.variantCodeITM14 = variantCodeITM14;
+  }
+  public void setVariantCodeITM15(String variantCodeITM15) {
+    this.variantCodeITM15 = variantCodeITM15;
+  }
+  public void setVariantTypeITM06(String variantTypeITM06) {
+    this.variantTypeITM06 = variantTypeITM06;
+  }
+  public void setVariantTypeITM07(String variantTypeITM07) {
+    this.variantTypeITM07 = variantTypeITM07;
+  }
+  public void setVariantTypeITM08(String variantTypeITM08) {
+    this.variantTypeITM08 = variantTypeITM08;
+  }
+  public void setVariantTypeITM09(String variantTypeITM09) {
+    this.variantTypeITM09 = variantTypeITM09;
+  }
+  public void setVariantTypeITM10(String variantTypeITM10) {
+    this.variantTypeITM10 = variantTypeITM10;
+  }
+
+
+  public String getColumnDescription() {
+    return columnDescription;
   }
   public void setColumnDescription(String columnDescription) {
     this.columnDescription = columnDescription;

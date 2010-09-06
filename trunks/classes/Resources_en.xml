@@ -1492,6 +1492,32 @@
   <object key="delivery request rows" value="Delivery request rows" />
   <object key="delivreqnr" value="Deliv.Req.Nr." />
   <object key="until date" value="Until date" />
+
+  <object key="translations" value="Translations" />
+  <object key="item descriptions" value="Item descriptions" />
+  <object key="item additional descriptions" value="Item additional descriptions" />
+  <object key="vat descriptions" value="Vat descriptions" />
+  <object key="topic" value="Topic" />
+  <object key="hierarchies names" value="Hierarchies names" />
+  <object key="hierarchy levels names" value="Hierarchy levels names" />
+  <object key="variant names" value="Variant names" />
+  <object key="variant type" value="Variant type" />
+  <object key="task descriptions" value="Task descriptions" />
+  <object key="payment descriptions" value="Payment descriptions" />
+  <object key="payment type descriptions" value="Payment type descriptions" />
+  <object key="pricelist descriptions" value="Pricelist descriptions" />
+  <object key="discount descriptions" value="Discount descriptions" />
+  <object key="charge descriptions" value="Charge descriptions" />
+  <object key="activity descriptions" value="Activity descriptions" />
+  <object key="role descriptions" value="Role descriptions" />
+  <object key="function descriptions" value="Function descriptions" />
+  <object key="ledger descriptions" value="Ledger descriptions" />
+  <object key="account descriptions" value="Account descriptions" />
+  <object key="account motives" value="Account motives" />
+  <object key="" value="" />
+  <object key="" value="" />
+  <object key="" value="" />
+  <object key="" value="" />
   <object key="" value="" />
   <object key="" value="" />
 

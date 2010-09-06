@@ -22,6 +22,8 @@ import org.openswing.swing.customvo.java.CustomValueObject;
 import org.jallinone.variants.java.VariantsMatrixRowVO;
 import org.jallinone.variants.java.VariantsMatrixColumnVO;
 import org.jallinone.items.java.ItemPK;
+import org.jallinone.variants.java.VariantsMatrixUtils;
+import org.jallinone.variants.java.VariantNameVO;
 
 
 /**
@@ -171,41 +173,54 @@ public class LoadVariantsPricesAction implements Action {
       VariantsMatrixRowVO rowVO = null;
       VariantsMatrixColumnVO colVO = null;
       HashMap indexes = new HashMap();
-      int cols = matrixVO.getColumnDescriptors().size()==0?1:matrixVO.getColumnDescriptors().size();
       for(int i=0;i<matrixVO.getRowDescriptors().size();i++) {
         rowVO = (VariantsMatrixRowVO)matrixVO.getRowDescriptors().get(i);
 
         customVO = new CustomValueObject();
         customVO.setAttributeNameS0(rowVO.getRowDescription());
         matrixRows.add(customVO);
-        indexes.put(rowVO.getVariantTypeITM06()+" "+rowVO.getVariantCodeITM11(),customVO);
+        indexes.put(
+          VariantsMatrixUtils.getVariantType(matrixVO,rowVO)+" "+VariantsMatrixUtils.getVariantCode(matrixVO,rowVO),
+          customVO
+        );
       }
+      VariantNameVO varVO = (VariantNameVO)matrixVO.getManagedVariants().get(0);
       for(int i=0;i<rows.size();i++) {
         vo = (VariantsPriceVO)rows.get(i);
-        customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm06SAL11()+" "+vo.getVariantCodeItm11SAL11());
+
+        if (varVO.getTableName().equals("ITM11_VARIANTS_1")) {
+          customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm06SAL11()+" "+vo.getVariantCodeItm11SAL11());
+        }
+        else if (varVO.getTableName().equals("ITM12_VARIANTS_2")) {
+          customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm07SAL11()+" "+vo.getVariantCodeItm12SAL11());
+        }
+        else if (varVO.getTableName().equals("ITM13_VARIANTS_3")) {
+          customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm08SAL11()+" "+vo.getVariantCodeItm13SAL11());
+        }
+        else if (varVO.getTableName().equals("ITM14_VARIANTS_4")) {
+          customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm09SAL11()+" "+vo.getVariantCodeItm14SAL11());
+        }
+        else if (varVO.getTableName().equals("ITM15_VARIANTS_5")) {
+          customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm10SAL11()+" "+vo.getVariantCodeItm15SAL11());
+        }
+
         if (matrixVO.getColumnDescriptors().size()==0) {
-          if (customVO==null)
-            customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm07SAL11()+" "+vo.getVariantCodeItm12SAL11());
-          if (customVO==null)
-            customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm08SAL11()+" "+vo.getVariantCodeItm13SAL11());
-          if (customVO==null)
-            customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm09SAL11()+" "+vo.getVariantCodeItm14SAL11());
-          if (customVO==null)
-            customVO = (CustomValueObject)indexes.get(vo.getVariantTypeItm10SAL11()+" "+vo.getVariantCodeItm15SAL11());
           customVO.setAttributeNameN0(vo.getValueSAL11());
         }
-        else if (customVO!=null) {
+        else {
 
-          for(int j=0;j<cols;j++) {
+          for(int j=0;j<matrixVO.getColumnDescriptors().size();j++) {
             colVO = (VariantsMatrixColumnVO)matrixVO.getColumnDescriptors().get(j);
-            if ((colVO.getVariantCodeITM12()==null && vo.getVariantCodeItm12SAL11().equals(ApplicationConsts.JOLLY) || colVO.getVariantCodeITM12().equals(vo.getVariantCodeItm12SAL11())) &&
-                (colVO.getVariantCodeITM13()==null && vo.getVariantCodeItm13SAL11().equals(ApplicationConsts.JOLLY) || colVO.getVariantCodeITM13().equals(vo.getVariantCodeItm13SAL11())) &&
-                (colVO.getVariantCodeITM14()==null && vo.getVariantCodeItm14SAL11().equals(ApplicationConsts.JOLLY) || colVO.getVariantCodeITM14().equals(vo.getVariantCodeItm14SAL11())) &&
-                (colVO.getVariantCodeITM15()==null && vo.getVariantCodeItm15SAL11().equals(ApplicationConsts.JOLLY) || colVO.getVariantCodeITM15().equals(vo.getVariantCodeItm15SAL11())) &&
-                (colVO.getVariantTypeITM07()==null && vo.getVariantTypeItm07SAL11().equals(ApplicationConsts.JOLLY) || colVO.getVariantTypeITM07().equals(vo.getVariantTypeItm07SAL11())) &&
-                (colVO.getVariantTypeITM08()==null && vo.getVariantTypeItm08SAL11().equals(ApplicationConsts.JOLLY) || colVO.getVariantTypeITM08().equals(vo.getVariantTypeItm08SAL11())) &&
-                (colVO.getVariantTypeITM09()==null && vo.getVariantTypeItm09SAL11().equals(ApplicationConsts.JOLLY) || colVO.getVariantTypeITM09().equals(vo.getVariantTypeItm09SAL11())) &&
-                (colVO.getVariantTypeITM10()==null && vo.getVariantTypeItm10SAL11().equals(ApplicationConsts.JOLLY) || colVO.getVariantTypeITM10().equals(vo.getVariantTypeItm10SAL11()))) {
+            if ((varVO.getTableName().equals("ITM11_VARIANTS_1")?true:colVO.getVariantCodeITM11().equals(vo.getVariantCodeItm11SAL11())) &&
+                (varVO.getTableName().equals("ITM12_VARIANTS_2")?true:colVO.getVariantCodeITM12().equals(vo.getVariantCodeItm12SAL11())) &&
+                (varVO.getTableName().equals("ITM13_VARIANTS_3")?true:colVO.getVariantCodeITM13().equals(vo.getVariantCodeItm13SAL11())) &&
+                (varVO.getTableName().equals("ITM14_VARIANTS_4")?true:colVO.getVariantCodeITM14().equals(vo.getVariantCodeItm14SAL11())) &&
+                (varVO.getTableName().equals("ITM15_VARIANTS_5")?true:colVO.getVariantCodeITM15().equals(vo.getVariantCodeItm15SAL11())) &&
+                (varVO.getTableName().equals("ITM11_VARIANTS_1")?true:colVO.getVariantTypeITM06().equals(vo.getVariantTypeItm06SAL11())) &&
+                (varVO.getTableName().equals("ITM12_VARIANTS_2")?true:colVO.getVariantTypeITM07().equals(vo.getVariantTypeItm07SAL11())) &&
+                (varVO.getTableName().equals("ITM13_VARIANTS_3")?true:colVO.getVariantTypeITM08().equals(vo.getVariantTypeItm08SAL11())) &&
+                (varVO.getTableName().equals("ITM14_VARIANTS_4")?true:colVO.getVariantTypeITM09().equals(vo.getVariantTypeItm09SAL11())) &&
+                (varVO.getTableName().equals("ITM15_VARIANTS_5")?true:colVO.getVariantTypeITM10().equals(vo.getVariantTypeItm10SAL11()))) {
               try {
                 CustomValueObject.class.getMethod("setAttributeNameN" + j,new Class[] {BigDecimal.class}).invoke(customVO, new Object[] {vo.getValueSAL11()});
               }
@@ -238,7 +253,6 @@ public class LoadVariantsPricesAction implements Action {
     }
 
   }
-
 
 
 }

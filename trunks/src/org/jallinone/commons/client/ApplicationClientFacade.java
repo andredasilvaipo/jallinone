@@ -90,6 +90,7 @@ import org.jallinone.ordertracking.client.OrderTrackingFrame;
 import org.jallinone.items.client.PrintBarcodeLabelsFrame;
 import org.jallinone.sales.reports.client.SalesPivotFrame;
 import org.jallinone.sales.documents.client.DeliveryRequestsController;
+import org.jallinone.system.translations.client.*;
 
 
 /**
@@ -960,6 +961,11 @@ public class ApplicationClientFacade implements ClientFacade {
 
   public void getDeliveryRequestsList() {
     new DeliveryRequestsController();
+  }
+
+
+  public void getTranslations() {
+    new TranslationsGridFrame(null,null);
   }
 
 

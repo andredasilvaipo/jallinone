@@ -1,5 +1,15 @@
 
 
+Release Notes 1.1.1
+---------------------
+
+Added "Translations" functionality, in order to manage translations for all languages (items, etc.)
+Fixed problem when using a subset of variants not starting from the first one
+Fixed problem with totals in sales documents when a vat is defined per customer
+Improved var register functionality
+
+
+
 Release Notes 1.1
 ---------------------
 

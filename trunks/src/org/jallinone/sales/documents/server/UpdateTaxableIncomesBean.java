@@ -388,7 +388,7 @@ public class UpdateTaxableIncomesBean {
         else {
           vatCode = customerVatCode;
           vatDescr = customerVatDescription;
-          vatPerc = customerVatValue.doubleValue();
+          vatPerc = customerVatValue.doubleValue()/100d;
         }
 
         detailItemVO.setVatValueDOC02(detailItemVO.getTaxableIncomeDOC02().multiply(new BigDecimal(vatPerc)).setScale(vo.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP));
@@ -449,7 +449,7 @@ public class UpdateTaxableIncomesBean {
         else {
           vatCode = customerVatCode;
           vatDescr = customerVatDescription;
-          vatPerc = customerVatValue.doubleValue();
+          vatPerc = customerVatValue.doubleValue()/100d;
         }
 
         actVO.setVatValueDOC13(actVO.getTaxableIncomeDOC13().multiply(new BigDecimal(vatPerc)).setScale(vo.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP));
@@ -495,7 +495,7 @@ public class UpdateTaxableIncomesBean {
           else {
             vatCode = customerVatCode;
             vatDescr = customerVatDescription;
-            vatPerc = customerVatValue.doubleValue();
+            vatPerc = customerVatValue.doubleValue()/100d;
           }
 
           chargeVO.setVatValueDOC03(chargeVO.getTaxableIncomeDOC03().multiply(new BigDecimal(vatPerc)).setScale(vo.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP));

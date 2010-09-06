@@ -149,7 +149,7 @@ public class SaleDeskDocRowsController extends CompanyGridController {
       panel.getGrid().reloadData();
       panel.getHeaderPanel().setMode(Consts.READONLY);
       panel.getHeaderPanel().executeReload();
-      panel.getDesks().reloadData();
+      panel.getDesks().reloadCurrentBlockOfData();
     }
     return res;
   }

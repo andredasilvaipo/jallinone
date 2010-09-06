@@ -290,6 +290,15 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
 
             serialNumberRequired = ((PriceItemVO)itemController.getLookupVO()).getSerialNumberRequiredITM01().booleanValue();
 
+            DetailSaleDocVO pVO = (DetailSaleDocVO)SaleDeskDocRowsGridPanel.this.parentVO;
+            if (pVO!=null && pVO.getCustomerVatCodeReg01DOC01()!=null && !pVO.getCustomerVatCodeReg01DOC01().equals("")) {
+              vo.setVatCodeItm01DOC02(pVO.getCustomerVatCodeReg01DOC01());
+              vo.setVatDescriptionDOC02(pVO.getVatDescriptionSYS10());
+              vo.setDeductibleReg01DOC02(pVO.getDeductibleREG01());
+              vo.setValueReg01DOC02(pVO.getValueREG01());
+              detailPanel.pull();
+            }
+
           }
           updateTotals();
         }

@@ -179,6 +179,8 @@ public class LoadProductVariantsMatrixBean {
         answer = bean.getItemVariants(conn,gridParams,userSessionPars,request,response,userSession,context);
         if (answer.isError())
           return answer;
+        // list of all variant's elements (not only the ones associated to the current item
+        // ("selected" attribute establishes which ones are associated to the current item...)
         ArrayList vos = new ArrayList(((VOListResponse)answer).getRows());
 
         if (i==0) {
@@ -189,14 +191,14 @@ public class LoadProductVariantsMatrixBean {
                 continue;
 
             VariantsMatrixRowVO rowVO = new VariantsMatrixRowVO();
-            rowVO.setRowDescription(variantVO.getVariantCode());
-            rowVO.setVariantCodeITM11(variantVO.getVariantCode());
-            rowVO.setVariantTypeITM06(variantVO.getVariantType());
+            setVariantDescription(variantVO,rowVO);
+            setVariantTypeAndCode(variantVO,rowVO);
             rows.add(rowVO);
           }
         }
         else {
-          tmp[i-1] = vos;
+          tmp[i-1] = vos; // es. i=1 (color),tmp[0]=[red,black,orange...]
+                          // es. i=2 (drop), tmp[1]=[short,medium,...]
         }
       }
 
@@ -213,22 +215,31 @@ public class LoadProductVariantsMatrixBean {
   }
 
 
-  private void createCombinations(ArrayList managedVariants,ArrayList[] tmp,ArrayList cols,int depth,VariantsMatrixColumnVO colVO) throws Exception {
-    ItemVariantVO vo = null;
+  /**
+   * Create combinations of all variants elements defined within "tmp"; e.g. combinations of colors, drops, heights...
+   * @param managedVariants ArrayList
+   * @param tmp array of all variants (except the first one) and for each variant, the list of variants' elements (red, black, orange...)
+   * @param cols list of all columns of the matrix (created recursivelly by this method)
+   * @param depth current dept
+   * @param colVO parent column to "duplicate" for each current variant's elements
+   */
+   private void createCombinations(ArrayList managedVariants,ArrayList[] tmp,ArrayList cols,int depth,VariantsMatrixColumnVO colVO) throws Exception {
+   ItemVariantVO vo = null;
     VariantsMatrixColumnVO col2VO = null;
     for(int i=0;i<tmp[depth].size();i++) {
-      vo = (ItemVariantVO)tmp[depth].get(i);
+      vo = (ItemVariantVO)tmp[depth].get(i); // colors: red, black, orange...
       if (!Boolean.TRUE.equals(vo.getSelected()))
-          continue;
+        // skip variant's element, if not associated to the current item...
+        continue;
 
       if (depth < tmp.length - 1) {
         if (colVO == null) {
           col2VO = new VariantsMatrixColumnVO();
-          setVariantTypeAndCodeDescription(col2VO,vo);
+          setVariantDescription(col2VO,vo);
         }
         else {
           col2VO = (VariantsMatrixColumnVO)colVO.clone();
-          setVariantTypeAndCodeDescription(col2VO,vo);
+          setVariantDescription(col2VO,vo);
         }
         setVariantTypeAndCode(managedVariants,col2VO,vo,depth);
         createCombinations(managedVariants, tmp, cols, depth + 1, (VariantsMatrixColumnVO)col2VO.clone());
@@ -236,11 +247,11 @@ public class LoadProductVariantsMatrixBean {
       else {
         if (colVO == null) {
           col2VO = new VariantsMatrixColumnVO();
-          setVariantTypeAndCodeDescription(col2VO,vo);
+          setVariantDescription(col2VO,vo);
         }
         else {
           col2VO = (VariantsMatrixColumnVO)colVO.clone();
-          setVariantTypeAndCodeDescription(col2VO,vo);
+          setVariantDescription(col2VO,vo);
         }
         setVariantTypeAndCode(managedVariants,col2VO,vo,depth);
 
@@ -250,7 +261,7 @@ public class LoadProductVariantsMatrixBean {
   }
 
 
-  private void setVariantTypeAndCodeDescription(VariantsMatrixColumnVO colVO,ItemVariantVO vo) {
+  private void setVariantDescription(VariantsMatrixColumnVO colVO,ItemVariantVO vo) {
     colVO.setColumnDescription(
       (colVO.getColumnDescription()==null?"":(colVO.getColumnDescription()+" / "))+
       (ApplicationConsts.JOLLY.equals(vo.getVariantType())?"":(vo.getVariantType()+" "))+
@@ -261,7 +272,11 @@ public class LoadProductVariantsMatrixBean {
 
   private void setVariantTypeAndCode(ArrayList managedVariants,VariantsMatrixColumnVO colVO,ItemVariantVO vo,int depth) {
     VariantNameVO varVO = (VariantNameVO)managedVariants.get(depth+1);
-    if (varVO.getTableName().equals("ITM12_VARIANTS_2")) {
+    if (varVO.getTableName().equals("ITM11_VARIANTS_1")) {
+      colVO.setVariantCodeITM11(vo.getVariantCode());
+      colVO.setVariantTypeITM06(vo.getVariantType());
+    }
+    else if (varVO.getTableName().equals("ITM12_VARIANTS_2")) {
       colVO.setVariantCodeITM12(vo.getVariantCode());
       colVO.setVariantTypeITM07(vo.getVariantType());
     }
@@ -280,6 +295,39 @@ public class LoadProductVariantsMatrixBean {
 
   }
 
+
+  private void setVariantDescription(ItemVariantVO varVO,VariantsMatrixRowVO vo) {
+    vo.setRowDescription(
+      (vo.getRowDescription()==null?"":(vo.getRowDescription()+" / "))+
+      (ApplicationConsts.JOLLY.equals(varVO.getVariantType())?"":(varVO.getVariantType()+" "))+
+      (ApplicationConsts.JOLLY.equals(varVO.getVariantCode())?"":varVO.getVariantCode())
+    );
+  }
+
+
+  private void setVariantTypeAndCode(ItemVariantVO varVO,VariantsMatrixRowVO vo) {
+    if (varVO.getTableName().equals("ITM11_VARIANTS_1")) {
+      vo.setVariantCodeITM11(varVO.getVariantCode());
+      vo.setVariantTypeITM06(varVO.getVariantType());
+    }
+    else if (varVO.getTableName().equals("ITM12_VARIANTS_2")) {
+      vo.setVariantCodeITM12(varVO.getVariantCode());
+      vo.setVariantTypeITM07(varVO.getVariantType());
+    }
+    else if (varVO.getTableName().equals("ITM13_VARIANTS_3")) {
+      vo.setVariantCodeITM13(varVO.getVariantCode());
+      vo.setVariantTypeITM08(varVO.getVariantType());
+    }
+    else if (varVO.getTableName().equals("ITM14_VARIANTS_4")) {
+      vo.setVariantCodeITM14(varVO.getVariantCode());
+      vo.setVariantTypeITM09(varVO.getVariantType());
+    }
+    else if (varVO.getTableName().equals("ITM15_VARIANTS_5")) {
+      vo.setVariantCodeITM15(varVO.getVariantCode());
+      vo.setVariantTypeITM10(varVO.getVariantType());
+    }
+
+  }
 
 
 }

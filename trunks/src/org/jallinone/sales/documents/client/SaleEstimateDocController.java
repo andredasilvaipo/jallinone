@@ -241,6 +241,7 @@ public class SaleEstimateDocController extends CompanyFormController {
       if (!res.isError()) {
         String warCode = (String)((VOResponse)res).getVo();
         if (warCode!=null) {
+          vo.setCompanyCodeSys01DOC01(companiesList.get(0).toString());
           vo.setWarehouseCodeWar01DOC01(warCode);
         }
       }

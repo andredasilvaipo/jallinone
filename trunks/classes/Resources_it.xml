@@ -1490,6 +1490,27 @@
   <object key="delivreqnr" value="N.Rich.Cons." />
   <object key="until date" value="Fino alla data" />
 
+  <object key="translations" value="Traduzioni" />
+  <object key="item descriptions" value="Descrizione articoli" />
+  <object key="item additional descriptions" value="Descrz. addizionale articoli" />
+  <object key="vat descriptions" value="Descrizioni IVA" />
+  <object key="topic" value="Argomento" />
+  <object key="hierarchies names" value="Nomi gerarchie" />
+  <object key="hierarchy levels names" value="Nomi livelli gerarchici" />
+  <object key="variant names" value="Nomi varianti" />
+  <object key="variant type" value="Tipo variante" />
+  <object key="task descriptions" value="Descrizione mansioni" />
+  <object key="payment descriptions" value="Descrizione pagamenti" />
+  <object key="payment type descriptions" value="Descrizione forme pagamento" />
+  <object key="pricelist descriptions" value="Descrizione listini" />
+  <object key="discount descriptions" value="Descrizione sconti" />
+  <object key="charge descriptions" value="Descrizione spese" />
+  <object key="activity descriptions" value="Descrizione attivit&#224;" />
+  <object key="role descriptions" value="Descrizione ruoli" />
+  <object key="function descriptions" value="Descrizione funzionalit&#224;" />
+  <object key="ledger descriptions" value="Descrizione libro mastro" />
+  <object key="account descriptions" value="Descrizione conti" />
+  <object key="account motives" value="Causali conti" />
 
 <!-- application translations -->
 

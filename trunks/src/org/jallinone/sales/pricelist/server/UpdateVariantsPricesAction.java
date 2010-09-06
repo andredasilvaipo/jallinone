@@ -19,6 +19,7 @@ import org.jallinone.variants.java.VariantsMatrixColumnVO;
 import org.jallinone.variants.java.VariantsMatrixRowVO;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.variants.java.VariantNameVO;
+import org.jallinone.variants.java.VariantsMatrixUtils;
 
 
 /**
@@ -148,48 +149,7 @@ public class UpdateVariantsPricesAction implements Action {
             vo.setValueSAL11((BigDecimal)cells[i][0]);
             vo.setStartDateSAL11(startDate);
             vo.setEndDateSAL11(endDate);
-
-            if (!containsVariant(matrixVO,"ITM11_VARIANTS_1")) {
-              // e.g. color but not no size...
-              vo.setVariantCodeItm11SAL11(ApplicationConsts.JOLLY);
-              vo.setVariantTypeItm06SAL11(ApplicationConsts.JOLLY);
-            }
-            else {
-              vo.setVariantCodeItm11SAL11(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm06SAL11(rowVO.getVariantTypeITM06());
-            }
-            if (!containsVariant(matrixVO,"ITM12_VARIANTS_2")) {
-              vo.setVariantCodeItm12SAL11(ApplicationConsts.JOLLY);
-              vo.setVariantTypeItm07SAL11(ApplicationConsts.JOLLY);
-            }
-            else {
-              vo.setVariantCodeItm12SAL11(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm07SAL11(rowVO.getVariantTypeITM06());
-            }
-            if (!containsVariant(matrixVO,"ITM13_VARIANTS_3")) {
-              vo.setVariantCodeItm13SAL11(ApplicationConsts.JOLLY);
-              vo.setVariantTypeItm08SAL11(ApplicationConsts.JOLLY);
-            }
-            else {
-              vo.setVariantCodeItm13SAL11(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm08SAL11(rowVO.getVariantTypeITM06());
-            }
-            if (!containsVariant(matrixVO,"ITM14_VARIANTS_4")) {
-              vo.setVariantCodeItm14SAL11(ApplicationConsts.JOLLY);
-              vo.setVariantTypeItm09SAL11(ApplicationConsts.JOLLY);
-            }
-            else {
-              vo.setVariantCodeItm14SAL11(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm09SAL11(rowVO.getVariantTypeITM06());
-            }
-            if (!containsVariant(matrixVO,"ITM15_VARIANTS_5")) {
-              vo.setVariantCodeItm15SAL11(ApplicationConsts.JOLLY);
-              vo.setVariantTypeItm10SAL11(ApplicationConsts.JOLLY);
-            }
-            else {
-              vo.setVariantCodeItm15SAL11(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm10SAL11(rowVO.getVariantTypeITM06());
-            }
+            VariantsMatrixUtils.setVariantTypesAndCodes(vo,"SAL11",matrixVO,rowVO,null);
 
             res = QueryUtil.insertTable(
                 conn,
@@ -221,19 +181,7 @@ public class UpdateVariantsPricesAction implements Action {
               vo.setValueSAL11((BigDecimal)cells[i][k]);
               vo.setStartDateSAL11(startDate);
               vo.setEndDateSAL11(endDate);
-
-              vo.setVariantCodeItm11SAL11(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm06SAL11(rowVO.getVariantTypeITM06());
-
-              vo.setVariantCodeItm12SAL11(colVO.getVariantCodeITM12()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM12());
-              vo.setVariantCodeItm13SAL11(colVO.getVariantCodeITM13()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM13());
-              vo.setVariantCodeItm14SAL11(colVO.getVariantCodeITM14()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM14());
-              vo.setVariantCodeItm15SAL11(colVO.getVariantCodeITM15()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM15());
-
-              vo.setVariantTypeItm07SAL11(colVO.getVariantTypeITM07()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM07());
-              vo.setVariantTypeItm08SAL11(colVO.getVariantTypeITM08()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM08());
-              vo.setVariantTypeItm09SAL11(colVO.getVariantTypeITM09()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM09());
-              vo.setVariantTypeItm10SAL11(colVO.getVariantTypeITM10()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM10());
+              VariantsMatrixUtils.setVariantTypesAndCodes(vo,"SAL11",matrixVO,rowVO,colVO);
 
               res = QueryUtil.insertTable(
                   conn,

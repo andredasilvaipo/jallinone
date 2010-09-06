@@ -18,6 +18,7 @@ import org.jallinone.events.server.GenericEvent;
 import org.jallinone.variants.java.*;
 import org.openswing.swing.customvo.java.CustomValueObject;
 import org.jallinone.commons.java.ApplicationConsts;
+import org.jallinone.variants.java.VariantNameVO;
 
 
 /**
@@ -95,10 +96,12 @@ public class LoadVariantBarcodesAction implements Action {
         colVO = (VariantsMatrixColumnVO)matrixVO.getColumnDescriptors().get(i);
         cols.put(
           new ColPK(
+            colVO.getVariantTypeITM06(),
             colVO.getVariantTypeITM07(),
             colVO.getVariantTypeITM08(),
             colVO.getVariantTypeITM09(),
             colVO.getVariantTypeITM10(),
+            colVO.getVariantCodeITM11(),
             colVO.getVariantCodeITM12(),
             colVO.getVariantCodeITM13(),
             colVO.getVariantCodeITM14(),
@@ -110,43 +113,40 @@ public class LoadVariantBarcodesAction implements Action {
 
       String sql =
           "select "+
-          "VARIANT_TYPE_ITM07,VARIANT_TYPE_ITM08,VARIANT_TYPE_ITM09,VARIANT_TYPE_ITM10,"+
-          "VARIANT_CODE_ITM12,VARIANT_CODE_ITM13,VARIANT_CODE_ITM14,VARIANT_CODE_ITM15,"+
-          "BAR_CODE from ITM22_VARIANT_BARCODES where "+
+          "VARIANT_TYPE_ITM06,VARIANT_TYPE_ITM07,VARIANT_TYPE_ITM08,VARIANT_TYPE_ITM09,VARIANT_TYPE_ITM10,"+
+          "VARIANT_CODE_ITM11,VARIANT_CODE_ITM12,VARIANT_CODE_ITM13,VARIANT_CODE_ITM14,VARIANT_CODE_ITM15,"+
+          "BAR_CODE "+
+          "from ITM22_VARIANT_BARCODES where "+
           "COMPANY_CODE_SYS01=? AND "+
           "ITEM_CODE_ITM01=? AND ";
 
-      if (matrixVO.getColumnDescriptors().size()==0) {
-        if (containsVariant(matrixVO,"ITM11_VARIANTS_1")) {
-          sql +=
-              "VARIANT_TYPE_ITM06=? AND "+
-              "VARIANT_CODE_ITM11=? ";
-        }
-        else if (containsVariant(matrixVO,"ITM12_VARIANTS_2")) {
-          sql +=
-              "VARIANT_TYPE_ITM07=? AND "+
-              "VARIANT_CODE_ITM12=? ";
-        }
-        else if (containsVariant(matrixVO,"ITM13_VARIANTS_3")) {
-          sql +=
-              "VARIANT_TYPE_ITM08=? AND "+
-              "VARIANT_CODE_ITM13=? ";
-        }
-        else if (containsVariant(matrixVO,"ITM14_VARIANTS_4")) {
-          sql +=
-              "VARIANT_TYPE_ITM09=? AND "+
-              "VARIANT_CODE_ITM14=? ";
-        }
-        else if (containsVariant(matrixVO,"ITM15_VARIANTS_5")) {
-          sql +=
-              "VARIANT_TYPE_ITM10=? AND "+
-              "VARIANT_CODE_ITM15=? ";
-        }
-      }
-      else
+      VariantNameVO varVO = (VariantNameVO)matrixVO.getManagedVariants().get(0);
+      if (varVO.getTableName().equals("ITM11_VARIANTS_1")) {
         sql +=
             "VARIANT_TYPE_ITM06=? AND "+
             "VARIANT_CODE_ITM11=? ";
+      }
+      else if (varVO.getTableName().equals("ITM12_VARIANTS_2")) {
+        sql +=
+            "VARIANT_TYPE_ITM07=? AND "+
+            "VARIANT_CODE_ITM12=? ";
+      }
+      else if (varVO.getTableName().equals("ITM13_VARIANTS_3")) {
+        sql +=
+            "VARIANT_TYPE_ITM08=? AND "+
+            "VARIANT_CODE_ITM13=? ";
+      }
+      else if (varVO.getTableName().equals("ITM14_VARIANTS_4")) {
+        sql +=
+            "VARIANT_TYPE_ITM09=? AND "+
+            "VARIANT_CODE_ITM14=? ";
+      }
+      else if (varVO.getTableName().equals("ITM15_VARIANTS_5")) {
+        sql +=
+            "VARIANT_TYPE_ITM10=? AND "+
+            "VARIANT_CODE_ITM15=? ";
+      }
+
       pstmt = conn.prepareStatement(sql);
 
       ArrayList rows = new ArrayList();
@@ -159,8 +159,8 @@ public class LoadVariantBarcodesAction implements Action {
 
         pstmt.setString(1,matrixVO.getItemPK().getCompanyCodeSys01ITM01());
         pstmt.setString(2,matrixVO.getItemPK().getItemCodeITM01());
-        pstmt.setString(3,rowVO.getVariantTypeITM06());
-        pstmt.setString(4,rowVO.getVariantCodeITM11());
+        pstmt.setString(3,VariantsMatrixUtils.getVariantType(matrixVO,rowVO));
+        pstmt.setString(4,VariantsMatrixUtils.getVariantCode(matrixVO,rowVO));
 
         vo = new CustomValueObject();
         vo.setAttributeNameS0(rowVO.getRowDescription());
@@ -169,19 +169,21 @@ public class LoadVariantBarcodesAction implements Action {
         rset = pstmt.executeQuery();
         while(rset.next()) {
           colPK = new ColPK(
-            rset.getString(1),
-            rset.getString(2),
-            rset.getString(3),
-            rset.getString(4),
-            rset.getString(5),
-            rset.getString(6),
-            rset.getString(7),
-            rset.getString(8)
+            varVO.getTableName().equals("ITM11_VARIANTS_1")?ApplicationConsts.JOLLY:rset.getString(1),
+            varVO.getTableName().equals("ITM12_VARIANTS_2")?ApplicationConsts.JOLLY:rset.getString(2),
+            varVO.getTableName().equals("ITM13_VARIANTS_3")?ApplicationConsts.JOLLY:rset.getString(3),
+            varVO.getTableName().equals("ITM14_VARIANTS_4")?ApplicationConsts.JOLLY:rset.getString(4),
+            varVO.getTableName().equals("ITM15_VARIANTS_5")?ApplicationConsts.JOLLY:rset.getString(5),
+            varVO.getTableName().equals("ITM11_VARIANTS_1")?ApplicationConsts.JOLLY:rset.getString(6),
+            varVO.getTableName().equals("ITM12_VARIANTS_2")?ApplicationConsts.JOLLY:rset.getString(7),
+            varVO.getTableName().equals("ITM13_VARIANTS_3")?ApplicationConsts.JOLLY:rset.getString(8),
+            varVO.getTableName().equals("ITM14_VARIANTS_4")?ApplicationConsts.JOLLY:rset.getString(9),
+            varVO.getTableName().equals("ITM15_VARIANTS_5")?ApplicationConsts.JOLLY:rset.getString(10)
           );
 
           if (matrixVO.getColumnDescriptors().size()==0) {
             try {
-              CustomValueObject.class.getMethod("setAttributeNameS1",new Class[] {String.class}).invoke(vo, new Object[] {rset.getString(9)});
+              CustomValueObject.class.getMethod("setAttributeNameS1",new Class[] {String.class}).invoke(vo, new Object[] {rset.getString(11)});
             }
             catch (Throwable ex) {
               ex.printStackTrace();
@@ -191,7 +193,7 @@ public class LoadVariantBarcodesAction implements Action {
             pos = (Integer)cols.get(colPK);
             if (pos!=null) {
               try {
-                CustomValueObject.class.getMethod("setAttributeNameS" +pos,new Class[] {String.class}).invoke(vo, new Object[] {rset.getString(9)});
+                CustomValueObject.class.getMethod("setAttributeNameS" +pos,new Class[] {String.class}).invoke(vo, new Object[] {rset.getString(11)});
               }
               catch (Throwable ex) {
                 ex.printStackTrace();
@@ -260,53 +262,63 @@ public class LoadVariantBarcodesAction implements Action {
 
   class ColPK {
 
-    private String variantTypeITM07;
-    private String variantTypeITM08;
-    private String variantTypeITM09;
-    private String variantTypeITM10;
+    private String variantTypeItm06;
+    private String variantTypeItm07;
+    private String variantTypeItm08;
+    private String variantTypeItm09;
+    private String variantTypeItm10;
 
-    private String variantCodeITM12;
-    private String variantCodeITM13;
-    private String variantCodeITM14;
-    private String variantCodeITM15;
-
-
-    public ColPK(String variantTypeITM07,String variantTypeITM08,String variantTypeITM09,String variantTypeITM10,
-                 String variantCodeITM12,String variantCodeITM13,String variantCodeITM14,String variantCodeITM15) {
-      this.variantTypeITM07 = variantTypeITM07==null?ApplicationConsts.JOLLY:variantTypeITM07;
-      this.variantTypeITM08 = variantTypeITM08==null?ApplicationConsts.JOLLY:variantTypeITM08;
-      this.variantTypeITM09 = variantTypeITM09==null?ApplicationConsts.JOLLY:variantTypeITM09;
-      this.variantTypeITM10 = variantTypeITM10==null?ApplicationConsts.JOLLY:variantTypeITM10;
-      this.variantCodeITM12 = variantCodeITM12==null?ApplicationConsts.JOLLY:variantCodeITM12;
-      this.variantCodeITM13 = variantCodeITM13==null?ApplicationConsts.JOLLY:variantCodeITM13;
-      this.variantCodeITM14 = variantCodeITM14==null?ApplicationConsts.JOLLY:variantCodeITM14;
-      this.variantCodeITM15 = variantCodeITM15==null?ApplicationConsts.JOLLY:variantCodeITM15;
-    }
+    private String variantCodeItm11;
+    private String variantCodeItm12;
+    private String variantCodeItm13;
+    private String variantCodeItm14;
+    private String variantCodeItm15;
 
 
-    public String getVariantCodeITM12() {
-      return variantCodeITM12;
+    public ColPK(String variantTypeItm06,String variantTypeItm07,String variantTypeItm08,String variantTypeItm09,String variantTypeItm10,
+                 String variantCodeItm11,String variantCodeItm12,String variantCodeItm13,String variantCodeItm14,String variantCodeItm15) {
+      this.variantTypeItm06 = variantTypeItm06==null?ApplicationConsts.JOLLY:variantTypeItm06;
+      this.variantTypeItm07 = variantTypeItm07==null?ApplicationConsts.JOLLY:variantTypeItm07;
+      this.variantTypeItm08 = variantTypeItm08==null?ApplicationConsts.JOLLY:variantTypeItm08;
+      this.variantTypeItm09 = variantTypeItm09==null?ApplicationConsts.JOLLY:variantTypeItm09;
+      this.variantTypeItm10 = variantTypeItm10==null?ApplicationConsts.JOLLY:variantTypeItm10;
+      this.variantCodeItm11 = variantCodeItm11==null?ApplicationConsts.JOLLY:variantCodeItm11;
+      this.variantCodeItm12 = variantCodeItm12==null?ApplicationConsts.JOLLY:variantCodeItm12;
+      this.variantCodeItm13 = variantCodeItm13==null?ApplicationConsts.JOLLY:variantCodeItm13;
+      this.variantCodeItm14 = variantCodeItm14==null?ApplicationConsts.JOLLY:variantCodeItm14;
+      this.variantCodeItm15 = variantCodeItm15==null?ApplicationConsts.JOLLY:variantCodeItm15;
     }
-    public String getVariantCodeITM13() {
-      return variantCodeITM13;
+
+
+    public String getVariantCodeItm11() {
+      return variantCodeItm11;
     }
-    public String getVariantCodeITM14() {
-      return variantCodeITM14;
+    public String getVariantCodeItm12() {
+      return variantCodeItm12;
     }
-    public String getVariantCodeITM15() {
-      return variantCodeITM15;
+    public String getVariantCodeItm13() {
+      return variantCodeItm13;
     }
-    public String getVariantTypeITM07() {
-      return variantTypeITM07;
+    public String getVariantCodeItm14() {
+      return variantCodeItm14;
     }
-    public String getVariantTypeITM08() {
-      return variantTypeITM08;
+    public String getVariantCodeItm15() {
+      return variantCodeItm15;
     }
-    public String getVariantTypeITM09() {
-      return variantTypeITM09;
+    public String getVariantTypeItm06() {
+      return variantTypeItm06;
     }
-    public String getVariantTypeITM10() {
-      return variantTypeITM10;
+    public String getVariantTypeItm07() {
+      return variantTypeItm07;
+    }
+    public String getVariantTypeItm08() {
+      return variantTypeItm08;
+    }
+    public String getVariantTypeItm09() {
+      return variantTypeItm09;
+    }
+    public String getVariantTypeItm10() {
+      return variantTypeItm10;
     }
 
     public boolean equals(Object o) {
@@ -315,27 +327,30 @@ public class LoadVariantBarcodesAction implements Action {
         return false;
       ColPK vo = (ColPK)o;
       return
-          (this.variantTypeITM07).equals(vo.variantTypeITM07) &&
-          (this.variantTypeITM08).equals(vo.variantTypeITM08) &&
-          (this.variantTypeITM09).equals(vo.variantTypeITM09) &&
-          (this.variantTypeITM10).equals(vo.variantTypeITM10) &&
-          (this.variantCodeITM12).equals(vo.variantCodeITM12) &&
-          (this.variantCodeITM13).equals(vo.variantCodeITM13) &&
-          (this.variantCodeITM14).equals(vo.variantCodeITM14) &&
-          (this.variantCodeITM15).equals(vo.variantCodeITM15);
+          (this.variantTypeItm06).equals(vo.variantTypeItm06) &&
+          (this.variantTypeItm07).equals(vo.variantTypeItm07) &&
+          (this.variantTypeItm08).equals(vo.variantTypeItm08) &&
+          (this.variantTypeItm09).equals(vo.variantTypeItm09) &&
+          (this.variantTypeItm10).equals(vo.variantTypeItm10) &&
+          (this.variantCodeItm12).equals(vo.variantCodeItm12) &&
+          (this.variantCodeItm13).equals(vo.variantCodeItm13) &&
+          (this.variantCodeItm14).equals(vo.variantCodeItm14) &&
+          (this.variantCodeItm15).equals(vo.variantCodeItm15);
     }
 
 
     public int hashCode() {
       return
-         (variantTypeITM07+
-          variantTypeITM08+
-          variantTypeITM09+
-          variantTypeITM10+
-          variantCodeITM12+
-          variantCodeITM13+
-          variantCodeITM14+
-          variantCodeITM15).hashCode();
+         (variantTypeItm06+
+          variantTypeItm07+
+          variantTypeItm08+
+          variantTypeItm09+
+          variantTypeItm10+
+          variantCodeItm11+
+          variantCodeItm12+
+          variantCodeItm13+
+          variantCodeItm14+
+          variantCodeItm15).hashCode();
     }
 
   } // end inner class

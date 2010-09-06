@@ -27,6 +27,7 @@ import org.jallinone.variants.java.VariantsMatrixColumnVO;
 import org.jallinone.variants.java.VariantsMatrixRowVO;
 import org.jallinone.purchases.documents.java.PurchaseUtils;
 import org.jallinone.variants.java.VariantNameVO;
+import org.jallinone.variants.java.VariantsMatrixUtils;
 
 
 /**
@@ -159,64 +160,11 @@ public class InsertPurchaseDocRowsAction implements Action {
 
           if (cells[i][0]!=null) {
             vo = (DetailPurchaseDocRowVO)voTemplate.clone();
-
-            if (!containsVariant(matrixVO,"ITM11_VARIANTS_1")) {
-              // e.g. color but not no size...
-              vo.setVariantCodeItm11DOC07(ApplicationConsts.JOLLY);
-              vo.setVariantTypeItm06DOC07(ApplicationConsts.JOLLY);
-            }
-            else {
-              vo.setVariantCodeItm11DOC07(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm06DOC07(rowVO.getVariantTypeITM06());
-            }
-            if (!containsVariant(matrixVO,"ITM12_VARIANTS_2")) {
-              vo.setVariantCodeItm12DOC07(ApplicationConsts.JOLLY);
-              vo.setVariantTypeItm07DOC07(ApplicationConsts.JOLLY);
-            }
-            else {
-              vo.setVariantCodeItm12DOC07(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm07DOC07(rowVO.getVariantTypeITM06());
-            }
-            if (!containsVariant(matrixVO,"ITM13_VARIANTS_3")) {
-              vo.setVariantCodeItm13DOC07(ApplicationConsts.JOLLY);
-              vo.setVariantTypeItm08DOC07(ApplicationConsts.JOLLY);
-            }
-            else {
-              vo.setVariantCodeItm13DOC07(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm08DOC07(rowVO.getVariantTypeITM06());
-            }
-            if (!containsVariant(matrixVO,"ITM14_VARIANTS_4")) {
-              vo.setVariantCodeItm14DOC07(ApplicationConsts.JOLLY);
-              vo.setVariantTypeItm09DOC07(ApplicationConsts.JOLLY);
-            }
-            else {
-              vo.setVariantCodeItm14DOC07(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm09DOC07(rowVO.getVariantTypeITM06());
-            }
-            if (!containsVariant(matrixVO,"ITM15_VARIANTS_5")) {
-              vo.setVariantCodeItm15DOC07(ApplicationConsts.JOLLY);
-              vo.setVariantTypeItm10DOC07(ApplicationConsts.JOLLY);
-            }
-            else {
-              vo.setVariantCodeItm15DOC07(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm10DOC07(rowVO.getVariantTypeITM06());
-            }
-
+            VariantsMatrixUtils.setVariantTypesAndCodes(vo,"DOC07",matrixVO,rowVO,null);
             vo.setQtyDOC07((BigDecimal)cells[i][0]);
 
             PurchaseUtils.updateTotals(vo,currencyDecimals.intValue());
 
-/*
-            vo.setVariantCodeItm12DOC07(ApplicationConsts.JOLLY);
-            vo.setVariantCodeItm13DOC07(ApplicationConsts.JOLLY);
-            vo.setVariantCodeItm14DOC07(ApplicationConsts.JOLLY);
-            vo.setVariantCodeItm15DOC07(ApplicationConsts.JOLLY);
-
-            vo.setVariantTypeItm07DOC07(ApplicationConsts.JOLLY);
-            vo.setVariantTypeItm08DOC07(ApplicationConsts.JOLLY);
-            vo.setVariantTypeItm09DOC07(ApplicationConsts.JOLLY);
-            vo.setVariantTypeItm10DOC07(ApplicationConsts.JOLLY);
-*/
             vo.setInQtyDOC07(new BigDecimal(0));
             vo.setOrderQtyDOC07(vo.getQtyDOC07());
             if (vo.getInvoiceQtyDOC07()==null)
@@ -249,24 +197,11 @@ public class InsertPurchaseDocRowsAction implements Action {
             colVO = (VariantsMatrixColumnVO)matrixVO.getColumnDescriptors().get(k);
             if (cells[i][k]!=null) {
               vo = (DetailPurchaseDocRowVO)voTemplate.clone();
-
               vo.setQtyDOC07((BigDecimal)cells[i][k]);
 
               PurchaseUtils.updateTotals(vo,currencyDecimals.intValue());
 
-              vo.setVariantCodeItm11DOC07(rowVO.getVariantCodeITM11());
-              vo.setVariantTypeItm06DOC07(rowVO.getVariantTypeITM06());
-
-              vo.setVariantCodeItm12DOC07(colVO.getVariantCodeITM12()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM12());
-              vo.setVariantCodeItm13DOC07(colVO.getVariantCodeITM13()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM13());
-              vo.setVariantCodeItm14DOC07(colVO.getVariantCodeITM14()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM14());
-              vo.setVariantCodeItm15DOC07(colVO.getVariantCodeITM15()==null?ApplicationConsts.JOLLY:colVO.getVariantCodeITM15());
-
-              vo.setVariantTypeItm07DOC07(colVO.getVariantTypeITM07()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM07());
-              vo.setVariantTypeItm08DOC07(colVO.getVariantTypeITM08()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM08());
-              vo.setVariantTypeItm09DOC07(colVO.getVariantTypeITM09()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM09());
-              vo.setVariantTypeItm10DOC07(colVO.getVariantTypeITM10()==null?ApplicationConsts.JOLLY:colVO.getVariantTypeITM10());
-
+              VariantsMatrixUtils.setVariantTypesAndCodes(vo,"DOC07",matrixVO,rowVO,colVO);
               vo.setInQtyDOC07(new BigDecimal(0));
               vo.setOrderQtyDOC07(vo.getQtyDOC07());
               if (vo.getInvoiceQtyDOC07()==null)

@@ -22,7 +22,10 @@ The following files must be available to use JAllInOne:
 - pooler.jar
 - serverjaio.jar
 - clientos.jar
+- commonos.jar
 - serveros.jar
+- BcImage.jar
+- barbecue-1.1.jar
 
 Note: OfficeLnFs_2.7.jar an open source project available in http://officelnfs.sourceforge.net/ and distributed with a BSD-style license.
 

@@ -147,7 +147,7 @@ public class PurchaseDocRowsController extends CompanyGridController {
       panel.getGrid().reloadData();
       panel.getHeaderPanel().setMode(Consts.READONLY);
       panel.getHeaderPanel().executeReload();
-      panel.getOrders().reloadData();
+      panel.getOrders().reloadCurrentBlockOfData();
     }
     return res;
   }

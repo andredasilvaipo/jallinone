@@ -86,7 +86,7 @@ public class ValidateWarehouseCodeAction implements Action {
         companies = "'"+pars.getLookupValidationParameters().get(ApplicationConsts.COMPANY_CODE_SYS01)+"'";
       }
       else {
-        ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("ACC01");
+        ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("WAR01");
         for(int i=0;i<companiesList.size();i++)
           companies += "'"+companiesList.get(i).toString()+"',";
         companies = companies.substring(0,companies.length()-1);
@@ -100,7 +100,6 @@ public class ValidateWarehouseCodeAction implements Action {
           "WAR01_WAREHOUSES,REG04_SUBJECTS,HIE02_HIERARCHIES where "+
           "WAR01_WAREHOUSES.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "REG04_SUBJECTS.SUBJECT_TYPE='M' and "+
-          "(WAR01_WAREHOUSES.PROGRESSIVE_SYS04 in ("+roles+") or WAR01_WAREHOUSES.PROGRESSIVE_SYS04 is null) and "+
           "WAR01_WAREHOUSES.COMPANY_CODE_SYS01 in ("+companies+") and "+
           "WAR01_WAREHOUSES.ENABLED='Y' and "+
           "WAR01_WAREHOUSES.WAREHOUSE_CODE=? and "+

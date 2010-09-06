@@ -223,4 +223,5 @@ public class PeopleCustomerVO extends PeopleVO implements Subject {
     this.currencyCodeReg03SAL01 = currencyCodeReg03SAL01;
   }
 
+
 }

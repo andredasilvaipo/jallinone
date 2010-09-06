@@ -270,6 +270,16 @@ public class SaleContractDocRowsGridPanel extends JPanel implements CurrencyColu
             orderedItemsPanel.getControlItemCode().setValue(vo.getItemCodeItm01DOC02());
             orderedItemsPanel.getControlItemCode().getLookupController().forceValidate();
             orderedItemsPanel.getGrid().reloadData();
+
+            DetailSaleDocVO pVO = (DetailSaleDocVO)SaleContractDocRowsGridPanel.this.parentVO;
+            if (pVO!=null && pVO.getCustomerVatCodeReg01DOC01()!=null && !pVO.getCustomerVatCodeReg01DOC01().equals("")) {
+              vo.setVatCodeItm01DOC02(pVO.getCustomerVatCodeReg01DOC01());
+              vo.setVatDescriptionDOC02(pVO.getVatDescriptionSYS10());
+              vo.setDeductibleReg01DOC02(pVO.getDeductibleREG01());
+              vo.setValueReg01DOC02(pVO.getValueREG01());
+              detailPanel.pull();
+            }
+
           }
           updateTotals();
         }
