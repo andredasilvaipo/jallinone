@@ -70,6 +70,7 @@ public class InsertItemAction implements Action {
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
     Connection conn = null;
     Statement stmt = null;
+    PreparedStatement pstmt = null;
     try {
       conn = ConnectionManager.getConnection(context);
 
@@ -174,6 +175,7 @@ public class InsertItemAction implements Action {
       attribute2dbField.put("barCodeITM01","BAR_CODE");
       attribute2dbField.put("barcodeTypeITM01","BARCODE_TYPE");
 
+
       if (vo.getSmallImage()!=null) {
         BigDecimal imageProgressive = ProgressiveUtils.getInternalProgressive("ITM01_ITEMS","SMALL_IMG",conn);
         vo.setSmallImageITM01("SMALL_IMG"+imageProgressive);
@@ -266,6 +268,42 @@ public class InsertItemAction implements Action {
             );
       }
 
+
+      if (!Boolean.TRUE.equals(vo.getUseVariant1ITM01()) &&
+          !Boolean.TRUE.equals(vo.getUseVariant1ITM01()) &&
+          !Boolean.TRUE.equals(vo.getUseVariant1ITM01()) &&
+          !Boolean.TRUE.equals(vo.getUseVariant1ITM01()) &&
+          !Boolean.TRUE.equals(vo.getUseVariant1ITM01())) {
+
+        // retrieve the min stock for the item that does not have variants...
+        String sql =
+            "insert into ITM23_VARIANT_MIN_STOCKS("+
+            "COMPANY_CODE_SYS01,ITEM_CODE_ITM01,  "+
+            "VARIANT_TYPE_ITM06,VARIANT_TYPE_ITM07,VARIANT_TYPE_ITM08,VARIANT_TYPE_ITM09,VARIANT_TYPE_ITM10,"+
+            "VARIANT_CODE_ITM11,VARIANT_CODE_ITM12,VARIANT_CODE_ITM13,VARIANT_CODE_ITM14,VARIANT_CODE_ITM15,"+
+            "MIN_STOCK) "+
+            "values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+        pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1,vo.getCompanyCodeSys01());
+        pstmt.setString(2,vo.getItemCodeITM01());
+        pstmt.setString(3,ApplicationConsts.JOLLY);
+        pstmt.setString(4,ApplicationConsts.JOLLY);
+        pstmt.setString(5,ApplicationConsts.JOLLY);
+        pstmt.setString(6,ApplicationConsts.JOLLY);
+        pstmt.setString(7,ApplicationConsts.JOLLY);
+        pstmt.setString(8,ApplicationConsts.JOLLY);
+        pstmt.setString(9,ApplicationConsts.JOLLY);
+        pstmt.setString(10,ApplicationConsts.JOLLY);
+        pstmt.setString(11,ApplicationConsts.JOLLY);
+        pstmt.setString(12,ApplicationConsts.JOLLY);
+        pstmt.setBigDecimal(13,vo.getMinStockITM23());
+        pstmt.execute();
+        pstmt.close();
+      }
+
+
+
       Response answer = res;
 
       // fires the GenericEvent.BEFORE_COMMIT event...
@@ -314,6 +352,11 @@ public class InsertItemAction implements Action {
     finally {
       try {
         stmt.close();
+      }
+      catch (Exception ex2) {
+      }
+      try {
+        pstmt.close();
       }
       catch (Exception ex2) {
       }

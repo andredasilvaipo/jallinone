@@ -148,7 +148,7 @@
     <delete>
       <fileset dir="${pub}" includes="*.war"/>
     </delete>
-    <war warfile="${pub}/jallinone.war" excludes="**/pooler.*,**/*.sh" webxml="${webapps}/jallinone/WEB-INF/web.xml" basedir="${webapps}/jAllInOne/"/>
+    <war warfile="${pub}/jallinone.war" excludes="**/pooler.ini**,**/*.sh" webxml="${webapps}/jallinone/WEB-INF/web.xml" basedir="${webapps}/jAllInOne/"/>
   </target>
 
 

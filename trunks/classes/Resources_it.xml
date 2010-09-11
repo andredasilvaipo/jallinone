@@ -1512,6 +1512,21 @@
   <object key="account descriptions" value="Descrizione conti" />
   <object key="account motives" value="Causali conti" />
 
+  <object key="connected users" value="Utenti connessi" />
+
+  <object key="min stock" value="Scorta minima" />
+  <object key="items reorder" value="Riordino articoli" />
+  <object key="minStockITM23" value="Scorta Min." />
+  <object key="proposedQty" value="Qt&#224; prop." />
+  <object key="pawnedQty" value="Qt&#224; imp." />
+  <object key="goodQty" value="Giacenza" />
+  <object key="orderedQty" value="Qt&#224; ordin." />
+  <object key="create orders" value="Crea ordini di acquisto" />
+  <object key="orders created" value="Ordini di acquisto creati." />
+  <object key="you must select at least one row and a qty greater than zero" value="E' necessario selezionare almeno una riga avente quantità maggiore di zero." />
+  <object key="order created using reorder functionality" value="Ordine di acquisto creato tramite la funzione di riordino" />
+
+
 <!-- application translations -->
 
   <currencySymbol>&#8364;</currencySymbol>

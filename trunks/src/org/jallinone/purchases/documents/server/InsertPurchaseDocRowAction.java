@@ -53,9 +53,7 @@ import org.jallinone.events.server.GenericEvent;
  */
 public class InsertPurchaseDocRowAction implements Action {
 
-  private PurchaseDocTotalsBean totalBean = new PurchaseDocTotalsBean();
-  private LoadPurchaseDocBean docBean = new LoadPurchaseDocBean();
-  private ProgressiveUtils progBean = new ProgressiveUtils();
+  private InsertPurchaseDocRowBean bean = new InsertPurchaseDocRowBean();
 
 
   public InsertPurchaseDocRowAction() {
@@ -74,7 +72,6 @@ public class InsertPurchaseDocRowAction implements Action {
    */
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
     Connection conn = null;
-    PreparedStatement pstmt = null;
     try {
       conn = ConnectionManager.getConnection(context);
 
@@ -94,126 +91,12 @@ public class InsertPurchaseDocRowAction implements Action {
       ));
 
       DetailPurchaseDocRowVO vo = (DetailPurchaseDocRowVO)inputPar;
-      vo.setInQtyDOC07(new BigDecimal(0));
-      vo.setOrderQtyDOC07(vo.getQtyDOC07());
-      if (vo.getInvoiceQtyDOC07()==null)
-        vo.setInvoiceQtyDOC07(new BigDecimal(0));
 
-      Map attribute2dbField = new HashMap();
-      attribute2dbField.put("companyCodeSys01DOC07","COMPANY_CODE_SYS01");
-      attribute2dbField.put("docTypeDOC07","DOC_TYPE");
-      attribute2dbField.put("docYearDOC07","DOC_YEAR");
-      attribute2dbField.put("docNumberDOC07","DOC_NUMBER");
-      attribute2dbField.put("rowNumberDOC07","ROW_NUMBER");
-      attribute2dbField.put("itemCodeItm01DOC07","ITEM_CODE_ITM01");
-      attribute2dbField.put("supplierItemCodePur02DOC07","SUPPLIER_ITEM_CODE_PUR02");
-      attribute2dbField.put("vatCodeItm01DOC07","VAT_CODE_ITM01");
-      attribute2dbField.put("valuePur04DOC07","VALUE_PUR04");
-      attribute2dbField.put("valueDOC07","VALUE");
-      attribute2dbField.put("qtyDOC07","QTY");
-      attribute2dbField.put("discountValueDOC07","DISCOUNT_VALUE");
-      attribute2dbField.put("discountPercDOC07","DISCOUNT_PERC");
-      attribute2dbField.put("vatValueDOC07","VAT_VALUE");
-
-      attribute2dbField.put("vatDescriptionDOC07","VAT_DESCRIPTION");
-      attribute2dbField.put("startDatePur04DOC07","START_DATE_PUR04");
-      attribute2dbField.put("endDatePur04DOC07","END_DATE_PUR04");
-      attribute2dbField.put("umCodePur02DOC07","UM_CODE_PUR02");
-      attribute2dbField.put("decimalsReg02DOC07","DECIMALS_REG02");
-      attribute2dbField.put("minPurchaseQtyPur02DOC07","MIN_PURCHASE_QTY_PUR02");
-      attribute2dbField.put("multipleQtyPur02DOC07","MULTIPLE_QTY_PUR02");
-      attribute2dbField.put("valueReg01DOC07","VALUE_REG01");
-      attribute2dbField.put("deductibleReg01DOC07","DEDUCTIBLE_REG01");
-      attribute2dbField.put("taxableIncomeDOC07","TAXABLE_INCOME");
-      attribute2dbField.put("progressiveHie02DOC07","PROGRESSIVE_HIE02");
-      attribute2dbField.put("deliveryDateDOC07","DELIVERY_DATE");
-      attribute2dbField.put("inQtyDOC07","IN_QTY");
-      attribute2dbField.put("orderQtyDOC07","ORDER_QTY");
-      attribute2dbField.put("invoiceQtyDOC07","INVOICE_QTY");
-
-      attribute2dbField.put("variantTypeItm06DOC07","VARIANT_TYPE_ITM06");
-      attribute2dbField.put("variantCodeItm11DOC07","VARIANT_CODE_ITM11");
-      attribute2dbField.put("variantTypeItm07DOC07","VARIANT_TYPE_ITM07");
-      attribute2dbField.put("variantCodeItm12DOC07","VARIANT_CODE_ITM12");
-      attribute2dbField.put("variantTypeItm08DOC07","VARIANT_TYPE_ITM08");
-      attribute2dbField.put("variantCodeItm13DOC07","VARIANT_CODE_ITM13");
-      attribute2dbField.put("variantTypeItm09DOC07","VARIANT_TYPE_ITM09");
-      attribute2dbField.put("variantCodeItm14DOC07","VARIANT_CODE_ITM14");
-      attribute2dbField.put("variantTypeItm10DOC07","VARIANT_TYPE_ITM10");
-      attribute2dbField.put("variantCodeItm15DOC07","VARIANT_CODE_ITM15");
-
-      if (vo.getVariantCodeItm11DOC07()==null)
-        vo.setVariantCodeItm11DOC07(ApplicationConsts.JOLLY);
-      if (vo.getVariantTypeItm06DOC07()==null)
-        vo.setVariantTypeItm06DOC07(ApplicationConsts.JOLLY);
-
-      if (vo.getVariantCodeItm12DOC07()==null)
-        vo.setVariantCodeItm12DOC07(ApplicationConsts.JOLLY);
-      if (vo.getVariantCodeItm13DOC07()==null)
-        vo.setVariantCodeItm13DOC07(ApplicationConsts.JOLLY);
-      if (vo.getVariantCodeItm14DOC07()==null)
-        vo.setVariantCodeItm14DOC07(ApplicationConsts.JOLLY);
-      if (vo.getVariantCodeItm15DOC07()==null)
-        vo.setVariantCodeItm15DOC07(ApplicationConsts.JOLLY);
-
-      if (vo.getVariantTypeItm07DOC07()==null)
-        vo.setVariantTypeItm07DOC07(ApplicationConsts.JOLLY);
-      if (vo.getVariantTypeItm08DOC07()==null)
-        vo.setVariantTypeItm08DOC07(ApplicationConsts.JOLLY);
-      if (vo.getVariantTypeItm09DOC07()==null)
-        vo.setVariantTypeItm09DOC07(ApplicationConsts.JOLLY);
-      if (vo.getVariantTypeItm10DOC07()==null)
-        vo.setVariantTypeItm10DOC07(ApplicationConsts.JOLLY);
-
-      vo.setRowNumberDOC07( progBean.getInternalProgressive("DOC07_PURCHASE_ITEMS","ROW_NUMBER",conn) );
-
-      // insert into DOC07...
-      Response res = QueryUtil.insertTable(
-          conn,
-          userSessionPars,
-          vo,
-          "DOC07_PURCHASE_ITEMS",
-          attribute2dbField,
-          "Y",
-          "N",
-          context,
-          true
-      );
-
+      Response res = bean.insertDocRow(conn,vo,userSessionPars,request,response,userSession,context);
       if (res.isError()) {
         conn.rollback();
         return res;
       }
-
-      // recalculate totals...
-      PurchaseDocPK pk = new PurchaseDocPK(
-          vo.getCompanyCodeSys01DOC07(),
-          vo.getDocTypeDOC07(),
-          vo.getDocYearDOC07(),
-          vo.getDocNumberDOC07()
-      );
-      Response docResponse = docBean.loadPurchaseDoc(conn,pk,userSessionPars,request,response,userSession,context);
-      if (docResponse.isError()) {
-        conn.rollback();
-        return docResponse;
-      }
-      DetailPurchaseDocVO docVO = (DetailPurchaseDocVO)((VOResponse)docResponse).getVo();
-      Response totalResponse = totalBean.calcDocTotals(conn,docVO,userSessionPars,request,response,userSession,context);
-      if (totalResponse.isError()) {
-        conn.rollback();
-        return totalResponse;
-      }
-
-      pstmt = conn.prepareStatement("update DOC06_PURCHASE set TAXABLE_INCOME=?,TOTAL_VAT=?,TOTAL=?,DOC_STATE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
-      pstmt.setBigDecimal(1,docVO.getTaxableIncomeDOC06());
-      pstmt.setBigDecimal(2,docVO.getTotalVatDOC06());
-      pstmt.setBigDecimal(3,docVO.getTotalDOC06());
-      pstmt.setString(4,ApplicationConsts.HEADER_BLOCKED);
-      pstmt.setString(5,vo.getCompanyCodeSys01DOC07());
-      pstmt.setString(6,vo.getDocTypeDOC07());
-      pstmt.setBigDecimal(7,vo.getDocYearDOC07());
-      pstmt.setBigDecimal(8,vo.getDocNumberDOC07());
-      pstmt.execute();
 
       Response answer = res;
 
@@ -261,11 +144,6 @@ public class InsertPurchaseDocRowAction implements Action {
       return new ErrorResponse(ex.getMessage());
     }
     finally {
-      try {
-        pstmt.close();
-      }
-      catch (Exception ex2) {
-      }
       try {
         ConnectionManager.releaseConnection(conn, context);
       }

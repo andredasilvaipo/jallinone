@@ -23,7 +23,7 @@ import org.jallinone.variants.java.VariantNameVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
- * <p>Description: Action class used to fetch barcodes for item's variants from ITM22 table.</p>
+ * <p>Description: Action class used to fetch min stocks defined for item's variants from ITM23 table.</p>
  * <p>Copyright: Copyright (C) 2006 Mauro Carniel</p>
  *
  * <p> This file is part of JAllInOne ERP/CRM application.
@@ -49,17 +49,17 @@ import org.jallinone.variants.java.VariantNameVO;
  * @author Mauro Carniel
  * @version 1.0
  */
-public class LoadVariantBarcodesAction implements Action {
+public class LoadVariantMinStocksAction implements Action {
 
 
-  public LoadVariantBarcodesAction() {
+  public LoadVariantMinStocksAction() {
   }
 
   /**
    * @return request name
    */
   public final String getRequestName() {
-    return "loadVariantBarcodes";
+    return "loadVariantMinStocks";
   }
 
 
@@ -115,8 +115,8 @@ public class LoadVariantBarcodesAction implements Action {
           "select "+
           "VARIANT_TYPE_ITM06,VARIANT_TYPE_ITM07,VARIANT_TYPE_ITM08,VARIANT_TYPE_ITM09,VARIANT_TYPE_ITM10,"+
           "VARIANT_CODE_ITM11,VARIANT_CODE_ITM12,VARIANT_CODE_ITM13,VARIANT_CODE_ITM14,VARIANT_CODE_ITM15,"+
-          "BAR_CODE "+
-          "from ITM22_VARIANT_BARCODES where "+
+          "MIN_STOCK "+
+          "from ITM23_VARIANT_MIN_STOCKS where "+
           "COMPANY_CODE_SYS01=? AND "+
           "ITEM_CODE_ITM01=? AND ";
 
@@ -183,7 +183,7 @@ public class LoadVariantBarcodesAction implements Action {
 
           if (matrixVO.getColumnDescriptors().size()==0) {
             try {
-              CustomValueObject.class.getMethod("setAttributeNameS1",new Class[] {String.class}).invoke(vo, new Object[] {rset.getString(11)});
+              CustomValueObject.class.getMethod("setAttributeNameN0",new Class[] {BigDecimal.class}).invoke(vo, new Object[] {rset.getBigDecimal(11)});
             }
             catch (Throwable ex) {
               ex.printStackTrace();
@@ -193,7 +193,7 @@ public class LoadVariantBarcodesAction implements Action {
             pos = (Integer)cols.get(colPK);
             if (pos!=null) {
               try {
-                CustomValueObject.class.getMethod("setAttributeNameS" +pos,new Class[] {String.class}).invoke(vo, new Object[] {rset.getString(11)});
+                CustomValueObject.class.getMethod("setAttributeNameN" +pos,new Class[] {BigDecimal.class}).invoke(vo, new Object[] {rset.getBigDecimal(11)});
               }
               catch (Throwable ex) {
                 ex.printStackTrace();
@@ -228,7 +228,7 @@ public class LoadVariantBarcodesAction implements Action {
 
     }
     catch (Throwable ex) {
-      Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"executeCommand","Error while fetching barcodes",ex);
+      Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"executeCommand","Error while fetching min stocks",ex);
       return new ErrorResponse(ex.getMessage());
     }
     finally {

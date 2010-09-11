@@ -98,7 +98,7 @@ public class LoadSupplierPricesAction implements Action {
       ItemPK pk = (ItemPK)gridParams.getOtherGridParams().get(ApplicationConsts.ITEM_PK);
       if (pk!=null)
         companyCodeSYS01 = pk.getCompanyCodeSys01ITM01();
-
+      BigDecimal progressiveREG04 = (BigDecimal)gridParams.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_REG04);
 
       sql =
           "select PUR04_SUPPLIER_PRICES.COMPANY_CODE_SYS01,PUR04_SUPPLIER_PRICES.PRICELIST_CODE_PUR03,PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04,PUR04_SUPPLIER_PRICES.ITEM_CODE_ITM01,PUR04_SUPPLIER_PRICES.VALUE,PUR04_SUPPLIER_PRICES.START_DATE,PUR04_SUPPLIER_PRICES.END_DATE,A.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,"+
@@ -124,13 +124,17 @@ public class LoadSupplierPricesAction implements Action {
             " and PUR04_SUPPLIER_PRICES.PRICELIST_CODE_PUR03='" +vo.getPricelistCodePUR03() + "' "+
             " and PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04="+vo.getProgressiveReg04PUR03();
       }
+      if (progressiveREG04!=null) {
+        sql +=
+            " and PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04="+progressiveREG04;
+      }
       if (pk!=null)
         sql += " and ITM01_ITEMS.ITEM_CODE='"+pk.getItemCodeITM01()+"' ";
 
       java.sql.Date filterDate = null;
       if (gridParams.getOtherGridParams().get(ApplicationConsts.DATE_FILTER)!=null) {
         filterDate = new java.sql.Date( ((java.util.Date)gridParams.getOtherGridParams().get(ApplicationConsts.DATE_FILTER)).getTime() );
-        sql += " and START_DATE<=? and END_DATE>=?";
+        sql += " and PUR04_SUPPLIER_PRICES.START_DATE<=? and PUR04_SUPPLIER_PRICES.END_DATE>=?";
       }
 
 

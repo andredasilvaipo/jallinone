@@ -92,15 +92,15 @@ public class SQLExecutionBean {
             sql = replace(sql, " VARCHAR(", " VARCHAR2(");
             sql = replace(sql, " NUMERIC(", " NUMBER(");
             sql = replace(sql, " DECIMAL(", " NUMBER(");
-            sql = replace(sql, " TIMESTAMP ", " DATE ");
-            sql = replace(sql, " DATETIME ", " DATE ");
+            sql = replace(sql, " TIMESTAMP", " DATE ");
+            sql = replace(sql, " DATETIME", " DATE ");
           }
           else if (vo.getDriverName().equals("com.microsoft.jdbc.sqlserver.SQLServerDriver")) {
-            sql = replace(sql, " TIMESTAMP ", " DATETIME ");
+            sql = replace(sql, " TIMESTAMP", " DATETIME ");
             sql = replace(sql, " DATE ", " DATETIME  ");
           }
           else if (vo.getDriverName().toLowerCase().indexOf("postgres")!=-1) {
-            sql = replace(sql, " DATETIME ", " TIMESTAMP ");
+            sql = replace(sql, " DATETIME", " TIMESTAMP ");
             sql = replace(sql, " DATE ", " TIMESTAMP ");
           }
           else {
@@ -258,7 +258,8 @@ public class SQLExecutionBean {
           pstmt.execute();
         }
         catch (SQLException ex4) {
-          System.out.println(ex4.toString());
+          Logger.error("NONAME", this.getClass().getName(), "executeSQL",
+                       "Invalid SQL: " + sql, ex4);
         }
         pstmt.close();
       }
@@ -270,7 +271,8 @@ public class SQLExecutionBean {
           pstmt.execute();
         }
         catch (SQLException ex3) {
-          System.out.println(ex3.toString());
+          Logger.error("NONAME", this.getClass().getName(), "executeSQL",
+                       "Invalid SQL: " + sql, ex3);
         }
         pstmt.close();
       }
@@ -279,7 +281,7 @@ public class SQLExecutionBean {
     catch (Throwable ex) {
       try {
         Logger.error("NONAME", this.getClass().getName(), "executeSQL",
-                     "Invalid SQL: " + sql, null);
+                     "Invalid SQL: " + sql, ex);
       }
       catch (Exception ex2) {
       }

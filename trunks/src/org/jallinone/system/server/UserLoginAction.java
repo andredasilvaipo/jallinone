@@ -38,7 +38,6 @@ import java.math.BigDecimal;
  * @author Mauro Carniel
  * @version 1.0
  */
-
 public class UserLoginAction extends LoginAction {
 
 

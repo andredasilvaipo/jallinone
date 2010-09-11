@@ -125,6 +125,8 @@ public class LoadItemBean {
       attribute2dbField.put("barCodeITM01","ITM01_ITEMS.BAR_CODE");
       attribute2dbField.put("barcodeTypeITM01","ITM01_ITEMS.BARCODE_TYPE");
 
+
+
       HashSet pkAttributes = new HashSet();
       pkAttributes.add("companyCodeSys01ITM01");
       pkAttributes.add("itemCodeITM01");
@@ -342,8 +344,41 @@ public class LoadItemBean {
               vo.setAvgPurchaseCost(vo.getAvgPurchaseCost().setScale(decimals.intValue(),BigDecimal.ROUND_HALF_UP));
           }
           rset.close();
+          pstmt.close();
         }
 
+        if (!Boolean.TRUE.equals(vo.getUseVariant1ITM01()) &&
+            !Boolean.TRUE.equals(vo.getUseVariant1ITM01()) &&
+            !Boolean.TRUE.equals(vo.getUseVariant1ITM01()) &&
+            !Boolean.TRUE.equals(vo.getUseVariant1ITM01()) &&
+            !Boolean.TRUE.equals(vo.getUseVariant1ITM01())) {
+
+          // retrieve the min stock for the item that does not have variants...
+          sql =
+              "select MIN_STOCK from ITM23_VARIANT_MIN_STOCKS where "+
+              "COMPANY_CODE_SYS01=? AND ITEM_CODE_ITM01=? AND "+
+              "VARIANT_TYPE_ITM06=? and VARIANT_TYPE_ITM07=? and VARIANT_TYPE_ITM08=? and VARIANT_TYPE_ITM09=? and VARIANT_TYPE_ITM10=? and "+
+              "VARIANT_CODE_ITM11=? and VARIANT_CODE_ITM12=? and VARIANT_CODE_ITM13=? and VARIANT_CODE_ITM14=? and VARIANT_CODE_ITM15=? ";
+
+          pstmt = conn.prepareStatement(sql);
+          pstmt.setString(1,vo.getCompanyCodeSys01());
+          pstmt.setString(2,vo.getItemCodeITM01());
+          pstmt.setString(3,ApplicationConsts.JOLLY);
+          pstmt.setString(4,ApplicationConsts.JOLLY);
+          pstmt.setString(5,ApplicationConsts.JOLLY);
+          pstmt.setString(6,ApplicationConsts.JOLLY);
+          pstmt.setString(7,ApplicationConsts.JOLLY);
+          pstmt.setString(8,ApplicationConsts.JOLLY);
+          pstmt.setString(9,ApplicationConsts.JOLLY);
+          pstmt.setString(10,ApplicationConsts.JOLLY);
+          pstmt.setString(11,ApplicationConsts.JOLLY);
+          pstmt.setString(12,ApplicationConsts.JOLLY);
+          rset = pstmt.executeQuery();
+          if (rset.next())
+            vo.setMinStockITM23(rset.getBigDecimal(1));
+          rset.close();
+          pstmt.close();
+        }
 
       } // end if on isError
 

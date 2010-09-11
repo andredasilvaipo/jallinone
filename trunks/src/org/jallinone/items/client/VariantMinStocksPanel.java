@@ -73,14 +73,14 @@ import java.awt.event.ActionEvent;
  * @author Mauro Carniel
  * @version 1.0
  */
-public class VariantBarcodesPanel extends JPanel {
+public class VariantMinStocksPanel extends JPanel {
 
   private LabelControl labelbc = new LabelControl();
   private TextControl controlbc = new TextControl();
   private GridControl grid = null;
 
 
-  public VariantBarcodesPanel() {
+  public VariantMinStocksPanel() {
     try {
       jbInit();
     }
@@ -92,7 +92,7 @@ public class VariantBarcodesPanel extends JPanel {
 
   private void jbInit() throws Exception {
     controlbc.setColumns(20);
-    labelbc.setLabel("barcode");
+    labelbc.setLabel("min stock");
     this.setLayout(new BorderLayout());
   }
 
@@ -117,7 +117,7 @@ public class VariantBarcodesPanel extends JPanel {
          * @return an ErrorResponse value object in case of errors, VOListResponse if the operation is successfully completed
          */
         public Response updateRecords(int[] rowNumbers,ArrayList oldPersistentObjects,ArrayList persistentObjects) throws Exception {
-          Response res = ClientUtils.getData("updateVariantBarcodes",new Object[]{vo,getCells()});
+          Response res = ClientUtils.getData("updateVariantMinStocks",new Object[]{vo,getCells()});
           if (res.isError())
             return res;
           return new VOListResponse(persistentObjects,false,persistentObjects.size());
@@ -132,7 +132,7 @@ public class VariantBarcodesPanel extends JPanel {
                                  ArrayList currentSortedVersusColumns,
                                  Class valueObjectType, Map otherGridParams) {
           VariantsMatrixVO matrixVO = (VariantsMatrixVO)otherGridParams.get(ApplicationConsts.VARIANTS_MATRIX_VO);
-          return ClientUtils.getData("loadVariantBarcodes",matrixVO);
+          return ClientUtils.getData("loadVariantMinStocks",matrixVO);
         }
 
       });
@@ -152,14 +152,14 @@ public class VariantBarcodesPanel extends JPanel {
       grid.getColumnContainer().add(var1Col,null);
 
       VariantsMatrixColumnVO colVO = null;
-      TextColumn col = null;
+      DecimalColumn col = null;
       for(int i=0;i<vo.getColumnDescriptors().size();i++) {
         colVO = (VariantsMatrixColumnVO)vo.getColumnDescriptors().get(i);
-        col = new TextColumn();
+        col = new DecimalColumn();
         col.setColumnSelectable(false);
         col.setEditableOnEdit(true);
         col.setHeaderColumnName(colVO.getColumnDescription());
-        col.setColumnName("attributeNameS"+(i+1));
+        col.setColumnName("attributeNameN"+(i+1));
         col.setColumnRequired(false);
         col.setMinWidth(90);
 
@@ -168,12 +168,12 @@ public class VariantBarcodesPanel extends JPanel {
         grid.getColumnContainer().add(col,null);
       }
       if (vo.getColumnDescriptors().size()==0) {
-        col = new TextColumn();
+        col = new DecimalColumn();
         col.setColumnSelectable(false);
+        col.setColumnRequired(false);
         col.setEditableOnEdit(true);
         col.setHeaderColumnName(" ");
-        col.setMaxCharacters(1000);
-        col.setColumnName("attributeNameS1");
+        col.setColumnName("attributeNameN0");
         col.setPreferredWidth(50);
 
         grid.getColumnContainer().add(col,null);

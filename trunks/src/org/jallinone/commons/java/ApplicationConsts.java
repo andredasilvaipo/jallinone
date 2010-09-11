@@ -33,7 +33,7 @@ import java.math.BigDecimal;
  */
 public class ApplicationConsts {
 
-  public static final int DB_VERSION = 3;
+  public static final int DB_VERSION = 4;
 
   public static final String DO_NOT_ADD_ENABLED = "DO_NOT_ADD_ENABLED";
 
@@ -338,10 +338,12 @@ public class ApplicationConsts {
   public static final String BAR_CODE_128B = "Code128B";
   public static final String BAR_CODE_128C = "Code128C";
   public static final String BAR_CODE_39E = "Code39E";
+  public static final String BAR_CODE_PDF417 = "PDF417";
 
   public static final String AMOUNT = "AMOUNT";
   public static final String LANGUAGES = "LANGUAGES";
   public static final String TOPIC = "TOPIC";
 
+  public static final String FILTER_VO = "FILTER_VO";
 
 }

@@ -740,6 +740,16 @@ public class ApplicationActionClasses extends ActionsCollection {
     a = new LoadTranslationsAction(); put(a.getRequestName(),a);
     a = new UpdateTranslationsAction(); put(a.getRequestName(),a);
 
+    a = new UsersListAction(); put(a.getRequestName(),a);
+
+    a = new LoadVariantMinStocksAction(); put(a.getRequestName(),a);
+    a = new UpdateVariantMinStocksAction(); put(a.getRequestName(),a);
+
+    a = new ReorderFromMinStocksAction(); put(a.getRequestName(),a);
+    a = new CreatePurchaseOrdersAction(); put(a.getRequestName(),a);
+    a = new ABCAction(); put(a.getRequestName(),a);
+
+
 
     put("changeLanguage",new Action() {
 

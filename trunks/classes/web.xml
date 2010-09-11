@@ -32,6 +32,10 @@
 	      <param-name>controllerCallbacks</param-name>
 	      <param-value>org.jallinone.commons.server.ApplicationControllerCallbacks</param-value>
 	    </init-param>
+	    <init-param>
+	      <param-name>suppressInitPoolerError</param-name>
+	      <param-value>true</param-value>
+	    </init-param>
 	    <load-on-startup>1</load-on-startup>
         </servlet>
         <servlet>

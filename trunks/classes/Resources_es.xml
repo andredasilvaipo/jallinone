@@ -1552,6 +1552,18 @@
   <object key="ledger descriptions" value="Ledger descriptions" />
   <object key="account descriptions" value="Account descriptions" />
   <object key="account motives" value="Account motives" />
+  <object key="connected users" value="Connected users" />
+  <object key="min stock" value="Min stock" />
+  <object key="items reorder" value="Items reorder" />
+  <object key="minStockITM23" value="Min.Stock" />
+  <object key="proposedQty" value="Prop.Qty" />
+  <object key="pawnedQty" value="Pawned Qty" />
+  <object key="goodQty" value="Good Qty" />
+  <object key="orderedQty" value="Future Qty" />
+  <object key="create orders" value="Create orders" />
+  <object key="orders created" value="Orders created." />
+  <object key="you must select at least one row and a qty greater than zero" value="You must select at least one row and a quantity greater than zero." />
+  <object key="order created using reorder functionality" value="Order created using reorder functionality" />
 
 
   <currencySymbol>&#8364;</currencySymbol>

@@ -97,6 +97,7 @@ public class DetailItemVO extends BaseValueObject implements VariantsItemDescrip
 
 
   private java.math.BigDecimal avgPurchaseCost;
+  private java.math.BigDecimal minStockITM23;
 
 
   public DetailItemVO() {
@@ -467,6 +468,12 @@ public class DetailItemVO extends BaseValueObject implements VariantsItemDescrip
   }
   public void setBarcodeTypeITM01(String barcodeTypeITM01) {
     this.barcodeTypeITM01 = barcodeTypeITM01;
+  }
+  public java.math.BigDecimal getMinStockITM23() {
+    return minStockITM23;
+  }
+  public void setMinStockITM23(java.math.BigDecimal minStockITM23) {
+    this.minStockITM23 = minStockITM23;
   }
 
 

@@ -412,118 +412,71 @@ public class PrintBarcodeLabelsFrame extends InternalFrame {
   }
 
   void insertButton_actionPerformed(ActionEvent e) {
-    if (controlItemCode.getValue()!=null &&
-        controlQty.getValue()!=null) {
-      ItemToPrintVO vo = (ItemToPrintVO)itemPanel.getVOModel().getValueObject();
-      Object[][] cells = variantsPanel.getCells();
-      if (cells==null) {
-        try {
-          vo = (ItemToPrintVO) vo.clone();
+    try {
+      if (controlItemCode.getValue()!=null &&
+          controlQty.getValue()!=null) {
+        ItemToPrintVO vo = (ItemToPrintVO)itemPanel.getVOModel().getValueObject();
+        Object[][] cells = variantsPanel.getCells();
+        if (cells==null) {
+          try {
+            vo = (ItemToPrintVO) vo.clone();
+          }
+          catch (CloneNotSupportedException ex) {
+          }
+          vo.setVariantTypeItm06(ApplicationConsts.JOLLY);
+          vo.setVariantTypeItm07(ApplicationConsts.JOLLY);
+          vo.setVariantTypeItm08(ApplicationConsts.JOLLY);
+          vo.setVariantTypeItm09(ApplicationConsts.JOLLY);
+          vo.setVariantTypeItm10(ApplicationConsts.JOLLY);
+          vo.setVariantCodeItm11(ApplicationConsts.JOLLY);
+          vo.setVariantCodeItm12(ApplicationConsts.JOLLY);
+          vo.setVariantCodeItm13(ApplicationConsts.JOLLY);
+          vo.setVariantCodeItm14(ApplicationConsts.JOLLY);
+          vo.setVariantCodeItm15(ApplicationConsts.JOLLY);
+          rows.add(vo);
+          grid.reloadData();
         }
-        catch (CloneNotSupportedException ex) {
-        }
-        vo.setVariantTypeItm06(ApplicationConsts.JOLLY);
-        vo.setVariantTypeItm07(ApplicationConsts.JOLLY);
-        vo.setVariantTypeItm08(ApplicationConsts.JOLLY);
-        vo.setVariantTypeItm09(ApplicationConsts.JOLLY);
-        vo.setVariantTypeItm10(ApplicationConsts.JOLLY);
-        vo.setVariantCodeItm11(ApplicationConsts.JOLLY);
-        vo.setVariantCodeItm12(ApplicationConsts.JOLLY);
-        vo.setVariantCodeItm13(ApplicationConsts.JOLLY);
-        vo.setVariantCodeItm14(ApplicationConsts.JOLLY);
-        vo.setVariantCodeItm15(ApplicationConsts.JOLLY);
-        rows.add(vo);
-        grid.reloadData();
+        else {
+          Object[] row = null;
+          VariantsMatrixRowVO rowVO = null;
+          VariantsMatrixColumnVO colMatrixVO = null;
+          VariantsMatrixVO matrixVO = variantsPanel.getVariantsMatrixVO();
+          for(int i=0;i<cells.length;i++) {
+            row = cells[i];
+            for(int j=0;j<row.length;j++) {
+              if (cells[i][j]!=null) {
+                BigDecimal qty = (BigDecimal)cells[i][j];
+                if (qty.intValue()>0) {
+                  try {
+                    vo = (ItemToPrintVO) vo.clone();
+                  }
+                  catch (CloneNotSupportedException ex) {
+                  }
+                  vo.setQty(qty);
+                  rowVO = (VariantsMatrixRowVO) matrixVO.getRowDescriptors().get(i);
+
+                  if (variantsPanel.getVariantsMatrixVO().getColumnDescriptors().size()==0) {
+                    VariantsMatrixUtils.setVariantTypesAndCodes(vo,"",variantsPanel.getVariantsMatrixVO(),rowVO,null);
+                  }
+                  else {
+                    colMatrixVO = (VariantsMatrixColumnVO )variantsPanel.getVariantsMatrixVO().getColumnDescriptors().get(j);
+                    VariantsMatrixUtils.setVariantTypesAndCodes(vo,"",variantsPanel.getVariantsMatrixVO(),rowVO,colMatrixVO);
+                  }
+
+
+                  rows.add(vo);
+                } // end if on qty >0
+              } // end if cell is not null
+            } // end inner for
+          } // end outer for
+
+          grid.reloadData();
+
+        } // end else
       }
-      else {
-        Object[] row = null;
-        VariantsMatrixRowVO rowVO = null;
-        VariantsMatrixColumnVO colMatrixVO = null;
-        VariantsMatrixVO matrixVO = variantsPanel.getVariantsMatrixVO();
-        for(int i=0;i<cells.length;i++) {
-          row = cells[i];
-          for(int j=0;j<row.length;j++) {
-            if (cells[i][j]!=null) {
-              BigDecimal qty = (BigDecimal)cells[i][j];
-              if (qty.intValue()>0) {
-                try {
-                  vo = (ItemToPrintVO) vo.clone();
-                }
-                catch (CloneNotSupportedException ex) {
-                }
-                vo.setQty(qty);
-                rowVO = (VariantsMatrixRowVO)matrixVO.getRowDescriptors().get(i);
-
-                vo.setVariantTypeItm06(rowVO.getVariantTypeITM06());
-                vo.setVariantCodeItm11(rowVO.getVariantCodeITM11());
-
-                if (variantsPanel.getVariantsMatrixVO().getColumnDescriptors().size()==0) {
-                  if (!containsVariant(matrixVO,"ITM11_VARIANTS_1")) {
-                    // e.g. color but not no size...
-                    vo.setVariantCodeItm11(ApplicationConsts.JOLLY);
-                    vo.setVariantTypeItm06(ApplicationConsts.JOLLY);
-                  }
-                  else {
-                    vo.setVariantCodeItm11(rowVO.getVariantCodeITM11());
-                    vo.setVariantTypeItm06(rowVO.getVariantTypeITM06());
-                  }
-                  if (!containsVariant(matrixVO,"ITM12_VARIANTS_2")) {
-                    vo.setVariantCodeItm12(ApplicationConsts.JOLLY);
-                    vo.setVariantTypeItm07(ApplicationConsts.JOLLY);
-                  }
-                  else {
-                    vo.setVariantCodeItm12(rowVO.getVariantCodeITM11());
-                    vo.setVariantTypeItm07(rowVO.getVariantTypeITM06());
-                  }
-                  if (!containsVariant(matrixVO,"ITM13_VARIANTS_3")) {
-                    vo.setVariantCodeItm13(ApplicationConsts.JOLLY);
-                    vo.setVariantTypeItm08(ApplicationConsts.JOLLY);
-                  }
-                  else {
-                    vo.setVariantCodeItm13(rowVO.getVariantCodeITM11());
-                    vo.setVariantTypeItm08(rowVO.getVariantTypeITM06());
-                  }
-                  if (!containsVariant(matrixVO,"ITM14_VARIANTS_4")) {
-                    vo.setVariantCodeItm14(ApplicationConsts.JOLLY);
-                    vo.setVariantTypeItm09(ApplicationConsts.JOLLY);
-                  }
-                  else {
-                    vo.setVariantCodeItm14(rowVO.getVariantCodeITM11());
-                    vo.setVariantTypeItm09(rowVO.getVariantTypeITM06());
-                  }
-                  if (!containsVariant(matrixVO,"ITM15_VARIANTS_5")) {
-                    vo.setVariantCodeItm15(ApplicationConsts.JOLLY);
-                    vo.setVariantTypeItm10(ApplicationConsts.JOLLY);
-                  }
-                  else {
-                    vo.setVariantCodeItm15(rowVO.getVariantCodeITM11());
-                    vo.setVariantTypeItm10(rowVO.getVariantTypeITM06());
-                  }
-                }
-                else {
-                  colMatrixVO = (VariantsMatrixColumnVO )variantsPanel.getVariantsMatrixVO().getColumnDescriptors().get(j);
-
-                  vo.setVariantTypeItm07(colMatrixVO.getVariantTypeITM07()==null?ApplicationConsts.JOLLY:colMatrixVO.getVariantTypeITM07());
-                  vo.setVariantTypeItm08(colMatrixVO.getVariantTypeITM08()==null?ApplicationConsts.JOLLY:colMatrixVO.getVariantTypeITM08());
-                  vo.setVariantTypeItm09(colMatrixVO.getVariantTypeITM09()==null?ApplicationConsts.JOLLY:colMatrixVO.getVariantTypeITM09());
-                  vo.setVariantTypeItm10(colMatrixVO.getVariantTypeITM10()==null?ApplicationConsts.JOLLY:colMatrixVO.getVariantTypeITM10());
-
-                  vo.setVariantCodeItm12(colMatrixVO.getVariantCodeITM12()==null?ApplicationConsts.JOLLY:colMatrixVO.getVariantCodeITM12());
-                  vo.setVariantCodeItm13(colMatrixVO.getVariantCodeITM13()==null?ApplicationConsts.JOLLY:colMatrixVO.getVariantCodeITM13());
-                  vo.setVariantCodeItm14(colMatrixVO.getVariantCodeITM14()==null?ApplicationConsts.JOLLY:colMatrixVO.getVariantCodeITM14());
-                  vo.setVariantCodeItm15(colMatrixVO.getVariantCodeITM15()==null?ApplicationConsts.JOLLY:colMatrixVO.getVariantCodeITM15());
-                }
-
-
-                rows.add(vo);
-              } // end if on qty >0
-            } // end if cell is not null
-          } // end inner for
-        } // end outer for
-
-        grid.reloadData();
-
-      } // end else
+    }
+    catch (Throwable ex1) {
+      ex1.printStackTrace();
     }
   }
 

@@ -91,6 +91,9 @@ import org.jallinone.items.client.PrintBarcodeLabelsFrame;
 import org.jallinone.sales.reports.client.SalesPivotFrame;
 import org.jallinone.sales.documents.client.DeliveryRequestsController;
 import org.jallinone.system.translations.client.*;
+import org.jallinone.system.client.UsersListFrame;
+import org.jallinone.purchases.items.client.ABCFrame;
+import org.jallinone.purchases.documents.client.ReorderFromMinStocksFrame;
 
 
 /**
@@ -966,6 +969,21 @@ public class ApplicationClientFacade implements ClientFacade {
 
   public void getTranslations() {
     new TranslationsGridFrame(null,null);
+  }
+
+
+  public void getConnectedUsers() {
+    new UsersListFrame();
+  }
+
+
+  public void getReorderFromMinStocks() {
+    new ReorderFromMinStocksFrame();
+  }
+
+
+  public void getABC() {
+    new ABCFrame();
   }
 
 

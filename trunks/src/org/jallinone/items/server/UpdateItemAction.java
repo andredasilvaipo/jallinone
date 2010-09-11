@@ -71,6 +71,7 @@ public class UpdateItemAction implements Action {
     String serverLanguageId = ((JAIOUserSessionParameters)userSessionPars).getServerLanguageId();
     Connection conn = null;
     Statement stmt = null;
+    PreparedStatement pstmt = null;
     try {
       conn = ConnectionManager.getConnection(context);
 
@@ -258,6 +259,7 @@ public class UpdateItemAction implements Action {
       attribute2dbField.put("barCodeITM01","BAR_CODE");
       attribute2dbField.put("barcodeTypeITM01","BARCODE_TYPE");
 
+
       HashSet pkAttributes = new HashSet();
       pkAttributes.add("companyCodeSys01ITM01");
       pkAttributes.add("itemCodeITM01");
@@ -292,6 +294,38 @@ public class UpdateItemAction implements Action {
             "PARENT_ITEM_CODE_ITM01='"+newVO.getItemCodeITM01()+"'"
         );
         stmt.close();
+      }
+
+
+      if (!Boolean.TRUE.equals(newVO.getUseVariant1ITM01()) &&
+          !Boolean.TRUE.equals(newVO.getUseVariant1ITM01()) &&
+          !Boolean.TRUE.equals(newVO.getUseVariant1ITM01()) &&
+          !Boolean.TRUE.equals(newVO.getUseVariant1ITM01()) &&
+          !Boolean.TRUE.equals(newVO.getUseVariant1ITM01())) {
+
+        // retrieve the min stock for the item that does not have variants...
+        String sql =
+            "update ITM23_VARIANT_MIN_STOCKS set MIN_STOCK=? where "+
+            "COMPANY_CODE_SYS01=? and ITEM_CODE_ITM01=? and   "+
+            "VARIANT_TYPE_ITM06=? and VARIANT_TYPE_ITM07=? and VARIANT_TYPE_ITM08=? and VARIANT_TYPE_ITM09=? and VARIANT_TYPE_ITM10=? and "+
+            "VARIANT_CODE_ITM11=? and VARIANT_CODE_ITM12=? and VARIANT_CODE_ITM13=? and VARIANT_CODE_ITM14=? and VARIANT_CODE_ITM15=? ";
+
+        pstmt = conn.prepareStatement(sql);
+        pstmt.setBigDecimal(1,newVO.getMinStockITM23());
+        pstmt.setString(2,newVO.getCompanyCodeSys01());
+        pstmt.setString(3,newVO.getItemCodeITM01());
+        pstmt.setString(4,ApplicationConsts.JOLLY);
+        pstmt.setString(5,ApplicationConsts.JOLLY);
+        pstmt.setString(6,ApplicationConsts.JOLLY);
+        pstmt.setString(7,ApplicationConsts.JOLLY);
+        pstmt.setString(8,ApplicationConsts.JOLLY);
+        pstmt.setString(9,ApplicationConsts.JOLLY);
+        pstmt.setString(10,ApplicationConsts.JOLLY);
+        pstmt.setString(11,ApplicationConsts.JOLLY);
+        pstmt.setString(12,ApplicationConsts.JOLLY);
+        pstmt.setString(13,ApplicationConsts.JOLLY);
+        pstmt.execute();
+        pstmt.close();
       }
 
 
@@ -343,6 +377,11 @@ public class UpdateItemAction implements Action {
     finally {
       try {
         stmt.close();
+      }
+      catch (Exception ex2) {
+      }
+      try {
+        pstmt.close();
       }
       catch (Exception ex2) {
       }

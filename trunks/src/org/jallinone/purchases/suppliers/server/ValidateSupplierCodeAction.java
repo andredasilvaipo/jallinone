@@ -94,7 +94,10 @@ public class ValidateSupplierCodeAction implements Action {
 
       // if client transmit a specific function code then use it to filter company code list by INSERT authorizations,
       // otherwise retrieve company code list from READ authorizations...
-      if (lookupPars.getLookupValidationParameters().get(ApplicationConsts.FILTER_COMPANY_FOR_INSERT)!=null) {
+      if (lookupPars.getLookupValidationParameters().get(ApplicationConsts.COMPANY_CODE_SYS01)!=null) {
+        companies = "'"+lookupPars.getLookupValidationParameters().get(ApplicationConsts.COMPANY_CODE_SYS01)+"',";
+      }
+      else if (lookupPars.getLookupValidationParameters().get(ApplicationConsts.FILTER_COMPANY_FOR_INSERT)!=null) {
        String functionCode = (String)lookupPars.getLookupValidationParameters().get(ApplicationConsts.FILTER_COMPANY_FOR_INSERT);
        ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList(functionCode);
        for(int i=0;i<companiesList.size();i++)
@@ -139,6 +142,22 @@ public class ValidateSupplierCodeAction implements Action {
       ArrayList values = new ArrayList();
       values.add(serverLanguageId);
       values.add(lookupPars.getCode());
+
+      if (lookupPars.getLookupValidationParameters().get(ApplicationConsts.ITEM)!=null) {
+        sql +=
+            " AND EXISTS(SELECT * FROM PUR04_SUPPLIER_PRICES WHERE "+
+            "PUR04_SUPPLIER_PRICES.COMPANY_CODE_SYS01=PUR01_SUPPLIERS.COMPANY_CODE_SYS01 AND "+
+            "PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04=PUR01_SUPPLIERS.PROGRESSIVE_REG04 AND "+
+            "PUR04_SUPPLIER_PRICES.ITEM_CODE_ITM01=? AND "+
+            "PUR04_SUPPLIER_PRICES.START_DATE<=? AND "+
+            "PUR04_SUPPLIER_PRICES.END_DATE>=? ) ";
+        java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
+
+        values.add(lookupPars.getLookupValidationParameters().get(ApplicationConsts.ITEM));
+        values.add(today);
+        values.add(today);
+      }
+
 
       GridParams gridParams = new GridParams();
 

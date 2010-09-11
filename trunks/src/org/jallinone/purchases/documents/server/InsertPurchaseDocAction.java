@@ -55,9 +55,7 @@ import org.jallinone.events.server.GenericEvent;
  */
 public class InsertPurchaseDocAction implements Action {
 
-  private ValidatePaymentCodeAction payBean = new ValidatePaymentCodeAction();
-  private ValidateCurrencyCodeAction currBean = new ValidateCurrencyCodeAction();
-
+  private InsertPurchaseDocBean bean = new InsertPurchaseDocBean();
 
 
   public InsertPurchaseDocAction() {
@@ -76,7 +74,6 @@ public class InsertPurchaseDocAction implements Action {
    */
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
     Connection conn = null;
-    PreparedStatement pstmt = null;
     try {
       conn = ConnectionManager.getConnection(context);
 
@@ -95,101 +92,8 @@ public class InsertPurchaseDocAction implements Action {
         null
       ));
       String companyCode = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("DOC06_ORDERS").get(0).toString();
-
       DetailPurchaseDocVO vo = (DetailPurchaseDocVO)inputPar;
-      vo.setEnabledDOC06("Y");
-      vo.setTaxableIncomeDOC06(new BigDecimal(0));
-      vo.setTotalDOC06(new BigDecimal(0));
-      vo.setTotalVatDOC06(new BigDecimal(0));
-
-      if (vo.getCompanyCodeSys01DOC06()==null)
-        vo.setCompanyCodeSys01DOC06(companyCode);
-
-      // retrieve payment info...
-      LookupValidationParams pars = new LookupValidationParams(vo.getPaymentCodeReg10DOC06(),new HashMap());
-      Response payResponse = payBean.executeCommand(pars,userSessionPars,request, response,userSession,context);
-      if (payResponse.isError())
-        return payResponse;
-      PaymentVO payVO = (PaymentVO)((VOListResponse)payResponse).getRows().get(0);
-      vo.setFirstInstalmentDaysDOC06(payVO.getFirstInstalmentDaysREG10());
-      vo.setInstalmentNumberDOC06(payVO.getInstalmentNumberREG10());
-      vo.setPaymentTypeDescriptionDOC06(payVO.getPaymentTypeDescriptionSYS10());
-      vo.setStartDayDOC06(payVO.getStartDayREG10());
-      vo.setStepDOC06(payVO.getStepREG10());
-
-      // retrieve currency info...
-      pars = new LookupValidationParams(vo.getCurrencyCodeReg03DOC06(),new HashMap());
-      Response currResponse = currBean.executeCommand(pars,userSessionPars,request, response,userSession,context);
-      if (currResponse.isError())
-        return currResponse;
-      CurrencyVO currVO = (CurrencyVO)((VOListResponse)currResponse).getRows().get(0);
-      vo.setCurrencySymbolREG03(currVO.getCurrencySymbolREG03());
-      vo.setDecimalSymbolREG03(currVO.getDecimalSymbolREG03());
-      vo.setThousandSymbolREG03(currVO.getThousandSymbolREG03());
-      vo.setDecimalsREG03(currVO.getDecimalsREG03());
-
-      // generate internal progressive for doc. number...
-      vo.setDocNumberDOC06(ProgressiveUtils.getInternalProgressive("DOC06_PURCHASE","DOC_NUMBER",conn));
-
-      Map attribute2dbField = new HashMap();
-      attribute2dbField.put("companyCodeSys01DOC06","COMPANY_CODE_SYS01");
-      attribute2dbField.put("docTypeDOC06","DOC_TYPE");
-      attribute2dbField.put("docStateDOC06","DOC_STATE");
-      attribute2dbField.put("pricelistCodePur03DOC06","PRICELIST_CODE_PUR03");
-      attribute2dbField.put("pricelistDescriptionDOC06","PRICELIST_DESCRIPTION");
-      attribute2dbField.put("currencyCodeReg03DOC06","CURRENCY_CODE_REG03");
-      attribute2dbField.put("docYearDOC06","DOC_YEAR");
-      attribute2dbField.put("docNumberDOC06","DOC_NUMBER");
-      attribute2dbField.put("taxableIncomeDOC06","TAXABLE_INCOME");
-      attribute2dbField.put("totalVatDOC06","TOTAL_VAT");
-      attribute2dbField.put("totalDOC06","TOTAL");
-      attribute2dbField.put("docDateDOC06","DOC_DATE");
-
-      attribute2dbField.put("progressiveReg04DOC06","PROGRESSIVE_REG04");
-      attribute2dbField.put("companyCodeSys01Doc06DOC06","COMPANY_CODE_SYS01_DOC06");
-      attribute2dbField.put("docTypeDoc06DOC06","DOC_TYPE_DOC06");
-      attribute2dbField.put("docYearDoc06DOC06","DOC_YEAR_DOC06");
-      attribute2dbField.put("docNumberDoc06DOC06","DOC_NUMBER_DOC06");
-      attribute2dbField.put("discountValueDOC06","DISCOUNT_VALUE");
-      attribute2dbField.put("discountPercDOC06","DISCOUNT_PERC");
-      attribute2dbField.put("chargeValueDOC06","CHARGE_VALUE");
-      attribute2dbField.put("chargePercDOC06","CHARGE_PERC");
-      attribute2dbField.put("paymentCodeReg10DOC06","PAYMENT_CODE_REG10");
-      attribute2dbField.put("paymentDescriptionDOC06","PAYMENT_DESCRIPTION");
-      attribute2dbField.put("instalmentNumberDOC06","INSTALMENT_NUMBER");
-      attribute2dbField.put("stepDOC06","STEP");
-      attribute2dbField.put("startDayDOC06","START_DAY");
-      attribute2dbField.put("firstInstalmentDaysDOC06","FIRST_INSTALMENT_DAYS");
-      attribute2dbField.put("paymentTypeDescriptionDOC06","PAYMENT_TYPE_DESCRIPTION");
-      attribute2dbField.put("progressiveWkf01DOC06","PROGRESSIVE_WKF01");
-      attribute2dbField.put("progressiveWkf08DOC06","PROGRESSIVE_WKF08");
-      attribute2dbField.put("descriptionWkf01DOC06","DESCRIPTION_WKF01");
-      attribute2dbField.put("noteDOC06","NOTE");
-      attribute2dbField.put("enabledDOC06","ENABLED");
-      attribute2dbField.put("warehouseCodeWar01DOC06","WAREHOUSE_CODE_WAR01");
-      attribute2dbField.put("descriptionWar01DOC06","DESCRIPTION_WAR01");
-      attribute2dbField.put("addressWar01DOC06","ADDRESS_WAR01");
-      attribute2dbField.put("cityWar01DOC06","CITY_WAR01");
-      attribute2dbField.put("provinceWar01DOC06","PROVINCE_WAR01");
-      attribute2dbField.put("zipWar01DOC06","ZIP_WAR01");
-      attribute2dbField.put("countryWar01DOC06","COUNTRY_WAR01");
-
-
-      // insert into DOC06...
-      Response res = CustomizeQueryUtil.insertTable(
-          conn,
-          userSessionPars,
-          vo,
-          "DOC06_PURCHASE",
-          attribute2dbField,
-          "Y",
-          "N",
-          context,
-          true,
-          ApplicationConsts.ID_PURCHASE_ORDER // window identifier...
-      );
-
-      Response answer = res;
+      Response answer = bean.insertPurchaseDoc(conn,vo,companyCode,userSessionPars, request, response,userSession,context);
 
       // fires the GenericEvent.BEFORE_COMMIT event...
       EventsManager.getInstance().processEvent(new GenericEvent(
@@ -235,11 +139,6 @@ public class InsertPurchaseDocAction implements Action {
       return new ErrorResponse(ex.getMessage());
     }
     finally {
-      try {
-        pstmt.close();
-      }
-      catch (Exception ex2) {
-      }
       try {
         ConnectionManager.releaseConnection(conn, context);
       }

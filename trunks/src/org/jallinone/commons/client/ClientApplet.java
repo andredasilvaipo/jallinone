@@ -468,6 +468,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     barcodeTypeDomain.addDomainPair(ApplicationConsts.BAR_CODE_128B,ApplicationConsts.BAR_CODE_128B);
     barcodeTypeDomain.addDomainPair(ApplicationConsts.BAR_CODE_128C,ApplicationConsts.BAR_CODE_128C);
     barcodeTypeDomain.addDomainPair(ApplicationConsts.BAR_CODE_39E,ApplicationConsts.BAR_CODE_39E);
+    barcodeTypeDomain.addDomainPair(ApplicationConsts.BAR_CODE_PDF417,ApplicationConsts.BAR_CODE_PDF417);
     domains.put(
       barcodeTypeDomain.getDomainId(),
       barcodeTypeDomain
