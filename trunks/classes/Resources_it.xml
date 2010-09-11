@@ -1523,8 +1523,27 @@
   <object key="orderedQty" value="Qt&#224; ordin." />
   <object key="create orders" value="Crea ordini di acquisto" />
   <object key="orders created" value="Ordini di acquisto creati." />
-  <object key="you must select at least one row and a qty greater than zero" value="E' necessario selezionare almeno una riga avente quantità maggiore di zero." />
+  <object key="you must select at least one row and a qty greater than zero" value="E' necessario selezionare almeno una riga avente quantit&#224; maggiore di zero." />
   <object key="order created using reorder functionality" value="Ordine di acquisto creato tramite la funzione di riordino" />
+
+  <object key="abc classification" value="Classificazione ABC con analisi incrociata fatturato-rimanenze" />
+  <object key="create abc" value="Crea classificazione ABC " />
+  <object key="invoiced" value="Fatturato" />
+  <object key="unsold" value="Rimanenze" />
+  <object key="abc aa" value="Alte scorte e alto fatturato: gli articoli di questa fascia potrebbero avere una migliore gestione delle rimanenze, riducendo le scorte minime" />
+  <object key="abc ac" value="Alte scorte e basso fatturato: &#232; necessaria una radicale gestione di questi articoli, riducendo le scorte minime" />
+  <object key="abc ca" value="Basse scorte e alto fatturato: eccellente gestione, non &#232; necessaria alcuna revisione" />
+  <object key="abc cc" value="Basse scorte e basso fatturato: articoli poco rilevanti, una diversa politica di gest.art. porterebbe a limitati miglioramenti" />
+  <object key="change min stocks" value="Cambia scorta min. per art.selez." />
+  <object key="perc1Invoiced" value="Banda A fatturato: 0..%" />
+  <object key="perc2Invoiced" value="Banda C fatturato: %..100%" />
+  <object key="perc1Unsold" value="Banda A rimanenze: 0..%" />
+  <object key="perc2Unsold" value="Banda C rimanenze: %..100%" />
+  <object key="abc" value="ABC" />
+  <object key="you have to select at least one row" value="E' necessario selezionare almeno una riga" />
+  <object key="min stocks updated" value="Aggiornamento scorte minime completato." />
+  <object key="set qty to zero" value="Azzera le quantit&#224;" />
+  <object key="update completed" value="Aggiornamento completato" />
 
 
 <!-- application translations -->

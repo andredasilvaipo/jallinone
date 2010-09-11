@@ -346,4 +346,12 @@ public class ApplicationConsts {
 
   public static final String FILTER_VO = "FILTER_VO";
 
+  public static final String ABC_TYPE_GOOD_QTY = "G";
+  public static final String ABC_TYPE_SOLD_QTY = "S";
+  public static final String ABC_TYPE_PAWNED_QTY = "P";
+  public static final String ABC_TYPE_UNSOLD_QTY = "U";
+  public static final String REPORT_ID = "REPORT_ID";
+
+
+
 }

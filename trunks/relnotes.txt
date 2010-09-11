@@ -3,11 +3,12 @@
 Release Notes 1.2
 ---------------------
 
-Added "Reorder from minimum stock per item/variants" functionality, in order to show the list of items under minimum stock
-and notifying users about that kind of event.
-Added "ABC classification", based on unsold stocks/invoice.
+Added "Reorder from minimum stock per item/variants" functionality, in order to show the list of items under minimum stock.
+Added "ABC classification", based on unsold stocks/invoiced items.
 Added "Connected users" functionality, useful when publishing new versions of application.
+Included pooler.jar library to .war file distribution.
 Added PDF417 barcode format in "print labels" functionality.
+Fixed some problems during  installation process (indexes length, exceptions, ...)
 
 
 

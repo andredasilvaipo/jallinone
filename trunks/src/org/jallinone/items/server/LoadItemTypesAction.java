@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import org.openswing.swing.message.send.java.GridParams;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.commons.java.ApplicationConsts;
 
 
 /**
@@ -84,12 +85,18 @@ public class LoadItemTypesAction implements Action {
         null
       ));
 
+      GridParams gridParams = (GridParams)inputPar;
 
       // retrieve companies list...
-      ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("ITM02");
       String companies = "";
-      for(int i=0;i<companiesList.size();i++)
-        companies += "'"+companiesList.get(i).toString()+"',";
+      if (gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01)!=null) {
+        companies = "'"+gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01)+"',";
+      }
+      else {
+        ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("ITM02");
+        for(int i=0;i<companiesList.size();i++)
+          companies += "'"+companiesList.get(i).toString()+"',";
+      }
       companies = companies.substring(0,companies.length()-1);
 
       String sql =
@@ -109,8 +116,6 @@ public class LoadItemTypesAction implements Action {
 
       ArrayList values = new ArrayList();
       values.add(serverLanguageId);
-
-      GridParams gridParams = (GridParams)inputPar;
 
       // read from ITM02 table...
       Response answer = CustomizeQueryUtil.getQuery(

@@ -1441,6 +1441,25 @@
   <object key="you must select at least one row and a qty greater than zero" value="You must select at least one row and a quantity greater than zero." />
   <object key="order created using reorder functionality" value="Order created using reorder functionality" />
 
+  <object key="abc classification" value="ABC Classification" />
+  <object key="create abc" value="Create ABC Classification" />
+  <object key="invoiced" value="Invoiced" />
+  <object key="unsold" value="Unsold" />
+  <object key="abc aa" value="high volume of stocks and high invoiced qtys: these items could be better managed in warehouse, by reducing the amount of stocks" />
+  <object key="abc ac" value="high volume of stocks and low invoiced qtys: these items must be better managed in warehouse, by reducing the amount of stocks" />
+  <object key="abc ca" value="low volume of stocks and high invoiced qtys: excellent management of stocks, no need to apply any change" />
+  <object key="abc cc" value="low volume of stocks and low invoiced qtys: these items are not important and stock management could be not changed" />
+  <object key="change min stocks" value="Change min stocks for selected items" />
+  <object key="perc1Invoiced" value="A invoiced band: 0..%" />
+  <object key="perc2Invoiced" value="C invoiced band: %..100%" />
+  <object key="perc1Unsold" value="A unsold band: 0..%" />
+  <object key="perc2Unsold" value="C unsold band: %..100%" />
+  <object key="abc" value="ABC" />
+  <object key="you have to select at least one row" value="You have to select at least one row" />
+  <object key="min stocks updated" value="Min stocks updated." />
+  <object key="set qty to zero" value="Set quantities to zero" />
+  <object key="update completed" value="Update completed" />
+
 
 	<currencySymbol>R$</currencySymbol>
 	<decimalSymbol>,</decimalSymbol>

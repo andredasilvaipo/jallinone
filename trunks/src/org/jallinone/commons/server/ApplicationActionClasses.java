@@ -69,6 +69,7 @@ import org.jallinone.warehouse.tables.movements.server.*;
 import org.openswing.swing.message.receive.java.*;
 import org.openswing.swing.server.*;
 import org.jallinone.system.translations.server.*;
+import org.jallinone.purchases.items.server.*;
 
 
 /**
@@ -747,9 +748,10 @@ public class ApplicationActionClasses extends ActionsCollection {
 
     a = new ReorderFromMinStocksAction(); put(a.getRequestName(),a);
     a = new CreatePurchaseOrdersAction(); put(a.getRequestName(),a);
-    a = new ABCAction(); put(a.getRequestName(),a);
-
-
+    a = new CreateABCAction(); put(a.getRequestName(),a);
+    a = new LoadABCAction(); put(a.getRequestName(),a);
+    a = new DeleteABCAction(); put(a.getRequestName(),a);
+    a = new UpdateMinStocksAction(); put(a.getRequestName(),a);
 
     put("changeLanguage",new Action() {
 

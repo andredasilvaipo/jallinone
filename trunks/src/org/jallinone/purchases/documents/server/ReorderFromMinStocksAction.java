@@ -199,7 +199,7 @@ public class ReorderFromMinStocksAction implements Action {
             "PUR04_SUPPLIER_PRICES.ITEM_CODE_ITM01 IN "+
             "(SELECT ITEM_CODE_ITM01 FROM ITM23_VARIANT_MIN_STOCKS "+
             " WHERE ITM23_VARIANT_MIN_STOCKS.COMPANY_CODE_SYS01=? AND ITM23_VARIANT_MIN_STOCKS.MIN_STOCK>0) "+
-            "ORDER BY PUR04_SUPPLIER_PRICES.PRICELIST_CODE_PUR03";
+            "ORDER BY PUR04_SUPPLIER_PRICES.VALUE,PUR04_SUPPLIER_PRICES.PRICELIST_CODE_PUR03";
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1,companyCode);
         pstmt.setBigDecimal(2,progressiveHIE02);
