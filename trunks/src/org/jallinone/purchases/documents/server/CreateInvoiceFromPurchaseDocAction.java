@@ -161,7 +161,8 @@ public class CreateInvoiceFromPurchaseDocAction implements Action {
         rowVO = (DetailPurchaseDocRowVO)((VOResponse)res).getVo();
         rowVO.setDocTypeDOC07(docVO.getDocTypeDOC06());
         rowVO.setDocNumberDOC07(docVO.getDocNumberDOC06());
-        if (rowVO.getInvoiceQtyDOC07().doubleValue()<rowVO.getQtyDOC07().doubleValue()) {
+        if (rowVO.getInvoiceQtyDOC07().doubleValue()<rowVO.getQtyDOC07().doubleValue() &&
+            rowVO.getQtyDOC07().doubleValue()==rowVO.getInQtyDOC07().doubleValue()) {
           rowVO.setQtyDOC07(rowVO.getQtyDOC07().subtract(rowVO.getInvoiceQtyDOC07().setScale(rowVO.getDecimalsReg02DOC07().intValue(),BigDecimal.ROUND_HALF_UP)));
           rowVO.setTaxableIncomeDOC07(rowVO.getQtyDOC07().multiply(rowVO.getValuePur04DOC07()).setScale(docVO.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP));
 
@@ -198,6 +199,7 @@ public class CreateInvoiceFromPurchaseDocAction implements Action {
         docVO.getDocNumberDOC06()
       );
       Response answer = docAction.loadPurchaseDoc(conn,pk,userSessionPars,request,response,userSession,context);
+
 
       // fires the GenericEvent.BEFORE_COMMIT event...
       EventsManager.getInstance().processEvent(new GenericEvent(

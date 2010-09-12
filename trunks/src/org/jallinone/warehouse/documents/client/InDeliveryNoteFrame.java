@@ -280,7 +280,7 @@ public class InDeliveryNoteFrame extends InternalFrame implements GenericButtonC
       if (!res.isError()) {
         headerFormPanel.setMode(Consts.READONLY);
         headerFormPanel.executeReload();
-        getOrders().reloadData();
+        getOrders().reloadCurrentBlockOfData();
       }
       else
         JOptionPane.showMessageDialog(

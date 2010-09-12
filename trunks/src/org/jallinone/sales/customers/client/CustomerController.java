@@ -141,6 +141,17 @@ public class CustomerController extends CompanyFormController {
     detailFrame.getActivitiesGrid().reloadData();
 
     detailFrame.setButtonsEnabled(true);
+
+    if (pk.getSubjectTypeREG04().equals(ApplicationConsts.SUBJECT_ORGANIZATION_CUSTOMER)) {
+      OrganizationCustomerVO vo = (OrganizationCustomerVO)detailFrame.getCurrentForm().getVOModel().getValueObject();
+      detailFrame.setTitle(ClientSettings.getInstance().getResources().getResource("customer")+" "+vo.getCustomerCodeSAL07()+" - "+vo.getName_1REG04()+" "+(vo.getName_2REG04()==null?"":vo.getName_2REG04()));
+    }
+    else {
+      PeopleCustomerVO vo = (PeopleCustomerVO)detailFrame.getCurrentForm().getVOModel().getValueObject();
+      detailFrame.setTitle(ClientSettings.getInstance().getResources().getResource("customer")+" "+vo.getCustomerCodeSAL07()+" - "+vo.getName_1REG04()+" "+(vo.getName_2REG04()==null?"":vo.getName_2REG04()));
+    }
+
+
   }
 
 
@@ -209,6 +220,7 @@ public class CustomerController extends CompanyFormController {
       detailFrame.getActivitiesGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_REG04_SUBJECT,pk.getProgressiveReg04SAL07());
       detailFrame.getActivitiesGrid().reloadData();
 
+      detailFrame.setTitle(ClientSettings.getInstance().getResources().getResource("customer"));
 
       detailFrame.setButtonsEnabled(true);
     }
@@ -274,14 +286,14 @@ public class CustomerController extends CompanyFormController {
    * The method can pre-set some v.o. attributes, so that some input controls will have a predefined value associated.
    * @param persistentObject new value object
    */
-  public void createPersistentObject(ValueObject PersistentObject) throws Exception {
+  public void createPersistentObject(ValueObject persistentObject) throws Exception {
     ClientApplet applet = ( (ApplicationClientFacade) MDIFrame.getInstance().getClientFacade()).getMainClass();
     String companyCode = null;
     if (applet.getAuthorizations().isOneCompany()) {
       ButtonCompanyAuthorizations bca = applet.getAuthorizations().getCompanyBa();
       ArrayList companiesList = bca.getCompaniesList("SAL07");
       companyCode = companiesList.get(0).toString();
-      ((Subject)PersistentObject).setCompanyCodeSys01REG04( companyCode );
+      ((Subject)persistentObject).setCompanyCodeSys01REG04( companyCode );
     }
 
     // set default values...

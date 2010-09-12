@@ -622,6 +622,8 @@ public class ABCFrame extends InternalFrame {
     }
     else {
       CreateABCFilterVO vo = (CreateABCFilterVO)filterPanel.getVOModel().getValueObject();
+      vo.setProgressiveHie02ITM01((BigDecimal)controlItemType.getValue());
+
       vo.setReportId(reportId);
       Response res = ClientUtils.getData("createABC",vo);
       if (res.isError()) {

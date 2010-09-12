@@ -270,7 +270,7 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
     DetailPurchaseDocVO vo = (DetailPurchaseDocVO)headerFormPanel.getVOModel().getValueObject();
     updateCurrencySettings(vo);
 
-    this.setTitle(ClientSettings.getInstance().getResources().getResource("purchase order")+(vo.getDocSequenceDOC06()!=null?" - "+vo.getDocYearDOC06()+"/"+vo.getDocSequenceDOC06():"")+" - "+vo.getName_1REG04()+" "+(vo.getName_2REG04()==null?"":vo.getName_2REG04()));
+    this.setTitle(ClientSettings.getInstance().getResources().getResource("purchase order")+" "+(vo.getDocSequenceDOC06()!=null?" - "+vo.getDocYearDOC06()+"/"+vo.getDocSequenceDOC06():"")+" - "+vo.getName_1REG04()+" "+(vo.getName_2REG04()==null?"":vo.getName_2REG04()));
 
     rowsPanel.setParentVO(vo);
     rowsPanel.getGrid().getOtherGridParams().put(ApplicationConsts.PURCHASE_DOC_PK,pk);
@@ -347,7 +347,7 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
       if (!res.isError()) {
         headerFormPanel.setMode(Consts.READONLY);
         headerFormPanel.executeReload();
-        getOrders().reloadData();
+        getOrders().reloadCurrentBlockOfData();
       }
 
     }

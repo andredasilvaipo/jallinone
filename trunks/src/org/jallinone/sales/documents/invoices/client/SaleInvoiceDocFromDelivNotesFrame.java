@@ -446,7 +446,7 @@ public class SaleInvoiceDocFromDelivNotesFrame extends InternalFrame implements 
         headerFormPanel.setMode(Consts.READONLY);
         headerFormPanel.executeReload();
         if (getInvoices()!=null)
-          getInvoices().reloadData();
+          getInvoices().reloadCurrentBlockOfData();
       }
       else JOptionPane.showMessageDialog(
               ClientUtils.getParentFrame(this),

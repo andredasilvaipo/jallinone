@@ -130,7 +130,7 @@ public class OutDeliveryNoteRowsController extends CompanyGridController {
   public void afterInsertGrid(GridControl grid) {
     panel.getHeaderPanel().setMode(Consts.READONLY);
     panel.getHeaderPanel().executeReload();
-    panel.getOrders().reloadData();
+    panel.getOrders().reloadCurrentBlockOfData();
     panel.getFrame().enabledConfirmButton();
   }
 

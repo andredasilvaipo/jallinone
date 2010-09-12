@@ -188,7 +188,8 @@ public class CreateInvoiceFromSaleDocAction implements Action {
         rowVO = (DetailSaleDocRowVO)((VOResponse)res).getVo();
         rowVO.setDocTypeDOC02(docVO.getDocTypeDOC01());
         rowVO.setDocNumberDOC02(docVO.getDocNumberDOC01());
-        if (rowVO.getInvoiceQtyDOC02().doubleValue()<rowVO.getQtyDOC02().doubleValue()) {
+        if (rowVO.getInvoiceQtyDOC02().doubleValue()<rowVO.getQtyDOC02().doubleValue() &&
+            rowVO.getQtyDOC02().doubleValue()==rowVO.getOutQtyDOC02().doubleValue()) {
           rowVO.setQtyDOC02(rowVO.getQtyDOC02().subtract(rowVO.getInvoiceQtyDOC02().setScale(rowVO.getDecimalsReg02DOC02().intValue(),BigDecimal.ROUND_HALF_UP)));
           rowVO.setTaxableIncomeDOC02(rowVO.getQtyDOC02().multiply(rowVO.getValueSal02DOC02()).setScale(docVO.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP));
           rowVO.setTotalDiscountDOC02( new BigDecimal(0) );

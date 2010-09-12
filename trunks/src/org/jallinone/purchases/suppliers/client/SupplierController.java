@@ -108,6 +108,9 @@ public class SupplierController extends CompanyFormController implements TreeCon
    */
   public void loadDataCompleted(boolean error) {
     if (!error) {
+      DetailSupplierVO vo = (DetailSupplierVO)detailFrame.getCurrentForm().getVOModel().getValueObject();
+      detailFrame.setTitle(ClientSettings.getInstance().getResources().getResource("supplier")+" "+vo.getSupplierCodePUR01()+" - "+vo.getName_1REG04());
+
       detailFrame.getReferencesPanel().getGrid().getOtherGridParams().put(
           ApplicationConsts.SUBJECT_PK,
           new SubjectPK(pk.getCompanyCodeSys01REG04(),pk.getProgressiveREG04())
@@ -123,12 +126,12 @@ public class SupplierController extends CompanyFormController implements TreeCon
       );
       detailFrame.getHierarchiesPanel().getGrid().reloadData();
 
-      DetailSupplierVO vo = (DetailSupplierVO)detailFrame.getCurrentForm().getVOModel().getValueObject();
       detailFrame.getSupplierPricelistPanel().init(vo);
       detailFrame.getSupplierPricelistPanel().getGrid().getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01REG04());
       detailFrame.getSupplierPricelistPanel().getGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_REG04,vo.getProgressiveREG04());
       detailFrame.getSupplierPricelistPanel().getGrid().reloadData();
 
+      detailFrame.getTreePanel().reloadTree();
 
       detailFrame.setButtonsEnabled(true);
     }
@@ -148,6 +151,9 @@ public class SupplierController extends CompanyFormController implements TreeCon
       detailFrame.getSupplierPricelistPanel().getGrid().clearData();
       detailFrame.getSupplierPricelistPanel().getPricesGrid().clearData();
       detailFrame.setButtonsEnabled(false);
+
+      detailFrame.setTitle(ClientSettings.getInstance().getResources().getResource("supplier"));
+
     }
     return ok;
   }

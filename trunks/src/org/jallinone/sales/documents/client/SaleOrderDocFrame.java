@@ -407,7 +407,7 @@ public class SaleOrderDocFrame extends InternalFrame implements SaleDocument {
         headerFormPanel.setMode(Consts.READONLY);
         headerFormPanel.executeReload();
         if (getOrders()!=null)
-          getOrders().reloadData();
+          getOrders().reloadCurrentBlockOfData();
       }
       else JOptionPane.showMessageDialog(
               ClientUtils.getParentFrame(this),

@@ -805,7 +805,7 @@ public class ProdOrderFrame extends InternalFrame  {
           confirmButton.setEnabled(false);
         headerFormPanel.setMode(Consts.READONLY);
         headerFormPanel.executeReload();
-        getOrders().reloadData();
+        getOrders().reloadCurrentBlockOfData();
       }
       else
         JOptionPane.showMessageDialog(

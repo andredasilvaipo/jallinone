@@ -92,7 +92,7 @@ public class InsertItemAction implements Action {
       String companyCode = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("ITM01").get(0).toString();
       DetailItemVO vo = (DetailItemVO)inputPar;
 
-      if (vo.getBarCodeITM01()==null) {
+      if (vo.getBarCodeITM01()==null || vo.getBarCodeITM01().equals("")) {
         new BarCodeGeneratorImpl().calculateBarCode(conn,vo);
       }
 
@@ -270,10 +270,10 @@ public class InsertItemAction implements Action {
 
 
       if (!Boolean.TRUE.equals(vo.getUseVariant1ITM01()) &&
-          !Boolean.TRUE.equals(vo.getUseVariant1ITM01()) &&
-          !Boolean.TRUE.equals(vo.getUseVariant1ITM01()) &&
-          !Boolean.TRUE.equals(vo.getUseVariant1ITM01()) &&
-          !Boolean.TRUE.equals(vo.getUseVariant1ITM01())) {
+          !Boolean.TRUE.equals(vo.getUseVariant2ITM01()) &&
+          !Boolean.TRUE.equals(vo.getUseVariant3ITM01()) &&
+          !Boolean.TRUE.equals(vo.getUseVariant4ITM01()) &&
+          !Boolean.TRUE.equals(vo.getUseVariant5ITM01())) {
 
         // retrieve the min stock for the item that does not have variants...
         String sql =
@@ -297,6 +297,7 @@ public class InsertItemAction implements Action {
         pstmt.setString(10,ApplicationConsts.JOLLY);
         pstmt.setString(11,ApplicationConsts.JOLLY);
         pstmt.setString(12,ApplicationConsts.JOLLY);
+
         pstmt.setBigDecimal(13,vo.getMinStockITM23());
         pstmt.execute();
         pstmt.close();

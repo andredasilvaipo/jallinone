@@ -78,6 +78,17 @@ public class SupplierPricesController extends CompanyGridController implements S
 
 
   /**
+   * Callback method invoked when the user has clicked on the insert button
+   * @param valueObject empty value object just created: the user can manage it to fill some attribute values
+   */
+  public void createValueObject(ValueObject valueObject) throws Exception {
+    SupplierPriceVO vo = (SupplierPriceVO)valueObject;
+    vo.setStartDatePUR04(new java.sql.Date(System.currentTimeMillis()));
+    vo.setEndDatePUR04(new java.sql.Date(System.currentTimeMillis()+86400000L*365));
+  }
+
+
+  /**
    * Method invoked when the user has clicked on save button and the grid is in INSERT mode.
    * @param rowNumbers row indexes related to the new rows to save
    * @param newValueObjects list of new value objects to save

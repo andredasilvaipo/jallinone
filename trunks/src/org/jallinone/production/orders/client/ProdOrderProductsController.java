@@ -122,7 +122,7 @@ public class ProdOrderProductsController extends CompanyGridController {
         // refresh detail header and orders list, because order state was updated...
         frame.getHeaderFormPanel().setMode(Consts.READONLY);
         frame.getHeaderFormPanel().executeReload();
-        frame.getOrders().reloadData();
+        frame.getOrders().reloadCurrentBlockOfData();
       }
 
     }

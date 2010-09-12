@@ -477,6 +477,8 @@ public class ReorderFromMinStocksFrame extends InternalFrame {
 //      OptionPane.showMessageDialog(MDIFrame.getInstance(),"you have to fill in all filtering conditions","Attention",JOptionPane.WARNING_MESSAGE);
     }
     else {
+      ReorderFromMinStockFilterVO vo = (ReorderFromMinStockFilterVO)filterPanel.getVOModel().getValueObject();
+      vo.setProgressiveHie02ITM01((BigDecimal)controlItemType.getValue());
       grid.getOtherGridParams().put(ApplicationConsts.FILTER_VO,filterPanel.getVOModel().getValueObject());
       grid.reloadData();
     }

@@ -279,8 +279,10 @@ public class SupplierDetailFrame extends InternalFrame {
             colMinQty.setDecimals(vo.getDecimalsREG02().intValue());
             colMultipleQty.setDecimals(vo.getDecimalsREG02().intValue());
             SupplierItemVO supplierVO = (SupplierItemVO)parentVO;
-            supplierVO.setMinPurchaseQtyPUR02(null);
-            supplierVO.setMultipleQtyPUR02(null);
+            if (supplierVO.getMinPurchaseQtyPUR02()!=null)
+              supplierVO.setMinPurchaseQtyPUR02(supplierVO.getMinPurchaseQtyPUR02().setScale(vo.getDecimalsREG02().intValue(),BigDecimal.ROUND_HALF_UP));
+            if (supplierVO.getMultipleQtyPUR02()!=null)
+              supplierVO.setMultipleQtyPUR02(supplierVO.getMultipleQtyPUR02().setScale(vo.getDecimalsREG02().intValue(),BigDecimal.ROUND_HALF_UP));
           }
         }
 

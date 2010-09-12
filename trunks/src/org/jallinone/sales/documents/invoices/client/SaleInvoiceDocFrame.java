@@ -365,7 +365,7 @@ public class SaleInvoiceDocFrame extends InternalFrame implements InvoiceDocumen
         headerFormPanel.setMode(Consts.READONLY);
         headerFormPanel.executeReload();
         if (getInvoices()!=null)
-          getInvoices().reloadData();
+          getInvoices().reloadCurrentBlockOfData();
       }
       else JOptionPane.showMessageDialog(
               ClientUtils.getParentFrame(this),

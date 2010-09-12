@@ -92,6 +92,17 @@ public class SupplierItemsController extends CompanyGridController {
 
 
   /**
+   * Callback method invoked when the user has clicked on the insert button
+   * @param valueObject empty value object just created: the user can manage it to fill some attribute values
+   */
+  public void createValueObject(ValueObject valueObject) throws Exception {
+    SupplierItemVO vo = (SupplierItemVO)valueObject;
+    vo.setMinPurchaseQtyPUR02(new BigDecimal(1));
+    vo.setMultipleQtyPUR02(new BigDecimal(1));
+  }
+
+
+  /**
    * Method invoked when the user has clicked on save button and the grid is in INSERT mode.
    * @param rowNumbers row indexes related to the new rows to save
    * @param newValueObjects list of new value objects to save

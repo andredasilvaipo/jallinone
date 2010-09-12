@@ -280,7 +280,7 @@ public class OutDeliveryNoteFrame extends InternalFrame implements GenericButton
       if (!res.isError()) {
         headerFormPanel.setMode(Consts.READONLY);
         headerFormPanel.executeReload();
-        getOrders().reloadData();
+        getOrders().reloadCurrentBlockOfData();
       }
       else
         JOptionPane.showMessageDialog(

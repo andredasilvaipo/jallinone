@@ -76,7 +76,7 @@ public class SaleDocTotalsAction implements Action {
 
       // check if there exists a vat code defined at customer level...
       BigDecimal customerVatValue = null;
-      if (vo.getCustomerVatCodeReg01DOC01()!=null) {
+      if (vo.getCustomerVatCodeReg01DOC01()!=null && !vo.getCustomerVatCodeReg01DOC01().equals("")) {
         // retrieve vat value and deductible percentage...
         Response res = vatBean.executeCommand(
             new LookupValidationParams(vo.getCustomerVatCodeReg01DOC01(),new HashMap()),
