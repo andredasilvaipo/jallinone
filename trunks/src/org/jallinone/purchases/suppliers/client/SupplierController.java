@@ -254,7 +254,7 @@ public class SupplierController extends CompanyFormController implements TreeCon
     // set default values...
     HashMap map = new HashMap();
     map.put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01REG04());
-    map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.DEBIT_ACCOUNT);
+    map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.DEBITS_ACCOUNT);
     Response response = ClientUtils.getData("loadUserParam",map);
     if (!response.isError()) {
       String code = (String)((VOResponse)response).getVo();

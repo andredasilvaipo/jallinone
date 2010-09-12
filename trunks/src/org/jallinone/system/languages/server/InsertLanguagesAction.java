@@ -116,7 +116,7 @@ public class InsertLanguagesAction implements Action {
           if (k>1)
             aux = String.valueOf(k);
 
-          fileName = "inssql"+k+"_"+vo.getClientLanguageCodeSYS09()+".ini";
+          fileName = "inssql"+aux+"_"+vo.getClientLanguageCodeSYS09()+".ini";
           InputStream in = null;
           try {
             in = this.getClass().getResourceAsStream("/" + fileName);

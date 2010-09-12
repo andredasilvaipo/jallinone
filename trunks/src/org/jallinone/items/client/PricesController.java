@@ -22,6 +22,7 @@ import org.jallinone.items.java.ItemPK;
 import org.openswing.swing.client.SaveButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import org.openswing.swing.util.java.Consts;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -134,6 +135,9 @@ public class PricesController extends CompanyGridController {
    * @param rowNumber selected row index
    */
   public void rowChanged(int rowNumber) {
+    if (frame.getPricesGrid().getMode()!=Consts.READONLY)
+      return;
+
     if (rowNumber!=-1)
       reloadVariantsPrices(rowNumber);
     else

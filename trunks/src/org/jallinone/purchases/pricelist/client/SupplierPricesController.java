@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 import org.jallinone.variants.client.ProductVariantsPanel;
 import org.jallinone.items.java.ItemPK;
 import java.awt.event.ActionEvent;
+import org.openswing.swing.util.java.Consts;
 
 
 /**
@@ -233,6 +234,11 @@ public class SupplierPricesController extends CompanyGridController implements S
    * @param rowNumber selected row index
    */
   public void rowChanged(int rowNumber) {
+    if (panel.getGrid().getMode()!=Consts.READONLY)
+      return;
+    if (panel.getPricesGrid().getMode()!=Consts.READONLY)
+      return;
+
     if (rowNumber!=-1)
       reloadVariantsPrices(rowNumber);
     else
