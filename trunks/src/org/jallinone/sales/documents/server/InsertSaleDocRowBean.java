@@ -21,6 +21,7 @@ import org.jallinone.sales.documents.java.SaleDocPK;
 import org.jallinone.sales.documents.java.DetailSaleDocVO;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -53,7 +54,7 @@ import org.jallinone.events.server.GenericEvent;
  */
 public class InsertSaleDocRowBean {
 
-  private ProgressiveUtils progBean = new ProgressiveUtils();
+  private CompanyProgressiveUtils progBean = new CompanyProgressiveUtils();
 
 
   public InsertSaleDocRowBean() {
@@ -128,7 +129,7 @@ public class InsertSaleDocRowBean {
       attribute2dbField.put("variantTypeItm10DOC02","VARIANT_TYPE_ITM10");
       attribute2dbField.put("variantCodeItm15DOC02","VARIANT_CODE_ITM15");
 
-      vo.setRowNumberDOC02( progBean.getInternalProgressive("DOC02_SELLING_ITEMS","ROW_NUMBER",conn) );
+      vo.setRowNumberDOC02( progBean.getInternalProgressive(vo.getCompanyCodeSys01DOC02(),"DOC02_SELLING_ITEMS","ROW_NUMBER",conn) );
 
       // insert into DOC02...
       Response res = QueryUtil.insertTable(

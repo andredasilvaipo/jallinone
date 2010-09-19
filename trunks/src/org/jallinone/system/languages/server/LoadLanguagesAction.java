@@ -44,6 +44,8 @@ import org.jallinone.events.server.GenericEvent;
  */
 public class LoadLanguagesAction implements Action {
 
+  private LoadLanguagesBean langsBean = new LoadLanguagesBean();
+
 
   public LoadLanguagesAction() {
   }
@@ -60,10 +62,7 @@ public class LoadLanguagesAction implements Action {
    * Business logic to execute.
    */
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
-    String serverLanguageId = ((JAIOUserSessionParameters)userSessionPars).getServerLanguageId();
-
     Connection conn = null;
-    Statement stmt = null;
     try {
       conn = ConnectionManager.getConnection(context);
 
@@ -81,22 +80,8 @@ public class LoadLanguagesAction implements Action {
         inputPar,
         null
       ));
-      stmt = conn.createStatement();
-      ResultSet rset = stmt.executeQuery(
-          "select LANGUAGE_CODE,DESCRIPTION,CLIENT_LANGUAGE_CODE from SYS09_LANGUAGES where ENABLED='Y'"
-      );
-      LanguageVO vo = null;
-      ArrayList list = new ArrayList();
-      while(rset.next()) {
-        vo = new LanguageVO();
-        vo.setLanguageCodeSYS09(rset.getString(1));
-        vo.setDescriptionSYS09(rset.getString(2));
-        vo.setClientLanguageCodeSYS09(rset.getString(3));
-        list.add(vo);
-      }
 
-      rset.close();
-      Response answer = new VOListResponse(list,false,list.size());
+      Response answer = langsBean.loadLanguages(conn,userSessionPars);
 
       // fires the GenericEvent.BEFORE_COMMIT event...
       EventsManager.getInstance().processEvent(new GenericEvent(
@@ -120,11 +105,6 @@ public class LoadLanguagesAction implements Action {
       return new ErrorResponse(ex.getMessage());
     }
     finally {
-      try {
-        stmt.close();
-      }
-      catch (Exception ex2) {
-      }
       try {
         ConnectionManager.releaseConnection(conn, context);
       }

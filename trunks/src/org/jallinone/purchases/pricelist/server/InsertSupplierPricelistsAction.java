@@ -110,7 +110,7 @@ public class InsertSupplierPricelistsAction implements Action {
         vo = (SupplierPricelistVO)list.get(i);
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01PUR03(),conn);
         vo.setProgressiveSys10PUR03(progressiveSYS10);
 
         // insert into PUR03...

@@ -153,7 +153,7 @@ public class InsertWindowCustomizationsAction implements Action {
         }
 
         // insert record in SYS10...
-        progressiveSys10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+        progressiveSys10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),((JAIOUserSessionParameters)userSessionPars).getDefCompanyCodeSys01SYS03(),conn);
 
         // insert record in SYS12...
         stmt.execute(

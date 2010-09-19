@@ -91,7 +91,8 @@ public class CreateBarcodeLabelsDataAction implements Action {
       Map map = (Map)inputPar;
       List rows = (List)map.get(ApplicationConsts.ITEMS);
 
-      BigDecimal reportId = ProgressiveUtils.getInternalProgressive("TMP02_BARCODES","REPORT_ID",conn);
+      ItemToPrintVO rowVO = (ItemToPrintVO)rows.get(0);
+      BigDecimal reportId = CompanyProgressiveUtils.getInternalProgressive(rowVO.getCompanyCodeSys01(),"TMP02_BARCODES","REPORT_ID",conn);
       pstmt = conn.prepareStatement(
         "insert into TMP02_BARCODES(REPORT_ID,PROGRESSIVE,BAR_CODE,BARCODE_TYPE,DESCRIPTION) values(?,?,?,?,?)"
       );
@@ -111,7 +112,6 @@ public class CreateBarcodeLabelsDataAction implements Action {
         "VARIANT_CODE_ITM15=? "
       );
 
-      ItemToPrintVO rowVO = null;
       DetailItemVO itemVO = null;
       String barcode = null;
       String barcodeType = null;

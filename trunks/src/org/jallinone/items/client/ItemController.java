@@ -114,6 +114,7 @@ public class ItemController extends CompanyFormController {
 
       frame.getItemVariantsPanel().clearData();
       frame.getVariantBarcodesPanel().clearData();
+      frame.getVariantMinStockPanel().clearData();
       frame.setTitle(ClientSettings.getInstance().getResources().getResource("item detail"));
 
     }
@@ -260,6 +261,7 @@ public class ItemController extends CompanyFormController {
       frame.getDocsPanel().getDocsGrid().clearData();
       frame.getItemVariantsPanel().clearData();
       frame.getVariantBarcodesPanel().clearData();
+      frame.getVariantMinStockPanel().clearData();
 
       frame.getSupplierPrices().setButtonsEnabled(false);
       frame.getSupplierPrices().getPricesGrid().clearData();
@@ -288,6 +290,7 @@ public class ItemController extends CompanyFormController {
     vo.setProgressiveHie01ITM01(levelVO.getProgressiveHIE01());
     vo.setProgressiveHie02ITM01(levelVO.getProgressiveHie02HIE01());
     vo.setLevelDescriptionSYS10(levelVO.getDescriptionSYS10());
+    vo.setProgressiveHie01HIE02(levelVO.getProgressiveHie01HIE02());
 
     vo.setCompanyCodeSys01ITM01(parentFrame.getSelectedItemType().getCompanyCodeSys01ITM02());
 

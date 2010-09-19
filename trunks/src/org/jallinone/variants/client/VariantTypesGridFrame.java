@@ -218,5 +218,8 @@ public class VariantTypesGridFrame extends InternalFrame {
       companyCodeSys01 = controlCompaniesCombo.getDomain().getDomainPairList()[0].getCode();
     return companyCodeSys01;
   }
+  public GridControl getGrid() {
+    return grid;
+  }
 
 }

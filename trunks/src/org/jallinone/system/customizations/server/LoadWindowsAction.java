@@ -112,6 +112,10 @@ public class LoadWindowsAction implements Action {
           parentNode = new OpenSwingTreeNode(vo);
           root.add(parentNode);
           code = rset.getString(4);
+          vo = new WindowVO();
+          vo.setDescriptionSYS10(rset.getString(2));
+          vo.setProgressiveSYS13(rset.getBigDecimal(1));
+          vo.setTableNameSYS13(rset.getString(5));
           parentNode.add(new OpenSwingTreeNode(vo));
         }
         else {

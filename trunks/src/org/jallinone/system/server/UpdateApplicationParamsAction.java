@@ -81,6 +81,34 @@ public class UpdateApplicationParamsAction implements Action {
         pstmt.executeUpdate();
       }
 
+      // update documents repository path...
+      pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+      pstmt.setString(1,vo.getDocumentPath());
+      pstmt.setString(2,ApplicationConsts.DOC_PATH);
+      rows = pstmt.executeUpdate();
+      pstmt.close();
+      if (rows==0) {
+        // record not yet exists: it will be inserted...
+        pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+        pstmt.setString(1,ApplicationConsts.DOC_PATH);
+        pstmt.setString(2,vo.getDocumentPath());
+        pstmt.executeUpdate();
+      }
+
+      // update increment value for progressives...
+      pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+      pstmt.setString(1,vo.getIncrementValue().toString());
+      pstmt.setString(2,ApplicationConsts.INCREMENT_VALUE);
+      rows = pstmt.executeUpdate();
+      pstmt.close();
+      if (rows==0) {
+        // record not yet exists: it will be inserted...
+        pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+        pstmt.setString(1,ApplicationConsts.INCREMENT_VALUE);
+        pstmt.setString(2,vo.getIncrementValue().toString());
+        pstmt.executeUpdate();
+      }
+
       conn.commit();
 
       return new VOResponse(vo);

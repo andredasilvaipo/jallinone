@@ -50,14 +50,24 @@ public class CompanyProgressiveUtils {
     try {
       stmt = conn.createStatement();
       ResultSet rset = stmt.executeQuery(
-          "select VALUE from SYS20_COMPANY_PROGRESSIVES where "+
-          "COMPANY_CODE_SYS01='"+companyCode+"' and TABLE_NAME='"+tableName+"' and COLUMN_NAME='"+columnName+"'");
-      if (rset.next()) {
-        // record found: it will be incremented by 10...
+          "select SYS20_COMPANY_PROGRESSIVES.VALUE,SYS11_APPLICATION_PARS.VALUE,SYS21_COMPANY_PARAMS.VALUE "+
+          "from SYS11_APPLICATION_PARS,SYS21_COMPANY_PARAMS LEFT OUTER JOIN SYS20_COMPANY_PROGRESSIVES ON "+
+          " SYS20_COMPANY_PROGRESSIVES.COMPANY_CODE_SYS01='"+companyCode+"' and "+
+          " SYS20_COMPANY_PROGRESSIVES.TABLE_NAME='"+tableName+"' and "+
+          " SYS20_COMPANY_PROGRESSIVES.COLUMN_NAME='"+columnName+"' "+
+          "WHERE SYS11_APPLICATION_PARS.PARAM_CODE='INCREMENT_VALUE' AND "+
+          "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01='"+companyCode+"' AND SYS21_COMPANY_PARAMS.PARAM_CODE='INITIAL_VALUE'"
+      );
+      rset.next();
+      progressive = rset.getBigDecimal(1);
+      long incrementValue = rset.getLong(2);
+      long initialValue = rset.getLong(3);
+      if (progressive!=null) {
+        // progressive found: it will be incremented by "incrementValue"...
         progressive = rset.getBigDecimal(1);
         rset.close();
         int rows = stmt.executeUpdate(
-            "update SYS20_COMPANY_PROGRESSIVES set VALUE=VALUE+1 where "+
+            "update SYS20_COMPANY_PROGRESSIVES set VALUE=VALUE+"+incrementValue+" where "+
             "COMPANY_CODE_SYS01='"+companyCode+"' and TABLE_NAME='"+tableName+"' and COLUMN_NAME='"+columnName+"' and VALUE="+progressive
         );
         if (rows==0)
@@ -66,11 +76,11 @@ public class CompanyProgressiveUtils {
         progressive = new BigDecimal(progressive.intValue()+1);
       }
       else {
-        // record not found: it will be inserted, beginning from 1...
+        // record not found: it will be inserted, beginning from "initialValue"...
         rset.close();
         stmt.execute(
             "insert into SYS20_COMPANY_PROGRESSIVES(COMPANY_CODE_SYS01,TABLE_NAME,COLUMN_NAME,VALUE) values("+
-            "'"+companyCode+"','"+tableName+"','"+columnName+"',1)"
+            "'"+companyCode+"','"+tableName+"','"+columnName+"',"+initialValue+")"
         );
         progressive = new BigDecimal(1);
       }
@@ -96,15 +106,27 @@ public class CompanyProgressiveUtils {
   public static final BigDecimal getInternalProgressive(String companyCode,String tableName,String columnName,Connection conn) throws Exception {
     Statement stmt = null;
     BigDecimal progressive = null;
+    BigDecimal initialValue = null;
+    BigDecimal incrementValue = null;
     try {
       stmt = conn.createStatement();
       ResultSet rset = stmt.executeQuery(
-          "select VALUE from SYS20_COMPANY_PROGRESSIVES where "+
-          "COMPANY_CODE_SYS01='"+companyCode+"' and TABLE_NAME='"+tableName+"' and COLUMN_NAME='"+columnName+"'");
-      if (rset.next()) {
+          "select SYS20_COMPANY_PROGRESSIVES.VALUE,SYS21_COMPANY_PARAMS.VALUE,SYS11_APPLICATION_PARS.VALUE "+
+          "from SYS21_COMPANY_PARAMS,SYS11_APPLICATION_PARS LEFT OUTER JOIN SYS20_COMPANY_PROGRESSIVES "+
+          "ON SYS20_COMPANY_PROGRESSIVES.COMPANY_CODE_SYS01='"+companyCode+"' and "+
+          "   SYS20_COMPANY_PROGRESSIVES.TABLE_NAME='"+tableName+"' and "+
+          "   SYS20_COMPANY_PROGRESSIVES.COLUMN_NAME='"+columnName+"' "+
+          "WHERE SYS11_APPLICATION_PARS.PARAM_CODE='INCREMENT_VALUE' and "+
+          "      SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01='"+companyCode+"' and "+
+          "      SYS21_COMPANY_PARAMS.PARAM_CODE='INITIAL_VALUE' ");
+
+      rset.next();
+      progressive = rset.getBigDecimal(1);
+      initialValue = rset.getBigDecimal(2);
+      incrementValue = rset.getBigDecimal(3);
+      rset.close();
+      if (progressive!=null) {
         // record found: it will be incremented by 10...
-        progressive = rset.getBigDecimal(1);
-        rset.close();
         int rows = stmt.executeUpdate(
             "update SYS20_COMPANY_PROGRESSIVES set VALUE=VALUE+10 where "+
             "COMPANY_CODE_SYS01='"+companyCode+"' and TABLE_NAME='"+tableName+"' and COLUMN_NAME='"+columnName+"' and VALUE="+progressive
@@ -112,16 +134,15 @@ public class CompanyProgressiveUtils {
         if (rows==0)
           throw new Exception("Updating not performed: the record was previously updated.");
 
-        progressive = new BigDecimal(progressive.intValue()+10);
+        progressive = new BigDecimal(progressive.intValue()+incrementValue.intValue());
       }
       else {
         // record not found: it will be inserted, beginning from 1...
-        rset.close();
         stmt.execute(
             "insert into SYS20_COMPANY_PROGRESSIVES(COMPANY_CODE_SYS01,TABLE_NAME,COLUMN_NAME,VALUE) values("+
-            "'"+companyCode+"','"+tableName+"','"+columnName+"',1)"
+            "'"+companyCode+"','"+tableName+"','"+columnName+"',"+initialValue+")"
         );
-        progressive = new BigDecimal(1);
+        progressive = initialValue;
       }
     }
     finally {

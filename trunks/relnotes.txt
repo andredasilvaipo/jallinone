@@ -1,5 +1,14 @@
 
 
+Release Notes 1.2.1
+---------------------
+
+Added "Data import" functionality, in order to initialize database (items, customers), starting from Xls, csv or txt files.
+Fixed problem with currencies in ABC classification.
+Changes in some tables, in order to specify distinct internal counters per company.
+
+
+
 Release Notes 1.2
 ---------------------
 

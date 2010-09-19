@@ -174,7 +174,7 @@ public class VariantBarcodesPanel extends JPanel {
         col.setHeaderColumnName(" ");
         col.setMaxCharacters(1000);
         col.setColumnName("attributeNameS1");
-        col.setPreferredWidth(50);
+        col.setPreferredWidth(90);
 
         grid.getColumnContainer().add(col,null);
       }

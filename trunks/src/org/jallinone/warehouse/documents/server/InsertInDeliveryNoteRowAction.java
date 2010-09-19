@@ -19,6 +19,7 @@ import org.jallinone.commons.java.ApplicationConsts;
 import org.openswing.swing.message.send.java.LookupValidationParams;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -51,7 +52,7 @@ import org.jallinone.events.server.GenericEvent;
  */
 public class InsertInDeliveryNoteRowAction implements Action {
 
-  private ProgressiveUtils progBean = new ProgressiveUtils();
+  private CompanyProgressiveUtils progBean = new CompanyProgressiveUtils();
   private InsertInSerialNumbersBean serialNumBean = new InsertInSerialNumbersBean();
 
 
@@ -185,8 +186,8 @@ public class InsertInDeliveryNoteRowAction implements Action {
       attribute2dbField.put("variantTypeItm10DOC09","VARIANT_TYPE_ITM10");
       attribute2dbField.put("variantCodeItm15DOC09","VARIANT_CODE_ITM15");
 
-      vo.setProgressiveDOC09( progBean.getInternalProgressive("DOC09_IN_DELIVERY_NOTE_ITEMS","PROGRESSIVE",conn) );
-      vo.setRowNumberDOC09( progBean.getInternalProgressive("DOC09_IN_DELIVERY_NOTE_ITEMS","ROW_NUMBER",conn) );
+      vo.setProgressiveDOC09( progBean.getInternalProgressive(vo.getCompanyCodeSys01DOC09(),"DOC09_IN_DELIVERY_NOTE_ITEMS","PROGRESSIVE",conn) );
+      vo.setRowNumberDOC09( progBean.getInternalProgressive(vo.getCompanyCodeSys01DOC09(),"DOC09_IN_DELIVERY_NOTE_ITEMS","ROW_NUMBER",conn) );
 /*
       vo.setVariantCodeItm11DOC09(ApplicationConsts.JOLLY);
       vo.setVariantTypeItm06DOC09(ApplicationConsts.JOLLY);

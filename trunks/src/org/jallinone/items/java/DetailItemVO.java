@@ -99,6 +99,8 @@ public class DetailItemVO extends BaseValueObject implements VariantsItemDescrip
   private java.math.BigDecimal avgPurchaseCost;
   private java.math.BigDecimal minStockITM23;
 
+  private java.math.BigDecimal progressiveHie01HIE02;
+
 
   public DetailItemVO() {
   }
@@ -474,6 +476,12 @@ public class DetailItemVO extends BaseValueObject implements VariantsItemDescrip
   }
   public void setMinStockITM23(java.math.BigDecimal minStockITM23) {
     this.minStockITM23 = minStockITM23;
+  }
+  public java.math.BigDecimal getProgressiveHie01HIE02() {
+    return progressiveHie01HIE02;
+  }
+  public void setProgressiveHie01HIE02(java.math.BigDecimal progressiveHie01HIE02) {
+    this.progressiveHie01HIE02 = progressiveHie01HIE02;
   }
 
 

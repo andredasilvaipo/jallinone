@@ -20,6 +20,7 @@ import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
 import org.openswing.swing.internationalization.server.ServerResourcesFactory;
 import org.openswing.swing.internationalization.java.Resources;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -129,12 +130,12 @@ public class InsertItemAction implements Action {
         vo.setUseVariant5ITM01(Boolean.FALSE);
 
       // generate progressive for item description...
-      BigDecimal progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+      BigDecimal progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ITM01(),conn);
       vo.setProgressiveSys10ITM01(progressiveSYS10);
 
       if (vo.getAddDescriptionSYS10()!=null) {
         // generate progressive for item additional description...
-        BigDecimal addProgressiveSYS10 = TranslationUtils.insertTranslations(vo.getAddDescriptionSYS10(),conn);
+        BigDecimal addProgressiveSYS10 = TranslationUtils.insertTranslations(vo.getAddDescriptionSYS10(),vo.getCompanyCodeSys01ITM01(),conn);
         vo.setAddProgressiveSys10ITM01(addProgressiveSYS10);
       }
 
@@ -177,7 +178,7 @@ public class InsertItemAction implements Action {
 
 
       if (vo.getSmallImage()!=null) {
-        BigDecimal imageProgressive = ProgressiveUtils.getInternalProgressive("ITM01_ITEMS","SMALL_IMG",conn);
+        BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01(),"ITM01_ITEMS","SMALL_IMG",conn);
         vo.setSmallImageITM01("SMALL_IMG"+imageProgressive);
         attribute2dbField.put("smallImageITM01",imageProgressive);
 
@@ -197,7 +198,7 @@ public class InsertItemAction implements Action {
       }
 
       if (vo.getLargeImage()!=null) {
-        BigDecimal imageProgressive = ProgressiveUtils.getInternalProgressive("ITM01_ITEMS","LARGE_IMG",conn);
+        BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01(),"ITM01_ITEMS","LARGE_IMG",conn);
         vo.setLargeImageITM01("LARGE_IMG"+imageProgressive);
         attribute2dbField.put("largeImageITM01",imageProgressive);
 
@@ -227,7 +228,7 @@ public class InsertItemAction implements Action {
           "N",
           context,
           true,
-          new BigDecimal(262) // window identifier...
+          vo.getProgressiveHie01HIE02() // window identifier...
       );
 
       // insert product variants...

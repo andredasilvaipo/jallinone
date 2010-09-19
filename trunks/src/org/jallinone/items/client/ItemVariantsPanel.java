@@ -72,8 +72,6 @@ public class ItemVariantsPanel extends JPanel {
 
   private DetailItemVO itemVO = null;
   GridBagLayout gridBagLayout1 = new GridBagLayout();
-  JPanel jPanel1 = new JPanel();
-  JPanel jPanel2 = new JPanel();
   private ArrayList variantPanels = new ArrayList();
 
 
@@ -102,11 +100,10 @@ public class ItemVariantsPanel extends JPanel {
 
     variantPanels.clear();
     this.removeAll();
-    this.revalidate();
+//    this.revalidate();
 //    this.repaint();
 
     VariantNameVO vo = null;
-    CheckBoxControl control = null;
     ItemVariantPanel p = null;
     int posx = 0;
     int posy = 0;

@@ -96,6 +96,20 @@ public class UpgradeBean {
       }
 
 
+      // execute some other "custom" updates...
+      pstmt = conn.prepareStatement("SELECT COMPANY_CODE FROM SYS01_COMPANIES WHERE ENABLED='Y'");
+      rset = pstmt.executeQuery();
+      String companyCode = null;
+      if (rset.next())
+        companyCode = rset.getString(1);
+      rset.close();
+      pstmt.close();
+      pstmt = conn.prepareStatement("UPDATE SYS03_USERS SET DEF_COMPANY_CODE_SYS01=? WHERE DEF_COMPANY_CODE_SYS01 IS NULL");
+      pstmt.setString(1,companyCode);
+      pstmt.execute();
+      pstmt.close();
+
+
       // update db version value...
       pstmt = conn.prepareStatement("UPDATE SYS11_APPLICATION_PARS SET VALUE=? WHERE PARAM_CODE='VERSION'");
       pstmt.setString(1,String.valueOf(ApplicationConsts.DB_VERSION));

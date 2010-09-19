@@ -28,6 +28,7 @@ import org.jallinone.variants.java.VariantsMatrixRowVO;
 import org.jallinone.purchases.documents.java.PurchaseUtils;
 import org.jallinone.variants.java.VariantNameVO;
 import org.jallinone.variants.java.VariantsMatrixUtils;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -62,7 +63,7 @@ public class InsertPurchaseDocRowsAction implements Action {
 
   private PurchaseDocTotalsBean totalBean = new PurchaseDocTotalsBean();
   private LoadPurchaseDocBean docBean = new LoadPurchaseDocBean();
-  private ProgressiveUtils progBean = new ProgressiveUtils();
+  private CompanyProgressiveUtils progBean = new CompanyProgressiveUtils();
 
 
   public InsertPurchaseDocRowsAction() {
@@ -169,7 +170,7 @@ public class InsertPurchaseDocRowsAction implements Action {
             vo.setOrderQtyDOC07(vo.getQtyDOC07());
             if (vo.getInvoiceQtyDOC07()==null)
               vo.setInvoiceQtyDOC07(new BigDecimal(0));
-            vo.setRowNumberDOC07( progBean.getInternalProgressive("DOC07_PURCHASE_ITEMS","ROW_NUMBER",conn) );
+            vo.setRowNumberDOC07( progBean.getInternalProgressive(vo.getCompanyCodeSys01DOC07(),"DOC07_PURCHASE_ITEMS","ROW_NUMBER",conn) );
 
             // insert into DOC07...
             res = QueryUtil.insertTable(
@@ -206,7 +207,7 @@ public class InsertPurchaseDocRowsAction implements Action {
               vo.setOrderQtyDOC07(vo.getQtyDOC07());
               if (vo.getInvoiceQtyDOC07()==null)
                 vo.setInvoiceQtyDOC07(new BigDecimal(0));
-              vo.setRowNumberDOC07( progBean.getInternalProgressive("DOC07_PURCHASE_ITEMS","ROW_NUMBER",conn) );
+              vo.setRowNumberDOC07( progBean.getInternalProgressive(vo.getCompanyCodeSys01DOC07(),"DOC07_PURCHASE_ITEMS","ROW_NUMBER",conn) );
 
               // insert into DOC07...
               res = QueryUtil.insertTable(

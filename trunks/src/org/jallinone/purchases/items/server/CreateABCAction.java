@@ -21,6 +21,7 @@ import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
 import org.jallinone.purchases.items.java.CreateABCFilterVO;
 import org.jallinone.system.progressives.server.ProgressiveUtils;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -100,7 +101,7 @@ public class CreateABCAction implements Action {
       if (filterVO.getReportId()!=null)
         action.executeCommand(filterVO.getReportId(),userSessionPars,request,response,userSession,context);
 
-      BigDecimal reportId = ProgressiveUtils.getInternalProgressive("TMP03_ABC","REPORT_ID",conn);
+      BigDecimal reportId = CompanyProgressiveUtils.getInternalProgressive(filterVO.getCompanyCode(),"TMP03_ABC","REPORT_ID",conn);
       filterVO.setReportId(reportId);
 
 

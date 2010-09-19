@@ -103,7 +103,7 @@ public class InsertWarehouseMotivesAction implements Action {
         vo.setEnabledWAR04("Y");
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),((JAIOUserSessionParameters)userSessionPars).getDefCompanyCodeSys01SYS03(),conn);
         vo.setProgressiveSys10WAR04(progressiveSYS10);
 
         // insert into WAR04...

@@ -356,6 +356,21 @@ public class UpdateCompanyParamsAction implements Action {
         pstmt.executeUpdate();
       }
 
+      // update initial value for progressives...
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt.setString(1,vo.getInitialValueSYS21().toString());
+      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(3,ApplicationConsts.INITIAL_VALUE);
+      rows = pstmt.executeUpdate();
+      pstmt.close();
+      if (rows==0) {
+        // record not yet exists: it will be inserted...
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
+        pstmt.setString(2,ApplicationConsts.INITIAL_VALUE);
+        pstmt.setString(3,vo.getInitialValueSYS21().toString());
+        pstmt.executeUpdate();
+      }
 
       conn.commit();
 

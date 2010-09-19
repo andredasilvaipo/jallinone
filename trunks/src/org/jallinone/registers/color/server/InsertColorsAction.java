@@ -101,7 +101,7 @@ public class InsertColorsAction implements Action {
         vo.setEnabledREG13("Y");
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),((JAIOUserSessionParameters)userSessionPars).getDefCompanyCodeSys01SYS03(),conn);
         vo.setProgressiveSys10REG13(progressiveSYS10);
 
         // insert into REG13...

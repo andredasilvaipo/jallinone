@@ -10,6 +10,7 @@ import org.openswing.swing.util.client.ClientUtils;
 import org.jallinone.registers.color.java.*;
 import java.math.BigDecimal;
 import javax.swing.*;
+import org.jallinone.variants.java.VariantTypeVO;
 
 
 /**
@@ -49,6 +50,26 @@ public class VariantTypesController extends GridController {
   public VariantTypesController() {
     gridFrame = new VariantTypesGridFrame(this);
     MDIFrame.add(gridFrame);
+  }
+
+
+  /**
+   * Callback method invoked each time a cell is edited: this method define if the new value is valid.
+   * This method is invoked ONLY if:
+   * - the edited value is not equals to the old value OR it has exmplicitely called setCellAt or setValueAt
+   * - the cell is editable
+   * Default behaviour: cell value is valid.
+   * @param rowNumber selected row index
+   * @param attributeName attribute name related to the column currently selected
+   * @param oldValue old cell value (before cell editing)
+   * @param newValue new cell value (just edited)
+   * @return <code>true</code> if cell value is valid, <code>false</code> otherwise
+   */
+  public boolean validateCell(int rowNumber,String attributeName,Object oldValue,Object newValue) {
+    VariantTypeVO vo = (VariantTypeVO)gridFrame.getGrid().getVOListTableModel().getObjectForRow(rowNumber);
+    if (attributeName.equals("variantType") && newValue!=null && (vo.getDescriptionSys10()==null || !vo.getDescriptionSys10().equals("")))
+      vo.setDescriptionSys10(newValue.toString());
+    return true;
   }
 
 

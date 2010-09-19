@@ -126,9 +126,7 @@ public class TranslationsGridFrame extends InternalFrame {
     controlTopic.addItemListener(new ItemListener() {
 
       public void itemStateChanged(ItemEvent e) {
-        if(e.getStateChange()==e.SELECTED) {
-          createGrid();
-        }
+        createGrid();
       }
 
     });
@@ -217,7 +215,12 @@ public class TranslationsGridFrame extends InternalFrame {
     grid = new GridControl();
     grid.setFunctionId("SYS10");
 
-    grid.getOtherGridParams().put(ApplicationConsts.TOPIC,controlTopic.getValue());
+    TopicVO topicVO = (TopicVO)controlTopic.getValue();
+    if (topicVO==null) {
+      topicVO = new TopicVO(langs,null,null,false,false);
+    }
+
+    grid.getOtherGridParams().put(ApplicationConsts.TOPIC,topicVO);
     grid.getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompaniesCombo.getValue());
 
     EditButton editButton = new EditButton();

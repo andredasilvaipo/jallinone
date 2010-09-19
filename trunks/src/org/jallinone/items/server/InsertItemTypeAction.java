@@ -16,6 +16,7 @@ import org.jallinone.commons.server.CustomizeQueryUtil;
 import org.jallinone.system.progressives.server.ProgressiveUtils;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -97,9 +98,9 @@ public class InsertItemTypeAction implements Action {
 
       // generate PROGRESSIVE_HIE02 value...
       stmt = conn.createStatement();
-      BigDecimal progressiveHIE02 = ProgressiveUtils.getInternalProgressive("HIE02_HIERARCHIES","PROGRESSIVE",conn);
-      BigDecimal progressiveHIE01 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
-      stmt.execute("INSERT INTO HIE02_HIERARCHIES(PROGRESSIVE,ENABLED) VALUES("+progressiveHIE02+",'Y')");
+      BigDecimal progressiveHIE02 = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01ITM02(),"HIE02_HIERARCHIES","PROGRESSIVE",conn);
+      BigDecimal progressiveHIE01 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ITM02(),conn);
+      stmt.execute("INSERT INTO HIE02_HIERARCHIES(PROGRESSIVE,COMPANY_CODE_SYS01,ENABLED) VALUES("+progressiveHIE02+",'"+vo.getCompanyCodeSys01ITM02()+"','Y')");
       stmt.execute("INSERT INTO HIE01_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE02,LEV,ENABLED) VALUES("+progressiveHIE01+","+progressiveHIE02+",0,'Y')");
       stmt.execute("UPDATE HIE02_HIERARCHIES SET PROGRESSIVE_HIE01="+progressiveHIE01+" WHERE PROGRESSIVE="+progressiveHIE02);
       vo.setProgressiveHie02ITM02(progressiveHIE02);
@@ -123,6 +124,11 @@ public class InsertItemTypeAction implements Action {
           true,
           new BigDecimal(272) // window identifier...
       );
+
+      if (!res.isError()) {
+        stmt.execute("INSERT INTO SYS13_WINDOWS(TABLE_NAME,PROGRESSIVE,FUNCTION_CODE_SYS06) VALUES('ITM01_ITEMS',"+progressiveHIE01+",'ITM01')");
+      }
+
 
 
       Response answer =  new VOResponse(vo);

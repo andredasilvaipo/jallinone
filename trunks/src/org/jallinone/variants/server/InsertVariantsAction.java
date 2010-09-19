@@ -148,7 +148,7 @@ public class InsertVariantsAction implements Action {
           vo.setVariantType(ApplicationConsts.JOLLY);
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSys10(),conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSys10(),vo.getCompanyCodeSys01(),conn);
         vo.setProgressiveSys10(progressiveSYS10);
 
         // insert into ITMxxx...

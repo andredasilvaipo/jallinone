@@ -99,7 +99,7 @@ public class CreateBarcodeLabelsDataFromPurchaseDocAction implements Action {
         return res;
       List rows = ((VOListResponse)res).getRows();
 
-      BigDecimal reportId = ProgressiveUtils.getInternalProgressive("TMP02_BARCODES","REPORT_ID",conn);
+      BigDecimal reportId = CompanyProgressiveUtils.getInternalProgressive(pk.getCompanyCodeSys01DOC06(),"TMP02_BARCODES","REPORT_ID",conn);
       pstmt = conn.prepareStatement(
         "insert into TMP02_BARCODES(REPORT_ID,PROGRESSIVE,BAR_CODE,BARCODE_TYPE,DESCRIPTION) values(?,?,?,?,?)"
       );

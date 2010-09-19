@@ -210,7 +210,7 @@ public class ApplicationParametersVO extends ValueObjectImpl {
    * @erturn image repository path
    */
   public final String getImagePath() {
-    return (String)applicationPars.get(ApplicationConsts.IMAGE_PATH);
+    return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.IMAGE_PATH);
   }
 
 
@@ -227,7 +227,7 @@ public class ApplicationParametersVO extends ValueObjectImpl {
    * @erturn document repository path
    */
   public final String getDocumentPath() {
-    return (String)applicationPars.get(ApplicationConsts.DOC_PATH);
+    return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.DOC_PATH);
   }
 
 
@@ -269,5 +269,25 @@ public class ApplicationParametersVO extends ValueObjectImpl {
   public final String getCompanyCodeSys01SYS03() {
     return companyCodeSys01SYS03;
   }
+
+
+
+  /**
+   * Set increment value for progressives
+   * @param imagePath increment value for progressives
+   */
+  public final void setIncrementValue(BigDecimal incrementValue) {
+    applicationPars.put(ApplicationConsts.INCREMENT_VALUE,incrementValue.toString());
+  }
+
+
+  /**
+   * @erturn increment value for progressives
+   */
+  public final BigDecimal getIncrementValue() {
+    String value = applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.INCREMENT_VALUE);
+    return value==null?null:new BigDecimal(value);
+  }
+
 
 }

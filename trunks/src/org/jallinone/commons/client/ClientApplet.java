@@ -26,6 +26,7 @@ import org.jallinone.subjects.java.Subject;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.openswing.swing.table.profiles.client.FileGridProfileManager;
 import org.openswing.swing.lookup.client.LookupController;
+import java.awt.event.KeyEvent;
 //import org.openswing.swing.util.client.HessianObjectSender;
 
 
@@ -544,7 +545,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
    */
   public String getAboutText() {
     return
-        "JAllInOne ERP/CRM Application ver. 1.1.2\n"+
+        "JAllInOne ERP/CRM Application ver. 1.2.1\n"+
         "\n"+
         "Copyright: Copyright (C) 2010 Mauro Carniel\n"+
         "Author: Mauro Carniel\n"+
@@ -656,6 +657,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     ClientSettings.SHOW_SORTING_ORDER = true;
     ClientSettings.LOOKUP_AUTO_COMPLETITION_WAIT_TIME = 1500;
     ClientSettings.SHOW_FRAME_TITLE_IN_EXPORT = true;
+    ClientSettings.AS_TAB = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0);
 
     ClientSettings.getInstance().setLanguage(languageId);
 

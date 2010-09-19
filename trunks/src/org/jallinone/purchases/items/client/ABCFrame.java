@@ -361,20 +361,42 @@ public class ABCFrame extends InternalFrame {
     new CustomizedColumns(new BigDecimal(182),currencyController);
     currencyController.addLookupListener(new LookupListener() {
 
-      public void codeValidated(boolean validated) {}
-
-      public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {
-        currVO = (CurrencyVO)currencyController.getLookupVO();
-        colSold.setCurrencySymbol(currVO.getCurrencySymbolREG03());
-        colSold.setDecimals(currVO.getDecimalsREG03().intValue());
-      }
-
       public void beforeLookupAction(ValueObject parentVO) {}
 
-      public void forceValidate() {}
+      public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {
+        grid.clearData();
+      }
+
+      public void codeValidated(boolean validated) { }
+
+      public void forceValidate() { }
 
     });
 
+    colSold.setDynamicSettings(new CurrencyColumnSettings() {
+
+      public double getMaxValue(int row) {
+        return Double.MAX_VALUE;
+      }
+
+      public double getMinValue(int row) {
+        return 0.0;
+      }
+
+      public boolean isGrouping(int row) {
+        return true;
+      }
+
+      public int getDecimals(int row) {
+        currVO = (CurrencyVO)currencyController.getLookupVO();
+        return currVO.getDecimalsREG03().intValue();
+      }
+
+      public String getCurrencySymbol(int row) {
+        currVO = (CurrencyVO)currencyController.getLookupVO();
+        return currVO.getCurrencySymbolREG03();
+      }
+    });
 
   }
 

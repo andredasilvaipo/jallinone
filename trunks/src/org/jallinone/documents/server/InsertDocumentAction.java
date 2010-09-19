@@ -20,6 +20,7 @@ import org.jallinone.documents.java.DocumentPK;
 import org.jallinone.documents.java.DocumentLinkVO;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -97,7 +98,7 @@ public class InsertDocumentAction implements Action {
         vo.setCompanyCodeSys01DOC14(companyCode);
 
       // generate progressive for document description...
-      BigDecimal progressiveDOC14 = ProgressiveUtils.getInternalProgressive("DOC14_DOCUMENTS","PROGRESSIVE",conn);
+      BigDecimal progressiveDOC14 = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01DOC14(),"DOC14_DOCUMENTS","PROGRESSIVE",conn);
       vo.setProgressiveDOC14(progressiveDOC14);
 
       Map attribute2dbField = new HashMap();

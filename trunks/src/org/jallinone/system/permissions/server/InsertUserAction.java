@@ -98,7 +98,7 @@ public class InsertUserAction implements Action {
       // insert record in SYS03...
       pstmt = conn.prepareStatement(
           "insert into SYS03_USERS(USERNAME,PASSWD,PASSWD_EXPIRATION,LANGUAGE_CODE_SYS09,FIRST_NAME,LAST_NAME,"+
-          "COMPANY_CODE_SYS01,PROGRESSIVE_REG04,USERNAME_CREATE,CREATE_DATE) values(?,?,?,?,?,?,?,?,?,?)"
+          "COMPANY_CODE_SYS01,PROGRESSIVE_REG04,USERNAME_CREATE,CREATE_DATE,DEF_COMPANY_CODE_SYS01) values(?,?,?,?,?,?,?,?,?,?,?)"
       );
       pstmt.setString(1,vo.getUsernameSYS03());
       pstmt.setString(2,vo.getPasswdSYS03());
@@ -110,6 +110,7 @@ public class InsertUserAction implements Action {
       pstmt.setBigDecimal(8,vo.getProgressiveReg04SYS03());
       pstmt.setString(9,vo.getUsernameCreateSYS03());
       pstmt.setDate(10,vo.getCreateDateSYS03());
+      pstmt.setString(11,vo.getDefCompanyCodeSys01SYS03());
       pstmt.execute();
       pstmt.close();
 

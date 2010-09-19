@@ -47,10 +47,11 @@ public class ApplicationParametersController extends FormController {
 
   public ApplicationParametersController() {
     detailFrame = new ApplicationParametersFrame(this);
-    MDIFrame.add(detailFrame);
 
     detailFrame.getMainPanel().setMode(Consts.READONLY);
     detailFrame.getMainPanel().executeReload();
+
+    MDIFrame.add(detailFrame);
   }
 
 

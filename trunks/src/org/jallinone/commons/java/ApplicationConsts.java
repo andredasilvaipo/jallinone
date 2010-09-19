@@ -33,7 +33,7 @@ import java.math.BigDecimal;
  */
 public class ApplicationConsts {
 
-  public static final int DB_VERSION = 4;
+  public static final int DB_VERSION = 5;
 
   public static final String DO_NOT_ADD_ENABLED = "DO_NOT_ADD_ENABLED";
 
@@ -48,6 +48,8 @@ public class ApplicationConsts {
 
   public static final String DOC_PATH = "DOC_PATH";
   public static final String IMAGE_PATH = "IMAGE_PATH";
+  public static final String INCREMENT_VALUE = "INCREMENT_VALUE";
+  public static final String INITIAL_VALUE = "INITIAL_VALUE";
   public static final String TREE_FILTER = "TREE_FILTER";
   public static final String DATE_FILTER = "DATE_FILTER";
   public static final String PROPERTIES_FILTER = "PROPERTIES_FILTER";
@@ -345,13 +347,22 @@ public class ApplicationConsts {
   public static final String TOPIC = "TOPIC";
 
   public static final String FILTER_VO = "FILTER_VO";
+  public static final String FILE_FORMAT_XLS = "XLS";
+  public static final String FILE_FORMAT_CSV1 = "CSV1";
+  public static final String FILE_FORMAT_CSV2 = "CSV2";
+  public static final String FILE_FORMAT_TXT = "TXT";
 
   public static final String ABC_TYPE_GOOD_QTY = "G";
   public static final String ABC_TYPE_SOLD_QTY = "S";
-  public static final String ABC_TYPE_PAWNED_QTY = "P";
   public static final String ABC_TYPE_UNSOLD_QTY = "U";
+  public static final String ABC_TYPE_PAWNED_QTY = "P";
   public static final String REPORT_ID = "REPORT_ID";
 
+  public static final String SCHEDULING_TYPE_NO_SCHED = "N";
+  public static final String SCHEDULING_TYPE_EVERY_DAY = "D";
+  public static final String SCHEDULING_TYPE_EVERY_WEEK = "W";
+
+  public static final String PROGRESSIVE_SYS23 = "PROGRESSIVE_SYS23";
 
 
 }

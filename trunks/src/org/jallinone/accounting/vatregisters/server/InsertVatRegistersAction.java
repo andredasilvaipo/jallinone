@@ -107,7 +107,7 @@ public class InsertVatRegistersAction implements Action {
         vo.setEnabledACC04("Y");
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ACC04(),conn);
         vo.setProgressiveSys10ACC04(progressiveSYS10);
 
         // insert into ACC04...

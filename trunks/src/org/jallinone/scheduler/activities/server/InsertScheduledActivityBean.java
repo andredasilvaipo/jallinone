@@ -17,6 +17,7 @@ import org.jallinone.scheduler.activities.java.ScheduledActivityVO;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -81,7 +82,7 @@ public class InsertScheduledActivityBean {
 
       // generate PROGRESSIVE value...
       stmt = conn.createStatement();
-      BigDecimal progressive = ProgressiveUtils.getInternalProgressive("SCH06_SCHEDULED_ACTIVITIES","PROGRESSIVE",conn);
+      BigDecimal progressive = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01SCH06(),"SCH06_SCHEDULED_ACTIVITIES","PROGRESSIVE",conn);
       vo.setProgressiveSCH06(progressive);
 
       Map attribute2dbField = new HashMap();

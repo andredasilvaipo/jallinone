@@ -22,6 +22,7 @@ import org.jallinone.subjects.java.OrganizationVO;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 
@@ -99,7 +100,7 @@ public class InsertSupplierAction implements Action {
 
       // check if supplier code is defined: if it's not defined then it will be defined as a progressive...
       if (vo.getSupplierCodePUR01()==null || vo.getSupplierCodePUR01().trim().equals("")) {
-        vo.setSupplierCodePUR01( String.valueOf(ProgressiveUtils.getConsecutiveProgressive("PUR01_SUPPLIERS",vo.getCompanyCodeSys01REG04(),conn).intValue()) );
+        vo.setSupplierCodePUR01( String.valueOf(CompanyProgressiveUtils.getConsecutiveProgressive(vo.getCompanyCodeSys01REG04(),"PUR01_SUPPLIERS",vo.getCompanyCodeSys01REG04(),conn).intValue()) );
       }
 
       // insert into REG04...

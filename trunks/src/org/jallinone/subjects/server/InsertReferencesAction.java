@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import org.jallinone.system.progressives.server.ProgressiveUtils;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 
@@ -99,7 +100,7 @@ public class InsertReferencesAction implements Action {
       Response res = null;
       for(int i=0;i<list.size();i++) {
         vo = (ReferenceVO)list.get(i);
-        vo.setProgressiveREG15( ProgressiveUtils.getInternalProgressive("REG15_REFERENCES","PROGRESSIVE",conn) );
+        vo.setProgressiveREG15( CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01REG15(),"REG15_REFERENCES","PROGRESSIVE",conn) );
 
         // insert into REG15...
         res = QueryUtil.insertTable(

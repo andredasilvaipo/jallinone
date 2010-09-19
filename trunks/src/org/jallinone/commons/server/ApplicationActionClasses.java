@@ -70,6 +70,7 @@ import org.openswing.swing.message.receive.java.*;
 import org.openswing.swing.server.*;
 import org.jallinone.system.translations.server.*;
 import org.jallinone.purchases.items.server.*;
+import org.jallinone.system.importdata.server.*;
 
 
 /**
@@ -752,6 +753,19 @@ public class ApplicationActionClasses extends ActionsCollection {
     a = new LoadABCAction(); put(a.getRequestName(),a);
     a = new DeleteABCAction(); put(a.getRequestName(),a);
     a = new UpdateMinStocksAction(); put(a.getRequestName(),a);
+
+    a = new DeleteETLProcessesAction(); put(a.getRequestName(),a);
+    a = new InsertETLProcessAction(); put(a.getRequestName(),a);
+    a = new LoadETLProcessAction(); put(a.getRequestName(),a);
+    a = new LoadETLProcessesAction(); put(a.getRequestName(),a);
+    a = new LoadSelectableFieldsAction(); put(a.getRequestName(),a);
+    a = new GetFolderContentAction(); put(a.getRequestName(),a);
+    a = new StartETLProcessAction(); put(a.getRequestName(),a);
+
+
+
+
+
 
     put("changeLanguage",new Action() {
 

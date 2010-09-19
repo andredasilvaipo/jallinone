@@ -1,23 +1,17 @@
 package org.jallinone.hierarchies.server;
 
-import org.openswing.swing.server.*;
+import java.math.*;
+import java.sql.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import java.io.*;
-import java.util.*;
+
+import org.jallinone.events.server.*;
+import org.jallinone.hierarchies.java.*;
+import org.jallinone.system.server.*;
+import org.jallinone.system.translations.server.*;
+import org.openswing.swing.logger.server.*;
 import org.openswing.swing.message.receive.java.*;
-import java.sql.*;
-import org.openswing.swing.logger.server.Logger;
-import org.jallinone.system.server.JAIOUserSessionParameters;
-import java.math.BigDecimal;
-import org.jallinone.system.customizations.java.WindowCustomizationVO;
-import org.jallinone.system.translations.server.TranslationUtils;
-import org.openswing.swing.internationalization.server.ServerResourcesFactory;
-import org.openswing.swing.internationalization.java.Resources;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
-import org.jallinone.system.progressives.server.ProgressiveUtils;
-import org.jallinone.events.server.EventsManager;
-import org.jallinone.events.server.GenericEvent;
+import org.openswing.swing.server.*;
 
 
 /**
@@ -50,6 +44,8 @@ import org.jallinone.events.server.GenericEvent;
  */
 public class InsertLevelAction implements Action {
 
+  private InsertLevelBean bean = new InsertLevelBean();
+
 
   public InsertLevelAction() {
   }
@@ -68,13 +64,8 @@ public class InsertLevelAction implements Action {
    */
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
     Connection conn = null;
-    PreparedStatement pstmt = null;
-    String serverLanguageId = ((JAIOUserSessionParameters)userSessionPars).getServerLanguageId();
-
     try {
       HierarchyLevelVO vo = (HierarchyLevelVO)inputPar;
-      vo.setEnabledHIE01("Y");
-
       conn = ConnectionManager.getConnection(context);
 
       // fires the GenericEvent.CONNECTION_CREATED event...
@@ -92,23 +83,11 @@ public class InsertLevelAction implements Action {
         null
       ));
 
-
-      // insert record in SYS10...
-      BigDecimal progressiveHIE01 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
-      vo.setProgressiveHIE01(progressiveHIE01);
-
-      // insert record in HIE01...
-      pstmt = conn.prepareStatement(
-          "insert into HIE01_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE01,PROGRESSIVE_HIE02,LEV,ENABLED) values(?,?,?,?,?)"
-      );
-      pstmt.setBigDecimal(1,progressiveHIE01);
-      pstmt.setBigDecimal(2,vo.getProgressiveHie01HIE01());
-      pstmt.setBigDecimal(3,vo.getProgressiveHie02HIE01());
-      pstmt.setBigDecimal(4,vo.getLevelHIE01());
-      pstmt.setString(5,vo.getEnabledHIE01());
-      pstmt.execute();
-
-      Response answer = new VOResponse(vo);
+      Response answer = bean.insertLevel(conn,vo,userSessionPars);
+      if (answer.isError()) {
+        conn.rollback();
+        return answer;
+      }
 
       // fires the GenericEvent.BEFORE_COMMIT event...
       EventsManager.getInstance().processEvent(new GenericEvent(
@@ -154,11 +133,6 @@ public class InsertLevelAction implements Action {
       return new ErrorResponse(ex.getMessage());
     }
     finally {
-      try {
-        pstmt.close();
-      }
-      catch (Exception ex2) {
-      }
       try {
         ConnectionManager.releaseConnection(conn, context);
       }

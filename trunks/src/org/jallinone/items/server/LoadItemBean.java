@@ -71,6 +71,21 @@ public class LoadItemBean {
     Statement stmt = null;
     PreparedStatement pstmt = null;
     try {
+      pstmt = conn.prepareStatement(
+          "SELECT HIE02_HIERARCHIES.PROGRESSIVE_HIE01 FROM "+
+          "HIE02_HIERARCHIES,ITM01_ITEMS WHERE " +
+          "ITM01_ITEMS.COMPANY_CODE_SYS01=? AND ITM01_ITEMS.ITEM_CODE=? AND " +
+          "ITM01_ITEMS.PROGRESSIVE_HIE02=HIE02_HIERARCHIES.PROGRESSIVE "
+      );
+      pstmt.setString(1,pk.getCompanyCodeSys01ITM01());
+      pstmt.setString(2,pk.getItemCodeITM01());
+      ResultSet rset = pstmt.executeQuery();
+      BigDecimal progressiveHie01HIE02 = null;
+      if (rset.next())
+        progressiveHie01HIE02 = rset.getBigDecimal(1);
+      rset.close();
+      pstmt.close();
+
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01ITM01","ITM01_ITEMS.COMPANY_CODE_SYS01");
@@ -124,7 +139,6 @@ public class LoadItemBean {
 
       attribute2dbField.put("barCodeITM01","ITM01_ITEMS.BAR_CODE");
       attribute2dbField.put("barcodeTypeITM01","ITM01_ITEMS.BARCODE_TYPE");
-
 
 
       HashSet pkAttributes = new HashSet();
@@ -182,14 +196,15 @@ public class LoadItemBean {
           "N",
           context,
           true,
-          new BigDecimal(262) // window identifier...
+          progressiveHie01HIE02 // window identifier...
       );
 
       if (!res.isError()) {
-        stmt = conn.createStatement();
-        ResultSet rset = null;
-
         DetailItemVO vo = (DetailItemVO)((VOResponse)res).getVo();
+        vo.setProgressiveHie01HIE02(progressiveHie01HIE02);
+
+        stmt = conn.createStatement();
+
         if (vo.getAddProgressiveSys10ITM01()!=null) {
           // retrieve additional description...
           rset = stmt.executeQuery(

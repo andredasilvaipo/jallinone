@@ -127,7 +127,7 @@ public class InsertLedgerAction implements EventAction {
           vo.setCompanyCodeSys01ACC01(companyCode);
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ACC01(),conn);
         vo.setProgressiveSys10ACC01(progressiveSYS10);
 
         // insert into ACC01...

@@ -16,6 +16,7 @@ import org.jallinone.system.translations.server.TranslationUtils;
 import org.openswing.swing.internationalization.server.ServerResourcesFactory;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 
@@ -116,7 +117,7 @@ public class PeopleBean {
       }
 
       if (generateProgressive) {
-        vo.setProgressiveREG04( ProgressiveUtils.getInternalProgressive("REG04_SUBJECTS","PROGRESSIVE",conn) );
+        vo.setProgressiveREG04( CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01REG04(),"REG04_SUBJECTS","PROGRESSIVE",conn) );
       }
 
       // insert record in REG04...

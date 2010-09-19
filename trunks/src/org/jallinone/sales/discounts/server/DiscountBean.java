@@ -114,7 +114,7 @@ public class DiscountBean {
   public static final void insertDiscount(Connection conn,DiscountVO vo) throws Exception {
     PreparedStatement pstmt = null;
     try {
-      vo.setProgressiveSys10SAL03( TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn) );
+      vo.setProgressiveSys10SAL03( TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01SAL03(),conn) );
       if (vo.getMinQtySAL03()==null)
         vo.setMinQtySAL03(new BigDecimal(1));
       if (vo.getMultipleQtySAL03()==null)

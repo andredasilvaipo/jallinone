@@ -19,6 +19,7 @@ import org.jallinone.subjects.java.Subject;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -282,7 +283,29 @@ public class InsertCompanyAction implements Action {
            vo.getCompanyCodeSys01REG04()
       );
 
+      // insert initial value for progressives...
+      pstmt = conn.prepareStatement("SELECT COUNT(*) FROM SYS01_COMPANIES");
+      rset = pstmt.executeQuery();
+      rset.next();
+      int companies = rset.getInt(1);
+      rset.close();
+      pstmt.close();
+      pstmt = conn.prepareStatement(
+        "INSERT INTO SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) VALUES(?,?,?)"
+      );
+      pstmt.setString(1,companyCode);
+      pstmt.setString(2,ApplicationConsts.INITIAL_VALUE);
+      pstmt.setString(3,String.valueOf(companies+2)); // progressive 2 is locked for db initialization...
+      pstmt.execute();
+      pstmt.close();
+
+
+
+
+
+
       Response answer = new VOResponse(vo);
+
 
       // fires the GenericEvent.BEFORE_COMMIT event...
       EventsManager.getInstance().processEvent(new GenericEvent(
@@ -390,7 +413,7 @@ public class InsertCompanyAction implements Action {
             pstmt2.setObject(i,rset.getObject(i));
           else {
             oldProgressive = rset.getObject(i);
-            newProgressive = ProgressiveUtils.getInternalProgressive("SYS10_TRANSLATIONS","PROGRESSIVE",conn);
+            newProgressive = CompanyProgressiveUtils.getInternalProgressive(newCompanyCode,"SYS10_TRANSLATIONS","PROGRESSIVE",conn);
             pstmt2.setObject(i,newProgressive);
           }
         pstmt2.execute();

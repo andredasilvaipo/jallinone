@@ -94,6 +94,7 @@ import org.jallinone.system.translations.client.*;
 import org.jallinone.system.client.UsersListFrame;
 import org.jallinone.purchases.items.client.ABCFrame;
 import org.jallinone.purchases.documents.client.ReorderFromMinStocksFrame;
+import org.jallinone.system.importdata.client.ETLProcessesGridController;
 
 
 /**
@@ -984,6 +985,11 @@ public class ApplicationClientFacade implements ClientFacade {
 
   public void getABC() {
     new ABCFrame();
+  }
+
+
+  public void importData() {
+    new ETLProcessesGridController();
   }
 
 

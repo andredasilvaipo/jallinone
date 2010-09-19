@@ -92,7 +92,7 @@ public class InsertCallOutAction implements Action {
         vo.setCompanyCodeSys01SCH10(companyCode);
 
       // generate progressive for call-out description...
-      BigDecimal progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+      BigDecimal progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01SCH10(),conn);
       vo.setProgressiveSys10SCH10(progressiveSYS10);
 
       Map attribute2dbField = new HashMap();

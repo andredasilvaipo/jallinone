@@ -114,7 +114,7 @@ public class InsertMachineriesAction implements Action {
           vo.setCompanyCodeSys01PRO03(companyCode);
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01PRO03(),conn);
         vo.setProgressiveSys10PRO03(progressiveSYS10);
 
         // insert into PRO03...

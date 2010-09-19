@@ -105,7 +105,7 @@ public class InsertPricelistsAction implements Action {
         vo = (PricelistVO)list.get(i);
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01SAL01(),conn);
         vo.setProgressiveSys10SAL01(progressiveSYS10);
 
         // insert into SAL01...

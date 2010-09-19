@@ -15,6 +15,8 @@ import org.jallinone.sqltool.java.ColumnVO;
 import org.jallinone.sqltool.java.RowVO;
 import org.jallinone.system.progressives.server.ProgressiveUtils;
 import java.lang.reflect.Method;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
+import org.jallinone.system.server.JAIOUserSessionParameters;
 
 
 /**
@@ -103,7 +105,7 @@ public class InsertTablesAction implements Action {
             colVO = (ColumnVO)tableVO.getColumns().get(j);
             // check if the current database field is a "calculated progressive"...
             if (colVO.getColumnName().startsWith(tableName) && colVO.getProgressive()) {
-              progressive = ProgressiveUtils.getConsecutiveProgressive(tableName,colVO.getColumnName(),conn);
+              progressive = CompanyProgressiveUtils.getInternalProgressive(((JAIOUserSessionParameters)userSessionPars).getDefCompanyCodeSys01SYS03(),tableName,colVO.getColumnName(),conn);
               m = rowVO.getClass().getMethod("set"+colVO.getAttributeName().substring(0,1).toUpperCase()+colVO.getAttributeName().substring(1),new Class[]{BigDecimal.class});
               m.invoke(rowVO,new Object[]{progressive});
             }

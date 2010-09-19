@@ -53,6 +53,7 @@ import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
 import org.jallinone.system.java.CompanyParametersVO;
 import org.jallinone.system.server.LoadCompanyParamsAction;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -695,7 +696,7 @@ public class CloseSaleDocAction implements Action {
           pstmt.setBigDecimal(3,docVO.getDocYearDOC01());
           pstmt.setBigDecimal(4,docVO.getDocNumberDOC01());
           pstmt.setBigDecimal(5,docVO.getDocSequenceDOC01());
-          pstmt.setBigDecimal(6,ProgressiveUtils.getConsecutiveProgressive("DOC19_EXPIRATIONS","PROGRESSIVE",conn));
+          pstmt.setBigDecimal(6,CompanyProgressiveUtils.getInternalProgressive(docVO.getCompanyCodeSys01DOC01(),"DOC19_EXPIRATIONS","PROGRESSIVE",conn));
           pstmt.setDate(7,docVO.getDocDateDOC01());
           pstmt.setDate(8,new java.sql.Date(startTime + inVO.getInstalmentDaysREG17().longValue()*86400*1000)); // expiration date
           pstmt.setString(9,docVO.getName_1REG04());

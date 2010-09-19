@@ -1547,10 +1547,53 @@
   <object key="min stocks updated" value="Min stocks updated." />
   <object key="set qty to zero" value="Set quantities to zero" />
   <object key="update completed" value="Update completed" />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
 
+  <object key="increment value in progr" value="Increment value in progr." />
+  <object key="initial value in progr" value="Initial value in progr" />
+  <object key="default company" value="Default company" />
+  <object key="etl processes" value="Import data processes" />
+  <object key="etl processes" value="Import data process" />
+  <object key="scheduler settings" value="Scheduler settings" />
+  <object key="import settings" value="Import settings" />
+  <object key="field.start" value="Start" />
+  <object key="field.end" value="End" />
+  <object key="field.pos" value="Pos" />
+  <object key="useVariant1ITM01" value="Use variant 1" />
+  <object key="useVariant2ITM01" value="Use variant 2" />
+  <object key="useVariant3ITM01" value="Use variant 3" />
+  <object key="useVariant4ITM01" value="Use variant 4" />
+  <object key="useVariant5ITM01" value="Use variant 5" />
+  <object key="barcode type" value="Barcode type" />
+  <object key="minSellingUmCodeReg02ITM01" value="M.U. min sell. qty" />
+  <object key="grossWeightUmCodeReg02ITM01" value="M.U. gross w." />
+  <object key="netWeightUmCodeReg02ITM01" value="M.U. net w." />
+  <object key="widthUmCodeReg02ITM01" value="M.U. width" />
+  <object key="heightUmCodeReg02ITM01" value="M.U. height" />
+  <object key="data import type" value="Data import" />
+  <object key="file format" value="File format" />
+  <object key="local file" value="Local file" />
+  <object key="remote file" value="Remote file" />
+  <object key="no scheduling" value="No scheduling" />
+  <object key="each day" value="Each day" />
+  <object key="each week" value="Each week" />
+  <object key="start date" value="Start date/time" />
+  <object key="start process now" value="Start process now" />
+  <object key="File not exists" value="File not exists" />
+  <object key="file preview" value="File preview" />
+  <object key="field.dateFormatSYS24" value="Date format" />
+  <object key="execution time" value="Execution time" />
+  <object key="records read" value="Records read" />
+  <object key="records inserted" value="Records inserted" />
+  <object key="records updated" value="Records updated" />
+  <object key="data import completed" value="Data import completed" />
+  <object key="levels separator" value="Levels separator" />
+  <object key="" value="" />
+  <object key="" value="" />
+  <object key="" value="" />
+  <object key="" value="" />
+  <object key="" value="" />
+  <object key="" value="" />
+  <object key="" value="" />
 
   <currencySymbol>$</currencySymbol>
   <decimalSymbol>.</decimalSymbol>

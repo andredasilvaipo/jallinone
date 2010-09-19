@@ -22,6 +22,7 @@ import org.jallinone.purchases.documents.java.PurchaseDocPK;
 import org.jallinone.purchases.documents.java.DetailPurchaseDocVO;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -56,7 +57,7 @@ public class InsertPurchaseDocRowBean {
 
   private PurchaseDocTotalsBean totalBean = new PurchaseDocTotalsBean();
   private LoadPurchaseDocBean docBean = new LoadPurchaseDocBean();
-  private ProgressiveUtils progBean = new ProgressiveUtils();
+  private CompanyProgressiveUtils progBean = new CompanyProgressiveUtils();
 
 
   public InsertPurchaseDocRowBean() {
@@ -142,7 +143,7 @@ public class InsertPurchaseDocRowBean {
       if (vo.getVariantTypeItm10DOC07()==null)
         vo.setVariantTypeItm10DOC07(ApplicationConsts.JOLLY);
 
-      vo.setRowNumberDOC07( progBean.getInternalProgressive("DOC07_PURCHASE_ITEMS","ROW_NUMBER",conn) );
+      vo.setRowNumberDOC07( progBean.getInternalProgressive(vo.getCompanyCodeSys01DOC07(),"DOC07_PURCHASE_ITEMS","ROW_NUMBER",conn) );
 
       // insert into DOC07...
       Response res = QueryUtil.insertTable(

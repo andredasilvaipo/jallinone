@@ -97,7 +97,9 @@ public class LoadTranslationsAction implements Action {
 
 
       String select = "select ";
-      String from = " from "+topic.getTableName()+",";
+      String from = " from ";
+      if (topic.getTableName()!=null)
+        from += topic.getTableName()+",";
       String where = " where ";
 
       HashMap attribute2dbField = new HashMap();
@@ -113,8 +115,11 @@ public class LoadTranslationsAction implements Action {
         from += "SYS10_TRANSLATIONS T"+i+",";
         where +=
             "not T"+i+".DESCRIPTION='"+ApplicationConsts.JOLLY+"' and "+
-            "T"+i+".LANGUAGE_CODE='"+vo.getLanguageCodeSYS09()+"' and "+
-            "T"+i+".PROGRESSIVE="+topic.getTableName()+"."+topic.getColumnName()+" and ";
+            "T"+i+".LANGUAGE_CODE='"+vo.getLanguageCodeSYS09()+"' and ";
+        if (topic.getTableName()!=null)
+          where += "T"+i+".PROGRESSIVE="+topic.getTableName()+"."+topic.getColumnName()+" and ";
+        else if (langs.size()>1 && i>0)
+          where += "T0.PROGRESSIVE=T"+i+".PROGRESSIVE and ";
         if (topic.isUseCompanyCode())
           where += topic.getTableName()+".COMPANY_CODE_SYS01='"+companyCodeSys01+"' and ";
         if (topic.isUseEnabled())

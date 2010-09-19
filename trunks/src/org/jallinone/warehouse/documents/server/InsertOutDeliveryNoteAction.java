@@ -17,6 +17,7 @@ import org.jallinone.system.java.ApplicationParametersVO;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -94,7 +95,7 @@ public class InsertOutDeliveryNoteAction implements Action {
         vo.setCompanyCodeSys01DOC08(companyCode);
 
       // generate the internal progressive for the document...
-      vo.setDocNumberDOC08( ProgressiveUtils.getInternalProgressive("DOC08_DELIVERY_NOTES","DOC_NUMBER",conn) );
+      vo.setDocNumberDOC08( CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01DOC08(),"DOC08_DELIVERY_NOTES","DOC_NUMBER",conn) );
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01DOC08","COMPANY_CODE_SYS01");

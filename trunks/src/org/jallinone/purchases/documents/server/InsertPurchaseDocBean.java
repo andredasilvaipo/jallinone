@@ -23,6 +23,7 @@ import org.jallinone.registers.currency.server.ValidateCurrencyCodeAction;
 import org.jallinone.registers.currency.java.CurrencyVO;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -102,7 +103,7 @@ public class InsertPurchaseDocBean {
       vo.setDecimalsREG03(currVO.getDecimalsREG03());
 
       // generate internal progressive for doc. number...
-      vo.setDocNumberDOC06(ProgressiveUtils.getInternalProgressive("DOC06_PURCHASE","DOC_NUMBER",conn));
+      vo.setDocNumberDOC06(CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01DOC06(),"DOC06_PURCHASE","DOC_NUMBER",conn));
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01DOC06","COMPANY_CODE_SYS01");

@@ -259,7 +259,7 @@ public class ItemFrame extends InternalFrame {
   );
   LabelControl labelMinStock = new LabelControl();
   NumericControl controlMinStock = new NumericControl();
-
+  private CustomizedControls customizedControls = null;
 
 
   public ItemFrame(ItemController controller,boolean productsOnly) {
@@ -282,25 +282,34 @@ public class ItemFrame extends InternalFrame {
       tab.addChangeListener(new ChangeListener() {
 
         public void stateChanged(ChangeEvent e) {
-          if (tab.getSelectedIndex()==8) {
+//          if (tab.getSelectedIndex()==8) {
+            if (tab.getSelectedComponent()!=null &&
+                tab.getSelectedComponent().equals(getItemVariantsPanel())) {
             DetailItemVO vo = (DetailItemVO)formPanel.getVOModel().getValueObject();
             getItemVariantsPanel().setContent(vo, getVariantsNames());
+            getItemVariantsPanel().revalidate();
+            getItemVariantsPanel().repaint();
           }
-          else if (tab.getSelectedIndex()==9) {
-            DetailItemVO vo = (DetailItemVO)formPanel.getVOModel().getValueObject();
+//          else if (tab.getSelectedIndex()==9) {
+          else if (tab.getSelectedComponent()!=null &&
+                   tab.getSelectedComponent().equals(getVariantBarcodesPanel())) {
             getVariantBarcodesPanel().setItem(formPanel);
             getVariantBarcodesPanel().revalidate();
             getVariantBarcodesPanel().repaint();
-            //ItemFrame.this.revalidate();
-            //ItemFrame.this.repaint();
           }
-          else if (tab.getSelectedIndex()==10) {
-            DetailItemVO vo = (DetailItemVO)formPanel.getVOModel().getValueObject();
+          else if (tab.getSelectedComponent()!=null &&
+                   tab.getSelectedComponent().equals(getVariantMinStockPanel())) {
+          //else if (tab.getSelectedIndex()==10) {
             getVariantMinStockPanel().setItem(formPanel);
             getVariantMinStockPanel().revalidate();
             getVariantMinStockPanel().repaint();
-            //ItemFrame.this.revalidate();
-            //ItemFrame.this.repaint();
+          }
+          else if (customizedControls!=null &&
+                   tab.getSelectedComponent()!=null &&
+                   tab.getSelectedComponent().equals(customizedControls)) {
+            customizedControls.setContent();
+            customizedControls.revalidate();
+            customizedControls.repaint();
           }
         }
 
@@ -494,10 +503,6 @@ public class ItemFrame extends InternalFrame {
       formPanel.setFormController(controller);
       formPanel.addLinkedPanel(imgPanel);
 
-
-      CustomizedControls customizedControls = new CustomizedControls(tab,formPanel,new BigDecimal(262));
-
-
       discountsGrid.setController(new DiscountsController(this));
       discountsGrid.setGridDataLocator(discountsGridDataLocator);
       discountsGridDataLocator.setServerMethodName("loadItemDiscounts");
@@ -555,6 +560,11 @@ public class ItemFrame extends InternalFrame {
         // read only...
         setVariants(controller.getPK().getCompanyCodeSys01ITM01());
 
+
+
+      HierarchyLevelVO levelVO = (HierarchyLevelVO)controller.getParentFrame().getHierarTreePanel().getSelectedNode().getUserObject();
+      customizedControls = new CustomizedControls(tab,formPanel,levelVO.getProgressiveHie01HIE02());
+
     }
     catch(Exception e) {
       e.printStackTrace();
@@ -592,12 +602,22 @@ public class ItemFrame extends InternalFrame {
        } // end for
 
        if (atLeastOne) {
-         varsPanel.setVisible(true);
-         variantsPanel.setVisible(true);
+         tab.remove(getItemVariantsPanel());
+         tab.remove(getVariantBarcodesPanel());
+         tab.remove(getVariantMinStockPanel());
+         tab.add(getItemVariantsPanel(),8);
+         tab.add(getVariantBarcodesPanel(),9);
+         tab.add(getVariantMinStockPanel(),10);
+         tab.setTitleAt(8,ClientSettings.getInstance().getResources().getResource("variantsPanel"));
+         tab.setTitleAt(9,ClientSettings.getInstance().getResources().getResource("barcodesPanel"));
+         tab.setTitleAt(10,ClientSettings.getInstance().getResources().getResource("min stock"));
+         tab.revalidate();
        }
        else {
-         variantsPanel.setVisible(false);
-         varsPanel.setVisible(false);
+         tab.remove(getItemVariantsPanel());
+         tab.remove(getVariantBarcodesPanel());
+         tab.remove(getVariantMinStockPanel());
+         tab.revalidate();
        }
 
        varsPanel.revalidate();
@@ -689,26 +709,33 @@ public class ItemFrame extends InternalFrame {
 
     this.setTitle(ClientSettings.getInstance().getResources().getResource("item detail")+" - "+vo.getItemCodeITM01()+" - "+vo.getDescriptionSYS10());
 
-    //getItemVariantsPanel().setContent(vo,getVariantsNames());
-    //getItemVariantsPanel().repaint();
-
-    if (tab.getSelectedIndex()==8) {
+//    if (tab.getSelectedIndex()==8) {
+    if (tab.getSelectedComponent()!=null &&
+        tab.getSelectedComponent().equals(getItemVariantsPanel())) {
       getItemVariantsPanel().setContent(vo, getVariantsNames());
+      getItemVariantsPanel().revalidate();
       getItemVariantsPanel().repaint();
     }
-    else if (tab.getSelectedIndex()==9) {
+//    else if (tab.getSelectedIndex()==9) {
+    else if (tab.getSelectedComponent()!=null &&
+             tab.getSelectedComponent().equals(getVariantBarcodesPanel())) {
       getVariantBarcodesPanel().setItem(formPanel);
       getVariantBarcodesPanel().revalidate();
       getVariantBarcodesPanel().repaint();
-      //ItemFrame.this.revalidate();
-      //ItemFrame.this.repaint();
     }
-    else if (tab.getSelectedIndex()==10) {
+//    else if (tab.getSelectedIndex()==10) {
+    else if (tab.getSelectedComponent()!=null &&
+             tab.getSelectedComponent().equals(getVariantMinStockPanel())) {
       getVariantMinStockPanel().setItem(formPanel);
       getVariantMinStockPanel().revalidate();
       getVariantMinStockPanel().repaint();
-      //ItemFrame.this.revalidate();
-      //ItemFrame.this.repaint();
+    }
+    else if (customizedControls!=null &&
+             tab.getSelectedComponent()!=null &&
+             tab.getSelectedComponent().equals(customizedControls)) {
+      customizedControls.setContent();
+      customizedControls.revalidate();
+      customizedControls.repaint();
     }
   }
 
@@ -806,6 +833,8 @@ public class ItemFrame extends InternalFrame {
     controlItemType.setCanCopy(true);
     controlItemType.setLinkLabel(labelitemType);
     controlItemType.setRequired(true);
+    controlItemType.setEnabledOnInsert(false);
+    controlItemType.setEnabledOnEdit(false);
     controlLevel.setAttributeName("progressiveHie01ITM01");
     controlLevel.setCanCopy(true);
     controlLevel.setCodBoxVisible(false);
@@ -1220,6 +1249,7 @@ public class ItemFrame extends InternalFrame {
     tab.add(variantsPanel,   "variantsPanel");
     tab.add(barcodesPanel,   "barcodesPanel");
     tab.add(minStocksPanel,   "minStocksPanel");
+
 
     tab.setTitleAt(0,ClientSettings.getInstance().getResources().getResource("item detail"));
     tab.setTitleAt(1,ClientSettings.getInstance().getResources().getResource("images"));

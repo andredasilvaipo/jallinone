@@ -71,6 +71,8 @@ public class ApplicationParametersFrame extends InternalFrame {
   GridBagLayout gridBagLayout3 = new GridBagLayout();
   LabelControl labelDocPath = new LabelControl();
   TextControl controlDocPath = new TextControl();
+  LabelControl labelIncrementVal = new LabelControl();
+  NumericControl controlIncremVal = new NumericControl();
 
 
 
@@ -81,7 +83,7 @@ public class ApplicationParametersFrame extends InternalFrame {
       mainPanel.setFormController(controller);
 
 
-      setSize(450,180);
+      setSize(450,200);
     }
     catch(Exception e) {
       e.printStackTrace();
@@ -101,6 +103,8 @@ public class ApplicationParametersFrame extends InternalFrame {
 
 
     labelDocPath.setText("document repository path");
+    labelIncrementVal.setText("increment value in progr");
+    controlIncremVal.setMinValue(1.0);
     topPanel.add(buttonsPanel,         new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 
@@ -120,15 +124,20 @@ public class ApplicationParametersFrame extends InternalFrame {
 
     controlImagePath.setAttributeName("imagePath");
     controlDocPath.setAttributeName("documentPath");
+    controlIncremVal.setAttributeName("incrementValue");
 
-    mainPanel.add(controlImagePath,          new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
+    mainPanel.add(controlImagePath,           new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(labelImagePath,          new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+    mainPanel.add(labelImagePath,           new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
-    mainPanel.add(labelDocPath,      new GridBagConstraints(0, 1, 1, 1, 0.0, 1.0
+    mainPanel.add(labelDocPath,        new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(controlDocPath,      new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+    mainPanel.add(controlDocPath,        new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    mainPanel.add(labelIncrementVal,   new GridBagConstraints(0, 2, 1, 1, 0.0, 1.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    mainPanel.add(controlIncremVal,  new GridBagConstraints(1, 2, 1, 1, 0.0, 1.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
 
 

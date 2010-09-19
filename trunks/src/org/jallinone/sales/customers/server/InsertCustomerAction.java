@@ -22,6 +22,7 @@ import org.jallinone.subjects.java.OrganizationVO;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -101,7 +102,7 @@ public class InsertCustomerAction implements Action {
 
         // check if customer code is defined: if it's not defined then it will be defined as a progressive...
         if (custVO.getCustomerCodeSAL07()==null || custVO.getCustomerCodeSAL07().trim().equals("")) {
-          custVO.setCustomerCodeSAL07( String.valueOf(ProgressiveUtils.getConsecutiveProgressive("SAL07_CUSTOMERS",vo.getCompanyCodeSys01REG04(),conn).intValue()) );
+          custVO.setCustomerCodeSAL07( String.valueOf(CompanyProgressiveUtils.getConsecutiveProgressive(vo.getCompanyCodeSys01REG04(),"SAL07_CUSTOMERS",vo.getCompanyCodeSys01REG04(),conn).intValue()) );
         }
 
         // test if there exists a customer with the same customer code...
@@ -123,7 +124,7 @@ public class InsertCustomerAction implements Action {
 
         // check if customer code is defined: if it's not defined then it will be defined as a progressive...
         if (custVO.getCustomerCodeSAL07()==null || custVO.getCustomerCodeSAL07().trim().equals("")) {
-          custVO.setCustomerCodeSAL07( String.valueOf(ProgressiveUtils.getInternalProgressive("SAL07_CUSTOMERS",vo.getCompanyCodeSys01REG04(),conn).intValue()) );
+          custVO.setCustomerCodeSAL07( String.valueOf(CompanyProgressiveUtils.getInternalProgressive(custVO.getCompanyCodeSys01REG04(),"SAL07_CUSTOMERS",vo.getCompanyCodeSys01REG04(),conn).intValue()) );
         }
 
         // test if there exists a customer with the same customer code...

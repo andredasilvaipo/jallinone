@@ -20,6 +20,7 @@ import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
 import org.openswing.swing.internationalization.server.ServerResourcesFactory;
 import org.openswing.swing.internationalization.java.Resources;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -140,7 +141,7 @@ public class UpdateItemAction implements Action {
               conn
           );
         else {
-          BigDecimal addProgressiveSYS10 = TranslationUtils.insertTranslations(newVO.getAddDescriptionSYS10(),conn);
+          BigDecimal addProgressiveSYS10 = TranslationUtils.insertTranslations(newVO.getAddDescriptionSYS10(),newVO.getCompanyCodeSys01ITM01(),conn);
           newVO.setAddProgressiveSys10ITM01(addProgressiveSYS10);
         }
       }
@@ -160,7 +161,7 @@ public class UpdateItemAction implements Action {
       }
       else if (newVO.getSmallImage()!=null) {
         if (oldVO.getSmallImage()==null) {
-          BigDecimal imageProgressive = ProgressiveUtils.getInternalProgressive("ITM01_ITEMS","SMALL_IMG",conn);
+          BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(newVO.getCompanyCodeSys01(),"ITM01_ITEMS","SMALL_IMG",conn);
           newVO.setSmallImageITM01("SMALL_IMG"+imageProgressive);
         }
         else
@@ -198,7 +199,7 @@ public class UpdateItemAction implements Action {
       }
       else if (newVO.getLargeImage()!=null) {
         if (oldVO.getLargeImage()==null) {
-          BigDecimal imageProgressive = ProgressiveUtils.getInternalProgressive("ITM01_ITEMS","LARGE_IMG",conn);
+          BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(newVO.getCompanyCodeSys01(),"ITM01_ITEMS","LARGE_IMG",conn);
           newVO.setLargeImageITM01("LARGE_IMG"+imageProgressive);
         }
         else
@@ -277,7 +278,7 @@ public class UpdateItemAction implements Action {
           "N",
           context,
           true,
-          new BigDecimal(262) // window identifier...
+          newVO.getProgressiveHie01HIE02() // window identifier...
       );
 
       if (res.isError()) {

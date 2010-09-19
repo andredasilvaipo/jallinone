@@ -27,6 +27,7 @@ import org.jallinone.accounting.movements.java.JournalRowVO;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
 import org.jallinone.events.server.EventAction;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -186,7 +187,7 @@ public class InsertJournalItemAction implements EventAction {
             pstmt.setBigDecimal(3,vo.getItemYearACC05());
             pstmt.setBigDecimal(4,null);
             pstmt.setBigDecimal(5,vo.getDocSequenceDOC19());
-            pstmt.setBigDecimal(6,ProgressiveUtils.getConsecutiveProgressive("DOC19_EXPIRATIONS","PROGRESSIVE",conn));
+            pstmt.setBigDecimal(6,CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01ACC05(),"DOC19_EXPIRATIONS","PROGRESSIVE",conn));
             pstmt.setDate(7,vo.getItemDateACC05());
             pstmt.setDate(8,new java.sql.Date(startTime + inVO.getInstalmentDaysREG17().longValue()*86400*1000)); // expiration date
             pstmt.setString(9,vo.getName_1REG04());

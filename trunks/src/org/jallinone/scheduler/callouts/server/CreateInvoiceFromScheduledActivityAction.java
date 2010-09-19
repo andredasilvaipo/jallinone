@@ -37,6 +37,7 @@ import org.jallinone.system.progressives.server.ProgressiveUtils;
 import org.jallinone.sales.activities.java.SaleActivityVO;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -130,7 +131,7 @@ public class CreateInvoiceFromScheduledActivityAction implements Action {
 
         // check if customer code is defined: if it's not defined then it will be defined as a progressive...
         if (vo.getCustomerCodeSAL07()==null || vo.getCustomerCodeSAL07().trim().equals("")) {
-          vo.setCustomerCodeSAL07( String.valueOf(ProgressiveUtils.getConsecutiveProgressive("SAL07_CUSTOMERS",vo.getCompanyCodeSys01DOC01(),conn).intValue()) );
+          vo.setCustomerCodeSAL07( String.valueOf(CompanyProgressiveUtils.getConsecutiveProgressive(vo.getCompanyCodeSys01DOC01(),"SAL07_CUSTOMERS",vo.getCompanyCodeSys01DOC01(),conn).intValue()) );
         }
 
         pstmt = conn.prepareStatement(

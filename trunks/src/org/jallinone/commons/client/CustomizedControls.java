@@ -1,19 +1,17 @@
 package org.jallinone.commons.client;
 
-import javax.swing.JPanel;
+import java.beans.*;
+import java.math.*;
+import java.util.*;
+
 import java.awt.*;
+import javax.swing.*;
+
+import org.jallinone.system.customizations.java.*;
 import org.openswing.swing.client.*;
-import org.openswing.swing.mdi.client.MDIFrame;
-import java.beans.Beans;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import org.jallinone.system.customizations.java.WindowCustomizationVO;
-import javax.swing.JScrollPane;
-import org.openswing.swing.form.client.Form;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.BorderFactory;
-import org.openswing.swing.util.client.ClientSettings;
+import org.openswing.swing.form.client.*;
+import org.openswing.swing.mdi.client.*;
+import org.openswing.swing.util.client.*;
 
 
 /**
@@ -50,7 +48,6 @@ public class CustomizedControls extends JScrollPane {
   GridBagLayout gridBagLayout1 = new GridBagLayout();
   JPanel innerPanel = new JPanel();
 
-
   public CustomizedControls(Container parent,Form form,BigDecimal progressiveSYS13) {
     try {
       jbInit();
@@ -72,17 +69,15 @@ public class CustomizedControls extends JScrollPane {
       ClientApplet applet = ( (ApplicationClientFacade) MDIFrame.getInstance().getClientFacade()).getMainClass();
       ArrayList inputControls = applet.getAuthorizations().getCustomizedWindows().getCustomizedFields(progressiveSYS13);
       if (inputControls.size() > 0) {
-//        // no customized input controls defined: this panel will be removed...
-//        new Thread() {
-//          public void run() {
-//            yield();
-//            Container c = CustomizedControls.this.getParent();
-//            c.remove(CustomizedControls.this);
-//          }
-//        }.start();
-//      }
-//      else {
-        // adding customized input controls...
+
+        parent.add(this,ClientSettings.getInstance().getResources().getResource("custom data"));
+//        this.setPreferredSize(new Dimension(parent.getPreferredSize()));
+//        this.setSize(new Dimension(parent.getPreferredSize()));
+//        this.getViewport().setPreferredSize(new Dimension(parent.getPreferredSize()));
+//        this.getViewport().setSize(new Dimension(parent.getPreferredSize()));
+//        innerPanel.setPreferredSize(new Dimension(parent.getPreferredSize()));
+//        innerPanel.setSize(new Dimension(parent.getPreferredSize()));
+
         WindowCustomizationVO inputControlInfo = null;
         int row = 0;
         int col = 0;
@@ -167,17 +162,30 @@ public class CustomizedControls extends JScrollPane {
                                               , GridBagConstraints.WEST,
                                               GridBagConstraints.VERTICAL,
                                               new Insets(5, 5, 5, 5), 0, 0));
-        parent.add(this,ClientSettings.getInstance().getResources().getResource("custom data"));
-        this.revalidate();
-        parent.validate();
-        parent.repaint();
+        this.getViewport().revalidate();
+//        if (parent instanceof JTabbedPane)
+//          ((JTabbedPane)parent).revalidate();
+//        else
+//          parent.validate();
+//        parent.repaint();
         form.addLinkedPanel(innerPanel);
-
+//        innerPanel.revalidate();
+//        innerPanel.repaint();
+//        JInternalFrame frame = ClientUtils.getParentInternalFrame(innerPanel);
+//        frame.revalidate();
+//        frame.repaint();
       }
     }
     catch (Exception ex) {
       ex.printStackTrace();
     }
+  }
+
+
+  public void setContent() {
+    this.getViewport().removeAll();
+    this.getViewport().add(innerPanel,null);
+    this.getViewport().revalidate();
   }
 
 

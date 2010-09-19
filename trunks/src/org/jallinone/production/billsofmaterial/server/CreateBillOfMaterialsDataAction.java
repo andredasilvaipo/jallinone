@@ -25,6 +25,7 @@ import javax.swing.tree.TreeModel;
 import java.text.DecimalFormat;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -118,7 +119,7 @@ public class CreateBillOfMaterialsDataAction implements Action {
       if (res.isError())
         return res;
 
-      BigDecimal reportId = ProgressiveUtils.getInternalProgressive("TMP01_BILL_OF_MATERIALS","REPORT_ID",conn);
+      BigDecimal reportId = CompanyProgressiveUtils.getInternalProgressive(pk.getCompanyCodeSys01ITM01(),"TMP01_BILL_OF_MATERIALS","REPORT_ID",conn);
       TreeModel model = (TreeModel)((VOResponse)res).getVo();
       DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
 

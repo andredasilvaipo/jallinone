@@ -15,6 +15,7 @@ import org.jallinone.system.progressives.server.ProgressiveUtils;
 import org.jallinone.system.translations.server.TranslationUtils;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -100,11 +101,11 @@ public class InsertRolesAction implements Action {
         oldProgressiveSYS04 = vo.getProgressiveSYS04();
 
         // generate new progressive for SYS04...
-        progressiveSYS04 = ProgressiveUtils.getInternalProgressive("SYS04_ROLES","PROGRESSIVE",conn);
+        progressiveSYS04 = CompanyProgressiveUtils.getInternalProgressive(((JAIOUserSessionParameters)userSessionPars).getDefCompanyCodeSys01SYS03(),"SYS04_ROLES","PROGRESSIVE",conn);
         vo.setProgressiveSYS04(progressiveSYS04);
 
         // insert record in SYS10...
-        progressiveSys10SYS04 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+        progressiveSys10SYS04 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),((JAIOUserSessionParameters)userSessionPars).getDefCompanyCodeSys01SYS03(),conn);
         vo.setProgressiveSys10SYS04(progressiveSys10SYS04);
 
         // insert record in SYS04...

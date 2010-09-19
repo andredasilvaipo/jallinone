@@ -106,7 +106,7 @@ public class InsertChargesAction implements Action {
         vo.setEnabledSAL06("Y");
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01SAL06(),conn);
         vo.setProgressiveSys10SAL06(progressiveSYS10);
 
 

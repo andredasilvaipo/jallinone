@@ -59,7 +59,7 @@ public class UserLoginAction extends LoginAction {
 
       conn = ConnectionManager.getConnection(context);
       pstmt = conn.prepareStatement(
-          "select LANGUAGE_CODE_SYS09,PASSWD_EXPIRATION,COMPANY_CODE_SYS01,PROGRESSIVE_REG04 from SYS03_USERS where "+
+          "select LANGUAGE_CODE_SYS09,PASSWD_EXPIRATION,COMPANY_CODE_SYS01,PROGRESSIVE_REG04,DEF_COMPANY_CODE_SYS01 from SYS03_USERS where "+
           "USERNAME=? and PASSWD=?"
       );
       pstmt.setString(1,username.toUpperCase());
@@ -68,6 +68,7 @@ public class UserLoginAction extends LoginAction {
       String serverLanguageId = null;
       String companyCodeSys01SYS03 = null;
       BigDecimal progressiveReg04SYS03 = null;
+      String defCompanyCodeSys01SYS03 = null;
       if (rset.next()) {
 
         // verify date expiration...
@@ -78,6 +79,7 @@ public class UserLoginAction extends LoginAction {
         serverLanguageId = rset.getString(1);
         companyCodeSys01SYS03 = rset.getString(3);
         progressiveReg04SYS03 = rset.getBigDecimal(4);
+        defCompanyCodeSys01SYS03 = rset.getString(5);
 
         stmt = conn.createStatement();
         ResultSet rset2 = stmt.executeQuery(
@@ -131,6 +133,7 @@ public class UserLoginAction extends LoginAction {
         ((JAIOUserSessionParameters)userSessionPars).setName_2(name_2);
         ((JAIOUserSessionParameters)userSessionPars).setEmployeeCode(empCode);
         ((JAIOUserSessionParameters)userSessionPars).setCompanyCodeSys01SYS03(companyCodeSys01SYS03);
+        ((JAIOUserSessionParameters)userSessionPars).setDefCompanyCodeSys01SYS03(defCompanyCodeSys01SYS03);
 
         authenticatedIds.add(tr.getSessionId());
         return tr;

@@ -42,6 +42,7 @@ import org.jallinone.registers.currency.server.CurrencyConversionUtils;
 import org.jallinone.system.server.LoadUserParamAction;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -435,7 +436,7 @@ public class ClosePurchaseDocAction implements Action {
           pstmt.setBigDecimal(3,docVO.getDocYearDOC06());
           pstmt.setBigDecimal(4,docVO.getDocNumberDOC06());
           pstmt.setBigDecimal(5,docVO.getDocSequenceDOC06());
-          pstmt.setBigDecimal(6,ProgressiveUtils.getConsecutiveProgressive("DOC19_EXPIRATIONS","PROGRESSIVE",conn));
+          pstmt.setBigDecimal(6,CompanyProgressiveUtils.getInternalProgressive(docVO.getCompanyCodeSys01DOC06(),"DOC19_EXPIRATIONS","PROGRESSIVE",conn));
           pstmt.setDate(7,docVO.getDocDateDOC06());
           pstmt.setDate(8,new java.sql.Date(startTime + inVO.getInstalmentDaysREG17().longValue()*86400*1000)); // expiration date
           pstmt.setString(9,docVO.getName_1REG04());

@@ -105,7 +105,7 @@ public class InsertTasksAction implements Action {
         vo.setEnabledREG07("Y");
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01REG07(),conn);
         vo.setProgressiveSys10REG07(progressiveSYS10);
 
         // insert into REG07...

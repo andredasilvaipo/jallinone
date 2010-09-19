@@ -121,7 +121,7 @@ public class InsertAccountingMotivesAction implements EventAction {
         vo.setEnabledACC03("Y");
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),((JAIOUserSessionParameters)userSessionPars).getDefCompanyCodeSys01SYS03(),conn);
         vo.setProgressiveSys10ACC03(progressiveSYS10);
 
          // insert into ACC03...

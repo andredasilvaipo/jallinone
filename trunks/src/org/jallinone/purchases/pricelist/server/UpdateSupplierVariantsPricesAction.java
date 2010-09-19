@@ -16,6 +16,7 @@ import org.openswing.swing.message.receive.java.*;
 import org.openswing.swing.server.*;
 import org.jallinone.purchases.pricelist.java.SupplierVariantsPriceVO;
 import org.jallinone.system.progressives.server.ProgressiveUtils;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -142,7 +143,7 @@ public class UpdateSupplierVariantsPricesAction implements Action {
 
           if (cells[i][0]!=null) {
             vo = new SupplierVariantsPriceVO();
-            vo.setProgressivePUR05(ProgressiveUtils.getConsecutiveProgressive("PUR05_SUPPLIER_VARIANTS_PRICES","PROGRESSIVE",conn));
+            vo.setProgressivePUR05(CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01PUR05(),"PUR05_SUPPLIER_VARIANTS_PRICES","PROGRESSIVE",conn));
             vo.setCompanyCodeSys01PUR05(matrixVO.getItemPK().getCompanyCodeSys01ITM01());
             vo.setItemCodeItm01PUR05(matrixVO.getItemPK().getItemCodeITM01());
             vo.setProgressiveReg04PUR05(progressiveReg04);
@@ -176,7 +177,7 @@ public class UpdateSupplierVariantsPricesAction implements Action {
             colVO = (VariantsMatrixColumnVO)matrixVO.getColumnDescriptors().get(k);
             if (cells[i][k]!=null) {
               vo = new SupplierVariantsPriceVO();
-              vo.setProgressivePUR05(ProgressiveUtils.getConsecutiveProgressive("PUR05_SUPPLIER_VARIANTS_PRICES","PROGRESSIVE",conn));
+              vo.setProgressivePUR05(CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01PUR05(),"PUR05_SUPPLIER_VARIANTS_PRICES","PROGRESSIVE",conn));
               vo.setCompanyCodeSys01PUR05(matrixVO.getItemPK().getCompanyCodeSys01ITM01());
               vo.setItemCodeItm01PUR05(matrixVO.getItemPK().getItemCodeITM01());
               vo.setProgressiveReg04PUR05(progressiveReg04);

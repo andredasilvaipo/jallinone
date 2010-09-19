@@ -25,6 +25,7 @@ import org.jallinone.registers.currency.java.CurrencyVO;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
 import org.jallinone.system.java.CompanyParametersVO;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -123,7 +124,7 @@ public class InsertSaleDocBean {
       vo.setDecimalsREG03(currVO.getDecimalsREG03());
 
       // generate internal progressive for doc. number...
-      vo.setDocNumberDOC01(ProgressiveUtils.getInternalProgressive("DOC01_SELLING","DOC_NUMBER",conn));
+      vo.setDocNumberDOC01(CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01DOC01(),"DOC01_SELLING","DOC_NUMBER",conn));
 
       // if doc type is estimate, then generate progressive for doc sequence, too...
       if (vo.getDocTypeDOC01().equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE)) {

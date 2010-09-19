@@ -113,7 +113,7 @@ public class InsertCustomFunctionAction implements Action {
       vo.setSql(tableVO.getSql());
 
       // insert new record in SYS10...
-      vo.setProgressiveSys10SYS06( TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn) );
+      vo.setProgressiveSys10SYS06( TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),((JAIOUserSessionParameters)userSessionPars).getDefCompanyCodeSys01SYS03(),conn) );
 
       // insert new record in SYS06...
       pstmt = conn.prepareStatement(

@@ -1,17 +1,23 @@
 package org.jallinone.system.permissions.client;
 
-import org.openswing.swing.mdi.client.InternalFrame;
-import javax.swing.*;
 import java.awt.*;
-import org.openswing.swing.client.*;
-import org.openswing.swing.table.columns.client.*;
-import org.openswing.swing.table.java.ServerGridDataLocator;
-import org.openswing.swing.util.client.ClientSettings;
-import org.openswing.swing.table.client.GridController;
-import org.openswing.swing.lookup.client.*;
+import javax.swing.*;
 import javax.swing.border.*;
-import org.openswing.swing.message.receive.java.*;
-import java.util.Collection;
+
+import org.openswing.swing.client.*;
+import org.openswing.swing.lookup.client.*;
+import org.openswing.swing.mdi.client.*;
+import org.openswing.swing.table.client.*;
+import org.openswing.swing.table.columns.client.*;
+import org.openswing.swing.table.java.*;
+import org.openswing.swing.util.client.*;
+import org.openswing.swing.domains.java.Domain;
+import org.jallinone.commons.client.ClientApplet;
+import org.jallinone.system.java.ButtonCompanyAuthorizations;
+import org.jallinone.commons.client.ApplicationClientFacade;
+import org.openswing.swing.message.receive.java.Response;
+import org.openswing.swing.message.receive.java.VOListResponse;
+import org.jallinone.system.companies.java.CompanyVO;
 
 
 /**
@@ -94,6 +100,7 @@ public class UsersFrame extends InternalFrame {
   LookupController empController = new LookupController();
   DecimalColumn colProgressiveREG04 = new DecimalColumn();
   TextColumn colCompanyCode = new TextColumn();
+  ComboColumn colDefCompany = new ComboColumn();
 
 
   public UsersFrame(GridController usersController) {
@@ -101,6 +108,20 @@ public class UsersFrame extends InternalFrame {
       jbInit();
       setSize(750,500);
       setMinimumSize(new Dimension(750,500));
+
+      // fill in companies combo...
+      Domain domain = new Domain("COMPANIES");
+      Response res = ClientUtils.getData("loadCompanies",null);
+      if (!res.isError()) {
+        java.util.List rows = ((VOListResponse)res).getRows();
+        CompanyVO vo = null;
+        for(int i=0;i<rows.size();i++) {
+          vo = (CompanyVO)rows.get(i);
+          domain.addDomainPair(vo.getCompanyCodeSYS01(),vo.getName_1REG04());
+        }
+      }
+      colDefCompany.setDomain(domain);
+
 
       usersGridControl.setController(usersController);
       usersGridControl.setGridDataLocator(usersGridDataLocator);
@@ -153,6 +174,7 @@ public class UsersFrame extends InternalFrame {
 
 
   private void jbInit() throws Exception {
+    colDefCompany.setColumnName("defCompanyCodeSys01SYS03");
     titledBorder1 = new TitledBorder("");
     titledBorder2 = new TitledBorder("");
     usersGridControl.setValueObjectClassName("org.jallinone.system.permissions.java.UserVO");
@@ -257,6 +279,7 @@ public class UsersFrame extends InternalFrame {
     colCompanyCode.setColumnName("companyCodeSys01SYS03");
     colCompanyCode.setColumnSelectable(false);
     colCompanyCode.setColumnVisible(false);
+    colDefCompany.setHeaderColumnName("default company");
     usersPanel.add(buttonsPanel,BorderLayout.NORTH);
     usersPanel.add(usersGridControl,BorderLayout.CENTER);
     this.getContentPane().add(usersPanel,    new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0
@@ -268,6 +291,7 @@ public class UsersFrame extends InternalFrame {
     usersGridControl.getColumnContainer().add(colPaswd, null);
     usersGridControl.getColumnContainer().add(colDateExp, null);
     usersGridControl.getColumnContainer().add(colLangCode, null);
+    usersGridControl.getColumnContainer().add(colDefCompany, null);
     usersGridControl.getColumnContainer().add(codEmpCode, null);
     usersGridControl.getColumnContainer().add(colProgressiveREG04, null);
     usersGridControl.getColumnContainer().add(colCompanyCode, null);

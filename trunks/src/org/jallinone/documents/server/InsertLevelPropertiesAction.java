@@ -109,7 +109,7 @@ public class InsertLevelPropertiesAction implements Action {
           vo.setCompanyCodeSys01DOC21(companyCode);
 
         // insert record in SYS10 and generate progressive for property description...
-        progressiveSys10DOC21 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+        progressiveSys10DOC21 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01DOC21(),conn);
         vo.setProgressiveSys10DOC21(progressiveSys10DOC21);
 
         // insert into DOC21...

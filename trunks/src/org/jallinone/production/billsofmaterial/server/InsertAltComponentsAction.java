@@ -16,6 +16,7 @@ import org.jallinone.production.billsofmaterial.java.AltComponentVO;
 import org.jallinone.system.progressives.server.ProgressiveUtils;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -144,7 +145,7 @@ public class InsertAltComponentsAction implements Action {
           pstmt.close();
           if (progressiveITM04==null) {
             // this is the first alternative component defined for this item: create a new progressive...
-            progressiveITM04 = ProgressiveUtils.getInternalProgressive("ITM04_ALTERNATIVE_ITEMS", "PROGRESSIVE", conn);
+            progressiveITM04 = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01ITM04(),"ITM04_ALTERNATIVE_ITEMS", "PROGRESSIVE", conn);
             // insert current item into ITM04...
             AltComponentVO currVO = new AltComponentVO();
             currVO.setCompanyCodeSys01ITM04(vo.getCompanyCodeSys01ITM04());
@@ -221,7 +222,7 @@ public class InsertAltComponentsAction implements Action {
         pstmt.execute();
 
         // insert all items in a single new group...
-        progressiveITM04 = ProgressiveUtils.getInternalProgressive("ITM04_ALTERNATIVE_ITEMS", "PROGRESSIVE", conn);
+        progressiveITM04 = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01ITM04(),"ITM04_ALTERNATIVE_ITEMS", "PROGRESSIVE", conn);
         // insert current item into ITM04...
         AltComponentVO currVO = new AltComponentVO();
         currVO.setCompanyCodeSys01ITM04(vo.getCompanyCodeSys01ITM04());

@@ -90,7 +90,7 @@ public class InsertManufactureAction implements Action {
 
       ManufactureVO vo = (ManufactureVO)inputPar;
       vo.setEnabledPRO01("Y");
-      vo.setProgressiveSys10PRO01(TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn));
+      vo.setProgressiveSys10PRO01(TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01PRO01(),conn));
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01PRO01","COMPANY_CODE_SYS01");

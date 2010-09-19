@@ -17,6 +17,7 @@ import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.system.progressives.server.ProgressiveUtils;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -95,8 +96,8 @@ public class InsertManufacturePhasesAction implements Action {
 
       for(int i=0;i<vos.size();i++) {
         vo = (ManufacturePhaseVO)vos.get(i);
-        vo.setProgressiveSys10PRO02(TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn));
-        vo.setProgressivePRO02(ProgressiveUtils.getInternalProgressive("PRO02_MANUFACTURE_PHASES","PROGRESSIVE",conn));
+        vo.setProgressiveSys10PRO02(TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01PRO02(),conn));
+        vo.setProgressivePRO02(CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01PRO02(),"PRO02_MANUFACTURE_PHASES","PROGRESSIVE",conn));
 
         Map attribute2dbField = new HashMap();
         attribute2dbField.put("companyCodeSys01PRO02","COMPANY_CODE_SYS01");

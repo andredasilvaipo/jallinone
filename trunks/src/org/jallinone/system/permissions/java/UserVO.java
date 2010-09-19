@@ -44,6 +44,7 @@ public class UserVO extends ValueObjectImpl {
   private String usernameCreateSYS03;
   private String oldUsernameSYS03;
   private String employeeCodeSCH01;
+  private String defCompanyCodeSys01SYS03;
 
 
   public UserVO() {
@@ -121,6 +122,12 @@ public class UserVO extends ValueObjectImpl {
   }
   public void setEmployeeCodeSCH01(String employeeCodeSCH01) {
     this.employeeCodeSCH01 = employeeCodeSCH01;
+  }
+  public String getDefCompanyCodeSys01SYS03() {
+    return defCompanyCodeSys01SYS03;
+  }
+  public void setDefCompanyCodeSys01SYS03(String defCompanyCodeSys01SYS03) {
+    this.defCompanyCodeSys01SYS03 = defCompanyCodeSys01SYS03;
   }
 
 }

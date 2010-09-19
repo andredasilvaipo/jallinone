@@ -17,6 +17,7 @@ import org.openswing.swing.message.send.java.LookupValidationParams;
 import org.jallinone.sales.customers.java.GridCustomerVO;
 import org.jallinone.sales.pricelist.server.ValidatePricelistCodeAction;
 import org.jallinone.sales.pricelist.java.PricelistVO;
+import java.math.BigDecimal;
 
 
 /**
@@ -404,6 +405,20 @@ public class LoadCompanyParamsAction implements Action {
       rset = pstmt.executeQuery();
       while(rset.next()) {
         vo.setSaleSectionalDOC01(rset.getString(1));
+      }
+      rset.close();
+
+
+      // retrieve initial value for progressives...
+      pstmt.close();
+      pstmt = conn.prepareStatement(
+          "select VALUE from SYS21_COMPANY_PARAMS where SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? "
+      );
+      pstmt.setString(1,companyCode);
+      pstmt.setString(2,ApplicationConsts.INITIAL_VALUE);
+      rset = pstmt.executeQuery();
+      while(rset.next()) {
+        vo.setInitialValueSYS21(new BigDecimal(rset.getString(1)));
       }
       rset.close();
 

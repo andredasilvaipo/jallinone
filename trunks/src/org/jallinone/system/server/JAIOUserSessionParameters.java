@@ -68,6 +68,9 @@ public class JAIOUserSessionParameters extends UserSessionParameters {
   /** employee company code */
   private String companyCodeSys01SYS03;
 
+  /** default company code */
+  private String defCompanyCodeSys01SYS03;
+
 
   public JAIOUserSessionParameters() {
   }
@@ -240,6 +243,12 @@ public class JAIOUserSessionParameters extends UserSessionParameters {
    */
   public final void setCompanyCodeSys01SYS03(String companyCodeSys01SYS03) {
     this.companyCodeSys01SYS03 = companyCodeSys01SYS03;
+  }
+  public String getDefCompanyCodeSys01SYS03() {
+    return defCompanyCodeSys01SYS03;
+  }
+  public void setDefCompanyCodeSys01SYS03(String defCompanyCodeSys01SYS03) {
+    this.defCompanyCodeSys01SYS03 = defCompanyCodeSys01SYS03;
   }
 
 }

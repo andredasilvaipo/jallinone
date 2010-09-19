@@ -16,6 +16,7 @@ import org.jallinone.commons.server.CustomizeQueryUtil;
 import org.jallinone.system.progressives.server.ProgressiveUtils;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 
@@ -91,18 +92,18 @@ public class InsertSubjectHierarchyAction implements Action {
       SubjectHierarchyVO vo = (SubjectHierarchyVO)inputPar;
 
       // insert record in SYS10...
-      BigDecimal progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+      BigDecimal progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01REG08(),conn);
       vo.setProgressiveSys10REG08(progressiveSYS10);
 
       // insert into HIE02...
-      vo.setProgressiveHie02REG08( ProgressiveUtils.getInternalProgressive("HIE02_HIERARCHIES","PROGRESSIVE",conn) );
-      pstmt = conn.prepareStatement("insert into HIE02_HIERARCHIES(PROGRESSIVE,ENABLED) values(?,'Y')");
+      vo.setProgressiveHie02REG08( CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01REG08(),"HIE02_HIERARCHIES","PROGRESSIVE",conn) );
+      pstmt = conn.prepareStatement("insert into HIE02_HIERARCHIES(PROGRESSIVE,COMPANY_CODE_SYS01,ENABLED) values(?,'"+vo.getCompanyCodeSys01REG08()+"','Y')");
       pstmt.setBigDecimal(1,vo.getProgressiveHie02REG08());
       pstmt.execute();
       pstmt.close();
 
       // insert into HIE01...
-      BigDecimal progressiveHIE01 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+      BigDecimal progressiveHIE01 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01REG08(),conn);
       pstmt = conn.prepareStatement("insert into HIE01_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE02,LEV,ENABLED) values(?,?,0,'Y')");
       pstmt.setBigDecimal(1,progressiveHIE01);
       pstmt.setBigDecimal(2,vo.getProgressiveHie02REG08());

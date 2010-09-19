@@ -4,6 +4,7 @@ import java.sql.*;
 import java.math.BigDecimal;
 import org.jallinone.system.progressives.server.ProgressiveUtils;
 import org.openswing.swing.logger.server.*;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -37,20 +38,31 @@ import org.openswing.swing.logger.server.*;
 public class TranslationUtils {
 
 
+//  /**
+//   * Insert a record in SYS10 table for each language defined in SYS09.
+//   * @param description description to insert
+//   * @param conn database connection
+//   * @return new progressive relative to SYS10
+//   */
+//  public static final BigDecimal insertTranslations(String description,Connection conn) throws Exception {
+//    return insertTranslations(description,null,conn);
+//  }
+
   /**
    * Insert a record in SYS10 table for each language defined in SYS09.
    * @param description description to insert
+   * @param companyCodeSys01 (optional) company code of the table having the PROGRESSIVE_SYS10 field
    * @param conn database connection
    * @return new progressive relative to SYS10
    */
-  public static final BigDecimal insertTranslations(String description,Connection conn) throws Exception {
-    BigDecimal progressive = ProgressiveUtils.getInternalProgressive("SYS10_TRANSLATIONS","PROGRESSIVE",conn);
+  public static final BigDecimal insertTranslations(String description,String companyCodeSys01,Connection conn) throws Exception {
+    BigDecimal progressive = CompanyProgressiveUtils.getInternalProgressive(companyCodeSys01,"SYS10_TRANSLATIONS","PROGRESSIVE",conn);
     Statement stmt = null;
     try {
       stmt = conn.createStatement();
       stmt.execute(
-        "insert into SYS10_TRANSLATIONS(PROGRESSIVE,LANGUAGE_CODE,DESCRIPTION) "+
-        "select "+progressive+",LANGUAGE_CODE,'"+description+"' FROM SYS09_LANGUAGES where ENABLED='Y'"
+        "insert into SYS10_TRANSLATIONS(PROGRESSIVE,LANGUAGE_CODE,DESCRIPTION,COMPANY_CODE_SYS01) "+
+        "select "+progressive+",LANGUAGE_CODE,'"+description+"','"+companyCodeSys01+"' FROM SYS09_LANGUAGES where ENABLED='Y'"
       );
     }
     finally {

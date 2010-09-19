@@ -41,6 +41,7 @@ public class HierarchyLevelVO extends ValueObjectImpl {
   private java.math.BigDecimal levelHIE01;
   private String descriptionSYS10;
   private String enabledHIE01;
+  private java.math.BigDecimal progressiveHie01HIE02;
 
 
   public HierarchyLevelVO() {
@@ -82,6 +83,12 @@ public class HierarchyLevelVO extends ValueObjectImpl {
   }
   public void setEnabledHIE01(String enabledHIE01) {
     this.enabledHIE01 = enabledHIE01;
+  }
+  public void setProgressiveHie01HIE02(java.math.BigDecimal progressiveHie01HIE02) {
+    this.progressiveHie01HIE02 = progressiveHie01HIE02;
+  }
+  public java.math.BigDecimal getProgressiveHie01HIE02() {
+    return progressiveHie01HIE02;
   }
 
 }

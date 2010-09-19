@@ -25,6 +25,7 @@ import org.jallinone.events.server.GenericEvent;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
 import org.jallinone.events.server.*;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -240,7 +241,7 @@ public class AddMovementBean {
             "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15 "+
             ") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       pstmt = conn.prepareStatement(sql);
-      BigDecimal progressiveWAR02 = ProgressiveUtils.getInternalProgressive("WAR02_WAREHOUSE_MOVEMENTS","PROGRESSIVE",conn);
+      BigDecimal progressiveWAR02 = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01WAR02(),"WAR02_WAREHOUSE_MOVEMENTS","PROGRESSIVE",conn);
       pstmt.setBigDecimal(1,progressiveWAR02);
       pstmt.setString(2,vo.getCompanyCodeSys01WAR02());
       pstmt.setString(3,vo.getWarehouseCodeWar01WAR02());

@@ -16,6 +16,7 @@ import org.jallinone.system.progressives.server.ProgressiveUtils;
 import org.jallinone.system.translations.server.TranslationUtils;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -77,9 +78,9 @@ public class InsertWarehouseAction implements Action {
 
       // generate PROGRESSIVE_HIE02 value...
       stmt = conn.createStatement();
-      BigDecimal progressiveHIE02 = ProgressiveUtils.getInternalProgressive("HIE02_HIERARCHIES","PROGRESSIVE",conn);
-      BigDecimal progressiveHIE01 = TranslationUtils.insertTranslations("",conn); // the root has no description as default...
-      stmt.execute("INSERT INTO HIE02_HIERARCHIES(PROGRESSIVE,ENABLED) VALUES("+progressiveHIE02+",'Y')");
+      BigDecimal progressiveHIE02 = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01WAR01(),"HIE02_HIERARCHIES","PROGRESSIVE",conn);
+      BigDecimal progressiveHIE01 = TranslationUtils.insertTranslations("",vo.getCompanyCodeSys01WAR01(),conn); // the root has no description as default...
+      stmt.execute("INSERT INTO HIE02_HIERARCHIES(PROGRESSIVE,COMPANY_CODE_SYS01,ENABLED) VALUES("+progressiveHIE02+",'"+vo.getCompanyCodeSys01WAR01()+"','Y')");
       stmt.execute("INSERT INTO HIE01_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE02,LEV,ENABLED) VALUES("+progressiveHIE01+","+progressiveHIE02+",0,'Y')");
       stmt.execute("UPDATE HIE02_HIERARCHIES SET PROGRESSIVE_HIE01="+progressiveHIE01+" WHERE PROGRESSIVE="+progressiveHIE02);
       vo.setProgressiveHie02WAR01(progressiveHIE02);

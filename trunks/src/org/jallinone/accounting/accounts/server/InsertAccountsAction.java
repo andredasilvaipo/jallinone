@@ -127,7 +127,7 @@ public class InsertAccountsAction implements EventAction {
           vo.setCanDelACC02(new Boolean(true));
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ACC02(),conn);
         vo.setProgressiveSys10ACC02(progressiveSYS10);
 
         // insert into ACC02...

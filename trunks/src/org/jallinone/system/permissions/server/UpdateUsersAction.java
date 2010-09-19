@@ -97,6 +97,7 @@ public class UpdateUsersAction implements Action {
       attribute2dbField.put("progressiveReg04SYS03","PROGRESSIVE_REG04");
       attribute2dbField.put("usernameCreateSYS03","USERNAME_CREATE");
       attribute2dbField.put("usernameSYS03","USERNAME");
+      attribute2dbField.put("defCompanyCodeSys01SYS03","DEF_COMPANY_CODE_SYS01");
 
       HashSet pkAttrs = new HashSet();
       pkAttrs.add("usernameSYS03");

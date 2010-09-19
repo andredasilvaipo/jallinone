@@ -100,7 +100,7 @@ public class InsertOperationsAction implements Action {
         if (vo.getCompanyCodeSys01PRO04()==null)
           vo.setCompanyCodeSys01PRO04(companyCode);
         vo.setEnabledPRO04("Y");
-        vo.setProgressiveSys10PRO04(TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),conn));
+        vo.setProgressiveSys10PRO04(TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01PRO04(),conn));
 
         Map attribute2dbField = new HashMap();
         attribute2dbField.put("companyCodeSys01PRO04","COMPANY_CODE_SYS01");

@@ -1,6 +1,7 @@
 package org.jallinone.system.java;
 
 import org.openswing.swing.message.receive.java.*;
+import java.math.BigDecimal;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -66,6 +67,8 @@ public class CompanyParametersVO extends ValueObjectImpl {
   private java.sql.Timestamp afternoonEndHourSCH02;
 
   private String saleSectionalDOC01;
+
+  private BigDecimal initialValueSYS21;
 
 
   public CompanyParametersVO() {
@@ -263,6 +266,12 @@ public class CompanyParametersVO extends ValueObjectImpl {
   }
   public void setSaleSectionalDOC01(String saleSectionalDOC01) {
     this.saleSectionalDOC01 = saleSectionalDOC01;
+  }
+  public BigDecimal getInitialValueSYS21() {
+    return initialValueSYS21;
+  }
+  public void setInitialValueSYS21(BigDecimal initialValueSYS21) {
+    this.initialValueSYS21 = initialValueSYS21;
   }
 
 }

@@ -18,6 +18,7 @@ import org.openswing.swing.message.send.java.LookupValidationParams;
 import org.jallinone.production.orders.java.*;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 
 
 /**
@@ -94,7 +95,7 @@ public class InsertProdOrderAction implements Action {
         vo.setCompanyCodeSys01DOC22(companyCode);
 
       // generate internal progressive for doc. number...
-      vo.setDocNumberDOC22(ProgressiveUtils.getInternalProgressive("DOC22_PRODUCTION_ORDER","DOC_NUMBER",conn));
+      vo.setDocNumberDOC22(CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01DOC22(),"DOC22_PRODUCTION_ORDER","DOC_NUMBER",conn));
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01DOC22","COMPANY_CODE_SYS01");
