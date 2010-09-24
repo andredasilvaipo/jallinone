@@ -13,12 +13,11 @@ import org.openswing.swing.logger.server.*;
 import org.openswing.swing.message.receive.java.*;
 import org.openswing.swing.message.send.java.*;
 import org.openswing.swing.server.*;
-import java.math.BigDecimal;
 
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
- * <p>Description: Bean used to load an ETL process defined in SYS23 table.</p>
+ * <p>Description: Bean used to load ETL processes defined in SYS23 table.</p>
  * <p>Copyright: Copyright (C) 2006 Mauro Carniel</p>
  *
  * <p> This file is part of JAllInOne ERP/CRM application.
@@ -44,24 +43,37 @@ import java.math.BigDecimal;
  * @author Mauro Carniel
  * @version 1.0
  */
-public class LoadETLProcessBean {
+public class LoadETLProcessesBean {
 
 
-  public LoadETLProcessBean() {}
+  public LoadETLProcessesBean() {}
 
 
   /**
    * Business logic to execute.
    */
-  public final Response loadETLProcess(Connection conn,BigDecimal progressiveSYS23,UserSessionParameters userSessionPars) {
+  public final Response loadETLProcesses(Connection conn,GridParams gridParams,UserSessionParameters userSessionPars) {
     try {
+      // retrieve companies list...
+      String companies = "";
+      if (gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01)!=null) {
+        companies = "'"+gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01)+"'";
+      }
+      else if (userSessionPars!=null) {
+        ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("IMPORT_DATA");
+        for(int i=0;i<companiesList.size();i++)
+          companies += "'"+companiesList.get(i).toString()+"',";
+        companies = companies.substring(0,companies.length()-1);
+      }
 
       String sql =
           "SELECT SYS23_ETL_PROCESSES.FILE_FORMAT,SYS23_ETL_PROCESSES.CLASS_NAME,SYS23_ETL_PROCESSES.COMPANY_CODE_SYS01,"+
           "SYS23_ETL_PROCESSES.SCHEDULING_TYPE,SYS23_ETL_PROCESSES.START_TIME,SYS23_ETL_PROCESSES.FILENAME,"+
           "SYS23_ETL_PROCESSES.SUB_TYPE_VALUE,SYS23_ETL_PROCESSES.SUB_TYPE_VALUE2,SYS23_ETL_PROCESSES.LEVELS_SEP,SYS23_ETL_PROCESSES.PROGRESSIVE_HIE02,"+
           "SYS23_ETL_PROCESSES.PROGRESSIVE,SYS23_ETL_PROCESSES.DESCRIPTION "+
-          "FROM SYS23_ETL_PROCESSES WHERE SYS23_ETL_PROCESSES.PROGRESSIVE=?";
+          "FROM SYS23_ETL_PROCESSES ";
+      if (companies.length()>0)
+        sql += " WHERE SYS23_ETL_PROCESSES.COMPANY_CODE_SYS01 in ("+companies+")";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("fileFormatSYS23","SYS23_ETL_PROCESSES.FILE_FORMAT");
@@ -78,7 +90,6 @@ public class LoadETLProcessBean {
       attribute2dbField.put("descriptionSYS23","SYS23_ETL_PROCESSES.DESCRIPTION");
 
       ArrayList values = new ArrayList();
-      values.add(progressiveSYS23);
 
 
       // read from SYS23 table...
@@ -92,14 +103,17 @@ public class LoadETLProcessBean {
           "Y",
           "N",
           null,
+          gridParams,
           true
       );
 
+
     }
     catch (Throwable ex) {
-      Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"executeCommand","Error while fetching an ETL process",ex);
+      Logger.error(userSessionPars!=null?userSessionPars.getUsername():null,this.getClass().getName(),"loadETLProcesses","Error while fetching ETL processes list",ex);
       return new ErrorResponse(ex.getMessage());
     }
+
   }
 
 

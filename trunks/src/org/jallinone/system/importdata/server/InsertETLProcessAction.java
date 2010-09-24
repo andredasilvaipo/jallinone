@@ -20,6 +20,7 @@ import org.jallinone.system.importdata.java.ETLProcessVO;
 import org.jallinone.system.importdata.java.ETLProcessFieldVO;
 import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 import org.jallinone.system.importdata.java.SelectableFieldVO;
+import org.jallinone.system.scheduler.server.ETLProcessesScheduler;
 
 
 /**
@@ -124,6 +125,7 @@ public class InsertETLProcessAction implements Action {
       attribute2dbField.put("startTimeSYS23","START_TIME");
       attribute2dbField.put("filenameSYS23","FILENAME");
       attribute2dbField.put("subTypeValueSYS23","SUB_TYPE_VALUE");
+      attribute2dbField.put("subTypeValue2SYS23","SUB_TYPE_VALUE2");
       attribute2dbField.put("levelsSepSYS23","LEVELS_SEP");
       attribute2dbField.put("progressiveHIE02","PROGRESSIVE_HIE02");
       attribute2dbField.put("progressiveSYS23","PROGRESSIVE");
@@ -225,6 +227,8 @@ public class InsertETLProcessAction implements Action {
         inputPar,
         answer
       ));
+
+      ETLProcessesScheduler.getInstance().restartProcesses();
 
       return answer;
     }

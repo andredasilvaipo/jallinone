@@ -89,11 +89,19 @@ public class ValidateSupplierPricelistCodeAction implements Action {
       ));
 
       String sql =
-          "select PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01,PUR03_SUPPLIER_PRICELISTS.PRICELIST_CODE,PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,PUR03_SUPPLIER_PRICELISTS.CURRENCY_CODE_REG03 from PUR03_SUPPLIER_PRICELISTS,SYS10_TRANSLATIONS where "+
+          "select PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01,PUR03_SUPPLIER_PRICELISTS.PRICELIST_CODE,"+
+          "PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
+          "PUR03_SUPPLIER_PRICELISTS.CURRENCY_CODE_REG03,REG04_SUBJECTS.NAME_1 "+
+          "from PUR03_SUPPLIER_PRICELISTS,SYS10_TRANSLATIONS,REG04_SUBJECTS "+
+          "where "+
           "PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "PUR03_SUPPLIER_PRICELISTS.PRICELIST_CODE=? and PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01=? and "+
-          "PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_REG04=?";
+          "REG04_SUBJECTS.COMPANY_CODE_SYS01=PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01 AND "+
+          "REG04_SUBJECTS.PROGRESSIVE=PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_REG04 ";
+
+      if (validationPars.getLookupValidationParameters().get(ApplicationConsts.PROGRESSIVE_REG04)!=null)
+        sql += " and PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_REG04=?";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01PUR03","PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01");
@@ -102,12 +110,14 @@ public class ValidateSupplierPricelistCodeAction implements Action {
       attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveSys10PUR03","PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10");
       attribute2dbField.put("currencyCodeReg03PUR03","PUR03_SUPPLIER_PRICELISTS.CURRENCY_CODE_REG03");
+      attribute2dbField.put("name_1REG04","REG04_SUBJECTS.NAME_1");
 
       ArrayList values = new ArrayList();
       values.add(serverLanguageId);
       values.add(validationPars.getCode());
       values.add( validationPars.getLookupValidationParameters().get(ApplicationConsts.COMPANY_CODE_SYS01) );
-      values.add( validationPars.getLookupValidationParameters().get(ApplicationConsts.PROGRESSIVE_REG04) );
+      if (validationPars.getLookupValidationParameters().get(ApplicationConsts.PROGRESSIVE_REG04)!=null)
+        values.add( validationPars.getLookupValidationParameters().get(ApplicationConsts.PROGRESSIVE_REG04) );
 
       // read from PUR03 table...
       Response answer = CustomizeQueryUtil.getQuery(

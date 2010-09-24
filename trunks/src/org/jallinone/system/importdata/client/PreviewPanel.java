@@ -97,15 +97,25 @@ public class PreviewPanel extends JPanel {
             if ("TXT".equals(fileFormat)) {
               vo.getField().setStartPosSYS24(new BigDecimal(x1/7+1));
               vo.getField().setEndPosSYS24(new BigDecimal(x2/7));
+              if(PreviewPanel.this.grid.getSelectedRow()+1<PreviewPanel.this.grid.getVOListTableModel().getRowCount()) {
+                PreviewPanel.this.grid.setRowSelectionInterval(PreviewPanel.this.grid.getSelectedRow()+1,PreviewPanel.this.grid.getSelectedRow()+1);
+              }
             }
             else {
-              if (x1==0)
+              if (x1==0) {
                 vo.getField().setPosSYS24(new BigDecimal(1));
+                if(PreviewPanel.this.grid.getSelectedRow()+1<PreviewPanel.this.grid.getVOListTableModel().getRowCount()) {
+                  PreviewPanel.this.grid.setRowSelectionInterval(PreviewPanel.this.grid.getSelectedRow()+1,PreviewPanel.this.grid.getSelectedRow()+1);
+                }
+              }
               else
                 for(int i=1;i<delimiters.size();i++) {
                   if (((Integer)delimiters.get(i-1)).intValue()==x1 &&
                       ((Integer)delimiters.get(i)).intValue()==x2) {
                     vo.getField().setPosSYS24(new BigDecimal(i+1));
+                    if(PreviewPanel.this.grid.getSelectedRow()+1<PreviewPanel.this.grid.getVOListTableModel().getRowCount()) {
+                      PreviewPanel.this.grid.setRowSelectionInterval(PreviewPanel.this.grid.getSelectedRow()+1,PreviewPanel.this.grid.getSelectedRow()+1);
+                    }
                     break;
                   }
                 }

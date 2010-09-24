@@ -57,7 +57,9 @@ public class RolesFrame extends InternalFrame {
   BorderLayout borderLayout3 = new BorderLayout();
   JSplitPane functionsSplitPane = new JSplitPane();
   JPanel functionsPanel = new JPanel();
+  JTabbedPane tab = new JTabbedPane();
   JPanel companiesPanel = new JPanel();
+  GridPermissionsPerRolePanel colsPanel = new GridPermissionsPerRolePanel();
   BorderLayout borderLayout4 = new BorderLayout();
   JPanel functionsButtonsPanel = new JPanel();
   JSplitPane treeGridSplitPane = new JSplitPane();
@@ -118,7 +120,7 @@ public class RolesFrame extends InternalFrame {
       treeDataLocator.setNodeNameAttribute("descriptionSYS10");
       treePanel.setTreeDataLocator(treeDataLocator);
 
-      functionsGridControl.setController(new RoleFunctionsController(functionsGridControl,companiesGridControl));
+      functionsGridControl.setController(new RoleFunctionsController(functionsGridControl,companiesGridControl,colsPanel));
       functionsGridControl.setGridDataLocator(functionsGridDataLocator);
       functionsGridDataLocator.setServerMethodName("loadRoleFunctions");
 
@@ -229,10 +231,13 @@ public class RolesFrame extends InternalFrame {
     rolesButtonsPanel.add(saveButton, null);
     rolesButtonsPanel.add(reloadButton, null);
     rolesButtonsPanel.add(deleteButton, null);
-    mainSplitPane.setDividerLocation(200);
+    mainSplitPane.setDividerLocation(180);
     roleDetailPanel.add(functionsSplitPane, BorderLayout.CENTER);
     functionsSplitPane.add(functionsPanel, JSplitPane.TOP);
-    functionsSplitPane.add(companiesPanel, JSplitPane.BOTTOM);
+    tab.add(companiesPanel,ClientSettings.getInstance().getResources().getResource("companies permissions"));
+    tab.add(colsPanel,ClientSettings.getInstance().getResources().getResource("columns permissions"));
+
+    functionsSplitPane.add(tab, JSplitPane.BOTTOM);
     functionsPanel.add(functionsButtonsPanel, BorderLayout.NORTH);
     functionsPanel.add(treeGridSplitPane, BorderLayout.CENTER);
     treeGridSplitPane.add(treePanel, JSplitPane.LEFT);

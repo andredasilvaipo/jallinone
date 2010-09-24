@@ -7,7 +7,7 @@
     <information>
       <title>jAllInOne</title>
       <description>jAllInOne - an ERP/CRM web application</description>
-      <vendor>Copyright (c) 2010 - Mauro Carniel</vendor>
+	  <vendor>MC</vendor>
       <icon href="appicon11.gif"/>
       <icon kind="splash" href="jAllInOne.jpg"/>
 

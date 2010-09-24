@@ -46,7 +46,6 @@ import org.openswing.swing.tree.java.OpenSwingTreeNode;
  * @author Mauro Carniel
  * @version 1.0
  */
-
 public class FunctionsTreeFrame extends InternalFrame {
 
   /** tree panel */

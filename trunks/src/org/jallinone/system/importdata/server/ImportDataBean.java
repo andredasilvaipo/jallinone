@@ -126,6 +126,10 @@ public class ImportDataBean {
             getFieldName(impVO.getSubTypeField(),tableName) != null) {
           params[k].add(processVO.getSubTypeValueSYS23());
         }
+        if (impVO.getSubTypeField2()!=null &&
+            getFieldName(impVO.getSubTypeField2(),tableName) != null) {
+          params[k].add(processVO.getSubTypeValue2SYS23());
+        }
       }
 
 
@@ -160,6 +164,13 @@ public class ImportDataBean {
             !alreadyAdded.contains(getFieldName(impVO.getSubTypeField(),tableName))) {
           insSQL += getFieldName(impVO.getSubTypeField(),tableName) + ",";
           alreadyAdded.add(getFieldName(impVO.getSubTypeField(),tableName));
+          count++;
+        }
+        if (impVO.getSubTypeField2()!=null &&
+            getFieldName(impVO.getSubTypeField2(),tableName) != null &&
+            !alreadyAdded.contains(getFieldName(impVO.getSubTypeField2(),tableName))) {
+          insSQL += getFieldName(impVO.getSubTypeField2(),tableName) + ",";
+          alreadyAdded.add(getFieldName(impVO.getSubTypeField2(),tableName));
           count++;
         }
         if (impVO.getProgressiveFieldName()!=null &&
@@ -238,11 +249,16 @@ public class ImportDataBean {
 //          updSQL += getFieldName(impVO.getHierarchyField(),tableName)+"=? and ";
 //          alreadyAdded.add(getFieldName(impVO.getHierarchyField(),tableName));
 //        }
-//        if (getFieldName(impVO.getSubTypeField(),tableName) != null &&
-//            !alreadyAdded.contains(getFieldName(impVO.getSubTypeField(),tableName))) {
-//          updSQL += getFieldName(impVO.getSubTypeField(),tableName) + "=? and ";
-//          alreadyAdded.add(getFieldName(impVO.getSubTypeField(),tableName));
-//        }
+        if (getFieldName(impVO.getSubTypeField(),tableName) != null &&
+            !alreadyAdded.contains(getFieldName(impVO.getSubTypeField(),tableName))) {
+          updSQL += getFieldName(impVO.getSubTypeField(),tableName) + "=? and ";
+          alreadyAdded.add(getFieldName(impVO.getSubTypeField(),tableName));
+        }
+        if (getFieldName(impVO.getSubTypeField2(),tableName) != null &&
+            !alreadyAdded.contains(getFieldName(impVO.getSubTypeField2(),tableName))) {
+          updSQL += getFieldName(impVO.getSubTypeField2(),tableName) + "=? and ";
+          alreadyAdded.add(getFieldName(impVO.getSubTypeField2(),tableName));
+        }
         it = impVO.getPkFields().iterator();
         while (it.hasNext()) {
           fieldName = it.next().toString();
@@ -294,9 +310,12 @@ public class ImportDataBean {
 //        if (getFieldName(impVO.getHierarchyField(),tableName) != null) {
 //          selSQL += getFieldName(impVO.getHierarchyField(),tableName)+"=? and ";
 //        }
-//        if (getFieldName(impVO.getSubTypeField(),tableName) != null) {
-//          selSQL += getFieldName(impVO.getSubTypeField(),tableName) + "=? and ";
-//        }
+        if (getFieldName(impVO.getSubTypeField(),tableName) != null) {
+          selSQL += getFieldName(impVO.getSubTypeField(),tableName) + "=? and ";
+        }
+        if (getFieldName(impVO.getSubTypeField2(),tableName) != null) {
+          selSQL += getFieldName(impVO.getSubTypeField2(),tableName) + "=? and ";
+        }
         it = impVO.getPkFields().iterator();
         while (it.hasNext()) {
           fieldName = it.next().toString();
@@ -395,6 +414,7 @@ public class ImportDataBean {
       Object value = null;
       BigDecimal progressive = null;
       Integer indexInt = null;
+      long notYetCommited = 0;
       while((row=proc.getNextRow(fieldsVO,impVO,classes))!=null) {
         rows++;
 
@@ -407,6 +427,13 @@ public class ImportDataBean {
           if (impVO.isSupportsCompanyCode()) {
             selPstmt[k].setObject(pos++,processVO.getCompanyCodeSys01SYS23());
           }
+          if (getFieldName(impVO.getSubTypeField(),tableName) != null) {
+            selPstmt[k].setObject(pos++,processVO.getSubTypeValueSYS23());
+          }
+          if (getFieldName(impVO.getSubTypeField2(),tableName) != null) {
+            selPstmt[k].setObject(pos++,processVO.getSubTypeValue2SYS23());
+          }
+
 //          for(int i=0;i<params[k].size();i++)
 //            selPstmt[k].setObject(pos++,params[k].get(i));
           it = impVO.getPkFields().iterator();
@@ -500,6 +527,13 @@ public class ImportDataBean {
             if (impVO.isSupportsCompanyCode()) {
               updPstmt[k].setObject(pos++,processVO.getCompanyCodeSys01SYS23());
             }
+            if (getFieldName(impVO.getSubTypeField(),tableName) != null) {
+              updPstmt[k].setObject(pos++,processVO.getSubTypeValueSYS23());
+            }
+            if (getFieldName(impVO.getSubTypeField2(),tableName) != null) {
+              updPstmt[k].setObject(pos++,processVO.getSubTypeValue2SYS23());
+            }
+
 //            for(int i=0;i<params[k].size();i++)
 //              updPstmt[k].setObject(pos++,params[k].get(i));
 
@@ -512,6 +546,7 @@ public class ImportDataBean {
             updPstmt[k].execute();
 
             rowsUpdated++;
+            notYetCommited++;
           }
           else {
             // record does not exist yet...
@@ -583,6 +618,11 @@ public class ImportDataBean {
                 !alreadyAdded.contains(getFieldName(impVO.getSubTypeField(),tableName))) {
               alreadyAdded.add(getFieldName(impVO.getSubTypeField(),tableName));
             }
+            if (impVO.getSubTypeField2()!=null &&
+                getFieldName(impVO.getSubTypeField2(),tableName) != null &&
+                !alreadyAdded.contains(getFieldName(impVO.getSubTypeField2(),tableName))) {
+              alreadyAdded.add(getFieldName(impVO.getSubTypeField2(),tableName));
+            }
             if (impVO.getProgressiveFieldName()!=null &&
                 getFieldName(impVO.getProgressiveFieldName(),tableName)!=null &&
                 !alreadyAdded.contains(getFieldName(impVO.getProgressiveFieldName(),tableName))) {
@@ -634,8 +674,8 @@ public class ImportDataBean {
             insPstmt[k].execute();
 
             rowsInserted++;
+            notYetCommited++;
           }
-
 
 
 
@@ -658,6 +698,11 @@ public class ImportDataBean {
 
         } // end for on tables...
 
+        if (notYetCommited>1000) {
+          notYetCommited = 0;
+          conn.commit();
+        }
+
       } // end while
 
 
@@ -672,7 +717,7 @@ public class ImportDataBean {
       msg += "\nRows read: "+rows+" - rows inserted: "+rowsInserted+" - rows updated: "+rowsUpdated;
 
       Logger.info(
-        userSessionPars.getUsername(),
+        userSessionPars!=null?userSessionPars.getUsername():null,
         this.getClass().getName(),
         "importData",
         msg
@@ -686,7 +731,7 @@ public class ImportDataBean {
       );
     }
     catch (Throwable ex) {
-      Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"importData",ex.getMessage(),ex);
+      Logger.error(userSessionPars!=null?userSessionPars.getUsername():null,this.getClass().getName(),"importData",ex.getMessage(),ex);
       return new ErrorResponse(ex.getMessage());
     }
     finally {
@@ -816,6 +861,8 @@ public class ImportDataBean {
 
 
   private String getFieldName(String tableAndFieldName,String tableName) {
+    if (tableAndFieldName==null)
+      return null;
     int index = tableAndFieldName.indexOf(tableName+".");
     if (index==-1)
       return null;

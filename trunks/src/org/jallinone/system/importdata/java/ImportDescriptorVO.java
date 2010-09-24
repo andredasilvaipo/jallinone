@@ -47,6 +47,9 @@ public class ImportDescriptorVO extends ValueObjectImpl {
   /** e.g. an item type */
   private String subTypeField;
 
+  /** e.g. a pricelist code */
+  private String subTypeField2;
+
   private boolean supportsCompanyCode;
 
   private LinkedHashMap progressiveSys10Fields = new LinkedHashMap();
@@ -54,7 +57,7 @@ public class ImportDescriptorVO extends ValueObjectImpl {
   private String hierarchyField;
 
   /** collection of pairs <field,default value for field> */
-  private LinkedHashMap defaultFields;
+  private LinkedHashMap defaultFields = new LinkedHashMap();
 
   /** table names where inserting/updating data, reported in the order to use when inserting data */
   private String[] tableNames;
@@ -147,6 +150,12 @@ public class ImportDescriptorVO extends ValueObjectImpl {
   }
   public void setFieldsToCopy(HashMap fieldsToCopy) {
     this.fieldsToCopy = fieldsToCopy;
+  }
+  public String getSubTypeField2() {
+    return subTypeField2;
+  }
+  public void setSubTypeField2(String subTypeField2) {
+    this.subTypeField2 = subTypeField2;
   }
 
 

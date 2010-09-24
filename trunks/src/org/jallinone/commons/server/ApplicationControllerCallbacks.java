@@ -5,6 +5,7 @@ import javax.servlet.ServletContext;
 import java.sql.*;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.startup.server.UpgradeBean;
+import org.jallinone.system.scheduler.server.ETLProcessesScheduler;
 //import net.sf.jasperreports.engine.util.JRProperties;
 
 
@@ -51,12 +52,18 @@ public class ApplicationControllerCallbacks extends ControllerCallbacks {
     // check for additional sql scripts...
     if (ConnectionManager.isConnectionSourceCreated()) {
       new UpgradeBean().maybeUpgradeDB(context);
+      ETLProcessesScheduler.getInstance().restartProcesses();
     }
+
+
 
 //    JRProperties.setPropertiesPath(context.getRealPath("/"));
 //    System.out.println("->"+context.getRealPath("/"));
   }
 
 
+  public void destroy(ServletContext context) {
+    ETLProcessesScheduler.getInstance().stopProcesses();
+  }
 
 }

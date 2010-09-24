@@ -92,7 +92,7 @@ public class LoadETLProcessFieldsBean {
 
     }
     catch (Throwable ex) {
-      Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"loadETLProcessFields","Error while fetching ETL process fields",ex);
+      Logger.error(userSessionPars!=null?userSessionPars.getUsername():null,this.getClass().getName(),"loadETLProcessFields","Error while fetching ETL process fields",ex);
       return new ErrorResponse(ex.getMessage());
     }
 

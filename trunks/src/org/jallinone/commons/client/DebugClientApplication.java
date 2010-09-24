@@ -82,6 +82,22 @@ public class DebugClientApplication extends ClientApplet {
 
     loadDomains();
 
+    // currently these are the supported languages...
+    Hashtable xmlFiles = new Hashtable();
+    xmlFiles.put("EN","Resources_en.xml");
+    xmlFiles.put("IT","Resources_it.xml");
+    xmlFiles.put("ES","Resources_es.xml");
+    xmlFiles.put("PTBR","Resources_PTBR.xml");
+
+    // initialize internationalization settings, according to user language identifier...
+    ClientSettings clientSettings = new ClientSettings(
+        new XMLResourcesFactory(xmlFiles,false),
+        domains,
+        new ButtonsAuthorizations(),
+        true
+    );
+    clientSettings.setLanguage("EN");
+
     // test if database is already created...
     VOResponse response = (VOResponse)ClientUtils.getData("databaseAlreadyExixts",new Object[0]);
     if (((Boolean)response.getVo()).booleanValue()) {

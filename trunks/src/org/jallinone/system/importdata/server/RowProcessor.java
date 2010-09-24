@@ -96,7 +96,7 @@ public abstract class RowProcessor {
         Long time = new Long(sdf.parse(obj.toString()).getTime());
         Constructor c = (Constructor)clazzCache.get(clazz);
         if (c==null) {
-          c = clazz.getConstructor(new Class[]{Long.class});
+          c = clazz.getConstructor(new Class[]{Long.TYPE});
           clazzCache.put(clazz,c);
         }
         return c.newInstance(new Object[]{time});
@@ -117,7 +117,7 @@ public abstract class RowProcessor {
         Long time = new Long(((java.util.Date)obj).getTime());
         Constructor c = (Constructor)clazzCache.get(clazz);
         if (c==null) {
-          c = clazz.getConstructor(new Class[]{Long.class});
+          c = clazz.getConstructor(new Class[]{Long.TYPE});
           clazzCache.put(clazz,c);
         }
         return c.newInstance(new Object[]{time});

@@ -62,6 +62,8 @@ public class DbConnVO extends ValueObjectImpl {
   private String useVariantType4;
   private String useVariantType5;
 
+  private boolean checkDbVersion;
+
 
   public DbConnVO() {
   }
@@ -230,6 +232,12 @@ public class DbConnVO extends ValueObjectImpl {
   }
   public void setUseVariantType1(String useVariantType1) {
     this.useVariantType1 = useVariantType1;
+  }
+  public boolean isCheckDbVersion() {
+    return checkDbVersion;
+  }
+  public void setCheckDbVersion(boolean checkDbVersion) {
+    this.checkDbVersion = checkDbVersion;
   }
 
 }

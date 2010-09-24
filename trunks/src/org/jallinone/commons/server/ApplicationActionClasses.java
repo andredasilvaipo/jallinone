@@ -71,6 +71,8 @@ import org.openswing.swing.server.*;
 import org.jallinone.system.translations.server.*;
 import org.jallinone.purchases.items.server.*;
 import org.jallinone.system.importdata.server.*;
+import org.jallinone.system.gridmanager.server.*;
+import org.jallinone.system.permissions.server.LoadGridPermissionsPerRoleAction;
 
 
 /**
@@ -762,6 +764,9 @@ public class ApplicationActionClasses extends ActionsCollection {
     a = new GetFolderContentAction(); put(a.getRequestName(),a);
     a = new StartETLProcessAction(); put(a.getRequestName(),a);
 
+    a = new DbGridPermissionsAction(); put(a.getRequestName(),a);
+    a = new LoadGridPermissionsPerRoleAction(); put(a.getRequestName(),a);
+    a = new UpdateGridPermissionsPerRoleAction(); put(a.getRequestName(),a);
 
 
 

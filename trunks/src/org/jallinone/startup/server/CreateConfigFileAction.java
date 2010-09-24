@@ -10,6 +10,7 @@ import org.jallinone.startup.java.*;
 import org.openswing.swing.logger.server.*;
 import org.openswing.swing.message.receive.java.*;
 import org.openswing.swing.server.*;
+import org.openswing.swing.message.receive.java.VOResponse;
 
 
 /**
@@ -106,6 +107,41 @@ public class CreateConfigFileAction implements Action {
       try {
         SQLExecutionBean executer = new SQLExecutionBean();
 
+        if (vo.isCheckDbVersion()) {
+          // check for db schema existence...
+          Statement stmt = null;
+          ResultSet rset = null;
+          try {
+            stmt = conn.createStatement();
+            rset = stmt.executeQuery("SELECT VALUE FROM SYS11_APPLICATION_PARS WHERE PARAM_CODE='VERSION'");
+            if (rset.next()) {
+              new UpgradeBean().maybeUpgradeDB(servletContext);
+              return new VOResponse(Boolean.TRUE);
+            }
+            else {
+              removeConfigIni();
+              return new VOResponse(Boolean.FALSE);
+            }
+          }
+          catch (Exception ex2) {
+            removeConfigIni();
+          }
+          finally {
+            try {
+              rset.close();
+            }
+            catch (Exception ex4) {
+            }
+            try {
+              stmt.close();
+            }
+            catch (Exception ex5) {
+            }
+          }
+          return new VOResponse(Boolean.FALSE);
+        }
+
+
         // read file of database structures...
         executer.executeSQL(conn,vo,"defsql.ini");
 
@@ -175,6 +211,27 @@ public class CreateConfigFileAction implements Action {
       return false;
     }
   }
+
+
+  /**
+   * Remove "pooler.ini" file.
+   */
+  private void removeConfigIni() {
+    try {
+      File f = new File(this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"pooler.ini");
+      f.delete();
+    }
+    catch (Throwable ex) {
+      Logger.error(
+          "NONAME",
+          this.getClass().getName(),
+          "removeConfigIni",
+          "Error while removing connection pooler .ini file",
+          ex
+      );
+    }
+  }
+
 
 
 }

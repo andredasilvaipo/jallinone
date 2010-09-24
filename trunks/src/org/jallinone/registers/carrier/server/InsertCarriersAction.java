@@ -101,7 +101,7 @@ public class InsertCarriersAction implements Action {
         vo.setEnabledREG09("Y");
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(((JAIOUserSessionParameters)userSessionPars).getDefCompanyCodeSys01SYS03(),vo.getDescriptionSYS10(),conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),((JAIOUserSessionParameters)userSessionPars).getDefCompanyCodeSys01SYS03(),conn);
         vo.setProgressiveSys10REG09(progressiveSYS10);
 
         // insert into REG09...

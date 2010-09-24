@@ -14,6 +14,7 @@ import org.jallinone.system.importdata.java.ETLProcessFieldVO;
 import org.jallinone.system.importdata.java.SelectableFieldVO;
 import org.openswing.swing.message.receive.java.ErrorResponse;
 import org.openswing.swing.message.receive.java.VOResponse;
+import org.openswing.swing.client.GridControl;
 
 
 /**
@@ -46,11 +47,13 @@ import org.openswing.swing.message.receive.java.VOResponse;
  */
 public class ETLProcessController extends FormController {
 
+  private GridControl parentGrid = null;
   private ETLProcessFrame frame = null;
   private ETLProcessVO vo = null;
 
 
-  public ETLProcessController(ETLProcessVO vo) {
+  public ETLProcessController(GridControl parentGrid,ETLProcessVO vo) {
+    this.parentGrid = parentGrid;
     this.vo = vo;
     this.frame = new ETLProcessFrame(this);
 
@@ -163,6 +166,7 @@ public class ETLProcessController extends FormController {
       frame.getGrid().setMode(Consts.READONLY);
       frame.getButtonExecNow().setEnabled(true);
       ETLProcessController.this.vo = (ETLProcessVO)((VOResponse)res).getVo();
+      parentGrid.reloadCurrentBlockOfData();
     }
     return res;
   }

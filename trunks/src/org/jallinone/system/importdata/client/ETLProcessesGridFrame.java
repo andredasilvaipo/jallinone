@@ -157,7 +157,7 @@ public class ETLProcessesGridFrame extends InternalFrame {
   }
 
   void insertButton_actionPerformed(ActionEvent e) {
-    new ETLProcessController(null);
+    new ETLProcessController(grid,null);
   }
 
 }

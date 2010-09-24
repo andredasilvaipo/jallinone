@@ -1584,6 +1584,17 @@
   <object key="records updated" value="Aggiornamenti" />
   <object key="data import completed" value="Importazione dati completata" />
   <object key="levels separator" value="Separatore liv.ger." />
+  <object key="companies permissions" value="Permessi per societ&#224;" />
+  <object key="columns permissions" value="Permessi per colonna di griglia" />
+  <object key="editableInIns" value="Ins." />
+  <object key="editableInEdit" value="Modif." />
+  <object key="colRequired" value="Obbl." />
+  <object key="colVisibile" value="Visib." />
+
+  <object key="import prices" value="Importaz. prezzi" />
+  <object key="for supplier" value="per fornitore" />
+  <object key="in pricelist" value="nel listino" />
+  <object key="import sale prices" value="Importaz. prezzi di vend." />
 
 
 <!-- application translations -->

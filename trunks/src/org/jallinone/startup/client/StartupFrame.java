@@ -11,6 +11,7 @@ import org.jallinone.commons.client.ClientApplet;
 import org.openswing.swing.util.client.ClientSettings;
 import java.math.BigDecimal;
 import org.openswing.swing.client.*;
+import org.openswing.swing.message.receive.java.VOResponse;
 
 
 /**
@@ -208,6 +209,7 @@ public class StartupFrame extends JFrame {
     text3Label.setText("an empty database schema to host JAllInOne data.");
     imagePanel.setPreferredSize(new Dimension(180, 180));
     introPanel.setBorder(null);
+    introPanel.setOpaque(false);
     mainPanel.setBorder(BorderFactory.createEtchedBorder());
     buttonsPanel.setLayout(flowLayout1);
     flowLayout1.setAlignment(FlowLayout.RIGHT);
@@ -495,6 +497,25 @@ public class StartupFrame extends JFrame {
       pos++;
     }
     else if (pos==1) {
+      DbConnVO vo = createConn();
+      vo.setCheckDbVersion(true);
+      Response res = ClientUtils.getData("createConfigFile",vo);
+      if (!res.isError()) {
+        Boolean b = (Boolean)((VOResponse)res).getVo();
+        if (b.booleanValue()) {
+
+          pos=4;
+          cardLayout1.show(mainPanel,"END");
+          dxButton.setEnabled(false);
+          exitButton.setEnabled(false);
+          sxButton.setEnabled(false);
+          endLabel.setText("Database structure creation has successfully completed.");
+          dxButton.setText("End");
+          dxButton.setEnabled(true);
+          return;
+        }
+      }
+
       sxButton.setEnabled(true);
       cardLayout1.show(mainPanel,"APPSETUP");
       pos++;
@@ -730,7 +751,7 @@ public class StartupFrame extends JFrame {
           response.getErrorMessage(),
           "Error",
           JOptionPane.ERROR_MESSAGE
-          );
+      );
       return false;
     }
     else

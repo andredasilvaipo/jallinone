@@ -109,6 +109,7 @@ public class UserLoginAction extends LoginAction {
           name_2 = rset2.getString(2);
           empCode = rset2.getString(3);
           rset2.close();
+          pstmt2.close();
         }
 
 
@@ -134,6 +135,17 @@ public class UserLoginAction extends LoginAction {
         ((JAIOUserSessionParameters)userSessionPars).setEmployeeCode(empCode);
         ((JAIOUserSessionParameters)userSessionPars).setCompanyCodeSys01SYS03(companyCodeSys01SYS03);
         ((JAIOUserSessionParameters)userSessionPars).setDefCompanyCodeSys01SYS03(defCompanyCodeSys01SYS03);
+
+        HashSet functionCodesBasedOnCompany = new HashSet();
+        pstmt2 = conn.prepareStatement(
+            "select FUNCTION_CODE FROM SYS06_FUNCTIONS WHERE USE_COMPANY_CODE='Y'"
+        );
+        rset2 = pstmt2.executeQuery();
+        while(rset2.next())
+          functionCodesBasedOnCompany.add(rset2.getString(1));
+        rset2.close();
+        pstmt2.close();
+        ((JAIOUserSessionParameters)userSessionPars).setFunctionCodesBasedOnCompany(functionCodesBasedOnCompany);
 
         authenticatedIds.add(tr.getSessionId());
         return tr;

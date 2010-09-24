@@ -50,13 +50,17 @@ public class RoleFunctionsController extends GridController {
   /** role functions grid */
   private GridControl functionsGridControl = null;
 
-  /** role function companies grid */
+  /** grid used to define function permissions per company, fixed a role and a function */
   private GridControl companiesGridControl = null;
 
+  /** grid used to define columns permissions, fixed a role and a function */
+  private GridPermissionsPerRolePanel colsPanel = null;
 
-  public RoleFunctionsController(GridControl functionsGridControl,GridControl companiesGridControl) {
+
+  public RoleFunctionsController(GridControl functionsGridControl,GridControl companiesGridControl,GridPermissionsPerRolePanel colsPanel) {
     this.functionsGridControl = functionsGridControl;
     this.companiesGridControl = companiesGridControl;
+    this.colsPanel = colsPanel;
   }
 
 
@@ -156,6 +160,7 @@ public class RoleFunctionsController extends GridController {
    */
   public void loadDataCompleted(boolean error) {
     companiesGridControl.clearData();
+    colsPanel.getGrid().clearData();
   }
 
 
@@ -171,10 +176,13 @@ public class RoleFunctionsController extends GridController {
         companiesGridControl.getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_SYS04,vo.getProgressiveSys04SYS07());
         companiesGridControl.getOtherGridParams().put(ApplicationConsts.FUNCTION_CODE_SYS06,vo.getFunctionCodeSys06SYS07());
         companiesGridControl.reloadData();
+
       }
       else {
         companiesGridControl.clearData();
       }
+
+      colsPanel.reloadGrid(vo.getProgressiveSys04SYS07(),vo.getFunctionCodeSys06SYS07());
     }
   }
 

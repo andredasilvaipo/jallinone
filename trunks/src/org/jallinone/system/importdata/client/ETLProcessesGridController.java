@@ -57,7 +57,7 @@ public class ETLProcessesGridController extends GridController {
    * @param persistentObject v.o. related to the selected row
    */
   public void doubleClick(int rowNumber,ValueObject persistentObject) {
-    new ETLProcessController((ETLProcessVO)persistentObject);
+    new ETLProcessController(gridFrame.getGrid(),(ETLProcessVO)persistentObject);
   }
 
 
@@ -67,7 +67,7 @@ public class ETLProcessesGridController extends GridController {
    * @return an ErrorResponse value object in case of errors, VOResponse if the operation is successfully completed
    */
   public Response deleteRecords(ArrayList persistentObjects) throws Exception {
-    return ClientUtils.getData("deleteETLProcesses",new Object[]{persistentObjects});
+    return ClientUtils.getData("deleteETLProcesses",persistentObjects);
   }
 
 

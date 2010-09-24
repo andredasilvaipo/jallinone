@@ -14,6 +14,7 @@ import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
 import org.jallinone.variants.java.VariantTypeVO;
 import org.jallinone.system.importdata.java.ETLProcessVO;
+import org.jallinone.system.scheduler.server.ETLProcessesScheduler;
 
 
 /**
@@ -122,6 +123,8 @@ public class DeleteETLProcessesAction implements Action {
         inputPar,
         answer
       ));
+
+      ETLProcessesScheduler.getInstance().restartProcesses();
 
       return answer;
     }

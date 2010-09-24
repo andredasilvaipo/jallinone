@@ -73,7 +73,7 @@ public class LoadLanguagesBean  {
       return new VOListResponse(list,false,list.size());
     }
     catch (Throwable ex) {
-      Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"loadLanguages","Error while fetching languages list",ex);
+      Logger.error(userSessionPars!=null?userSessionPars.getUsername():null,this.getClass().getName(),"loadLanguages","Error while fetching languages list",ex);
       return new ErrorResponse(ex.getMessage());
     }
     finally {

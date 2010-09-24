@@ -104,6 +104,12 @@ public class ExportRetailSaleOnFileBean  {
       if (programPath==null) {
         return new ErrorResponse(resources.getResource("retail sale export non allowed: receipt path has not been defined as user parameter."));
       }
+
+      // for demo only...
+      if (programPath.equals("NOPRINT")) {
+        return new VOResponse(Boolean.TRUE);
+      }
+
       programPath = programPath.replace('\\','/');
       String path = programPath.substring(0,programPath.lastIndexOf("/"));
 

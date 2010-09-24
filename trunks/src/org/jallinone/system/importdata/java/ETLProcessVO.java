@@ -42,6 +42,8 @@ public class ETLProcessVO extends ValueObjectImpl {
   /** e.g. an item type */
   private Object subTypeValueSYS23;
 
+  /** e.g. a pricelist code */
+  private Object subTypeValue2SYS23;
 
   /** separator to use when extracting hierarchy levels for a record, starting from a single field in the file */
   private String levelsSepSYS23;
@@ -129,5 +131,11 @@ public class ETLProcessVO extends ValueObjectImpl {
   }
   public void setDescriptionSYS23(String descriptionSYS23) {
     this.descriptionSYS23 = descriptionSYS23;
+  }
+  public Object getSubTypeValue2SYS23() {
+    return subTypeValue2SYS23;
+  }
+  public void setSubTypeValue2SYS23(Object subTypeValue2SYS23) {
+    this.subTypeValue2SYS23 = subTypeValue2SYS23;
   }
 }

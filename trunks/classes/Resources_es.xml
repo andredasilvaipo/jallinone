@@ -1588,7 +1588,7 @@
   <object key="initial value in progr" value="Initial value in progr" />
   <object key="default company" value="Default company" />
   <object key="etl processes" value="Import data processes" />
-  <object key="etl processes" value="Import data process" />
+  <object key="etl process" value="Import data process" />
   <object key="scheduler settings" value="Scheduler settings" />
   <object key="import settings" value="Import settings" />
   <object key="field.start" value="Start" />
@@ -1623,6 +1623,16 @@
   <object key="records updated" value="Records updated" />
   <object key="data import completed" value="Data import completed" />
   <object key="levels separator" value="Levels separator" />
+  <object key="companies permissions" value="Companies permissions" />
+  <object key="columns permissions" value="Columns permissions" />
+  <object key="editableInIns" value="Can ins." />
+  <object key="editableInEdit" value="Can edit" />
+  <object key="colRequired" value="Required" />
+  <object key="colVisibile" value="Visib." />
+  <object key="import prices" value="Import prices" />
+  <object key="for supplier" value="for supplier" />
+  <object key="in pricelist" value="in pricelist" />
+  <object key="import sale prices" value="Import sale prices" />
 
 
   <currencySymbol>&#8364;</currencySymbol>

@@ -1,9 +1,15 @@
 
 
-Release Notes 1.2.1
----------------------
+Release Notes 1.3
+-----------------
 
-Added "Data import" functionality, in order to initialize database (items, customers), starting from Xls, csv or txt files.
+Added "Data import" functionality, in order to initialize database (items, customers, pricelists), 
+starting from Xls, csv or txt files. Added scheduler feature in order to auto start ETL processes periodically.
+Improved customized windows: now it is possible to customize item detail per line of business (item type).
+Improved login dialog: now it is possible to store account and select a language directly when logon on.
+Improved grid: now it is possible to define which columns to show/edit for each grid/role, using Administration/Roles functionality.
+Improved setup window: now JAllInOne upgrades based on .war file can be managed simply by removing past version of JallInOne web app 
+and replacing it with the newer; after that, simply follow the installation wizard and specify db schema info.
 Fixed problem with currencies in ABC classification.
 Changes in some tables, in order to specify distinct internal counters per company.
 

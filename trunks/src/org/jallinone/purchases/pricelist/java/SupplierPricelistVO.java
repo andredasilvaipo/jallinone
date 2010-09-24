@@ -40,6 +40,7 @@ public class SupplierPricelistVO extends BaseValueObject {
   private String oldPricelistCodePur03PUR04;
   private java.math.BigDecimal progressiveReg04PUR03;
   private java.math.BigDecimal oldProgressiveReg04PUR03;
+  private String name_1REG04;
 
 
   public SupplierPricelistVO() {
@@ -91,6 +92,12 @@ public class SupplierPricelistVO extends BaseValueObject {
   }
   public void setOldProgressiveReg04PUR03(java.math.BigDecimal oldProgressiveReg04PUR03) {
     this.oldProgressiveReg04PUR03 = oldProgressiveReg04PUR03;
+  }
+  public String getName_1REG04() {
+    return name_1REG04;
+  }
+  public void setName_1REG04(String name_1REG04) {
+    this.name_1REG04 = name_1REG04;
   }
 
 }

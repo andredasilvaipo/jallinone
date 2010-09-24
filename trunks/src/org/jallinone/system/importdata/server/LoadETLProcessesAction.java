@@ -45,6 +45,7 @@ import org.openswing.swing.server.*;
  */
 public class LoadETLProcessesAction implements Action {
 
+  private LoadETLProcessesBean bean = new LoadETLProcessesBean();
 
   public LoadETLProcessesAction() {}
 
@@ -82,55 +83,7 @@ public class LoadETLProcessesAction implements Action {
 
       GridParams gridParams = (GridParams)inputPar;
 
-      // retrieve companies list...
-      String companies = "";
-      if (gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01)!=null) {
-        companies = "'"+gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01)+"'";
-      }
-      else {
-        ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("IMPORT_DATA");
-        for(int i=0;i<companiesList.size();i++)
-          companies += "'"+companiesList.get(i).toString()+"',";
-        companies = companies.substring(0,companies.length()-1);
-      }
-
-      String sql =
-          "SELECT SYS23_ETL_PROCESSES.FILE_FORMAT,SYS23_ETL_PROCESSES.CLASS_NAME,SYS23_ETL_PROCESSES.COMPANY_CODE_SYS01,"+
-          "SYS23_ETL_PROCESSES.SCHEDULING_TYPE,SYS23_ETL_PROCESSES.START_TIME,SYS23_ETL_PROCESSES.FILENAME,"+
-          "SYS23_ETL_PROCESSES.SUB_TYPE_VALUE,SYS23_ETL_PROCESSES.LEVELS_SEP,SYS23_ETL_PROCESSES.PROGRESSIVE_HIE02,"+
-          "SYS23_ETL_PROCESSES.PROGRESSIVE,SYS23_ETL_PROCESSES.DESCRIPTION "+
-          "FROM SYS23_ETL_PROCESSES WHERE SYS23_ETL_PROCESSES.COMPANY_CODE_SYS01 in ("+companies+")";
-
-      Map attribute2dbField = new HashMap();
-      attribute2dbField.put("fileFormatSYS23","SYS23_ETL_PROCESSES.FILE_FORMAT");
-      attribute2dbField.put("classNameSYS23","SYS23_ETL_PROCESSES.CLASS_NAME");
-      attribute2dbField.put("companyCodeSys01SYS23","SYS23_ETL_PROCESSES.COMPANY_CODE_SYS01");
-      attribute2dbField.put("schedulingTypeSYS23","SYS23_ETL_PROCESSES.SCHEDULING_TYPE");
-      attribute2dbField.put("startTimeSYS23","SYS23_ETL_PROCESSES.START_TIME");
-      attribute2dbField.put("filenameSYS23","SYS23_ETL_PROCESSES.FILENAME");
-      attribute2dbField.put("subTypeValueSYS23","SYS23_ETL_PROCESSES.SUB_TYPE_VALUE");
-      attribute2dbField.put("levelsSepSYS23","SYS23_ETL_PROCESSES.LEVELS_SEP");
-      attribute2dbField.put("progressiveHIE02","SYS23_ETL_PROCESSES.PROGRESSIVE_HIE02");
-      attribute2dbField.put("progressiveSYS23","SYS23_ETL_PROCESSES.PROGRESSIVE");
-      attribute2dbField.put("descriptionSYS23","SYS23_ETL_PROCESSES.DESCRIPTION");
-
-      ArrayList values = new ArrayList();
-
-
-      // read from SYS23 table...
-      Response answer = QueryUtil.getQuery(
-          conn,
-          userSessionPars,
-          sql,
-          values,
-          attribute2dbField,
-          ETLProcessVO.class,
-          "Y",
-          "N",
-          context,
-          gridParams,
-          true
-      );
+      Response answer = bean.loadETLProcesses(conn,gridParams,userSessionPars);
 
       // fires the GenericEvent.BEFORE_COMMIT event...
       EventsManager.getInstance().processEvent(new GenericEvent(

@@ -20,9 +20,7 @@ import org.openswing.swing.message.send.java.GridParams;
 import org.jallinone.items.java.ItemTypeVO;
 import org.openswing.swing.message.receive.java.VOListResponse;
 import java.math.BigDecimal;
-import org.jallinone.system.importdata.java.ImportItemsDescriptorVO;
-import org.jallinone.system.importdata.java.ImportCustomersDescriptorVO;
-import org.jallinone.system.importdata.java.ETLProcessVO;
+import org.jallinone.system.importdata.java.*;
 import org.openswing.swing.domains.java.DomainPair;
 import javax.swing.filechooser.FileFilter;
 import java.io.File;
@@ -33,6 +31,10 @@ import org.openswing.swing.message.receive.java.VOResponse;
 import org.jallinone.commons.client.ClientApplet;
 import org.jallinone.system.java.ButtonCompanyAuthorizations;
 import org.jallinone.commons.client.ApplicationClientFacade;
+import org.jallinone.sales.pricelist.java.PricelistVO;
+import org.jallinone.purchases.items.java.SupplierItemVO;
+import org.jallinone.purchases.suppliers.java.GridSupplierVO;
+import org.jallinone.purchases.pricelist.java.SupplierPricelistVO;
 
 /**
   * <p>Title: JAllInOne ERP/CRM application</p>
@@ -162,22 +164,22 @@ public class ETLProcessFrame extends InternalFrame {
     df.addDomainPair("ddMMyyyy","ddMMyyyy");
     df.addDomainPair("yyyy-MM-dd","yyyy-MM-dd");
     df.addDomainPair("yyyy/MM/dd","yyyy/MM/dd");
-    df.addDomainPair("ddMMyyyy","ddMMyyyy");
+    df.addDomainPair("yyyyMMdd","yyyyMMdd");
     colDateFormat.setDomain(df);
 
 
     // define the domain about data import type:
     // - add all item types
-    // - add customers
     Domain dit = new Domain("DATA_IMPORT_TYPE");
     int pos = 0;
     DataImportType ditVO = null;
+    java.util.List itemTypesList = null;
     Response res = ClientUtils.getData("loadItemTypes",new GridParams());
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      java.util.List list = ((VOListResponse)res).getRows();
-      for(int i=0;i<list.size();i++) {
-        vo = (ItemTypeVO)list.get(i);
+      itemTypesList = ((VOListResponse)res).getRows();
+      for(int i=0;i<itemTypesList.size();i++) {
+        vo = (ItemTypeVO)itemTypesList.get(i);
         ditVO = new DataImportType();
         ditVO.comboItemIndex = pos++;
         ditVO.progressiveHIE02 = vo.getProgressiveHie02ITM02();
@@ -192,7 +194,8 @@ public class ETLProcessFrame extends InternalFrame {
       }
     }
 
-
+    // add to the domain about data import type:
+    // - customers
     ClientApplet applet = ( (ApplicationClientFacade) MDIFrame.getInstance().getClientFacade()).getMainClass();
     ButtonCompanyAuthorizations bca = applet.getAuthorizations().getCompanyBa();
     ArrayList companiesList = bca.getCompaniesList("SAL07");
@@ -209,6 +212,84 @@ public class ETLProcessFrame extends InternalFrame {
       }
     }
 
+
+    // add to the domain about data import type:
+    // - sale pricelists
+    res = ClientUtils.getData("loadPricelists",new GridParams());
+    if (!res.isError()) {
+      PricelistVO vo = null;
+      java.util.List list = ((VOListResponse)res).getRows();
+      for(int i=0;i<list.size();i++) {
+        vo = (PricelistVO)list.get(i);
+        ditVO = new DataImportType();
+        ditVO.comboItemIndex = pos++;
+        ditVO.subTypeCode = vo.getPricelistCodeSAL01();
+        ditVO.className = ImportSalePricesDescriptorVO.class.getName();
+        ditVO.companyCodeSys01 = vo.getCompanyCodeSys01SAL01();
+
+        dit.addDomainPair(
+          ditVO,
+          ClientSettings.getInstance().getResources().getResource("import sale prices")+" "+
+          ClientSettings.getInstance().getResources().getResource("for pricelist")+" "+vo.getDescriptionSYS10()
+        );
+      }
+    }
+
+    // add to the domain about data import type:
+    // - supplier items
+    res = ClientUtils.getData("loadSuppliers",new GridParams());
+    if (!res.isError()) {
+      GridSupplierVO vo = null;
+      ItemTypeVO itemTypeVO = null;
+      java.util.List list = ((VOListResponse)res).getRows();
+      for(int i=0;i<list.size();i++) {
+        vo = (GridSupplierVO)list.get(i);
+        for(int j=0;j<itemTypesList.size();j++) {
+          itemTypeVO = (ItemTypeVO)itemTypesList.get(j);
+          ditVO = new DataImportType();
+          ditVO.comboItemIndex = pos++;
+          ditVO.subTypeCode = vo.getProgressiveREG04();
+          ditVO.subTypeCode2 = itemTypeVO.getProgressiveHie02ITM02();
+          ditVO.progressiveHIE02 = itemTypeVO.getProgressiveHie02ITM02();
+          ditVO.className = ImportSupplierItemsDescriptorVO.class.getName();
+          ditVO.companyCodeSys01 = vo.getCompanyCodeSys01REG04();
+
+          dit.addDomainPair(
+            ditVO,
+            ClientSettings.getInstance().getResources().getResource("import")+" "+
+            itemTypeVO.getDescriptionSYS10()+" "+
+            ClientSettings.getInstance().getResources().getResource("for supplier")+" "+
+            vo.getName_1REG04()
+          );
+        }
+      }
+    }
+
+    // add to the domain about data import type:
+    // - supplier prices
+    res = ClientUtils.getData("loadSupplierPricelists",new GridParams());
+    if (!res.isError()) {
+      SupplierPricelistVO vo = null;
+      java.util.List list = ((VOListResponse)res).getRows();
+      for(int i=0;i<list.size();i++) {
+        vo = (SupplierPricelistVO)list.get(i);
+        ditVO = new DataImportType();
+        ditVO.comboItemIndex = pos++;
+        ditVO.subTypeCode = vo.getPricelistCodePUR03();
+        ditVO.subTypeCode2 = vo.getProgressiveReg04PUR03();
+        ditVO.className = ImportSupplierPricesDescriptorVO.class.getName();
+        ditVO.companyCodeSys01 = vo.getCompanyCodeSys01PUR03();
+
+        dit.addDomainPair(
+          ditVO,
+          ClientSettings.getInstance().getResources().getResource("import prices")+" "+
+          ClientSettings.getInstance().getResources().getResource("for supplier")+" "+
+          vo.getName_1REG04()+" "+
+          ClientSettings.getInstance().getResources().getResource("in pricelist")+" "+vo.getDescriptionSYS10()
+        );
+      }
+    }
+
     controlImportType.setDomain(dit);
     controlImportType.addItemListener(new ItemListener() {
 
@@ -220,6 +301,7 @@ public class ETLProcessFrame extends InternalFrame {
           processVO.setClassNameSYS23(vo.className);
           processVO.setProgressiveHIE02(vo.progressiveHIE02);
           processVO.setSubTypeValueSYS23(vo.subTypeCode);
+          processVO.setSubTypeValue2SYS23(vo.subTypeCode2);
           grid.clearData();
           grid.getOtherGridParams().put(ApplicationConsts.FILTER_VO,processVO);
           grid.reloadData();
@@ -292,10 +374,13 @@ public class ETLProcessFrame extends InternalFrame {
     schedPanel.setBorder(titledBorder2);
     labelFormat.setLabel("file format");
     controlEachWeek.setText("each week");
+    controlEachWeek.setSelectedValue(ApplicationConsts.SCHEDULING_TYPE_EVERY_WEEK);
     controlEachWeek.addItemListener(new ETLProcessFrame_controlEachWeek_itemAdapter(this));
     controlEachDay.setText("each day");
+    controlEachDay.setSelectedValue(ApplicationConsts.SCHEDULING_TYPE_EVERY_DAY);
     controlEachDay.addItemListener(new ETLProcessFrame_controlEachDay_itemAdapter(this));
     labelStartDate.setLabel("start date");
+    controlNoSched.setSelectedValue(ApplicationConsts.SCHEDULING_TYPE_NO_SCHED);
     controlNoSched.setSelected(true);
     controlNoSched.setText("no scheduling");
     controlNoSched.addItemListener(new ETLProcessFrame_controlNoSched_itemAdapter(this));
@@ -595,7 +680,8 @@ public class ETLProcessFrame extends InternalFrame {
       ditVO = (DataImportType)dp[i].getCode();
       if (ditVO.className.equals(vo.getClassNameSYS23()) &&
           (ditVO.progressiveHIE02==null && vo.getProgressiveHIE02()==null || ditVO.progressiveHIE02.equals(vo.getProgressiveHIE02())) &&
-          (ditVO.subTypeCode==null && vo.getSubTypeValueSYS23()==null || ditVO.subTypeCode.toString().equals(vo.getSubTypeValueSYS23().toString()))
+          (ditVO.subTypeCode==null && vo.getSubTypeValueSYS23()==null || ditVO.subTypeCode.toString().equals(vo.getSubTypeValueSYS23().toString())) &&
+          (ditVO.subTypeCode2==null && vo.getSubTypeValue2SYS23()==null || ditVO.subTypeCode2.toString().equals(vo.getSubTypeValue2SYS23().toString()))
       ) {
         index = i;
         break;
@@ -608,6 +694,7 @@ public class ETLProcessFrame extends InternalFrame {
   class DataImportType {
 
     public Object subTypeCode;
+    public Object subTypeCode2;
     public BigDecimal progressiveHIE02;
     public int comboItemIndex = -1;
     public String className;

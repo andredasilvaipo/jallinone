@@ -27,6 +27,12 @@ import org.jallinone.commons.java.ApplicationConsts;
 import org.openswing.swing.table.profiles.client.FileGridProfileManager;
 import org.openswing.swing.lookup.client.LookupController;
 import java.awt.event.KeyEvent;
+import org.openswing.swing.permissions.java.CryptUtils;
+import org.openswing.swing.table.profiles.database.server.DbGridProfileManager;
+import org.openswing.swing.table.permissions.database.server.DbGridPermissionsManager;
+import org.openswing.swing.table.profiles.database.server.*;
+import org.jallinone.system.gridmanager.java.*;
+import org.jallinone.system.gridmanager.client.JAIODbGridPermissions;
 //import org.openswing.swing.util.client.HessianObjectSender;
 
 
@@ -75,6 +81,9 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
   /** user authorizations */
   protected ApplicationParametersVO authorizations = null;
 
+  /** login dialog */
+  private LoginDialog loginDialog = null;
+
 
   /**
    * Method called by the browser to init the application, when it's executed as an applet.
@@ -95,6 +104,25 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
 
 
     loadDomains();
+
+    // currently these are the supported languages...
+    Hashtable xmlFiles = new Hashtable();
+    xmlFiles.put("EN","Resources_en.xml");
+    xmlFiles.put("IT","Resources_it.xml");
+    xmlFiles.put("ES","Resources_es.xml");
+    xmlFiles.put("PTBR","Resources_PTBR.xml");
+
+    // initialize internationalization settings, according to user language identifier...
+    ClientSettings clientSettings = new ClientSettings(
+        new XMLResourcesFactory(xmlFiles,false),
+        domains,
+        new ButtonsAuthorizations(),
+//        false
+        true
+    );
+    clientSettings.setLanguage("EN");
+
+
     // test if database is already created...
     VOResponse response = null;
     try {
@@ -109,7 +137,8 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     }
     if (((Boolean)response.getVo()).booleanValue()) {
       // view the login window before viewing MDI frame...
-      LoginDialog d = new LoginDialog(null,false,this);
+      //loginDialog = new LoginDialog(null,false,this);
+      viewLoginDialog(null,false);
     }
     else {
       // startup wizard will be showed...
@@ -545,7 +574,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
    */
   public String getAboutText() {
     return
-        "JAllInOne ERP/CRM Application ver. 1.2.1\n"+
+        "JAllInOne ERP/CRM Application ver. 1.3\n"+
         "\n"+
         "Copyright: Copyright (C) 2010 Mauro Carniel\n"+
         "Author: Mauro Carniel\n"+
@@ -575,10 +604,42 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
    * @return a dialog window to logon the application; the method can return null if viewLoginInMenuBar returns false
    */
   public JDialog viewLoginDialog(JFrame parentFrame) {
-    JDialog d = new LoginDialog(parentFrame,true,this);
-    return d;
+    return viewLoginDialog(parentFrame,true);
   }
 
+
+  /**
+   * @param parentFrame parent frame
+   * @return a dialog window to logon the application; the method can return null if viewLoginInMenuBar returns false
+   */
+  public JDialog viewLoginDialog(JFrame parentFrame,boolean changeLogin) {
+    Properties supportedLanguageIds = new Properties();
+    supportedLanguageIds.setProperty("EN","english");
+    supportedLanguageIds.setProperty("IT","italian");
+    supportedLanguageIds.setProperty("ES","spanish");
+    supportedLanguageIds.setProperty("PTBR","brazilian");
+    String currentLanguageIdentifier = "EN";
+    Locale locale = Locale.getDefault();
+    if (supportedLanguageIds.containsKey(locale.getLanguage().toUpperCase()))
+      currentLanguageIdentifier = locale.getLanguage().toUpperCase();
+
+    loginDialog = new LoginDialog(
+      parentFrame,
+      changeLogin,
+      this,
+      "Logon",
+      "Login",
+      'L',
+      "Exit",
+      'E',
+      "Store account",
+      "JALLINONE",
+      null,
+      supportedLanguageIds,
+      currentLanguageIdentifier
+    );
+    return loginDialog;
+  }
 
 
   /**
@@ -611,13 +672,22 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     // user correcly authenticated: retrieve from the server response the language identifier...
     String languageId = ((TextResponse)response).getMessage();
 
+    if (ClientSettings.getInstance().getResources()!=null) {
+      // not first login: change user
+      String currentLanguageId = ClientSettings.getInstance().getResources().getLanguageId();
+      if (currentLanguageId!=null && !currentLanguageId.equals(languageId)) {
+        ClientUtils.getData("changeLanguage", currentLanguageId);
+        languageId = currentLanguageId;
+      }
+    }
+
     // retrieve user authorizations...
     response = ClientUtils.getData("getUserAuthorizations",new Object[0]);
     if (response.isError())
       throw new Exception(response.getErrorMessage());
     authorizations = (ApplicationParametersVO)((VOResponse)response).getVo();
 
-    // currently these are the languages supported...
+    // currently these are the supported languages...
     Hashtable xmlFiles = new Hashtable();
     xmlFiles.put("EN","Resources_en.xml");
     xmlFiles.put("IT","Resources_it.xml");
@@ -658,6 +728,9 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     ClientSettings.LOOKUP_AUTO_COMPLETITION_WAIT_TIME = 1500;
     ClientSettings.SHOW_FRAME_TITLE_IN_EXPORT = true;
     ClientSettings.AS_TAB = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0);
+
+    ClientSettings.GRID_PERMISSION_MANAGER = new JAIODbGridPermissions();
+    ClientSettings.GRID_PERMISSION_MANAGER.setUsername(username.toUpperCase());
 
     ClientSettings.getInstance().setLanguage(languageId);
 

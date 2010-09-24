@@ -5,6 +5,7 @@ import org.jallinone.system.java.ButtonCompanyAuthorizations;
 import org.jallinone.system.java.CustomizedWindows;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.HashSet;
 
 
 /**
@@ -70,6 +71,9 @@ public class JAIOUserSessionParameters extends UserSessionParameters {
 
   /** default company code */
   private String defCompanyCodeSys01SYS03;
+
+  /** collection of FUNCTION_CODEs having a permission in SYS02 */
+  private HashSet functionCodesBasedOnCompany = new HashSet();
 
 
   public JAIOUserSessionParameters() {
@@ -244,11 +248,39 @@ public class JAIOUserSessionParameters extends UserSessionParameters {
   public final void setCompanyCodeSys01SYS03(String companyCodeSys01SYS03) {
     this.companyCodeSys01SYS03 = companyCodeSys01SYS03;
   }
-  public String getDefCompanyCodeSys01SYS03() {
+
+
+  /**
+   * @return default company code
+   */
+  public final String getDefCompanyCodeSys01SYS03() {
     return defCompanyCodeSys01SYS03;
   }
-  public void setDefCompanyCodeSys01SYS03(String defCompanyCodeSys01SYS03) {
+
+
+  /**
+   * Set the default company code.
+   * @param defCompanyCodeSys01SYS03 default company code
+   */
+  public final void setDefCompanyCodeSys01SYS03(String defCompanyCodeSys01SYS03) {
     this.defCompanyCodeSys01SYS03 = defCompanyCodeSys01SYS03;
+  }
+
+
+  /**
+   * @return collection of FUNCTION_CODEs having a permission in SYS02
+   */
+  public final HashSet getFunctionCodesBasedOnCompany() {
+    return functionCodesBasedOnCompany;
+  }
+
+
+  /**
+   * Set the collection of FUNCTION_CODEs having a permission in SYS02.
+   * @param functionCodesBasedOnCompany collection of FUNCTION_CODEs having a permission in SYS02
+   */
+  public final void setFunctionCodesBasedOnCompany(HashSet functionCodesBasedOnCompany) {
+    this.functionCodesBasedOnCompany = functionCodesBasedOnCompany;
   }
 
 }
