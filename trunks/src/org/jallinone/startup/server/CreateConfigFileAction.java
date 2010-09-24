@@ -192,7 +192,7 @@ public class CreateConfigFileAction implements Action {
       props.setProperty("password", password);
       props.setProperty("url", url);
       FileOutputStream out = new FileOutputStream(this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"pooler.ini");
-      props.save(out,"POOLER PROPERTIES");
+      props.store(out,"POOLER PROPERTIES");
       try {
         out.close();
       }
@@ -218,8 +218,22 @@ public class CreateConfigFileAction implements Action {
    */
   private void removeConfigIni() {
     try {
+      Logger.debug(
+          "NONAME",
+          this.getClass().getName(),
+          "removeConfigIni",
+          "Removing connection pooler .ini file"
+      );
       File f = new File(this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"pooler.ini");
-      f.delete();
+      boolean ok = f.delete();
+      Logger.debug(
+          "NONAME",
+          this.getClass().getName(),
+          "removeConfigIni",
+          "Removing connection pooler .ini file: "+(ok?"ok":"remove failed!")
+      );
+      ConnectionManager.destroyConnectionSource();
+
     }
     catch (Throwable ex) {
       Logger.error(
