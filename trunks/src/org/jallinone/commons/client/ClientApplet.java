@@ -1,38 +1,26 @@
 package org.jallinone.commons.client;
 
 import java.util.*;
-import org.openswing.swing.mdi.client.*;
-import org.openswing.swing.util.client.ClientSettings;
-import org.openswing.swing.internationalization.java.EnglishOnlyResourceFactory;
-import org.openswing.swing.util.client.*;
-import org.openswing.swing.permissions.client.*;
-import java.awt.Image;
+
+import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
-import org.openswing.swing.internationalization.java.Language;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.DefaultMutableTreeNode;
-import org.openswing.swing.mdi.java.ApplicationFunction;
-import org.openswing.swing.internationalization.java.XMLResourcesFactory;
-import org.openswing.swing.domains.java.Domain;
+import javax.swing.tree.*;
+
+import org.jallinone.commons.java.*;
+import org.jallinone.startup.client.*;
+import org.jallinone.system.gridmanager.client.*;
+import org.jallinone.system.java.*;
+import org.openswing.swing.domains.java.*;
 import org.openswing.swing.internationalization.java.*;
+import org.openswing.swing.lookup.client.*;
+import org.openswing.swing.mdi.client.*;
 import org.openswing.swing.message.receive.java.*;
-import org.openswing.swing.permissions.java.ButtonsAuthorizations;
-import org.openswing.swing.message.receive.java.UserAuthorizationsResponse;
-import netscape.javascript.JSObject;
-import org.jallinone.startup.client.StartupFrame;
-import org.jallinone.system.java.ApplicationParametersVO;
-import java.awt.Color;
-import org.jallinone.subjects.java.Subject;
-import org.jallinone.commons.java.ApplicationConsts;
-import org.openswing.swing.table.profiles.client.FileGridProfileManager;
-import org.openswing.swing.lookup.client.LookupController;
-import java.awt.event.KeyEvent;
-import org.openswing.swing.permissions.java.CryptUtils;
-import org.openswing.swing.table.profiles.database.server.DbGridProfileManager;
-import org.openswing.swing.table.permissions.database.server.DbGridPermissionsManager;
-import org.openswing.swing.table.profiles.database.server.*;
-import org.jallinone.system.gridmanager.java.*;
-import org.jallinone.system.gridmanager.client.JAIODbGridPermissions;
+import org.openswing.swing.permissions.client.*;
+import org.openswing.swing.permissions.java.*;
+import org.openswing.swing.table.profiles.client.*;
+import org.openswing.swing.util.client.*;
+import netscape.javascript.*;
 //import org.openswing.swing.util.client.HessianObjectSender;
 
 
@@ -101,6 +89,28 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
 //    ClientUtils.setObjectSender(new HessianObjectSender());
 
 //    ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "org.jvnet.substance.skin.SubstanceMistSilverLookAndFeel";
+
+    try {
+      ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "com.jtattoo.plaf.aluminium.AluminiumLookAndFeel"; // "com.jtattoo.plaf.aero.McWinLookAndFeel";
+      Properties props = new Properties();
+      props.put("logoString", "JAllInOne");
+      props.put("backgroundColor", "232 232 232");
+      String color = "220 220 220";
+      props.put("disabledBackgroundColor", color);
+      props.put("systemTextFont", "Verdana PLAIN 11");
+      props.put("controlTextFont", "Verdana PLAIN 11");
+      props.put("menuTextFont", "Verdana PLAIN 11");
+      props.put("userTextFont", "Verdana PLAIN 11");
+      props.put("subTextFont", "Verdana PLAIN 11");
+      Class.forName(ClientSettings.LOOK_AND_FEEL_CLASS_NAME).getMethod(
+          "setCurrentTheme", new Class[] {Properties.class}).invoke(null,
+          new Object[] {props});
+      UIManager.setLookAndFeel(ClientSettings.LOOK_AND_FEEL_CLASS_NAME);
+
+    }
+    catch (Throwable ex1) {
+      ex1.printStackTrace();
+    }
 
 
     loadDomains();
@@ -574,7 +584,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
    */
   public String getAboutText() {
     return
-        "JAllInOne ERP/CRM Application ver. 1.3\n"+
+        "JAllInOne ERP/CRM Application ver. 1.3.1\n"+
         "\n"+
         "Copyright: Copyright (C) 2010 Mauro Carniel\n"+
         "Author: Mauro Carniel\n"+

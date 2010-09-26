@@ -685,7 +685,7 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
    * @return list of objects stored withing the grid
    */
   public Object[][] getCells() {
-    if (!onValidating)
+    if (!onValidating && grid!=null && grid.getTable()!=null && grid.getTable().getGrid()!=null)
       grid.getTable().getGrid().stopCellEditing();
 
     if (grid==null)

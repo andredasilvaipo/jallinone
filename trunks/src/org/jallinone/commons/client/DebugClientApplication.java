@@ -21,6 +21,7 @@ import org.openswing.swing.message.receive.java.UserAuthorizationsResponse;
 import netscape.javascript.JSObject;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.startup.client.StartupFrame;
+import java.awt.Color;
 
 
 /**
@@ -80,6 +81,27 @@ public class DebugClientApplication extends ClientApplet {
   protected void initApplication() {
 //    ClientUtils.setObjectSender(new HessianObjectSender());
 
+    try {
+      ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "com.jtattoo.plaf.aluminium.AluminiumLookAndFeel"; // "com.jtattoo.plaf.aero.McWinLookAndFeel";
+      Properties props = new Properties();
+      props.put("logoString", "JAllInOne");
+      props.put("backgroundColor", "232 232 232");
+      String color = "220 220 220";
+      props.put("disabledBackgroundColor", color);
+      props.put("systemTextFont", "Verdana PLAIN 11");
+      props.put("controlTextFont", "Verdana PLAIN 11");
+      props.put("menuTextFont", "Verdana PLAIN 11");
+      props.put("userTextFont", "Verdana PLAIN 11");
+      props.put("subTextFont", "Verdana PLAIN 11");
+      Class.forName(ClientSettings.LOOK_AND_FEEL_CLASS_NAME).getMethod(
+          "setCurrentTheme", new Class[] {Properties.class}).invoke(null,
+          new Object[] {props});
+      UIManager.setLookAndFeel(ClientSettings.LOOK_AND_FEEL_CLASS_NAME);
+    }
+    catch (Throwable ex1) {
+      ex1.printStackTrace();
+    }
+
     loadDomains();
 
     // currently these are the supported languages...
@@ -88,6 +110,7 @@ public class DebugClientApplication extends ClientApplet {
     xmlFiles.put("IT","Resources_it.xml");
     xmlFiles.put("ES","Resources_es.xml");
     xmlFiles.put("PTBR","Resources_PTBR.xml");
+
 
     // initialize internationalization settings, according to user language identifier...
     ClientSettings clientSettings = new ClientSettings(
@@ -137,7 +160,10 @@ public class DebugClientApplication extends ClientApplet {
 //      UIManager.setLookAndFeel(new com.oyoaha.swing.plaf.oyoaha.OyoahaLookAndFeel());
 //      UIManager.setLookAndFeel(new ch.randelshofer.quaqua.QuaquaLookAndFeel());
 
-//      SwingUtilities.updateComponentTreeUI(frame);
+//      UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
+//      UIManager.setLookAndFeel("com.jtattoo.plaf.mint.MintLookAndFeel");
+//      UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+
     }
     catch (Throwable ex) {
       ex.printStackTrace();

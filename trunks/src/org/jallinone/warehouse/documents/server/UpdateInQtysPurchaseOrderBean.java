@@ -23,6 +23,8 @@ import org.openswing.swing.internationalization.server.ServerResourcesFactory;
 import org.openswing.swing.internationalization.java.Resources;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.jallinone.registers.measure.server.LoadMeasureConvsAction;
+import org.jallinone.registers.measure.server.MeasureConvBean;
 
 
 /**
@@ -121,6 +123,7 @@ public class UpdateInQtysPurchaseOrderBean {
 
       pstmt1 = conn.prepareStatement(sql1);
       pstmt2 = conn.prepareStatement(sql2);
+
 
       // for each item row it will be updated the related purchase order row and warehouse available quantities...
       GridInDeliveryNoteRowVO vo = null;

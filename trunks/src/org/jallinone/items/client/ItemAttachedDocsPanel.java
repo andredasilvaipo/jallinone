@@ -173,7 +173,7 @@ public class ItemAttachedDocsPanel extends JPanel {
     docsButtonsPanel1.setLayout(flowLayout5);
     docsGrid.setAutoLoadData(false);
     docsGrid.setDeleteButton(deleteButton5);
-    docsGrid.setFunctionId("ITM05");
+    //docsGrid.setFunctionId("ITM05");
     docsGrid.setInsertButton(insertButton5);
     docsGrid.setNavBar(navigatorBar5);
     docsGrid.setReloadButton(reloadButton5);
