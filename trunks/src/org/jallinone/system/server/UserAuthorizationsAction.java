@@ -19,6 +19,8 @@ import org.jallinone.system.java.CustomizedWindows;
 import org.jallinone.system.customizations.java.WindowCustomizationVO;
 import java.math.BigDecimal;
 import org.openswing.swing.tree.java.OpenSwingTreeNode;
+import org.openswing.swing.table.permissions.java.GridPermissions;
+import org.jallinone.system.gridmanager.server.JAIODbPermissionsDescriptor;
 
 
 /**
@@ -268,6 +270,90 @@ public class UserAuthorizationsAction implements Action {
       ((JAIOUserSessionParameters)userSessionPars).setAppParams(applicationPars);
 
 
+      // retrieve grid digests...
+      HashMap lastGridPermissionsDigests = new HashMap();
+      rset = stmt.executeQuery(
+          "select FUNCTION_CODE_SYS06,DIGEST FROM SYS25_FUNCTIONS_DIGESTS"
+      );
+      while(rset.next())
+        lastGridPermissionsDigests.put(rset.getString(1),rset.getString(2));
+      rset.close();
+
+
+      JAIODbPermissionsDescriptor dbPermissionsDescriptor = new JAIODbPermissionsDescriptor();
+      String sql =
+        "select "+
+        dbPermissionsDescriptor.getFunctionIdFieldNameInGridPermissionsTable()+","+
+        dbPermissionsDescriptor.getColumnsAttributeFieldNameInGridPermissionsTable()+","+
+        dbPermissionsDescriptor.getEditableColumnsInInsertFieldNameInGridPermissionsTable()+","+
+        dbPermissionsDescriptor.getEditableColumnsInEditFieldNameInGridPermissionsTable()+","+
+        dbPermissionsDescriptor.getColumnsMandatoryFieldNameInGridPermissionsTable()+","+
+        dbPermissionsDescriptor.getColumnsVisibilityFieldNameInGridPermissionsTable()+" "+
+        "from "+dbPermissionsDescriptor.getGridPermissionsTableName()+" where ";
+      String functionId = null;
+      for(int j=0;j<userRoles.size();j++) {
+        sql += " (";
+        for(int i=0;i<dbPermissionsDescriptor.getRoleIdFieldNamesInGridPermissionsTable().length;i++)
+          sql += dbPermissionsDescriptor.getRoleIdFieldNamesInGridPermissionsTable()[i]+"=? or ";
+        sql = sql.substring(0,sql.length()-3);
+        sql += ") and ";
+      }
+      sql = sql.substring(0,sql.length()-4);
+      sql += " order by "+dbPermissionsDescriptor.getFunctionIdFieldNameInGridPermissionsTable();
+      pstmt = conn.prepareStatement(sql);
+      Object roleId =null;
+      int count = 1;
+      Iterator it = userRoles.keySet().iterator();
+      while(it.hasNext()) {
+        roleId = it.next();
+        pstmt.setObject(count++, roleId);
+      }
+      rset = pstmt.executeQuery();
+
+      HashMap gridPermissions = new HashMap();
+      GridPermissions permissions = null;
+      String[] aux = null;
+      while(rset.next()) {
+        if (functionId==null || !functionId.equals(rset.getString(1))) {
+          functionId = rset.getString(1);
+          int num = rset.getString(2).split(",").length;
+          permissions = new GridPermissions(
+            functionId,
+            userSessionPars.getUsername(),
+            new String[num],
+            new boolean[num],
+            new boolean[num],
+            new boolean[num],
+            new boolean[num]
+          );
+          gridPermissions.put(functionId,permissions);
+        }
+        aux = rset.getString(2).split(","); // columnAttributes
+        for(int i=0;i<aux.length;i++)
+          permissions.getColumnsAttribute()[i] = aux[i];
+
+        aux = rset.getString(3).split(","); // editableColumnsInInsertFieldName
+        for(int i=0;i<aux.length;i++)
+          permissions.getColumnsEditabilityInInsert()[i] = aux[i].equals("true");
+
+        aux = rset.getString(4).split(","); // editableColumnsInEdit
+        for(int i=0;i<aux.length;i++)
+          permissions.getColumnsEditabilityInEdit()[i] = aux[i].equals("true");
+
+        aux = rset.getString(5).split(","); // columnsMandatory
+        for(int i=0;i<aux.length;i++)
+          permissions.getColumnsMandatory()[i] = aux[i].equals("true");
+
+        aux = rset.getString(6).split(","); // columnsVisibility
+        for(int i=0;i<aux.length;i++)
+          permissions.getColumnsVisibility()[i] = aux[i].equals("true");
+      }
+      rset.close();
+      pstmt.close();
+
+
+
+
       return new VOResponse(new ApplicationParametersVO(
           userSessionPars.getLanguageId(),
           model,
@@ -281,7 +367,9 @@ public class UserAuthorizationsAction implements Action {
           ((JAIOUserSessionParameters)userSessionPars).getName_1(),
           ((JAIOUserSessionParameters)userSessionPars).getName_2(),
           ((JAIOUserSessionParameters)userSessionPars).getEmployeeCode(),
-          ((JAIOUserSessionParameters)userSessionPars).getCompanyCodeSys01SYS03()
+          ((JAIOUserSessionParameters)userSessionPars).getCompanyCodeSys01SYS03(),
+          lastGridPermissionsDigests,
+          gridPermissions
       ));
     } catch (Exception ex1) {
       ex1.printStackTrace();

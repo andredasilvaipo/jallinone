@@ -213,7 +213,7 @@ public class OrderedItemsPanel extends JPanel {
     topPanel.setLayout(gridBagLayout1);
     grid.setAutoLoadData(false);
     grid.setExportButton(exportButton);
-    grid.setFunctionId("WAR01");
+    //grid.setFunctionId("WAR01");
     grid.setMaxSortedColumns(3);
     grid.setNavBar(navigatorBar);
     grid.setReloadButton(reloadButton);

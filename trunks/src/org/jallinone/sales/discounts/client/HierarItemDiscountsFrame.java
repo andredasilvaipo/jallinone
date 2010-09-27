@@ -188,7 +188,7 @@ public class HierarItemDiscountsFrame extends InternalFrame {
     discountsGrid.setDeleteButton(deleteButton1);
     discountsGrid.setEditButton(editButton1);
     discountsGrid.setExportButton(exportButton1);
-    discountsGrid.setFunctionId("ITM01");
+    discountsGrid.setFunctionId("SAL03");
     discountsGrid.setMaxSortedColumns(3);
     discountsGrid.setInsertButton(insertButton1);
     discountsGrid.setNavBar(navigatorBar1);

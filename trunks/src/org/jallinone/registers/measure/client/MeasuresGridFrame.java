@@ -151,6 +151,7 @@ public class MeasuresGridFrame extends InternalFrame {
     convGridControl.setAutoLoadData(false);
     convGridControl.setEditButton(editButton1);
     convGridControl.setFunctionId("REG02");
+    convGridControl.setAllowColumnsPermission(false);
     convGridControl.setPreferredSize(new Dimension(320, 200));
     convGridControl.setReloadButton(reloadButton1);
     convGridControl.setSaveButton(saveButton1);

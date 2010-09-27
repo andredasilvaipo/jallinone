@@ -6,6 +6,7 @@ import org.jallinone.system.java.CustomizedWindows;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.HashSet;
+import java.util.HashMap;
 
 
 /**
@@ -282,5 +283,6 @@ public class JAIOUserSessionParameters extends UserSessionParameters {
   public final void setFunctionCodesBasedOnCompany(HashSet functionCodesBasedOnCompany) {
     this.functionCodesBasedOnCompany = functionCodesBasedOnCompany;
   }
+
 
 }

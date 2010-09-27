@@ -311,9 +311,44 @@ public class ItemFrame extends InternalFrame {
             customizedControls.revalidate();
             customizedControls.repaint();
           }
+          else if (tab.getSelectedComponent()!=null &&
+                   tab.getSelectedComponent().equals(discountsPanel)) {
+            discountsGrid.reloadData();
+          }
+          else if (tab.getSelectedComponent()!=null &&
+                   tab.getSelectedComponent().equals(pricesSplit)) {
+            supplierPrices.getPricesGrid().reloadData();
+            pricesGrid.reloadData();
+          }
+          else if (tab.getSelectedComponent()!=null &&
+                   tab.getSelectedComponent().equals(docsPanel)) {
+            docsPanel.getDocsGrid().reloadData();
+          }
+          else if (tab.getSelectedComponent()!=null &&
+                   tab.getSelectedComponent().equals(bookedItemsPanel)) {
+            bookedItemsPanel.getGrid().reloadData();
+          }
+          else if (tab.getSelectedComponent()!=null &&
+                   tab.getSelectedComponent().equals(orderedItemsPanel)) {
+            orderedItemsPanel.getGrid().reloadData();
+          }
+          else if (tab.getSelectedComponent()!=null &&
+                   tab.getSelectedComponent().equals(billOfMaterialsPanel)) {
+            bomTabbedPane.getAltCompsGrid().reloadData();
+            bomTabbedPane.getComponentsGrid().reloadData();
+          }
         }
 
       });
+
+      discountsGrid.setAutoLoadData(false);
+      supplierPrices.getPricesGrid().setAutoLoadData(false);
+      pricesGrid.setAutoLoadData(false);
+      docsPanel.getDocsGrid().setAutoLoadData(false);
+      bookedItemsPanel.getGrid().setAutoLoadData(false);
+      orderedItemsPanel.getGrid().setAutoLoadData(false);
+      bomTabbedPane.getAltCompsGrid().setAutoLoadData(false);
+      bomTabbedPane.getComponentsGrid().setAutoLoadData(false);
 
       controlLevel.setLookupController(levelController);
       levelController.setLookupDataLocator(levelDataLocator);
@@ -611,7 +646,12 @@ public class ItemFrame extends InternalFrame {
          tab.setTitleAt(8,ClientSettings.getInstance().getResources().getResource("variantsPanel"));
          tab.setTitleAt(9,ClientSettings.getInstance().getResources().getResource("barcodesPanel"));
          tab.setTitleAt(10,ClientSettings.getInstance().getResources().getResource("min stock"));
+
+//         tab.setIconAt(8,new ImageIcon(ClientUtils.getImage("colors.gif")));
+//         tab.setIconAt(9,new ImageIcon(ClientUtils.getImage("barcode.gif")));
+//         tab.setIconAt(10,new ImageIcon(ClientUtils.getImage("open.gif")));
          tab.revalidate();
+         tab.repaint();
        }
        else {
          tab.remove(getItemVariantsPanel());
@@ -926,7 +966,7 @@ public class ItemFrame extends InternalFrame {
     discountsGrid.setDeleteButton(deleteButton2);
     discountsGrid.setEditButton(editButton2);
     discountsGrid.setExportButton(exportButton1);
-    discountsGrid.setFunctionId("ITM01");
+    discountsGrid.setFunctionId("SAL03");
     discountsGrid.setInsertButton(insertButton2);
     discountsGrid.setNavBar(navigatorBar1);
     discountsGrid.setReloadButton(reloadButton2);
@@ -1019,6 +1059,7 @@ public class ItemFrame extends InternalFrame {
     this.getContentPane().add(buttonsPanel,  BorderLayout.NORTH);
     this.getContentPane().add(tab, BorderLayout.CENTER);
     tab.add(formPanel,   "detailPanel");
+//    tab.setIconAt(0,new ImageIcon(ClientUtils.getImage("items.gif")));
     formPanel.add(labelItemCode,          new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     formPanel.add(controlItemCode,          new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
@@ -1072,6 +1113,7 @@ public class ItemFrame extends InternalFrame {
     formPanel.add(controlNote,          new GridBagConstraints(1, 9, 6, 1, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
     tab.add(imgPanel,   "imagePanel");
+//    tab.setIconAt(1,new ImageIcon(ClientUtils.getImage("chart.gif")));
     imgPanel.add(smallImageButton,     new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 0), 0, 0));
     imgPanel.add(smallImage,       new GridBagConstraints(2, 0, 1, 2, 0.0, 0.0
@@ -1108,6 +1150,7 @@ public class ItemFrame extends InternalFrame {
     imgPanel.add(jLabel1,   new GridBagConstraints(0, 1, 2, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
     tab.add(discountsPanel,   "discountPanel");
+//    tab.setIconAt(2,new ImageIcon(ClientUtils.getImage("calc.gif")));
     discountsPanel.add(discountsButtonsPanel, BorderLayout.NORTH);
     discountsPanel.add(discountsGrid,  BorderLayout.CENTER);
     discountsButtonsPanel.add(insertButton2, null);
@@ -1229,11 +1272,17 @@ public class ItemFrame extends InternalFrame {
     pricesSplit.add(prices2Split,JSplitPane.TOP);
     pricesSplit.add(supplierPrices,JSplitPane.BOTTOM);
     tab.add(pricesSplit,   "pricePanel");
+//    tab.setIconAt(3,new ImageIcon(ClientUtils.getImage("report.gif")));
 
     tab.add(docsPanel,   "docsPanel");
     tab.add(bookedItemsPanel,   "bookedItemsPanel");
     tab.add(orderedItemsPanel,   "orderedItemsPanel");
     tab.add(billOfMaterialsPanel,   "billOfMaterials");
+
+//    tab.setIconAt(4,new ImageIcon(ClientUtils.getImage("doc2.gif")));
+//    tab.setIconAt(5,new ImageIcon(ClientUtils.getImage("itemsavail.gif")));
+//    tab.setIconAt(6,new ImageIcon(ClientUtils.getImage("docs.gif")));
+//    tab.setIconAt(7,new ImageIcon(ClientUtils.getImage("bills.gif")));
 
     pricesPanel.add(pricesButtonsPanel, BorderLayout.NORTH);
     pricesPanel.add(pricesGrid,  BorderLayout.CENTER);
@@ -1250,6 +1299,9 @@ public class ItemFrame extends InternalFrame {
     tab.add(barcodesPanel,   "barcodesPanel");
     tab.add(minStocksPanel,   "minStocksPanel");
 
+//    tab.setIconAt(8,new ImageIcon(ClientUtils.getImage("colors.gif")));
+//    tab.setIconAt(9,new ImageIcon(ClientUtils.getImage("barcode.gif")));
+//    tab.setIconAt(10,new ImageIcon(ClientUtils.getImage("open.gif")));
 
     tab.setTitleAt(0,ClientSettings.getInstance().getResources().getResource("item detail"));
     tab.setTitleAt(1,ClientSettings.getInstance().getResources().getResource("images"));
@@ -1262,6 +1314,9 @@ public class ItemFrame extends InternalFrame {
     tab.setTitleAt(8,ClientSettings.getInstance().getResources().getResource("variantsPanel"));
     tab.setTitleAt(9,ClientSettings.getInstance().getResources().getResource("barcodesPanel"));
     tab.setTitleAt(10,ClientSettings.getInstance().getResources().getResource("min stock"));
+
+    tab.repaint();
+    repaint();
 
     colValue.setDecimals(5);
     colValue.setMinValue(0.0);

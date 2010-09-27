@@ -88,11 +88,11 @@ public class DebugClientApplication extends ClientApplet {
       props.put("backgroundColor", "232 232 232");
       String color = "220 220 220";
       props.put("disabledBackgroundColor", color);
-      props.put("systemTextFont", "Verdana PLAIN 11");
-      props.put("controlTextFont", "Verdana PLAIN 11");
-      props.put("menuTextFont", "Verdana PLAIN 11");
-      props.put("userTextFont", "Verdana PLAIN 11");
-      props.put("subTextFont", "Verdana PLAIN 11");
+      props.put("systemTextFont", "Arial PLAIN 11");
+      props.put("controlTextFont", "Arial PLAIN 11");
+      props.put("menuTextFont", "Arial PLAIN 11");
+      props.put("userTextFont", "Arial PLAIN 11");
+      props.put("subTextFont", "Arial PLAIN 11");
       Class.forName(ClientSettings.LOOK_AND_FEEL_CLASS_NAME).getMethod(
           "setCurrentTheme", new Class[] {Properties.class}).invoke(null,
           new Object[] {props});

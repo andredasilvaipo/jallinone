@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Hashtable;
 import org.jallinone.commons.java.ApplicationConsts;
 import java.math.BigDecimal;
+import java.util.HashMap;
 
 
 /**
@@ -39,8 +40,6 @@ import java.math.BigDecimal;
  * @version 1.0
  */
 public class ApplicationParametersVO extends ValueObjectImpl {
-
-
 
 
   /** buttons authorizations, filtered by the logged user */
@@ -82,6 +81,12 @@ public class ApplicationParametersVO extends ValueObjectImpl {
   /** company employee (optional) */
   private String companyCodeSys01SYS03;
 
+  /** collection of pairs <functionId of grid,associated digest> */
+  private HashMap lastGridPermissionsDigests = new HashMap();
+
+  /** collection of pairs <functionId of grid,GridPermissions partial content> */
+  private HashMap gridPermissions = new HashMap();
+
 
   public ApplicationParametersVO() {}
 
@@ -115,7 +120,9 @@ public class ApplicationParametersVO extends ValueObjectImpl {
       String name_1,
       String name_2,
       String employeeCode,
-      String companyCodeSys01SYS03
+      String companyCodeSys01SYS03,
+      HashMap lastGridPermissionsDigests,
+      HashMap gridPermissions
   ) {
     this.languageId = languageId;
     this.appMenu = appMenu;
@@ -130,6 +137,8 @@ public class ApplicationParametersVO extends ValueObjectImpl {
     this.name_2 = name_2;
     this.employeeCode = employeeCode;
     this.companyCodeSys01SYS03 = companyCodeSys01SYS03;
+    this.lastGridPermissionsDigests = lastGridPermissionsDigests;
+    this.gridPermissions = gridPermissions;
   }
 
 
@@ -287,6 +296,19 @@ public class ApplicationParametersVO extends ValueObjectImpl {
   public final BigDecimal getIncrementValue() {
     String value = applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.INCREMENT_VALUE);
     return value==null?null:new BigDecimal(value);
+  }
+
+
+  public HashMap getLastGridPermissionsDigests() {
+    return lastGridPermissionsDigests;
+  }
+
+
+  public void setLastGridPermissionsDigests(HashMap lastGridPermissionsDigests) {
+    this.lastGridPermissionsDigests = lastGridPermissionsDigests;
+  }
+  public HashMap getGridPermissions() {
+    return gridPermissions;
   }
 
 

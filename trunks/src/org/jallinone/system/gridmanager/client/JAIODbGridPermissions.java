@@ -6,6 +6,10 @@ import org.openswing.swing.table.permissions.java.GridPermissions;
 import org.openswing.swing.util.client.ClientUtils;
 import org.openswing.swing.message.receive.java.VOResponse;
 import org.openswing.swing.message.receive.java.Response;
+import org.jallinone.commons.client.ClientApplet;
+import org.openswing.swing.mdi.client.MDIFrame;
+import org.jallinone.commons.client.ApplicationClientFacade;
+import java.util.Iterator;
 
 /**
  * <p>Title: OpenSwing Framework</p>
@@ -48,13 +52,19 @@ public class JAIODbGridPermissions extends GridPermissionsManager {
    * @throws Throwable throwed if fetching operation does not correctly accomplished
    */
   public ArrayList getUserRoles() throws Throwable {
-    Response res = ClientUtils.getData("dbGridPermissions",new Object[]{
-      "getUserRoles"
-    });
-    if (res.isError())
-      throw new Exception(res.getErrorMessage());
-    else
-      return (ArrayList)((VOResponse)res).getVo();
+    ClientApplet applet = ( (ApplicationClientFacade)MDIFrame.getInstance().getClientFacade()).getMainClass();
+    Iterator it = applet.getAuthorizations().getUserRoles().keySet().iterator();
+    ArrayList userRoles = new ArrayList();
+    while(it.hasNext())
+      userRoles.add(new Object[]{it.next()});
+    return userRoles;
+//    Response res = ClientUtils.getData("dbGridPermissions",new Object[]{
+//      "getUserRoles"
+//    });
+//    if (res.isError())
+//      throw new Exception(res.getErrorMessage());
+//    else
+//      return (ArrayList)((VOResponse)res).getVo();
   }
 
 
@@ -69,21 +79,54 @@ public class JAIODbGridPermissions extends GridPermissionsManager {
    * @return GridPermissions object, built starting from user roles for the specified grid identifier
    * @throws Throwable throwed if fetching operation does not correctly accomplished
    */
-  public GridPermissions getUserGridPermissions(String functionId,ArrayList userRoles,String[] columnAttributes,boolean[] columnsVisibility,boolean[] columnEditableInInsert,boolean[] columnsEditbleInEdit,boolean[] columnsMandatory) throws Throwable{
-    Response res = ClientUtils.getData("dbGridPermissions",new Object[]{
-        "getUserGridPermissions",
-        functionId,
-        userRoles,
-        columnAttributes,
-        columnsVisibility,
-        columnEditableInInsert,
-        columnsEditbleInEdit,
-        columnsMandatory
-    });
-    if (res.isError())
-      throw new Exception(res.getErrorMessage());
-    else
-      return (GridPermissions)((VOResponse)res).getVo();
+  public GridPermissions getUserGridPermissions(String functionId,ArrayList userRoles,String[] columnAttributes,boolean[] columnsVisibility,boolean[] columnEditableInInsert,boolean[] columnsEditableInEdit,boolean[] columnsMandatory) throws Throwable{
+    ClientApplet applet = ( (ApplicationClientFacade)MDIFrame.getInstance().getClientFacade()).getMainClass();
+    GridPermissions serverPermissions = (GridPermissions)applet.getAuthorizations().getGridPermissions().get(functionId);
+
+    GridPermissions permissions = new GridPermissions(
+      functionId,
+      getUsername(),
+      (String[])columnAttributes.clone(),
+      (boolean[])columnsVisibility.clone(),
+      (boolean[])columnEditableInInsert.clone(),
+      (boolean[])columnsEditableInEdit.clone(),
+      (boolean[])columnsMandatory.clone()
+    );
+    if (serverPermissions==null)
+      return permissions;
+
+    boolean[] aux = serverPermissions.getColumnsEditabilityInInsert(); // editableColumnsInInsertFieldName
+    for(int i=0;i<aux.length;i++)
+      permissions.getColumnsEditabilityInInsert()[i] = permissions.getColumnsEditabilityInInsert()[i] && aux[i];
+
+    aux = serverPermissions.getColumnsEditabilityInEdit(); // editableColumnsInEdit
+    for(int i=0;i<aux.length;i++)
+      permissions.getColumnsEditabilityInEdit()[i] = permissions.getColumnsEditabilityInEdit()[i] && aux[i];
+
+    aux = serverPermissions.getColumnsMandatory(); // columnsMandatory
+    for(int i=0;i<aux.length;i++)
+      permissions.getColumnsMandatory()[i] = permissions.getColumnsMandatory()[i] || aux[i];
+
+    aux = serverPermissions.getColumnsVisibility(); // columnsVisibility
+    for(int i=0;i<aux.length;i++)
+      permissions.getColumnsVisibility()[i] = aux[i];
+
+    return permissions;
+
+//    Response res = ClientUtils.getData("dbGridPermissions",new Object[]{
+//        "getUserGridPermissions",
+//        functionId,
+//        userRoles,
+//        columnAttributes,
+//        columnsVisibility,
+//        columnEditableInInsert,
+//        columnsEditbleInEdit,
+//        columnsMandatory
+//    });
+//    if (res.isError())
+//      throw new Exception(res.getErrorMessage());
+//    else
+//      return (GridPermissions)((VOResponse)res).getVo();
   }
 
 
@@ -93,14 +136,18 @@ public class JAIODbGridPermissions extends GridPermissionsManager {
    * Note: this method returns null if no digest has been yet stored (i.e. this is the first time the grid is being viewed)
    */
   public String getLastGridDigest(String functionId) throws Throwable {
-    Response res = ClientUtils.getData("dbGridPermissions",new Object[]{
-        "getLastGridDigest",
-        functionId
-    });
-    if (res.isError())
-      throw new Exception(res.getErrorMessage());
-    else
-      return (String)((VOResponse)res).getVo();
+    ClientApplet applet = ( (ApplicationClientFacade)MDIFrame.getInstance().getClientFacade()).getMainClass();
+    return (String)applet.getAuthorizations().getLastGridPermissionsDigests().get(functionId);
+
+
+//    Response res = ClientUtils.getData("dbGridPermissions",new Object[]{
+//        "getLastGridDigest",
+//        functionId
+//    });
+//    if (res.isError())
+//      throw new Exception(res.getErrorMessage());
+//    else
+//      return (String)((VOResponse)res).getVo();
   }
 
 

@@ -536,7 +536,7 @@ public class ProductPanel extends JPanel {
     altCompsGrid.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     altCompsGrid.setDeleteButton(deleteButton3);
     altCompsGrid.setExportButton(exportButton3);
-    altCompsGrid.setFunctionId("ITM01");
+    //altCompsGrid.setFunctionId("ITM03");
     altCompsGrid.setMaxNumberOfRowsOnInsert(50);
     altCompsGrid.setInsertButton(insertButton3);
     altCompsGrid.setReloadButton(reloadButton3);
@@ -608,6 +608,7 @@ public class ProductPanel extends JPanel {
     componentsGrid.setEditButton(editButton2);
     componentsGrid.setExportButton(exportButton1);
     componentsGrid.setFunctionId("ITM03");
+    componentsGrid.setAllowColumnsPermission(false);
     componentsGrid.setInsertButton(insertButton2);
     componentsGrid.setNavBar(navigatorBar1);
     componentsGrid.setReloadButton(reloadButton2);

@@ -147,6 +147,7 @@ public class UserLoginAction extends LoginAction {
         pstmt2.close();
         ((JAIOUserSessionParameters)userSessionPars).setFunctionCodesBasedOnCompany(functionCodesBasedOnCompany);
 
+
         authenticatedIds.add(tr.getSessionId());
         return tr;
       }

@@ -97,11 +97,11 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
       props.put("backgroundColor", "232 232 232");
       String color = "220 220 220";
       props.put("disabledBackgroundColor", color);
-      props.put("systemTextFont", "Verdana PLAIN 11");
-      props.put("controlTextFont", "Verdana PLAIN 11");
-      props.put("menuTextFont", "Verdana PLAIN 11");
-      props.put("userTextFont", "Verdana PLAIN 11");
-      props.put("subTextFont", "Verdana PLAIN 11");
+      props.put("systemTextFont", "Arial PLAIN 11");
+      props.put("controlTextFont", "Arial PLAIN 11");
+      props.put("menuTextFont", "Arial PLAIN 11");
+      props.put("userTextFont", "Arial PLAIN 11");
+      props.put("subTextFont", "Arial PLAIN 11");
       Class.forName(ClientSettings.LOOK_AND_FEEL_CLASS_NAME).getMethod(
           "setCurrentTheme", new Class[] {Properties.class}).invoke(null,
           new Object[] {props});
@@ -584,7 +584,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
    */
   public String getAboutText() {
     return
-        "JAllInOne ERP/CRM Application ver. 1.3.1\n"+
+        "JAllInOne ERP/CRM Application ver. 1.3.2\n"+
         "\n"+
         "Copyright: Copyright (C) 2010 Mauro Carniel\n"+
         "Author: Mauro Carniel\n"+
