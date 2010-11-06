@@ -17,6 +17,7 @@ import org.jallinone.items.java.ItemPK;
 import java.math.BigDecimal;
 import org.jallinone.events.server.EventsManager;
 import org.jallinone.events.server.GenericEvent;
+import org.openswing.swing.message.receive.java.VOListResponse;
 
 
 /**
@@ -89,6 +90,9 @@ public class LoadOrderedItemsAction implements Action {
       ));
 
       GridParams gridPars = (GridParams)inputPar;
+      ItemPK pk = (ItemPK)gridPars.getOtherGridParams().get(ApplicationConsts.ITEM_PK);
+      if (pk==null)
+        return new VOListResponse(new ArrayList(),false,0);
 
       String sql =
           "select DOC07_PURCHASE_ITEMS.DELIVERY_DATE,DOC07_PURCHASE_ITEMS.ORDER_QTY,"+
@@ -138,8 +142,6 @@ public class LoadOrderedItemsAction implements Action {
       attribute2dbField.put("variantCodeItm15DOC07","DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM15");
       attribute2dbField.put("descriptionSYS10","SYS10_ITM01.DESCRIPTION");
 
-
-      ItemPK pk = (ItemPK)gridPars.getOtherGridParams().get(ApplicationConsts.ITEM_PK);
       ArrayList pars = new ArrayList();
       pars.add( ApplicationConsts.CONFIRMED );
       pars.add( pk.getCompanyCodeSys01ITM01() );

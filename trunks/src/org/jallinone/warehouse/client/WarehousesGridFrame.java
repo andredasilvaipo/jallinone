@@ -96,6 +96,8 @@ public class WarehousesGridFrame extends InternalFrame {
     grid.setDeleteButton(deleteButton);
     grid.setExportButton(exportButton);
     grid.setFunctionId("WAR01");
+    grid.setAllowColumnsProfile(false);
+    grid.setAllowColumnsPermission(false);
     grid.setMaxSortedColumns(3);
     grid.setInsertButton(insertButton);
     grid.setNavBar(navigatorBar);

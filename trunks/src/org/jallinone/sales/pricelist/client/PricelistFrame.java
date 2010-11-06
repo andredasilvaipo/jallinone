@@ -32,6 +32,7 @@ import java.util.Collection;
 import org.jallinone.variants.client.ProductVariantsPanel;
 import org.jallinone.variants.client.ProductVariantsController;
 import org.openswing.swing.form.client.Form;
+import org.openswing.swing.util.java.Consts;
 
 
 /**
@@ -446,6 +447,8 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
 
 
   public void dateChanged(Date oldDate,Date newDate) {
+    if (grid.getMode()!=Consts.READONLY)
+      return;
     if (controlDate.getDate()==null)
       pricesGrid.getOtherGridParams().remove(ApplicationConsts.DATE_FILTER);
     else

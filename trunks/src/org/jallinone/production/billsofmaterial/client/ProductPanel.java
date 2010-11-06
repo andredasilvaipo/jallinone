@@ -609,6 +609,7 @@ public class ProductPanel extends JPanel {
     componentsGrid.setExportButton(exportButton1);
     componentsGrid.setFunctionId("ITM03");
     componentsGrid.setAllowColumnsPermission(false);
+    componentsGrid.setAllowColumnsProfile(false);
     componentsGrid.setInsertButton(insertButton2);
     componentsGrid.setNavBar(navigatorBar1);
     componentsGrid.setReloadButton(reloadButton2);

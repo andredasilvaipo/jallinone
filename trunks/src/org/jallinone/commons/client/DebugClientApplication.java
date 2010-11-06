@@ -6,7 +6,8 @@ import org.openswing.swing.util.client.ClientSettings;
 import org.openswing.swing.internationalization.java.EnglishOnlyResourceFactory;
 import org.openswing.swing.util.client.*;
 import org.openswing.swing.permissions.client.*;
-import java.awt.Image;
+import java.awt.event.*;
+import java.awt.*;
 import javax.swing.*;
 import org.openswing.swing.internationalization.java.Language;
 import javax.swing.tree.DefaultTreeModel;
@@ -163,6 +164,15 @@ public class DebugClientApplication extends ClientApplet {
 //      UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
 //      UIManager.setLookAndFeel("com.jtattoo.plaf.mint.MintLookAndFeel");
 //      UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+
+//      JMenuItem showHelpMenu = new JMenuItem("Help Topics");
+//      showHelpMenu.addActionListener(new ActionListener() {
+//
+//        public void actionPerformed(ActionEvent e) {
+//        }
+//
+//      });
+//      MDIFrame.getInstance().getMenuHelp().add(showHelpMenu);
 
     }
     catch (Throwable ex) {

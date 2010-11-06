@@ -105,13 +105,16 @@ public class UpdateMeasureConvsAction implements Action {
 
 
         stmt.execute(sql);
-
+        String convStr = "null";
+        if (newVO.getValueREG05()!=null) {
+            BigDecimal conv = new BigDecimal(1).divide(newVO.getValueREG05(),5,BigDecimal.ROUND_HALF_UP);
+            convStr = conv.toString();
+        }
         sql =
             "update REG05_MEASURE_CONV set VALUE="+
-            (newVO.getValueREG05()==null?"null":String.valueOf(1/newVO.getValueREG05().doubleValue()))+" where "+
+            convStr+" where "+
             "UM_CODE='"+newVO.getUmCodeReg02REG05()+"' and "+
             "UM_CODE_REG02='"+newVO.getUmCodeREG05()+"'";
-
 
         stmt.execute(sql);
 

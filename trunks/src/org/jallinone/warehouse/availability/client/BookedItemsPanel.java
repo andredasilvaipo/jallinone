@@ -150,6 +150,7 @@ public class BookedItemsPanel extends JPanel {
       itemController.setVisibleColumn("descriptionSYS10", true);
       itemController.setPreferredWidthColumn("descriptionSYS10", 200);
       itemController.setFramePreferedSize(new Dimension(650,500));
+      itemController.setShowErrorMessage(false);
       itemController.addLookupListener(new LookupListener() {
 
         public void codeValidated(boolean validated) {}

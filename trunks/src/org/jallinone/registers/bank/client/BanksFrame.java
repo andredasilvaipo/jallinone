@@ -206,13 +206,20 @@ public class BanksFrame extends InternalFrame {
 //    controlBban.setTrimText(true);
 //    controlBban.setUpperCase(true);
 
-    MaskFormatter mask1 = new MaskFormatter("A AAAAA AAAAA AAAAAAAAAAAA");
+    MaskFormatter mask1 = new MaskFormatter("AAAA AAAA AAA* **** **** **** **** **");
+    mask1.setPlaceholderCharacter(' ');
+
+    MaskFormatter mask2 = new MaskFormatter("AAAA AAAA AAAA AAA* **** **** **** **** **");
+    mask2.setPlaceholderCharacter(' ');
+
+//    MaskFormatter mask1 = new MaskFormatter("A AAAAA AAAAA AAAAAAAAAAAA");
     controlBban.setFormatter(mask1);
     controlBban.addFocusListener(new BanksFrame_controlBban_focusAdapter(this));
 
-    MaskFormatter mask2 = new MaskFormatter("AAAA AAAA AAAA AAAA AAAA AAA");
+//    MaskFormatter mask2 = new MaskFormatter("AAAA AAAA AAAA AAAA AAAA AAA");
     controlIban.setFormatter(mask2);
     controlIban.addFocusListener(new BanksFrame_controlIban_focusAdapter(this));
+
 
 
     controlIban.setAttributeName("ibanREG12");

@@ -1510,6 +1510,7 @@
   <object key="for supplier" value="for supplier" />
   <object key="in pricelist" value="in pricelist" />
   <object key="import sale prices" value="Import sale prices" />
+  <object key="treePosition" value="Position in menu" />
 
 
   <currencySymbol>R$</currencySymbol>

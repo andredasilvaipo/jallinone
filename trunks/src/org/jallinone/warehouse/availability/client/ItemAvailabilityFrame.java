@@ -199,7 +199,7 @@ public class ItemAvailabilityFrame extends InternalFrame {
     split.setDividerLocation(150);
     split.add(hierarTreePanel,JSplitPane.LEFT);
     split.add(availPanel,JSplitPane.RIGHT);
-    hierarTreePanel.setFunctionId("WAR01");
+    //hierarTreePanel.setFunctionId("WAR01");
 
     warehousePanel.setVOClassName("org.jallinone.warehouse.java.WarehouseVO");
     labelWarehouse.setText("warehouse");

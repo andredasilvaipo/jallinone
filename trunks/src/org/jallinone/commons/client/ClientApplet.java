@@ -21,6 +21,8 @@ import org.openswing.swing.permissions.java.*;
 import org.openswing.swing.table.profiles.client.*;
 import org.openswing.swing.util.client.*;
 import netscape.javascript.*;
+import javax.swing.event.MenuListener;
+import javax.swing.event.MenuEvent;
 //import org.openswing.swing.util.client.HessianObjectSender;
 
 
@@ -781,6 +783,16 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     // add the clock panel to the status panel...
     userPanel.setText(username);
     MDIFrame.addStatusComponent(new Clock());
+
+//    JMenuItem showHelpMenu = new JMenuItem("Help Topics");
+//    showHelpMenu.addActionListener(new ActionListener() {
+//
+//      public void actionPerformed(ActionEvent e) {
+//      }
+//
+//    });
+//    MDIFrame.getInstance().getMenuHelp().add(showHelpMenu);
+
   }
 
 

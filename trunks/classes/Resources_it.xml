@@ -1595,6 +1595,7 @@
   <object key="for supplier" value="per fornitore" />
   <object key="in pricelist" value="nel listino" />
   <object key="import sale prices" value="Importaz. prezzi di vend." />
+  <object key="treePosition" value="Posizione nel menu" />
 
 
 <!-- application translations -->

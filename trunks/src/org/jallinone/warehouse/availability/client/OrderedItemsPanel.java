@@ -132,6 +132,7 @@ public class OrderedItemsPanel extends JPanel {
       // item code lookup...
       itemDataLocator.setGridMethodName("loadItems");
       itemDataLocator.setValidationMethodName("validateItemCode");
+      itemController.setShowErrorMessage(false);
 
       controlItemCode.setLookupController(itemController);
       itemController.setLookupDataLocator(itemDataLocator);

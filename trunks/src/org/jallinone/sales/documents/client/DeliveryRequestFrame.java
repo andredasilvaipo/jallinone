@@ -276,8 +276,8 @@ public class DeliveryRequestFrame extends InternalFrame implements SaleDocument 
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
     tabbedPane.add(linesPanel,   "items");
-    warePanel.add(controlDelivDate,  new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 30, 0));
+    warePanel.add(controlDelivDate,   new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 50, 0));
 
     tabbedPane.setTitleAt(0,ClientSettings.getInstance().getResources().getResource("header"));
     tabbedPane.setTitleAt(1,ClientSettings.getInstance().getResources().getResource("items"));

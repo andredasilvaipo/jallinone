@@ -81,6 +81,8 @@ public class SQLExecutionBean {
       boolean fkFound = false;
       boolean indexFound = false;
       String defaultValue = null;
+      int index = -1;
+      StringBuffer unicode = new StringBuffer();
       boolean useDefaultValue =
           conn.getMetaData().getDriverName().equals("oracle.jdbc.driver.OracleDriver") ||
           conn.getMetaData().getDriverName().equals("com.microsoft.jdbc.sqlserver.SQLServerDriver") ||
@@ -235,6 +237,19 @@ public class SQLExecutionBean {
           if (indexFound)
             sql = removeCommasAtEnd(sql);
 
+          // check for unicode chars...
+          while((index=sql.indexOf("\\u"))!=-1) {
+                  for(int i=index+2;i<sql.length();i++)
+                          if (Character.isDigit(sql.charAt(i)))
+                                  unicode.append(sql.charAt(i));
+                          else
+                                  break;
+                  if (unicode.length()>0) {
+                          sql.delete(index, index+1+unicode.length());
+                          sql.setCharAt(index, new Character((char)Integer.valueOf(unicode.toString(),16).intValue()).charValue());
+                          unicode.delete(0, unicode.length());
+                  }
+          }
 
           if (sql.toString().trim().length()>0) {
             pstmt = conn.prepareStatement(sql.toString().substring(0,sql.length() - 1));

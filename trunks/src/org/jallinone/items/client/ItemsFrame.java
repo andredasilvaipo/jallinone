@@ -188,6 +188,7 @@ public class ItemsFrame extends InternalFrame {
     grid.setExportButton(exportButton1);
     grid.setFunctionId("ITM01");
     grid.setAllowColumnsPermission(false);
+    grid.setAllowColumnsProfile(false);
     grid.setMaxSortedColumns(3);
     grid.setInsertButton(insertButton1);
     grid.setNavBar(navigatorBar1);

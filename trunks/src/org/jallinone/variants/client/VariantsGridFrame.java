@@ -232,7 +232,7 @@ public class VariantsGridFrame extends InternalFrame {
     colDescr.setColumnSortable(true);
     colDescr.setEditableOnEdit(true);
     colDescr.setEditableOnInsert(true);
-    colDescr.setHeaderColumnName("variantTypeDesc");
+    colDescr.setHeaderColumnName("variantDesc");
     colDescr.setPreferredWidth(250);
 
     colCodOrder.setColumnName("codeOrder");

@@ -102,7 +102,7 @@ public class DeleteItemsAction implements Action {
         stmt.execute(
             "delete from ITM03_COMPONENTS where "+
             "COMPANY_CODE_SYS01='"+pk.getCompanyCodeSys01ITM01()+"' and "+
-            "ITEM_CODE_ITM03='"+pk.getItemCodeITM01()+"'"
+            "ITEM_CODE_ITM01='"+pk.getItemCodeITM01()+"'"
         );
 
 

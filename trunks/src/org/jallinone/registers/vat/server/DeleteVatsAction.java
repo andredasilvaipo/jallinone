@@ -90,7 +90,7 @@ public class DeleteVatsAction implements Action {
         stmt.execute("update REG01_VATS set ENABLED='N' where VAT_CODE='"+vo.getVatCodeREG01()+"'");
 
         // remove default vat code from customers too...
-        stmt.execute("update SAL07_CUSTOMERS set VAT_CODE_REG01=NULLnull where VAT_CODE_REG01='"+vo.getVatCodeREG01()+"'");
+        stmt.execute("update SAL07_CUSTOMERS set VAT_CODE_REG01=NULL where VAT_CODE_REG01='"+vo.getVatCodeREG01()+"'");
 
 
       }
