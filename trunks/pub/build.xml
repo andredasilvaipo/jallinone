@@ -13,8 +13,9 @@
   <property name="keystore" value="${KEYSTORE}"/>
   <property name="alias" value="${ALIAS}"/>
   <property name="storepass" value="${STOREPASS}"/>
-  <property name="libmule" value="${basedir}/../lib"/>
-  <property name="libendorsed" value="${basedir}/../lib"/>
+  <property name="libmule" value="${basedir}/../libmule"/>
+  <property name="libendorsed" value="${basedir}/../libendorsed"/>
+  <property name="libservlet" value="${libservlet}"/>
 
   
   <path id="classpath">
@@ -24,15 +25,21 @@
     <fileset dir="${libmule}">
       <include name="**/*.jar"/>
     </fileset>
+    <fileset file="${libservlet}" />
   </path>
   
   
   <target name="compile-classic">
     <echo message="Compiling classic version..."/>
+    <delete>
+      <fileset dir="${classes}" includes="**/*.class"/>
+    </delete>
     <javac destdir="${classes}"
+	      fork="true"
+	      memorymaximumsize="512m"
           classpathref="classpath"
           includeantruntime="false"
-          debug="off"
+          debug="on"
           nowarn="off"
           source="1.4"
           target="1.4"
@@ -46,10 +53,15 @@
   
   <target name="compile-mule">
     <echo message="Compiling SOA version..."/>
+    <delete>
+      <fileset dir="${classes}" includes="**/*.class"/>
+    </delete>
     <javac destdir="${classes}"
+	      fork="true"
+	      memorymaximumsize="512m"
           classpathref="classpath"
           includeantruntime="false"
-          debug="off"
+          debug="on"
           nowarn="off"
           source="1.6"
           target="1.6"
@@ -190,7 +202,7 @@
   </target>
 
   
-  <target name="allclasses-classic" depends="classes">
+  <target name="allclasses-classic" depends="allclasses">
     <copy todir="${webapps}/jAllInOne/WEB-INF" >
       <fileset dir="${srcclassic}">
         <include name="web.xml"/>
@@ -199,7 +211,7 @@
   </target>
   
 
-  <target name="allclasses-mule" depends="classes">
+  <target name="allclasses-mule" depends="allclasses">
     <copy todir="${webapps}/jAllInOne/WEB-INF/lib" >
       <fileset dir="${libmule}">
         <include name="acegi-security-1.0.7-osgi.jar"/>
@@ -473,6 +485,7 @@
         <include name="mysql-connector-java-5.0.3-bin.jar"/>
         <include name="jasperreports-1.2.7.jar"/>
         <include name="itext-1.3.1.jar"/>
+        <include name="log4j-1.2.14"/>
         <include name="commons-collections-2.1.jar"/>
         <include name="commons-beanutils-1.5.jar"/>
         <include name="commons-digester-1.7.jar"/>
@@ -502,18 +515,18 @@
   </target>
   
     
-  <target name="allclasses-nosign-classic">
+  <target name="allclasses-nosign-classic" depends="allclasses-nosign">
     <copy todir="${webapps}/jAllInOne/WEB-INF" >
-      <fileset dir="${libclassic}">
+      <fileset dir="${srcclassic}">
         <include name="web.xml"/>
       </fileset>
     </copy>
   </target>
 
 
-  <target name="allclasses-nosign-mule">
+  <target name="allclasses-nosign-mule" depends="allclasses-nosign">
     <copy todir="${webapps}/jAllInOne/WEB-INF" >
-      <fileset dir="${libmule}">
+      <fileset dir="${srcmule}">
         <include name="web.xml"/>
       </fileset>
     </copy>
