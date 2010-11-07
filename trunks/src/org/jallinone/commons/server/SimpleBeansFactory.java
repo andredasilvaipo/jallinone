@@ -215,33 +215,27 @@ public class SimpleBeansFactory implements BeansFactory {
 			return getConnection();
 		}
 
-		@Override
 		public PrintWriter getLogWriter() throws SQLException {
 			return pw;
 		}
 
-		@Override
 		public int getLoginTimeout() throws SQLException {
 			return loginTimeout;
 		}
 
-		@Override
 		public void setLogWriter(PrintWriter out) throws SQLException {
 			pw = out;
 		}
 
-		@Override
 		public void setLoginTimeout(int seconds) throws SQLException {
 			loginTimeout = seconds;
 		}
 
-		@Override
-		public boolean isWrapperFor(Class<?> iface) throws SQLException {
+		public boolean isWrapperFor(Class iface) throws SQLException {
 			return false;
 		}
 
-		@Override
-		public <T> T unwrap(Class<T> iface) throws SQLException {
+		public Object unwrap(Class iface) throws SQLException {
 			return null;
 		}			
 
