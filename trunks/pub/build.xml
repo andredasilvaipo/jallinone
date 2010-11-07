@@ -699,7 +699,7 @@
   </target>
 
   
-  <target name="war-soa">
+  <target name="war-mule">
     <mkdir dir="${pub}/soa"/>
     <delete>
       <fileset dir="${pub}/soa" includes="*.war"/>
@@ -723,10 +723,16 @@
         <include name="*.jar"/>
       </fileset>
     </copy>
+    <copy todir="${tmp}/libmule" >
+      <fileset dir="${libmule}" >
+        <include name="*.jar"/>
+      </fileset>
+    </copy>
     <copy todir="${tmp}/pub" >
       <fileset dir="${pub}" >
         <include name="build.xml"/>
-        <include name="jallinone.war"/>
+        <include name="classic/jallinone.war"/>
+		<include name="soa/jallinone.war"/>
       </fileset>
     </copy>
     <copy todir="${tmp}" >
@@ -741,6 +747,16 @@
         <include name="build.xml"/>
       </fileset>
     </copy>
+    <copy todir="${tmp}/srcmule" >
+      <fileset dir="${srcmule}" >
+        <include name="**/*"/>
+      </fileset>
+    </copy>
+    <copy todir="${tmp}/srcclassic" >
+      <fileset dir="${srcclassic}" >
+        <include name="**/*"/>
+      </fileset>
+    </copy>
     <copy todir="${tmp}/classes" >
       <fileset dir="${classes}">
         <include name="*.xml"/>
@@ -750,6 +766,7 @@
         <include name="*.ini"/>
         <include name="*.jnlp"/>
         <exclude name="pooler.*"/>
+        <exclude name="conf/*.xml"/>
       </fileset>
     </copy>
     <copy todir="${tmp}/src" >

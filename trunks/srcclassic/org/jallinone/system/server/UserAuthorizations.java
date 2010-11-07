@@ -1,34 +1,10 @@
 package org.jallinone.system.server;
 
-import org.openswing.swing.server.*;
-import java.io.*;
-import java.util.*;
+import java.util.HashMap;
 
-import org.openswing.swing.message.receive.java.*;
-
-import javax.jws.soap.SOAPBinding;
-import javax.swing.tree.*;
-import javax.swing.tree.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.openswing.swing.mdi.java.*;
-import org.openswing.swing.message.receive.java.*;
-import org.openswing.swing.permissions.java.*;
-import org.openswing.swing.internationalization.java.*;
-import java.sql.*;
-
-import org.jallinone.commons.java.HashMapAdapter;
-import org.jallinone.system.java.*;
-import org.jallinone.system.java.*;
-import org.jallinone.system.java.*;
-import org.jallinone.system.permissions.java.RoleVO;
-import org.jallinone.system.customizations.java.*;
-import java.math.*;
-import org.openswing.swing.tree.java.*;
-import org.openswing.swing.table.permissions.java.*;
-import org.jallinone.system.gridmanager.server.*;
-
-import com.sun.xml.internal.ws.api.SOAPVersion;
+import org.jallinone.system.java.ButtonCompanyAuthorization;
+import org.jallinone.system.java.CustomizedWindows;
+import org.openswing.swing.permissions.java.ButtonAuthorization;
 
 
 /**
@@ -68,17 +44,17 @@ public interface UserAuthorizations {
 	
     public ButtonCompanyAuthorization[] getButtonCompanyAuthorizations(String serverLanguageId,String username) throws Throwable;
    
-    @XmlJavaTypeAdapter(HashMapAdapter.class)
+    
     public HashMap getUserRoles(String serverLanguageId,String username) throws Throwable;
 
     public int getCompaniesNumber() throws Throwable;    	
     
     public CustomizedWindows getWindowCustomizations(String langId) throws Throwable;
     
-    @XmlJavaTypeAdapter(HashMapAdapter.class)
+    
     public HashMap getApplicationPars() throws Throwable;
     
-    @XmlJavaTypeAdapter(HashMapAdapter.class)
+    
     public HashMap getLastGridPermissionsDigests() throws Throwable;
     
      

@@ -1,25 +1,18 @@
 package org.jallinone.system.permissions.server;
 
-import org.openswing.swing.server.*;
-import java.io.*;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Properties;
 
-import org.openswing.swing.message.receive.java.*;
+import org.jallinone.system.permissions.java.GridPermissionsPerRoleVO;
+import org.jallinone.system.permissions.java.RoleFunctionCompanyVO;
+import org.jallinone.system.permissions.java.RoleFunctionVO;
+import org.jallinone.system.permissions.java.RoleVO;
+import org.jallinone.system.permissions.java.UserRoleVO;
+import org.openswing.swing.message.receive.java.VOListResponse;
+import org.openswing.swing.message.receive.java.VOResponse;
 import org.openswing.swing.message.send.java.GridParams;
-
-import java.sql.*;
-
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.openswing.swing.logger.server.*;
-import org.jallinone.system.server.*;
-import org.jallinone.system.permissions.java.*;
-import org.openswing.swing.internationalization.server.*;
-import org.openswing.swing.internationalization.java.*;
-import org.jallinone.commons.java.HashMapAdapter;
-import org.jallinone.events.server.*;
-import org.jallinone.events.server.*;
 
 
 /**
@@ -82,11 +75,11 @@ public interface Roles {
 
 	public VOListResponse loadRoleFunctionCompanies(GridParams params,String serverLanguageId,String username) throws Throwable;
 
-	public VOListResponse loadRoleFunctions(GridParams params,String serverLanguageId,String username,@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap userRoles) throws Throwable;
+	public VOListResponse loadRoleFunctions(GridParams params,String serverLanguageId,String username, HashMap userRoles) throws Throwable;
 
 	public VOListResponse loadRoles(String serverLanguageId,String username) throws Throwable;
 
-	public VOListResponse loadUserRoles(GridParams params,String serverLanguageId,String username,@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap userRoles) throws Throwable;
+	public VOListResponse loadUserRoles(GridParams params,String serverLanguageId,String username, HashMap userRoles) throws Throwable;
 
 	public VOListResponse updateGridPermissionsPerRole(String functionCodeSYS06,BigDecimal progressiveSYS04,ArrayList vos,String serverLanguageId,String username) throws Throwable;
 

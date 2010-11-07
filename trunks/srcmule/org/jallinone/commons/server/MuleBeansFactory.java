@@ -1,11 +1,5 @@
 package org.jallinone.commons.server;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.Properties;
 
 import org.apache.cxf.interceptor.LoggingInInterceptor;
@@ -13,17 +7,12 @@ import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.mule.api.MuleContext;
 import org.mule.api.MuleException;
-import org.mule.api.config.ConfigurationException;
-import org.mule.api.config.MuleConfiguration;
-import org.mule.api.context.MuleContextBuilder;
-import org.mule.api.lifecycle.InitialisationException;
 import org.mule.config.DefaultMuleConfiguration;
 import org.mule.config.builders.AutoConfigurationBuilder;
 import org.mule.context.DefaultMuleContextBuilder;
 import org.mule.context.DefaultMuleContextFactory;
 import org.mule.module.client.MuleClient;
 import org.openswing.swing.logger.server.Logger;
-import org.openswing.swing.message.receive.java.Response;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>

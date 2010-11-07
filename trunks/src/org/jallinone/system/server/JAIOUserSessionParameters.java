@@ -2,9 +2,6 @@ package org.jallinone.system.server;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
-
-import javax.xml.bind.annotation.XmlTransient;
 
 import org.jallinone.system.java.ButtonCompanyAuthorizations;
 import org.jallinone.system.java.CustomizedWindows;

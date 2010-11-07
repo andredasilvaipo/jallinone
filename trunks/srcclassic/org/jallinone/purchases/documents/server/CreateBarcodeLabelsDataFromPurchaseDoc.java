@@ -4,7 +4,7 @@ import java.math.*;
 import java.sql.*;
 import java.util.*;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 
 import org.jallinone.commons.java.*;
 import org.jallinone.events.server.*;
@@ -49,7 +49,7 @@ import org.openswing.swing.server.*;
 
 public interface CreateBarcodeLabelsDataFromPurchaseDoc {
 
-  public VOResponse createBarcodeLabelsDataFromPurchaseDoc(@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap map,String serverLanguageId,String username) throws Throwable;
+  public VOResponse createBarcodeLabelsDataFromPurchaseDoc( HashMap map,String serverLanguageId,String username) throws Throwable;
 
 }
 

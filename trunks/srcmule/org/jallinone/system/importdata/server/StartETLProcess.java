@@ -7,7 +7,7 @@ import org.openswing.swing.message.receive.java.*;
 import java.sql.*;
 import org.openswing.swing.logger.server.*;
 import org.jallinone.system.server.*;
-import org.jallinone.registers.color.java.*;
+
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
 import org.jallinone.variants.java.*;

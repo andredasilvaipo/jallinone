@@ -1,20 +1,24 @@
 package org.jallinone.startup.server;
 
 import java.io.*;
-import java.sql.*;
-import java.util.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Properties;
 
-import org.jallinone.startup.java.*;
-import org.jallinone.system.server.JAIOUserSessionParameters;
-import org.openswing.swing.logger.server.*;
-import org.openswing.swing.message.receive.java.*;
-import org.openswing.swing.server.*;
-import org.openswing.swing.message.receive.java.*;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-
-import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.startup.java.DbConnVO;
+import org.openswing.swing.logger.server.Logger;
+import org.openswing.swing.message.receive.java.ErrorResponse;
+import org.openswing.swing.message.receive.java.Response;
+import org.openswing.swing.message.receive.java.VOResponse;
+import org.openswing.swing.server.Action;
+import org.openswing.swing.server.ConnectionManager;
+import org.openswing.swing.server.UserSessionParameters;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -217,7 +221,7 @@ public class CreateConfigFileAction implements Action {
       
       // update also "conf/applicationContext.xml" file...
       String xmlFile = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"conf/applicationContext.xml";
-      BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(xmlFile)));
+      BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(xmlFile))));
       StringBuffer sb = new StringBuffer();
       String line = null;
       while((line=br.readLine())!=null) {
@@ -244,7 +248,7 @@ public class CreateConfigFileAction implements Action {
 		   </bean>
        */
       
-      PrintWriter pw = new PrintWriter(xmlFile);
+      PrintWriter pw = new PrintWriter(new FileOutputStream(xmlFile));
       String[] lines = sb.toString().split("\n");
       for(int i=0;i<lines.length;i++)
     	  pw.println(lines[i]);

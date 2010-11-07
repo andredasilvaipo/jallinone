@@ -7,7 +7,7 @@ import org.openswing.swing.message.send.java.FilterWhereClause;
 import org.openswing.swing.table.java.GridDataLocator;
 import org.openswing.swing.mdi.client.MDIFrame;
 import org.openswing.swing.util.client.ClientUtils;
-import org.jallinone.registers.color.java.*;
+
 import java.math.BigDecimal;
 import javax.swing.*;
 import org.jallinone.variants.java.VariantTypeVO;

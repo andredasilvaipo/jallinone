@@ -11,7 +11,7 @@ import org.openswing.swing.logger.server.*;
 import org.jallinone.system.server.*;
 import java.math.*;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 
 import org.openswing.swing.message.send.java.*;
 import org.jallinone.commons.java.*;
@@ -64,7 +64,7 @@ public interface LoadOrderTracking {
 	public OrderTrackingFilterVO getOrderTracking();
 	
 
-	public VOListResponse loadOrderTracking(GridParams gridParams,@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap mapDOC06,@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap mapDOC01,@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap mapDOC08,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadOrderTracking(GridParams gridParams, HashMap mapDOC06, HashMap mapDOC01, HashMap mapDOC08,String serverLanguageId,String username) throws Throwable;
 
 }
 

@@ -1,5 +1,15 @@
 
 
+Release Notes 2.0
+-------------------
+
+Available new SOA based version of JAllInOne and classic version.
+Fixed some bugs on updating measure units, production orders, documents management, currency setting in sale documents,
+initial data translations with UTF8 database schemas.
+Changed build.xml in order to support two distinct compilations and deployes: one for "classic version" (no Mule, java 1.4 compatible) 
+and one for "SOA version" (based on java 1.6 and Mule).
+
+
 Release Notes 1.3.2
 -------------------
 

@@ -132,7 +132,9 @@ public class SimpleBeansFactory implements BeansFactory {
 
 		// analyze other properties...
 		Method[] setters = beanClass.getMethods();
-		for(Method m: setters) {
+		Method m = null;
+		for(int i=0;i<setters.length;i++) {
+			m = setters[i];
 			if (m.getName().startsWith("set") && 
 				m.getParameterTypes().length==1 &&
 				m.getParameterTypes()[0].getName().endsWith("Bean")

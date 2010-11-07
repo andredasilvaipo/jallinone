@@ -19,7 +19,7 @@ import org.jallinone.sales.pricelist.server.*;
 import org.jallinone.sales.pricelist.java.*;
 import java.math.*;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 
 
 /**
@@ -55,13 +55,13 @@ public interface Params {
 
   public VOResponse loadCompanyParams(String companyCode,String serverLanguageId,String username) throws Throwable;
 
-  public VOResponse loadUserParam(@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap params,String serverLanguageId,String username) throws Throwable;
+  public VOResponse loadUserParam( HashMap params,String serverLanguageId,String username) throws Throwable;
   
   public VOResponse loadUserParams(String companyCode,String serverLanguageId,String username,ArrayList custCompaniesList,ArrayList warCompaniesList) throws Throwable;
  
-  public VOResponse saveUserParam(@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap params,String serverLanguageId,String username) throws Throwable;
+  public VOResponse saveUserParam( HashMap params,String serverLanguageId,String username) throws Throwable;
   
-  public VOResponse updateApplicationParams(@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap applicationPars,String serverLanguageId,String username) throws Throwable;
+  public VOResponse updateApplicationParams( HashMap applicationPars,String serverLanguageId,String username) throws Throwable;
   
   public VOResponse updateCompanyParams(CompanyParametersVO vo,String serverLanguageId,String username) throws Throwable;
 

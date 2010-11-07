@@ -14,7 +14,7 @@ import java.sql.*;
 import org.openswing.swing.logger.server.*;
 import org.jallinone.system.server.*;
 import org.jallinone.system.translations.server.TranslationUtils;
-import org.jallinone.registers.color.java.*;
+
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;

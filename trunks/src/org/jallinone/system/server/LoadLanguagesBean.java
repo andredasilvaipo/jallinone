@@ -1,16 +1,15 @@
 package org.jallinone.system.server;
 
-import org.openswing.swing.logger.server.*;
-import org.openswing.swing.server.*;
-import java.io.*;
-import java.util.*;
-import org.openswing.swing.message.receive.java.*;
-import java.sql.*;
-import org.openswing.swing.internationalization.java.*;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import javax.sql.DataSource;
-import javax.xml.bind.JAXBContext;
+
+import org.openswing.swing.internationalization.java.Language;
+import org.openswing.swing.logger.server.Logger;
+import org.openswing.swing.message.receive.java.VOListResponse;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>

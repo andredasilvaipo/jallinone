@@ -71,7 +71,7 @@ public class LoadOrderTrackingAction implements Action {
 		  Resources res = factory.getResources(userSessionPars.getLanguageId());
 
 		  
-		  HashMap<String,String> mapDOC06 = new HashMap<String,String>();
+		  HashMap mapDOC06 = new HashMap();
 		  mapDOC06.put(
 				  ApplicationConsts.PURCHASE_INVOICE_DOC_TYPE,
 				  res.getResource("purchase invoice")
@@ -98,7 +98,7 @@ public class LoadOrderTrackingAction implements Action {
 		  );
 		  
 		  
-		  HashMap<String,String> mapDOC01 = new HashMap<String,String>();
+		  HashMap mapDOC01 = new HashMap();
 		  mapDOC01.put(
 				  ApplicationConsts.SALE_INVOICE_DOC_TYPE,
 				  res.getResource("sale invoice")
@@ -141,7 +141,7 @@ public class LoadOrderTrackingAction implements Action {
 		  );
 	  
 
-		  HashMap<String,String> mapDOC08 = new HashMap<String,String>();
+		  HashMap mapDOC08 = new HashMap();
 		  mapDOC08.put(
 				  ApplicationConsts.IN_DELIVERY_NOTE_DOC_TYPE,
 				  res.getResource("in delivery note")

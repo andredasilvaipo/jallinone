@@ -3,8 +3,8 @@ package org.jallinone.system.permissions.java;
 import org.openswing.swing.message.receive.java.*;
 import java.math.BigDecimal;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+
+
 
 
 /**
