@@ -5,6 +5,32 @@
     "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
 
     <web-app>
+	  <context-param>
+		  <param-name>beansFactory</param-name>
+		  <!--<param-value>org.jallinone.commons.server.MuleBeansFactory</param-value>-->
+		  <param-value>org.jallinone.commons.server.SimpleBeansFactory</param-value>
+	  </context-param> 
+	  <context-param>
+		  <param-name>org.mule.config</param-name>
+		  <param-value>conf/jallinone.xml</param-value>
+	  </context-param> 
+	  <context-param>
+		  <param-name>muleURL</param-name>
+		  <param-value>http://localhost:8777/services/</param-value>
+	  </context-param> 
+	  <context-param>
+		  <param-name>loggingInterceptorLevel</param-name>
+		  <param-value>0</param-value>
+	  </context-param> 	  
+	  <context-param>
+		<param-name>log4jExposeWebAppRoot</param-name>
+		<param-value>false</param-value>
+	  </context-param>
+	  <context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/classes/log4j.properties</param-value>
+	  </context-param>
+	
         <servlet>
             <servlet-name>controller</servlet-name>
             <servlet-class>org.openswing.swing.server.Controller</servlet-class>
