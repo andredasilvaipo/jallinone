@@ -61,16 +61,22 @@ import org.jallinone.variants.java.*;
 public interface CreateInvoiceFromInDelivNotes {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public DetailPurchaseDocVO getDetailPurchaseDoc();
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public InDeliveryNotesVO getInDeliveryNotes();
 
-	public VOResponse createInvoiceFromInDelivNotes(PurchaseInvoiceFromDelivNotesVO invoiceVO,String companyCode,String serverLanguageId,String username) throws Throwable;
+	public VOResponse createInvoiceFromInDelivNotes(
+		 HashMap variant1Descriptions,
+		 HashMap variant2Descriptions,
+		 HashMap variant3Descriptions,
+		 HashMap variant4Descriptions,
+		 HashMap variant5Descriptions,
+		 PurchaseInvoiceFromDelivNotesVO invoiceVO,String companyCode,String serverLanguageId,String username) throws Throwable;
 
 }
 

@@ -49,7 +49,13 @@ import org.openswing.swing.server.*;
 
 public interface CreateBarcodeLabelsDataFromPurchaseDoc {
 
-  public VOResponse createBarcodeLabelsDataFromPurchaseDoc( HashMap map,String serverLanguageId,String username) throws Throwable;
+  public VOResponse createBarcodeLabelsDataFromPurchaseDoc(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		HashMap map, String serverLanguageId, String username) throws Throwable;
 
 }
 

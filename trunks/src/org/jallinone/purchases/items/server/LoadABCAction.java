@@ -25,6 +25,7 @@ import org.jallinone.purchases.items.java.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -68,11 +69,13 @@ public class LoadABCAction implements Action {
 
 
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
-      GridParams gridParams = (GridParams)inputPar;
+    GridParams gridParams = (GridParams)inputPar;
     try {
+			String companyCode = (String)gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01);
+			VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(companyCode);
 
     	ABCService bean = (ABCService)JAIOBeanFactory.getInstance().getBean(ABCService.class);
-      Response answer = bean.loadABC(gridParams,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+      Response answer = bean.loadABC(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),gridParams,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
     return answer;
     }

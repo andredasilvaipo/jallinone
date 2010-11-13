@@ -24,6 +24,8 @@ import org.jallinone.purchases.suppliers.server.*;
 import org.jallinone.purchases.suppliers.java.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
 
 
 /**
@@ -57,7 +59,13 @@ import org.jallinone.events.server.*;
 @javax.jws.WebService
 public interface CreateInvoiceFromPurchaseDoc {
 
-  public VOResponse createInvoiceFromPurchaseDoc(DetailPurchaseDocVO docVO,String companyCode,String serverLanguageId,String username) throws Throwable;
+  public VOResponse createInvoiceFromPurchaseDoc(
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+              DetailPurchaseDocVO docVO,String companyCode,String serverLanguageId,String username) throws Throwable;
 
 }
 

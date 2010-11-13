@@ -61,7 +61,7 @@ import javax.sql.DataSource;
 public class SaleDocsBean  implements SaleDocs {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -69,9 +69,9 @@ public class SaleDocsBean  implements SaleDocs {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -81,7 +81,7 @@ public class SaleDocsBean  implements SaleDocs {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -113,7 +113,7 @@ public class SaleDocsBean  implements SaleDocs {
   }
 
   private LoadSaleDocBean bean;
-  
+
   public void setBean(LoadSaleDocBean bean) {
 	  this.bean = bean;
   }
@@ -124,17 +124,24 @@ public class SaleDocsBean  implements SaleDocs {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public GridSaleDocVO getGridSaleDoc() {
 	  throw new UnsupportedOperationException();
   }
-	
+
 
   /**
    * Business logic to execute.
    */
-  public VOResponse updateSaleDoc(DetailSaleDocVO oldVO,DetailSaleDocVO newVO,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable {
+  public VOResponse updateSaleDoc(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      DetailSaleDocVO oldVO, DetailSaleDocVO newVO, String serverLanguageId,
+      String username, ArrayList customizedFields) throws Throwable {
     Statement stmt = null;
     Connection conn = null;
     try {
@@ -148,7 +155,7 @@ public class SaleDocsBean  implements SaleDocs {
       // retrieve payment info...
       LookupValidationParams pars = new LookupValidationParams(newVO.getPaymentCodeReg10DOC01(),new HashMap());
       Response payResponse = payBean.validatePaymentCode(pars,serverLanguageId,username,new ArrayList());
-      if (payResponse.isError()) 
+      if (payResponse.isError())
         throw new Exception(payResponse.getErrorMessage());
       PaymentVO payVO = (PaymentVO)((VOListResponse)payResponse).getRows().get(0);
       newVO.setFirstInstalmentDaysDOC01(payVO.getFirstInstalmentDaysREG10());
@@ -160,9 +167,9 @@ public class SaleDocsBean  implements SaleDocs {
       // retrieve currency info...
       pars = new LookupValidationParams(newVO.getCurrencyCodeReg03DOC01(),new HashMap());
       Response currResponse = currBean.validateCurrencyCode(pars,serverLanguageId,username,new ArrayList());
-      if (currResponse.isError()) 
+      if (currResponse.isError())
         throw new Exception(currResponse.getErrorMessage());
-        
+
       CurrencyVO currVO = (CurrencyVO)((VOListResponse)currResponse).getRows().get(0);
       newVO.setCurrencySymbolREG03(currVO.getCurrencySymbolREG03());
       newVO.setDecimalSymbolREG03(currVO.getDecimalSymbolREG03());
@@ -251,10 +258,14 @@ public class SaleDocsBean  implements SaleDocs {
 
       SaleDocPK pk = new SaleDocPK(newVO.getCompanyCodeSys01DOC01(),newVO.getDocTypeDOC01(),newVO.getDocYearDOC01(),newVO.getDocNumberDOC01());
       Response totalsRes = totals.updateTaxableIncomes(
-        pk,
-        serverLanguageId,
-        username
-
+          variant1Descriptions,
+          variant2Descriptions,
+          variant3Descriptions,
+          variant4Descriptions,
+          variant5Descriptions,
+          pk,
+          serverLanguageId,
+          username
       );
       if (totalsRes.isError()) {
     	  throw new Exception(totalsRes.getErrorMessage());
@@ -299,7 +310,7 @@ public class SaleDocsBean  implements SaleDocs {
 
       }
       catch (Exception exx) {}
-    
+
       try {
         payBean.setConn(null);
         currBean.setConn(null);
@@ -597,7 +608,7 @@ public class SaleDocsBean  implements SaleDocs {
    */
   public VOResponse insertSaleDoc(DetailSaleDocVO vo,String serverLanguageId,String username,String companyCode,ArrayList customizedFields)  throws Throwable{
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -617,9 +628,9 @@ public class SaleDocsBean  implements SaleDocs {
       // retrieve payment info...
       LookupValidationParams pars = new LookupValidationParams(vo.getPaymentCodeReg10DOC01(),new HashMap());
       Response payResponse = payBean.validatePaymentCode(pars,serverLanguageId,username,new ArrayList());
-      if (payResponse.isError()) 
+      if (payResponse.isError())
         throw new Exception(payResponse.getErrorMessage());
-        
+
       PaymentVO payVO = (PaymentVO)((VOListResponse)payResponse).getRows().get(0);
       vo.setFirstInstalmentDaysDOC01(payVO.getFirstInstalmentDaysREG10());
       vo.setInstalmentNumberDOC01(payVO.getInstalmentNumberREG10());
@@ -753,7 +764,7 @@ public class SaleDocsBean  implements SaleDocs {
     	  }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
         payBean.setConn(null);
         currBean.setConn(null);
@@ -769,7 +780,7 @@ public class SaleDocsBean  implements SaleDocs {
    */
   public VOResponse deleteSaleDocs(ArrayList list,String serverLanguageId,String username) throws Throwable {
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -828,7 +839,7 @@ public class SaleDocsBean  implements SaleDocs {
             }
 
         }
-        
+
         catch (Exception exx) {}
     }
 

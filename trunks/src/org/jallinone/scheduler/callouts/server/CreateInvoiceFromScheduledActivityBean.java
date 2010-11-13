@@ -73,7 +73,7 @@ import javax.sql.DataSource;
 public class CreateInvoiceFromScheduledActivityBean  implements CreateInvoiceFromScheduledActivity {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -81,9 +81,9 @@ public class CreateInvoiceFromScheduledActivityBean  implements CreateInvoiceFro
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -93,7 +93,7 @@ public class CreateInvoiceFromScheduledActivityBean  implements CreateInvoiceFro
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -135,7 +135,7 @@ public class CreateInvoiceFromScheduledActivityBean  implements CreateInvoiceFro
     this.totals = totals;
   }
 
-  
+
 
   public CreateInvoiceFromScheduledActivityBean() {
   }
@@ -145,7 +145,14 @@ public class CreateInvoiceFromScheduledActivityBean  implements CreateInvoiceFro
   /**
    * Business logic to execute.
    */
-  public VOResponse createInvoiceFromScheduledActivity(InvoiceFromCallOutRequestVO invVO,String t1,String serverLanguageId,String username) throws Throwable {
+  public VOResponse createInvoiceFromScheduledActivity(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      InvoiceFromCallOutRequestVO invVO, String t1, String serverLanguageId,
+      String username) throws Throwable {
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
@@ -326,6 +333,11 @@ public class CreateInvoiceFromScheduledActivityBean  implements CreateInvoiceFro
 
       SaleDocPK docPK = new SaleDocPK(vo.getCompanyCodeSys01DOC01(),vo.getDocTypeDOC01(),vo.getDocYearDOC01(),vo.getDocNumberDOC01());
       res = totals.updateTaxableIncomes(
+        variant1Descriptions,
+        variant2Descriptions,
+        variant3Descriptions,
+        variant4Descriptions,
+        variant5Descriptions,
         docPK,
         serverLanguageId,
         username
@@ -420,7 +432,7 @@ public class CreateInvoiceFromScheduledActivityBean  implements CreateInvoiceFro
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
         saleDoc.setConn(null);
         insItemRow.setConn(null);

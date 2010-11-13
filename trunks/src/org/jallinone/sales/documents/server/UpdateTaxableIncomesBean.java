@@ -66,7 +66,7 @@ import org.openswing.swing.message.send.java.LookupValidationParams;
 public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -74,9 +74,9 @@ public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -86,7 +86,7 @@ public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -110,9 +110,9 @@ public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
     this.rowsBean = rowsBean;
   }
 
-  
+
   private InsertSaleItemBean bean;
-  
+
   public void setBean(InsertSaleItemBean bean) {
 	  this.bean = bean;
   }
@@ -125,19 +125,25 @@ public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public TaxableIncomeVO getTaxableIncome() {
-	  throw new UnsupportedOperationException();  
+	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Recalculate items/activities/value charges totals and document totals.
    * No commit or rollback are executed. No connection is created or released.
    * @return list of TaxableIncomeVO objects, grouped per item/act/charge and per vat code
    */
-  public VOListResponse updateTaxableIncomes(SaleDocPK pk,String serverLanguageId,String username) throws Throwable{
+  public VOListResponse updateTaxableIncomes(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      SaleDocPK pk, String serverLanguageId, String username) throws Throwable {
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
@@ -177,7 +183,7 @@ public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
       // retrieve all item rows...
       GridParams pars = new GridParams();
       pars.getOtherGridParams().put(ApplicationConsts.SALE_DOC_PK,pk);
-      Response rowsResponse = rowsBean.loadSaleDocRows(pars,serverLanguageId,username);
+      Response rowsResponse = rowsBean.loadSaleDocRows(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,pars,serverLanguageId,username);
       if (rowsResponse.isError())
     	  throw new Exception(rowsResponse.getErrorMessage());
       java.util.List itemRows = ((VOListResponse)rowsResponse).getRows();
@@ -193,6 +199,7 @@ public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
         itemVO = (GridSaleDocRowVO)itemRows.get(i);
         // retrieve item detail...
         rowResponse = bean.loadSaleDocRow(
+          variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,
           new SaleDocRowPK(
             pk.getCompanyCodeSys01DOC01(),
             pk.getDocTypeDOC01(),
@@ -638,13 +645,13 @@ public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
     	  }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
         vatBean.setConn(null);
         docBean.setConn(null);
         rowsBean.setConn(null);
         itemDiscountBean.setConn(null);
-        bean.setConn(null);        
+        bean.setConn(null);
       } catch (Exception ex) {}
     }
 

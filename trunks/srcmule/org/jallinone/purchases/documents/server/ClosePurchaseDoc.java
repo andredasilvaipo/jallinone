@@ -41,6 +41,8 @@ import org.jallinone.system.server.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
 import org.jallinone.system.progressives.server.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
 
 
 /**
@@ -81,7 +83,13 @@ import org.jallinone.system.progressives.server.*;
 @javax.jws.WebService
 public interface ClosePurchaseDoc {
 
-  public VOResponse closePurchaseDoc(PurchaseDocPK pk,String t1,String t2,String t3,String t4,String t5,String t6,String t7,String serverLanguageId,String username) throws Throwable;
+  public VOResponse closePurchaseDoc(
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+			  PurchaseDocPK pk,String t1,String t2,String t3,String t4,String t5,String t6,String t7,String serverLanguageId,String username) throws Throwable;
 
 }
 

@@ -1,5 +1,7 @@
 package org.jallinone.contacts.server;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
 import javax.jws.WebService;
 
 import org.jallinone.subjects.java.OrganizationVO;

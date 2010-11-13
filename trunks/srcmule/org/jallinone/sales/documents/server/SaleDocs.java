@@ -15,6 +15,8 @@ import org.jallinone.system.server.*;
 import java.math.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
+import org.jallinone.commons.java.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -61,7 +63,13 @@ public interface SaleDocs {
 
 	public VOListResponse validateSaleDocNumber(LookupValidationParams pars,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
 
-	public VOResponse updateSaleDoc(DetailSaleDocVO oldVO,DetailSaleDocVO newVO,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
+	public VOResponse updateSaleDoc(
+		          @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+				  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+				  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+				  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+				  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+				  DetailSaleDocVO oldVO,DetailSaleDocVO newVO,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
 
 
 }

@@ -50,15 +50,36 @@ import org.jallinone.events.server.*;
 public interface SaleDocRows {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public GridSaleDocRowVO getSaleDoc(SaleDocPK pk);
-	
-	public VOResponse deleteSaleDocRows(ArrayList list,String serverLanguageId,String username) throws Throwable;
 
-	public VOResponse insertSaleDocRows(DetailSaleDocRowVO voTemplate,VariantsMatrixVO matrixVO,Object[][] cells,BigDecimal currencyDecimals,String serverLanguageId,String username) throws Throwable;
+	public VOResponse deleteSaleDocRows(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             ArrayList list, String serverLanguageId, String username) throws Throwable;
 
-	public VOResponse updateSaleDocRow(DetailSaleDocRowVO oldVO,DetailSaleDocRowVO newVO,String serverLanguageId,String username) throws Throwable;
+	public VOResponse insertSaleDocRows(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             DetailSaleDocRowVO voTemplate, VariantsMatrixVO matrixVO,
+             Object[][] cells, BigDecimal currencyDecimals, String serverLanguageId,
+             String username) throws Throwable;
+
+	public VOResponse updateSaleDocRow(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             DetailSaleDocRowVO oldVO, DetailSaleDocRowVO newVO,
+             String serverLanguageId, String username) throws Throwable;
 
 }
 

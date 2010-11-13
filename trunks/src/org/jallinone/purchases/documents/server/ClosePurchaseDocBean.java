@@ -78,7 +78,7 @@ import org.openswing.swing.message.send.java.LookupValidationParams;
 public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 
 
-	private DataSource dataSource; 
+	private DataSource dataSource;
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -88,7 +88,7 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 	private Connection conn = null;
 
 	/**
-	 * Set external connection. 
+	 * Set external connection.
 	 */
 	public void setConn(Connection conn) {
 		this.conn = conn;
@@ -167,8 +167,16 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 	/**
 	 * Business logic to execute.
 	 */
-	 public VOResponse closePurchaseDoc(PurchaseDocPK pk,String t1,String t2,String t3,String t4,String t5,String t6,String t7,String serverLanguageId,String username) throws Throwable {
-		 
+	 public VOResponse closePurchaseDoc(
+		 HashMap variant1Descriptions,
+		 HashMap variant2Descriptions,
+		 HashMap variant3Descriptions,
+		 HashMap variant4Descriptions,
+		 HashMap variant5Descriptions,
+		 PurchaseDocPK pk, String t1, String t2, String t3, String t4, String t5,
+		 String t6, String t7, String serverLanguageId, String username) throws
+		 Throwable {
+
 		 PreparedStatement pstmt = null;
 		 PreparedStatement pstmt2 = null;
 		 ResultSet rset = null;
@@ -187,8 +195,6 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 			 userParamAction.setConn(conn); // use same transaction...
 
 
-
-
 			 // retrieve document header...
 			 DetailPurchaseDocVO docVO =docAction.loadPurchaseDoc(pk,serverLanguageId,username,new ArrayList());
 
@@ -199,7 +205,7 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 			 // retrieve document item rows...
 			 GridParams gridParams = new GridParams();
 			 gridParams.getOtherGridParams().put(ApplicationConsts.PURCHASE_DOC_PK,pk);
-			 Response res = rowsAction.loadPurchaseDocRows(gridParams,serverLanguageId,username);
+			 Response res = rowsAction.loadPurchaseDocRows(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,gridParams,serverLanguageId,username);
 			 if (res.isError())
 				 throw new Exception(res.getErrorMessage());
 			 java.util.List rows = ((VOListResponse)res).getRows();
@@ -229,6 +235,7 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 				 for(int i=0;i<rows.size();i++) {
 					 vo = (GridPurchaseDocRowVO)rows.get(i);
 					 refDetailVO = rowAction.loadPurchaseDocRow(
+      				 variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,
 							 new PurchaseDocRowPK(
 									 docVO.getCompanyCodeSys01Doc06DOC06(),
 									 docVO.getDocTypeDoc06DOC06(),
@@ -801,7 +808,7 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 				 vatRegisterAction.setConn(null);
 				 userParamAction.setConn(null);
 			 } catch (Exception ex) {}
-			 
+
 		 }
 	 }
 

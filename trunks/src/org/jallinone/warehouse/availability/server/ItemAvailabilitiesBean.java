@@ -56,7 +56,7 @@ import javax.sql.DataSource;
 public class ItemAvailabilitiesBean implements ItemAvailabilities {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -64,9 +64,9 @@ public class ItemAvailabilitiesBean implements ItemAvailabilities {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -76,7 +76,7 @@ public class ItemAvailabilitiesBean implements ItemAvailabilities {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -88,31 +88,38 @@ public class ItemAvailabilitiesBean implements ItemAvailabilities {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public BookedItemQtyVO getBookedItemQty(ItemPK pk) {
-	  throw new UnsupportedOperationException();  
+	  throw new UnsupportedOperationException();
   }
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ItemAvailabilityVO getItemAvailabilityVO(ItemPK pk) {
-	  throw new UnsupportedOperationException();  
+	  throw new UnsupportedOperationException();
   }
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public OrderedItemQtyVO getOrderedItemQty(ItemPK pk) {
-	  throw new UnsupportedOperationException();  
+	  throw new UnsupportedOperationException();
   }
 
 
   /**
    * Business logic to execute.
    */
-  public VOListResponse loadBookedItems(GridParams gridPars,String serverLanguageId,String username,ArrayList companiesList ) throws Throwable {
+  public VOListResponse loadBookedItems(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      GridParams gridPars, String serverLanguageId, String username,
+      ArrayList companiesList) throws Throwable {
     PreparedStatement pstmt = null;
     Statement stmt = null;
     Connection conn = null;
@@ -234,6 +241,64 @@ public class ItemAvailabilitiesBean implements ItemAvailabilities {
       ResultSet rset = null;
       for(int i=0;i<list.size();i++) {
         vo = (BookedItemQtyVO)list.get(i);
+
+        String descr = vo.getItemDescriptionSYS10();
+
+        // check supported variants for current item...
+        if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm11DOC02())) {
+          descr += " "+getVariantCodeAndTypeDesc(
+            variant1Descriptions,
+            vo,
+            vo.getVariantTypeItm06DOC02(),
+            vo.getVariantCodeItm11DOC02(),
+            serverLanguageId,
+            username
+          );
+        }
+        if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm12DOC02())) {
+          descr += " "+getVariantCodeAndTypeDesc(
+            variant2Descriptions,
+            vo,
+            vo.getVariantTypeItm07DOC02(),
+            vo.getVariantCodeItm12DOC02(),
+            serverLanguageId,
+            username
+          );
+        }
+        if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm13DOC02())) {
+          descr += " "+getVariantCodeAndTypeDesc(
+            variant3Descriptions,
+            vo,
+            vo.getVariantTypeItm08DOC02(),
+            vo.getVariantCodeItm13DOC02(),
+            serverLanguageId,
+            username
+          );
+        }
+        if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm14DOC02())) {
+          descr += " "+getVariantCodeAndTypeDesc(
+            variant4Descriptions,
+            vo,
+            vo.getVariantTypeItm09DOC02(),
+            vo.getVariantCodeItm14DOC02(),
+            serverLanguageId,
+            username
+          );
+        }
+        if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm15DOC02())) {
+          descr += " "+getVariantCodeAndTypeDesc(
+            variant5Descriptions,
+            vo,
+            vo.getVariantTypeItm10DOC02(),
+            vo.getVariantCodeItm15DOC02(),
+            serverLanguageId,
+            username
+          );
+        }
+        vo.setItemDescriptionSYS10(descr);
+
+
+
         pstmt.setString(1,vo.getCompanyCodeSys01WAR03());
         pstmt.setString(2,vo.getItemCodeItm01DOC02());
         pstmt.setString(3,ApplicationConsts.CONFIRMED);
@@ -281,7 +346,14 @@ public class ItemAvailabilitiesBean implements ItemAvailabilities {
   /**
    * Business logic to execute.
    */
-  public VOListResponse loadItemAvailabilities(GridParams gridPars,String serverLanguageId,String username,ArrayList companiesList) throws Throwable {
+  public VOListResponse loadItemAvailabilities(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      GridParams gridPars, String serverLanguageId, String username,
+      ArrayList companiesList) throws Throwable {
     PreparedStatement pstmt = null;
     Statement stmt = null;
     Connection conn = null;
@@ -435,8 +507,73 @@ public class ItemAvailabilitiesBean implements ItemAvailabilities {
             true
         );
 
+      if (answer.isError())
+        throw new Exception(answer.getErrorMessage());
 
-      if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (VOListResponse)answer;
+      java.util.List rows = ((VOListResponse)answer).getRows();
+      ItemAvailabilityVO vo = null;
+      for(int i=0;i<rows.size();i++) {
+        vo = (ItemAvailabilityVO)rows.get(i);
+        String descr = vo.getDescriptionSYS10();
+
+        // check supported variants for current item...
+        if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm11WAR03())) {
+          descr += " "+getVariantCodeAndTypeDesc(
+            variant1Descriptions,
+            vo,
+            vo.getVariantTypeItm06WAR03(),
+            vo.getVariantCodeItm11WAR03(),
+            serverLanguageId,
+            username
+          );
+        }
+        if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm12WAR03())) {
+          descr += " "+getVariantCodeAndTypeDesc(
+            variant2Descriptions,
+            vo,
+            vo.getVariantTypeItm07WAR03(),
+            vo.getVariantCodeItm12WAR03(),
+            serverLanguageId,
+            username
+          );
+        }
+        if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm13WAR03())) {
+          descr += " "+getVariantCodeAndTypeDesc(
+            variant3Descriptions,
+            vo,
+            vo.getVariantTypeItm08WAR03(),
+            vo.getVariantCodeItm13WAR03(),
+            serverLanguageId,
+            username
+          );
+        }
+        if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm14WAR03())) {
+          descr += " "+getVariantCodeAndTypeDesc(
+            variant4Descriptions,
+            vo,
+            vo.getVariantTypeItm09WAR03(),
+            vo.getVariantCodeItm14WAR03(),
+            serverLanguageId,
+            username
+          );
+        }
+        if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm15WAR03())) {
+          descr += " "+getVariantCodeAndTypeDesc(
+            variant5Descriptions,
+            vo,
+            vo.getVariantTypeItm10WAR03(),
+            vo.getVariantCodeItm15WAR03(),
+            serverLanguageId,
+            username
+          );
+        }
+        vo.setDescriptionSYS10(descr);
+
+      }
+
+
+
+     return (VOListResponse)answer;
     }
     catch (Throwable ex) {
       Logger.error(username,this.getClass().getName(),"executeCommand","Error while fetching item availabilities",ex);
@@ -467,7 +604,14 @@ public class ItemAvailabilitiesBean implements ItemAvailabilities {
   /**
    * Business logic to execute.
    */
-  public VOListResponse loadOrderedItems(GridParams gridPars,String serverLanguageId,String username) throws Throwable {
+  public VOListResponse loadOrderedItems(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      GridParams gridPars, String serverLanguageId, String username) throws
+      Throwable {
     PreparedStatement pstmt = null;
     Statement stmt = null;
     Connection conn = null;
@@ -552,9 +696,71 @@ public class ItemAvailabilitiesBean implements ItemAvailabilities {
           true
       );
 
+      if (answer.isError())
+        throw new Exception(answer.getErrorMessage());
 
+      java.util.List rows = ((VOListResponse)answer).getRows();
+      OrderedItemQtyVO vo = null;
+      for(int i=0;i<rows.size();i++) {
+        vo = (OrderedItemQtyVO)rows.get(i);
 
-      if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (VOListResponse)answer;
+        String descr = vo.getDescriptionSYS10();
+
+        // check supported variants for current item...
+        if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm11DOC07())) {
+          descr += " "+getVariantCodeAndTypeDesc(
+            variant1Descriptions,
+            vo,
+            vo.getVariantTypeItm06DOC07(),
+            vo.getVariantCodeItm11DOC07(),
+            serverLanguageId,
+            username
+          );
+        }
+        if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm12DOC07())) {
+          descr += " "+getVariantCodeAndTypeDesc(
+            variant2Descriptions,
+            vo,
+            vo.getVariantTypeItm07DOC07(),
+            vo.getVariantCodeItm12DOC07(),
+            serverLanguageId,
+            username
+          );
+        }
+        if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm13DOC07())) {
+          descr += " "+getVariantCodeAndTypeDesc(
+            variant3Descriptions,
+            vo,
+            vo.getVariantTypeItm08DOC07(),
+            vo.getVariantCodeItm13DOC07(),
+            serverLanguageId,
+            username
+          );
+        }
+        if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm14DOC07())) {
+          descr += " "+getVariantCodeAndTypeDesc(
+            variant4Descriptions,
+            vo,
+            vo.getVariantTypeItm09DOC07(),
+            vo.getVariantCodeItm14DOC07(),
+            serverLanguageId,
+            username
+          );
+        }
+        if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm15DOC07())) {
+          descr += " "+getVariantCodeAndTypeDesc(
+            variant5Descriptions,
+            vo,
+            vo.getVariantTypeItm10DOC07(),
+            vo.getVariantCodeItm15DOC07(),
+            serverLanguageId,
+            username
+          );
+        }
+        vo.setDescriptionSYS10(descr);
+      }
+
+      return (VOListResponse)answer;
     }
     catch (Throwable ex) {
       Logger.error(username,this.getClass().getName(),"executeCommand","Error while fetching future item availabilities",ex);
@@ -579,6 +785,50 @@ public class ItemAvailabilitiesBean implements ItemAvailabilities {
 
   }
 
+
+  private String getVariantCodeAndTypeDesc(
+      HashMap variantDescriptions,
+      BookedItemQtyVO vo,
+      String varType,
+      String varCode,
+      String serverLanguageId,
+      String username
+  ) throws Throwable {
+    String varDescr = (String)variantDescriptions.get(varType+"_"+varCode);
+    if (varDescr==null)
+      varDescr = ApplicationConsts.JOLLY.equals(varCode)?"":varCode;
+    return varDescr;
+  }
+
+
+  private String getVariantCodeAndTypeDesc(
+      HashMap variantDescriptions,
+      ItemAvailabilityVO vo,
+      String varType,
+      String varCode,
+      String serverLanguageId,
+      String username
+  ) throws Throwable {
+    String varDescr = (String)variantDescriptions.get(varType+"_"+varCode);
+    if (varDescr==null)
+      varDescr = ApplicationConsts.JOLLY.equals(varCode)?"":varCode;
+    return varDescr;
+  }
+
+
+  private String getVariantCodeAndTypeDesc(
+      HashMap variantDescriptions,
+      OrderedItemQtyVO vo,
+      String varType,
+      String varCode,
+      String serverLanguageId,
+      String username
+  ) throws Throwable {
+    String varDescr = (String)variantDescriptions.get(varType+"_"+varCode);
+    if (varDescr==null)
+      varDescr = ApplicationConsts.JOLLY.equals(varCode)?"":varCode;
+    return varDescr;
+  }
 
 
 

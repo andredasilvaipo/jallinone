@@ -158,33 +158,33 @@ public class MovementVO extends ValueObjectImpl {
   }
   public String getItemDescriptionSYS10() {
     String aux = itemDescriptionSYS10;
-    if (aux==null)
-      return null;
-
-    if (variantTypeItm06WAR02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm06WAR02))
-      aux += " "+variantTypeItm06WAR02;
-    if (variantCodeItm11WAR02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm11WAR02))
-      aux += " "+variantCodeItm11WAR02;
-
-    if (variantTypeItm07WAR02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm07WAR02))
-      aux += " "+variantTypeItm07WAR02;
-    if (variantCodeItm12WAR02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm12WAR02))
-      aux += " "+variantCodeItm12WAR02;
-
-    if (variantTypeItm08WAR02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm08WAR02))
-      aux += " "+variantTypeItm08WAR02;
-    if (variantCodeItm13WAR02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm13WAR02))
-      aux += " "+variantCodeItm13WAR02;
-
-    if (variantTypeItm09WAR02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm09WAR02))
-      aux += " "+variantTypeItm09WAR02;
-    if (variantCodeItm14WAR02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm14WAR02))
-      aux += " "+variantCodeItm14WAR02;
-
-    if (variantTypeItm10WAR02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm10WAR02))
-      aux += " "+variantTypeItm10WAR02;
-    if (variantCodeItm15WAR02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm15WAR02))
-      aux += " "+variantCodeItm15WAR02;
+//    if (aux==null)
+//      return null;
+//
+//    if (variantTypeItm06WAR02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm06WAR02))
+//      aux += " "+variantTypeItm06WAR02;
+//    if (variantCodeItm11WAR02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm11WAR02))
+//      aux += " "+variantCodeItm11WAR02;
+//
+//    if (variantTypeItm07WAR02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm07WAR02))
+//      aux += " "+variantTypeItm07WAR02;
+//    if (variantCodeItm12WAR02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm12WAR02))
+//      aux += " "+variantCodeItm12WAR02;
+//
+//    if (variantTypeItm08WAR02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm08WAR02))
+//      aux += " "+variantTypeItm08WAR02;
+//    if (variantCodeItm13WAR02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm13WAR02))
+//      aux += " "+variantCodeItm13WAR02;
+//
+//    if (variantTypeItm09WAR02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm09WAR02))
+//      aux += " "+variantTypeItm09WAR02;
+//    if (variantCodeItm14WAR02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm14WAR02))
+//      aux += " "+variantCodeItm14WAR02;
+//
+//    if (variantTypeItm10WAR02!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm10WAR02))
+//      aux += " "+variantTypeItm10WAR02;
+//    if (variantCodeItm15WAR02!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm15WAR02))
+//      aux += " "+variantCodeItm15WAR02;
     return aux;
   }
   public void setItemDescriptionSYS10(String itemDescriptionSYS10) {

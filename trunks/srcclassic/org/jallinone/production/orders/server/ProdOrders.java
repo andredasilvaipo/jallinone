@@ -64,7 +64,15 @@ import org.jallinone.events.server.*;
 
 public interface ProdOrders {
 
-	public VOResponse confirmProdOrder(DetailProdOrderVO vo,String t1,String t2,String t3,String t4,String t5,String serverLanguageId,String username,String imagePath,ArrayList companiesList) throws Throwable;
+	public VOResponse confirmProdOrder(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             DetailProdOrderVO vo, String t1, String t2, String t3, String t4,
+             String t5, String serverLanguageId, String username, String imagePath,
+             ArrayList companiesList) throws Throwable;
 
 	public VOResponse deleteProdOrders(ArrayList list,String serverLanguageId,String username) throws Throwable;
 

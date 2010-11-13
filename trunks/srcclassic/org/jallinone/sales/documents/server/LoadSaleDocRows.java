@@ -65,27 +65,34 @@ import javax.sql.DataSource;
 public interface LoadSaleDocRows {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public GridSaleDocRowVO getGridSaleDocRow(SaleDocPK pk);
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public SaleDocActivityVO getSaleDocActivity(SaleDocPK pk);
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public SaleDocChargeVO getSaleDocCharge(SaleDocPK pk);
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public SaleDocDiscountVO getSaleDocDiscount(SaleDocPK pk);
 
 
-	public VOListResponse loadSaleDocRows(GridParams pars,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadSaleDocRows(
+              HashMap variant1Descriptions,
+              HashMap variant2Descriptions,
+              HashMap variant3Descriptions,
+              HashMap variant4Descriptions,
+              HashMap variant5Descriptions,
+              GridParams pars,
+              String serverLanguageId,String username) throws Throwable;
 
 	public VOListResponse loadSaleDocActivities(GridParams gridParams,String serverLanguageId,String username) throws Throwable;
 

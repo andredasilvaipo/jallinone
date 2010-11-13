@@ -16,6 +16,8 @@ import org.jallinone.items.java.*;
 import java.math.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
+import org.jallinone.commons.java.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -64,11 +66,32 @@ public interface ItemAvailabilities {
 	 */
 	public OrderedItemQtyVO getOrderedItemQty(ItemPK pk);
 
-	public VOListResponse loadBookedItems(GridParams gridPars,String serverLanguageId,String username,ArrayList companiesList ) throws Throwable;
+	
+	
+	
+	public VOListResponse loadBookedItems(
+	  	  		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+				  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+				  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+				  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+				  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+				  GridParams gridPars,String serverLanguageId,String username,ArrayList companiesList ) throws Throwable;
 
-	public VOListResponse loadItemAvailabilities(GridParams gridPars,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
+	public VOListResponse loadItemAvailabilities(
+  	  		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+			  GridParams gridPars,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
 
-	public VOListResponse loadOrderedItems(GridParams gridPars,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadOrderedItems(
+	  	  		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+				  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+				  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+				  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+				  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+				  GridParams gridPars,String serverLanguageId,String username) throws Throwable;
 
 
 }

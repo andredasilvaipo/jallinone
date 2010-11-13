@@ -13,6 +13,15 @@ import org.openswing.swing.table.client.GridController;
 import org.jallinone.commons.client.CustomizedColumns;
 import java.math.BigDecimal;
 import org.jallinone.commons.java.ApplicationConsts;
+import org.openswing.swing.form.client.Form;
+import java.awt.FlowLayout;
+import org.openswing.swing.lookup.client.LookupServerDataLocator;
+import org.openswing.swing.lookup.client.LookupController;
+import org.openswing.swing.lookup.client.LookupListener;
+import org.openswing.swing.message.receive.java.ValueObject;
+import java.util.Collection;
+import org.jallinone.warehouse.java.WarehouseVO;
+import org.jallinone.warehouse.java.WarehousePK;
 
 
 /**
@@ -69,6 +78,21 @@ public class MovementsGridFrame extends InternalFrame {
   TextColumn colMotiveCode = new TextColumn();
   TextColumn colMotiveDescr = new TextColumn();
 
+	JPanel northPanel = new JPanel();
+
+	Form warehousePanel = new Form();
+	LabelControl labelWarehouse = new LabelControl();
+	CodLookupControl controlWarehouseCod = new CodLookupControl();
+	TextControl controlWarehouseDescr = new TextControl();
+	FlowLayout flowLayout2 = new FlowLayout(FlowLayout.LEFT);
+
+	/** warehouse code lookup data locator */
+	LookupServerDataLocator warDataLocator = new LookupServerDataLocator();
+
+	/** warehouse code lookup controller */
+	LookupController warController = new LookupController();
+
+
 
   public MovementsGridFrame(GridController controller) {
     grid.setController(controller);
@@ -78,6 +102,50 @@ public class MovementsGridFrame extends InternalFrame {
       jbInit();
       setSize(750,400);
       setMinimumSize(new Dimension(750,400));
+
+
+			// warehouse code lookup...
+			warDataLocator.setGridMethodName("loadWarehouses");
+			warDataLocator.setValidationMethodName("validateWarehouseCode");
+
+			controlWarehouseCod.setLookupController(warController);
+			warController.setLookupDataLocator(warDataLocator);
+			warController.setFrameTitle("warehouses");
+
+			warController.setLookupValueObjectClassName("org.jallinone.warehouse.java.WarehouseVO");
+			warController.addLookup2ParentLink("companyCodeSys01WAR01", "companyCodeSys01WAR01");
+			warController.addLookup2ParentLink("warehouseCodeWAR01", "warehouseCodeWAR01");
+			warController.addLookup2ParentLink("progressiveHie02WAR01", "progressiveHie02WAR01");
+			warController.addLookup2ParentLink("descriptionWAR01", "descriptionWAR01");
+
+			warController.setAllColumnVisible(false);
+			warController.setVisibleColumn("companyCodeSys01WAR01", true);
+			warController.setVisibleColumn("warehouseCodeWAR01", true);
+			warController.setVisibleColumn("descriptionWAR01", true);
+			warController.setPreferredWidthColumn("descriptionWAR01", 250);
+			warController.setFramePreferedSize(new Dimension(460,500));
+			warController.addLookupListener(new LookupListener() {
+
+				public void codeValidated(boolean validated) {}
+
+				public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {
+					// fill in the grid v.o., according to the selected war settings...
+					WarehouseVO vo = (WarehouseVO)warehousePanel.getVOModel().getValueObject();
+					if (vo.getWarehouseCodeWAR01()==null || vo.getWarehouseCodeWAR01().equals("")) {
+						grid.clearData();
+					}
+					else {
+						grid.getOtherGridParams().put(ApplicationConsts.WAREHOUSE_CODE,new WarehousePK(vo.getCompanyCodeSys01WAR01(),vo.getWarehouseCodeWAR01()));
+						grid.reloadData();
+					}
+				}
+
+				public void beforeLookupAction(ValueObject parentVO) { }
+
+				public void forceValidate() {}
+
+			});
+
 
     }
     catch(Exception e) {
@@ -92,6 +160,9 @@ public class MovementsGridFrame extends InternalFrame {
 
 
   private void jbInit() throws Exception {
+	  northPanel.setLayout(new BorderLayout());
+		grid.setAutoLoadData(false);
+
     grid.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     grid.setValueObjectClassName("org.jallinone.warehouse.tables.movements.java.MovementVO");
     this.setTitle(ClientSettings.getInstance().getResources().getResource("warehouse movements"));
@@ -166,7 +237,7 @@ public class MovementsGridFrame extends InternalFrame {
     colMotiveCode.setPreferredWidth(60);
     colMotiveDescr.setColumnName("motiveDescriptionSYS10");
     colMotiveDescr.setPreferredWidth(200);
-    this.getContentPane().add(buttonsPanel, BorderLayout.NORTH);
+    this.getContentPane().add(northPanel, BorderLayout.NORTH);
     buttonsPanel.add(reloadButton, null);
     buttonsPanel.add(exportButton, null);
     buttonsPanel.add(navigatorBar, null);
@@ -184,6 +255,23 @@ public class MovementsGridFrame extends InternalFrame {
     grid.getColumnContainer().add(colMotiveCode, null);
     grid.getColumnContainer().add(colMotiveDescr, null);
     grid.getColumnContainer().add(colNote, null);
+
+
+		warehousePanel.setVOClassName("org.jallinone.warehouse.java.WarehouseVO");
+		labelWarehouse.setText("warehouse");
+		controlWarehouseCod.setEnabled(true);
+		controlWarehouseCod.setMaxCharacters(20);
+		controlWarehouseCod.setAttributeName("warehouseCodeWAR01");
+		controlWarehouseDescr.setEnabled(false);
+		controlWarehouseDescr.setAttributeName("descriptionWAR01");
+		warehousePanel.setLayout(flowLayout2);
+		warehousePanel.add(labelWarehouse, null);
+		warehousePanel.add(controlWarehouseCod, null);
+		northPanel.add(warehousePanel, BorderLayout.NORTH);
+		northPanel.add(buttonsPanel, BorderLayout.SOUTH);
+		warehousePanel.add(controlWarehouseDescr, null);
+
+
   }
 
 }

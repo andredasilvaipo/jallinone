@@ -56,7 +56,7 @@ import javax.sql.DataSource;
 public class SaleDocActivitiesBean  implements SaleDocActivities {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -64,9 +64,9 @@ public class SaleDocActivitiesBean  implements SaleDocActivities {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -108,7 +108,7 @@ public class SaleDocActivitiesBean  implements SaleDocActivities {
   }
 
 
-   
+
 
   /**
    * Recalculate item row totals and document totals.
@@ -168,7 +168,7 @@ public class SaleDocActivitiesBean  implements SaleDocActivities {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
         totalBean.setConn(null);
         docBean.setConn(null);
@@ -184,7 +184,14 @@ public class SaleDocActivitiesBean  implements SaleDocActivities {
   /**
    * Business logic to execute.
    */
-  public VOListResponse updateSaleDocActivities(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable {
+  public VOListResponse updateSaleDocActivities(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      ArrayList oldVOs, ArrayList newVOs, String serverLanguageId,
+      String username) throws Throwable {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -246,6 +253,11 @@ public class SaleDocActivitiesBean  implements SaleDocActivities {
 
 
       res = totals.updateTaxableIncomes(
+        variant1Descriptions,
+        variant2Descriptions,
+        variant3Descriptions,
+        variant4Descriptions,
+        variant5Descriptions,
         new SaleDocPK(newVO.getCompanyCodeSys01DOC13(),newVO.getDocTypeDOC13(),newVO.getDocYearDOC13(),newVO.getDocNumberDOC13()),
         serverLanguageId,
         username
@@ -277,7 +289,7 @@ public class SaleDocActivitiesBean  implements SaleDocActivities {
             }
 
         }
-        catch (Exception exx) {}    
+        catch (Exception exx) {}
       try {
         totals.setConn(null);
       } catch (Exception ex) {}
@@ -292,7 +304,8 @@ public class SaleDocActivitiesBean  implements SaleDocActivities {
    * Insert new activity in the sale document.
    * It does not execute any commit or rollback operations.
    */
-  public VOResponse insertSaleActivity(SaleDocActivityVO vo,String username) throws Exception {
+  public VOResponse insertSaleActivity(
+      SaleDocActivityVO vo, String username) throws Exception {
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
@@ -388,7 +401,13 @@ public class SaleDocActivitiesBean  implements SaleDocActivities {
   /**
    * Business logic to execute.
    */
-  public VOResponse deleteSaleDocActivities(ArrayList list,String serverLanguageId,String username) throws Throwable {
+  public VOResponse deleteSaleDocActivities(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      ArrayList list, String serverLanguageId, String username) throws Throwable {
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
@@ -418,6 +437,11 @@ public class SaleDocActivitiesBean  implements SaleDocActivities {
       }
 
       Response res = totals.updateTaxableIncomes(
+        variant1Descriptions,
+        variant2Descriptions,
+        variant3Descriptions,
+        variant4Descriptions,
+        variant5Descriptions,
         new SaleDocPK(vo.getCompanyCodeSys01DOC13(),vo.getDocTypeDOC13(),vo.getDocYearDOC13(),vo.getDocNumberDOC13()),
         serverLanguageId,
         username
@@ -454,7 +478,7 @@ public class SaleDocActivitiesBean  implements SaleDocActivities {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
         totals.setConn(null);
       } catch (Exception ex) {}
@@ -467,7 +491,13 @@ public class SaleDocActivitiesBean  implements SaleDocActivities {
   /**
    * Business logic to execute.
    */
-  public VOListResponse insertSaleDocActivities(ArrayList list,String serverLanguageId,String username) throws Throwable {
+  public VOListResponse insertSaleDocActivities(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      ArrayList list,String serverLanguageId,String username) throws Throwable {
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
@@ -493,6 +523,11 @@ public class SaleDocActivitiesBean  implements SaleDocActivities {
       pstmt.execute();
 
       res = totals.updateTaxableIncomes(
+        variant1Descriptions,
+        variant2Descriptions,
+        variant3Descriptions,
+        variant4Descriptions,
+        variant5Descriptions,
         new SaleDocPK(vo.getCompanyCodeSys01DOC13(),vo.getDocTypeDOC13(),vo.getDocYearDOC13(),vo.getDocNumberDOC13()),
         serverLanguageId,
         username
@@ -531,7 +566,7 @@ public class SaleDocActivitiesBean  implements SaleDocActivities {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
         totals.setConn(null);
       } catch (Exception ex) {}

@@ -19,6 +19,7 @@ import org.jallinone.events.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -62,17 +63,26 @@ public class LoadSaleDocRowsAction implements Action {
 
 
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
-	  GridParams pars = (GridParams)inputPar;
-	  try {
-
-		  LoadSaleDocRows bean = (LoadSaleDocRows)JAIOBeanFactory.getInstance().getBean(LoadSaleDocRows.class);
-		  Response answer = bean.loadSaleDocRows(pars,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
-
-		  return answer;
-	  }
-	  catch (Throwable ex) {
-		  Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"executeCommand","Error while processing request",ex);
-		  return new ErrorResponse(ex.getMessage());
+    GridParams pars = (GridParams)inputPar;
+    try {
+      SaleDocPK pk = (SaleDocPK)pars.getOtherGridParams().get(ApplicationConsts.SALE_DOC_PK);
+      VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(pk.getCompanyCodeSys01DOC01());
+      LoadSaleDocRows bean = (LoadSaleDocRows)JAIOBeanFactory.getInstance().getBean(LoadSaleDocRows.class);
+      Response answer = bean.loadSaleDocRows(
+        vo.getVariant1Descriptions(),
+        vo.getVariant2Descriptions(),
+        vo.getVariant3Descriptions(),
+        vo.getVariant4Descriptions(),
+        vo.getVariant5Descriptions(),
+        pars,
+        ((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),
+        userSessionPars.getUsername()
+      );
+      return answer;
+    }
+    catch (Throwable ex) {
+      Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"executeCommand","Error while processing request",ex);
+      return new ErrorResponse(ex.getMessage());
     }
   }
 }

@@ -57,7 +57,13 @@ import org.jallinone.sales.documents.java.*;
 
 public interface ConfirmSaleDoc {
 
-  public VOResponse confirmSaleDoc(SaleDocPK pk,String serverLanguageId,String username) throws Throwable;
+  public VOResponse confirmSaleDoc(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      SaleDocPK pk,String serverLanguageId,String username) throws Throwable;
 
 }
 

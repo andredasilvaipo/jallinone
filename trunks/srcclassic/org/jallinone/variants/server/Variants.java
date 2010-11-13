@@ -49,7 +49,7 @@ import org.jallinone.variants.java.*;
 public interface Variants {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public VariantNameVO getVariantName(VariantVO vo);
 
@@ -62,6 +62,8 @@ public interface Variants {
 	public VOListResponse updateVariants(String tableName,ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
 
 	public VOResponse deleteVariants(String tableName,ArrayList list,String serverLanguageId,String username) throws Throwable;
+
+        public VOListResponse loadAllVariants(String tableName,String variantTypeJoin,String serverLanguageId,String username) throws Throwable;
 
 }
 

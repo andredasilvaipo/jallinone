@@ -49,7 +49,7 @@ import javax.sql.DataSource;
 public class LoadPurchaseDocRowsBean  implements LoadPurchaseDocRows {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -57,9 +57,9 @@ public class LoadPurchaseDocRowsBean  implements LoadPurchaseDocRows {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -69,7 +69,7 @@ public class LoadPurchaseDocRowsBean  implements LoadPurchaseDocRows {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -81,17 +81,23 @@ public class LoadPurchaseDocRowsBean  implements LoadPurchaseDocRows {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public GridPurchaseDocRowVO getGridPurchaseDocRow(PurchaseDocPK pk) {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
    */
-  public VOListResponse loadPurchaseDocRows(GridParams pars,String serverLanguageId,String username) throws Throwable {
+  public VOListResponse loadPurchaseDocRows(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		GridParams pars, String serverLanguageId, String username) throws Throwable {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -176,7 +182,72 @@ public class LoadPurchaseDocRowsBean  implements LoadPurchaseDocRows {
       );
 
 
-      if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (VOListResponse)answer;
+      if (answer.isError())
+				throw new Exception(answer.getErrorMessage());
+
+	    java.util.List rows = ((VOListResponse)answer).getRows();
+			GridPurchaseDocRowVO vo = null;
+			String descr = null;
+			for(int i=0;i<rows.size();i++) {
+				vo = (GridPurchaseDocRowVO)rows.get(i);
+				descr = vo.getDescriptionSYS10();
+
+				// check supported variants for current item...
+				if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm11DOC07())) {
+					descr += " "+getVariantCodeAndTypeDesc(
+						variant1Descriptions,
+						vo,
+						vo.getVariantTypeItm06DOC07(),
+						vo.getVariantCodeItm11DOC07(),
+						serverLanguageId,
+						username
+					);
+				}
+				if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm12DOC07())) {
+					descr += " "+getVariantCodeAndTypeDesc(
+						variant2Descriptions,
+						vo,
+						vo.getVariantTypeItm07DOC07(),
+						vo.getVariantCodeItm12DOC07(),
+						serverLanguageId,
+						username
+					);
+				}
+				if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm13DOC07())) {
+					descr += " "+getVariantCodeAndTypeDesc(
+						variant3Descriptions,
+						vo,
+						vo.getVariantTypeItm08DOC07(),
+						vo.getVariantCodeItm13DOC07(),
+						serverLanguageId,
+						username
+					);
+				}
+				if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm14DOC07())) {
+					descr += " "+getVariantCodeAndTypeDesc(
+						variant4Descriptions,
+						vo,
+						vo.getVariantTypeItm09DOC07(),
+						vo.getVariantCodeItm14DOC07(),
+						serverLanguageId,
+						username
+					);
+				}
+				if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm15DOC07())) {
+					descr += " "+getVariantCodeAndTypeDesc(
+						variant5Descriptions,
+						vo,
+						vo.getVariantTypeItm10DOC07(),
+						vo.getVariantCodeItm15DOC07(),
+						serverLanguageId,
+						username
+					);
+				}
+				vo.setDescriptionSYS10(descr);
+
+			}
+
+			return (VOListResponse)answer;
 
     }
     catch (Throwable ex) {
@@ -194,10 +265,23 @@ public class LoadPurchaseDocRowsBean  implements LoadPurchaseDocRows {
         }
         catch (Exception exx) {}
     }
-
-
   }
 
+
+
+		private String getVariantCodeAndTypeDesc(
+				HashMap variantDescriptions,
+				GridPurchaseDocRowVO vo,
+				String varType,
+				String varCode,
+				String serverLanguageId,
+				String username
+		) throws Throwable {
+			String varDescr = (String)variantDescriptions.get(varType+"_"+varCode);
+			if (varDescr==null)
+				varDescr = ApplicationConsts.JOLLY.equals(varCode)?"":varCode;
+			return varDescr;
+		}
 
 
 }

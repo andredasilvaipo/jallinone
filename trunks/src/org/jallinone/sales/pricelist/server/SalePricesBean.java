@@ -61,7 +61,7 @@ import javax.sql.DataSource;
 public class SalePricesBean  implements SalePrices {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -69,9 +69,9 @@ public class SalePricesBean  implements SalePrices {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -81,7 +81,7 @@ public class SalePricesBean  implements SalePrices {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -93,33 +93,33 @@ public class SalePricesBean  implements SalePrices {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public PricelistVO getPricelist() {
 	  throw new UnsupportedOperationException();
   }
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public CustomValueObject getCustomValueObject() {
-	  throw new UnsupportedOperationException();	  
+	  throw new UnsupportedOperationException();
   }
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public PriceVO getPrice() {
-	  throw new UnsupportedOperationException();	
+	  throw new UnsupportedOperationException();
   }
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public DetailItemVO getDetailItem() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
@@ -735,7 +735,7 @@ public class SalePricesBean  implements SalePrices {
 				price = (BigDecimal)variantsPrice.getCells()[i][0];
 			} catch (Exception e) {
 				continue;
-			}        	  
+			}
             vo = new VariantsPriceVO();
             vo.setCompanyCodeSys01SAL11(variantsPrice.getMatrixVO().getItemPK().getCompanyCodeSys01ITM01());
             vo.setItemCodeItm01SAL11(variantsPrice.getMatrixVO().getItemPK().getItemCodeITM01());
@@ -771,7 +771,7 @@ public class SalePricesBean  implements SalePrices {
     				price = (BigDecimal)variantsPrice.getCells()[i][k];
     		  } catch (Exception e) {
     				continue;
-    		  }            	
+    		  }
               vo = new VariantsPriceVO();
               vo.setCompanyCodeSys01SAL11(variantsPrice.getMatrixVO().getItemPK().getCompanyCodeSys01ITM01());
               vo.setItemCodeItm01SAL11(variantsPrice.getMatrixVO().getItemPK().getItemCodeITM01());
@@ -829,11 +829,11 @@ public class SalePricesBean  implements SalePrices {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
   }
-  
-  
+
+
 
 
   /**

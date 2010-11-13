@@ -51,11 +51,17 @@ import org.jallinone.variants.java.*;
 public interface ReorderFromMinStocks {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public ReorderFromMinStockVO getReorderFromMinStock(ReorderFromMinStockFilterVO pk);
 
-	public VOListResponse reorderFromMinStocks(GridParams gridPars,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse reorderFromMinStocks(
+		 HashMap variant1Descriptions,
+		 HashMap variant2Descriptions,
+		 HashMap variant3Descriptions,
+		 HashMap variant4Descriptions,
+		 HashMap variant5Descriptions,
+		 GridParams gridPars, String serverLanguageId, String username) throws Throwable;
 
 }
 

@@ -10,7 +10,7 @@ import org.openswing.swing.message.receive.java.VOListResponse;
 public interface CheckComponentsAvailability {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public ProdOrderProductVO getProdOrderProduct();
 
@@ -21,7 +21,14 @@ public interface CheckComponentsAvailability {
 	 * @params compAltComps collection of <component item code,HashSet of alternative component item codes>; filled by this method (and given back by reference)
 	 * @return VOListResponse of ProdOrderComponentVO objects
 	 */
-	public VOListResponse checkComponentsAvailability( HashMap compAltComps,ArrayList products,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
+	public VOListResponse checkComponentsAvailability(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             HashMap compAltComps, ArrayList products, String serverLanguageId,
+             String username, ArrayList companiesList) throws Throwable;
 
 
 }

@@ -68,7 +68,7 @@ import javax.sql.DataSource;
 public class CreateSaleDocFromEstimateBean  implements CreateSaleDocFromEstimate {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -76,9 +76,9 @@ public class CreateSaleDocFromEstimateBean  implements CreateSaleDocFromEstimate
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -88,7 +88,7 @@ public class CreateSaleDocFromEstimateBean  implements CreateSaleDocFromEstimate
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -107,7 +107,7 @@ public class CreateSaleDocFromEstimateBean  implements CreateSaleDocFromEstimate
   }
 
   private LoadSaleDocBean loadSaleDocBean;
-  
+
   public void setLoadSaleDocBean(LoadSaleDocBean loadSaleDocBean) {
 	  this.loadSaleDocBean = loadSaleDocBean;
   }
@@ -150,13 +150,13 @@ public class CreateSaleDocFromEstimateBean  implements CreateSaleDocFromEstimate
   }
 
   private InsertSaleItemBean bean;
-  
+
   public void setBean(InsertSaleItemBean bean) {
 	  this.bean = bean;
   }
 
   private InsertSaleDocRowDiscountBean insBean;
-  
+
   public void setInsBean(InsertSaleDocRowDiscountBean insBean) {
 	  this.insBean = insBean;
   }
@@ -168,7 +168,14 @@ public class CreateSaleDocFromEstimateBean  implements CreateSaleDocFromEstimate
   /**
    * Business logic to execute.
    */
-  public DetailSaleDocVO createSaleDocFromEstimate(SaleDocPK pk,String t1,String serverLanguageId,String username,ArrayList companiesList) throws Throwable {
+  public DetailSaleDocVO createSaleDocFromEstimate(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      SaleDocPK pk, String t1, String serverLanguageId, String username,
+      ArrayList companiesList) throws Throwable {
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
@@ -181,17 +188,17 @@ public class CreateSaleDocFromEstimateBean  implements CreateSaleDocFromEstimate
       discAction.setConn(conn); // use same transaction...
       itemDiscAction.setConn(conn); // use same transaction...
       totals.setConn(conn); // use same transaction...
-      bean.setConn(conn); 
+      bean.setConn(conn);
       loadSaleDocBean.setConn(conn);
       insBean.setConn(conn);
-      
+
       // retrieve document header...
       DetailSaleDocVO docVO = loadSaleDocBean.loadSaleDoc(pk,serverLanguageId,username,new ArrayList());
 
       // retrieve document item rows...
       GridParams gridParams = new GridParams();
       gridParams.getOtherGridParams().put(ApplicationConsts.SALE_DOC_PK,pk);
-      Response res = rowsAction.loadSaleDocRows(gridParams,serverLanguageId,username);
+      Response res = rowsAction.loadSaleDocRows(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,gridParams,serverLanguageId,username);
       if (res.isError()) {
         throw new Exception(res.getErrorMessage());
       }
@@ -247,7 +254,7 @@ public class CreateSaleDocFromEstimateBean  implements CreateSaleDocFromEstimate
             gridRowVO.getVariantCodeItm15DOC02()
 
         );
-        res = bean.loadSaleDocRow(docRowPK,serverLanguageId,username);
+        res = bean.loadSaleDocRow(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,docRowPK,serverLanguageId,username);
         if (res.isError()) {
           throw new Exception(res.getErrorMessage());
         }
@@ -334,7 +341,13 @@ public class CreateSaleDocFromEstimateBean  implements CreateSaleDocFromEstimate
 
 
       // recalculate all taxable incomes, vats, totals...
-      res = totals.updateTaxableIncomes(pk,serverLanguageId,username);
+      res = totals.updateTaxableIncomes(
+          variant1Descriptions,
+          variant2Descriptions,
+          variant3Descriptions,
+          variant4Descriptions,
+          variant5Descriptions,
+          pk, serverLanguageId, username);
       if (res.isError()) {
         throw new Exception(res.getErrorMessage());
       }
@@ -368,7 +381,7 @@ public class CreateSaleDocFromEstimateBean  implements CreateSaleDocFromEstimate
 
       }
       catch (Exception exx) {}
-    
+
       try {
         rowsAction.setConn(null);
         docAction.setConn(null);
@@ -378,7 +391,7 @@ public class CreateSaleDocFromEstimateBean  implements CreateSaleDocFromEstimate
         discAction.setConn(null);
         itemDiscAction.setConn(null);
         totals.setConn(null);
-        bean.setConn(null);   
+        bean.setConn(null);
         loadSaleDocBean.setConn(null);
         insBean.setConn(null);
       } catch (Exception ex) {}

@@ -38,6 +38,11 @@
 	<parameter name="LANGUAGE_CODE" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["EN"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="VAR1_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR2_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR3_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR4_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR5_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
 	<queryString><![CDATA[select DOC10_OUT_DELIVERY_NOTE_ITEMS.COMPANY_CODE_SYS01,
 DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_TYPE,DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_YEAR,
 DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_NUMBER,DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_TYPE_DOC01,
@@ -324,17 +329,45 @@ $F{DECIMALS}
 					<textElement textAlignment="Left">
 						<font fontName="Courier New" size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRIPTION}+
-($F{VARIANT_TYPE_ITM06}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM06})+
-($F{VARIANT_CODE_ITM11}.equals("*")?"":" "+$F{VARIANT_CODE_ITM11})+
-($F{VARIANT_TYPE_ITM07}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM07})+
-($F{VARIANT_CODE_ITM12}.equals("*")?"":" "+$F{VARIANT_CODE_ITM12})+
-($F{VARIANT_TYPE_ITM08}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM08})+
-($F{VARIANT_CODE_ITM13}.equals("*")?"":" "+$F{VARIANT_CODE_ITM13})+
-($F{VARIANT_TYPE_ITM09}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM09})+
-($F{VARIANT_CODE_ITM14}.equals("*")?"":" "+$F{VARIANT_CODE_ITM14})+
-($F{VARIANT_TYPE_ITM10}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM10})+
-($F{VARIANT_CODE_ITM15}.equals("*")?"":" "+$F{VARIANT_CODE_ITM15})]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRIPTION}+" "+
+($F{VARIANT_CODE_ITM11}.equals("*")?
+  "":
+  ($P{VAR1_DESCRS}.get($F{VARIANT_TYPE_ITM06}+"_"+$F{VARIANT_CODE_ITM11})!=null?
+     $P{VAR1_DESCRS}.get($F{VARIANT_TYPE_ITM06}+"_"+$F{VARIANT_CODE_ITM11})+" ":
+	 ($F{VARIANT_TYPE_ITM06}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM06})+($F{VARIANT_CODE_ITM11}.equals("*")?"":" "+$F{VARIANT_CODE_ITM11})
+  )
+)+
+($F{VARIANT_CODE_ITM12}.equals("*")?
+  "":
+  ($P{VAR2_DESCRS}.get($F{VARIANT_TYPE_ITM07}+"_"+$F{VARIANT_CODE_ITM12})!=null?
+     $P{VAR2_DESCRS}.get($F{VARIANT_TYPE_ITM07}+"_"+$F{VARIANT_CODE_ITM12})+" ":
+	 ($F{VARIANT_TYPE_ITM07}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM07})+($F{VARIANT_CODE_ITM12}.equals("*")?"":" "+$F{VARIANT_CODE_ITM12})
+  )
+)+
+($F{VARIANT_CODE_ITM13}.equals("*")?
+  "":
+  ($P{VAR3_DESCRS}.get($F{VARIANT_TYPE_ITM08}+"_"+$F{VARIANT_CODE_ITM13})!=null?
+     $P{VAR3_DESCRS}.get($F{VARIANT_TYPE_ITM08}+"_"+$F{VARIANT_CODE_ITM13})+" ":
+	 ($F{VARIANT_TYPE_ITM08}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM08})+($F{VARIANT_CODE_ITM13}.equals("*")?"":" "+$F{VARIANT_CODE_ITM13})
+  )
+)+
+($F{VARIANT_CODE_ITM14}.equals("*")?
+  "":
+  ($P{VAR4_DESCRS}.get($F{VARIANT_TYPE_ITM09}+"_"+$F{VARIANT_CODE_ITM14})!=null?
+     $P{VAR4_DESCRS}.get($F{VARIANT_TYPE_ITM09}+"_"+$F{VARIANT_CODE_ITM14})+" ":
+	 ($F{VARIANT_TYPE_ITM09}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM09})+($F{VARIANT_CODE_ITM14}.equals("*")?"":" "+$F{VARIANT_CODE_ITM14})
+  )
+)+
+($F{VARIANT_CODE_ITM15}.equals("*")?
+  "":
+  ($P{VAR5_DESCRS}.get($F{VARIANT_TYPE_ITM10}+"_"+$F{VARIANT_CODE_ITM15})!=null?
+     $P{VAR5_DESCRS}.get($F{VARIANT_TYPE_ITM10}+"_"+$F{VARIANT_CODE_ITM15})+" ":
+	 ($F{VARIANT_TYPE_ITM10}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM10})+($F{VARIANT_CODE_ITM15}.equals("*")?"":" "+$F{VARIANT_CODE_ITM15})
+  )
+)
+
+
+]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

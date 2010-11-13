@@ -3,6 +3,7 @@ package org.jallinone.sales.documents.server;
 import org.jallinone.accounting.movements.java.TaxableIncomeVO;
 import org.jallinone.sales.documents.java.SaleDocPK;
 import org.openswing.swing.message.receive.java.VOListResponse;
+import java.util.HashMap;
 
 
 /**
@@ -37,13 +38,19 @@ import org.openswing.swing.message.receive.java.VOListResponse;
  */
 
 public interface UpdateTaxableIncomes {
-  
+
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public TaxableIncomeVO getTaxableIncome();
 
-	public VOListResponse updateTaxableIncomes(SaleDocPK pk,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse updateTaxableIncomes(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             SaleDocPK pk, String serverLanguageId, String username) throws Throwable;
 
 }
 

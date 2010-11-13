@@ -61,9 +61,15 @@ public interface InDeliveryNotes {
   public VOResponse updateInDeliveryNote(DetailDeliveryNoteVO oldVO,DetailDeliveryNoteVO newVO,String serverLanguageId,String username) throws Throwable;
 
   public VOListResponse updateInDeliveryNoteRows(ArrayList oldRows,ArrayList newRows,String serverLanguageId,String username) throws Throwable;
-	
-  public VOResponse updateInQuantities(DeliveryNotePK pk,String t1,String t2,String serverLanguageId,String username) throws Throwable;
 
-  
+	public VOResponse updateInQuantities(
+		 HashMap variant1Descriptions,
+		 HashMap variant2Descriptions,
+		 HashMap variant3Descriptions,
+		 HashMap variant4Descriptions,
+		 HashMap variant5Descriptions,
+		 DeliveryNotePK pk,String t1,String t2,String serverLanguageId,String username) throws Throwable;
+
+
 }
 

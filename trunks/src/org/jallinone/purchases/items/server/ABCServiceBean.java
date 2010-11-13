@@ -60,7 +60,7 @@ import javax.sql.DataSource;
 public class ABCServiceBean  implements ABCService {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -68,9 +68,9 @@ public class ABCServiceBean  implements ABCService {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -80,13 +80,13 @@ public class ABCServiceBean  implements ABCService {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
-  
+
   private DeleteABCBean bean;
-  
+
   public void setBean(DeleteABCBean bean) {
 	  this.bean = bean;
   }
@@ -95,10 +95,10 @@ public class ABCServiceBean  implements ABCService {
   public ABCServiceBean() {
   }
 
-  
+
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ABCVO getABC() {
 	  throw new UnsupportedOperationException();
@@ -108,7 +108,13 @@ public class ABCServiceBean  implements ABCService {
   /**
    * Business logic to execute.
    */
-  public VOListResponse loadABC(GridParams gridParams,String serverLanguageId,String username) throws Throwable {
+  public VOListResponse loadABC(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		GridParams gridParams, String serverLanguageId, String username) throws Throwable {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -239,10 +245,73 @@ public class ABCServiceBean  implements ABCService {
           true
       );
 
-      if (res.isError())      
+      if (res.isError())
     	  throw new Exception(res.getErrorMessage());
-      else
-    	  return (VOListResponse)res;
+
+			ABCVO vo = null;
+			List rows = ((VOListResponse)res).getRows();
+			String descr = null;
+			for(int i=0;i<rows.size();i++) {
+				vo = (ABCVO)rows.get(i);
+				descr = vo.getItemDescription();
+
+				// check supported variants for current item...
+				if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeITM11())) {
+					descr += " "+getVariantCodeAndTypeDesc(
+						variant1Descriptions,
+						vo,
+						vo.getVariantTypeITM06(),
+						vo.getVariantCodeITM11(),
+						serverLanguageId,
+						username
+					);
+				}
+				if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeITM12())) {
+					descr += " "+getVariantCodeAndTypeDesc(
+						variant2Descriptions,
+						vo,
+						vo.getVariantTypeITM07(),
+						vo.getVariantCodeITM12(),
+						serverLanguageId,
+						username
+					);
+				}
+				if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeITM13())) {
+					descr += " "+getVariantCodeAndTypeDesc(
+						variant3Descriptions,
+						vo,
+						vo.getVariantTypeITM08(),
+						vo.getVariantCodeITM13(),
+						serverLanguageId,
+						username
+					);
+				}
+				if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeITM14())) {
+					descr += " "+getVariantCodeAndTypeDesc(
+						variant4Descriptions,
+						vo,
+						vo.getVariantTypeITM09(),
+						vo.getVariantCodeITM14(),
+						serverLanguageId,
+						username
+					);
+				}
+				if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeITM15())) {
+					descr += " "+getVariantCodeAndTypeDesc(
+						variant5Descriptions,
+						vo,
+						vo.getVariantTypeITM10(),
+						vo.getVariantCodeITM15(),
+						serverLanguageId,
+						username
+					);
+				}
+				vo.setItemDescription(descr);
+
+			} // end for on rows...
+
+
+   	  return (VOListResponse)res;
     }
     catch (Throwable ex) {
     	try {
@@ -273,7 +342,7 @@ public class ABCServiceBean  implements ABCService {
 
 
 
-  
+
 
   /**
    * Business logic to execute.
@@ -286,7 +355,7 @@ public class ABCServiceBean  implements ABCService {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       bean.setConn(conn);
 
-      
+
       if (filterVO.getReportId()!=null)
         bean.deleteABC(filterVO.getReportId(),serverLanguageId,username);
 
@@ -636,12 +705,26 @@ public class ABCServiceBean  implements ABCService {
         }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
     }
 
   }
 
 
+
+		private String getVariantCodeAndTypeDesc(
+				HashMap variantDescriptions,
+				ABCVO vo,
+				String varType,
+				String varCode,
+				String serverLanguageId,
+				String username
+		) throws Throwable {
+			String varDescr = (String)variantDescriptions.get(varType+"_"+varCode);
+			if (varDescr==null)
+				varDescr = ApplicationConsts.JOLLY.equals(varCode)?"":varCode;
+			return varDescr;
+		}
 
 
 

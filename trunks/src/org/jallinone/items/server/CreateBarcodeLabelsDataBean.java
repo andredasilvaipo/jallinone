@@ -49,7 +49,7 @@ import javax.sql.DataSource;
 public class CreateBarcodeLabelsDataBean  implements CreateBarcodeLabelsData {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -57,9 +57,9 @@ public class CreateBarcodeLabelsDataBean  implements CreateBarcodeLabelsData {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -69,7 +69,7 @@ public class CreateBarcodeLabelsDataBean  implements CreateBarcodeLabelsData {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -92,11 +92,17 @@ public class CreateBarcodeLabelsDataBean  implements CreateBarcodeLabelsData {
   /**
    * Business logic to execute.
    */
-  public VOResponse createBarcodeLabelsData(ItemToPrintVO[] rows,String serverLanguageId,String username,String imagePath) throws Throwable {
+  public VOResponse createBarcodeLabelsData(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		ItemToPrintVO[] rows,String serverLanguageId,String username,String imagePath) throws Throwable {
     PreparedStatement pstmt = null;
     PreparedStatement pstmt2 = null;
     ResultSet rset2 = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -135,7 +141,7 @@ public class CreateBarcodeLabelsDataBean  implements CreateBarcodeLabelsData {
         rowVO = rows[i];
 
         pk = new ItemPK(rowVO.getCompanyCodeSys01(),rowVO.getItemCodeItm01());
-		progressiveHie02ITM01 = bean.getProgressiveHie02ITM01(pk, username); 
+		progressiveHie02ITM01 = bean.getProgressiveHie02ITM01(pk, username);
         res = new VOResponse(bean.loadItem(
         		pk,
         		progressiveHie02ITM01,
@@ -177,7 +183,7 @@ public class CreateBarcodeLabelsDataBean  implements CreateBarcodeLabelsData {
           pstmt.setLong(2,progressive);
           pstmt.setString(3,pad(barcode,barcodeType));
           pstmt.setString(4,barcodeType);
-
+/*
           aux = itemVO.getDescriptionSYS10();
           if (rowVO.getVariantTypeItm06()!=null && !ApplicationConsts.JOLLY.equals(rowVO.getVariantTypeItm06()))
             aux += " "+rowVO.getVariantTypeItm06();
@@ -203,6 +209,67 @@ public class CreateBarcodeLabelsDataBean  implements CreateBarcodeLabelsData {
             aux += " "+rowVO.getVariantTypeItm10();
           if (rowVO.getVariantCodeItm15()!=null && !ApplicationConsts.JOLLY.equals(rowVO.getVariantCodeItm15()))
             aux += " "+rowVO.getVariantCodeItm15();
+*/
+
+
+
+					aux = itemVO.getDescriptionSYS10();
+
+					// check supported variants for current item...
+					if (!ApplicationConsts.JOLLY.equals(rowVO.getVariantCodeItm11())) {
+						aux += " "+getVariantCodeAndTypeDesc(
+							variant1Descriptions,
+							rowVO,
+							rowVO.getVariantTypeItm06(),
+							rowVO.getVariantCodeItm11(),
+							serverLanguageId,
+							username
+						);
+					}
+					if (!ApplicationConsts.JOLLY.equals(rowVO.getVariantCodeItm12())) {
+						aux += " "+getVariantCodeAndTypeDesc(
+							variant2Descriptions,
+							rowVO,
+							rowVO.getVariantTypeItm07(),
+							rowVO.getVariantCodeItm12(),
+							serverLanguageId,
+							username
+						);
+					}
+					if (!ApplicationConsts.JOLLY.equals(rowVO.getVariantCodeItm13())) {
+						aux += " "+getVariantCodeAndTypeDesc(
+							variant3Descriptions,
+							rowVO,
+							rowVO.getVariantTypeItm08(),
+							rowVO.getVariantCodeItm13(),
+							serverLanguageId,
+							username
+						);
+					}
+					if (!ApplicationConsts.JOLLY.equals(rowVO.getVariantCodeItm14())) {
+						aux += " "+getVariantCodeAndTypeDesc(
+							variant4Descriptions,
+							rowVO,
+							rowVO.getVariantTypeItm09(),
+							rowVO.getVariantCodeItm14(),
+							serverLanguageId,
+							username
+						);
+					}
+					if (!ApplicationConsts.JOLLY.equals(rowVO.getVariantCodeItm15())) {
+						aux += " "+getVariantCodeAndTypeDesc(
+							variant5Descriptions,
+							rowVO,
+							rowVO.getVariantTypeItm10(),
+							rowVO.getVariantCodeItm15(),
+							serverLanguageId,
+							username
+						);
+					}
+					rowVO.setDescriptionSYS10(aux);
+
+
+
           pstmt.setString(5,aux);
 
           for(int j=0;j<rowVO.getQty().intValue();j++) {
@@ -252,7 +319,7 @@ public class CreateBarcodeLabelsDataBean  implements CreateBarcodeLabelsData {
     		}
 
     	}
-    	catch (Exception exx) {}      
+    	catch (Exception exx) {}
     }
   }
 
@@ -267,6 +334,22 @@ public class CreateBarcodeLabelsDataBean  implements CreateBarcodeLabelsData {
     else
       return code;
   }
+
+
+
+		private String getVariantCodeAndTypeDesc(
+				HashMap variantDescriptions,
+				ItemToPrintVO vo,
+				String varType,
+				String varCode,
+				String serverLanguageId,
+				String username
+		) throws Throwable {
+			String varDescr = (String)variantDescriptions.get(varType+"_"+varCode);
+			if (varDescr==null)
+				varDescr = ApplicationConsts.JOLLY.equals(varCode)?"":varCode;
+			return varDescr;
+		}
 
 
 

@@ -60,7 +60,7 @@ import javax.sql.DataSource;
 public class CreateInvoiceFromPurchaseDocBean  implements CreateInvoiceFromPurchaseDoc {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -68,9 +68,9 @@ public class CreateInvoiceFromPurchaseDocBean  implements CreateInvoiceFromPurch
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -130,8 +130,15 @@ public class CreateInvoiceFromPurchaseDocBean  implements CreateInvoiceFromPurch
   /**
    * Business logic to execute.
    */
-  public VOResponse createInvoiceFromPurchaseDoc(DetailPurchaseDocVO docVO,String companyCode,String serverLanguageId,String username) throws Throwable {
-    PreparedStatement pstmt = null;
+  public VOResponse createInvoiceFromPurchaseDoc(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		DetailPurchaseDocVO docVO, String companyCode, String serverLanguageId,
+		String username) throws Throwable {
+		PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -159,7 +166,7 @@ public class CreateInvoiceFromPurchaseDocBean  implements CreateInvoiceFromPurch
       // retrieve ref. document item rows...
       GridParams gridParams = new GridParams();
       gridParams.getOtherGridParams().put(ApplicationConsts.PURCHASE_DOC_PK,refPK);
-      res = rowsAction.loadPurchaseDocRows(gridParams,serverLanguageId,username);
+      res = rowsAction.loadPurchaseDocRows(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,gridParams,serverLanguageId,username);
       if (res.isError())
         throw new Exception(res.getErrorMessage());
       java.util.List rows = ((VOListResponse)res).getRows();
@@ -192,7 +199,7 @@ public class CreateInvoiceFromPurchaseDocBean  implements CreateInvoiceFromPurch
             gridRowVO.getVariantCodeItm15DOC07()
 
         );
-        rowVO = rowAction.loadPurchaseDocRow(docRowPK,serverLanguageId,username);
+        rowVO = rowAction.loadPurchaseDocRow(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,docRowPK,serverLanguageId,username);
         rowVO.setDocTypeDOC07(docVO.getDocTypeDOC06());
         rowVO.setDocNumberDOC07(docVO.getDocNumberDOC06());
         if (rowVO.getInvoiceQtyDOC07().doubleValue()<rowVO.getQtyDOC07().doubleValue() &&
@@ -261,7 +268,7 @@ public class CreateInvoiceFromPurchaseDocBean  implements CreateInvoiceFromPurch
 
       }
       catch (Exception exx) {}
-      
+
       try {
         rowsAction.setConn(null);
         docAction.setConn(null);

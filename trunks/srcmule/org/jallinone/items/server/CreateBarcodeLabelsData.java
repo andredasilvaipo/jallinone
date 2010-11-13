@@ -14,6 +14,8 @@ import org.jallinone.system.server.*;
 import org.openswing.swing.logger.server.*;
 import org.openswing.swing.message.receive.java.*;
 import org.openswing.swing.server.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
 
 
 /**
@@ -48,7 +50,13 @@ import org.openswing.swing.server.*;
 @javax.jws.WebService
 public interface CreateBarcodeLabelsData {
 
-  public VOResponse createBarcodeLabelsData(ItemToPrintVO[] rows,String serverLanguageId,String username,String imagePath) throws Throwable;
+  public VOResponse createBarcodeLabelsData(
+  				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+			    ItemToPrintVO[] rows,String serverLanguageId,String username,String imagePath) throws Throwable;
 
 }
 

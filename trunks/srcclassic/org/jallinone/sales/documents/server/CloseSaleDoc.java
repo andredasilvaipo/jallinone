@@ -1,58 +1,9 @@
 package org.jallinone.sales.documents.server;
 
-import org.openswing.swing.server.*;
-import java.io.*;
 import java.util.*;
 
-import org.openswing.swing.message.receive.java.*;
-import java.sql.*;
-import org.openswing.swing.logger.server.*;
-import org.jallinone.sales.documents.java.*;
-import org.jallinone.system.server.*;
-import java.math.*;
-import org.jallinone.system.progressives.server.*;
-import org.jallinone.system.translations.server.*;
-import org.jallinone.commons.server.*;
-import org.jallinone.system.java.*;
-import org.jallinone.commons.java.*;
-import org.openswing.swing.message.send.java.*;
-import org.jallinone.sales.documents.java.*;
 import org.jallinone.sales.documents.java.*;
 import org.openswing.swing.message.receive.java.*;
-import org.jallinone.sales.documents.java.*;
-import org.jallinone.warehouse.availability.server.*;
-import org.openswing.swing.message.send.java.*;
-import org.jallinone.items.java.*;
-import org.jallinone.warehouse.availability.java.*;
-import org.openswing.swing.internationalization.server.*;
-import org.openswing.swing.internationalization.java.*;
-import org.jallinone.warehouse.movements.java.*;
-import org.jallinone.warehouse.movements.server.*;
-import org.jallinone.sales.documents.java.*;
-import org.jallinone.sales.documents.headercharges.server.*;
-import org.jallinone.sales.documents.activities.server.*;
-import org.jallinone.sales.documents.headercharges.java.*;
-import org.jallinone.sales.documents.activities.java.*;
-import org.jallinone.sales.documents.headercharges.server.*;
-import org.jallinone.sales.documents.activities.server.*;
-import org.jallinone.registers.payments.server.*;
-import org.jallinone.registers.payments.server.*;
-import org.jallinone.registers.payments.java.*;
-import org.jallinone.registers.payments.java.*;
-import org.jallinone.accounting.movements.java.*;
-import org.jallinone.accounting.movements.server.*;
-import org.jallinone.accounting.movements.java.*;
-import org.jallinone.accounting.movements.server.*;
-import org.jallinone.system.server.*;
-import org.jallinone.system.companies.server.*;
-import org.jallinone.registers.currency.server.*;
-import org.jallinone.sales.documents.headercharges.server.*;
-import org.jallinone.sales.documents.activities.server.*;
-import org.jallinone.events.server.*;
-import org.jallinone.events.server.*;
-import org.jallinone.system.java.*;
-import org.jallinone.system.server.*;
-import org.jallinone.system.progressives.server.*;
 
 
 /**
@@ -94,12 +45,17 @@ import org.jallinone.system.progressives.server.*;
 public interface CloseSaleDoc {
 
   public VOResponse closeSaleDoc(
-		  SaleDocPK pk,
-		  String t1,String t2,String t3,String t4,String t5,
-		  String t6,String t7,String t8,String t9,String t10,
-		  String t11,String t12,String t13,String t14,String t15,
-		  String serverLanguageId,String username,
-		  ArrayList companiesList
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      SaleDocPK pk,
+      String t1,String t2,String t3,String t4,String t5,
+      String t6,String t7,String t8,String t9,String t10,
+      String t11,String t12,String t13,String t14,String t15,
+      String serverLanguageId,String username,
+      ArrayList companiesList
   ) throws Throwable;
 
 }

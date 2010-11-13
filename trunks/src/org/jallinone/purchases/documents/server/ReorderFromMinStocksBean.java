@@ -53,7 +53,7 @@ import javax.sql.DataSource;
 public class ReorderFromMinStocksBean  implements ReorderFromMinStocks {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -61,9 +61,9 @@ public class ReorderFromMinStocksBean  implements ReorderFromMinStocks {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -73,7 +73,7 @@ public class ReorderFromMinStocksBean  implements ReorderFromMinStocks {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -85,17 +85,23 @@ public class ReorderFromMinStocksBean  implements ReorderFromMinStocks {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ReorderFromMinStockVO getReorderFromMinStock(ReorderFromMinStockFilterVO pk) {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
    */
-  public VOListResponse reorderFromMinStocks(GridParams gridPars,String serverLanguageId,String username) throws Throwable {
+  public VOListResponse reorderFromMinStocks(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		GridParams gridPars, String serverLanguageId, String username) throws Throwable {
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
@@ -468,8 +474,67 @@ public class ReorderFromMinStocksBean  implements ReorderFromMinStocks {
         // fill in all other attributes...
         ReorderFromMinStockVO vo = null;
         int i=0;
+				String descr = null;
         while(i<rows.size()) {
           vo = (ReorderFromMinStockVO)rows.get(i);
+
+					descr = vo.getItemDescription();
+
+					// check supported variants for current item...
+					if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeITM11())) {
+						descr += " "+getVariantCodeAndTypeDesc(
+							variant1Descriptions,
+							vo,
+							vo.getVariantTypeITM06(),
+							vo.getVariantCodeITM11(),
+							serverLanguageId,
+							username
+						);
+					}
+					if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeITM12())) {
+						descr += " "+getVariantCodeAndTypeDesc(
+							variant2Descriptions,
+							vo,
+							vo.getVariantTypeITM07(),
+							vo.getVariantCodeITM12(),
+							serverLanguageId,
+							username
+						);
+					}
+					if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeITM13())) {
+						descr += " "+getVariantCodeAndTypeDesc(
+							variant3Descriptions,
+							vo,
+							vo.getVariantTypeITM08(),
+							vo.getVariantCodeITM13(),
+							serverLanguageId,
+							username
+						);
+					}
+					if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeITM14())) {
+						descr += " "+getVariantCodeAndTypeDesc(
+							variant4Descriptions,
+							vo,
+							vo.getVariantTypeITM09(),
+							vo.getVariantCodeITM14(),
+							serverLanguageId,
+							username
+						);
+					}
+					if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeITM15())) {
+						descr += " "+getVariantCodeAndTypeDesc(
+							variant5Descriptions,
+							vo,
+							vo.getVariantTypeITM10(),
+							vo.getVariantCodeITM15(),
+							serverLanguageId,
+							username
+						);
+					}
+					vo.setItemDescription(descr);
+
+
+
           pk = new VariantItemPK(
             companyCode,
             vo.getItemCode(),
@@ -571,10 +636,26 @@ public class ReorderFromMinStocksBean  implements ReorderFromMinStocks {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
-    }
+  }
+
+			private String getVariantCodeAndTypeDesc(
+					HashMap variantDescriptions,
+					ReorderFromMinStockVO vo,
+					String varType,
+					String varCode,
+					String serverLanguageId,
+					String username
+			) throws Throwable {
+				String varDescr = (String)variantDescriptions.get(varType+"_"+varCode);
+				if (varDescr==null)
+					varDescr = ApplicationConsts.JOLLY.equals(varCode)?"":varCode;
+				return varDescr;
+			}
+
+
 
 
   class Supplier {

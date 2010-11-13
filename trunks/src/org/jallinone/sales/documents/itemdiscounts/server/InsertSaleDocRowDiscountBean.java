@@ -86,7 +86,6 @@ public class InsertSaleDocRowDiscountBean implements InsertSaleDocRowDiscount {
 	   * Create local connection
 	   */
 	  public Connection getConn() throws Exception {
-	    
 	    Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
 	  }
 	
@@ -99,7 +98,8 @@ public class InsertSaleDocRowDiscountBean implements InsertSaleDocRowDiscount {
 	   * Insert a new item row discount.
 	   * No commit or rollback is executed; no connection is created or released.
 	   */
-	  public VOResponse insertSaleDocRowDiscount(SaleItemDiscountVO vo,String serverLanguageId,String username) throws Throwable {
+	  public VOResponse insertSaleDocRowDiscount(
+		      SaleItemDiscountVO vo,String serverLanguageId,String username) throws Throwable {
 		Connection conn = null;
 	    try {
 	      if (this.conn==null) conn = getConn(); else conn = this.conn; 

@@ -23,6 +23,10 @@ import java.sql.*;
 import org.openswing.swing.message.send.java.*;
 import org.jallinone.sales.documents.java.*;
 import org.jallinone.sales.documents.java.*;
+import org.jallinone.commons.java.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -57,7 +61,13 @@ import org.jallinone.sales.documents.java.*;
 @javax.jws.WebService
 public interface ConfirmSaleDoc {
 
-  public VOResponse confirmSaleDoc(SaleDocPK pk,String serverLanguageId,String username) throws Throwable;
+  public VOResponse confirmSaleDoc(
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+			  SaleDocPK pk,String serverLanguageId,String username) throws Throwable;
 
 }
 

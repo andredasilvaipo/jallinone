@@ -50,7 +50,13 @@ public interface LoadMovements {
 	 */
 	public MovementVO getMovement();
 
-	public VOListResponse loadWarehouseMovements(GridParams gridParams,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadWarehouseMovements(
+		 HashMap variant1Descriptions,
+		 HashMap variant2Descriptions,
+		 HashMap variant3Descriptions,
+		 HashMap variant4Descriptions,
+		 HashMap variant5Descriptions,
+		 GridParams gridParams, String serverLanguageId, String username) throws Throwable;
 
 }
 

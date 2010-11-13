@@ -20,6 +20,7 @@ import org.jallinone.events.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -65,9 +66,10 @@ public class LoadPurchaseDocRowAction implements Action {
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
       PurchaseDocRowPK pk = (PurchaseDocRowPK)inputPar;
     try {
+			VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(pk.getCompanyCodeSys01DOC07());
 
       LoadPurchaseDocRow bean = (LoadPurchaseDocRow)JAIOBeanFactory.getInstance().getBean(LoadPurchaseDocRow.class);
-      Response answer = new VOResponse(bean.loadPurchaseDocRow(pk,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername()));
+      Response answer = new VOResponse(bean.loadPurchaseDocRow(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),pk,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername()));
 
     return answer;
     }

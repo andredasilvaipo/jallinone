@@ -32,6 +32,9 @@ import org.jallinone.sales.documents.activities.java.*;
 import org.jallinone.sales.documents.headerdiscounts.java.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
+import java.util.HashMap;
+import org.jallinone.commons.java.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -67,7 +70,13 @@ import org.jallinone.events.server.*;
 @javax.jws.WebService
 public interface CreateInvoiceFromSaleDoc {
 
-  public VOResponse createInvoiceFromSaleDoc(DetailSaleDocVO docVO,String serverLanguageId,String username) throws Throwable;
+  public VOResponse createInvoiceFromSaleDoc(
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+			  DetailSaleDocVO docVO,String serverLanguageId,String username) throws Throwable;
 
 }
 

@@ -51,11 +51,17 @@ import org.jallinone.events.server.*;
 public interface LoadPurchaseDocAndDelivNoteRows {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public GridInDeliveryNoteRowVO getGridInDeliveryNoteRow(PurchaseDocPK pk);
 
-	public VOListResponse loadPurchaseDocAndDelivNoteRows(GridParams pars,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadPurchaseDocAndDelivNoteRows(
+		 HashMap variant1Descriptions,
+		 HashMap variant2Descriptions,
+		 HashMap variant3Descriptions,
+		 HashMap variant4Descriptions,
+		 HashMap variant5Descriptions,
+		 GridParams pars, String serverLanguageId, String username) throws Throwable;
 
 }
 

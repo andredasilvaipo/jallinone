@@ -19,6 +19,7 @@ import org.jallinone.events.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -69,11 +70,13 @@ public class InsertSaleDocRowDiscountsAction implements Action {
                                        ServletContext context) {
 	  java.util.ArrayList list = (ArrayList)inputPar;
 	  try {
+            SaleItemDiscountVO voDisc = (SaleItemDiscountVO)list.get(0);
+            VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(voDisc.getCompanyCodeSys01DOC04());
 
-		  InsertSaleDocRowDiscounts bean = (InsertSaleDocRowDiscounts)JAIOBeanFactory.getInstance().getBean(InsertSaleDocRowDiscounts.class);
-		  Response answer = bean.insertSaleDocRowDiscounts(list,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+            InsertSaleDocRowDiscounts bean = (InsertSaleDocRowDiscounts)JAIOBeanFactory.getInstance().getBean(InsertSaleDocRowDiscounts.class);
+            Response answer = bean.insertSaleDocRowDiscounts(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),list,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
-		  return answer;
+            return answer;
 	  }
 	  catch (Throwable ex) {
 		  Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"executeCommand","Error while processing request",ex);

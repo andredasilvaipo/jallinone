@@ -64,7 +64,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class InDeliveryNotesBean  implements InDeliveryNotes {
 
 
-	private DataSource dataSource; 
+	private DataSource dataSource;
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -74,7 +74,7 @@ public class InDeliveryNotesBean  implements InDeliveryNotes {
 	private Connection conn = null;
 
 	/**
-	 * Set external connection. 
+	 * Set external connection.
 	 */
 	public void setConn(Connection conn) {
 		this.conn = conn;
@@ -94,13 +94,13 @@ public class InDeliveryNotesBean  implements InDeliveryNotes {
 		this.movBean = movBean;
 	}
 
-	
+
 	private WarehouseUtilsBean bean;
-	
+
 	public void setBean(WarehouseUtilsBean bean) {
 		this.bean = bean;
 	}
-	
+
 
   public InDeliveryNotesBean() {
   }
@@ -211,10 +211,17 @@ public class InDeliveryNotesBean  implements InDeliveryNotes {
    * No commit/rollback is executed.
    * @return ErrorResponse in case of errors, new VOResponse(Boolean.TRUE) if qtys updating was correctly executed
    */
-  public VOResponse updateInQuantities(DeliveryNotePK pk,String t1,String t2,String serverLanguageId,String username) throws Throwable {
+  public VOResponse updateInQuantities(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		DeliveryNotePK pk, String t1, String t2, String serverLanguageId,
+		String username) throws Throwable {
     PreparedStatement pstmt1 = null;
     PreparedStatement pstmt2 = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -228,7 +235,7 @@ public class InDeliveryNotesBean  implements InDeliveryNotes {
       // retrieve all in delivery note rows...
       GridParams pars = new GridParams();
       pars.getOtherGridParams().put(ApplicationConsts.DELIVERY_NOTE_PK,pk);
-      Response res = bean.loadInDeliveryNoteRows(pars,serverLanguageId,username);
+      Response res = bean.loadInDeliveryNoteRows(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,pars,serverLanguageId,username);
       if (res.isError())
         throw new Exception(res.getErrorMessage());
 
@@ -393,7 +400,7 @@ public class InDeliveryNotesBean  implements InDeliveryNotes {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
     }
 
   }
@@ -497,7 +504,7 @@ public class InDeliveryNotesBean  implements InDeliveryNotes {
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       bean.setConn(conn);
-      
+
       GridInDeliveryNoteRowVO oldVO = null;
       GridInDeliveryNoteRowVO newVO = null;
 

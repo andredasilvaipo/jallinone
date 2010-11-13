@@ -49,7 +49,7 @@ import org.jallinone.events.server.*;
 public interface SaleDocs {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public GridSaleDocVO getGridSaleDoc();
 
@@ -61,7 +61,14 @@ public interface SaleDocs {
 
 	public VOListResponse validateSaleDocNumber(LookupValidationParams pars,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
 
-	public VOResponse updateSaleDoc(DetailSaleDocVO oldVO,DetailSaleDocVO newVO,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
+	public VOResponse updateSaleDoc(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             DetailSaleDocVO oldVO, DetailSaleDocVO newVO, String serverLanguageId,
+             String username, ArrayList customizedFields) throws Throwable;
 
 
 }

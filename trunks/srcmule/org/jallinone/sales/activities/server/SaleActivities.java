@@ -52,15 +52,18 @@ public interface SaleActivities {
 	 */
 	public SaleActivityVO getSaleActivity();
 
-	public VOListResponse insertSaleActivities(ArrayList list,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
+	public VOListResponse insertSaleActivities(
+		  ArrayList list,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
 
 	public VOListResponse loadSaleActivities(GridParams gridParams,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable;
 
-	public VOListResponse updateSaleActivities(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
+	public VOListResponse updateSaleActivities(
+		  ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
 
 	public VOListResponse validateSaleActivityCode(LookupValidationParams validationPars,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
 
-	public VOResponse deleteSaleActivities(ArrayList list,String serverLanguageId,String username) throws Throwable;
+	public VOResponse deleteSaleActivities(
+  		  ArrayList list,String serverLanguageId,String username) throws Throwable;
 
 }
 

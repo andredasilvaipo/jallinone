@@ -18,6 +18,7 @@ import org.openswing.swing.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -65,9 +66,11 @@ public class CreateBarcodeLabelsDataFromPurchaseDocAction implements Action {
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
     try {
       HashMap map = (HashMap)inputPar;
+			PurchaseDocPK pk = (PurchaseDocPK)map.get(ApplicationConsts.PURCHASE_DOC_PK);
+			VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(pk.getCompanyCodeSys01DOC06());
 
       CreateBarcodeLabelsDataFromPurchaseDoc bean = (CreateBarcodeLabelsDataFromPurchaseDoc)JAIOBeanFactory.getInstance().getBean(CreateBarcodeLabelsDataFromPurchaseDoc.class);
-      Response answer = bean.createBarcodeLabelsDataFromPurchaseDoc(map,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+      Response answer = bean.createBarcodeLabelsDataFromPurchaseDoc(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),map,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
     return answer;
     }

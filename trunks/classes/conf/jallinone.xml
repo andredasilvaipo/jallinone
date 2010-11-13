@@ -18,7 +18,7 @@
                http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
                http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                http://www.mulesource.org/schema/mule/stdio/2.2 http://www.mulesource.org/schema/mule/stdio/2.2/mule-stdio.xsd
-               http://www.mulesource.org/schema/mule/servlet/2.2 http://www.mulesource.org/schema/mule/servlet/2.2/mule-servlet.xsd">    
+               http://www.mulesource.org/schema/mule/servlet/2.2 http://www.mulesource.org/schema/mule/servlet/2.2/mule-servlet.xsd">
 
     <description>JAllInOne web services over CXF.</description>
     <spring:beans>
@@ -37,7 +37,7 @@
           <service name="LoadDocumentLinksService">
                <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/LoadDocumentLinks" /></inbound>
                <pooled-component><spring-object bean="LoadDocumentLinksBean" ></spring-object></pooled-component>
-          </service>          
+          </service>
           <service name="DocumentsService">
                <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/Documents" /></inbound>
                <pooled-component><spring-object bean="DocumentsBean" ></spring-object></pooled-component>
@@ -349,6 +349,10 @@
           <service name="ItemDiscountsService">
                <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/ItemDiscounts" /></inbound>
                <pooled-component><spring-object bean="ItemDiscountsBean" ></spring-object></pooled-component>
+          </service>
+          <service name="InsertSaleDocActivitiesService">
+               <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/InsertSaleDocActivities" /></inbound>
+               <pooled-component><spring-object bean="InsertSaleDocActivitiesBean" ></spring-object></pooled-component>
           </service>
           <service name="SaleDocActivitiesService">
                <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/SaleDocActivities" /></inbound>
@@ -730,7 +734,7 @@
                <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/VatRegisters" /></inbound>
                <pooled-component><spring-object bean="VatRegistersBean" ></spring-object></pooled-component>
           </service>
-          
+
           <service name="BanksService">
                <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/Banks" /></inbound>
                <pooled-component><spring-object bean="BanksBean" ></spring-object></pooled-component>
@@ -783,7 +787,7 @@
               <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/LoadSaleDocRows" /></inbound>
               <pooled-component><spring-object bean="LoadSaleDocRowsBean" ></spring-object></pooled-component>
          </service>
-		  
+
      </model>
 </mule>
 

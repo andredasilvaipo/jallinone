@@ -62,7 +62,7 @@ import javax.sql.DataSource;
 public class ConfirmSaleDocBean  implements ConfirmSaleDoc {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -70,9 +70,9 @@ public class ConfirmSaleDocBean  implements ConfirmSaleDoc {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -82,13 +82,13 @@ public class ConfirmSaleDocBean  implements ConfirmSaleDoc {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
 
   private LoadSaleDocBean loadSaleDocBean;
-  
+
   public void setLoadSaleDocBean(LoadSaleDocBean loadSaleDocBean) {
 	  this.loadSaleDocBean = loadSaleDocBean;
   }
@@ -106,7 +106,7 @@ public class ConfirmSaleDocBean  implements ConfirmSaleDoc {
   }
 
   private InsertSaleItemBean insbean;
-  
+
   public void setInsbean(InsertSaleItemBean insbean) {
 	  this.insbean = insbean;
   }
@@ -120,16 +120,22 @@ public class ConfirmSaleDocBean  implements ConfirmSaleDoc {
   /**
    * Business logic to execute.
    */
-  public VOResponse confirmSaleDoc(SaleDocPK pk,String serverLanguageId,String username) throws Throwable {
+  public VOResponse confirmSaleDoc(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      SaleDocPK pk, String serverLanguageId, String username) throws Throwable {
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       bean.setConn(conn); // use same transaction...
       rowsBean.setConn(conn); // use same transaction...
-      insbean.setConn(conn); 
+      insbean.setConn(conn);
       loadSaleDocBean.setConn(conn);
-      
+
       // generate progressive for doc. sequence...
       pstmt = conn.prepareStatement(
         "select max(DOC_SEQUENCE) from DOC01_SELLING where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_SEQUENCE is not null"
@@ -156,11 +162,12 @@ public class ConfirmSaleDocBean  implements ConfirmSaleDoc {
           username,
           new ArrayList()
         );
-        
+
         // retrieve doc rows...
         GridParams gridParams = new GridParams();
         gridParams.getOtherGridParams().put(ApplicationConsts.SALE_DOC_PK,pk);
         Response res = rowsBean.loadSaleDocRows(
+          variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,
           gridParams,
           serverLanguageId,
           username
@@ -225,10 +232,10 @@ public class ConfirmSaleDocBean  implements ConfirmSaleDoc {
             vo.getCompanyCodeSys01DOC01(),
             new ArrayList()
           );
-          if (res.isError()) 
+          if (res.isError())
             throw new Exception(res.getErrorMessage());
 
-          
+
           // insert rows related to the current delivery date...
           aux = (ArrayList)map.get(datesToSort[i]);
           for(int k=0;k<aux.size();k++) {
@@ -236,6 +243,7 @@ public class ConfirmSaleDocBean  implements ConfirmSaleDoc {
 
             // retrieve detail...
             res = insbean.loadSaleDocRow(
+                variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,
                 new SaleDocRowPK(
                   gridRowVO.getCompanyCodeSys01DOC02(),
                   gridRowVO.getDocTypeDOC02(),
@@ -318,12 +326,12 @@ public class ConfirmSaleDocBean  implements ConfirmSaleDoc {
     	  }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
 
       try {
         bean.setConn(null);
         rowsBean.setConn(null);
-        insbean.setConn(null);    
+        insbean.setConn(null);
         loadSaleDocBean.setConn(null);
       } catch (Exception ex) {}
     }

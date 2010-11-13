@@ -87,7 +87,7 @@ import org.openswing.swing.message.send.java.LookupValidationParams;
 public class CloseSaleDocBean  implements CloseSaleDoc {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -95,9 +95,9 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -107,7 +107,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -176,11 +176,11 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
   }
 
   private InsertSaleItemBean bean;
-  
+
   public void setBean(InsertSaleItemBean bean) {
 	  this.bean = bean;
   }
-  
+
 
 
   public CloseSaleDocBean() {}
@@ -191,18 +191,23 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
    * Business logic to execute.
    */
   public VOResponse closeSaleDoc(
-		  SaleDocPK pk,
-		  String t1,String t2,String t3,String t4,String t5,
-		  String t6,String t7,String t8,String t9,String t10,
-		  String t11,String t12,String t13,String t14,String t15,
-		  String serverLanguageId,String username,
-		  ArrayList companiesList
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      SaleDocPK pk,
+      String t1,String t2,String t3,String t4,String t5,
+      String t6,String t7,String t8,String t9,String t10,
+      String t11,String t12,String t13,String t14,String t15,
+      String serverLanguageId,String username,
+      ArrayList companiesList
   ) throws Throwable {
-    
+
     PreparedStatement pstmt = null;
     PreparedStatement pstmt2 = null;
     ResultSet rset = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -216,8 +221,8 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
       taxableIncomeAction.setConn(conn); // use same transaction...
       vatRegisterAction.setConn(conn); // use same transaction...
       parsBean.setConn(conn); // use same transaction...
-      bean.setConn(conn); 
-      
+      bean.setConn(conn);
+
 
       // retrieve document header...
       DetailSaleDocVO docVO = docAction.loadSaleDoc(pk,serverLanguageId,username,new ArrayList());
@@ -229,7 +234,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
       // retrieve document item rows...
       GridParams gridParams = new GridParams();
       gridParams.getOtherGridParams().put(ApplicationConsts.SALE_DOC_PK,pk);
-      Response res = rowsAction.loadSaleDocRows(gridParams,serverLanguageId,username);
+      Response res = rowsAction.loadSaleDocRows(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,gridParams,serverLanguageId,username);
       if (res.isError())
         throw new Exception(res.getErrorMessage());
       ArrayList rows = new ArrayList(((VOListResponse)res).getRows());
@@ -249,7 +254,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
           vo = (GridSaleDocRowVO)rows.get(i);
           gridParams.getOtherGridParams().put(ApplicationConsts.WAREHOUSE_CODE,docVO.getWarehouseCodeWar01DOC01());
           gridParams.getOtherGridParams().put(ApplicationConsts.ITEM_PK,new ItemPK(vo.getCompanyCodeSys01DOC02(),vo.getItemCodeItm01DOC02()));
-          res = availAction.loadBookedItems(gridParams,serverLanguageId,username,companiesList);
+          res = availAction.loadBookedItems(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,gridParams,serverLanguageId,username,companiesList);
           if (res.isError()) {
             throw new Exception(res.getErrorMessage());
           }
@@ -259,6 +264,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
             if (availVO.getAvailableQtyWAR03().doubleValue()>=vo.getQtyDOC02().doubleValue()) {
               // unload item from the specified warehouse...
               res = bean.loadSaleDocRow(
+                  variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,
                   new SaleDocRowPK(
                     vo.getCompanyCodeSys01DOC02(),
                     vo.getDocTypeDOC02(),
@@ -350,6 +356,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
         for(int i=0;i<rows.size();i++) {
           vo = (GridSaleDocRowVO)rows.get(i);
           res = bean.loadSaleDocRow(
+              variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,
               new SaleDocRowPK(
                 docVO.getCompanyCodeSys01Doc01DOC01(),
                 docVO.getDocTypeDoc01DOC01(),
@@ -861,7 +868,13 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
         pstmt.close();
 
         // calculate taxable income rows, grouped by vat code...
-        res = taxableIncomeAction.updateTaxableIncomes(pk,serverLanguageId,username);
+        res = taxableIncomeAction.updateTaxableIncomes(
+            variant1Descriptions,
+            variant2Descriptions,
+            variant3Descriptions,
+            variant4Descriptions,
+            variant5Descriptions,
+            pk, serverLanguageId, username);
         if (res.isError()) {
           throw new Exception(res.getErrorMessage());
         }
@@ -1100,7 +1113,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
     	  }
 
       }
-      catch (Exception exx) {}        
+      catch (Exception exx) {}
       try {
         rowsAction.setConn(null);
         docAction.setConn(null);
@@ -1112,7 +1125,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
         taxableIncomeAction.setConn(null);
         vatRegisterAction.setConn(null);
         parsBean.setConn(null);
-        bean.setConn(null);         
+        bean.setConn(null);
       } catch (Exception ex) {}
     }
   }

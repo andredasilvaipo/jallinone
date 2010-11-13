@@ -21,6 +21,8 @@ import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.server.Action;
 import org.openswing.swing.server.Controller;
 import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.variants.java.VariantDescriptionsVO;
+import org.jallinone.production.orders.java.ProdOrderProductVO;
 
 
 /**
@@ -53,7 +55,7 @@ import org.openswing.swing.server.UserSessionParameters;
  */
 public class CheckComponentsAvailabilityAction implements Action {
 
-  
+
   public CheckComponentsAvailabilityAction() {}
 
 
@@ -77,10 +79,13 @@ public class CheckComponentsAvailabilityAction implements Action {
 
     	ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("WAR01");
 
+
     	CheckComponentsAvailability bean = (CheckComponentsAvailability)JAIOBeanFactory.getInstance().getBean(CheckComponentsAvailability.class);
     	GridParams gridParams = (GridParams)inputPar;;
     	ArrayList products = (ArrayList)gridParams.getOtherGridParams().get(ApplicationConsts.PRODUCTS);
-    	Response answer = bean.checkComponentsAvailability(new HashMap(),products,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList);
+        ProdOrderProductVO prodVO = (ProdOrderProductVO)products.get(0);
+        VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(prodVO.getCompanyCodeSys01DOC23());
+    	Response answer = bean.checkComponentsAvailability(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),new HashMap(),products,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList);
 
     	return answer;
     }

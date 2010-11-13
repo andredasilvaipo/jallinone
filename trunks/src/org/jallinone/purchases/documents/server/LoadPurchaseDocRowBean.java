@@ -50,7 +50,7 @@ import javax.sql.DataSource;
 public class LoadPurchaseDocRowBean  implements LoadPurchaseDocRow {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -58,9 +58,9 @@ public class LoadPurchaseDocRowBean  implements LoadPurchaseDocRow {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -70,10 +70,10 @@ public class LoadPurchaseDocRowBean  implements LoadPurchaseDocRow {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
-  
+
 
   public LoadPurchaseDocRowBean() {
   }
@@ -83,7 +83,14 @@ public class LoadPurchaseDocRowBean  implements LoadPurchaseDocRow {
   /**
    * Business logic to execute.
    */
-  public DetailPurchaseDocRowVO loadPurchaseDocRow(PurchaseDocRowPK pk,String serverLanguageId,String username) throws Throwable {
+  public DetailPurchaseDocRowVO loadPurchaseDocRow(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		PurchaseDocRowPK pk, String serverLanguageId, String username) throws
+		Throwable {
     Statement stmt = null;
     Connection conn = null;
     try {
@@ -204,9 +211,67 @@ public class LoadPurchaseDocRowBean  implements LoadPurchaseDocRow {
           true
       );
 
+			Response answer = res;
+			if (answer.isError())
+				throw new Exception(answer.getErrorMessage());
+			DetailPurchaseDocRowVO vo = (DetailPurchaseDocRowVO) ( (VOResponse)answer).getVo();
+			String descr = vo.getDescriptionSYS10();
 
-      Response answer = res;
-      if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (DetailPurchaseDocRowVO)((VOResponse)answer).getVo();
+			// check supported variants for current item...
+			if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm11DOC07())) {
+				descr += " "+getVariantCodeAndTypeDesc(
+					variant1Descriptions,
+					vo,
+					vo.getVariantTypeItm06DOC07(),
+					vo.getVariantCodeItm11DOC07(),
+					serverLanguageId,
+					username
+				);
+			}
+			if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm12DOC07())) {
+				descr += " "+getVariantCodeAndTypeDesc(
+					variant2Descriptions,
+					vo,
+					vo.getVariantTypeItm07DOC07(),
+					vo.getVariantCodeItm12DOC07(),
+					serverLanguageId,
+					username
+				);
+			}
+			if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm13DOC07())) {
+				descr += " "+getVariantCodeAndTypeDesc(
+					variant3Descriptions,
+					vo,
+					vo.getVariantTypeItm08DOC07(),
+					vo.getVariantCodeItm13DOC07(),
+					serverLanguageId,
+					username
+				);
+			}
+			if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm14DOC07())) {
+				descr += " "+getVariantCodeAndTypeDesc(
+					variant4Descriptions,
+					vo,
+					vo.getVariantTypeItm09DOC07(),
+					vo.getVariantCodeItm14DOC07(),
+					serverLanguageId,
+					username
+				);
+			}
+			if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm15DOC07())) {
+				descr += " "+getVariantCodeAndTypeDesc(
+					variant5Descriptions,
+					vo,
+					vo.getVariantTypeItm10DOC07(),
+					vo.getVariantCodeItm15DOC07(),
+					serverLanguageId,
+					username
+				);
+			}
+			vo.setDescriptionSYS10(descr);
+
+
+	    return vo;
     }
     catch (Throwable ex) {
       Logger.error(username,this.getClass().getName(),"executeCommand","Error while fetching an existing purchase order row",ex);
@@ -235,10 +300,23 @@ public class LoadPurchaseDocRowBean  implements LoadPurchaseDocRow {
         }
         catch (Exception exx) {}
     }
-
-
   }
 
+
+
+		private String getVariantCodeAndTypeDesc(
+				HashMap variantDescriptions,
+				DetailPurchaseDocRowVO vo,
+				String varType,
+				String varCode,
+				String serverLanguageId,
+				String username
+		) throws Throwable {
+			String varDescr = (String)variantDescriptions.get(varType+"_"+varCode);
+			if (varDescr==null)
+				varDescr = ApplicationConsts.JOLLY.equals(varCode)?"":varCode;
+			return varDescr;
+		}
 
 
 }

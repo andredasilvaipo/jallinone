@@ -319,6 +319,7 @@ public class ABCFrame extends InternalFrame {
 
           GridParams gridParams = new GridParams();
           gridParams.getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,warehouseVO.getCompanyCodeSys01WAR01());
+					grid.getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,warehouseVO.getCompanyCodeSys01WAR01());
           Domain d = new Domain("ITEM_TYPES");
           Response res = ClientUtils.getData("loadItemTypes",gridParams);
           if (!res.isError()) {

@@ -1,19 +1,12 @@
 package org.jallinone.purchases.documents.server;
 
-import org.openswing.swing.server.*;
-import java.io.*;
-import java.util.*;
-import org.openswing.swing.message.receive.java.*;
-import java.sql.*;
-import org.openswing.swing.logger.server.*;
-import org.jallinone.purchases.documents.java.*;
-import org.jallinone.system.server.*;
-import org.jallinone.commons.server.*;
-import java.math.*;
-import org.openswing.swing.message.send.java.*;
-import org.jallinone.commons.java.*;
-import org.jallinone.events.server.*;
-import org.jallinone.events.server.*;
+import java.util.HashMap;
+import org.jallinone.purchases.documents.java.PurchaseDocPK;
+import org.jallinone.purchases.documents.java.GridPurchaseDocRowVO;
+import org.openswing.swing.message.receive.java.VOListResponse;
+import org.openswing.swing.message.send.java.GridParams;
+
+
 
 
 /**
@@ -48,11 +41,17 @@ import org.jallinone.events.server.*;
 public interface LoadPurchaseDocRows {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public GridPurchaseDocRowVO getGridPurchaseDocRow(PurchaseDocPK pk);
 
-	public VOListResponse loadPurchaseDocRows(GridParams pars,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadPurchaseDocRows(
+		 HashMap variant1Descriptions,
+		 HashMap variant2Descriptions,
+		 HashMap variant3Descriptions,
+		 HashMap variant4Descriptions,
+		 HashMap variant5Descriptions,
+		 GridParams pars,String serverLanguageId,String username) throws Throwable;
 
 }
 

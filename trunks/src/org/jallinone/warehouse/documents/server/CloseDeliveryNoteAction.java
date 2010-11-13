@@ -27,6 +27,7 @@ import org.jallinone.events.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -71,7 +72,7 @@ public class CloseDeliveryNoteAction implements Action {
 
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
 	  try {
-		  DetailDeliveryNoteVO vo = (DetailDeliveryNoteVO)inputPar;
+		  DetailDeliveryNoteVO voDel = (DetailDeliveryNoteVO)inputPar;
 
 		  ServerResourcesFactory factory = (ServerResourcesFactory)context.getAttribute(Controller.RESOURCES_FACTORY);
 		  Resources res = factory.getResources(userSessionPars.getLanguageId());
@@ -80,8 +81,10 @@ public class CloseDeliveryNoteAction implements Action {
 		  String t3 = res.getResource("load items from purchase order");
 		  String t4 = res.getResource("the warehouse motive specified is not defined");
 
+			VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(voDel.getCompanyCodeSys01DOC08());
+
 		  DeliveryNotes bean = (DeliveryNotes)JAIOBeanFactory.getInstance().getBean(DeliveryNotes.class);
-		  Response answer = bean.closeDeliveryNote(vo,t1,t2,t3,t4,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+		  Response answer = bean.closeDeliveryNote(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),voDel,t1,t2,t3,t4,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
 		  return answer;
 	  }

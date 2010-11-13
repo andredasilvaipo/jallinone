@@ -93,10 +93,11 @@ public class CreateInvoiceFromOutDelivNotesAction implements Action {
 		  ServerResourcesFactory factory = (ServerResourcesFactory)context.getAttribute(Controller.RESOURCES_FACTORY);
 		  Resources resources = factory.getResources(userSessionPars.getLanguageId());
 
+                  VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(invoiceVO.getDocVO().getCompanyCodeSys01DOC01());
 
 
 		  CreateInvoiceFromOutDelivNotes bean = (CreateInvoiceFromOutDelivNotes)JAIOBeanFactory.getInstance().getBean(CreateInvoiceFromOutDelivNotes.class);
-		  Response answer = bean.createInvoiceFromOutDelivNotes(invoiceVO,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+		  Response answer = bean.createInvoiceFromOutDelivNotes(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),invoiceVO,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
 		  return answer;
 	  }

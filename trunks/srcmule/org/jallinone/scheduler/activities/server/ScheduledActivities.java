@@ -12,6 +12,8 @@ import org.openswing.swing.logger.server.*;
 import org.jallinone.system.server.*;
 import java.math.*;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
 import javax.jws.WebService;
 
 import org.jallinone.scheduler.activities.java.*;

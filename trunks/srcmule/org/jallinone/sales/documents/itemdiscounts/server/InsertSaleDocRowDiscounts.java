@@ -1,7 +1,9 @@
 package org.jallinone.sales.documents.itemdiscounts.server;
 
-import java.util.ArrayList;
+import java.util.*;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
 import javax.jws.WebService;
 
 import org.jallinone.sales.documents.itemdiscounts.java.SaleItemDiscountVO;
@@ -16,6 +18,12 @@ public interface InsertSaleDocRowDiscounts {
 	public SaleItemDiscountVO getSaleItemDiscount();
 
 
-	public VOListResponse insertSaleDocRowDiscounts(ArrayList list,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse insertSaleDocRowDiscounts(
+		  	  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+		      @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+		      @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+		      @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+		      @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+		      ArrayList list,String serverLanguageId,String username) throws Throwable;
 
 }

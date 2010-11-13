@@ -46,6 +46,7 @@ import org.jallinone.system.progressives.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -101,17 +102,18 @@ public class ClosePurchaseDocAction implements Action {
 		  // retrieve internationalization settings (Resources object)...
 		  ServerResourcesFactory factory = (ServerResourcesFactory)context.getAttribute(Controller.RESOURCES_FACTORY);
 		  Resources resources = factory.getResources(userSessionPars.getLanguageId());
-          String t1 = resources.getResource("debiting note");
-          String t2 = resources.getResource("valueREG01");
-          String t3 = resources.getResource("rateNumberREG17");
-          String t4 = resources.getResource("purchase invoice");
+      String t1 = resources.getResource("debiting note");
+      String t2 = resources.getResource("valueREG01");
+      String t3 = resources.getResource("rateNumberREG17");
+      String t4 = resources.getResource("purchase invoice");
 
-          String t5 = resources.getResource("noteNumber");
-          String t6 = resources.getResource("supplier");
-          String t7 = resources.getResource("invoiceNumber");
+      String t5 = resources.getResource("noteNumber");
+      String t6 = resources.getResource("supplier");
+      String t7 = resources.getResource("invoiceNumber");
+			VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(pk.getCompanyCodeSys01DOC06());
 
 		  ClosePurchaseDoc bean = (ClosePurchaseDoc)JAIOBeanFactory.getInstance().getBean(ClosePurchaseDoc.class);
-		  Response answer = bean.closePurchaseDoc(pk,t1,t2,t3,t4,t5,t6,t7,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+		  Response answer = bean.closePurchaseDoc(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),pk,t1,t2,t3,t4,t5,t6,t7,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
 		  return answer;
 	  }

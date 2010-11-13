@@ -66,7 +66,14 @@ import org.jallinone.events.server.*;
 
 public interface CreateSaleDocFromEstimate {
 
-  public DetailSaleDocVO createSaleDocFromEstimate(SaleDocPK pk,String t1,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
+  public DetailSaleDocVO createSaleDocFromEstimate(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      SaleDocPK pk, String t1, String serverLanguageId, String username,
+      ArrayList companiesList) throws Throwable;
 
 }
 

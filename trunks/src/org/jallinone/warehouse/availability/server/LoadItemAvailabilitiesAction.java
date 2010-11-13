@@ -15,6 +15,9 @@ import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.server.Action;
 import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.variants.java.VariantDescriptionsVO;
+import org.jallinone.items.java.ItemPK;
+import org.jallinone.commons.java.ApplicationConsts;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -60,9 +63,16 @@ public class LoadItemAvailabilitiesAction implements Action {
 	public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
 		GridParams gridPars = (GridParams)inputPar;
 		try {
+                        String companyCode = (String)gridPars.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01);
+                        if (companyCode==null) {
+                          ItemPK pk = (ItemPK) gridPars.getOtherGridParams().get(ApplicationConsts.ITEM_PK);
+                          if (pk!=null)
+                            companyCode = pk.getCompanyCodeSys01ITM01();
+                        }
+                        VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(companyCode);
 			ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("WAR01");
 			ItemAvailabilities bean = (ItemAvailabilities)JAIOBeanFactory.getInstance().getBean(ItemAvailabilities.class);
-			Response answer = bean.loadItemAvailabilities(gridPars,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList);
+			Response answer = bean.loadItemAvailabilities(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),gridPars,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList);
 
 			return answer;
 		}

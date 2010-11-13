@@ -79,14 +79,14 @@ public class CheckComponentsAvailabilityBean implements CheckComponentsAvailabil
 		this.conv = conv;
 	}
 
-	
+
 	private CurrenciesBean compCurr;
 
 	public void setCompCurr(CurrenciesBean compCurr) {
 		this.compCurr = compCurr;
-	}	
-	
-	private DataSource dataSource; 
+	}
+
+	private DataSource dataSource;
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -96,7 +96,7 @@ public class CheckComponentsAvailabilityBean implements CheckComponentsAvailabil
 	private Connection conn = null;
 
 	/**
-	 * Set external connection. 
+	 * Set external connection.
 	 */
 	public void setConn(Connection conn) {
 		this.conn = conn;
@@ -109,14 +109,14 @@ public class CheckComponentsAvailabilityBean implements CheckComponentsAvailabil
 		Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
 	}
 
-	
+
 	  /**
-	   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	   */
 	public ProdOrderProductVO getProdOrderProduct() {
-		throw new UnsupportedOperationException();	
+		throw new UnsupportedOperationException();
 	}
-	
+
 
 	public CheckComponentsAvailabilityBean() {
 	}
@@ -128,7 +128,14 @@ public class CheckComponentsAvailabilityBean implements CheckComponentsAvailabil
 	 * @params compAltComps collection of <component item code,HashSet of alternative component item codes>; filled by this method (and given back by reference)
 	 * @return VOListResponse of ProdOrderComponentVO objects
 	 */
-	public final VOListResponse checkComponentsAvailability(HashMap compAltComps,ArrayList products,String serverLanguageId,String username,ArrayList companiesList) throws Throwable {
+	public final VOListResponse checkComponentsAvailability(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             HashMap compAltComps, ArrayList products, String serverLanguageId,
+             String username, ArrayList companiesList) throws Throwable {
 		Connection conn = null;
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -201,7 +208,7 @@ public class CheckComponentsAvailabilityBean implements CheckComponentsAvailabil
 				componentVO = (ProdOrderComponentVO)comps.get(itemCode);
 
 				gridParams.getOtherGridParams().put(ApplicationConsts.ITEM_PK,new ItemPK(prodVO.getCompanyCodeSys01DOC23(),itemCode));
-				res = avail.loadItemAvailabilities(gridParams,serverLanguageId,username,companiesList);
+				res = avail.loadItemAvailabilities(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,gridParams,serverLanguageId,username,companiesList);
 				if (res.isError())
 					throw new Exception(res.getErrorMessage());
 
@@ -219,15 +226,15 @@ public class CheckComponentsAvailabilityBean implements CheckComponentsAvailabil
 					res = bean.loadAltComponents(gridParams,serverLanguageId,username);
 					if (res.isError())
 						throw new Exception(res.getErrorMessage());
-					
+
 					list = new ArrayList(((VOListResponse)res).getRows());
 					for(int i=0;i<list.size();i++) {
 						altVO = (AltComponentVO)list.get(i);
 						gridParams.getOtherGridParams().put(ApplicationConsts.ITEM_PK,new ItemPK(prodVO.getCompanyCodeSys01DOC23(),altVO.getItemCodeItm01ITM04()));
-						res = avail.loadItemAvailabilities(gridParams,serverLanguageId,username,companiesList);
+						res = avail.loadItemAvailabilities(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,gridParams,serverLanguageId,username,companiesList);
 						if (res.isError())
 							throw new Exception(res.getErrorMessage());
-						
+
 						availList = new ArrayList(((VOListResponse)res).getRows());
 						altAvailability = new BigDecimal(0);
 						for(int j=0;j<availList.size();j++) {
@@ -305,7 +312,7 @@ public class CheckComponentsAvailabilityBean implements CheckComponentsAvailabil
 
 	        }
 	        catch (Exception exx) {}
-	        
+
 	        bean.setConn(null);
 			avail.setConn(null);
 			conv.setConn(null);

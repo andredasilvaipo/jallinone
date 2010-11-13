@@ -34,6 +34,7 @@ import org.openswing.swing.server.ConnectionManager;
 import org.openswing.swing.server.Controller;
 import org.openswing.swing.server.UserSessionParameters;
 import org.openswing.swing.util.java.Consts;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -90,7 +91,7 @@ public class JasperReportAction implements Action {
 		  String langId = res.getLanguageId();
 		  String reportDir = context.getRealPath("WEB-INF/classes/reports/") +"/";
 		  String dateformat = res.getDateMask(Consts.TYPE_DATE);
-		  
+
 		  try {
 			  System.setProperty(
 					  "jasper.reports.compile.class.path",
@@ -102,7 +103,7 @@ public class JasperReportAction implements Action {
 		  catch (Throwable ex3) {
 		  }
 
-		  Response answer = new VOResponse(getJasperReport(params,t1,langId,reportDir,dateformat,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername()));
+		  Response answer = new VOResponse(getJasperReport(params,t1,langId,reportDir,dateformat,(JAIOUserSessionParameters)userSessionPars,userSessionPars.getUsername()));
 
 		  return answer;
 	  }
@@ -111,20 +112,21 @@ public class JasperReportAction implements Action {
 		  return new ErrorResponse(ex.getMessage());
 	  }
   }
-  
-  
+
+
 
 
   /**
    * Business logic to execute.
    */
-  public JasperPrint getJasperReport(HashMap params,String t1,String langId,String reportDir,String dateFormat,String serverLanguageId,String username) throws Throwable {
+  public JasperPrint getJasperReport(HashMap params,String t1,String langId,String reportDir,String dateFormat,JAIOUserSessionParameters userSessionPars,String username) throws Throwable {
     PreparedStatement pstmt = null;
     String functionCode = null;
     Connection conn = null;
     try {
       conn = ConnectionManager.getConnection(null);
 
+			String serverLanguageId = userSessionPars.getServerLanguageId();
       String companyCode = (String)params.get(ApplicationConsts.COMPANY_CODE_SYS01);
       functionCode = (String)params.get(ApplicationConsts.FUNCTION_CODE_SYS06);
       String exportFormat = (String)params.get(ApplicationConsts.EXPORT_FORMAT);
@@ -187,9 +189,19 @@ public class JasperReportAction implements Action {
       exportParams.put("LANGUAGE_CODE",serverLanguageId);
       exportParams.put("DATE_FORMAT",dateFormat);
 
+			if (companyCode!=null) {
+				VariantDescriptionsVO vo = (VariantDescriptionsVO)userSessionPars.getVariantDescriptionsVO().get(companyCode);
+				exportParams.put("VAR1_DESCRS", vo.getVariant1Descriptions());
+				exportParams.put("VAR2_DESCRS", vo.getVariant2Descriptions());
+				exportParams.put("VAR3_DESCRS", vo.getVariant3Descriptions());
+				exportParams.put("VAR4_DESCRS", vo.getVariant4Descriptions());
+				exportParams.put("VAR5_DESCRS", vo.getVariant5Descriptions());
+			}
+
+
 
       return JasperFillManager.fillReport(new FileInputStream(file),exportParams,conn);
-   
+
     } catch (Throwable ex) {
       Logger.error(username,this.getClass().getName(),"executeCommand","Error while generating a jasper report for report '"+(functionCode==null?"":functionCode)+"'",ex);
       throw new Exception(ex.getMessage());
@@ -208,6 +220,6 @@ public class JasperReportAction implements Action {
   }
 
 
-  
+
 }
 

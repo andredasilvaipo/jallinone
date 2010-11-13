@@ -6,6 +6,7 @@ import java.util.*;
 import org.openswing.swing.message.receive.java.*;
 import java.sql.*;
 import java.math.*;
+import org.jallinone.system.java.UserLoginVO;
 
 
 
@@ -41,7 +42,7 @@ import java.math.*;
 
 public interface UserLogin {
 
-	public JAIOUserSessionParameters authenticateUser(String username,String password) throws Throwable;
-	
-	
+	public UserLoginVO authenticateUser(String username,String password) throws Throwable;
+
+
 }

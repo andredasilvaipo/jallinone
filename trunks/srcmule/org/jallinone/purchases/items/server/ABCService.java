@@ -22,7 +22,8 @@ import org.jallinone.events.server.*;
 import org.jallinone.purchases.items.java.*;
 import org.jallinone.system.progressives.server.*;
 import org.jallinone.system.progressives.server.*;
-
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -61,7 +62,13 @@ public interface ABCService {
 	public ABCVO getABC();
 
 
-	public VOListResponse loadABC(GridParams gridParams,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadABC(
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+			    GridParams gridParams,String serverLanguageId,String username) throws Throwable;
 
 	public VOResponse createABC(CreateABCFilterVO filterVO,String serverLanguageId,String username) throws Throwable;
 

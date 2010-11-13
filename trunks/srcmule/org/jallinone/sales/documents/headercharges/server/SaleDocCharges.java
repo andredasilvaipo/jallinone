@@ -17,6 +17,8 @@ import org.jallinone.sales.documents.java.*;
 import org.jallinone.sales.documents.server.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
+import org.jallinone.commons.java.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -50,13 +52,31 @@ import org.jallinone.events.server.*;
 @javax.jws.WebService
 public interface SaleDocCharges {
 
-  public VOResponse deleteSaleDocCharges(ArrayList list,String serverLanguageId,String username) throws Throwable;
+  public VOResponse deleteSaleDocCharges(
+  	  		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+			  ArrayList list,String serverLanguageId,String username) throws Throwable;
 
   public Response insertSaleDocCharge(SaleDocChargeVO vo,String username) throws Throwable;
 
-  public VOListResponse insertSaleDocCharges(ArrayList list,String serverLanguageId,String username) throws Throwable;
+  public VOListResponse insertSaleDocCharges(
+  	  		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+			  ArrayList list,String serverLanguageId,String username) throws Throwable;
 
-  public VOListResponse updateSaleDocCharges(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
+  public VOListResponse updateSaleDocCharges(
+  	  		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+			  ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
 
   public Response updateTotals(SaleDocPK docPK,String serverLanguageId,String username) throws Throwable;
 

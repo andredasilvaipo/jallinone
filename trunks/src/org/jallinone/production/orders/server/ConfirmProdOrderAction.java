@@ -42,6 +42,7 @@ import org.jallinone.events.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -91,21 +92,22 @@ public class ConfirmProdOrderAction implements Action {
 
 
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
-	  DetailProdOrderVO vo = (DetailProdOrderVO)inputPar;
+	  DetailProdOrderVO voProd = (DetailProdOrderVO)inputPar;
 	  try {
 		  // retrieve internationalization settings (Resources object)...
 		  ServerResourcesFactory factory = (ServerResourcesFactory)context.getAttribute(Controller.RESOURCES_FACTORY);
 		  Resources resources = factory.getResources(userSessionPars.getLanguageId());
-          String t1 = resources.getResource("component is not available in the specified warehouse");
-          String t2 = resources.getResource("found");
-          String t3 = resources.getResource("required");
-          String t4 = resources.getResource("unload items from production order");
-		  String t5 = resources.getResource("the warehouse motive specified is not defined");
+                  String t1 = resources.getResource("component is not available in the specified warehouse");
+                  String t2 = resources.getResource("found");
+                  String t3 = resources.getResource("required");
+                  String t4 = resources.getResource("unload items from production order");
+                  String t5 = resources.getResource("the warehouse motive specified is not defined");
 		  String imagePath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.IMAGE_PATH);
 		  ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("WAR01");
-		  
+
+                  VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(voProd.getCompanyCodeSys01DOC22());
 		  ProdOrders bean = (ProdOrders)JAIOBeanFactory.getInstance().getBean(ProdOrders.class);
-		  Response answer = bean.confirmProdOrder(vo,t1,t2,t3,t4,t5,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),imagePath,companiesList);
+		  Response answer = bean.confirmProdOrder(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),voProd,t1,t2,t3,t4,t5,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),imagePath,companiesList);
 
 		  return answer;
 	  }

@@ -30,6 +30,8 @@ import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
 
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
 import javax.jws.WebService;
 import javax.sql.DataSource;
 
@@ -85,7 +87,14 @@ public interface LoadSaleDocRows {
 	public SaleDocDiscountVO getSaleDocDiscount(SaleDocPK pk);
 
 
-	public VOListResponse loadSaleDocRows(GridParams pars,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadSaleDocRows(
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+              GridParams pars,
+              String serverLanguageId,String username) throws Throwable;
 
 	public VOListResponse loadSaleDocActivities(GridParams gridParams,String serverLanguageId,String username) throws Throwable;
 

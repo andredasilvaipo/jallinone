@@ -82,8 +82,10 @@ public class CreateInvoiceFromInDelivNotesAction implements Action {
 		  ServerResourcesFactory factory = (ServerResourcesFactory)context.getAttribute(Controller.RESOURCES_FACTORY);
 		  Resources resources = factory.getResources(userSessionPars.getLanguageId());
 
+			VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(invoiceVO.getDocVO().getCompanyCodeSys01DOC06());
+
 		  CreateInvoiceFromInDelivNotes bean = (CreateInvoiceFromInDelivNotes)JAIOBeanFactory.getInstance().getBean(CreateInvoiceFromInDelivNotes.class);
-		  Response answer = bean.createInvoiceFromInDelivNotes(invoiceVO,invoiceVO.getDocVO().getCompanyCodeSys01DOC06(),((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+		  Response answer = bean.createInvoiceFromInDelivNotes(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),invoiceVO,invoiceVO.getDocVO().getCompanyCodeSys01DOC06(),((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
 		  return answer;
 	  }

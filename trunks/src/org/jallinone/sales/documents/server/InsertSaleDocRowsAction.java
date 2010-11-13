@@ -79,11 +79,11 @@ public class InsertSaleDocRowsAction implements Action {
 	  Object[][] cells = (Object[][])pars[2];
 	  BigDecimal currencyDecimals = (BigDecimal)pars[3];
 	  try {
+            VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(voTemplate.getCompanyCodeSys01DOC02());
+	    SaleDocRows bean = (SaleDocRows)JAIOBeanFactory.getInstance().getBean(SaleDocRows.class);
+            Response answer = bean.insertSaleDocRows(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),voTemplate,matrixVO,cells,currencyDecimals,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
-		  SaleDocRows bean = (SaleDocRows)JAIOBeanFactory.getInstance().getBean(SaleDocRows.class);
-		  Response answer = bean.insertSaleDocRows(voTemplate,matrixVO,cells,currencyDecimals,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
-
-		  return answer;
+            return answer;
 	  }
 	  catch (Throwable ex) {
 		  Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"executeCommand","Error while processing request",ex);

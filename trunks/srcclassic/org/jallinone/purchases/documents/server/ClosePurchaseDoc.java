@@ -81,7 +81,15 @@ import org.jallinone.system.progressives.server.*;
 
 public interface ClosePurchaseDoc {
 
-  public VOResponse closePurchaseDoc(PurchaseDocPK pk,String t1,String t2,String t3,String t4,String t5,String t6,String t7,String serverLanguageId,String username) throws Throwable;
+  public VOResponse closePurchaseDoc(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		PurchaseDocPK pk, String t1, String t2, String t3, String t4, String t5,
+		String t6, String t7, String serverLanguageId, String username) throws
+		Throwable;
 
 }
 

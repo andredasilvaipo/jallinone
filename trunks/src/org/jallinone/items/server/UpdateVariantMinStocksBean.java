@@ -54,7 +54,7 @@ import javax.sql.DataSource;
 public class UpdateVariantMinStocksBean  implements UpdateVariantMinStocks {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -62,9 +62,9 @@ public class UpdateVariantMinStocksBean  implements UpdateVariantMinStocks {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -74,7 +74,7 @@ public class UpdateVariantMinStocksBean  implements UpdateVariantMinStocks {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -91,7 +91,7 @@ public class UpdateVariantMinStocksBean  implements UpdateVariantMinStocks {
    */
   public VOListResponse updateVariantMinStocks(VariantsMatrixVO matrixVO,Object[][] cells,String serverLanguageId,String username) throws Throwable {
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -126,7 +126,7 @@ public class UpdateVariantMinStocksBean  implements UpdateVariantMinStocks {
       vo.setCompanyCodeSys01ITM23(matrixVO.getItemPK().getCompanyCodeSys01ITM01());
       vo.setItemCodeItm01ITM23(matrixVO.getItemPK().getItemCodeITM01());
       BigDecimal qty = null;
-      
+
       for(int i=0;i<cells.length;i++) {
         rowVO = (VariantsMatrixRowVO)matrixVO.getRowDescriptors()[i];
         row = cells[i];
@@ -141,7 +141,7 @@ public class UpdateVariantMinStocksBean  implements UpdateVariantMinStocks {
           }
           if (qty==null)
         	continue;
-      		
+
           VariantsMatrixUtils.setVariantTypesAndCodes(vo,"ITM23",matrixVO,rowVO,null);
 
           pstmt.setString(1,matrixVO.getItemPK().getCompanyCodeSys01ITM01());

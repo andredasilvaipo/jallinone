@@ -55,7 +55,7 @@ import javax.sql.DataSource;
 public class VariantsBean  implements Variants {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -63,9 +63,9 @@ public class VariantsBean  implements Variants {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -75,7 +75,7 @@ public class VariantsBean  implements Variants {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -113,7 +113,7 @@ public class VariantsBean  implements Variants {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public VariantNameVO getVariantName(VariantVO vo) {
 	  throw new UnsupportedOperationException();
@@ -127,7 +127,7 @@ public class VariantsBean  implements Variants {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
- 
+
 
       String companyCodeSys01 = (String)gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01);
       String tableName = (String)gridParams.getOtherGridParams().get(ApplicationConsts.TABLE_NAME);
@@ -191,7 +191,7 @@ public class VariantsBean  implements Variants {
             }
 
         }
-        catch (Exception exx) {}		
+        catch (Exception exx) {}
 	}
 
   }
@@ -273,11 +273,11 @@ public class VariantsBean  implements Variants {
    * Business logic to execute.
    */
   public VOListResponse updateVariants(String tableName,ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable {
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      
+
       String variantTypeJoin = (String)variantTypeJoins.get(tableName);
 
       VariantVO oldVO = null;
@@ -345,7 +345,7 @@ public class VariantsBean  implements Variants {
             }
 
         }
-        catch (Exception exx) {}    	
+        catch (Exception exx) {}
     }
   }
 
@@ -356,7 +356,7 @@ public class VariantsBean  implements Variants {
    * Business logic to execute.
    */
   public VOListResponse insertVariants(String tableName,String companyCodeSys01,java.util.List list,String serverLanguageId,String username) throws Throwable {
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -398,7 +398,7 @@ public class VariantsBean  implements Variants {
             true
         );
         if (res.isError()) {
-        	throw new Exception(res.getErrorMessage()); 
+        	throw new Exception(res.getErrorMessage());
         }
       }
 
@@ -427,7 +427,7 @@ public class VariantsBean  implements Variants {
             }
 
         }
-        catch (Exception exx) {}    	
+        catch (Exception exx) {}
     }
 
   }
@@ -441,7 +441,7 @@ public class VariantsBean  implements Variants {
    */
   public VOResponse deleteVariants(String tableName,ArrayList list,String serverLanguageId,String username) throws Throwable {
     Statement stmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -471,7 +471,7 @@ public class VariantsBean  implements Variants {
       catch (Exception ex3) {
       }
 
-      throw new Exception(ex.getMessage()); 
+      throw new Exception(ex.getMessage());
     }
     finally {
       try {
@@ -491,6 +491,74 @@ public class VariantsBean  implements Variants {
     }
   }
 
+
+  /**
+   * Business logic to execute.
+   */
+  public VOListResponse loadAllVariants(String tableName,String variantTypeJoin,String serverLanguageId,String username) throws Throwable {
+    Connection conn = null;
+    try {
+      if (this.conn==null) conn = getConn(); else conn = this.conn;
+
+      String sql =
+          "select "+tableName+".COMPANY_CODE_SYS01,"+tableName+".VARIANT_CODE,"+tableName+"."+variantTypeJoin+","+
+          tableName+".CODE_ORDER,"+tableName+".PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+tableName+".ENABLED "+
+          "from "+tableName+",SYS10_TRANSLATIONS "+
+          "where "+
+          tableName+".PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          tableName+".ENABLED='Y'  and not "+tableName+".VARIANT_CODE=?" ;
+
+      Map attribute2dbField = new HashMap();
+      attribute2dbField.put("companyCodeSys01",tableName+".COMPANY_CODE_SYS01");
+      attribute2dbField.put("codeOrder",tableName+".CODE_ORDER");
+      attribute2dbField.put("variantCode",tableName+".VARIANT_CODE");
+      attribute2dbField.put("variantType",tableName+"."+variantTypeJoin);
+      attribute2dbField.put("progressiveSys10",tableName+".PROGRESSIVE_SYS10");
+      attribute2dbField.put("descriptionSys10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("enabled",tableName+".ENABLED");
+
+      ArrayList values = new ArrayList();
+      values.add(serverLanguageId);
+      values.add(ApplicationConsts.JOLLY);
+
+
+      // read from ITMxxx table...
+      Response answer = QueryUtil.getQuery(
+          conn,
+          new UserSessionParameters(username),
+          sql,
+          values,
+          attribute2dbField,
+          VariantVO.class,
+          "Y",
+          "N",
+          null,
+          new GridParams(),
+          true
+      );
+      if (answer.isError())
+        throw new Exception(answer.getErrorMessage());
+
+      return (VOListResponse)answer;
+    }
+    catch (Throwable ex) {
+      Logger.error(username,this.getClass().getName(),"executeCommand","Error while fetching variants list",ex);
+      throw new Exception(ex.getMessage());
+    }
+        finally {
+        try {
+            if (this.conn==null && conn!=null) {
+                // close only local connection
+                conn.commit();
+                conn.close();
+            }
+
+        }
+        catch (Exception exx) {}
+        }
+
+  }
 
 
 }

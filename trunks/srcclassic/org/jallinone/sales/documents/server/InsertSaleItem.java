@@ -61,9 +61,15 @@ import javax.sql.DataSource;
 
 public interface InsertSaleItem {
 
-	public VOResponse loadSaleDocRow(SaleDocRowPK pk,String serverLanguageId,String username) throws Throwable;
+	public VOResponse loadSaleDocRow(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             SaleDocRowPK pk, String serverLanguageId, String username) throws Throwable;
 
 	public VOResponse insertSaleItem(DetailSaleDocRowVO vo,String serverLanguageId,String username) throws Throwable;
 
-	
+
 }

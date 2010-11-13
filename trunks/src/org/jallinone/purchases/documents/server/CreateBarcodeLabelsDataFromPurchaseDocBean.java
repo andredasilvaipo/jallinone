@@ -49,7 +49,7 @@ import javax.sql.DataSource;
 public class CreateBarcodeLabelsDataFromPurchaseDocBean  implements CreateBarcodeLabelsDataFromPurchaseDoc {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -57,9 +57,9 @@ public class CreateBarcodeLabelsDataFromPurchaseDocBean  implements CreateBarcod
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -69,7 +69,7 @@ public class CreateBarcodeLabelsDataFromPurchaseDocBean  implements CreateBarcod
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -92,11 +92,17 @@ public class CreateBarcodeLabelsDataFromPurchaseDocBean  implements CreateBarcod
   /**
    * Business logic to execute.
    */
-  public VOResponse createBarcodeLabelsDataFromPurchaseDoc(HashMap map,String serverLanguageId,String username) throws Throwable {
+  public VOResponse createBarcodeLabelsDataFromPurchaseDoc(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		HashMap map, String serverLanguageId, String username) throws Throwable {
     PreparedStatement pstmt = null;
     PreparedStatement pstmt2 = null;
     ResultSet rset2 = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -107,7 +113,7 @@ public class CreateBarcodeLabelsDataFromPurchaseDocBean  implements CreateBarcod
       GridParams pars = new GridParams();
       pars.getOtherGridParams().put(ApplicationConsts.PURCHASE_DOC_PK,pk);
 
-      Response res = action.loadPurchaseDocRows(pars,serverLanguageId,username);
+      Response res = action.loadPurchaseDocRows(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,pars,serverLanguageId,username);
       if (res.isError())
         throw new Exception(res.getErrorMessage());
       List rows = ((VOListResponse)res).getRows();
@@ -211,7 +217,7 @@ public class CreateBarcodeLabelsDataFromPurchaseDocBean  implements CreateBarcod
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
       try {
           action.setConn(null);
         } catch (Exception ex) {}
@@ -225,7 +231,7 @@ public class CreateBarcodeLabelsDataFromPurchaseDocBean  implements CreateBarcod
       for(int i=len;i<13;i++)
         code = "0"+code;
       return code;
-    
+
     }
     else
       return code;

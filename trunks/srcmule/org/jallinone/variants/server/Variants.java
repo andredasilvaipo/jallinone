@@ -63,5 +63,7 @@ public interface Variants {
 
 	public VOResponse deleteVariants(String tableName,ArrayList list,String serverLanguageId,String username) throws Throwable;
 
+	public VOListResponse loadAllVariants(String tableName,String variantTypeJoin,String serverLanguageId,String username) throws Throwable;
+	
 }
 

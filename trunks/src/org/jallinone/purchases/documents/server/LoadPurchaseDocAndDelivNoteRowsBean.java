@@ -51,7 +51,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class LoadPurchaseDocAndDelivNoteRowsBean  implements LoadPurchaseDocAndDelivNoteRows {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -59,9 +59,9 @@ public class LoadPurchaseDocAndDelivNoteRowsBean  implements LoadPurchaseDocAndD
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -71,7 +71,7 @@ public class LoadPurchaseDocAndDelivNoteRowsBean  implements LoadPurchaseDocAndD
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -88,9 +88,9 @@ public class LoadPurchaseDocAndDelivNoteRowsBean  implements LoadPurchaseDocAndD
   public LoadPurchaseDocAndDelivNoteRowsBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public GridInDeliveryNoteRowVO getGridInDeliveryNoteRow(PurchaseDocPK pk) {
 	  throw new UnsupportedOperationException();
@@ -100,7 +100,13 @@ public class LoadPurchaseDocAndDelivNoteRowsBean  implements LoadPurchaseDocAndD
   /**
    * Business logic to execute.
    */
-  public VOListResponse loadPurchaseDocAndDelivNoteRows(GridParams pars,String serverLanguageId,String username) throws Throwable {
+  public VOListResponse loadPurchaseDocAndDelivNoteRows(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		GridParams pars, String serverLanguageId, String username) throws Throwable {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -195,8 +201,68 @@ public class LoadPurchaseDocAndDelivNoteRowsBean  implements LoadPurchaseDocAndD
 
       if (!res.isError()) {
         GridInDeliveryNoteRowVO vo = null;
+				String descr = null;
         for(int i=0;i<((VOListResponse)res).getRows().size();i++) {
           vo = (GridInDeliveryNoteRowVO)((VOListResponse)res).getRows().get(i);
+
+					descr = vo.getDescriptionSYS10();
+
+					// check supported variants for current item...
+					if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm11DOC09())) {
+						descr += " "+getVariantCodeAndTypeDesc(
+							variant1Descriptions,
+							vo,
+							vo.getVariantTypeItm06DOC09(),
+							vo.getVariantCodeItm11DOC09(),
+							serverLanguageId,
+							username
+						);
+					}
+					if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm12DOC09())) {
+						descr += " "+getVariantCodeAndTypeDesc(
+							variant2Descriptions,
+							vo,
+							vo.getVariantTypeItm07DOC09(),
+							vo.getVariantCodeItm12DOC09(),
+							serverLanguageId,
+							username
+						);
+					}
+					if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm13DOC09())) {
+						descr += " "+getVariantCodeAndTypeDesc(
+							variant3Descriptions,
+							vo,
+							vo.getVariantTypeItm08DOC09(),
+							vo.getVariantCodeItm13DOC09(),
+							serverLanguageId,
+							username
+						);
+					}
+					if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm14DOC09())) {
+						descr += " "+getVariantCodeAndTypeDesc(
+							variant4Descriptions,
+							vo,
+							vo.getVariantTypeItm09DOC09(),
+							vo.getVariantCodeItm14DOC09(),
+							serverLanguageId,
+							username
+						);
+					}
+					if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm15DOC09())) {
+						descr += " "+getVariantCodeAndTypeDesc(
+							variant5Descriptions,
+							vo,
+							vo.getVariantTypeItm10DOC09(),
+							vo.getVariantCodeItm15DOC09(),
+							serverLanguageId,
+							username
+						);
+					}
+					vo.setDescriptionSYS10(descr);
+
+
+
+
           vo.setValueREG05(convBean.getConversion(
             vo.getUmCodeREG02(),
             vo.getUmCodeReg02PUR02(),
@@ -231,6 +297,23 @@ public class LoadPurchaseDocAndDelivNoteRowsBean  implements LoadPurchaseDocAndD
     }
 
   }
+
+
+
+
+		private String getVariantCodeAndTypeDesc(
+				HashMap variantDescriptions,
+				GridInDeliveryNoteRowVO vo,
+				String varType,
+				String varCode,
+				String serverLanguageId,
+				String username
+		) throws Throwable {
+			String varDescr = (String)variantDescriptions.get(varType+"_"+varCode);
+			if (varDescr==null)
+				varDescr = ApplicationConsts.JOLLY.equals(varCode)?"":varCode;
+			return varDescr;
+		}
 
 
 

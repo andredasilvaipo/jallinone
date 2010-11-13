@@ -20,6 +20,7 @@ import org.jallinone.events.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -63,14 +64,16 @@ public class UpdateSaleDocRowDiscountsAction implements Action {
 
 
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
-      ArrayList oldVOs = ((ArrayList[])inputPar)[0];
-      ArrayList newVOs = ((ArrayList[])inputPar)[1];
+    ArrayList oldVOs = ((ArrayList[])inputPar)[0];
+    ArrayList newVOs = ((ArrayList[])inputPar)[1];
     try {
+      SaleItemDiscountVO oldVO = (SaleItemDiscountVO)oldVOs.get(0);
+      VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(oldVO.getCompanyCodeSys01DOC04());
 
-    	SaleDocRowDiscounts bean = (SaleDocRowDiscounts)JAIOBeanFactory.getInstance().getBean(SaleDocRowDiscounts.class);
-      Response answer = bean.updateSaleDocRowDiscounts(((ArrayList[])inputPar)[0],((ArrayList[])inputPar)[1],((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+      SaleDocRowDiscounts bean = (SaleDocRowDiscounts)JAIOBeanFactory.getInstance().getBean(SaleDocRowDiscounts.class);
+      Response answer = bean.updateSaleDocRowDiscounts(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),((ArrayList[])inputPar)[0],((ArrayList[])inputPar)[1],((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
-    return answer;
+      return answer;
     }
     catch (Throwable ex) {
       Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"executeCommand","Error while processing request",ex);

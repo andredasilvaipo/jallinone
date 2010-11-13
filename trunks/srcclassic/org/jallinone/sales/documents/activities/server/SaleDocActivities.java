@@ -50,15 +50,29 @@ import org.jallinone.events.server.*;
 
 public interface SaleDocActivities {
 
-	public VOListResponse insertSaleDocActivities(ArrayList list,String serverLanguageId,String username) throws Throwable;
 
-	public VOResponse insertSaleActivity(SaleDocActivityVO vo,String username) throws Exception;
-	
-	public VOListResponse updateSaleDocActivities(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
+	public VOResponse insertSaleActivity(
+             SaleDocActivityVO vo, String username) throws Exception;
+
+	public VOListResponse updateSaleDocActivities(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             ArrayList oldVOs, ArrayList newVOs, String serverLanguageId,
+             String username) throws Throwable;
 
 	public VOResponse updateTotals(SaleDocPK docPK,String serverLanguageId,String username) throws Throwable;
 
-	public VOResponse deleteSaleDocActivities(ArrayList list,String serverLanguageId,String username) throws Throwable;
+	public VOResponse deleteSaleDocActivities(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             ArrayList list, String serverLanguageId, String username) throws
+            Throwable;
 
 }
 

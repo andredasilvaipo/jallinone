@@ -50,25 +50,49 @@ import org.jallinone.events.server.*;
 public interface ItemAvailabilities {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public BookedItemQtyVO getBookedItemQty(ItemPK pk);
-	
+
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public ItemAvailabilityVO getItemAvailabilityVO(ItemPK pk);
-	
+
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public OrderedItemQtyVO getOrderedItemQty(ItemPK pk);
 
-	public VOListResponse loadBookedItems(GridParams gridPars,String serverLanguageId,String username,ArrayList companiesList ) throws Throwable;
 
-	public VOListResponse loadItemAvailabilities(GridParams gridPars,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
 
-	public VOListResponse loadOrderedItems(GridParams gridPars,String serverLanguageId,String username) throws Throwable;
+
+
+	public VOListResponse loadBookedItems(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             GridParams gridPars, String serverLanguageId, String username,
+             ArrayList companiesList) throws Throwable;
+
+	public VOListResponse loadItemAvailabilities(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             GridParams gridPars, String serverLanguageId, String username,
+             ArrayList companiesList) throws Throwable;
+
+	public VOListResponse loadOrderedItems(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             GridParams gridPars, String serverLanguageId, String username) throws Throwable;
 
 
 }

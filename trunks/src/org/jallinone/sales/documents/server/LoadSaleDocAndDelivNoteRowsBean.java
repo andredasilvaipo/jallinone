@@ -50,7 +50,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class LoadSaleDocAndDelivNoteRowsBean  implements LoadSaleDocAndDelivNoteRows {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -58,9 +58,9 @@ public class LoadSaleDocAndDelivNoteRowsBean  implements LoadSaleDocAndDelivNote
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -70,7 +70,7 @@ public class LoadSaleDocAndDelivNoteRowsBean  implements LoadSaleDocAndDelivNote
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -89,17 +89,23 @@ public class LoadSaleDocAndDelivNoteRowsBean  implements LoadSaleDocAndDelivNote
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public GridOutDeliveryNoteRowVO getGridOutDeliveryNoteRow(SaleDocPK pk) {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
    */
-  public VOListResponse loadSaleDocAndDelivNoteRows(GridParams pars,String serverLanguageId,String username) throws Throwable {
+  public VOListResponse loadSaleDocAndDelivNoteRows(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		GridParams pars, String serverLanguageId, String username) throws Throwable {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -191,7 +197,71 @@ public class LoadSaleDocAndDelivNoteRowsBean  implements LoadSaleDocAndDelivNote
       }
 
       Response answer = res;
-      if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (VOListResponse)answer;
+      if (answer.isError())
+				throw new Exception(answer.getErrorMessage());
+
+	    java.util.List rows = ((VOListResponse)answer).getRows();
+			String descr = null;
+			GridOutDeliveryNoteRowVO vo = null;
+			for(int i=0;i<rows.size();i++) {
+				vo = (GridOutDeliveryNoteRowVO)rows.get(i);
+				descr = vo.getDescriptionSYS10();
+
+					// check supported variants for current item...
+					if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm11DOC10())) {
+						descr += " "+getVariantCodeAndTypeDesc(
+							variant1Descriptions,
+							vo,
+							vo.getVariantTypeItm06DOC10(),
+							vo.getVariantCodeItm11DOC10(),
+							serverLanguageId,
+							username
+						);
+					}
+					if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm12DOC10())) {
+						descr += " "+getVariantCodeAndTypeDesc(
+							variant2Descriptions,
+							vo,
+							vo.getVariantTypeItm07DOC10(),
+							vo.getVariantCodeItm12DOC10(),
+							serverLanguageId,
+							username
+						);
+					}
+					if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm13DOC10())) {
+						descr += " "+getVariantCodeAndTypeDesc(
+							variant3Descriptions,
+							vo,
+							vo.getVariantTypeItm08DOC10(),
+							vo.getVariantCodeItm13DOC10(),
+							serverLanguageId,
+							username
+						);
+					}
+					if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm14DOC10())) {
+						descr += " "+getVariantCodeAndTypeDesc(
+							variant4Descriptions,
+							vo,
+							vo.getVariantTypeItm09DOC10(),
+							vo.getVariantCodeItm14DOC10(),
+							serverLanguageId,
+							username
+						);
+					}
+					if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm15DOC10())) {
+						descr += " "+getVariantCodeAndTypeDesc(
+							variant5Descriptions,
+							vo,
+							vo.getVariantTypeItm10DOC10(),
+							vo.getVariantCodeItm15DOC10(),
+							serverLanguageId,
+							username
+						);
+					}
+					vo.setDescriptionSYS10(descr);
+			}
+
+	    return (VOListResponse)answer;
     }
     catch (Throwable ex) {
       Logger.error(username,this.getClass().getName(),"executeCommand","Error while fetching sale document + delivery note rows proposal list",ex);
@@ -206,13 +276,30 @@ public class LoadSaleDocAndDelivNoteRowsBean  implements LoadSaleDocAndDelivNote
     		}
 
     	}
-    	catch (Exception exx) {}    
+    	catch (Exception exx) {}
     	try {
     		convBean.setConn(null);
     	} catch (Exception ex) {}
     }
 
   }
+
+
+
+		private String getVariantCodeAndTypeDesc(
+				HashMap variantDescriptions,
+				GridOutDeliveryNoteRowVO vo,
+				String varType,
+				String varCode,
+				String serverLanguageId,
+				String username
+		) throws Throwable {
+			String varDescr = (String)variantDescriptions.get(varType+"_"+varCode);
+			if (varDescr==null)
+				varDescr = ApplicationConsts.JOLLY.equals(varCode)?"":varCode;
+			return varDescr;
+		}
+
 
 
 

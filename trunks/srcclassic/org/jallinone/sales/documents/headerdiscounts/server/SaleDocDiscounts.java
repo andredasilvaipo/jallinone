@@ -53,21 +53,41 @@ import org.jallinone.events.server.*;
 public interface SaleDocDiscounts {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public DiscountVO getDetailSaleDoc(DetailSaleDocVO pk);
 
-	public VOResponse deleteSaleDocDiscounts(ArrayList list,String serverLanguageId,String username) throws Throwable;
+	public VOResponse deleteSaleDocDiscounts(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             ArrayList list, String serverLanguageId, String username) throws Throwable;
 
 	public VOResponse insertSaleDocDiscount(SaleDocDiscountVO vo,String username) throws Throwable;
 
-	public VOListResponse insertSaleDocDiscounts(ArrayList list,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse insertSaleDocDiscounts(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             ArrayList list, String serverLanguageId, String username) throws Throwable;
 
 	public VOListResponse loadSaleHeaderDiscounts(GridParams gridParams,String serverLanguageId,String username) throws Throwable;
 
-	public VOListResponse updateSaleDocDiscounts(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse updateSaleDocDiscounts(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             ArrayList oldVOs, ArrayList newVOs, String serverLanguageId,
+             String username) throws Throwable;
 
-	public VOResponse updateTotals(SaleDocPK docPK,String serverLanguageId,String username) throws Throwable;
+	public VOResponse updateTotals(
+             SaleDocPK docPK, String serverLanguageId, String username) throws Throwable;
 
 	public VOListResponse validateSaleHeaderDiscountCode(LookupValidationParams validationPars,String serverLanguageId,String username) throws Throwable;
 

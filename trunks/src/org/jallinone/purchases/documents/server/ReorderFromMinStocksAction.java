@@ -22,6 +22,7 @@ import org.jallinone.variants.java.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -65,11 +66,13 @@ public class ReorderFromMinStocksAction implements Action {
 
 
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
-      GridParams gridPars = (GridParams)inputPar;
+    GridParams gridPars = (GridParams)inputPar;
     try {
+			String companyCode = (String)gridPars.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01);
+			VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(companyCode);
 
       ReorderFromMinStocks bean = (ReorderFromMinStocks)JAIOBeanFactory.getInstance().getBean(ReorderFromMinStocks.class);
-      Response answer = bean.reorderFromMinStocks(gridPars,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+      Response answer = bean.reorderFromMinStocks(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),gridPars,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
     return answer;
     }

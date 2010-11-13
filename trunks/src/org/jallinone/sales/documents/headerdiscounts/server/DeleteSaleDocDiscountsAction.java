@@ -19,6 +19,7 @@ import org.jallinone.events.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -64,9 +65,11 @@ public class DeleteSaleDocDiscountsAction implements Action {
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
       java.util.ArrayList list = (ArrayList)inputPar;
     try {
+      SaleDocDiscountVO voDisc = (SaleDocDiscountVO)list.get(0);
+      VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(voDisc.getCompanyCodeSys01DOC05());
 
       SaleDocDiscounts bean = (SaleDocDiscounts)JAIOBeanFactory.getInstance().getBean(SaleDocDiscounts.class);
-      Response answer = bean.deleteSaleDocDiscounts(list,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+      Response answer = bean.deleteSaleDocDiscounts(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),list,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
     return answer;
     }

@@ -61,7 +61,7 @@ import javax.sql.DataSource;
 public class InsertSaleDocRowDiscountsBean implements InsertSaleDocRowDiscounts {
 
 
-	  private DataSource dataSource; 
+	  private DataSource dataSource;
 
 	  public void setDataSource(DataSource dataSource) {
 	    this.dataSource = dataSource;
@@ -69,9 +69,9 @@ public class InsertSaleDocRowDiscountsBean implements InsertSaleDocRowDiscounts 
 
 	  /** external connection */
 	  private Connection conn = null;
-	  
+
 	  /**
-	   * Set external connection. 
+	   * Set external connection.
 	   */
 	  public void setConn(Connection conn) {
 	    this.conn = conn;
@@ -81,40 +81,46 @@ public class InsertSaleDocRowDiscountsBean implements InsertSaleDocRowDiscounts 
 	   * Create local connection
 	   */
 	  public Connection getConn() throws Exception {
-	    
+
 	    Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
 	  }
 
-	  
+
 	  private UpdateTaxableIncomesBean totals;
 
 	  public void setTotals(UpdateTaxableIncomesBean totals) {
 	    this.totals = totals;
 	  }
-	  
+
 	  private InsertSaleDocRowDiscountBean bean;
-	  
+
 	  public void setBean(InsertSaleDocRowDiscountBean bean) {
 		  this.bean = bean;
 	  }
-	  
-		
+
+
 	  /**
-	   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	   */
 	  public SaleItemDiscountVO getSaleItemDiscount() {
-		  throw new UnsupportedOperationException();		
+		  throw new UnsupportedOperationException();
 	  }
-	  
-	  
-	  
-	  
-	  
-	
+
+
+
+
+
+
 	 /**
 	   * Business logic to execute.
 	   */
-	  public VOListResponse insertSaleDocRowDiscounts(ArrayList list,String serverLanguageId,String username) throws Throwable {
+	  public VOListResponse insertSaleDocRowDiscounts(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             ArrayList list, String serverLanguageId, String username) throws Throwable {
 	    Connection conn = null;
 	    try {
 	      if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -137,10 +143,14 @@ public class InsertSaleDocRowDiscountsBean implements InsertSaleDocRowDiscounts 
 	      }
 
 	      res = totals.updateTaxableIncomes(
+               variant1Descriptions,
+               variant2Descriptions,
+               variant3Descriptions,
+               variant4Descriptions,
+               variant5Descriptions,
 	        new SaleDocPK(vo.getCompanyCodeSys01DOC04(),vo.getDocTypeDOC04(),vo.getDocYearDOC04(),vo.getDocNumberDOC04()),
 	        serverLanguageId,
 	        username
-
 	      );
 	      if (res.isError()) {
 	        throw new Exception(res.getErrorMessage());
@@ -170,7 +180,7 @@ public class InsertSaleDocRowDiscountsBean implements InsertSaleDocRowDiscounts 
 	            }
 
 	        }
-	        catch (Exception exx) {}    
+	        catch (Exception exx) {}
 	      try {
 	        totals.setConn(null);
 	      } catch (Exception ex) {}
@@ -180,5 +190,5 @@ public class InsertSaleDocRowDiscountsBean implements InsertSaleDocRowDiscounts 
 
 
 
-	
+
 }

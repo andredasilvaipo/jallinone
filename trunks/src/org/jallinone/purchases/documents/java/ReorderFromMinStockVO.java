@@ -97,32 +97,32 @@ public class ReorderFromMinStockVO extends ValueObjectImpl {
   }
   public String getItemDescription() {
     String aux = itemDescription;
-    if (aux==null)
-      return null;
-    if (variantTypeITM06!=null && !ApplicationConsts.JOLLY.equals(variantTypeITM06))
-      aux += " "+variantTypeITM06;
-    if (variantCodeITM11!=null && !ApplicationConsts.JOLLY.equals(variantCodeITM11))
-      aux += " "+variantCodeITM11;
-
-    if (variantTypeITM07!=null && !ApplicationConsts.JOLLY.equals(variantTypeITM07))
-      aux += " "+variantTypeITM07;
-    if (variantCodeITM12!=null && !ApplicationConsts.JOLLY.equals(variantCodeITM12))
-      aux += " "+variantCodeITM12;
-
-    if (variantTypeITM08!=null && !ApplicationConsts.JOLLY.equals(variantTypeITM08))
-      aux += " "+variantTypeITM08;
-    if (variantCodeITM13!=null && !ApplicationConsts.JOLLY.equals(variantCodeITM13))
-      aux += " "+variantCodeITM13;
-
-    if (variantTypeITM09!=null && !ApplicationConsts.JOLLY.equals(variantTypeITM09))
-      aux += " "+variantTypeITM09;
-    if (variantCodeITM14!=null && !ApplicationConsts.JOLLY.equals(variantCodeITM14))
-      aux += " "+variantCodeITM14;
-
-    if (variantTypeITM10!=null && !ApplicationConsts.JOLLY.equals(variantTypeITM10))
-      aux += " "+variantTypeITM10;
-    if (variantCodeITM15!=null && !ApplicationConsts.JOLLY.equals(variantCodeITM15))
-      aux += " "+variantCodeITM15;
+//    if (aux==null)
+//      return null;
+//    if (variantTypeITM06!=null && !ApplicationConsts.JOLLY.equals(variantTypeITM06))
+//      aux += " "+variantTypeITM06;
+//    if (variantCodeITM11!=null && !ApplicationConsts.JOLLY.equals(variantCodeITM11))
+//      aux += " "+variantCodeITM11;
+//
+//    if (variantTypeITM07!=null && !ApplicationConsts.JOLLY.equals(variantTypeITM07))
+//      aux += " "+variantTypeITM07;
+//    if (variantCodeITM12!=null && !ApplicationConsts.JOLLY.equals(variantCodeITM12))
+//      aux += " "+variantCodeITM12;
+//
+//    if (variantTypeITM08!=null && !ApplicationConsts.JOLLY.equals(variantTypeITM08))
+//      aux += " "+variantTypeITM08;
+//    if (variantCodeITM13!=null && !ApplicationConsts.JOLLY.equals(variantCodeITM13))
+//      aux += " "+variantCodeITM13;
+//
+//    if (variantTypeITM09!=null && !ApplicationConsts.JOLLY.equals(variantTypeITM09))
+//      aux += " "+variantTypeITM09;
+//    if (variantCodeITM14!=null && !ApplicationConsts.JOLLY.equals(variantCodeITM14))
+//      aux += " "+variantCodeITM14;
+//
+//    if (variantTypeITM10!=null && !ApplicationConsts.JOLLY.equals(variantTypeITM10))
+//      aux += " "+variantTypeITM10;
+//    if (variantCodeITM15!=null && !ApplicationConsts.JOLLY.equals(variantCodeITM15))
+//      aux += " "+variantCodeITM15;
     return aux;
 
   }

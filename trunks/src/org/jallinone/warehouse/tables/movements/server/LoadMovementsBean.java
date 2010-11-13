@@ -15,6 +15,8 @@ import org.jallinone.events.server.*;
 
 
 import javax.sql.DataSource;
+import org.jallinone.commons.java.ApplicationConsts;
+import org.jallinone.warehouse.java.WarehousePK;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -47,7 +49,7 @@ import javax.sql.DataSource;
 public class LoadMovementsBean  implements LoadMovements {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -55,9 +57,9 @@ public class LoadMovementsBean  implements LoadMovements {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -67,7 +69,7 @@ public class LoadMovementsBean  implements LoadMovements {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -84,15 +86,24 @@ public class LoadMovementsBean  implements LoadMovements {
   public MovementVO getMovement() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
    */
-  public VOListResponse loadWarehouseMovements(GridParams gridParams,String serverLanguageId,String username) throws Throwable {
+  public VOListResponse loadWarehouseMovements(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		GridParams gridParams, String serverLanguageId, String username) throws	Throwable {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
+
+
+			WarehousePK pk = (WarehousePK)gridParams.getOtherGridParams().get(ApplicationConsts.WAREHOUSE_CODE);
 
       String sql =
           "select WAR04_WAREHOUSE_MOTIVES.QTY_SIGN,WAR04_WAREHOUSE_MOTIVES.ITEM_TYPE,WAR02_WAREHOUSE_MOVEMENTS.PROGRESSIVE,WAR02_WAREHOUSE_MOVEMENTS.COMPANY_CODE_SYS01,"+
@@ -118,7 +129,9 @@ public class LoadMovementsBean  implements LoadMovements {
           "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_ITM01.PROGRESSIVE and "+
           "SYS10_ITM01.LANGUAGE_CODE=? and "+
           "WAR02_WAREHOUSE_MOVEMENTS.COMPANY_CODE_SYS01=WAR01_WAREHOUSES.COMPANY_CODE_SYS01 and "+
-          "WAR02_WAREHOUSE_MOVEMENTS.WAREHOUSE_CODE_WAR01=WAR01_WAREHOUSES.WAREHOUSE_CODE ";
+          "WAR02_WAREHOUSE_MOVEMENTS.WAREHOUSE_CODE_WAR01=WAR01_WAREHOUSES.WAREHOUSE_CODE and "+
+					"WAR01_WAREHOUSES.COMPANY_CODE_SYS01=? and " +
+					"WAR01_WAREHOUSES.WAREHOUSE_CODE=? ";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("qtySignWAR04","WAR04_WAREHOUSE_MOTIVES.QTY_SIGN");
@@ -153,6 +166,8 @@ public class LoadMovementsBean  implements LoadMovements {
       values.add(serverLanguageId);
       values.add(serverLanguageId);
       values.add(serverLanguageId);
+			values.add(pk.getCompanyCodeSys01WAR01());
+			values.add(pk.getWarehouseCodeWAR01());
 
 
       // read from WAR02 table...
@@ -171,8 +186,74 @@ public class LoadMovementsBean  implements LoadMovements {
       );
 
 
-      if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (VOListResponse)answer;
+      if (answer.isError())
+				throw new Exception(answer.getErrorMessage());
 
+
+			List rows = ((VOListResponse)answer).getRows();
+			String descr = null;
+			MovementVO vo = null;
+			for(int i=0;i<rows.size();i++) {
+				vo = (MovementVO)rows.get(i);
+				descr = vo.getItemDescriptionSYS10();
+
+				// check supported variants for current item...
+				if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm11WAR02())) {
+					descr += " "+getVariantCodeAndTypeDesc(
+						variant1Descriptions,
+						vo,
+						vo.getVariantTypeItm06WAR02(),
+						vo.getVariantCodeItm11WAR02(),
+						serverLanguageId,
+						username
+					);
+				}
+				if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm12WAR02())) {
+					descr += " "+getVariantCodeAndTypeDesc(
+						variant2Descriptions,
+						vo,
+						vo.getVariantTypeItm07WAR02(),
+						vo.getVariantCodeItm12WAR02(),
+						serverLanguageId,
+						username
+					);
+				}
+				if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm13WAR02())) {
+					descr += " "+getVariantCodeAndTypeDesc(
+						variant3Descriptions,
+						vo,
+						vo.getVariantTypeItm08WAR02(),
+						vo.getVariantCodeItm13WAR02(),
+						serverLanguageId,
+						username
+					);
+				}
+				if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm14WAR02())) {
+					descr += " "+getVariantCodeAndTypeDesc(
+						variant4Descriptions,
+						vo,
+						vo.getVariantTypeItm09WAR02(),
+						vo.getVariantCodeItm14WAR02(),
+						serverLanguageId,
+						username
+					);
+				}
+				if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm15WAR02())) {
+					descr += " "+getVariantCodeAndTypeDesc(
+						variant5Descriptions,
+						vo,
+						vo.getVariantTypeItm10WAR02(),
+						vo.getVariantCodeItm15WAR02(),
+						serverLanguageId,
+						username
+					);
+				}
+				vo.setItemDescriptionSYS10(descr);
+
+			} // end for on rows...
+
+
+	    return (VOListResponse)answer;
     }
     catch (Throwable ex) {
       Logger.error(username,this.getClass().getName(),"executeCommand","Error while fetching warehouse movements list",ex);
@@ -192,6 +273,23 @@ public class LoadMovementsBean  implements LoadMovements {
 
 
   }
+
+
+
+
+		private String getVariantCodeAndTypeDesc(
+				HashMap variantDescriptions,
+				MovementVO vo,
+				String varType,
+				String varCode,
+				String serverLanguageId,
+				String username
+		) throws Throwable {
+			String varDescr = (String)variantDescriptions.get(varType+"_"+varCode);
+			if (varDescr==null)
+				varDescr = ApplicationConsts.JOLLY.equals(varCode)?"":varCode;
+			return varDescr;
+		}
 
 
 

@@ -226,7 +226,7 @@ public class PrintBarcodeLabelsFrame extends InternalFrame {
                 companyCodeSys01 = companiesList.get(0).toString();
         	}
         }
-        
+
         itemDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,companyCodeSys01);
         itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,companyCodeSys01);
       }
@@ -450,11 +450,18 @@ public class PrintBarcodeLabelsFrame extends InternalFrame {
           VariantsMatrixRowVO rowVO = null;
           VariantsMatrixColumnVO colMatrixVO = null;
           VariantsMatrixVO matrixVO = variantsPanel.getVariantsMatrixVO();
+					String descr = vo.getDescriptionSYS10();
           for(int i=0;i<cells.length;i++) {
             row = cells[i];
             for(int j=0;j<row.length;j++) {
               if (cells[i][j]!=null) {
-                BigDecimal qty = (BigDecimal)cells[i][j];
+								BigDecimal qty = null;
+								try {
+									qty = (BigDecimal) cells[i][j];
+								}
+								catch (Exception ex2) {
+									qty = new BigDecimal(0);
+								}
                 if (qty.intValue()>0) {
                   try {
                     vo = (ItemToPrintVO) vo.clone();
@@ -463,6 +470,7 @@ public class PrintBarcodeLabelsFrame extends InternalFrame {
                   }
                   vo.setQty(qty);
                   rowVO = (VariantsMatrixRowVO) matrixVO.getRowDescriptors()[i];
+									vo.setDescriptionSYS10(descr+" "+rowVO.getRowDescription());
 
                   if (variantsPanel.getVariantsMatrixVO().getColumnDescriptors().length==0) {
                     VariantsMatrixUtils.setVariantTypesAndCodes(vo,"",variantsPanel.getVariantsMatrixVO(),rowVO,null);
@@ -470,6 +478,7 @@ public class PrintBarcodeLabelsFrame extends InternalFrame {
                   else {
                     colMatrixVO = (VariantsMatrixColumnVO )variantsPanel.getVariantsMatrixVO().getColumnDescriptors()[j];
                     VariantsMatrixUtils.setVariantTypesAndCodes(vo,"",variantsPanel.getVariantsMatrixVO(),rowVO,colMatrixVO);
+										vo.setDescriptionSYS10(vo.getDescriptionSYS10()+" "+colMatrixVO.getColumnDescription());
                   }
 
 

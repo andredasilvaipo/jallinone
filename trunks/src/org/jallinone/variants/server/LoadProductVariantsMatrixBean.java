@@ -69,14 +69,14 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
   public void setBean(LoadItemVariantsBean bean) {
 	  this.bean = bean;
   }
-  
+
   private HashMap productVariants = new HashMap();
   private HashMap variantTypes = new HashMap();
   private HashMap variantTypeJoins = new HashMap();
   private HashMap variantCodeJoins = new HashMap();
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
 	  this.dataSource = dataSource;
@@ -84,9 +84,9 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -96,10 +96,10 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
-  
+
 
   public LoadProductVariantsMatrixBean() {
     productVariants.put("ITM11_VARIANTS_1","ITM16_PRODUCT_VARIANTS_1");
@@ -127,7 +127,7 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
     variantCodeJoins.put("ITM15_VARIANTS_5","VARIANT_CODE_ITM15");
   }
 
-  
+
   /**
    * Business logic to execute.
    */
@@ -138,7 +138,7 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
 	  return getVM(itemVO,serverLanguageId,username);
   }
 
-  
+
   /**
    * Business logic to execute.
    */
@@ -148,8 +148,8 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
   ) throws Throwable {
 	  return getVM(itemVO,serverLanguageId,username);
   }
-  
-  
+
+
   /**
    * Business logic to execute.
    */
@@ -159,8 +159,8 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
   ) throws Throwable {
 	  return getVM(itemVO,serverLanguageId,username);
   }
-  
-  
+
+
   /**
    * Business logic to execute.
    */
@@ -170,8 +170,8 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
   ) throws Throwable {
 	  return getVM(itemVO,serverLanguageId,username);
   }
-  
-  
+
+
   /**
    * Business logic to execute.
    */
@@ -181,8 +181,8 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
   ) throws Throwable {
 	  return getVM(itemVO,serverLanguageId,username);
   }
-  
-  
+
+
   /**
    * Business logic to execute.
    */
@@ -191,10 +191,10 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
     String serverLanguageId,String username
   ) throws Throwable {
 	  return getVM(itemVO,serverLanguageId,username);
-  }  
-  
-  
-  
+  }
+
+
+
   /**
    * Business logic to execute.
    */
@@ -202,7 +202,7 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
     VariantsItemDescriptor itemVO,
     String serverLanguageId,String username
   ) throws Throwable {
-    
+
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       bean.setConn(conn);
@@ -268,6 +268,10 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
       GridParams gridParams = new GridParams();
       VariantNameVO varVO = null;
       ArrayList[] tmp = new ArrayList[managedVariants.size()-1];
+      boolean[] tmpSameVarType = new boolean[managedVariants.size()-1];
+      boolean sameVarType = true;
+      ItemVariantVO variantVO = null;
+      String currVarType = null;
       for(int i=0;i<managedVariants.size();i++) {
         varVO = (VariantNameVO)managedVariants.get(i);
         gridParams.getOtherGridParams().put(ApplicationConsts.ITEM_PK,matrixVO.getItemPK());
@@ -280,20 +284,34 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
         // ("selected" attribute establishes which ones are associated to the current item...)
         ArrayList vos = new ArrayList(((VOListResponse)answer).getRows());
 
+        sameVarType = true;
+        currVarType = null;
+        for(int k=0;k<vos.size();k++) {
+          variantVO = (ItemVariantVO)vos.get(k);
+          if (!Boolean.TRUE.equals(variantVO.getSelected()))
+              continue;
+          if (currVarType!=null && !currVarType.equals(variantVO.getVariantType())) {
+            sameVarType = false;
+            break;
+          }
+          else
+            currVarType = variantVO.getVariantType();
+        }
+
         if (i==0) {
-          ItemVariantVO variantVO = null;
           for(int k=0;k<vos.size();k++) {
             variantVO = (ItemVariantVO)vos.get(k);
             if (!Boolean.TRUE.equals(variantVO.getSelected()))
                 continue;
 
             VariantsMatrixRowVO rowVO = new VariantsMatrixRowVO();
-            setVariantDescription(variantVO,rowVO);
+            setVariantDescription(variantVO,rowVO,sameVarType);
             setVariantTypeAndCode(variantVO,rowVO);
             rows.add(rowVO);
           }
         }
         else {
+          tmpSameVarType[i-1] = sameVarType;
           tmp[i-1] = vos; // es. i=1 (color),tmp[0]=[red,black,orange...]
                           // es. i=2 (drop), tmp[1]=[short,medium,...]
         }
@@ -301,11 +319,11 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
 
       // create combinations of "tmp"...
       if (managedVariants.size()>1)
-        createCombinations(managedVariants,tmp,cols,0,null);
+        createCombinations(managedVariants,tmp,tmpSameVarType,cols,0,null);
 
       matrixVO.setRowDescriptors((VariantsMatrixRowVO[])rows.toArray(new VariantsMatrixRowVO[rows.size()]));
       matrixVO.setColumnDescriptors((VariantsMatrixColumnVO[])cols.toArray(new VariantsMatrixColumnVO[cols.size()]));
-      
+
       return matrixVO;
     }
     catch (Throwable ex) {
@@ -321,7 +339,7 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
             }
 
         }
-        catch (Exception exx) {}    	
+        catch (Exception exx) {}
     }
   }
 
@@ -334,7 +352,7 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
    * @param depth current dept
    * @param colVO parent column to "duplicate" for each current variant's elements
    */
-   private void createCombinations(ArrayList managedVariants,ArrayList[] tmp,ArrayList cols,int depth,VariantsMatrixColumnVO colVO) throws Exception {
+   private void createCombinations(ArrayList managedVariants,ArrayList[] tmp,boolean[] tmpSameVarType,ArrayList cols,int depth,VariantsMatrixColumnVO colVO) throws Exception {
      ItemVariantVO vo = null;
      VariantsMatrixColumnVO col2VO = null;
      for(int i=0;i<tmp[depth].size();i++) {
@@ -346,23 +364,23 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
     	 if (depth < tmp.length - 1) {
     		 if (colVO == null) {
     			 col2VO = new VariantsMatrixColumnVO();
-    			 setVariantDescription(col2VO,vo);
+    			 setVariantDescription(col2VO,vo,tmpSameVarType[depth]);
     		 }
     		 else {
     			 col2VO = (VariantsMatrixColumnVO)colVO.clone();
-    			 setVariantDescription(col2VO,vo);
+    			 setVariantDescription(col2VO,vo,tmpSameVarType[depth]);
     		 }
     		 setVariantTypeAndCode(managedVariants,col2VO,vo,depth);
-    		 createCombinations(managedVariants, tmp, cols, depth + 1, (VariantsMatrixColumnVO)col2VO.clone());
+    		 createCombinations(managedVariants, tmp, tmpSameVarType, cols, depth + 1, (VariantsMatrixColumnVO)col2VO.clone());
     	 }
     	 else {
     		 if (colVO == null) {
     			 col2VO = new VariantsMatrixColumnVO();
-    			 setVariantDescription(col2VO,vo);
+    			 setVariantDescription(col2VO,vo,tmpSameVarType[depth]);
     		 }
     		 else {
     			 col2VO = (VariantsMatrixColumnVO)colVO.clone();
-    			 setVariantDescription(col2VO,vo);
+    			 setVariantDescription(col2VO,vo,tmpSameVarType[depth]);
     		 }
     		 setVariantTypeAndCode(managedVariants,col2VO,vo,depth);
 
@@ -372,11 +390,14 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
    }
 
 
-   private void setVariantDescription(VariantsMatrixColumnVO colVO,ItemVariantVO vo) {
+   private void setVariantDescription(VariantsMatrixColumnVO colVO,ItemVariantVO vo,boolean sameVarType) {
 	   colVO.setColumnDescription(
 			   (colVO.getColumnDescription()==null?"":(colVO.getColumnDescription()+" / "))+
-			   (ApplicationConsts.JOLLY.equals(vo.getVariantType())?"":(vo.getVariantType()+" "))+
-			   (ApplicationConsts.JOLLY.equals(vo.getVariantCode())?"":vo.getVariantCode())
+                           (sameVarType?
+                            "":
+ 			    (ApplicationConsts.JOLLY.equals(vo.getVariantType())?"":(vo.getVariantTypeDesc()+" "))
+                           )+
+			   (ApplicationConsts.JOLLY.equals(vo.getVariantCode())?"":vo.getVariantDesc())
 	   );
   }
 
@@ -407,11 +428,14 @@ public class LoadProductVariantsMatrixBean implements LoadProductVariantsMatrix 
   }
 
 
-  private void setVariantDescription(ItemVariantVO varVO,VariantsMatrixRowVO vo) {
+  private void setVariantDescription(ItemVariantVO varVO,VariantsMatrixRowVO vo,boolean sameVarType) {
     vo.setRowDescription(
       (vo.getRowDescription()==null?"":(vo.getRowDescription()+" / "))+
-      (ApplicationConsts.JOLLY.equals(varVO.getVariantType())?"":(varVO.getVariantType()+" "))+
-      (ApplicationConsts.JOLLY.equals(varVO.getVariantCode())?"":varVO.getVariantCode())
+      (sameVarType?
+       "":
+       (ApplicationConsts.JOLLY.equals(varVO.getVariantType())?"":(varVO.getVariantTypeDesc()+" "))
+      )+
+      (ApplicationConsts.JOLLY.equals(varVO.getVariantCode())?"":varVO.getVariantDesc())
     );
   }
 

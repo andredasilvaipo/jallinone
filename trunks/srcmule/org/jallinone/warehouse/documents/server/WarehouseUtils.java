@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
 import javax.jws.WebService;
 import javax.sql.DataSource;
 
@@ -32,6 +34,9 @@ import org.openswing.swing.message.receive.java.VOResponse;
 import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.server.QueryUtil;
 import org.openswing.swing.server.UserSessionParameters;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
+
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -69,9 +74,21 @@ public interface WarehouseUtils {
 	 */
 	public DeliveryNotePK getDeliveryNote();
 
-	public VOListResponse loadInDeliveryNoteRows(GridParams pars,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadInDeliveryNoteRows(
+                @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+				GridParams pars,String serverLanguageId,String username) throws Throwable;
 
-	public VOListResponse loadOutDeliveryNoteRows(GridParams pars,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadOutDeliveryNoteRows(
+	            @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+				GridParams pars,String serverLanguageId,String username) throws Throwable;
 
 	public VOResponse reinsertInSerialNumbers(GridInDeliveryNoteRowVO vo,String serverLanguageId,String username) throws Throwable;
 

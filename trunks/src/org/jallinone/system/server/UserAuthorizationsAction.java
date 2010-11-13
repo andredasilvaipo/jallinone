@@ -35,6 +35,10 @@ import org.openswing.swing.server.ConnectionManager;
 import org.openswing.swing.server.UserSessionParameters;
 import org.openswing.swing.table.permissions.java.GridPermissions;
 import org.openswing.swing.tree.java.OpenSwingTreeNode;
+import org.jallinone.variants.server.VariantsBean;
+import org.jallinone.variants.java.VariantVO;
+import org.jallinone.variants.java.VariantDescriptionsVO;
+import org.jallinone.variants.server.Variants;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -88,7 +92,7 @@ public class UserAuthorizationsAction implements Action {
 			UserAuthorizations bean = (UserAuthorizations)JAIOBeanFactory.getInstance().getBean(UserAuthorizations.class);
 
 			HashMap applicationPars = bean.getApplicationPars();
-			
+
 			ButtonCompanyAuthorizations companyBa = new ButtonCompanyAuthorizations();
 			ButtonCompanyAuthorization[] companyBas = bean.getButtonCompanyAuthorizations(langId, username);
 			for(int i=0;i<companyBas.length;i++)
@@ -96,7 +100,7 @@ public class UserAuthorizationsAction implements Action {
 					companyBas[i].getFunctionId()+"_"+companyBas[i].getCompanyCode(),
 					companyBas[i]
 				);
-			
+
 			ButtonsAuthorizations ba = new ButtonsAuthorizations();
 			ButtonAuthorization[] bas = bean.getButtonsAuthorizations(langId, username);
 			for(int i=0;i<bas.length;i++)
@@ -107,12 +111,12 @@ public class UserAuthorizationsAction implements Action {
 
 			int companiesNr = bean.getCompaniesNumber();
 			HashMap userRoles = bean.getUserRoles(langId, username);
-			
+
 			HashMap gridPermissions = getGridPermissions(username, userRoles);
 			HashMap lastGridPermissionsDigests = bean.getLastGridPermissionsDigests();
 			DefaultTreeModel model = getMenu(langId, username);
 			CustomizedWindows cust = bean.getWindowCustomizations(langId);
-		
+
 			// store user roles in user session...
 			((JAIOUserSessionParameters)userSessionPars).setUserRoles(userRoles);
 
@@ -124,6 +128,91 @@ public class UserAuthorizationsAction implements Action {
 
 			// store application parameters in user session...
 			((JAIOUserSessionParameters)userSessionPars).setAppParams(applicationPars);
+
+                        // store variants descriptions...
+                        Variants vBean = (Variants)JAIOBeanFactory.getInstance().getBean(Variants.class);
+
+                        String tableName = "ITM11_VARIANTS_1";
+                        String variantTypeJoin = "VARIANT_TYPE_ITM06";
+                        java.util.List rows = vBean.loadAllVariants(tableName,variantTypeJoin,langId,username).getRows();
+                        VariantVO vo = null;
+                        VariantDescriptionsVO d = null;
+                        for(int i=0;i<rows.size();i++) {
+                          vo = (VariantVO)rows.get(i);
+                          d = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(vo.getCompanyCodeSys01());
+                          if (d==null) {
+                            d = new VariantDescriptionsVO();
+                            ((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01(),d);
+                          }
+                          d.getVariant1Descriptions().put(
+                            vo.getVariantType()+"_"+vo.getVariantCode(),
+                            vo.getDescriptionSys10()
+                          );
+                        }
+
+                        tableName = "ITM12_VARIANTS_2";
+                        variantTypeJoin = "VARIANT_TYPE_ITM07";
+                        rows = vBean.loadAllVariants(tableName,variantTypeJoin,langId,username).getRows();
+                        for(int i=0;i<rows.size();i++) {
+                          vo = (VariantVO)rows.get(i);
+                          d = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(vo.getCompanyCodeSys01());
+                          if (d==null) {
+                            d = new VariantDescriptionsVO();
+                            ((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01(),d);
+                          }
+                          d.getVariant2Descriptions().put(
+                            vo.getVariantType()+"_"+vo.getVariantCode(),
+                            vo.getDescriptionSys10()
+                          );
+                        }
+
+                        tableName = "ITM13_VARIANTS_3";
+                        variantTypeJoin = "VARIANT_TYPE_ITM08";
+                        rows = vBean.loadAllVariants(tableName,variantTypeJoin,langId,username).getRows();
+                        for(int i=0;i<rows.size();i++) {
+                          vo = (VariantVO)rows.get(i);
+                          d = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(vo.getCompanyCodeSys01());
+                          if (d==null) {
+                            d = new VariantDescriptionsVO();
+                            ((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01(),d);
+                          }
+                          d.getVariant3Descriptions().put(
+                            vo.getVariantType()+"_"+vo.getVariantCode(),
+                            vo.getDescriptionSys10()
+                          );
+                        }
+
+                        tableName = "ITM14_VARIANTS_4";
+                        variantTypeJoin = "VARIANT_TYPE_ITM09";
+                        rows = vBean.loadAllVariants(tableName,variantTypeJoin,langId,username).getRows();
+                        for(int i=0;i<rows.size();i++) {
+                          vo = (VariantVO)rows.get(i);
+                          d = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(vo.getCompanyCodeSys01());
+                          if (d==null) {
+                            d = new VariantDescriptionsVO();
+                            ((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01(),d);
+                          }
+                          d.getVariant4Descriptions().put(
+                            vo.getVariantType()+"_"+vo.getVariantCode(),
+                            vo.getDescriptionSys10()
+                          );
+                        }
+
+                        tableName = "ITM15_VARIANTS_5";
+                        variantTypeJoin = "VARIANT_TYPE_ITM10";
+                        rows = vBean.loadAllVariants(tableName,variantTypeJoin,langId,username).getRows();
+                        for(int i=0;i<rows.size();i++) {
+                          vo = (VariantVO)rows.get(i);
+                          d = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(vo.getCompanyCodeSys01());
+                          if (d==null) {
+                            d = new VariantDescriptionsVO();
+                            ((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01(),d);
+                          }
+                          d.getVariant5Descriptions().put(
+                            vo.getVariantType()+"_"+vo.getVariantCode(),
+                            vo.getDescriptionSys10()
+                          );
+                        }
 
 			return new VOResponse(new ApplicationParametersVO(
 					userSessionPars.getLanguageId(),
@@ -148,8 +237,8 @@ public class UserAuthorizationsAction implements Action {
 			return new ErrorResponse(ex.getMessage());
 		}
 	}
-	
-	
+
+
 
 	  /**
 	   * Business logic to execute.
@@ -162,7 +251,7 @@ public class UserAuthorizationsAction implements Action {
 	      conn = ConnectionManager.getConnection(null);
 	      stmt = conn.createStatement(); // used for secondary query on SYS02...
 	      ResultSet rset = null;
-	      
+
 	      JAIODbPermissionsDescriptor dbPermissionsDescriptor = new JAIODbPermissionsDescriptor();
 	      String sql =
 	        "select "+
@@ -233,9 +322,9 @@ public class UserAuthorizationsAction implements Action {
 	      }
 	      rset.close();
 	      pstmt.close();
-	      
+
 	      return gridPermissions;
-	  
+
 	    } catch (Exception ex1) {
 	      ex1.printStackTrace();
 	      throw new Exception(ex1.getMessage());
@@ -258,7 +347,7 @@ public class UserAuthorizationsAction implements Action {
 	  }
 
 
-	
+
 
 	  /**
 	   * Business logic to execute.
@@ -422,6 +511,6 @@ public class UserAuthorizationsAction implements Action {
 	    return true;
 	  }
 
-	
+
 }
 

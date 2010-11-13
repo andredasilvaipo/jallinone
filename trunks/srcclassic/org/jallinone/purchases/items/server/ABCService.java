@@ -56,12 +56,18 @@ import org.jallinone.system.progressives.server.*;
 public interface ABCService {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public ABCVO getABC();
 
 
-	public VOListResponse loadABC(GridParams gridParams,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadABC(
+		 HashMap variant1Descriptions,
+		 HashMap variant2Descriptions,
+		 HashMap variant3Descriptions,
+		 HashMap variant4Descriptions,
+		 HashMap variant5Descriptions,
+		 GridParams gridParams, String serverLanguageId, String username) throws Throwable;
 
 	public VOResponse createABC(CreateABCFilterVO filterVO,String serverLanguageId,String username) throws Throwable;
 

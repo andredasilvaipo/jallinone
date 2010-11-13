@@ -19,6 +19,8 @@ import org.jallinone.sales.documents.java.*;
 import org.jallinone.sales.documents.server.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
+import org.jallinone.commons.java.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -57,17 +59,37 @@ public interface SaleDocDiscounts {
 	 */
 	public DiscountVO getDetailSaleDoc(DetailSaleDocVO pk);
 
-	public VOResponse deleteSaleDocDiscounts(ArrayList list,String serverLanguageId,String username) throws Throwable;
+	public VOResponse deleteSaleDocDiscounts(
+		      @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+			  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+		      ArrayList list,String serverLanguageId,String username) throws Throwable;
 
-	public VOResponse insertSaleDocDiscount(SaleDocDiscountVO vo,String username) throws Throwable;
+	public VOResponse insertSaleDocDiscount(
+		  SaleDocDiscountVO vo,String username) throws Throwable;
 
-	public VOListResponse insertSaleDocDiscounts(ArrayList list,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse insertSaleDocDiscounts(
+	      @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+		  ArrayList list,String serverLanguageId,String username) throws Throwable;
 
 	public VOListResponse loadSaleHeaderDiscounts(GridParams gridParams,String serverLanguageId,String username) throws Throwable;
 
-	public VOListResponse updateSaleDocDiscounts(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse updateSaleDocDiscounts(
+	      @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+		  ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
 
-	public VOResponse updateTotals(SaleDocPK docPK,String serverLanguageId,String username) throws Throwable;
+	public VOResponse updateTotals(
+		  SaleDocPK docPK,String serverLanguageId,String username) throws Throwable;
 
 	public VOListResponse validateSaleHeaderDiscountCode(LookupValidationParams validationPars,String serverLanguageId,String username) throws Throwable;
 

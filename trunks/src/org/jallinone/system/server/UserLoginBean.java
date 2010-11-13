@@ -1,17 +1,14 @@
 package org.jallinone.system.server;
 
-import org.openswing.swing.server.*;
-
-import java.io.*;
-import java.util.*;
-
-import org.openswing.swing.message.receive.java.*;
-
-import java.sql.*;
-import java.math.*;
-
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import javax.sql.DataSource;
+
+import org.jallinone.system.java.UserLoginVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -73,7 +70,7 @@ public class UserLoginBean implements UserLogin {
   }
 
   
-  public JAIOUserSessionParameters authenticateUser(String username,String password) throws Throwable {
+  public UserLoginVO authenticateUser(String username,String password) throws Throwable {
     PreparedStatement pstmt = null;
     Statement stmt = null;
     PreparedStatement pstmt2 = null;
@@ -134,28 +131,17 @@ public class UserLoginBean implements UserLogin {
           pstmt2.close();
         }
 
-        HashSet functionCodesBasedOnCompany = new HashSet();
-        pstmt2 = conn.prepareStatement(
-            "select FUNCTION_CODE FROM SYS06_FUNCTIONS WHERE USE_COMPANY_CODE='Y'"
-        );
-        rset2 = pstmt2.executeQuery();
-        while(rset2.next())
-          functionCodesBasedOnCompany.add(rset2.getString(1));
-        rset2.close();
-        pstmt2.close();
 
-
-        JAIOUserSessionParameters userSessionPars = new JAIOUserSessionParameters();
-        userSessionPars.setLanguageId(languageId);
-        userSessionPars.setServerLanguageId(serverLanguageId);
-        userSessionPars.setProgressiveReg04SYS03(progressiveReg04SYS03);
-        userSessionPars.setName_1(name_1);
-        userSessionPars.setName_2(name_2);
-        userSessionPars.setEmployeeCode(empCode);
-        userSessionPars.setCompanyCodeSys01SYS03(companyCodeSys01SYS03);
-        userSessionPars.setDefCompanyCodeSys01SYS03(defCompanyCodeSys01SYS03);
-        userSessionPars.setFunctionCodesBasedOnCompany(functionCodesBasedOnCompany);
-        return userSessionPars;
+        UserLoginVO userLoginPars = new UserLoginVO();
+        userLoginPars.setLanguageId(languageId);
+        userLoginPars.setServerLanguageId(serverLanguageId);
+        userLoginPars.setProgressiveReg04SYS03(progressiveReg04SYS03);
+        userLoginPars.setName_1(name_1);
+        userLoginPars.setName_2(name_2);
+        userLoginPars.setEmployeeCode(empCode);
+        userLoginPars.setCompanyCodeSys01SYS03(companyCodeSys01SYS03);
+        userLoginPars.setDefCompanyCodeSys01SYS03(defCompanyCodeSys01SYS03);
+        return userLoginPars;
       }
       else
     	  throw new Exception("Account not valid");

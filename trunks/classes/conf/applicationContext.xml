@@ -188,7 +188,7 @@
      <property name="bean" ref="BillOfMaterialsBean" />
      <property name="avail" ref="ItemAvailabilitiesBean" />
      <property name="conv" ref="MeasuresBean" />
-     <property name="compCurr" ref="CurrenciesBean" />     
+     <property name="compCurr" ref="CurrenciesBean" />
    </bean>
    <bean id="ProdOrderProductsBean" scope="prototype" class="org.jallinone.production.orders.server.ProdOrderProductsBean">
      <property name="dataSource" ref="JALLINONE" />
@@ -378,15 +378,20 @@
    </bean>
    <bean id="HierarCustomerDiscountsBean" scope="prototype" class="org.jallinone.sales.discounts.server.HierarCustomerDiscountsBean">
      <property name="dataSource" ref="JALLINONE" />
-     <property name="discountBean" ref="DiscountBean" />     
+     <property name="discountBean" ref="DiscountBean" />
    </bean>
    <bean id="HierarItemDiscountsBean" scope="prototype" class="org.jallinone.sales.discounts.server.HierarItemDiscountsBean">
      <property name="dataSource" ref="JALLINONE" />
-     <property name="discountBean" ref="DiscountBean" />     
+     <property name="discountBean" ref="DiscountBean" />
    </bean>
    <bean id="ItemDiscountsBean" scope="prototype" class="org.jallinone.sales.discounts.server.ItemDiscountsBean">
      <property name="dataSource" ref="JALLINONE" />
      <property name="discountBean" ref="DiscountBean" />
+   </bean>
+   <bean id="InsertSaleDocActivitiesBean" scope="prototype" class="org.jallinone.sales.documents.activities.server.InsertSaleDocActivitiesBean">
+     <property name="dataSource" ref="JALLINONE" />
+     <property name="totals" ref="UpdateTaxableIncomesBean" />
+     <property name="bean" ref="SaleDocActivitiesBean" />
    </bean>
    <bean id="SaleDocActivitiesBean" scope="prototype" class="org.jallinone.sales.documents.activities.server.SaleDocActivitiesBean">
      <property name="dataSource" ref="JALLINONE" />
@@ -422,12 +427,12 @@
    </bean>
    <bean id="InsertSaleDocRowDiscountBean" scope="prototype" class="org.jallinone.sales.documents.itemdiscounts.server.InsertSaleDocRowDiscountBean">
      <property name="dataSource" ref="JALLINONE" />
-   </bean>   
+   </bean>
    <bean id="InsertSaleDocRowDiscountsBean" scope="prototype" class="org.jallinone.sales.documents.itemdiscounts.server.InsertSaleDocRowDiscountsBean">
      <property name="dataSource" ref="JALLINONE" />
      <property name="totals" ref="UpdateTaxableIncomesBean" />
      <property name="bean" ref="InsertSaleDocRowDiscountBean" />
-   </bean>   
+   </bean>
    <bean id="CloseSaleDocBean" scope="prototype" class="org.jallinone.sales.documents.server.CloseSaleDocBean">
      <property name="dataSource" ref="JALLINONE" />
      <property name="rowsAction" ref="LoadSaleDocRowsBean" />
@@ -491,7 +496,7 @@
      <property name="loadSaleDocBean" ref="LoadSaleDocBean" />
      <property name="insBean" ref="InsertSaleDocRowDiscountBean" />
    </bean>
-   
+
    <bean id="InsertSaleItemBean" scope="prototype" class="org.jallinone.sales.documents.server.InsertSaleItemBean">
      <property name="dataSource" ref="JALLINONE" />
    </bean>
@@ -501,18 +506,18 @@
      <property name="serialNumBean" ref="InsertSaleSerialNumbersBean" />
      <property name="bean" ref="InsertSaleItemBean" />
    </bean>
-   
+
    <bean id="LoadSaleDocBean" scope="prototype" class="org.jallinone.sales.documents.server.LoadSaleDocBean">
      <property name="dataSource" ref="JALLINONE" />
    </bean>
-   
+
    <bean id="SaleDocsBean" scope="prototype" class="org.jallinone.sales.documents.server.SaleDocsBean">
      <property name="dataSource" ref="JALLINONE" />
      <property name="payBean" ref="PaymentsBean" />
      <property name="currBean" ref="CurrenciesBean" />
      <property name="userBean" ref="ParamsBean" />
      <property name="totals" ref="UpdateTaxableIncomesBean" />
-     <property name="bean" ref="LoadSaleDocBean" />     
+     <property name="bean" ref="LoadSaleDocBean" />
    </bean>
    <bean id="LoadItemsSoldToOtherCustomersBean" scope="prototype" class="org.jallinone.sales.documents.server.LoadItemsSoldToOtherCustomersBean">
      <property name="dataSource" ref="JALLINONE" />
@@ -673,11 +678,11 @@
      <property name="fieldsBean" ref="LoadETLProcessFieldsBean" />
      <property name="langsBean" ref="LanguagesBean" />
    </bean>
-   
+
    <bean id="LoadLanguagesBean" scope="prototype" class="org.jallinone.system.server.LoadLanguagesBean">
      <property name="dataSource" ref="JALLINONE" />
    </bean>
-   
+
    <bean id="LanguagesBean" scope="prototype" class="org.jallinone.system.languages.server.LanguagesBean">
      <property name="dataSource" ref="JALLINONE" />
    </bean>
@@ -732,7 +737,7 @@
      <property name="dataSource" ref="JALLINONE" />
      <property name="movBean" ref="AddMovementBean" />
      <property name="bean" ref="WarehouseUtilsBean" />
-     <property name="loadSaleDocBean" ref="LoadSaleDocBean" /> 
+     <property name="loadSaleDocBean" ref="LoadSaleDocBean" />
    </bean>
    <bean id="WarehousesBean" scope="prototype" class="org.jallinone.warehouse.server.WarehousesBean">
      <property name="dataSource" ref="JALLINONE" />

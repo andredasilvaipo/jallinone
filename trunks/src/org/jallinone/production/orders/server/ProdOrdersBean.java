@@ -80,7 +80,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class ProdOrdersBean  implements ProdOrders {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -88,9 +88,9 @@ public class ProdOrdersBean  implements ProdOrders {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -100,7 +100,7 @@ public class ProdOrdersBean  implements ProdOrders {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -304,7 +304,7 @@ public class ProdOrdersBean  implements ProdOrders {
     			conn.rollback();
     	}
     	catch (Exception ex3) {
-    	} 
+    	}
     	throw new Exception(ex.getMessage());
     }
     finally {
@@ -331,12 +331,18 @@ public class ProdOrdersBean  implements ProdOrders {
 	/**
 	 * Business logic to execute.
 	 */
-	 public VOResponse confirmProdOrder(DetailProdOrderVO vo,String t1,String t2,String t3,String t4,String t5,String serverLanguageId,String username,String imagePath,ArrayList companiesList) throws Throwable {
-		 
+	 public VOResponse confirmProdOrder(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             DetailProdOrderVO vo, String t1, String t2, String t3, String t4,
+             String t5, String serverLanguageId, String username, String imagePath,
+             ArrayList companiesList) throws Throwable {
 		 PreparedStatement pstmt = null;
 		 PreparedStatement pstmt2 = null;
 		 ResultSet rset = null;
-
 		 Connection conn = null;
 		 try {
 			 if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -360,7 +366,7 @@ public class ProdOrdersBean  implements ProdOrders {
 			 HashMap compAltCodes = new HashMap(); // collection of <component item code,HashSet of alternative component item codes>
 
 			 // retrieve components availabilities required in the specified production order...
-			 res = check.checkComponentsAvailability(compAltCodes,products,serverLanguageId,username,companiesList);
+			 res = check.checkComponentsAvailability(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,compAltCodes,products,serverLanguageId,username,companiesList);
 			 if (res.isError())
 				 throw new Exception(res.getErrorMessage());
 			 ArrayList components = new ArrayList(((VOListResponse)res).getRows());
@@ -517,7 +523,7 @@ public class ProdOrdersBean  implements ProdOrders {
 					 conn.rollback();
 			 }
 			 catch (Exception ex3) {
-			 } 
+			 }
 
 			 throw new Exception(ex.getMessage());
 		 }
@@ -599,7 +605,7 @@ public class ProdOrdersBean  implements ProdOrders {
 			 }
 			 catch (Exception ex1) {
 			 }
-	 
+
 		 }
 	 }
 
@@ -879,7 +885,7 @@ public class ProdOrdersBean  implements ProdOrders {
     			conn.rollback();
     	}
     	catch (Exception ex3) {
-    	} 
+    	}
 
     	throw new Exception(ex.getMessage());
     }
@@ -889,7 +895,7 @@ public class ProdOrdersBean  implements ProdOrders {
       }
       catch (Exception ex2) {
       }
-    
+
       try {
           if (this.conn==null && conn!=null) {
               // close only local connection
@@ -899,7 +905,7 @@ public class ProdOrdersBean  implements ProdOrders {
 
       }
       catch (Exception exx) {}
-      
+
       try {
         rowsAction.setConn(null);
         mov.setConn(null);
@@ -907,7 +913,7 @@ public class ProdOrdersBean  implements ProdOrders {
     }
   }
 
-  
+
 
 
   /**
@@ -1041,7 +1047,7 @@ public class ProdOrdersBean  implements ProdOrders {
       );
       if (res.isError())
     	  throw new Exception(res.getErrorMessage());
-      
+
       return new VOResponse(vo);
     }
     catch (Throwable ex) {
@@ -1052,7 +1058,7 @@ public class ProdOrdersBean  implements ProdOrders {
     			conn.rollback();
     	}
     	catch (Exception ex3) {
-    	} 
+    	}
 
     	throw new Exception(ex.getMessage());
     }
@@ -1087,7 +1093,7 @@ public class ProdOrdersBean  implements ProdOrders {
     PreparedStatement pstmt24 = null;
     PreparedStatement pstmt25 = null;
     PreparedStatement pstmt26 = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -1155,7 +1161,7 @@ public class ProdOrdersBean  implements ProdOrders {
     			conn.rollback();
     	}
     	catch (Exception ex3) {
-    	} 
+    	}
     	throw new Exception(ex.getMessage());
     }
     finally {

@@ -128,32 +128,32 @@ public class ItemToPrintVO extends ValueObjectImpl {
   }
   public String getDescriptionSYS10() {
     String aux = descriptionSYS10;
-    if (aux==null)
-      return null;
-    if (variantTypeItm06!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm06))
-      aux += " "+variantTypeItm06;
-    if (variantCodeItm11!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm11))
-      aux += " "+variantCodeItm11;
-
-    if (variantTypeItm07!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm07))
-      aux += " "+variantTypeItm07;
-    if (variantCodeItm12!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm12))
-      aux += " "+variantCodeItm12;
-
-    if (variantTypeItm08!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm08))
-      aux += " "+variantTypeItm08;
-    if (variantCodeItm13!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm13))
-      aux += " "+variantCodeItm13;
-
-    if (variantTypeItm09!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm09))
-      aux += " "+variantTypeItm09;
-    if (variantCodeItm14!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm14))
-      aux += " "+variantCodeItm14;
-
-    if (variantTypeItm10!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm10))
-      aux += " "+variantTypeItm10;
-    if (variantCodeItm15!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm15))
-      aux += " "+variantCodeItm15;
+//    if (aux==null)
+//      return null;
+//    if (variantTypeItm06!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm06))
+//      aux += " "+variantTypeItm06;
+//    if (variantCodeItm11!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm11))
+//      aux += " "+variantCodeItm11;
+//
+//    if (variantTypeItm07!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm07))
+//      aux += " "+variantTypeItm07;
+//    if (variantCodeItm12!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm12))
+//      aux += " "+variantCodeItm12;
+//
+//    if (variantTypeItm08!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm08))
+//      aux += " "+variantTypeItm08;
+//    if (variantCodeItm13!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm13))
+//      aux += " "+variantCodeItm13;
+//
+//    if (variantTypeItm09!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm09))
+//      aux += " "+variantTypeItm09;
+//    if (variantCodeItm14!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm14))
+//      aux += " "+variantCodeItm14;
+//
+//    if (variantTypeItm10!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm10))
+//      aux += " "+variantTypeItm10;
+//    if (variantCodeItm15!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm15))
+//      aux += " "+variantCodeItm15;
     return aux;
   }
   public void setDescriptionSYS10(String descriptionSYS10) {

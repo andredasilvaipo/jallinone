@@ -28,6 +28,7 @@ import org.jallinone.sales.documents.java.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -72,11 +73,12 @@ public class ConfirmSaleDocAction implements Action {
 
 
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
-      SaleDocPK pk = (SaleDocPK)inputPar;
+    SaleDocPK pk = (SaleDocPK)inputPar;
     try {
+      VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(pk.getCompanyCodeSys01DOC01());
 
       ConfirmSaleDoc bean = (ConfirmSaleDoc)JAIOBeanFactory.getInstance().getBean(ConfirmSaleDoc.class);
-      Response answer = bean.confirmSaleDoc(pk,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+      Response answer = bean.confirmSaleDoc(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),pk,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
     return answer;
     }

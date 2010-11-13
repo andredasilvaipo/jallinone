@@ -60,7 +60,7 @@ import javax.sql.DataSource;
 public class SaleDocRowsBean  implements SaleDocRows {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -68,9 +68,9 @@ public class SaleDocRowsBean  implements SaleDocRows {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -80,7 +80,7 @@ public class SaleDocRowsBean  implements SaleDocRows {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -102,30 +102,37 @@ public class SaleDocRowsBean  implements SaleDocRows {
 
 
   private InsertSaleItemBean bean;
-  
+
   public void setBean(InsertSaleItemBean bean) {
 	  this.bean = bean;
   }
-  
-  
-  
+
+
+
   public SaleDocRowsBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public GridSaleDocRowVO getSaleDoc(SaleDocPK pk) {
 	  throw new UnsupportedOperationException();
   }
-  
-  
+
+
 
   /**
    * Business logic to execute.
    */
-  public VOResponse updateSaleDocRow(DetailSaleDocRowVO oldVO,DetailSaleDocRowVO newVO,String serverLanguageId,String username) throws Throwable {
+  public VOResponse updateSaleDocRow(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      DetailSaleDocRowVO oldVO, DetailSaleDocRowVO newVO,
+      String serverLanguageId, String username) throws Throwable {
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
@@ -219,6 +226,11 @@ public class SaleDocRowsBean  implements SaleDocRows {
           newVO.getDocNumberDOC02()
       );
       Response totalRes = totals.updateTaxableIncomes(
+        variant1Descriptions,
+        variant2Descriptions,
+        variant3Descriptions,
+        variant4Descriptions,
+        variant5Descriptions,
         pk,
         serverLanguageId,
         username
@@ -238,6 +250,7 @@ public class SaleDocRowsBean  implements SaleDocRows {
 
       // reload v.o. after updating taxable incomes...
       res = bean.loadSaleDocRow(
+        variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,
         new SaleDocRowPK(
           pk.getCompanyCodeSys01DOC01(),
           pk.getDocTypeDOC01(),
@@ -264,12 +277,7 @@ public class SaleDocRowsBean  implements SaleDocRows {
       }
       newVO = (DetailSaleDocRowVO)((VOResponse)res).getVo();
 
-      Response answer = new VOResponse(newVO);
-
-
-
-
-      if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (VOResponse)answer;
+      return new VOResponse(newVO);
     }
     catch (Throwable ex) {
       Logger.error(username,this.getClass().getName(),"executeCommand","Error while updating an existing sale document row",ex);
@@ -297,23 +305,31 @@ public class SaleDocRowsBean  implements SaleDocRows {
     	  }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
       try {
     	  bean.setConn(null);
     	  totals.setConn(null);
     	  serialNumBean.setConn(null);
       } catch (Exception ex) {}
- 
+
     }
   }
 
 
 
-  
+
   /**
    * Business logic to execute.
    */
-  public VOResponse insertSaleDocRows(DetailSaleDocRowVO voTemplate,VariantsMatrixVO matrixVO,Object[][] cells,BigDecimal currencyDecimals,String serverLanguageId,String username) throws Throwable {
+  public VOResponse insertSaleDocRows(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      DetailSaleDocRowVO voTemplate, VariantsMatrixVO matrixVO,
+      Object[][] cells, BigDecimal currencyDecimals, String serverLanguageId,
+      String username) throws Throwable {
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
@@ -410,6 +426,11 @@ public class SaleDocRowsBean  implements SaleDocRows {
 
       // recalculate totals...
       res = totals.updateTaxableIncomes(
+        variant1Descriptions,
+        variant2Descriptions,
+        variant3Descriptions,
+        variant4Descriptions,
+        variant5Descriptions,
         pk,
         serverLanguageId,
         username
@@ -447,7 +468,7 @@ public class SaleDocRowsBean  implements SaleDocRows {
     	  }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
       try {
         bean.setConn(null);
         totals.setConn(null);
@@ -472,11 +493,17 @@ public class SaleDocRowsBean  implements SaleDocRows {
   /**
    * Business logic to execute.
    */
-  public VOResponse deleteSaleDocRows(ArrayList list,String serverLanguageId,String username) throws Throwable {
+  public VOResponse deleteSaleDocRows(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      ArrayList list, String serverLanguageId, String username) throws Throwable {
     PreparedStatement pstmt1 = null;
     PreparedStatement pstmt2 = null;
     PreparedStatement pstmt3 = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -583,6 +610,11 @@ public class SaleDocRowsBean  implements SaleDocRows {
           rowPK.getDocNumberDOC02()
       );
       Response res = totals.updateTaxableIncomes(
+        variant1Descriptions,
+        variant2Descriptions,
+        variant3Descriptions,
+        variant4Descriptions,
+        variant5Descriptions,
         pk,
         serverLanguageId,
         username
@@ -630,7 +662,7 @@ public class SaleDocRowsBean  implements SaleDocRows {
     	  }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
         totals.setConn(null);
       } catch (Exception ex) {}

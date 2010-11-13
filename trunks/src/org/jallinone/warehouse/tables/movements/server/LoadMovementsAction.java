@@ -17,6 +17,9 @@ import org.jallinone.events.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
+import org.jallinone.warehouse.java.WarehousePK;
+import org.jallinone.commons.java.ApplicationConsts;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -60,11 +63,13 @@ public class LoadMovementsAction implements Action {
 
 
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
-      GridParams gridParams = (GridParams)inputPar;
+    GridParams gridParams = (GridParams)inputPar;
     try {
+			WarehousePK pk = (WarehousePK)gridParams.getOtherGridParams().get(ApplicationConsts.WAREHOUSE_CODE);
+			VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(pk.getCompanyCodeSys01WAR01());
 
       LoadMovements bean = (LoadMovements)JAIOBeanFactory.getInstance().getBean(LoadMovements.class);
-      Response answer = bean.loadWarehouseMovements(gridParams,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+      Response answer = bean.loadWarehouseMovements(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),gridParams,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
     return answer;
     }

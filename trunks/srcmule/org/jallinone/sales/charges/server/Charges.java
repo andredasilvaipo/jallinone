@@ -52,15 +52,18 @@ public interface Charges {
 	 */
 	public ChargeVO getCharge();
 
-	public VOListResponse insertCharges(ArrayList list,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
+	public VOListResponse insertCharges(
+		  ArrayList list,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
 
 	public VOListResponse loadCharges(GridParams gridParams,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable;
 
-	public VOListResponse updateCharges(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
+	public VOListResponse updateCharges(
+		  ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
 
 	public VOListResponse validateChargeCode(LookupValidationParams validationPars,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
 
-	public VOResponse deleteCharges(ArrayList list,String serverLanguageId,String username) throws Throwable;
+	public VOResponse deleteCharges(
+		  ArrayList list,String serverLanguageId,String username) throws Throwable;
 
 }
 

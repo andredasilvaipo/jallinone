@@ -36,13 +36,28 @@
 	<parameter name="WAREHOUSE_CODE" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
 	</parameter>
+	<parameter name="VAR1_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR2_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR3_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR4_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR5_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
 	<queryString><![CDATA[select ITEM_CODE_ITM01,AVAILABLE_QTY,DAMAGED_QTY,
-LOC_DESC,WAREHOUSE_CODE_WAR01,ITEM_DESC,DESCRIPTION,MIN_SELLING_QTY_UM_CODE_REG02,DECIMALS
+LOC_DESC,WAREHOUSE_CODE_WAR01,ITEM_DESC,DESCRIPTION,MIN_SELLING_QTY_UM_CODE_REG02,DECIMALS,
+VARIANT_TYPE_ITM06,VARIANT_CODE_ITM11,
+VARIANT_TYPE_ITM07,VARIANT_CODE_ITM12,
+VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13,
+VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14,
+VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15 
 from (
 select WAR03_ITEMS_AVAILABILITY.ITEM_CODE_ITM01,AVAILABLE_QTY,DAMAGED_QTY,
 A.DESCRIPTION AS LOC_DESC,WAR03_ITEMS_AVAILABILITY.WAREHOUSE_CODE_WAR01,
 B.DESCRIPTION AS ITEM_DESC,WAR01_WAREHOUSES.DESCRIPTION,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,
-REG02_MEASURE_UNITS.DECIMALS
+REG02_MEASURE_UNITS.DECIMALS,
+WAR03_ITEMS_AVAILABILITY.VARIANT_TYPE_ITM06,WAR03_ITEMS_AVAILABILITY.VARIANT_CODE_ITM11,
+WAR03_ITEMS_AVAILABILITY.VARIANT_TYPE_ITM07,WAR03_ITEMS_AVAILABILITY.VARIANT_CODE_ITM12,
+WAR03_ITEMS_AVAILABILITY.VARIANT_TYPE_ITM08,WAR03_ITEMS_AVAILABILITY.VARIANT_CODE_ITM13,
+WAR03_ITEMS_AVAILABILITY.VARIANT_TYPE_ITM09,WAR03_ITEMS_AVAILABILITY.VARIANT_CODE_ITM14,
+WAR03_ITEMS_AVAILABILITY.VARIANT_TYPE_ITM10,WAR03_ITEMS_AVAILABILITY.VARIANT_CODE_ITM15 
 from WAR03_ITEMS_AVAILABILITY,SYS10_TRANSLATIONS A,SYS10_TRANSLATIONS B,ITM01_ITEMS,WAR01_WAREHOUSES,REG02_MEASURE_UNITS
 where 
 WAR03_ITEMS_AVAILABILITY.WAREHOUSE_CODE_WAR01=WAR01_WAREHOUSES.WAREHOUSE_CODE and
@@ -68,6 +83,16 @@ order by WAREHOUSE_CODE,LOC_DESC,ITEM_CODE) AUX]]></queryString>
 	<field name="DESCRIPTION" class="java.lang.String"/>
 	<field name="MIN_SELLING_QTY_UM_CODE_REG02" class="java.lang.String"/>
 	<field name="DECIMALS" class="java.math.BigDecimal"/>
+	<field name="VARIANT_TYPE_ITM06" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM11" class="java.lang.String"/>
+	<field name="VARIANT_TYPE_ITM07" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM12" class="java.lang.String"/>
+	<field name="VARIANT_TYPE_ITM08" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM13" class="java.lang.String"/>
+	<field name="VARIANT_TYPE_ITM09" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM14" class="java.lang.String"/>
+	<field name="VARIANT_TYPE_ITM10" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM15" class="java.lang.String"/>
 
 
 		<group  name="WAREHOUSE_CODE_WAR01" >
@@ -370,7 +395,44 @@ $F{DECIMALS}
 					<textElement>
 						<font fontName="Times-Roman" size="10"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ITEM_DESC}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ITEM_DESC}+" "+
+($F{VARIANT_CODE_ITM11}.equals("*")?
+  "":
+  ($P{VAR1_DESCRS}.get($F{VARIANT_TYPE_ITM06}+"_"+$F{VARIANT_CODE_ITM11})!=null?
+     $P{VAR1_DESCRS}.get($F{VARIANT_TYPE_ITM06}+"_"+$F{VARIANT_CODE_ITM11})+" ":
+	 ($F{VARIANT_TYPE_ITM06}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM06})+($F{VARIANT_CODE_ITM11}.equals("*")?"":" "+$F{VARIANT_CODE_ITM11})
+  )
+)+
+($F{VARIANT_CODE_ITM12}.equals("*")?
+  "":
+  ($P{VAR2_DESCRS}.get($F{VARIANT_TYPE_ITM07}+"_"+$F{VARIANT_CODE_ITM12})!=null?
+     $P{VAR2_DESCRS}.get($F{VARIANT_TYPE_ITM07}+"_"+$F{VARIANT_CODE_ITM12})+" ":
+	 ($F{VARIANT_TYPE_ITM07}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM07})+($F{VARIANT_CODE_ITM12}.equals("*")?"":" "+$F{VARIANT_CODE_ITM12})
+  )
+)+
+($F{VARIANT_CODE_ITM13}.equals("*")?
+  "":
+  ($P{VAR3_DESCRS}.get($F{VARIANT_TYPE_ITM08}+"_"+$F{VARIANT_CODE_ITM13})!=null?
+     $P{VAR3_DESCRS}.get($F{VARIANT_TYPE_ITM08}+"_"+$F{VARIANT_CODE_ITM13})+" ":
+	 ($F{VARIANT_TYPE_ITM08}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM08})+($F{VARIANT_CODE_ITM13}.equals("*")?"":" "+$F{VARIANT_CODE_ITM13})
+  )
+)+
+($F{VARIANT_CODE_ITM14}.equals("*")?
+  "":
+  ($P{VAR4_DESCRS}.get($F{VARIANT_TYPE_ITM09}+"_"+$F{VARIANT_CODE_ITM14})!=null?
+     $P{VAR4_DESCRS}.get($F{VARIANT_TYPE_ITM09}+"_"+$F{VARIANT_CODE_ITM14})+" ":
+	 ($F{VARIANT_TYPE_ITM09}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM09})+($F{VARIANT_CODE_ITM14}.equals("*")?"":" "+$F{VARIANT_CODE_ITM14})
+  )
+)+
+($F{VARIANT_CODE_ITM15}.equals("*")?
+  "":
+  ($P{VAR5_DESCRS}.get($F{VARIANT_TYPE_ITM10}+"_"+$F{VARIANT_CODE_ITM15})!=null?
+     $P{VAR5_DESCRS}.get($F{VARIANT_TYPE_ITM10}+"_"+$F{VARIANT_CODE_ITM15})+" ":
+	 ($F{VARIANT_TYPE_ITM10}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM10})+($F{VARIANT_CODE_ITM15}.equals("*")?"":" "+$F{VARIANT_CODE_ITM15})
+  )
+)
+
+]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

@@ -5,8 +5,9 @@ import org.openswing.swing.server.*;
 
 import java.io.*;
 import java.util.*;
-import org.openswing.swing.message.receive.java.*;
 
+import org.openswing.swing.message.receive.java.*;
+import org.jallinone.system.java.*;
 import java.sql.*;
 import java.math.*;
 
@@ -76,7 +77,18 @@ public class UserLoginAction extends LoginAction {
     	String password = ((String[])inputPar)[1];
 
     	UserLogin bean = (UserLogin)JAIOBeanFactory.getInstance().getBean(UserLogin.class);
-    	JAIOUserSessionParameters userSessionPars = bean.authenticateUser(username, password);
+    	UserLoginVO userLoginVO = bean.authenticateUser(username, password);
+     	JAIOUserSessionParameters userSessionPars = new JAIOUserSessionParameters();
+     	userSessionPars.setLanguageId(userLoginVO.getLanguageId());
+     	userSessionPars.setServerLanguageId(userLoginVO.getServerLanguageId());
+     	userSessionPars.setProgressiveReg04SYS03(userLoginVO.getProgressiveReg04SYS03());
+        userSessionPars.setName_1(userLoginVO.getName_1());
+        userSessionPars.setName_2(userLoginVO.getName_2());
+        userSessionPars.setEmployeeCode(userLoginVO.getEmployeeCode());
+        userSessionPars.setCompanyCodeSys01SYS03(userLoginVO.getCompanyCodeSys01SYS03());
+        userSessionPars.setDefCompanyCodeSys01SYS03(userLoginVO.getDefCompanyCodeSys01SYS03());
+     	
+     	fillInFunctionCodesBasedOnCompany(username,userSessionPars);
 
     	SessionIdGenerator gen = (SessionIdGenerator)context.getAttribute(Controller.SESSION_ID_GENERATOR);
     	Hashtable userSessions = (Hashtable)context.getAttribute(Controller.USER_SESSIONS);
@@ -101,6 +113,47 @@ public class UserLoginAction extends LoginAction {
     } 
   }
 
+  
+  /**
+   * Business logic to execute.
+   */
+  private void fillInFunctionCodesBasedOnCompany(String username,JAIOUserSessionParameters userSessionPars) throws Throwable {
+	  Connection conn = null;
+	  ResultSet rset2 = null;
+	  PreparedStatement pstmt2 = null;
+	  try {
+		  conn = ConnectionManager.getConnection(null);
+		  HashSet functionCodesBasedOnCompany = new HashSet();
+		  pstmt2 = conn.prepareStatement(
+				  "select FUNCTION_CODE FROM SYS06_FUNCTIONS WHERE USE_COMPANY_CODE='Y'"
+		  );
+		  rset2 = pstmt2.executeQuery();
+		  while(rset2.next())
+			  functionCodesBasedOnCompany.add(rset2.getString(1));
+		  rset2.close();
+		  pstmt2.close();
+		  userSessionPars.setFunctionCodesBasedOnCompany(functionCodesBasedOnCompany);
+	  } catch (Exception ex1) {
+		  ex1.printStackTrace();
+		  throw new Exception(ex1.getMessage());
+	  } finally {
+		  try {
+			  rset2.close();
+		  }
+		  catch (Exception ex) {
+		  }
+		  try {
+			  pstmt2.close();
+		  }
+		  catch (Exception ex) {
+		  }
+		  try {
+			  ConnectionManager.releaseConnection(conn, null);
+		  } catch (Exception e) {
+		  }
+	  }
+  }
+  
 
 }
 

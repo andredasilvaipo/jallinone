@@ -1,35 +1,29 @@
-package org.jallinone.warehouse.documents.server;
+package org.jallinone.sales.documents.activities.server;
 
 import org.openswing.swing.server.*;
 import java.io.*;
 import java.util.*;
-
+import org.jallinone.sales.documents.activities.java.*;
 import org.openswing.swing.message.receive.java.*;
+import org.openswing.swing.message.send.java.GridParams;
 
 import java.sql.*;
 import org.openswing.swing.logger.server.*;
 import org.jallinone.system.server.*;
-
-import java.math.*;
-import org.jallinone.system.progressives.server.*;
-import org.jallinone.system.translations.server.*;
-import org.jallinone.commons.server.*;
-import org.jallinone.system.java.*;
+import org.jallinone.sales.documents.activities.java.*;
+import org.jallinone.sales.documents.server.*;
+import org.jallinone.sales.documents.java.*;
+import org.jallinone.sales.documents.java.*;
+import org.jallinone.sales.documents.server.*;
+import org.jallinone.events.server.*;
+import org.jallinone.events.server.*;
 import org.jallinone.commons.java.*;
-import org.openswing.swing.message.send.java.*;
-import org.jallinone.warehouse.documents.java.*;
-import org.openswing.swing.internationalization.server.*;
-import org.openswing.swing.internationalization.java.*;
-import org.jallinone.warehouse.documents.java.*;
-import org.jallinone.events.server.*;
-import org.jallinone.events.server.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.jallinone.commons.java.*;
 
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
- * * <p>Description: Bean used to manage a delivery note.</p>
+ * * <p>Description: Bean used to manage sale activities for a sale document.</p>
  * <p>Copyright: Copyright (C) 2006 Mauro Carniel</p>
  *
  * <p> This file is part of JAllInOne ERP/CRM application.
@@ -56,17 +50,22 @@ import org.jallinone.commons.java.*;
  * @version 1.0
  */
 @javax.jws.WebService
-public interface DeliveryNotes {
+public interface InsertSaleDocActivities {
 
-  public VOResponse closeDeliveryNote(
-				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
-				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
-				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
-				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
-				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
-				DetailDeliveryNoteVO vo,String t1,String t2,String t3,String t4,String serverLanguageId,String username) throws Throwable;
+	/**
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 */
+	public SaleDocActivityVO getSaleDocActivity();
 
-  public VOResponse deleteDeliveryNotes(ArrayList list,String serverLanguageId,String username) throws Throwable;
+
+	public VOListResponse insertSaleDocActivities(
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+          ArrayList list,String serverLanguageId,String username) throws Throwable;
+
 
 }
 

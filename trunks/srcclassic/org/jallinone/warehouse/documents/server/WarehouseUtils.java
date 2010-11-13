@@ -65,13 +65,25 @@ import org.openswing.swing.server.UserSessionParameters;
 public interface WarehouseUtils {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public DeliveryNotePK getDeliveryNote();
 
-	public VOListResponse loadInDeliveryNoteRows(GridParams pars,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadInDeliveryNoteRows(
+		 HashMap variant1Descriptions,
+		 HashMap variant2Descriptions,
+		 HashMap variant3Descriptions,
+		 HashMap variant4Descriptions,
+		 HashMap variant5Descriptions,
+		 GridParams pars, String serverLanguageId, String username) throws Throwable;
 
-	public VOListResponse loadOutDeliveryNoteRows(GridParams pars,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadOutDeliveryNoteRows(
+		 HashMap variant1Descriptions,
+		 HashMap variant2Descriptions,
+		 HashMap variant3Descriptions,
+		 HashMap variant4Descriptions,
+		 HashMap variant5Descriptions,
+		 GridParams pars, String serverLanguageId, String username) throws Throwable;
 
 	public VOResponse reinsertInSerialNumbers(GridInDeliveryNoteRowVO vo,String serverLanguageId,String username) throws Throwable;
 

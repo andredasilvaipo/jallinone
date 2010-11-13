@@ -39,6 +39,7 @@ import org.jallinone.events.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -85,14 +86,16 @@ public class CreateSaleDocFromEstimateAction implements Action {
 		  SaleDocPK pk = (SaleDocPK)inputPar;
 
 		  ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("SAL07");
-		  
+
 		  // retrieve internationalization settings (Resources object)...
 		  ServerResourcesFactory factory = (ServerResourcesFactory)context.getAttribute(Controller.RESOURCES_FACTORY);
 		  Resources resources = factory.getResources(userSessionPars.getLanguageId());
 		  String t1 = resources.getResource("estimate nr. ");
 
+                  VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(pk.getCompanyCodeSys01DOC01());
+
 		  CreateSaleDocFromEstimate bean = (CreateSaleDocFromEstimate)JAIOBeanFactory.getInstance().getBean(CreateSaleDocFromEstimate.class);
-		  Response answer = new VOResponse( bean.createSaleDocFromEstimate(pk,t1,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList) );
+		  Response answer = new VOResponse( bean.createSaleDocFromEstimate(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),pk,t1,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList) );
 
 		  return answer;
 	  }

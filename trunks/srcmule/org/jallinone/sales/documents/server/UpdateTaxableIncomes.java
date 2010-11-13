@@ -3,6 +3,9 @@ package org.jallinone.sales.documents.server;
 import org.jallinone.accounting.movements.java.TaxableIncomeVO;
 import org.jallinone.sales.documents.java.SaleDocPK;
 import org.openswing.swing.message.receive.java.VOListResponse;
+import java.util.HashMap;
+import org.jallinone.commons.java.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -43,7 +46,13 @@ public interface UpdateTaxableIncomes {
 	 */
 	public TaxableIncomeVO getTaxableIncome();
 
-	public VOListResponse updateTaxableIncomes(SaleDocPK pk,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse updateTaxableIncomes(
+	          @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+			  SaleDocPK pk,String serverLanguageId,String username) throws Throwable;
 
 }
 

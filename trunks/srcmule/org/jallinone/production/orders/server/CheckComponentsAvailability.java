@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.jws.WebService;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.jallinone.commons.java.HashMapAdapter;
 import org.jallinone.production.orders.java.ProdOrderProductVO;
@@ -33,7 +35,13 @@ public interface CheckComponentsAvailability {
 	 * @params compAltComps collection of <component item code,HashSet of alternative component item codes>; filled by this method (and given back by reference)
 	 * @return VOListResponse of ProdOrderComponentVO objects
 	 */
-	public VOListResponse checkComponentsAvailability(@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap compAltComps,ArrayList products,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
+	public VOListResponse checkComponentsAvailability(
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap compAltComps,ArrayList products,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
 
 
 }

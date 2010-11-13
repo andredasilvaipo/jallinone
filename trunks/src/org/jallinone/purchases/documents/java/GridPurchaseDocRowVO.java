@@ -147,33 +147,33 @@ public class GridPurchaseDocRowVO extends ValueObjectImpl {
   }
   public String getDescriptionSYS10() {
     String aux = descriptionSYS10;
-    if (aux==null)
-      return null;
-
-    if (variantTypeItm06DOC07!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm06DOC07))
-      aux += " "+variantTypeItm06DOC07;
-    if (variantCodeItm11DOC07!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm11DOC07))
-      aux += " "+variantCodeItm11DOC07;
-
-    if (variantTypeItm07DOC07!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm07DOC07))
-      aux += " "+variantTypeItm07DOC07;
-    if (variantCodeItm12DOC07!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm12DOC07))
-      aux += " "+variantCodeItm12DOC07;
-
-    if (variantTypeItm08DOC07!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm08DOC07))
-      aux += " "+variantTypeItm08DOC07;
-    if (variantCodeItm13DOC07!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm13DOC07))
-      aux += " "+variantCodeItm13DOC07;
-
-    if (variantTypeItm09DOC07!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm09DOC07))
-      aux += " "+variantTypeItm09DOC07;
-    if (variantCodeItm14DOC07!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm14DOC07))
-      aux += " "+variantCodeItm14DOC07;
-
-    if (variantTypeItm10DOC07!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm10DOC07))
-      aux += " "+variantTypeItm10DOC07;
-    if (variantCodeItm15DOC07!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm15DOC07))
-      aux += " "+variantCodeItm15DOC07;
+//    if (aux==null)
+//      return null;
+//
+//    if (variantTypeItm06DOC07!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm06DOC07))
+//      aux += " "+variantTypeItm06DOC07;
+//    if (variantCodeItm11DOC07!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm11DOC07))
+//      aux += " "+variantCodeItm11DOC07;
+//
+//    if (variantTypeItm07DOC07!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm07DOC07))
+//      aux += " "+variantTypeItm07DOC07;
+//    if (variantCodeItm12DOC07!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm12DOC07))
+//      aux += " "+variantCodeItm12DOC07;
+//
+//    if (variantTypeItm08DOC07!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm08DOC07))
+//      aux += " "+variantTypeItm08DOC07;
+//    if (variantCodeItm13DOC07!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm13DOC07))
+//      aux += " "+variantCodeItm13DOC07;
+//
+//    if (variantTypeItm09DOC07!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm09DOC07))
+//      aux += " "+variantTypeItm09DOC07;
+//    if (variantCodeItm14DOC07!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm14DOC07))
+//      aux += " "+variantCodeItm14DOC07;
+//
+//    if (variantTypeItm10DOC07!=null && !ApplicationConsts.JOLLY.equals(variantTypeItm10DOC07))
+//      aux += " "+variantTypeItm10DOC07;
+//    if (variantCodeItm15DOC07!=null && !ApplicationConsts.JOLLY.equals(variantCodeItm15DOC07))
+//      aux += " "+variantCodeItm15DOC07;
     return aux;
   }
   public void setDescriptionSYS10(String descriptionSYS10) {

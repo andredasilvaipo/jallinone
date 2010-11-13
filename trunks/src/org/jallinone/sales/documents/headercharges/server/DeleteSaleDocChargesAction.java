@@ -19,6 +19,7 @@ import org.jallinone.events.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -62,11 +63,13 @@ public class DeleteSaleDocChargesAction implements Action {
 
 
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
-      java.util.ArrayList list = (ArrayList)inputPar;
+    java.util.ArrayList list = (ArrayList)inputPar;
     try {
+      SaleDocChargeVO voCharge = (SaleDocChargeVO)list.get(0);
+      VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(voCharge.getCompanyCodeSys01DOC03());
 
       SaleDocCharges bean = (SaleDocCharges)JAIOBeanFactory.getInstance().getBean(SaleDocCharges.class);
-      Response answer = bean.deleteSaleDocCharges(list,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+      Response answer = bean.deleteSaleDocCharges(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),list,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
     return answer;
     }

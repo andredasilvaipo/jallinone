@@ -37,6 +37,7 @@ import org.jallinone.events.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -84,14 +85,15 @@ public class CreateInvoiceFromSaleDocAction implements Action {
 
 	  try {
 		  DetailSaleDocVO docVO = (DetailSaleDocVO)inputPar;
-		  
+
 		  // retrieve internationalization settings (Resources object)...
 		  ServerResourcesFactory factory = (ServerResourcesFactory)context.getAttribute(Controller.RESOURCES_FACTORY);
 		  Resources resources = factory.getResources(userSessionPars.getLanguageId());
 
+                  VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(docVO.getCompanyCodeSys01DOC01());
 
 		  CreateInvoiceFromSaleDoc bean = (CreateInvoiceFromSaleDoc)JAIOBeanFactory.getInstance().getBean(CreateInvoiceFromSaleDoc.class);
-		  Response answer = bean.createInvoiceFromSaleDoc(docVO,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+		  Response answer = bean.createInvoiceFromSaleDoc(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),docVO,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
 		  return answer;
 	  }

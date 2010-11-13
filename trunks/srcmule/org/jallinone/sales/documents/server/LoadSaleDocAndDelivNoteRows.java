@@ -17,6 +17,8 @@ import org.jallinone.warehouse.documents.java.*;
 import org.jallinone.registers.measure.server.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
 
 
 /**
@@ -55,7 +57,13 @@ public interface LoadSaleDocAndDelivNoteRows {
 	 */
 	public GridOutDeliveryNoteRowVO getGridOutDeliveryNoteRow(SaleDocPK pk);
 
-	public VOListResponse loadSaleDocAndDelivNoteRows(GridParams pars,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadSaleDocAndDelivNoteRows(
+	            @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+				GridParams pars,String serverLanguageId,String username) throws Throwable;
 
 }
 

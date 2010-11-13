@@ -214,6 +214,7 @@ public class ReorderFromMinStocksFrame extends InternalFrame {
           warehouseVO = (WarehouseVO)wareController.getLookupVO();
           supplierDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,warehouseVO.getCompanyCodeSys01WAR01());
           supplierDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,warehouseVO.getCompanyCodeSys01WAR01());
+					grid.getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,warehouseVO.getCompanyCodeSys01WAR01());
           controlSupplierCode.setEnabled(true);
         }
       }

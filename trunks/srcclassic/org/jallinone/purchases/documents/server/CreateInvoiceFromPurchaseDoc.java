@@ -57,7 +57,14 @@ import org.jallinone.events.server.*;
 
 public interface CreateInvoiceFromPurchaseDoc {
 
-  public VOResponse createInvoiceFromPurchaseDoc(DetailPurchaseDocVO docVO,String companyCode,String serverLanguageId,String username) throws Throwable;
+	public VOResponse createInvoiceFromPurchaseDoc(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		DetailPurchaseDocVO docVO, String companyCode, String serverLanguageId,
+		String username) throws Throwable;
 
 }
 

@@ -61,6 +61,7 @@ import org.jallinone.system.progressives.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -121,12 +122,12 @@ public class CloseSaleDocAction implements Action {
 		  String t4 = resources.getResource("noteNumber");
 		  String t5 = resources.getResource("customer");
 		  String t6 = resources.getResource("invoiceNumber");
-		  
+
 		  String t7 = resources.getResource("credit note");
 		  String t8 = resources.getResource("valueREG01");
 		  String t9 = resources.getResource("rateNumberREG17");
 		  String t10 = resources.getResource("sale invoice");
-		  
+
 		  String t11 = resources.getResource("retail sale export non allowed: receipt path has not been defined as user parameter.");
 		  String t12 = resources.getResource("company not found.");
 		  String t13 = resources.getDateMask(Consts.TYPE_DATE_TIME);
@@ -135,9 +136,11 @@ public class CloseSaleDocAction implements Action {
 		  String t15 = resources.getResource("the warehouse motive specified is not defined");
 
 		  ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("WAR01");
-		  
+
+     VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(pk.getCompanyCodeSys01DOC01());
+
 		  CloseSaleDoc bean = (CloseSaleDoc)JAIOBeanFactory.getInstance().getBean(CloseSaleDoc.class);
-		  Response answer = bean.closeSaleDoc(pk,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList);
+		  Response answer = bean.closeSaleDoc(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),pk,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList);
 
 		  return answer;
 	  }

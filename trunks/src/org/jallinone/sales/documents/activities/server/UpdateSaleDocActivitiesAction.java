@@ -19,6 +19,7 @@ import org.jallinone.events.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -65,9 +66,11 @@ public class UpdateSaleDocActivitiesAction implements Action {
       ArrayList oldVOs = ((ArrayList[])inputPar)[0];
       ArrayList newVOs = ((ArrayList[])inputPar)[1];
     try {
+      SaleDocActivityVO oldVO = (SaleDocActivityVO)oldVOs.get(0);
+      VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(oldVO.getCompanyCodeSys01DOC13());
 
-    	SaleDocActivities bean = (SaleDocActivities)JAIOBeanFactory.getInstance().getBean(SaleDocActivities.class);
-      Response answer = bean.updateSaleDocActivities(((ArrayList[])inputPar)[0],((ArrayList[])inputPar)[1],((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+      SaleDocActivities bean = (SaleDocActivities)JAIOBeanFactory.getInstance().getBean(SaleDocActivities.class);
+      Response answer = bean.updateSaleDocActivities(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),((ArrayList[])inputPar)[0],((ArrayList[])inputPar)[1],((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
     return answer;
     }

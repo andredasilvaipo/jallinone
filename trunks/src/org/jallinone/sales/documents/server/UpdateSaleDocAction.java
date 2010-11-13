@@ -31,6 +31,7 @@ import org.jallinone.events.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -80,8 +81,10 @@ public class UpdateSaleDocAction implements Action {
 		  CustomizedWindows cust = ((JAIOUserSessionParameters)userSessionPars).getCustomizedWindows();
 		  ArrayList customizedFields = cust.getCustomizedFields(ApplicationConsts.ID_SALE_ORDER);
 
+                  VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(oldVO.getCompanyCodeSys01DOC01());
+
 		  SaleDocs bean = (SaleDocs)JAIOBeanFactory.getInstance().getBean(SaleDocs.class);
-		  Response answer = bean.updateSaleDoc(oldVO,newVO,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),customizedFields);
+		  Response answer = bean.updateSaleDoc(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),oldVO,newVO,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),customizedFields);
 
 		  return answer;
 	  }

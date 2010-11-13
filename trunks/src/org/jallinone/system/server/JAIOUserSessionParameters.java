@@ -75,6 +75,9 @@ public class JAIOUserSessionParameters extends UserSessionParameters {
   /** collection of FUNCTION_CODEs having a permission in SYS02 */
   private HashSet functionCodesBasedOnCompany = new HashSet();
 
+  /** cache of VariantDescriptionsVO object, one for each company code */
+  private HashMap variantDescriptionsVO = new HashMap();
+
 
   public JAIOUserSessionParameters() { }
 
@@ -280,6 +283,12 @@ public class JAIOUserSessionParameters extends UserSessionParameters {
    */
   public final void setFunctionCodesBasedOnCompany(HashSet functionCodesBasedOnCompany) {
     this.functionCodesBasedOnCompany = functionCodesBasedOnCompany;
+  }
+  public HashMap getVariantDescriptionsVO() {
+    return variantDescriptionsVO;
+  }
+  public void setVariantDescriptionsVO(HashMap variantDescriptionsVO) {
+    this.variantDescriptionsVO = variantDescriptionsVO;
   }
 
 

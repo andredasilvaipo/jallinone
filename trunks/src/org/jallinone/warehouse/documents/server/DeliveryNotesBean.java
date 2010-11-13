@@ -59,7 +59,7 @@ import javax.sql.DataSource;
 public class DeliveryNotesBean  implements DeliveryNotes {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -67,9 +67,9 @@ public class DeliveryNotesBean  implements DeliveryNotes {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -79,7 +79,7 @@ public class DeliveryNotesBean  implements DeliveryNotes {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -107,7 +107,14 @@ public class DeliveryNotesBean  implements DeliveryNotes {
   /**
    * Business logic to execute.
    */
-  public VOResponse closeDeliveryNote(DetailDeliveryNoteVO vo,String t1,String t2,String t3,String t4,String serverLanguageId,String username) throws Throwable {
+  public VOResponse closeDeliveryNote(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		DetailDeliveryNoteVO vo, String t1, String t2, String t3, String t4,
+		String serverLanguageId, String username) throws Throwable {
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
@@ -148,13 +155,13 @@ public class DeliveryNotesBean  implements DeliveryNotes {
             vo.getDocNumberDOC08()
         );
         if (vo.getDocTypeDOC08().equals(ApplicationConsts.IN_DELIVERY_NOTE_DOC_TYPE))
-          res = inQtyBean.updateInQuantities(pk,t3,t4,serverLanguageId,username);
+          res = inQtyBean.updateInQuantities(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,pk,t3,t4,serverLanguageId,username);
         else if (vo.getDocTypeDOC08().equals(ApplicationConsts.OUT_DELIVERY_NOTE_DOC_TYPE))
-          res = outQtyBean.updateOutQtysSaleDoc(pk,t2,t4,serverLanguageId,username);
+          res = outQtyBean.updateOutQtysSaleDoc(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,pk,t2,t4,serverLanguageId,username);
 
         if (res.isError()) {
           Logger.error(username,this.getClass().getName(),"executeCommand","Error while closing a delivery note:\n"+res.getErrorMessage(),null);
-          if (res.isError()) 
+          if (res.isError())
         	  throw new Exception(res.getErrorMessage());
         }
         Response answer = new VOResponse(new BigDecimal(docSequenceDOC08));
@@ -192,7 +199,7 @@ public class DeliveryNotesBean  implements DeliveryNotes {
 
       }
       catch (Exception exx) {}
-    
+
       try {
         inQtyBean.setConn(null);
         outQtyBean.setConn(null);
@@ -206,7 +213,7 @@ public class DeliveryNotesBean  implements DeliveryNotes {
    */
   public VOResponse deleteDeliveryNotes(ArrayList list,String serverLanguageId,String username) throws Throwable {
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;

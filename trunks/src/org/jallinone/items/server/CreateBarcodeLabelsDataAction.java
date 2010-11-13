@@ -18,6 +18,7 @@ import org.openswing.swing.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -66,11 +67,22 @@ public class CreateBarcodeLabelsDataAction implements Action {
 	  HashMap map = (HashMap)inputPar;
 	  try {
 		  CreateBarcodeLabelsData bean = (CreateBarcodeLabelsData)JAIOBeanFactory.getInstance().getBean(CreateBarcodeLabelsData.class);
-		  String imagePath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.IMAGE_PATH); 
+		  String imagePath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.IMAGE_PATH);
 
 		  ArrayList list = new ArrayList((List)map.get(ApplicationConsts.ITEMS));
 		  ItemToPrintVO[] rows = (ItemToPrintVO[])list.toArray(new ItemToPrintVO[list.size()]);
-		  Response answer = bean.createBarcodeLabelsData(rows,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),imagePath);
+
+			VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(rows[0].getCompanyCodeSys01());
+
+		  Response answer = bean.createBarcodeLabelsData(
+					vo.getVariant1Descriptions(),
+					vo.getVariant2Descriptions(),
+					vo.getVariant3Descriptions(),
+					vo.getVariant4Descriptions(),
+					vo.getVariant5Descriptions(),
+					rows,
+					( (JAIOUserSessionParameters) userSessionPars).getServerLanguageId(),
+					userSessionPars.getUsername(), imagePath);
 
 		  return answer;
 	  }

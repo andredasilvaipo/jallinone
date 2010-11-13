@@ -48,7 +48,13 @@ import org.jallinone.events.server.*;
 
 public interface LoadPurchaseDocRow {
 
-  public DetailPurchaseDocRowVO loadPurchaseDocRow(PurchaseDocRowPK pk,String serverLanguageId,String username) throws Throwable;
+  public DetailPurchaseDocRowVO loadPurchaseDocRow(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		PurchaseDocRowPK pk, String serverLanguageId, String username) throws Throwable;
 
 }
 

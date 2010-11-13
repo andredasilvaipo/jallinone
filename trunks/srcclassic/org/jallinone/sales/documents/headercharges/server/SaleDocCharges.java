@@ -50,15 +50,37 @@ import org.jallinone.events.server.*;
 
 public interface SaleDocCharges {
 
-  public VOResponse deleteSaleDocCharges(ArrayList list,String serverLanguageId,String username) throws Throwable;
+  public VOResponse deleteSaleDocCharges(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      ArrayList list, String serverLanguageId, String username) throws Throwable;
 
-  public Response insertSaleDocCharge(SaleDocChargeVO vo,String username) throws Throwable;
+  public Response insertSaleDocCharge(
+      SaleDocChargeVO vo, String username) throws Throwable;
 
-  public VOListResponse insertSaleDocCharges(ArrayList list,String serverLanguageId,String username) throws Throwable;
+  public VOListResponse insertSaleDocCharges(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      ArrayList list, String serverLanguageId, String username) throws Throwable;
 
-  public VOListResponse updateSaleDocCharges(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
+  public VOListResponse updateSaleDocCharges(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      ArrayList oldVOs, ArrayList newVOs, String serverLanguageId,
+      String username) throws Throwable;
 
-  public Response updateTotals(SaleDocPK docPK,String serverLanguageId,String username) throws Throwable;
+  public Response updateTotals(
+      SaleDocPK docPK, String serverLanguageId, String username) throws
+      Throwable;
 
 }
 

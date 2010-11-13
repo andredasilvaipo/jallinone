@@ -6,7 +6,9 @@ import java.util.*;
 import org.openswing.swing.message.receive.java.*;
 import java.sql.*;
 import java.math.*;
-
+import org.jallinone.system.java.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
 import javax.jws.WebService;
 
 
@@ -41,7 +43,7 @@ import javax.jws.WebService;
 @WebService
 public interface UserLogin {
 
-	public JAIOUserSessionParameters authenticateUser(String username,String password) throws Throwable;
+	public UserLoginVO authenticateUser(String username,String password) throws Throwable;
 	
 	
 }

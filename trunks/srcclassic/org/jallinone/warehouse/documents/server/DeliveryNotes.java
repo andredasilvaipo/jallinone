@@ -56,7 +56,14 @@ import org.jallinone.events.server.*;
 
 public interface DeliveryNotes {
 
-  public VOResponse closeDeliveryNote(DetailDeliveryNoteVO vo,String t1,String t2,String t3,String t4,String serverLanguageId,String username) throws Throwable;
+  public VOResponse closeDeliveryNote(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		DetailDeliveryNoteVO vo, String t1, String t2, String t3, String t4,
+		String serverLanguageId, String username) throws Throwable;
 
   public VOResponse deleteDeliveryNotes(ArrayList list,String serverLanguageId,String username) throws Throwable;
 

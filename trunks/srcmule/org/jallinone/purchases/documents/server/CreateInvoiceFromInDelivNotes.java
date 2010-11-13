@@ -27,6 +27,8 @@ import org.jallinone.purchases.documents.invoices.java.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
 import org.jallinone.variants.java.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
 
 
 /**
@@ -70,7 +72,14 @@ public interface CreateInvoiceFromInDelivNotes {
 	 */
 	public InDeliveryNotesVO getInDeliveryNotes();
 
-	public VOResponse createInvoiceFromInDelivNotes(PurchaseInvoiceFromDelivNotesVO invoiceVO,String companyCode,String serverLanguageId,String username) throws Throwable;
+	
+	public VOResponse createInvoiceFromInDelivNotes(
+	              @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+				  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+				  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+				  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+				  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+			      PurchaseInvoiceFromDelivNotesVO invoiceVO,String companyCode,String serverLanguageId,String username) throws Throwable;
 
 }
 

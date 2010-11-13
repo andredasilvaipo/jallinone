@@ -2,6 +2,8 @@ package org.jallinone.system.importdata.server;
 
 import java.math.BigDecimal;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
 import javax.jws.WebService;
 
 import org.jallinone.system.importdata.java.ETLProcessFieldVO;

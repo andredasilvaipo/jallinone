@@ -19,6 +19,7 @@ import org.jallinone.events.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -62,12 +63,13 @@ public class UpdateSaleDocChargesAction implements Action {
 
 
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
-      ArrayList oldVOs = ((ArrayList[])inputPar)[0];
-      ArrayList newVOs = ((ArrayList[])inputPar)[1];
+    ArrayList oldVOs = ((ArrayList[])inputPar)[0];
+    ArrayList newVOs = ((ArrayList[])inputPar)[1];
     try {
-
-    	SaleDocCharges bean = (SaleDocCharges)JAIOBeanFactory.getInstance().getBean(SaleDocCharges.class);
-      Response answer = bean.updateSaleDocCharges(((ArrayList[])inputPar)[0],((ArrayList[])inputPar)[1],((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+      SaleDocChargeVO oldVO = (SaleDocChargeVO)oldVOs.get(0);
+      VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(oldVO.getCompanyCodeSys01DOC03());
+      SaleDocCharges bean = (SaleDocCharges)JAIOBeanFactory.getInstance().getBean(SaleDocCharges.class);
+      Response answer = bean.updateSaleDocCharges(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),((ArrayList[])inputPar)[0],((ArrayList[])inputPar)[1],((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
     return answer;
     }

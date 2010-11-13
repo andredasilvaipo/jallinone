@@ -59,9 +59,9 @@ import javax.sql.DataSource;
  */
 public class InsertSaleItemBean implements InsertSaleItem {
 
-	
 
-	  private DataSource dataSource; 
+
+	  private DataSource dataSource;
 
 	  public void setDataSource(DataSource dataSource) {
 	    this.dataSource = dataSource;
@@ -69,9 +69,9 @@ public class InsertSaleItemBean implements InsertSaleItem {
 
 	  /** external connection */
 	  private Connection conn = null;
-	  
+
 	  /**
-	   * Set external connection. 
+	   * Set external connection.
 	   */
 	  public void setConn(Connection conn) {
 	    this.conn = conn;
@@ -81,7 +81,7 @@ public class InsertSaleItemBean implements InsertSaleItem {
 	   * Create local connection
 	   */
 	  public Connection getConn() throws Exception {
-	    
+
 	    Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
 	  }
 
@@ -91,7 +91,13 @@ public class InsertSaleItemBean implements InsertSaleItem {
 	   * Load a specific item row.
 	   * No commit or rollback are executed; no connection is created or released.-
 	   */
-	  public VOResponse loadSaleDocRow(SaleDocRowPK pk,String serverLanguageId,String username)  throws Throwable{
+	  public VOResponse loadSaleDocRow(
+             HashMap variant1Descriptions,
+             HashMap variant2Descriptions,
+             HashMap variant3Descriptions,
+             HashMap variant4Descriptions,
+             HashMap variant5Descriptions,
+             SaleDocRowPK pk, String serverLanguageId, String username) throws Throwable {
 	    Statement stmt = null;
 	    PreparedStatement pstmt = null;
 	    Connection conn = null;
@@ -220,6 +226,65 @@ public class InsertSaleItemBean implements InsertSaleItem {
 
 	      if (!res.isError()) {
 	        DetailSaleDocRowVO vo = (DetailSaleDocRowVO)((VOResponse)res).getVo();
+
+                String descr = vo.getDescriptionSYS10();
+
+                // check supported variants for current item...
+                if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm11DOC02())) {
+                  descr += " "+getVariantCodeAndTypeDesc(
+                    variant1Descriptions,
+                    vo,
+                    vo.getVariantTypeItm06DOC02(),
+                    vo.getVariantCodeItm11DOC02(),
+                    serverLanguageId,
+                    username
+                  );
+                }
+                if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm12DOC02())) {
+                  descr += " "+getVariantCodeAndTypeDesc(
+                    variant2Descriptions,
+                    vo,
+                    vo.getVariantTypeItm07DOC02(),
+                    vo.getVariantCodeItm12DOC02(),
+                    serverLanguageId,
+                    username
+                  );
+                }
+                if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm13DOC02())) {
+                  descr += " "+getVariantCodeAndTypeDesc(
+                    variant3Descriptions,
+                    vo,
+                    vo.getVariantTypeItm08DOC02(),
+                    vo.getVariantCodeItm13DOC02(),
+                    serverLanguageId,
+                    username
+                  );
+                }
+                if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm14DOC02())) {
+                  descr += " "+getVariantCodeAndTypeDesc(
+                    variant4Descriptions,
+                    vo,
+                    vo.getVariantTypeItm09DOC02(),
+                    vo.getVariantCodeItm14DOC02(),
+                    serverLanguageId,
+                    username
+                  );
+                }
+                if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm15DOC02())) {
+                  descr += " "+getVariantCodeAndTypeDesc(
+                    variant5Descriptions,
+                    vo,
+                    vo.getVariantTypeItm10DOC02(),
+                    vo.getVariantCodeItm15DOC02(),
+                    serverLanguageId,
+                    username
+                  );
+                }
+                vo.setDescriptionSYS10(descr);
+
+
+
+
 	        ResultSet rset = null;
 
 	        // retrieve position description, if defined...
@@ -303,7 +368,7 @@ public class InsertSaleItemBean implements InsertSaleItem {
 	        stmt.close();
 	      }
 	      catch (Exception ex2) {
-	      
+
 	      try {
 	      } catch (Exception ex) {}
 	      }
@@ -320,11 +385,27 @@ public class InsertSaleItemBean implements InsertSaleItem {
 	    	  }
 
 	      }
-	      catch (Exception exx) {}      
+	      catch (Exception exx) {}
 	    }
 
 	  }
 
+
+
+
+          private String getVariantCodeAndTypeDesc(
+              HashMap variantDescriptions,
+              DetailSaleDocRowVO vo,
+              String varType,
+              String varCode,
+              String serverLanguageId,
+              String username
+          ) throws Throwable {
+            String varDescr = (String)variantDescriptions.get(varType+"_"+varCode);
+            if (varDescr==null)
+              varDescr = ApplicationConsts.JOLLY.equals(varCode)?"":varCode;
+            return varDescr;
+          }
 
 
 
@@ -337,7 +418,7 @@ public class InsertSaleItemBean implements InsertSaleItem {
 	    Connection conn = null;
 	    try {
 	      if (this.conn==null) conn = getConn(); else conn = this.conn;
-	         
+
 
 	      if (vo.getOutQtyDOC02()==null)
 	        vo.setOutQtyDOC02(new BigDecimal(0));
@@ -405,9 +486,7 @@ public class InsertSaleItemBean implements InsertSaleItem {
 	        throw new Exception(res.getErrorMessage());
 	      }
 
-	      Response answer = new VOResponse(vo);
-
-	      if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (VOResponse)answer;
+	      return new VOResponse(vo);
 	    }
 	    catch (Throwable ex) {
 	      Logger.error(username,this.getClass().getName(),"insertSaleItem","Error while inserting a new sale document item row",ex);
@@ -427,11 +506,11 @@ public class InsertSaleItemBean implements InsertSaleItem {
 	    	  }
 
 	      }
-	      catch (Exception exx) {}      
+	      catch (Exception exx) {}
 	    }
 	  }
 
 
 
-	
+
 }

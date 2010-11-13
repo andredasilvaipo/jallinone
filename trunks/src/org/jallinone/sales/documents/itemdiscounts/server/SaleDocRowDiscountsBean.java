@@ -61,7 +61,7 @@ import javax.sql.DataSource;
 public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -69,9 +69,9 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -81,7 +81,7 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -94,7 +94,7 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
   }
 
   private DiscountBean discountBean;
-  
+
   public void setDiscountBean(DiscountBean discountBean) {
 	  this.discountBean = discountBean;
   }
@@ -105,13 +105,13 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
   private SaleItemTotalDiscountBean itemDiscountBean;
 
   private InsertSaleDocRowDiscountsBean bean;
-  
+
   public void setBean(InsertSaleDocRowDiscountsBean bean) {
 	  this.bean = bean;
   }
-  
 
-  
+
+
   public void setTotalBean(SaleDocTotalsBean totalBean) {
 	  this.totalBean = totalBean;
   }
@@ -128,40 +128,46 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
 	   this.itemDiscountBean = itemDiscountBean;
    }
 
-  
+
   public SaleDocRowDiscountsBean() {
   }
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public DetailSaleDocRowVO getDetailSaleDocRow() {
-	  throw new UnsupportedOperationException();  
-  }
-	
-  /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
-   */
-  public SaleItemDiscountVO getSaleItemDiscount() {
-	  throw new UnsupportedOperationException();		
+	  throw new UnsupportedOperationException();
   }
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
+   */
+  public SaleItemDiscountVO getSaleItemDiscount() {
+	  throw new UnsupportedOperationException();
+  }
+
+  /**
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public DiscountVO getDiscount() {
-	  throw new UnsupportedOperationException();		
-  }  
-  
-  
+	  throw new UnsupportedOperationException();
+  }
+
+
 
 
   /**
    * Recalculate item row totals and document totals.
    * @return Boolean.TRUE if totals are correctly calculated
    */
-  public Response updateTotals(SaleDocRowPK pk,String serverLanguageId,String username) throws Throwable{
+  public Response updateTotals(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      SaleDocRowPK pk, String serverLanguageId, String username) throws Throwable {
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
@@ -181,7 +187,14 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
       DetailSaleDocVO vo = docBean.loadSaleDoc(docPK,serverLanguageId,username,new ArrayList());
 
       // recalculate item row totals...
-      Response rowResponse = rowBean.loadSaleDocRow(pk,serverLanguageId,username);
+      Response rowResponse = rowBean.loadSaleDocRow(
+          variant1Descriptions,
+          variant2Descriptions,
+          variant3Descriptions,
+          variant4Descriptions,
+          variant5Descriptions,
+          pk, serverLanguageId, username
+      );
       if (rowResponse.isError()) {
         conn.rollback();
         throw new Exception(rowResponse.getErrorMessage());
@@ -261,7 +274,7 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
           totalBean.setConn(null);
           docBean.setConn(null);
@@ -357,9 +370,9 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
     		}
 
     	}
-    	catch (Exception exx) {}    
+    	catch (Exception exx) {}
     	try {
-    		discountBean.setConn(null);    	  
+    		discountBean.setConn(null);
     	} catch (Exception ex) {}
     }
 
@@ -582,7 +595,7 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
           discountBean.setConn(null);
       } catch (Exception ex) {}
@@ -596,7 +609,14 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
   /**
    * Business logic to execute.
    */
-  public VOListResponse updateSaleDocRowDiscounts(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable {
+  public VOListResponse updateSaleDocRowDiscounts(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      ArrayList oldVOs, ArrayList newVOs, String serverLanguageId,
+      String username) throws Throwable {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -627,7 +647,7 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
         pkAttrs.add("variantCodeItm14DOC04");
         pkAttrs.add("variantTypeItm10DOC04");
         pkAttrs.add("variantCodeItm15DOC04");
-        
+
         HashMap attribute2dbField = new HashMap();
         attribute2dbField.put("companyCodeSys01DOC04","COMPANY_CODE_SYS01");
         attribute2dbField.put("discountCodeSal03DOC04","DISCOUNT_CODE_SAL03");
@@ -677,6 +697,11 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
       }
 
       res = totals.updateTaxableIncomes(
+        variant1Descriptions,
+        variant2Descriptions,
+        variant3Descriptions,
+        variant4Descriptions,
+        variant5Descriptions,
         new SaleDocPK(newVO.getCompanyCodeSys01DOC04(),newVO.getDocTypeDOC04(),newVO.getDocYearDOC04(),newVO.getDocNumberDOC04()),
         serverLanguageId,
         username
@@ -709,7 +734,7 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
     		}
 
     	}
-    	catch (Exception exx) {}    
+    	catch (Exception exx) {}
     	try {
     		totals.setConn(null);
     	} catch (Exception ex) {}
@@ -723,9 +748,15 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
   /**
    * Business logic to execute.
    */
-  public VOResponse deleteSaleDocRowDiscounts(ArrayList list,String serverLanguageId,String username) throws Throwable {
+  public VOResponse deleteSaleDocRowDiscounts(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      ArrayList list, String serverLanguageId, String username) throws Throwable {
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -755,6 +786,11 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
       }
 
       Response res = totals.updateTaxableIncomes(
+        variant1Descriptions,
+        variant2Descriptions,
+        variant3Descriptions,
+        variant4Descriptions,
+        variant5Descriptions,
         new SaleDocPK(vo.getCompanyCodeSys01DOC04(),vo.getDocTypeDOC04(),vo.getDocYearDOC04(),vo.getDocNumberDOC04()),
         serverLanguageId,
         username
@@ -791,7 +827,7 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
         totals.setConn(null);
       } catch (Exception ex) {}

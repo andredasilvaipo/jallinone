@@ -53,6 +53,8 @@ import org.jallinone.events.server.*;
 import org.jallinone.system.java.*;
 import org.jallinone.system.server.*;
 import org.jallinone.system.progressives.server.*;
+import org.jallinone.commons.java.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -94,6 +96,11 @@ import org.jallinone.system.progressives.server.*;
 public interface CloseSaleDoc {
 
   public VOResponse closeSaleDoc(
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
 		  SaleDocPK pk,
 		  String t1,String t2,String t3,String t4,String t5,
 		  String t6,String t7,String t8,String t9,String t10,

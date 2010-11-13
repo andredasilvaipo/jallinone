@@ -65,7 +65,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class OutDeliveryNotesBean  implements OutDeliveryNotes {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -73,9 +73,9 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -85,17 +85,17 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
 
   private AddMovementBean movBean;
-  
+
   public void setMovBean(AddMovementBean movBean) {
 	  this.movBean = movBean;
   }
- 
+
   private LoadSaleDocBean loadSaleDocBean;
 
 
@@ -108,12 +108,12 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
   public void setBean(WarehouseUtilsBean bean) {
 	  this.bean = bean;
   }
-  
+
 
   public OutDeliveryNotesBean() {
   }
 
-  
+
 
   /**
    * Business logic to execute.
@@ -214,7 +214,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
    */
   public VOResponse insertOutDeliveryNoteRow(GridOutDeliveryNoteRowVO vo,String serverLanguageId,String username) throws Throwable {
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -395,7 +395,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
     }
   }
 
@@ -732,7 +732,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       bean.setConn(conn);
-      
+
       GridOutDeliveryNoteRowVO oldVO = null;
       GridOutDeliveryNoteRowVO newVO = null;
 
@@ -842,11 +842,11 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
   public VOResponse deleteOutDeliveryNoteRows(ArrayList list,String serverLanguageId,String username) throws Throwable {
     PreparedStatement pstmt = null;
     PreparedStatement pstmt2 = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-  
+
       OutDeliveryNoteRowPK rowPK = null;
 
       pstmt = conn.prepareStatement(
@@ -918,23 +918,30 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
    * No commit/rollback is executed.
    * @return ErrorResponse in case of errors, new VOResponse(Boolean.TRUE) if qtys updating was correctly executed
    */
-  public VOResponse updateOutQtysPurchaseOrder(DeliveryNotePK pk,String t1,String t2,String serverLanguageId,String username) throws Throwable {
+  public VOResponse updateOutQtysPurchaseOrder(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		DeliveryNotePK pk, String t1, String t2, String serverLanguageId,
+		String username) throws Throwable {
 	// String t1 = resources.getResource("unload items from sale document");
 	// String t2 = res.getResource("the warehouse motive specified is not defined");
 
     PreparedStatement pstmt1 = null;
     PreparedStatement pstmt2 = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      movBean.setConn(conn);  
+      movBean.setConn(conn);
       bean.setConn(conn);
 
       // retrieve all in delivery note rows...
       GridParams pars = new GridParams();
       pars.getOtherGridParams().put(ApplicationConsts.DELIVERY_NOTE_PK,pk);
-      Response res = bean.loadOutDeliveryNoteRows(pars,serverLanguageId,username);
+      Response res = bean.loadOutDeliveryNoteRows(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,pars,serverLanguageId,username);
       if (res.isError())
     	  throw new Exception(res.getErrorMessage());
 
@@ -1079,9 +1086,9 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
-          movBean.setConn(null);      
+          movBean.setConn(null);
       } catch (Exception ex) {}
     }
 
@@ -1095,22 +1102,29 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
    * No commit/rollback is executed.
    * @return ErrorResponse in case of errors, new VOResponse(Boolean.TRUE) if qtys updating was correctly executed
    */
-  public VOResponse updateOutQtysSaleDoc(DeliveryNotePK pk,String t1,String t2,String serverLanguageId,String username) throws Throwable {
+  public VOResponse updateOutQtysSaleDoc(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		DeliveryNotePK pk, String t1, String t2, String serverLanguageId,
+		String username) throws Throwable {
     PreparedStatement pstmt1 = null;
     PreparedStatement pstmt2 = null;
     PreparedStatement pstmt3 = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       loadSaleDocBean.setConn(conn);
       movBean.setConn(conn);
       bean.setConn(conn);
-      
+
       // retrieve all out delivery note rows...
       GridParams pars = new GridParams();
       pars.getOtherGridParams().put(ApplicationConsts.DELIVERY_NOTE_PK,pk);
-      Response res = bean.loadOutDeliveryNoteRows(pars,serverLanguageId,username);
+      Response res = bean.loadOutDeliveryNoteRows(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,pars,serverLanguageId,username);
       if (res.isError())
         throw new Exception(res.getErrorMessage());
 
@@ -1226,7 +1240,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
         // update sale document...
         if (vo.getDocTypeDoc01DOC10().equals(ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE)) {
        	  SaleDocPK saleDocPK = new SaleDocPK(vo.getCompanyCodeSys01DOC10(),vo.getDocTypeDoc01DOC10(),vo.getDocYearDoc01DOC10(),vo.getDocNumberDoc01DOC10());
-        	
+
        	  saleDocVO = loadSaleDocBean.loadSaleDoc(
     		  saleDocPK,
     		  serverLanguageId,

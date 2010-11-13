@@ -15,6 +15,8 @@ import org.jallinone.system.server.*;
 import java.math.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
 
 
 /**
@@ -62,7 +64,13 @@ public interface InDeliveryNotes {
 
   public VOListResponse updateInDeliveryNoteRows(ArrayList oldRows,ArrayList newRows,String serverLanguageId,String username) throws Throwable;
 	
-  public VOResponse updateInQuantities(DeliveryNotePK pk,String t1,String t2,String serverLanguageId,String username) throws Throwable;
+  public VOResponse updateInQuantities(
+  	            @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+				DeliveryNotePK pk,String t1,String t2,String serverLanguageId,String username) throws Throwable;
 
   
 }

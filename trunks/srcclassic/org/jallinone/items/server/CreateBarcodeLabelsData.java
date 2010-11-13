@@ -48,7 +48,14 @@ import org.openswing.swing.server.*;
 
 public interface CreateBarcodeLabelsData {
 
-  public VOResponse createBarcodeLabelsData(ItemToPrintVO[] rows,String serverLanguageId,String username,String imagePath) throws Throwable;
+  public VOResponse createBarcodeLabelsData(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		ItemToPrintVO[] rows, String serverLanguageId, String username,
+		String imagePath) throws Throwable;
 
 }
 

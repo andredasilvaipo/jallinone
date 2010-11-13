@@ -41,6 +41,7 @@ import org.jallinone.system.progressives.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -93,8 +94,10 @@ public class CreateInvoiceFromScheduledActivityAction implements Action {
 			Resources resources = factory.getResources(userSessionPars.getLanguageId());
 			String t1 = resources.getResource("no price defined for the scheduled item");
 
+                        VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(invVO.getCallOutRequest().getCompanyCodeSys01SCH03());
+
 			CreateInvoiceFromScheduledActivity bean = (CreateInvoiceFromScheduledActivity)JAIOBeanFactory.getInstance().getBean(CreateInvoiceFromScheduledActivity.class);
-			Response answer = bean.createInvoiceFromScheduledActivity(invVO,t1,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+			Response answer = bean.createInvoiceFromScheduledActivity(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),invVO,t1,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
 			return answer;
 		}

@@ -70,7 +70,14 @@ import org.jallinone.system.progressives.server.*;
 
 public interface CreateInvoiceFromScheduledActivity {
 
-  public VOResponse createInvoiceFromScheduledActivity(InvoiceFromCallOutRequestVO invVO,String t1,String serverLanguageId,String username) throws Throwable;
+  public VOResponse createInvoiceFromScheduledActivity(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      InvoiceFromCallOutRequestVO invVO, String t1, String serverLanguageId,
+      String username) throws Throwable;
 
 }
 

@@ -1,29 +1,27 @@
-package org.jallinone.purchases.documents.server;
+package org.jallinone.sales.documents.activities.server;
 
 import org.openswing.swing.server.*;
 import java.io.*;
 import java.util.*;
+
 import org.openswing.swing.message.receive.java.*;
+import org.openswing.swing.message.send.java.GridParams;
+
 import java.sql.*;
 import org.openswing.swing.logger.server.*;
-import org.jallinone.warehouse.java.*;
 import org.jallinone.system.server.*;
-import org.openswing.swing.server.*;
-import org.openswing.swing.message.send.java.*;
-import org.jallinone.commons.java.*;
+import org.jallinone.sales.documents.activities.java.*;
+import org.jallinone.sales.documents.server.*;
+import org.jallinone.sales.documents.java.*;
+import org.jallinone.sales.documents.java.*;
+import org.jallinone.sales.documents.server.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
-import org.jallinone.purchases.documents.java.*;
-import java.math.*;
-import java.util.*;
-import org.jallinone.variants.java.*;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.jallinone.commons.java.*;
 
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
- * * <p>Description: Bean used to retrieve the list of variants/items having a min stock declared in the item detail.</p>
+ * * <p>Description: Bean used to manage sale activities for a sale document.</p>
  * <p>Copyright: Copyright (C) 2006 Mauro Carniel</p>
  *
  * <p> This file is part of JAllInOne ERP/CRM application.
@@ -49,21 +47,18 @@ import org.jallinone.commons.java.*;
  * @author Mauro Carniel
  * @version 1.0
  */
-@javax.jws.WebService
-public interface ReorderFromMinStocks {
 
-	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
-	 */
-	public ReorderFromMinStockVO getReorderFromMinStock(ReorderFromMinStockFilterVO pk);
+public interface InsertSaleDocActivities {
 
-	public VOListResponse reorderFromMinStocks(
-				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
-				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
-				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
-				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
-				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
-				GridParams gridPars,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse insertSaleDocActivities(
+						 HashMap variant1Descriptions,
+						 HashMap variant2Descriptions,
+						 HashMap variant3Descriptions,
+						 HashMap variant4Descriptions,
+						 HashMap variant5Descriptions,
+						 ArrayList list, String serverLanguageId, String username) throws Throwable;
+
+
 
 }
 

@@ -37,6 +37,7 @@ import org.openswing.swing.table.client.GridController;
 import javax.swing.border.*;
 import java.util.Map;
 import org.jallinone.variants.java.VariantNameVO;
+import org.jallinone.items.java.ItemVariantVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -104,6 +105,28 @@ public class ItemVariantPanel extends JPanel {
         public Response updateRecords(int[] rowNumbers,ArrayList oldPersistentObjects,ArrayList persistentObjects) throws Exception {
           return ClientUtils.getData("updateItemVariants",new ArrayList[]{oldPersistentObjects,persistentObjects});
         }
+
+
+				/**
+				 * @param grid grid
+				 * @param row selected row index
+				 * @param attributeName attribute name that identifies the selected grid column
+				 * @return <code>true</code> if the selected cell is editable, <code>false</code> otherwise
+				 */
+				public boolean isCellEditable(GridControl grid,int row,String attributeName) {
+					String currentSelVarType = null;
+					ItemVariantVO vo = null;
+					for(int i=0;i<grid.getVOListTableModel().getRowCount();i++) {
+						vo = (ItemVariantVO)grid.getVOListTableModel().getObjectForRow(i);
+						if (Boolean.TRUE.equals(vo.getSelected()) && currentSelVarType==null)
+							currentSelVarType = vo.getVariantType();
+					}
+					if (currentSelVarType!=null &&
+							!((ItemVariantVO)grid.getVOListTableModel().getObjectForRow(row)).getVariantType().equals(currentSelVarType))
+						return false;
+					return grid.isFieldEditable(row,attributeName);
+				}
+
 
       });
 

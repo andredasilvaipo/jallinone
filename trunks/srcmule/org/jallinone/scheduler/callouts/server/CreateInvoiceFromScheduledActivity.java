@@ -36,6 +36,8 @@ import org.jallinone.sales.activities.java.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
 import org.jallinone.system.progressives.server.*;
+import org.jallinone.commons.java.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -70,7 +72,13 @@ import org.jallinone.system.progressives.server.*;
 @javax.jws.WebService
 public interface CreateInvoiceFromScheduledActivity {
 
-  public VOResponse createInvoiceFromScheduledActivity(InvoiceFromCallOutRequestVO invVO,String t1,String serverLanguageId,String username) throws Throwable;
+  public VOResponse createInvoiceFromScheduledActivity(
+          @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+		  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+	      InvoiceFromCallOutRequestVO invVO,String t1,String serverLanguageId,String username) throws Throwable;
 
 }
 

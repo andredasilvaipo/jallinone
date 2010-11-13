@@ -45,6 +45,11 @@
 	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
 	</parameter>
+	<parameter name="VAR1_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR2_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR3_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR4_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR5_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
 	<queryString><![CDATA[select DOC01_SELLING.DELIVERY_DATE,DOC01_SELLING.COMPANY_CODE_SYS01,DOC01_SELLING.SECTIONAL,DOC01_SELLING.DOC_TYPE,DOC01_SELLING.DOC_STATE,
 DOC01_SELLING.PRICELIST_CODE_SAL01,DOC01_SELLING.PRICELIST_DESCRIPTION,
 DOC01_SELLING.CURRENCY_CODE_REG03,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,
@@ -459,6 +464,27 @@ $F{DELIVERY_DATE}
 					</subreportParameter>
 					<subreportParameter  name="REPORT_RESOURCE_BUNDLE">
 						<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="VAR1_DESCRS">
+						<subreportParameterExpression><![CDATA[$P{VAR1_DESCRS}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="DATE_FORMAT">
+						<subreportParameterExpression><![CDATA[$P{DATE_FORMAT}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="SUBREPORT_DIR">
+						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="VAR2_DESCRS">
+						<subreportParameterExpression><![CDATA[$P{VAR2_DESCRS}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="VAR3_DESCRS">
+						<subreportParameterExpression><![CDATA[$P{VAR3_DESCRS}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="VAR4_DESCRS">
+						<subreportParameterExpression><![CDATA[$P{VAR4_DESCRS}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="VAR5_DESCRS">
+						<subreportParameterExpression><![CDATA[$P{VAR5_DESCRS}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"DelivReqDoc_subreportItems.jasper"]]></subreportExpression>

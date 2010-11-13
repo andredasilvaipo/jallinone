@@ -72,7 +72,14 @@ import org.jallinone.variants.java.*;
 
 public interface CreateInvoiceFromOutDelivNotes {
 
-  public VOResponse createInvoiceFromOutDelivNotes(SaleInvoiceFromDelivNotesVO invoiceVO,String serverLanguageId,String username) throws Throwable;
+  public VOResponse createInvoiceFromOutDelivNotes(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      SaleInvoiceFromDelivNotesVO invoiceVO, String serverLanguageId,
+      String username) throws Throwable;
 
 }
 

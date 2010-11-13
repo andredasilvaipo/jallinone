@@ -57,14 +57,27 @@ public interface OutDeliveryNotes {
   public VOResponse loadOutDeliveryNote(DeliveryNotePK pk,String serverLanguageId,String username) throws Throwable;
 
   public VOListResponse loadOutDeliveryNotes(GridParams pars,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
-  
+
   public VOResponse updateOutDeliveryNote(DetailDeliveryNoteVO oldVO,DetailDeliveryNoteVO newVO,String serverLanguageId,String username) throws Throwable;
-  
+
   public VOListResponse updateOutDeliveryNoteRows(ArrayList oldRows,ArrayList newRows,String serverLanguageId,String username) throws Throwable;
 
-  public VOResponse updateOutQtysPurchaseOrder(DeliveryNotePK pk,String t1,String t2,String serverLanguageId,String username) throws Throwable;
-	
-  public VOResponse updateOutQtysSaleDoc(DeliveryNotePK pk,String t1,String t2,String serverLanguageId,String username) throws Throwable;
+  public VOResponse updateOutQtysPurchaseOrder(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		DeliveryNotePK pk, String t1, String t2, String serverLanguageId,
+		String username) throws Throwable;
+
+  public VOResponse updateOutQtysSaleDoc(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		DeliveryNotePK pk,String t1,String t2,String serverLanguageId,String username) throws Throwable;
 
 }
 

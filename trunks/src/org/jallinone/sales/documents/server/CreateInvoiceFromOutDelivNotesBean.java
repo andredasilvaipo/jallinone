@@ -75,7 +75,7 @@ import javax.sql.DataSource;
 public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOutDelivNotes {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -83,9 +83,9 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -95,7 +95,7 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -108,11 +108,11 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
   }
 
   private LoadSaleDocBean loadSaleDocBean;
-  
+
   public void setLoadSaleDocBean(LoadSaleDocBean loadSaleDocBean) {
 	  this.loadSaleDocBean = loadSaleDocBean;
   }
-  
+
   private SaleDocsBean docAction;
 
   public void setDocAction(SaleDocsBean docAction) {
@@ -158,17 +158,17 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
   }
 
   private InsertSaleItemBean bean;
-  
+
   public void setBean(InsertSaleItemBean bean) {
 	  this.bean = bean;
   }
 
   private InsertSaleDocRowDiscountBean insBean;
-  
+
   public void setInsBean(InsertSaleDocRowDiscountBean insBean) {
 	  this.insBean = insBean;
   }
-  
+
 
   public CreateInvoiceFromOutDelivNotesBean() {}
 
@@ -177,7 +177,14 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
   /**
    * Business logic to execute.
    */
-  public VOResponse createInvoiceFromOutDelivNotes(SaleInvoiceFromDelivNotesVO invoiceVO,String serverLanguageId,String username) throws Throwable {
+  public VOResponse createInvoiceFromOutDelivNotes(
+      HashMap variant1Descriptions,
+      HashMap variant2Descriptions,
+      HashMap variant3Descriptions,
+      HashMap variant4Descriptions,
+      HashMap variant5Descriptions,
+      SaleInvoiceFromDelivNotesVO invoiceVO, String serverLanguageId,
+      String username) throws Throwable {
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
@@ -190,10 +197,10 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
       discAction.setConn(conn); // use same transaction...
       itemDiscAction.setConn(conn); // use same transaction...
       totals.setConn(conn); // use same transaction...
-      bean.setConn(conn); 
+      bean.setConn(conn);
       loadSaleDocBean.setConn(conn);
       insBean.setConn(conn);
-      
+
       DetailSaleDocVO docVO = invoiceVO.getDocVO();
       ArrayList delivNotes = invoiceVO.getSelectedDeliveryNotes();
 
@@ -273,7 +280,7 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
       // retrieve ref. document item rows...
       GridParams gridParams = new GridParams();
       gridParams.getOtherGridParams().put(ApplicationConsts.SALE_DOC_PK,refPK);
-      res = rowsAction.loadSaleDocRows(gridParams,serverLanguageId,username);
+      res = rowsAction.loadSaleDocRows(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,gridParams,serverLanguageId,username);
       if (res.isError()) {
         throw new Exception(res.getErrorMessage());
       }
@@ -310,7 +317,7 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
             gridRowVO.getVariantCodeItm15DOC02()
 
         );
-        res = bean.loadSaleDocRow(docRowPK,serverLanguageId,username);
+        res = bean.loadSaleDocRow(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,docRowPK,serverLanguageId,username);
         if (res.isError()) {
           throw new Exception(res.getErrorMessage());
         }
@@ -446,7 +453,13 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
         docVO.getDocYearDOC01(),
         docVO.getDocNumberDOC01()
       );
-      res = totals.updateTaxableIncomes(pk,serverLanguageId,username);
+      res = totals.updateTaxableIncomes(
+          variant1Descriptions,
+          variant2Descriptions,
+          variant3Descriptions,
+          variant4Descriptions,
+          variant5Descriptions,
+          pk, serverLanguageId, username);
       if (res.isError()) {
         throw new Exception(res.getErrorMessage());
       }
@@ -482,7 +495,7 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
     	  }
 
       }
-      catch (Exception exx) {}          
+      catch (Exception exx) {}
       try {
           rowsAction.setConn(null);
           docAction.setConn(null);
@@ -492,7 +505,7 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
           discAction.setConn(null);
           itemDiscAction.setConn(null);
           totals.setConn(null);
-          bean.setConn(null); 
+          bean.setConn(null);
           loadSaleDocBean.setConn(null);
           insBean.setConn(null);
         } catch (Exception ex) {}

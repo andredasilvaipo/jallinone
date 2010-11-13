@@ -62,7 +62,7 @@ import javax.sql.DataSource;
 public class CreateInvoiceFromInDelivNotesBean  implements CreateInvoiceFromInDelivNotes {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -70,9 +70,9 @@ public class CreateInvoiceFromInDelivNotesBean  implements CreateInvoiceFromInDe
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -82,7 +82,7 @@ public class CreateInvoiceFromInDelivNotesBean  implements CreateInvoiceFromInDe
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -128,26 +128,33 @@ public class CreateInvoiceFromInDelivNotesBean  implements CreateInvoiceFromInDe
 
   public CreateInvoiceFromInDelivNotesBean() {}
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public DetailPurchaseDocVO getDetailPurchaseDoc() {
 	  throw new UnsupportedOperationException();
   }
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public InDeliveryNotesVO getInDeliveryNotes() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
    */
-  public VOResponse createInvoiceFromInDelivNotes(PurchaseInvoiceFromDelivNotesVO invoiceVO,String companyCode,String serverLanguageId,String username) throws Throwable {
+	public VOResponse createInvoiceFromInDelivNotes(
+		HashMap variant1Descriptions,
+		HashMap variant2Descriptions,
+		HashMap variant3Descriptions,
+		HashMap variant4Descriptions,
+		HashMap variant5Descriptions,
+		PurchaseInvoiceFromDelivNotesVO invoiceVO, String companyCode,
+		String serverLanguageId, String username) throws Throwable {
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
@@ -236,7 +243,7 @@ public class CreateInvoiceFromInDelivNotesBean  implements CreateInvoiceFromInDe
       // retrieve ref. document item rows...
       GridParams gridParams = new GridParams();
       gridParams.getOtherGridParams().put(ApplicationConsts.PURCHASE_DOC_PK,refPK);
-      res = rowsAction.loadPurchaseDocRows(gridParams,serverLanguageId,username);
+      res = rowsAction.loadPurchaseDocRows(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,gridParams,serverLanguageId,username);
       if (res.isError())
         throw new Exception(res.getErrorMessage());
       java.util.List rows = ((VOListResponse)res).getRows();
@@ -269,7 +276,7 @@ public class CreateInvoiceFromInDelivNotesBean  implements CreateInvoiceFromInDe
             gridRowVO.getVariantCodeItm15DOC07()
 
         );
-        rowVO = rowAction.loadPurchaseDocRow(docRowPK,serverLanguageId,username);
+        rowVO = rowAction.loadPurchaseDocRow(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,docRowPK,serverLanguageId,username);
 
         // check if the row to be inserted is in the selected delivery notes...
         if (!selectedItems.containsKey(getVariantItemPK(rowVO)))

@@ -27,6 +27,8 @@ import org.jallinone.system.progressives.server.*;
 import org.jallinone.system.progressives.server.*;
 
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
 import javax.jws.WebService;
 import javax.sql.DataSource;
 

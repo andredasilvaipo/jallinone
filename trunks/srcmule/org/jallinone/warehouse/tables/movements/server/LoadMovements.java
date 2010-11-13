@@ -12,6 +12,8 @@ import org.openswing.swing.message.send.java.*;
 import org.jallinone.warehouse.tables.movements.java.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.jallinone.commons.java.*;
 
 
 /**
@@ -50,7 +52,13 @@ public interface LoadMovements {
 	 */
 	public MovementVO getMovement();
 
-	public VOListResponse loadWarehouseMovements(GridParams gridParams,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadWarehouseMovements(
+			@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+			@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+			@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+			@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+			@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+			GridParams gridParams,String serverLanguageId,String username) throws Throwable;
 
 }
 
