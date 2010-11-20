@@ -27,9 +27,7 @@
       <jar href="netscape.jar" />
       <jar href="jasperreports-1.2.7.jar" />
       <jar href="itext-1.3.1.jar" />
-      <jar href="jTattoo.jar" />
       <property name="SERVERURL" value="$$context/controller"/> 
-      <property name="LOOK_AND_FEEL_CLASS_NAME" value="com.jtattoo.plaf.aluminium.AluminiumLookAndFeel"/>
    </resources>
 
 </jnlp>

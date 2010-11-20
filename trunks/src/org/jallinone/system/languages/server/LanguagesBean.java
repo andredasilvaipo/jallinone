@@ -51,7 +51,7 @@ import javax.sql.DataSource;
 public class LanguagesBean  implements Languages {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -59,9 +59,9 @@ public class LanguagesBean  implements Languages {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -81,7 +81,7 @@ public class LanguagesBean  implements Languages {
   }
 
 
-  
+
 
   /**
    * Business logic to execute.
@@ -142,7 +142,7 @@ public class LanguagesBean  implements Languages {
   public VOListResponse insertLanguages(ArrayList list,String serverLanguageId,String username) throws Throwable {
     Statement stmt = null;
     PreparedStatement pstmt = null;
-    
+		StringBuffer sql = new StringBuffer("");
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -150,7 +150,6 @@ public class LanguagesBean  implements Languages {
 
 
       LanguageVO vo = null;
-      StringBuffer sql = new StringBuffer("");
       BufferedReader br = null;
       ResultSet rset = null;
 
@@ -158,6 +157,8 @@ public class LanguagesBean  implements Languages {
           "insert into SYS09_LANGUAGES(LANGUAGE_CODE,DESCRIPTION,CLIENT_LANGUAGE_CODE,CREATE_DATE,ENABLED) VALUES(?,?,?,?,'Y')"
       );
 
+   		 int index = -1;
+		   StringBuffer unicode = new StringBuffer();
       for(int i=0;i<list.size();i++) {
         vo = (LanguageVO)list.get(i);
 
@@ -198,6 +199,27 @@ public class LanguagesBean  implements Languages {
                 sql = replace(sql, ":LANGUAGE_CODE","'" + vo.getLanguageCodeSYS09() + "'");
               }
               if (sql.toString().trim().length()>0) {
+
+								// check for unicode chars...
+								while((index=sql.indexOf("\\u"))!=-1) {
+									for(int j=index+2;j<Math.min(sql.length(),index+2+6);j++)
+										if (Character.isDigit(sql.charAt(j)) ||
+											sql.charAt(j)=='A' ||
+											sql.charAt(j)=='B' ||
+											sql.charAt(j)=='C' ||
+											sql.charAt(j)=='D' ||
+											sql.charAt(j)=='E' ||
+											sql.charAt(j)=='F')
+											unicode.append(sql.charAt(j));
+										else
+											break;
+									if (unicode.length()>0) {
+										sql.delete(index, index+1+unicode.length());
+										sql.setCharAt(index, new Character((char)Integer.valueOf(unicode.toString(),16).intValue()).charValue());
+										unicode.delete(0, unicode.length());
+									}
+								}
+
                 stmt.execute(sql.toString().substring(0,sql.length() - 1));
               }
               sql.delete(0, sql.length());
@@ -228,7 +250,7 @@ public class LanguagesBean  implements Languages {
     }
     catch (Throwable ex) {
       Logger.error(username, this.getClass().getName(),
-                   "executeCommand", "Error while inserting new languages", ex);
+                   "executeCommand", "Error while inserting new languages:\n"+sql.toString(), ex);
       try {
     		if (this.conn==null && conn!=null)
     			// rollback only local connection
@@ -254,7 +276,7 @@ public class LanguagesBean  implements Languages {
 
   }
 
-  
+
 
   /**
    * Replace the specified pattern with the new one.
@@ -267,7 +289,7 @@ public class LanguagesBean  implements Languages {
     int i = -1;
     while((i=b.indexOf(oldPattern))!=-1) {
       b.replace(i,i+oldPattern.length(),newPattern);
-    
+
       try {
       } catch (Exception ex) {}
     }
@@ -280,10 +302,10 @@ public class LanguagesBean  implements Languages {
    * Business logic to execute.
    */
   public VOListResponse validateLanguageCode(LookupValidationParams validationPars,String serverLanguageId,String username) throws Throwable {
-    
+
 
     Statement stmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -336,13 +358,13 @@ public class LanguagesBean  implements Languages {
 
 
 
-  
+
 
   /**
    * Business logic to execute.
    */
   public VOListResponse updateLanguages(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable {
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -418,7 +440,7 @@ public class LanguagesBean  implements Languages {
   public VOResponse deleteLanguage(LanguageVO vo,String serverLanguageId,String username) throws Throwable {
     Statement stmt = null;
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -453,7 +475,7 @@ public class LanguagesBean  implements Languages {
       }
       catch (Exception ex2) {
       }
-    
+
       try {
       } catch (Exception ex) {}
     }

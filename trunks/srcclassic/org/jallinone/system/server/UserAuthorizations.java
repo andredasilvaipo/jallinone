@@ -39,25 +39,25 @@ import org.openswing.swing.permissions.java.ButtonAuthorization;
 
 public interface UserAuthorizations {
 
-	
+
 	public ButtonAuthorization[] getButtonsAuthorizations(String serverLanguageId,String username) throws Throwable;
-	
+
     public ButtonCompanyAuthorization[] getButtonCompanyAuthorizations(String serverLanguageId,String username) throws Throwable;
-   
-    
+
+
     public HashMap getUserRoles(String serverLanguageId,String username) throws Throwable;
 
-    public int getCompaniesNumber() throws Throwable;    	
-    
+    public int getCompaniesNumber() throws Throwable;
+
     public CustomizedWindows getWindowCustomizations(String langId) throws Throwable;
-    
-    
+
+
     public HashMap getApplicationPars() throws Throwable;
-    
-    
+
+
     public HashMap getLastGridPermissionsDigests() throws Throwable;
-    
-     
-	
+
+
+
 }
 

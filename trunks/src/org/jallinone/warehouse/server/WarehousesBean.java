@@ -56,7 +56,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class WarehousesBean  implements Warehouses {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -64,9 +64,9 @@ public class WarehousesBean  implements Warehouses {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -263,7 +263,7 @@ public class WarehousesBean  implements Warehouses {
    * Business logic to execute.
    */
   public VOResponse loadWarehouse(WarehousePK pk,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable {
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -357,7 +357,7 @@ public class WarehousesBean  implements Warehouses {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      
+
 //      // retrieve roles list...
 //      Iterator it = ((JAIOUserSessionParameters)userSessionPars).getUserRoles().keySet().iterator();
 //      String roles = "";
@@ -433,8 +433,6 @@ public class WarehousesBean  implements Warehouses {
         }
         catch (Exception exx) {}
     }
-
-
   }
 
 
@@ -700,7 +698,7 @@ public class WarehousesBean  implements Warehouses {
 
 
 
-  
+
   /**
    * Business logic to execute.
    */
@@ -756,6 +754,7 @@ public class WarehousesBean  implements Warehouses {
     }
 
   }
+
 
 
 

@@ -60,7 +60,7 @@ import javax.swing.tree.DefaultTreeModel;
 public class HierarchiesBean  implements Hierarchies {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -68,9 +68,9 @@ public class HierarchiesBean  implements Hierarchies {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -80,7 +80,7 @@ public class HierarchiesBean  implements Hierarchies {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -145,7 +145,7 @@ public class HierarchiesBean  implements Hierarchies {
         }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
   }
 
@@ -156,7 +156,7 @@ public class HierarchiesBean  implements Hierarchies {
    */
   public VOResponse insertLevel(HierarchyLevelVO vo,String serverLanguageId,String username,String defCompanyCodeSys01SYS03)  throws Throwable{
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -355,6 +355,120 @@ public class HierarchiesBean  implements Hierarchies {
 
   }
 
+
+		/**
+		 * Business logic to execute.
+		 */
+		public VOListResponse getLeaves(BigDecimal progressiveHIE02,String langId,String username) throws Throwable {
+			PreparedStatement pstmt = null;
+			Connection conn = null;
+			try {
+				if (this.conn==null) conn = getConn(); else conn = this.conn;
+
+				// retrieve the whole tree...
+				pstmt = conn.prepareStatement(
+						"select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV,"+
+						"SYS10_TRANSLATIONS.DESCRIPTION,HIE02_HIERARCHIES.PROGRESSIVE_HIE01 "+
+						"from HIE01_LEVELS,HIE02_HIERARCHIES,SYS10_TRANSLATIONS where "+
+						"HIE01_LEVELS.PROGRESSIVE_HIE02=HIE02_HIERARCHIES.PROGRESSIVE and "+
+						"HIE01_LEVELS.PROGRESSIVE = SYS10_TRANSLATIONS.PROGRESSIVE and "+
+						"SYS10_TRANSLATIONS.LANGUAGE_CODE='"+langId+"' and HIE01_LEVELS.ENABLED='Y' and "+
+						"HIE01_LEVELS.PROGRESSIVE_HIE02=? "+
+						"order by HIE01_LEVELS.LEV,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.PROGRESSIVE"
+				);
+				pstmt.setBigDecimal(1,progressiveHIE02);
+				ResultSet rset = pstmt.executeQuery();
+
+				Hashtable currentLevelNodes = new Hashtable();
+				Hashtable newLevelNodes = new Hashtable();
+				int currentLevel = -1;
+				DefaultMutableTreeNode rootNode = null;
+				DefaultMutableTreeNode currentNode = null;
+				DefaultMutableTreeNode parentNode = null;
+				HierarchyLevelVO vo = null;
+				while(rset.next()) {
+					if (currentLevel!=rset.getInt(3)) {
+						// next level...
+						currentLevel = rset.getInt(3);
+						currentLevelNodes = newLevelNodes;
+						newLevelNodes = new Hashtable();
+					}
+
+					if (currentLevel==0) {
+						// prepare a tree model with the root node...
+						vo = new HierarchyLevelVO();
+						vo.setEnabledHIE01("Y");
+						vo.setLevelHIE01(rset.getBigDecimal(3));
+						vo.setProgressiveHIE01(rset.getBigDecimal(1));
+						vo.setProgressiveHie01HIE01(rset.getBigDecimal(2));
+						vo.setProgressiveHie02HIE01(progressiveHIE02);
+						vo.setDescriptionSYS10(rset.getString(4));
+						vo.setProgressiveHie01HIE02(rset.getBigDecimal(5));
+						currentNode = new DefaultMutableTreeNode(vo);
+						rootNode = currentNode;
+					}
+					else {
+						vo = new HierarchyLevelVO();
+						vo.setEnabledHIE01("Y");
+						vo.setLevelHIE01(rset.getBigDecimal(3));
+						vo.setProgressiveHIE01(rset.getBigDecimal(1));
+						vo.setProgressiveHie01HIE01(rset.getBigDecimal(2));
+						vo.setProgressiveHie02HIE01(progressiveHIE02);
+						vo.setDescriptionSYS10(rset.getString(4));
+						vo.setProgressiveHie01HIE02(rset.getBigDecimal(5));
+						currentNode = new DefaultMutableTreeNode(vo);
+
+						parentNode = (DefaultMutableTreeNode)currentLevelNodes.get(new Integer(rset.getInt(2)));
+						parentNode.add(currentNode);
+					}
+
+					newLevelNodes.put(new Integer(rset.getInt(1)),currentNode);
+
+				}
+				rset.close();
+
+
+				ArrayList leaves = new ArrayList();
+				searchLeaves("", rootNode, leaves);
+
+				return new VOListResponse(leaves,false,leaves.size());
+			} catch (Exception ex1) {
+				ex1.printStackTrace();
+				throw new Exception(ex1.getMessage());
+			} finally {
+				try {
+					pstmt.close();
+				}
+				catch (Exception ex) {
+				}
+				try {
+						if (this.conn==null && conn!=null) {
+							// close only local connection
+							conn.commit();
+							conn.close();
+					}
+
+				}
+				catch (Exception exx) {}
+			}
+		}
+
+
+			private void searchLeaves(String prefix, DefaultMutableTreeNode node,ArrayList leaves) {
+				HierarchyLevelVO vo = (HierarchyLevelVO)node.getUserObject();
+				if (node.getChildCount()==0 && vo!=null) {
+					vo.setDescriptionSYS10(prefix+vo.getDescriptionSYS10());
+					leaves.add(vo);
+				}
+				else {
+					for(int i=0;i<node.getChildCount();i++)
+					  searchLeaves(
+					    prefix+(vo.getDescriptionSYS10().length()>0?vo.getDescriptionSYS10()+" - ":""),
+							(DefaultMutableTreeNode)node.getChildAt(i),
+							leaves
+						);
+				}
+			}
 
 
 }

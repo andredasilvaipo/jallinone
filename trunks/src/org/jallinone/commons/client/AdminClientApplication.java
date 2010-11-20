@@ -56,6 +56,8 @@ public class AdminClientApplication extends ClientApplication {
     languagesDomain.addDomainPair("EN","english");
     languagesDomain.addDomainPair("IT","italian");
     languagesDomain.addDomainPair("ES","espanol");
+		languagesDomain.addDomainPair("PTBR","brazilian");
+		languagesDomain.addDomainPair("DE","german");
     domains.put(
       languagesDomain.getDomainId(),
       languagesDomain

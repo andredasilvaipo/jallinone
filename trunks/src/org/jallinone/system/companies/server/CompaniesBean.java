@@ -53,7 +53,7 @@ import org.openswing.swing.message.receive.java.VOResponse;
 public class CompaniesBean  implements Companies {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -61,9 +61,9 @@ public class CompaniesBean  implements Companies {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -73,18 +73,18 @@ public class CompaniesBean  implements Companies {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
 
   private OrganizationBean bean;
-  
+
   public void setBean(OrganizationBean bean) {
 	  this.bean = bean;
   }
-  
-  
+
+
 
 
   public CompaniesBean() {
@@ -92,7 +92,7 @@ public class CompaniesBean  implements Companies {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public CompanyVO getCompany() {
 	  throw new UnsupportedOperationException();
@@ -113,7 +113,7 @@ public class CompaniesBean  implements Companies {
           "select REG04_SUBJECTS.SUBJECT_TYPE,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,REG04_SUBJECTS.ADDRESS,"+
           "REG04_SUBJECTS.CITY,REG04_SUBJECTS.ZIP,REG04_SUBJECTS.PROVINCE,REG04_SUBJECTS.COUNTRY,REG04_SUBJECTS.TAX_CODE,"+
           "REG04_SUBJECTS.PHONE_NUMBER,REG04_SUBJECTS.FAX_NUMBER,REG04_SUBJECTS.EMAIL_ADDRESS,REG04_SUBJECTS.WEB_SITE,"+
-          "REG04_SUBJECTS.LAWFUL_SITE,REG04_SUBJECTS.NOTE,SYS01_COMPANIES.CURRENCY_CODE_REG03,REG04_SUBJECTS.PROGRESSIVE_REG04 "+
+          "REG04_SUBJECTS.LAWFUL_SITE,REG04_SUBJECTS.NOTE,SYS01_COMPANIES.CURRENCY_CODE_REG03,REG04_SUBJECTS.PROGRESSIVE "+
           "from REG04_SUBJECTS,SYS01_COMPANIES where "+
           "COMPANY_CODE_SYS01='"+companyCode+"' and "+
           "REG04_SUBJECTS.COMPANY_CODE_SYS01=SYS01_COMPANIES.COMPANY_CODE and "+
@@ -190,7 +190,7 @@ public class CompaniesBean  implements Companies {
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       bean.setConn(conn);
-      
+
       Response res = bean.update(oldVO,newVO,t1,serverLanguageId,username);
       Response answer = res;
       if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (VOResponse)answer;
@@ -208,7 +208,7 @@ public class CompaniesBean  implements Companies {
       throw new Exception(ex.getMessage());
     }
     finally {
-    	
+
     	try {
 			bean.setConn(null);
 		} catch (Exception e) {
@@ -239,6 +239,7 @@ public class CompaniesBean  implements Companies {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
+			bean.setConn(conn);
       stmt = conn.createStatement();
 
 
@@ -253,7 +254,6 @@ public class CompaniesBean  implements Companies {
 
       vo.setProgressiveREG04(new BigDecimal(2));
       vo.setSubjectTypeREG04(ApplicationConsts.SUBJECT_MY_COMPANY);
-      OrganizationBean bean = new OrganizationBean();
       bean.insert(false,vo,t1,serverLanguageId,username);
 
       // add grants of the new company code to ADMIN user...
@@ -310,12 +310,29 @@ public class CompaniesBean  implements Companies {
       // insert company user parameters...
       pstmt = conn.prepareStatement(
         "INSERT INTO SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) "+
-        "SELECT DISTINCT ?,PARAM_CODE,VALUE FROM SYS19_USER_PARAMS WHERE COMPANY_CODE_SYS01=?"
+        "SELECT DISTINCT ?,PARAM_CODE,VALUE FROM SYS21_COMPANY_PARAMS WHERE COMPANY_CODE_SYS01=?"
       );
       pstmt.setString(1,vo.getCompanyCodeSys01REG04());
       pstmt.setString(2,companyCode);
       pstmt.execute();
       pstmt.close();
+
+
+			// insert initial value for progressives...
+			pstmt = conn.prepareStatement("SELECT COUNT(*) FROM SYS01_COMPANIES");
+			rset = pstmt.executeQuery();
+			rset.next();
+			int companies = rset.getInt(1);
+			rset.close();
+			pstmt.close();
+			pstmt = conn.prepareStatement(
+				"UPDATE SYS21_COMPANY_PARAMS SET VALUE=? WHERE COMPANY_CODE_SYS01=? AND PARAM_CODE=?"
+			);
+ 		  pstmt.setString(1,String.valueOf(companies+2)); // progressive 2 is locked for db initialization...
+			pstmt.setString(2,vo.getCompanyCodeSys01REG04());
+			pstmt.setString(3,ApplicationConsts.INITIAL_VALUE);
+			int rows = pstmt.executeUpdate();
+			pstmt.close();
 
 
       // insert company ledger...
@@ -433,23 +450,6 @@ public class CompaniesBean  implements Companies {
            vo.getCompanyCodeSys01REG04()
       );
 
-      // insert initial value for progressives...
-      pstmt = conn.prepareStatement("SELECT COUNT(*) FROM SYS01_COMPANIES");
-      rset = pstmt.executeQuery();
-      rset.next();
-      int companies = rset.getInt(1);
-      rset.close();
-      pstmt.close();
-      pstmt = conn.prepareStatement(
-        "INSERT INTO SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) VALUES(?,?,?)"
-      );
-      pstmt.setString(1,companyCode);
-      pstmt.setString(2,ApplicationConsts.INITIAL_VALUE);
-      pstmt.setString(3,String.valueOf(companies+2)); // progressive 2 is locked for db initialization...
-      pstmt.execute();
-      pstmt.close();
-
-
       return new VOResponse(vo);
     }
     catch (Throwable ex) {
@@ -475,6 +475,12 @@ public class CompaniesBean  implements Companies {
       }
       catch (Exception ex2) {
       }
+			try {
+				bean.setConn(null);
+			}
+			catch (Exception ex1) {
+			}
+
       try {
           if (this.conn==null && conn!=null) {
               // close only local connection
@@ -483,7 +489,7 @@ public class CompaniesBean  implements Companies {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }
@@ -573,7 +579,6 @@ public class CompaniesBean  implements Companies {
    * Business logic to execute.
    */
   public VOListResponse loadCompanies(String serverLanguageId,String username) throws Throwable {
-    
     Statement stmt = null;
     Connection conn = null;
     try {

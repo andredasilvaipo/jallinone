@@ -234,6 +234,7 @@
   <object key="italian" value="Italian" />
   <object key="spanish" value="Spanish" />
   <object key="brazilian" value="Brazilian" />
+  <object key="german" value="German" />
 
   <object key="male" value="Male" />
   <object key="female" value="Female" />

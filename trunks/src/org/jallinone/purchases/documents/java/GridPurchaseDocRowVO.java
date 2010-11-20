@@ -2,6 +2,7 @@ package org.jallinone.purchases.documents.java;
 
 import org.openswing.swing.message.receive.java.*;
 import org.jallinone.commons.java.*;
+import java.math.BigDecimal;
 
 
 /**
@@ -66,6 +67,8 @@ public class GridPurchaseDocRowVO extends ValueObjectImpl {
 
   private String barCodeITM01;
   private String barcodeTypeITM01;
+	private String serialNumberRequiredITM01;
+	private BigDecimal progressiveHie02DOC07;
 
 
   public GridPurchaseDocRowVO() {
@@ -282,6 +285,18 @@ public class GridPurchaseDocRowVO extends ValueObjectImpl {
   }
   public void setBarcodeTypeITM01(String barcodeTypeITM01) {
     this.barcodeTypeITM01 = barcodeTypeITM01;
+  }
+  public String getSerialNumberRequiredITM01() {
+    return serialNumberRequiredITM01;
+  }
+  public void setSerialNumberRequiredITM01(String serialNumberRequiredITM01) {
+    this.serialNumberRequiredITM01 = serialNumberRequiredITM01;
+  }
+  public BigDecimal getProgressiveHie02DOC07() {
+    return progressiveHie02DOC07;
+  }
+  public void setProgressiveHie02DOC07(BigDecimal progressiveHie02DOC07) {
+    this.progressiveHie02DOC07 = progressiveHie02DOC07;
   }
 
 

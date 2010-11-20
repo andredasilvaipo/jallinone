@@ -50,6 +50,8 @@ public class StoredSerialNumberVO extends ValueObjectImpl {
   private String variantTypeItm10WAR05;
   private String variantCodeItm15WAR05;
 
+	private String descriptionSYS10;
+
 
   public StoredSerialNumberVO() {
   }
@@ -139,5 +141,14 @@ public class StoredSerialNumberVO extends ValueObjectImpl {
   public void setCompanyCodeSys01WAR05(String companyCodeSys01WAR05) {
     this.companyCodeSys01WAR05 = companyCodeSys01WAR05;
   }
+  public String getDescriptionSYS10() {
+    return descriptionSYS10;
+  }
+  public void setDescriptionSYS10(String descriptionSYS10) {
+    this.descriptionSYS10 = descriptionSYS10;
+  }
+
+
+
 
 }

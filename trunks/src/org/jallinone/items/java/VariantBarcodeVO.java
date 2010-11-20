@@ -2,6 +2,7 @@ package org.jallinone.items.java;
 
 import org.openswing.swing.message.receive.java.ValueObjectImpl;
 import org.jallinone.commons.java.*;
+import java.math.BigDecimal;
 
 
 /**
@@ -49,6 +50,8 @@ public class VariantBarcodeVO extends ValueObjectImpl {
   private String variantTypeItm10ITM22;
   private String variantCodeItm15ITM22;
   private String enabledITM22;
+	private String serialNumberRequiredITM01;
+	private BigDecimal progressiveHie02ITM01;
 
 
   public VariantBarcodeVO() {
@@ -170,6 +173,18 @@ public class VariantBarcodeVO extends ValueObjectImpl {
   }
   public void setEnabledITM22(String enabledITM22) {
     this.enabledITM22 = enabledITM22;
+  }
+  public String getSerialNumberRequiredITM01() {
+    return serialNumberRequiredITM01;
+  }
+  public void setSerialNumberRequiredITM01(String serialNumberRequiredITM01) {
+    this.serialNumberRequiredITM01 = serialNumberRequiredITM01;
+  }
+  public BigDecimal getProgressiveHie02ITM01() {
+    return progressiveHie02ITM01;
+  }
+  public void setProgressiveHie02ITM01(BigDecimal progressiveHie02ITM01) {
+    this.progressiveHie02ITM01 = progressiveHie02ITM01;
   }
 
 

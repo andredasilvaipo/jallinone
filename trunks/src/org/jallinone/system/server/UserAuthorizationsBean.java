@@ -52,7 +52,7 @@ import org.openswing.swing.table.permissions.java.GridPermissions;
 public class UserAuthorizationsBean  implements UserAuthorizations {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -60,9 +60,9 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -72,7 +72,7 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -81,7 +81,7 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
   public UserAuthorizationsBean() {
   }
 
-    
+
   /**
    * Business logic to execute.
    */
@@ -107,7 +107,7 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
       );
       rset = pstmt.executeQuery();
       while(rset.next()) {
-        if (rset.getString(2)==null) 
+        if (rset.getString(2)==null)
         	userRoles.put(rset.getBigDecimal(1),"");
         else
         	userRoles.put(rset.getBigDecimal(1),rset.getString(2));
@@ -116,7 +116,7 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
       pstmt.close();
 
       return userRoles;
-      
+
     } catch (Exception ex1) {
       ex1.printStackTrace();
       throw new Exception(ex1.getMessage());
@@ -139,11 +139,11 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
   }
 
-  
+
   /**
    * Business logic to execute.
    */
@@ -187,11 +187,11 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
   }
 
-  
+
   /**
    * Business logic to execute.
    */
@@ -253,7 +253,7 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
   }
 
@@ -279,7 +279,7 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
       rset.close();
 
       return applicationPars;
-      
+
     } catch (Exception ex1) {
       ex1.printStackTrace();
       throw new Exception(ex1.getMessage());
@@ -302,7 +302,7 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
   }
 
@@ -351,12 +351,12 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
   }
 
- 
-  
+
+
   /**
    * Business logic to execute.
    */
@@ -365,7 +365,7 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
 
     PreparedStatement pstmt = null;
     Statement stmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -402,7 +402,7 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
       pstmt.close();
 
       return (ButtonAuthorization[])ba.toArray(new ButtonAuthorization[ba.size()]);
-      
+
     } catch (Exception ex1) {
       ex1.printStackTrace();
       throw new Exception(ex1.getMessage());
@@ -425,11 +425,11 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
   }
 
-  
+
   /**
    * Business logic to execute.
    */
@@ -437,7 +437,7 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
     ArrayList companyBa = new ArrayList();
     PreparedStatement pstmt = null;
     Statement stmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -481,7 +481,7 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
       pstmt.close();
 
       return (ButtonCompanyAuthorization[])companyBa.toArray(new ButtonCompanyAuthorization[companyBa.size()]);
-      
+
     } catch (Exception ex1) {
       ex1.printStackTrace();
       throw new Exception(ex1.getMessage());
@@ -504,7 +504,7 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
   }
 

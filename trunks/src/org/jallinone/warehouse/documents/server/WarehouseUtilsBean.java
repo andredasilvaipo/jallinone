@@ -202,6 +202,10 @@ public class WarehouseUtilsBean implements WarehouseUtils {
 	      values.add(pk.getDocYearDOC08());
 	      values.add(pk.getDocNumberDOC08());
 
+				int blockSize = 50;
+				if (pars.getOtherGridParams().get(ApplicationConsts.BLOCK_SIZE)!=null)
+					blockSize = Integer.parseInt(pars.getOtherGridParams().get(ApplicationConsts.BLOCK_SIZE).toString());
+
 	      // read from DOC09 table...
 	      Response res = QueryUtil.getQuery(
 	          conn,
@@ -214,7 +218,8 @@ public class WarehouseUtilsBean implements WarehouseUtils {
 	          "N",
 	          null,
 	          pars,
-	          true
+	          blockSize,
+					 true
 	     );
 	     if (!res.isError()) {
 	       ArrayList serialNums = null;
@@ -512,6 +517,10 @@ public class WarehouseUtilsBean implements WarehouseUtils {
 	      values.add(pk.getDocYearDOC08());
 	      values.add(pk.getDocNumberDOC08());
 
+				int blockSize = 50;
+				if (pars.getOtherGridParams().get(ApplicationConsts.BLOCK_SIZE)!=null)
+					blockSize = Integer.parseInt(pars.getOtherGridParams().get(ApplicationConsts.BLOCK_SIZE).toString());
+
 	      // read from DOC10 table...
 	      Response res = QueryUtil.getQuery(
 	          conn,
@@ -524,6 +533,7 @@ public class WarehouseUtilsBean implements WarehouseUtils {
 	          "N",
 	          null,
 	          pars,
+						blockSize,
 	          true
 	     );
 

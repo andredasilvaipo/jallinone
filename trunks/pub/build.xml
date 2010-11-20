@@ -17,7 +17,7 @@
   <property name="libendorsed" value="${basedir}/../libendorsed"/>
   <property name="libservlet" value="${libservlet}"/>
 
-  
+
   <path id="classpath">
     <fileset dir="${lib}">
       <include name="**/*.jar"/>
@@ -27,8 +27,8 @@
     </fileset>
     <fileset file="${libservlet}" />
   </path>
-  
-  
+
+
   <target name="compile-classic">
     <echo message="Compiling classic version..."/>
     <delete>
@@ -49,8 +49,8 @@
 	   <src path="${srcclassic}"/>
       </javac>
   </target>
-  
-  
+
+
   <target name="compile-mule">
     <echo message="Compiling SOA version..."/>
     <delete>
@@ -71,8 +71,8 @@
 	   <src path="${srcmule}"/>
       </javac>
   </target>
-  
-  
+
+
   <target name="allclasses" >
     <delete>
       <fileset dir="${tmp}" includes="**/*.*"/>
@@ -111,9 +111,7 @@
         <include name="jTattoo.jar"/>
       </fileset>
       <fileset dir="${classes}">
-        <include name="launch14.jnlp"/>
-        <include name="launch15.jnlp"/>
-        <include name="launch16.jnlp"/>
+        <include name="*.jnlp"/>
         <include name="appicon11.gif"/>
         <include name="jAllInOne.jpg"/>
       </fileset>
@@ -180,7 +178,7 @@
         <include name="commons-digester-1.7.jar"/>
         <include name="commons-logging.jar"/>
         <include name="jruleengine.jar"/>
-        <include name="jsr94.jar"/>		
+        <include name="jsr94.jar"/>
       </fileset>
       <fileset dir="${libOpenSwing}">
         <include name="serveros.jar"/>
@@ -201,7 +199,7 @@
     </copy>
   </target>
 
-  
+
   <target name="allclasses-classic" depends="allclasses">
     <copy todir="${webapps}/jAllInOne/WEB-INF" >
       <fileset dir="${srcclassic}">
@@ -209,7 +207,7 @@
       </fileset>
     </copy>
   </target>
-  
+
 
   <target name="allclasses-mule" depends="allclasses">
     <copy todir="${webapps}/jAllInOne/WEB-INF/lib" >
@@ -370,7 +368,7 @@
         <include name="commons-digester-1.7.jar"/>
         <include name="commons-logging.jar"/>
       </fileset>
-    </copy>	  
+    </copy>
     <copy todir="${webapps}/jAllInOne/WEB-INF" >
       <fileset dir="${srcmule}">
         <include name="web.xml"/>
@@ -419,9 +417,7 @@
         <include name="jTattoo.jar"/>
       </fileset>
       <fileset dir="${classes}">
-        <include name="launch14.jnlp"/>
-        <include name="launch15.jnlp"/>
-        <include name="launch16.jnlp"/>
+        <include name="*.jnlp"/>
         <include name="appicon11.gif"/>
         <include name="jAllInOne.jpg"/>
       </fileset>
@@ -500,8 +496,8 @@
       </fileset>
     </copy>
   </target>
-  
-    
+
+
   <target name="allclasses-nosign-classic" depends="allclasses-nosign">
     <copy todir="${webapps}/jAllInOne/WEB-INF" >
       <fileset dir="${srcclassic}">
@@ -675,11 +671,11 @@
         <include name="commons-digester-1.7.jar"/>
         <include name="commons-logging.jar"/>
       </fileset>
-    </copy>	  
+    </copy>
 	<jar jarfile="${tmp}/endorsed.zip" basedir="${libendorsed}"/>
   </target>
-  
-     
+
+
   <target name="war-classic">
     <mkdir dir="${pub}/classic"/>
     <delete>
@@ -688,7 +684,7 @@
     <war warfile="${pub}/classic/jallinone.war" excludes="**/pooler.ini**,**/*.sh" webxml="${webapps}/jallinone/WEB-INF/web.xml" basedir="${webapps}/jAllInOne/"/>
   </target>
 
-  
+
   <target name="war-mule">
     <mkdir dir="${pub}/soa"/>
     <delete>
@@ -696,7 +692,7 @@
     </delete>
     <war warfile="${pub}/soa/jallinone.war" excludes="**/pooler.ini**,**/*.sh" webxml="${webapps}/jallinone/WEB-INF/web.xml" basedir="${webapps}/jAllInOne/"/>
   </target>
-  
+
 
   <target name="createdistribution">
     <mkdir dir="${tmp}"/>
@@ -769,6 +765,6 @@
   </target>
 
 
-  
+
 
 </project>

@@ -17,6 +17,7 @@ import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.jallinone.commons.java.*;
+import org.jallinone.sales.documents.java.SaleDocPK;
 
 
 /**
@@ -80,5 +81,22 @@ public interface OutDeliveryNotes {
 				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
 				DeliveryNotePK pk,String t1,String t2,String serverLanguageId,String username) throws Throwable;
 
+				
+  public GridOutDeliveryNoteRowVO validateCode(
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
+				@XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
+				SaleDocPK pk,
+				String warehouseCode,
+				BigDecimal progressiveREG04,
+			    BigDecimal progressiveHie01DOC10,
+				BigDecimal docSequenceDOC01,			
+				BigDecimal delivNoteDocNumber,
+				String codeType,
+				String code,
+				String serverLanguageId,String username) throws Throwable;
+				
 }
 

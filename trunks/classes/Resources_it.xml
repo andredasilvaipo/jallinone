@@ -191,6 +191,7 @@
   <object key="italian" value="Italiano" />
   <object key="spanish" value="Spagnolo" />
   <object key="brazilian" value="Brasiliano" />
+  <object key="german" value="Tedesco" />
 
   <object key="male" value="Maschio" />
   <object key="female" value="Femmina" />

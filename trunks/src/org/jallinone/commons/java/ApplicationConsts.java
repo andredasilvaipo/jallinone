@@ -364,5 +364,8 @@ public class ApplicationConsts {
 
   public static final String PROGRESSIVE_SYS23 = "PROGRESSIVE_SYS23";
 
+	public static final String BLOCK_SIZE = "BLOCK_SIZE";
+
+
 
 }

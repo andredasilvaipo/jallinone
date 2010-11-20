@@ -84,7 +84,9 @@ public class DebugClientApplication extends ClientApplet {
 //    ClientUtils.setObjectSender(new HessianObjectSender());
 
     try {
-      ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "com.jtattoo.plaf.aluminium.AluminiumLookAndFeel"; // "com.jtattoo.plaf.aero.McWinLookAndFeel";
+			String lookAndFeelClassName = System.getProperty("LOOK_AND_FEEL_CLASS_NAME");
+			if (lookAndFeelClassName!=null)
+				ClientSettings.LOOK_AND_FEEL_CLASS_NAME = lookAndFeelClassName; // "com.jtattoo.plaf.aero.McWinLookAndFeel";
       Properties props = new Properties();
       props.put("logoString", "JAllInOne");
       props.put("backgroundColor", "232 232 232");
@@ -95,10 +97,12 @@ public class DebugClientApplication extends ClientApplet {
       props.put("menuTextFont", "Arial PLAIN 11");
       props.put("userTextFont", "Arial PLAIN 11");
       props.put("subTextFont", "Arial PLAIN 11");
-      Class.forName(ClientSettings.LOOK_AND_FEEL_CLASS_NAME).getMethod(
-          "setCurrentTheme", new Class[] {Properties.class}).invoke(null,
-          new Object[] {props});
-      UIManager.setLookAndFeel(ClientSettings.LOOK_AND_FEEL_CLASS_NAME);
+			if (lookAndFeelClassName!=null) {
+				Class.forName(ClientSettings.LOOK_AND_FEEL_CLASS_NAME).getMethod(
+						"setCurrentTheme", new Class[] {Properties.class}).invoke(null,
+						new Object[] {props});
+				UIManager.setLookAndFeel(ClientSettings.LOOK_AND_FEEL_CLASS_NAME);
+			}
     }
     catch (Throwable ex1) {
       ex1.printStackTrace();
@@ -111,7 +115,8 @@ public class DebugClientApplication extends ClientApplet {
     xmlFiles.put("EN","Resources_en.xml");
     xmlFiles.put("IT","Resources_it.xml");
     xmlFiles.put("ES","Resources_es.xml");
-    xmlFiles.put("PTBR","Resources_PTBR.xml");
+		xmlFiles.put("PTBR","Resources_PTBR.xml");
+		xmlFiles.put("DE","Resources_de.xml");
 
 
     // initialize internationalization settings, according to user language identifier...

@@ -741,8 +741,10 @@ public class StartupFrame extends JFrame {
       dbConnVO.setClientLanguageCode("IT");
     else if (clientLanguageCodeComboBox.getSelectedIndex()==2)
       dbConnVO.setClientLanguageCode("ES");
-    else
+    else if (clientLanguageCodeComboBox.getSelectedIndex()==3)
       dbConnVO.setClientLanguageCode("PTBR");
+		else
+			dbConnVO.setClientLanguageCode("DE");
     dbConnVO.setAdminPassword(adminPasswdTF.getText().trim());
     Response response = ClientUtils.getData("createConfigFile",dbConnVO);
     if (response.isError()) {

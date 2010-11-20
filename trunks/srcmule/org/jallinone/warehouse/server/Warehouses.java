@@ -65,5 +65,6 @@ public interface Warehouses {
 
   public VOListResponse validateWarehouseCode(LookupValidationParams pars,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
 
+  
 }
 

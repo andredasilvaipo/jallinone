@@ -170,6 +170,7 @@
   <object key="numeric" value="Numérico"/>
   <object key="english" value="Inglês"/>
   <object key="italian" value="Italiano"/>
+  <object key="german" value="German" />
   <object key="male" value="Masculino"/>
   <object key="female" value="Feminino"/>
   <object key="officeNr" value="Gabinete Nr. "/>

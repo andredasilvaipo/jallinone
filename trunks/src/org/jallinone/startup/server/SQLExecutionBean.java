@@ -63,7 +63,7 @@ public class SQLExecutionBean {
     PreparedStatement pstmt = null;
     StringBuffer sql = new StringBuffer("");
     InputStream in = null;
-    
+
     try {
       try {
         in = this.getClass().getResourceAsStream("/" + fileName);
@@ -244,13 +244,14 @@ public class SQLExecutionBean {
 
           // check for unicode chars...
           while((index=sql.indexOf("\\u"))!=-1) {
-        	  for(int i=index+2;i<sql.length();i++)
+        	  for(int i=index+2;i<Math.min(sql.length(),index+2+6);i++)
         		  if (Character.isDigit(sql.charAt(i)) ||
         			  sql.charAt(i)=='A' ||
         			  sql.charAt(i)=='B' ||
         			  sql.charAt(i)=='C' ||
         			  sql.charAt(i)=='D' ||
-        			  sql.charAt(i)=='E')
+        			  sql.charAt(i)=='E' ||
+								sql.charAt(i)=='F')
         			  unicode.append(sql.charAt(i));
         		  else
         			  break;
@@ -266,7 +267,7 @@ public class SQLExecutionBean {
             for (int i = 0; i < vals.size(); i++) {
               pstmt.setObject(i + 1, vals.get(i));
             }
-            
+
             pstmt.execute();
             pstmt.close();
           }

@@ -32,6 +32,14 @@ import org.openswing.swing.message.receive.java.VOResponse;
 import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.server.QueryUtil;
 import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.purchases.documents.java.PurchaseDocPK;
+import org.jallinone.items.java.VariantBarcodeVO;
+import org.openswing.swing.message.send.java.LookupValidationParams;
+import org.jallinone.items.server.ValidateVariantBarcodeBean;
+import org.jallinone.items.java.GridItemVO;
+import org.jallinone.warehouse.server.WarehousesBean;
+import org.jallinone.warehouse.java.StoredSerialNumberVO;
+import org.jallinone.purchases.documents.java.GridPurchaseDocRowVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -101,6 +109,13 @@ public class InDeliveryNotesBean  implements InDeliveryNotes {
 		this.bean = bean;
 	}
 
+	private MeasuresBean convBean;
+
+	public void setConvBean(MeasuresBean convBean) {
+		this.convBean = convBean;
+	}
+
+
 
   public InDeliveryNotesBean() {
   }
@@ -122,6 +137,10 @@ public class InDeliveryNotesBean  implements InDeliveryNotes {
       for(int i=0;i<companiesList.size();i++)
         companies += "'"+companiesList.get(i).toString()+"',";
       companies = companies.substring(0,companies.length()-1);
+
+      int blockSize = 50;
+			if (pars.getOtherGridParams().get(ApplicationConsts.BLOCK_SIZE)!=null)
+				blockSize = Integer.parseInt(pars.getOtherGridParams().get(ApplicationConsts.BLOCK_SIZE).toString());
 
       String sql =
           "select DOC08_DELIVERY_NOTES.COMPANY_CODE_SYS01,DOC08_DELIVERY_NOTES.DOC_TYPE,DOC08_DELIVERY_NOTES.DOC_STATE,"+
@@ -171,7 +190,7 @@ public class InDeliveryNotesBean  implements InDeliveryNotes {
           "N",
           null,
           pars,
-          50,
+          blockSize,
           true
       );
 
@@ -695,6 +714,516 @@ public class InDeliveryNotesBean  implements InDeliveryNotes {
     }
 
   }
+
+
+		/**
+		 * Business logic to execute.
+		 */
+		public GridInDeliveryNoteRowVO validateCode(
+			HashMap variant1Descriptions,
+			HashMap variant2Descriptions,
+			HashMap variant3Descriptions,
+			HashMap variant4Descriptions,
+			HashMap variant5Descriptions,
+			PurchaseDocPK pk,
+			String warehouseCode,
+			BigDecimal progressiveREG04,
+			BigDecimal progressiveHie01DOC09,
+			BigDecimal docSequenceDOC06,
+			BigDecimal delivNoteDocNumber,
+			String codeType,
+			String code,
+			String serverLanguageId, String username) throws Throwable {
+
+			 PreparedStatement pstmt = null;
+			 Connection conn = null;
+			 try {
+				 if (this.conn == null) conn = getConn(); else conn = this.conn;
+				 convBean.setConn(conn);
+
+       	 Response res = null;
+				 java.util.List rows = null;
+				 ArrayList values = new ArrayList();
+				 boolean itemFound = false;
+
+				 GridInDeliveryNoteRowVO vo = new GridInDeliveryNoteRowVO();
+				 vo.setCompanyCodeSys01DOC09(pk.getCompanyCodeSys01DOC06());
+				 vo.setDocNumberDoc06DOC09(pk.getDocNumberDOC06());
+				 vo.setDocNumberDOC09(delivNoteDocNumber);
+				 vo.setDocTypeDoc06DOC09(pk.getDocTypeDOC06());
+				 vo.setDocTypeDOC09(ApplicationConsts.IN_DELIVERY_NOTE_DOC_TYPE);
+				 vo.setDocYearDoc06DOC09(pk.getDocYearDOC06());
+				 vo.setDocYearDOC09(new BigDecimal(new java.util.Date().getYear() + 1900));
+				 vo.setSupplierQtyDOC09(new BigDecimal(1));
+				 vo.setQtyDOC09(new BigDecimal(1));
+				 vo.setInvoiceQtyDOC09(new BigDecimal(0));
+				 vo.setSerialNumbers(new ArrayList());
+				 vo.setWarehouseCodeWar01DOC08(warehouseCode);
+				 vo.setProgressiveHie01DOC09(progressiveHie01DOC09); // warehouse location
+				 vo.setDocSequenceDoc06DOC09(docSequenceDOC06);
+
+	       if ("B".equals(codeType)) {
+					 // validate variants barcode...
+					 String sql =
+							 "select "+
+							 "ITM22_VARIANT_BARCODES.COMPANY_CODE_SYS01,ITM22_VARIANT_BARCODES.ITEM_CODE_ITM01,SYS10_TRANSLATIONS.DESCRIPTION,"+
+							 "ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM06,ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM07,ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM08,ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM09,ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM10,"+
+							 "ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM11,ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM12,ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM13,ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM14,ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM15,"+
+							 "ITM22_VARIANT_BARCODES.BAR_CODE,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
+							 "from ITM22_VARIANT_BARCODES,ITM01_ITEMS,SYS10_TRANSLATIONS,DOC07_PURCHASE_ITEMS "+
+							 "where "+
+							 "ITM22_VARIANT_BARCODES.COMPANY_CODE_SYS01=? AND "+
+							 "ITM22_VARIANT_BARCODES.BAR_CODE=? AND "+
+							 "ITM22_VARIANT_BARCODES.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 AND "+
+							 "ITM22_VARIANT_BARCODES.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and ITM01_ITEMS.ENABLED='Y' AND "+
+							 "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE AND "+
+							 "SYS10_TRANSLATIONS.LANGUAGE_CODE=? AND "+
+							 "DOC07_PURCHASE_ITEMS.COMPANY_CODE_SYS01=ITM22_VARIANT_BARCODES.COMPANY_CODE_SYS01 AND "+
+							 "DOC07_PURCHASE_ITEMS.DOC_TYPE=? AND "+
+							 "DOC07_PURCHASE_ITEMS.DOC_YEAR=? AND "+
+							 "DOC07_PURCHASE_ITEMS.DOC_NUMBER=? AND "+
+							 "DOC07_PURCHASE_ITEMS.QTY-DOC07_PURCHASE_ITEMS.IN_QTY>0 AND "+
+							 "DOC07_PURCHASE_ITEMS.ITEM_CODE_ITM01=ITM22_VARIANT_BARCODES.ITEM_CODE_ITM01 AND "+
+							 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM06=ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM06 AND "+
+							 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM07=ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM07 AND "+
+							 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM08=ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM08 AND "+
+							 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM09=ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM09 AND "+
+							 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM10=ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM10 AND "+
+							 "DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM11=ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM11 AND "+
+							 "DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM12=ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM12 AND "+
+							 "DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM13=ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM13 AND "+
+							 "DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM14=ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM14 AND "+
+							 "DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM15=ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM15  ";
+
+					 Map attribute2dbField = new HashMap();
+					 attribute2dbField.put("companyCodeSys01ITM22","ITM22_VARIANT_BARCODES.COMPANY_CODE_SYS01");
+					 attribute2dbField.put("itemCodeItm01ITM22","ITM22_VARIANT_BARCODES.ITEM_CODE_ITM01");
+					 attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+					 attribute2dbField.put("barCodeITM22","ITM22_VARIANT_BARCODES.BAR_CODE");
+					 attribute2dbField.put("serialNumberRequiredITM01","ITM01_ITEMS.SERIAL_NUMBER_REQUIRED");
+					 attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
+					 attribute2dbField.put("variantTypeItm06ITM22","ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM06");
+					 attribute2dbField.put("variantCodeItm11ITM22","ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM11");
+					 attribute2dbField.put("variantTypeItm07ITM22","ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM07");
+					 attribute2dbField.put("variantCodeItm12ITM22","ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM12");
+					 attribute2dbField.put("variantTypeItm08ITM22","ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM08");
+					 attribute2dbField.put("variantCodeItm13ITM22","ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM13");
+					 attribute2dbField.put("variantTypeItm09ITM22","ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM09");
+					 attribute2dbField.put("variantCodeItm14ITM22","ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM14");
+					 attribute2dbField.put("variantTypeItm10ITM22","ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM10");
+					 attribute2dbField.put("variantCodeItm15ITM22","ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM15");
+
+	         values.clear();
+					 values.add(pk.getCompanyCodeSys01DOC06());
+					 values.add(code);
+					 values.add(serverLanguageId);
+					 values.add(pk.getDocTypeDOC06());
+					 values.add(pk.getDocYearDOC06());
+					 values.add(pk.getDocNumberDOC06());
+
+					 // read from ITM01 table...
+					 res = QueryUtil.getQuery(
+							 conn,
+							 new UserSessionParameters(username),
+							 sql,
+							 values,
+							 attribute2dbField,
+							 VariantBarcodeVO.class,
+							 "Y",
+							 "N",
+							 null,
+							 new GridParams(),
+							 true
+					 );
+					 if (res.isError())
+						 throw new Exception(res.getErrorMessage());
+
+					 rows = ((VOListResponse)res).getRows();
+					 if (rows.size() == 1) {
+						 // found variants barcode: pre-fill code and qty in variants matrix...
+						 VariantBarcodeVO barcodeVO = (VariantBarcodeVO)rows.get(0);
+
+						 //vo.setInQtyDOC07();
+						 //vo.setDecimalsREG02();
+						 vo.setItemCodeItm01DOC09(barcodeVO.getItemCodeItm01ITM22());
+						 vo.setDescriptionSYS10(barcodeVO.getDescriptionSYS10());
+						 vo.setSerialNumberRequiredITM01(new Boolean("Y".equals(barcodeVO.getSerialNumberRequiredITM01())));
+						 vo.setProgressiveHie02DOC09(barcodeVO.getProgressiveHie02ITM01()); // item's LOB
+
+						 //vo.setQtyDOC07();
+						 //vo.setSupplierItemCodePur02DOC09();
+						 //vo.setSupplierQtyDecimalsREG02();
+						 //vo.setUmCodeREG02();
+						 //vo.setUmCodeReg02PUR02();
+						 //vo.setValueREG05();
+						 vo.setVariantCodeItm11DOC09(barcodeVO.getVariantCodeItm11ITM22());
+						 vo.setVariantCodeItm12DOC09(barcodeVO.getVariantCodeItm12ITM22());
+						 vo.setVariantCodeItm13DOC09(barcodeVO.getVariantCodeItm13ITM22());
+						 vo.setVariantCodeItm14DOC09(barcodeVO.getVariantCodeItm14ITM22());
+						 vo.setVariantCodeItm15DOC09(barcodeVO.getVariantCodeItm15ITM22());
+						 vo.setVariantTypeItm06DOC09(barcodeVO.getVariantTypeItm06ITM22());
+						 vo.setVariantTypeItm07DOC09(barcodeVO.getVariantTypeItm07ITM22());
+						 vo.setVariantTypeItm08DOC09(barcodeVO.getVariantTypeItm08ITM22());
+						 vo.setVariantTypeItm09DOC09(barcodeVO.getVariantTypeItm09ITM22());
+						 vo.setVariantTypeItm10DOC09(barcodeVO.getVariantTypeItm10ITM22());
+
+						 itemFound = true;
+					 }
+
+	         if (!itemFound) {
+						 // no barcode found in ITM22 (barcode for item variants)
+						 // trying to find a barcode at item level...
+						 sql =
+								 "select "+
+								 "ITM01_ITEMS.COMPANY_CODE_SYS01,ITM01_ITEMS.ITEM_CODE,SYS10_TRANSLATIONS.DESCRIPTION,"+
+								 "ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
+								 "from ITM01_ITEMS,SYS10_TRANSLATIONS,DOC07_PURCHASE_ITEMS where "+
+								 "ITM01_ITEMS.COMPANY_CODE_SYS01=? AND "+
+								 "ITM01_ITEMS.BAR_CODE=? AND "+
+								 "ITM01_ITEMS.ENABLED='Y' AND "+
+								 "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE AND "+
+								 "SYS10_TRANSLATIONS.LANGUAGE_CODE=? AND "+
+								 "DOC07_PURCHASE_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 AND " +
+								 "DOC07_PURCHASE_ITEMS.DOC_TYPE=? AND " +
+								 "DOC07_PURCHASE_ITEMS.DOC_YEAR=? AND " +
+								 "DOC07_PURCHASE_ITEMS.DOC_NUMBER=? AND " +
+								 "DOC07_PURCHASE_ITEMS.QTY-DOC07_PURCHASE_ITEMS.IN_QTY>0 AND "+
+								 "DOC07_PURCHASE_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE AND " +
+								 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM06='*' AND " +
+								 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM07='*' AND " +
+								 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM08='*' AND " +
+								 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM09='*' AND " +
+								 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM10='*' AND " +
+								 "DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM11='*' AND " +
+								 "DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM12='*' AND " +
+								 "DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM13='*' AND " +
+								 "DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM14='*' AND " +
+								 "DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM15='*' ";
+
+						 attribute2dbField.clear();
+						 attribute2dbField.put("companyCodeSys01ITM01","ITM01_ITEMS.COMPANY_CODE_SYS01");
+						 attribute2dbField.put("itemCodeITM01","ITM01_ITEMS.ITEM_CODE");
+						 attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+						 attribute2dbField.put("barCodeITM01","ITM01_ITEMS.BAR_CODE");
+						 attribute2dbField.put("serialNumberRequiredITM01","ITM01_ITEMS.SERIAL_NUMBER_REQUIRED");
+						 attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
+
+						 values.clear();
+						 values.add(pk.getCompanyCodeSys01DOC06());
+						 values.add(code);
+						 values.add(serverLanguageId);
+						 values.add(pk.getDocTypeDOC06());
+						 values.add(pk.getDocYearDOC06());
+						 values.add(pk.getDocNumberDOC06());
+
+						 // read from ITM01 table...
+						 res = QueryUtil.getQuery(
+								 conn,
+								 new UserSessionParameters(username),
+								 sql,
+								 values,
+								 attribute2dbField,
+								 GridItemVO.class,
+								 "Y",
+								 "N",
+								 null,
+								 new GridParams(),
+								 true
+						 );
+
+						 if (res.isError())
+							 throw new Exception(res.getErrorMessage());
+
+						 rows = ( (VOListResponse) res).getRows();
+						 if (rows.size() == 1) {
+							 // found variants barcode: pre-fill code and qty in variants matrix...
+							 GridItemVO itemVO = (GridItemVO)rows.get(0);
+
+							 //vo.setInQtyDOC07();
+							 //vo.setDecimalsREG02();
+							 vo.setItemCodeItm01DOC09(itemVO.getItemCodeITM01());
+							 vo.setDescriptionSYS10(itemVO.getDescriptionSYS10());
+							 vo.setSerialNumberRequiredITM01(new Boolean("Y".equals(itemVO.getSerialNumberRequiredITM01())));
+							 vo.setProgressiveHie02DOC09(itemVO.getProgressiveHie02ITM01()); // item's LOB
+
+							 //vo.setQtyDOC07();
+							 //vo.setSupplierItemCodePur02DOC09();
+							 //vo.setSupplierQtyDecimalsREG02();
+							 //vo.setUmCodeREG02();
+							 //vo.setUmCodeReg02PUR02();
+							 //vo.setValueREG05();
+							 vo.setVariantCodeItm11DOC09(ApplicationConsts.JOLLY);
+							 vo.setVariantCodeItm12DOC09(ApplicationConsts.JOLLY);
+							 vo.setVariantCodeItm13DOC09(ApplicationConsts.JOLLY);
+							 vo.setVariantCodeItm14DOC09(ApplicationConsts.JOLLY);
+							 vo.setVariantCodeItm15DOC09(ApplicationConsts.JOLLY);
+							 vo.setVariantTypeItm06DOC09(ApplicationConsts.JOLLY);
+							 vo.setVariantTypeItm07DOC09(ApplicationConsts.JOLLY);
+							 vo.setVariantTypeItm08DOC09(ApplicationConsts.JOLLY);
+							 vo.setVariantTypeItm09DOC09(ApplicationConsts.JOLLY);
+							 vo.setVariantTypeItm10DOC09(ApplicationConsts.JOLLY);
+
+							 itemFound = true;
+						 }
+	         }
+
+           if (!itemFound) {
+						 // no barcode found!
+						 return null;
+					 }
+	       }
+         else {
+					 // check for item code WITHOUT VARIANTS in buying order...
+					 String sql =
+							 "select DOC07_PURCHASE_ITEMS.COMPANY_CODE_SYS01,DOC07_PURCHASE_ITEMS.ITEM_CODE_ITM01,"+
+							 "SYS10_TRANSLATIONS.DESCRIPTION,"+
+							 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM06,DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM11,"+
+							 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM07,DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM12,"+
+							 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM08,DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM13,"+
+							 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM09,DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM14,"+
+							 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM10,DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM15, "+
+							 "ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,DOC07_PURCHASE_ITEMS.PROGRESSIVE_HIE02 "+
+							 "from DOC07_PURCHASE_ITEMS,ITM01_ITEMS,SYS10_TRANSLATIONS where "+
+							 "DOC07_PURCHASE_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
+							 "DOC07_PURCHASE_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
+							 "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+							 "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+							 "DOC07_PURCHASE_ITEMS.COMPANY_CODE_SYS01=? and "+
+							 "DOC07_PURCHASE_ITEMS.DOC_TYPE=? and "+
+							 "DOC07_PURCHASE_ITEMS.DOC_YEAR=? and "+
+							 "DOC07_PURCHASE_ITEMS.DOC_NUMBER=? and "+
+							 "DOC07_PURCHASE_ITEMS.ITEM_CODE_ITM01=? and "+
+  						 "DOC07_PURCHASE_ITEMS.QTY-DOC07_PURCHASE_ITEMS.IN_QTY>0 and "+
+							 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM06='*' AND " +
+							 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM07='*' AND " +
+							 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM08='*' AND " +
+							 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM09='*' AND " +
+							 "DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM10='*' AND " +
+							 "DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM11='*' AND " +
+							 "DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM12='*' AND " +
+							 "DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM13='*' AND " +
+							 "DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM14='*' AND " +
+							 "DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM15='*' ";
+
+					 Map attribute2dbField = new HashMap();
+					 attribute2dbField.put("companyCodeSys01DOC07","DOC07_PURCHASE_ITEMS.COMPANY_CODE_SYS01");
+					 attribute2dbField.put("itemCodeItm01DOC07","DOC07_PURCHASE_ITEMS.ITEM_CODE_ITM01");
+					 attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+					 attribute2dbField.put("serialNumberRequiredITM01","ITM01_ITEMS.SERIAL_NUMBER_REQUIRED");
+					 attribute2dbField.put("progressiveHie02DOC07","DOC07_PURCHASE_ITEMS.PROGRESSIVE_HIE02");
+
+					 attribute2dbField.put("variantTypeItm06DOC07","DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM06");
+					 attribute2dbField.put("variantCodeItm11DOC07","DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM11");
+					 attribute2dbField.put("variantTypeItm07DOC07","DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM07");
+					 attribute2dbField.put("variantCodeItm12DOC07","DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM12");
+					 attribute2dbField.put("variantTypeItm08DOC07","DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM08");
+					 attribute2dbField.put("variantCodeItm13DOC07","DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM13");
+					 attribute2dbField.put("variantTypeItm09DOC07","DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM09");
+					 attribute2dbField.put("variantCodeItm14DOC07","DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM14");
+					 attribute2dbField.put("variantTypeItm10DOC07","DOC07_PURCHASE_ITEMS.VARIANT_TYPE_ITM10");
+					 attribute2dbField.put("variantCodeItm15DOC07","DOC07_PURCHASE_ITEMS.VARIANT_CODE_ITM15");
+
+					 values.clear();
+					 values.add(serverLanguageId);
+					 values.add(pk.getCompanyCodeSys01DOC06());
+					 values.add(pk.getDocTypeDOC06());
+					 values.add(pk.getDocYearDOC06());
+					 values.add(pk.getDocNumberDOC06());
+					 values.add(code);
+
+					 // read from DOC07 table...
+					 res = QueryUtil.getQuery(
+							 conn,
+							 new UserSessionParameters(username),
+							 sql,
+							 values,
+							 attribute2dbField,
+							 GridPurchaseDocRowVO.class,
+							 "Y",
+							 "N",
+							 null,
+							 new GridParams(),
+							 true
+					 );
+
+					 if (res.isError())
+						 throw new Exception(res.getErrorMessage());
+
+					 rows = ( (VOListResponse) res).getRows();
+					 if (rows.size() == 1) {
+							GridPurchaseDocRowVO itemVO = (GridPurchaseDocRowVO)rows.get(0);
+
+							//vo.setInQtyDOC07();
+							//vo.setDecimalsREG02();
+							vo.setItemCodeItm01DOC09(itemVO.getItemCodeItm01DOC07());
+							vo.setDescriptionSYS10(itemVO.getDescriptionSYS10());
+							vo.setSerialNumberRequiredITM01(new Boolean("Y".equals(itemVO.getSerialNumberRequiredITM01())));
+							vo.setProgressiveHie02DOC09(itemVO.getProgressiveHie02DOC07()); // item's LOB
+							//vo.setQtyDOC07();
+							//vo.setSupplierItemCodePur02DOC09();
+							//vo.setSupplierQtyDecimalsREG02();
+							//vo.setUmCodeREG02();
+							//vo.setUmCodeReg02PUR02();
+							//vo.setValueREG05();
+							vo.setVariantCodeItm11DOC09(itemVO.getVariantCodeItm11DOC07());
+							vo.setVariantCodeItm12DOC09(itemVO.getVariantCodeItm12DOC07());
+							vo.setVariantCodeItm13DOC09(itemVO.getVariantCodeItm13DOC07());
+							vo.setVariantCodeItm14DOC09(itemVO.getVariantCodeItm14DOC07());
+							vo.setVariantCodeItm15DOC09(itemVO.getVariantCodeItm15DOC07());
+							vo.setVariantTypeItm06DOC09(itemVO.getVariantTypeItm06DOC07());
+							vo.setVariantTypeItm07DOC09(itemVO.getVariantTypeItm07DOC07());
+							vo.setVariantTypeItm08DOC09(itemVO.getVariantTypeItm08DOC07());
+							vo.setVariantTypeItm09DOC09(itemVO.getVariantTypeItm09DOC07());
+							vo.setVariantTypeItm10DOC09(itemVO.getVariantTypeItm10DOC07());
+
+							itemFound = true;
+					 }
+
+					 if (!itemFound) {
+						 // no item found!
+						 return null;
+					 }
+				 }
+
+				 String descr = vo.getDescriptionSYS10();
+
+				 // check supported variants for current item...
+				 if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm11DOC09())) {
+					 descr += " "+getVariantCodeAndTypeDesc(
+						 variant1Descriptions,
+						 vo,
+						 vo.getVariantTypeItm06DOC09(),
+						 vo.getVariantCodeItm11DOC09(),
+						 serverLanguageId,
+						 username
+					 );
+				 }
+				 if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm12DOC09())) {
+					 descr += " "+getVariantCodeAndTypeDesc(
+						 variant2Descriptions,
+						 vo,
+						 vo.getVariantTypeItm07DOC09(),
+						 vo.getVariantCodeItm12DOC09(),
+						 serverLanguageId,
+						 username
+					 );
+				 }
+				 if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm13DOC09())) {
+					 descr += " "+getVariantCodeAndTypeDesc(
+						 variant3Descriptions,
+						 vo,
+						 vo.getVariantTypeItm08DOC09(),
+						 vo.getVariantCodeItm13DOC09(),
+						 serverLanguageId,
+						 username
+					 );
+				 }
+				 if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm14DOC09())) {
+					 descr += " "+getVariantCodeAndTypeDesc(
+						 variant4Descriptions,
+						 vo,
+						 vo.getVariantTypeItm09DOC09(),
+						 vo.getVariantCodeItm14DOC09(),
+						 serverLanguageId,
+						 username
+					 );
+				 }
+				 if (!ApplicationConsts.JOLLY.equals(vo.getVariantCodeItm15DOC09())) {
+					 descr += " "+getVariantCodeAndTypeDesc(
+						 variant5Descriptions,
+						 vo,
+						 vo.getVariantTypeItm10DOC09(),
+						 vo.getVariantCodeItm15DOC09(),
+						 serverLanguageId,
+						 username
+					 );
+				 }
+				 vo.setDescriptionSYS10(descr);
+
+
+				 // retrieve qty conversion and decimals...
+				 String sql =
+									 "select "+
+									 " REG02_ALIAS1.DECIMALS,"+ // supplier decs
+									 " PUR02_SUPPLIER_ITEMS.UM_CODE_REG02, "+ // supplier m.u.
+									 " REG02_ALIAS2.DECIMALS, "+ // sale decs
+									 " ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02 "+ // sale m.u.
+									 "from PUR02_SUPPLIER_ITEMS,ITM01_ITEMS,REG02_MEASURE_UNITS REG02_ALIAS1,REG02_MEASURE_UNITS REG02_ALIAS2 where "+
+									 "PUR02_SUPPLIER_ITEMS.UM_CODE_REG02=REG02_ALIAS1.UM_CODE and "+
+									 "PUR02_SUPPLIER_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
+									 "PUR02_SUPPLIER_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
+									 "PUR02_SUPPLIER_ITEMS.COMPANY_CODE_SYS01 = ? and "+
+									 "PUR02_SUPPLIER_ITEMS.PROGRESSIVE_REG04=? and "+
+									 "PUR02_SUPPLIER_ITEMS.ENABLED='Y' and "+
+									 "PUR02_SUPPLIER_ITEMS.ITEM_CODE_ITM01=? and "+
+									 "ITM01_ITEMS.MIN_SELlING_QTY_UM_CODE_REG02=REG02_ALIAS2.UM_CODE ";
+				 pstmt =  conn.prepareStatement(sql);
+				 pstmt.setString(1,pk.getCompanyCodeSys01DOC06());
+				 pstmt.setBigDecimal(2,progressiveREG04);
+				 pstmt.setString(3,vo.getItemCodeItm01DOC09());
+				 ResultSet rset = pstmt.executeQuery();
+				 if (rset.next()) {
+					 vo.setSupplierQtyDecimalsREG02(rset.getBigDecimal(1));
+					 vo.setDecimalsREG02(rset.getBigDecimal(3));
+					 vo.setUmCodeReg02PUR02(rset.getString(2));
+					 vo.setValueREG05(convBean.getConversion(
+						 rset.getString(4),
+						 vo.getUmCodeReg02PUR02(),
+						 serverLanguageId,
+						 username
+					 ));
+				 }
+				 rset.close();
+				 pstmt.close();
+
+				 return vo;
+			 }
+			 catch (Throwable ex) {
+				 Logger.error(username,this.getClass().getName(),"executeCommand","Error while validating code for an in delivery note row",ex);
+				 throw new Exception(ex.getMessage());
+			 }
+			 finally {
+				 try {
+					 pstmt.close();
+				 }
+				 catch (Exception ex2) {
+				 }
+
+				 try {
+					 convBean.setConn(null);
+				 } catch (Exception ex) {}
+
+				 try {
+						 if (this.conn==null && conn!=null) {
+								 // close only local connection
+								 conn.commit();
+								 conn.close();
+						 }
+
+				 }
+				 catch (Exception exx) {}
+			 }
+		}
+
+
+
+
+
+	private String getVariantCodeAndTypeDesc(
+			HashMap variantDescriptions,
+			GridInDeliveryNoteRowVO vo,
+			String varType,
+			String varCode,
+			String serverLanguageId,
+			String username
+	) throws Throwable {
+		String varDescr = (String)variantDescriptions.get(varType+"_"+varCode);
+		if (varDescr==null)
+			varDescr = ApplicationConsts.JOLLY.equals(varCode)?"":varCode;
+		return varDescr;
+	}
+
+
 
 
   /**

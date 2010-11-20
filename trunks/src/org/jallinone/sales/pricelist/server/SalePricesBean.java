@@ -237,7 +237,7 @@ public class SalePricesBean  implements SalePrices {
       java.sql.Date filterDate = null;
       if (gridParams.getOtherGridParams().get(ApplicationConsts.DATE_FILTER)!=null) {
         filterDate = new java.sql.Date( ((java.util.Date)gridParams.getOtherGridParams().get(ApplicationConsts.DATE_FILTER)).getTime() );
-        sql += " and START_DATE<=? and END_DATE>=?";
+        sql += " and SAL02_PRICES.START_DATE<=? and SAL02_PRICES.END_DATE>=?";
       }
 
       Map attribute2dbField = new HashMap();

@@ -15,6 +15,7 @@ import org.jallinone.system.server.*;
 import java.math.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
+import org.jallinone.purchases.documents.java.PurchaseDocPK;
 
 
 /**
@@ -70,6 +71,21 @@ public interface InDeliveryNotes {
 		 HashMap variant5Descriptions,
 		 DeliveryNotePK pk,String t1,String t2,String serverLanguageId,String username) throws Throwable;
 
+	public GridInDeliveryNoteRowVO validateCode(
+		 HashMap variant1Descriptions,
+		 HashMap variant2Descriptions,
+		 HashMap variant3Descriptions,
+		 HashMap variant4Descriptions,
+		 HashMap variant5Descriptions,
+		 PurchaseDocPK pk,
+		 String warehouseCode,
+		 BigDecimal progressiveREG04,
+		 BigDecimal progressiveHie01DOC09,
+		 BigDecimal docSequenceDOC06,
+		 BigDecimal delivNoteDocNumber,
+		 String codeType,
+		 String code,
+		 String serverLanguageId, String username) throws Throwable;
 
 }
 

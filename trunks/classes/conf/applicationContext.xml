@@ -732,6 +732,7 @@
      <property name="dataSource" ref="JALLINONE" />
      <property name="movBean" ref="AddMovementBean" />
      <property name="bean" ref="WarehouseUtilsBean" />
+     <property name="convBean" ref="MeasuresBean" />
    </bean>
    <bean id="OutDeliveryNotesBean" scope="prototype" class="org.jallinone.warehouse.documents.server.OutDeliveryNotesBean">
      <property name="dataSource" ref="JALLINONE" />

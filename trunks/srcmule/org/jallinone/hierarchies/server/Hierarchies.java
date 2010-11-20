@@ -57,6 +57,8 @@ public interface Hierarchies {
   
   public VOResponse updateLevel(HierarchyLevelVO oldVO,HierarchyLevelVO newVO,String serverLanguageId,String username) throws Throwable;
 
+  public VOListResponse getLeaves(BigDecimal progressiveHIE02,String langId,String username) throws Throwable;
+  
 }
 
 

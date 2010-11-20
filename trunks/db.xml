@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="yes" ?>
 <DBMODEL Version="4.0">
 <SETTINGS>
-<GLOBALSETTINGS ModelName="db" IDModel="0" IDVersion="0" VersionStr="1.0.0.0" Comments="" UseVersionHistroy="1" AutoIncVersion="1" DatabaseType="MySQL" ZoomFac="69.00" XPos="0" YPos="1643" DefaultDataType="33" DefaultTablePrefix="0" DefSaveDBConn="" DefSyncDBConn="" DefQueryDBConn="" Printer="PDFCreator" HPageCount="8.4462890625" PageAspectRatio="1.413994757007461" PageOrientation="1" PageFormat="A4 (210x297 mm, 8.26x11.7 inches)" SelectedPages="0;1;2;3;4;9;10;11;12;17;18;19;20;25;26;27;28;33;34;35;36;41;42;43;44" UsePositionGrid="1" PositionGridX="20" PositionGridY="20" TableNameInRefs="1" DefaultTableType="0" ActivateRefDefForNewRelations="1" FKPrefix="" FKPostfix="" CreateFKRefDefIndex="1" DBQuoteCharacter="`" CreateSQLforLinkedObjects="0" DefModelFont="Tahoma" CanvasWidth="8649" CanvasHeight="6001" />
+<GLOBALSETTINGS ModelName="db" IDModel="0" IDVersion="0" VersionStr="1.0.0.0" Comments="" UseVersionHistroy="1" AutoIncVersion="1" DatabaseType="MySQL" ZoomFac="83.00" XPos="710" YPos="0" DefaultDataType="33" DefaultTablePrefix="0" DefSaveDBConn="" DefSyncDBConn="" DefQueryDBConn="" Printer="PDFCreator" HPageCount="8.4462890625" PageAspectRatio="1.413994757007461" PageOrientation="1" PageFormat="A4 (210x297 mm, 8.26x11.7 inches)" SelectedPages="0;1;2;3;4;9;10;11;12;17;18;19;20;25;26;27;28;33;34;35;36;41;42;43;44" UsePositionGrid="1" PositionGridX="20" PositionGridY="20" TableNameInRefs="1" DefaultTableType="0" ActivateRefDefForNewRelations="1" FKPrefix="" FKPostfix="" CreateFKRefDefIndex="1" DBQuoteCharacter="`" CreateSQLforLinkedObjects="0" DefModelFont="Tahoma" CanvasWidth="8649" CanvasHeight="6001" />
 <DATATYPEGROUPS>
 <DATATYPEGROUP Name="Numeric Types" Icon="1" />
 <DATATYPEGROUP Name="Date and Time Types" Icon="2" />
@@ -263,7 +263,7 @@
 <REGIONS>
 </REGIONS>
 <TABLES>
-<TABLE ID="1051" Tablename="WAR01_WAREHOUSES" PrevTableName="Table_01" XPos="40" YPos="60" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="398" >
+<TABLE ID="1051" Tablename="WAR01_WAREHOUSES" PrevTableName="Table_01" XPos="40" YPos="200" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="405" >
 <COLUMNS>
 <COLUMN ID="3907" ColName="COMPANY_CODE_SYS01" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -329,6 +329,7 @@
 <RELATION_START ID="5353" />
 <RELATION_START ID="6236" />
 <RELATION_START ID="6240" />
+<RELATION_START ID="9794" />
 </RELATIONS_START>
 <RELATIONS_END>
 <RELATION_END ID="1153" />
@@ -426,6 +427,7 @@
 <RELATION_START ID="8438" />
 <RELATION_START ID="9157" />
 <RELATION_START ID="9687" />
+<RELATION_START ID="9783" />
 </RELATIONS_START>
 <RELATIONS_END>
 <RELATION_END ID="5806" />
@@ -1212,7 +1214,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="1373" Tablename="WAR03_ITEMS_AVAILABILITY" PrevTableName="Table_17" XPos="740" YPos="220" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="404" >
+<TABLE ID="1373" Tablename="WAR03_ITEMS_AVAILABILITY" PrevTableName="Table_17" XPos="740" YPos="220" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="435" >
 <COLUMNS>
 <COLUMN ID="4005" ColName="COMPANY_CODE_SYS01" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -4268,7 +4270,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="2229" Tablename="SYS12_WINDOW_CUSTOMIZATIONS" PrevTableName="Table_44" XPos="1600" YPos="360" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="375" >
+<TABLE ID="2229" Tablename="SYS12_WINDOW_CUSTOMIZATIONS" PrevTableName="Table_44" XPos="1420" YPos="560" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="375" >
 <COLUMNS>
 <COLUMN ID="4086" ColName="PROGRESSIVE_SYS13" PrevColName="" Pos="1" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -5500,7 +5502,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="2773" Tablename="SYS13_WINDOWS" PrevTableName="Table_58" XPos="1580" YPos="540" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="376" >
+<TABLE ID="2773" Tablename="SYS13_WINDOWS" PrevTableName="Table_58" XPos="1420" YPos="740" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="376" >
 <COLUMNS>
 <COLUMN ID="2777" ColName="PROGRESSIVE" PrevColName="PROGRESSIVE_SYS10" Pos="1" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -6131,7 +6133,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="3841" Tablename="WAR02_WAREHOUSE_MOVEMENTS" PrevTableName="Table_69" XPos="360" YPos="20" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="403" >
+<TABLE ID="3841" Tablename="WAR02_WAREHOUSE_MOVEMENTS" PrevTableName="Table_69" XPos="360" YPos="20" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="406" >
 <COLUMNS>
 <COLUMN ID="3843" ColName="PROGRESSIVE" PrevColName="" Pos="0" idDatatype="13" DatatypeParams="(38)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -6274,7 +6276,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="3867" Tablename="WAR04_WAREHOUSE_MOTIVES" PrevTableName="Table_70" XPos="820" YPos="40" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="405" >
+<TABLE ID="3867" Tablename="WAR04_WAREHOUSE_MOTIVES" PrevTableName="Table_70" XPos="820" YPos="40" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="437" >
 <COLUMNS>
 <COLUMN ID="3869" ColName="WAREHOUSE_MOTIVE" PrevColName="" Pos="0" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -6304,6 +6306,8 @@
 </COLUMNS>
 <RELATIONS_START>
 <RELATION_START ID="3873" />
+<RELATION_START ID="9901" />
+<RELATION_START ID="9903" />
 </RELATIONS_START>
 <INDICES>
 <INDEX ID="3870" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
@@ -6600,7 +6604,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="4428" Tablename="WKF01_PROCESSES" PrevTableName="Table_77" XPos="4060" YPos="2660" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="435" >
+<TABLE ID="4428" Tablename="WKF01_PROCESSES" PrevTableName="Table_77" XPos="4060" YPos="2660" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="444" >
 <COLUMNS>
 <COLUMN ID="6552" ColName="PROGRESSIVE" PrevColName="" Pos="3" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -6645,7 +6649,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="4438" Tablename="WKF02_PROCESS_ACTIVITIES" PrevTableName="Table_78" XPos="3880" YPos="2360" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="437" >
+<TABLE ID="4438" Tablename="WKF02_PROCESS_ACTIVITIES" PrevTableName="Table_78" XPos="3880" YPos="2360" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="451" >
 <COLUMNS>
 <COLUMN ID="6572" ColName="PROGRESSIVE_WKF01" PrevColName="" Pos="1" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -6757,7 +6761,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="4456" Tablename="WKF03_HOOKS" PrevTableName="Table_79" XPos="4200" YPos="2420" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="443" >
+<TABLE ID="4456" Tablename="WKF03_HOOKS" PrevTableName="Table_79" XPos="4200" YPos="2420" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="458" >
 <COLUMNS>
 <COLUMN ID="4458" ColName="PROGRESSIVE" PrevColName="" Pos="0" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -6791,7 +6795,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="4468" Tablename="WKF04_PROCESS_PROPERTIES" PrevTableName="Table_80" XPos="3420" YPos="2540" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="444" >
+<TABLE ID="4468" Tablename="WKF04_PROCESS_PROPERTIES" PrevTableName="Table_80" XPos="3420" YPos="2540" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="465" >
 <COLUMNS>
 <COLUMN ID="6554" ColName="PROGRESSIVE_WKF01" PrevColName="" Pos="1" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -6836,7 +6840,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="4474" Tablename="WKF05_ACTIVITY_PROPERTIES" PrevTableName="Table_81" XPos="3503" YPos="2320" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="451" >
+<TABLE ID="4474" Tablename="WKF05_ACTIVITY_PROPERTIES" PrevTableName="Table_81" XPos="3503" YPos="2320" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="471" >
 <COLUMNS>
 <COLUMN ID="6578" ColName="PROGRESSIVE_WKF01" PrevColName="" Pos="1" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -6885,7 +6889,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="4489" Tablename="WKF06_ACTIVITY_RELS" PrevTableName="Table_82" XPos="4060" YPos="2134" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="458" >
+<TABLE ID="4489" Tablename="WKF06_ACTIVITY_RELS" PrevTableName="Table_82" XPos="4060" YPos="2134" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="473" >
 <COLUMNS>
 <COLUMN ID="6563" ColName="PROGRESSIVE_WKF01" PrevColName="" Pos="1" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -6942,7 +6946,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="4514" Tablename="WKF07_REL_CONDITIONS" PrevTableName="Table_83" XPos="3520" YPos="2100" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="465" >
+<TABLE ID="4514" Tablename="WKF07_REL_CONDITIONS" PrevTableName="Table_83" XPos="3520" YPos="2100" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="476" >
 <COLUMNS>
 <COLUMN ID="6579" ColName="PROGRESSIVE_WKF01" PrevColName="" Pos="1" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -7010,7 +7014,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="4591" Tablename="WKF09_INSTANCE_PROPERTIES" PrevTableName="Table_86" XPos="3400" YPos="2700" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="473" >
+<TABLE ID="4591" Tablename="WKF09_INSTANCE_PROPERTIES" PrevTableName="Table_86" XPos="3400" YPos="2700" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="479" >
 <COLUMNS>
 <COLUMN ID="6577" ColName="PROGRESSIVE_WKF01" PrevColName="" Pos="1" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -7068,7 +7072,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="4549" Tablename="WKF08_PROCESS_INSTANCES" PrevTableName="Table_84" XPos="3400" YPos="2860" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="471" >
+<TABLE ID="4549" Tablename="WKF08_PROCESS_INSTANCES" PrevTableName="Table_84" XPos="3400" YPos="2860" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="478" >
 <COLUMNS>
 <COLUMN ID="6562" ColName="PROGRESSIVE_WKF01" PrevColName="" Pos="1" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -7695,7 +7699,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="5287" Tablename="WAR05_STORED_SERIAL_NUMBERS" PrevTableName="Table_97" XPos="1100" YPos="100" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="406" >
+<TABLE ID="5287" Tablename="WAR05_STORED_SERIAL_NUMBERS" PrevTableName="Table_97" XPos="1100" YPos="100" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="443" >
 <COLUMNS>
 <COLUMN ID="5289" ColName="SERIAL_NUMBER" PrevColName="" Pos="0" idDatatype="20" DatatypeParams="(255)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -9582,7 +9586,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="6368" Tablename="TMP01_BILL_OF_MATERIALS" PrevTableName="Table_125" XPos="2760" YPos="2520" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="395" >
+<TABLE ID="6368" Tablename="TMP01_BILL_OF_MATERIALS" PrevTableName="Table_125" XPos="2760" YPos="2520" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="398" >
 <COLUMNS>
 <COLUMN ID="6370" ColName="REPORT_ID" PrevColName="" Pos="0" idDatatype="13" DatatypeParams="(5)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -10119,6 +10123,7 @@
 <RELATION_START ID="9407" />
 <RELATION_START ID="9485" />
 <RELATION_START ID="9590" />
+<RELATION_START ID="9824" />
 </RELATIONS_START>
 <RELATIONS_END>
 <RELATION_END ID="8376" />
@@ -10588,6 +10593,7 @@
 <RELATION_START ID="9413" />
 <RELATION_START ID="9491" />
 <RELATION_START ID="9596" />
+<RELATION_START ID="9836" />
 </RELATIONS_START>
 <RELATIONS_END>
 <RELATION_END ID="8561" />
@@ -10665,6 +10671,7 @@
 <RELATION_START ID="9419" />
 <RELATION_START ID="9497" />
 <RELATION_START ID="9602" />
+<RELATION_START ID="9842" />
 </RELATIONS_START>
 <RELATIONS_END>
 <RELATION_END ID="8569" />
@@ -10742,6 +10749,7 @@
 <RELATION_START ID="9425" />
 <RELATION_START ID="9503" />
 <RELATION_START ID="9608" />
+<RELATION_START ID="9848" />
 </RELATIONS_START>
 <RELATIONS_END>
 <RELATION_END ID="8578" />
@@ -10819,6 +10827,7 @@
 <RELATION_START ID="9431" />
 <RELATION_START ID="9509" />
 <RELATION_START ID="9614" />
+<RELATION_START ID="9854" />
 </RELATIONS_START>
 <RELATIONS_END>
 <RELATION_END ID="8586" />
@@ -11022,7 +11031,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="9283" Tablename="TMP02_BARCODES" PrevTableName="Table_144" XPos="3080" YPos="2540" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="396" >
+<TABLE ID="9283" Tablename="TMP02_BARCODES" PrevTableName="Table_144" XPos="3080" YPos="2540" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="403" >
 <COLUMNS>
 <COLUMN ID="9285" ColName="REPORT_ID" PrevColName="" Pos="0" idDatatype="13" DatatypeParams="(5)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -11510,7 +11519,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="9529" Tablename="TMP03_ABC" PrevTableName="Table_148" XPos="420" YPos="2640" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="397" >
+<TABLE ID="9529" Tablename="TMP03_ABC" PrevTableName="Table_148" XPos="420" YPos="2640" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="404" >
 <COLUMNS>
 <COLUMN ID="9539" ColName="REPORT_ID" PrevColName="" Pos="1" idDatatype="13" DatatypeParams="(5)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -11808,7 +11817,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="9701" Tablename="SYS25_FUNCTIONS_DIGESTS" PrevTableName="Table_151" XPos="1960" YPos="3400" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="476" >
+<TABLE ID="9701" Tablename="SYS25_FUNCTIONS_DIGESTS" PrevTableName="Table_151" XPos="1960" YPos="3400" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="395" >
 <COLUMNS>
 <COLUMN ID="9710" ColName="FUNCTION_CODE_SYS06" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -11837,7 +11846,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="9712" Tablename="SYS26_GRID_PERMISSIONS_DEFS" PrevTableName="Table_152" XPos="1380" YPos="3480" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="478" >
+<TABLE ID="9712" Tablename="SYS26_GRID_PERMISSIONS_DEFS" PrevTableName="Table_152" XPos="1380" YPos="3480" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="396" >
 <COLUMNS>
 <COLUMN ID="9765" ColName="FUNCTION_CODE_SYS06" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -11891,7 +11900,7 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="9720" Tablename="SYS27_GRID_PERMISSIONS" PrevTableName="Table_153" XPos="1680" YPos="3480" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="479" >
+<TABLE ID="9720" Tablename="SYS27_GRID_PERMISSIONS" PrevTableName="Table_153" XPos="1680" YPos="3480" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="397" >
 <COLUMNS>
 <COLUMN ID="9759" ColName="FUNCTION_CODE_SYS06" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
@@ -11948,6 +11957,298 @@
 <INDEX ID="9769" IndexName="SYS27_GRID_PERMISSIONS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="9767">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="9770" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+</INDICES>
+</TABLE>
+<TABLE ID="9775" Tablename="WAR06_INVENTORIES" PrevTableName="Table_154" XPos="1400" YPos="20" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="483" >
+<COLUMNS>
+<COLUMN ID="9786" ColName="COMPANY_CODE_SYS01" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9777" ColName="PROGRESSIVE" PrevColName="" Pos="0" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9798" ColName="WAREHOUSE_CODE_WAR01" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9906" ColName="INV_NEGATIVE_MOTIVE_WAR04" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9905" ColName="INV_POSITIVE_MOTIVE_WAR04" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9884" ColName="STATE" PrevColName="" Pos="8" idDatatype="19" DatatypeParams="(1)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9779" ColName="DESCRIPTION" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(255)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9780" ColName="START_DATE" PrevColName="" Pos="2" idDatatype="14" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9781" ColName="END_DATE" PrevColName="" Pos="3" idDatatype="14" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9800" ColName="NOTE" PrevColName="" Pos="7" idDatatype="20" DatatypeParams="(2000)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9782" ColName="ENABLED" PrevColName="" Pos="4" idDatatype="19" DatatypeParams="(1)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+</COLUMNS>
+<RELATIONS_START>
+<RELATION_START ID="9820" />
+</RELATIONS_START>
+<RELATIONS_END>
+<RELATION_END ID="9783" />
+<RELATION_END ID="9794" />
+<RELATION_END ID="9901" />
+<RELATION_END ID="9903" />
+</RELATIONS_END>
+<INDICES>
+<INDEX ID="9778" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="9786" LengthParam="0" />
+<INDEXCOLUMN idColumn="9777" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="9785" IndexName="WAR06_INVENTORIES_FKIndex1" IndexKind="1" FKRefDef_Obj_id="9783">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="9786" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="9797" IndexName="WAR06_INVENTORIES_FKIndex2" IndexKind="1" FKRefDef_Obj_id="9794">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="9786" LengthParam="0" />
+<INDEXCOLUMN idColumn="9798" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="9902" IndexName="WAR06_INVENTORIES_FKIndex4" IndexKind="1" FKRefDef_Obj_id="9901">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="9905" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="9904" IndexName="WAR06_INVENTORIES_FKIndex5" IndexKind="1" FKRefDef_Obj_id="9903">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="9906" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+</INDICES>
+</TABLE>
+<TABLE ID="9801" Tablename="WAR07_INVENTORY_ITEMS" PrevTableName="Table_155" XPos="1740" YPos="200" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="486" >
+<COLUMNS>
+<COLUMN ID="9816" ColName="PROGRESSIVE" PrevColName="" Pos="2" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9860" ColName="COMPANY_CODE_SYS01" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9861" ColName="PROGRESSIVE_WAR06" PrevColName="" Pos="1" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9862" ColName="ITEM_CODE_ITM01" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9863" ColName="VARIANT_TYPE_ITM06" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9864" ColName="VARIANT_CODE_ITM11" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9865" ColName="VARIANT_TYPE_ITM07" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9866" ColName="VARIANT_CODE_ITM12" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9867" ColName="VARIANT_TYPE_ITM08" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9868" ColName="VARIANT_CODE_ITM13" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9871" ColName="VARIANT_TYPE_ITM09" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9872" ColName="VARIANT_CODE_ITM14" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9869" ColName="VARIANT_TYPE_ITM10" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9870" ColName="VARIANT_CODE_ITM15" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(20)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9886" ColName="STATE" PrevColName="" Pos="20" idDatatype="19" DatatypeParams="(1)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9882" ColName="PROGRESSIVE_HIE01" PrevColName="" Pos="19" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9888" ColName="REAL_PROGRESSIVE_HIE01" PrevColName="" Pos="20" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9803" ColName="QTY" PrevColName="" Pos="0" idDatatype="12" DatatypeParams="(18,5)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9805" ColName="REAL_QTY" PrevColName="" Pos="1" idDatatype="12" DatatypeParams="(18,5)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9819" ColName="DELTA_QTY" PrevColName="" Pos="3" idDatatype="12" DatatypeParams="(18,5)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="0" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+</COLUMNS>
+<RELATIONS_START>
+<RELATION_START ID="9893" />
+</RELATIONS_START>
+<RELATIONS_END>
+<RELATION_END ID="9820" />
+<RELATION_END ID="9824" />
+<RELATION_END ID="9836" />
+<RELATION_END ID="9842" />
+<RELATION_END ID="9848" />
+<RELATION_END ID="9854" />
+</RELATIONS_END>
+<INDICES>
+<INDEX ID="9817" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="9816" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="9823" IndexName="WAR07_INVENTORY_ITEMS_FKIndex1" IndexKind="1" FKRefDef_Obj_id="9820">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="9860" LengthParam="0" />
+<INDEXCOLUMN idColumn="9861" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="9829" IndexName="WAR07_INVENTORY_ITEMS_FKIndex2" IndexKind="1" FKRefDef_Obj_id="9824">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="9860" LengthParam="0" />
+<INDEXCOLUMN idColumn="9862" LengthParam="0" />
+<INDEXCOLUMN idColumn="9863" LengthParam="0" />
+<INDEXCOLUMN idColumn="9864" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="9841" IndexName="WAR07_INVENTORY_ITEMS_FKIndex3" IndexKind="1" FKRefDef_Obj_id="9836">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="9860" LengthParam="0" />
+<INDEXCOLUMN idColumn="9862" LengthParam="0" />
+<INDEXCOLUMN idColumn="9865" LengthParam="0" />
+<INDEXCOLUMN idColumn="9866" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="9847" IndexName="WAR07_INVENTORY_ITEMS_FKIndex4" IndexKind="1" FKRefDef_Obj_id="9842">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="9860" LengthParam="0" />
+<INDEXCOLUMN idColumn="9862" LengthParam="0" />
+<INDEXCOLUMN idColumn="9867" LengthParam="0" />
+<INDEXCOLUMN idColumn="9868" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="9853" IndexName="WAR07_INVENTORY_ITEMS_FKIndex5" IndexKind="1" FKRefDef_Obj_id="9848">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="9860" LengthParam="0" />
+<INDEXCOLUMN idColumn="9862" LengthParam="0" />
+<INDEXCOLUMN idColumn="9871" LengthParam="0" />
+<INDEXCOLUMN idColumn="9872" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="9859" IndexName="WAR07_INVENTORY_ITEMS_FKIndex6" IndexKind="1" FKRefDef_Obj_id="9854">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="9860" LengthParam="0" />
+<INDEXCOLUMN idColumn="9862" LengthParam="0" />
+<INDEXCOLUMN idColumn="9869" LengthParam="0" />
+<INDEXCOLUMN idColumn="9870" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+</INDICES>
+</TABLE>
+<TABLE ID="9889" Tablename="WAR08_INVENTORY_S_N" PrevTableName="Table_156" XPos="1760" YPos="80" TableType="0" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="493" >
+<COLUMNS>
+<COLUMN ID="9891" ColName="SERIAL_NUMBER" PrevColName="" Pos="0" idDatatype="20" DatatypeParams="(255)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="1" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="9896" ColName="PROGRESSIVE_WAR07" PrevColName="" Pos="1" idDatatype="13" DatatypeParams="(12)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+</COLUMNS>
+<RELATIONS_END>
+<RELATION_END ID="9893" />
+</RELATIONS_END>
+<INDICES>
+<INDEX ID="9892" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="9891" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="9895" IndexName="WAR08_INVENTORY_S_N_FKIndex1" IndexKind="1" FKRefDef_Obj_id="9893">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="9896" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 </INDICES>
@@ -12020,7 +12321,7 @@
 <RELATION ID="2555" RelationName="Rel_89" Kind="4" SrcTable="1903" DestTable="2542" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nDOC_TYPE=DOC_TYPE\nDOC_YEAR=DOC_YEAR\nDOC_NUMBER=DOC_NUMBER\n" FKFieldsComments="\n\n\n\n" relDirection="2" MidOffset="3" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2560" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="143" />
 <RELATION ID="2592" RelationName="Rel_92" Kind="2" SrcTable="1662" DestTable="2569" FKFields="CURRENCY_CODE=CURRENCY_CODE_REG03\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="9473" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="148" />
 <RELATION ID="2604" RelationName="Rel_93" Kind="2" SrcTable="1662" DestTable="2580" FKFields="CURRENCY_CODE=CURRENCY_CODE_REG03\n" FKFieldsComments="\n" relDirection="2" MidOffset="4" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2606" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="149" />
-<RELATION ID="2649" RelationName="Rel_96" Kind="2" SrcTable="2580" DestTable="2609" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nMACHINERY_CODE=MACHINERY_CODE_PRO03\n" FKFieldsComments="\n\n" relDirection="4" MidOffset="-2" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2652" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="151" />
+<RELATION ID="2649" RelationName="Rel_96" Kind="2" SrcTable="2580" DestTable="2609" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nMACHINERY_CODE=MACHINERY_CODE_PRO03\n" FKFieldsComments="\n\n" relDirection="4" MidOffset="-11" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2652" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="151" />
 <RELATION ID="2733" RelationName="Rel_101" Kind="4" SrcTable="1132" DestTable="2609" FKFields="COMPANY_CODE=COMPANY_CODE_SYS01\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2735" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="151" />
 <RELATION ID="2738" RelationName="Rel_102" Kind="2" SrcTable="2485" DestTable="2609" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nMANUFACTURE_CODE=MANUFACTURE_CODE_PRO01\n" FKFieldsComments="\n\n" relDirection="2" MidOffset="-3" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2741" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="151" />
 <RELATION ID="2768" RelationName="Rel_97" Kind="2" SrcTable="2762" DestTable="2250" FKFields="CARRIER_CODE=CARRIER_CODE_REG09\n" FKFieldsComments="\n" relDirection="4" MidOffset="6" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="2770" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="155" />
@@ -12091,7 +12392,7 @@
 <RELATION ID="4895" RelationName="Rel_170" Kind="4" SrcTable="1225" DestTable="4893" FKFields="FUNCTION_CODE=FUNCTION_CODE_SYS06\n" FKFieldsComments="\n" relDirection="4" MidOffset="2" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4897" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="264" />
 <RELATION ID="4901" RelationName="Rel_171" Kind="4" SrcTable="1302" DestTable="4893" FKFields="PROGRESSIVE=PROGRESSIVE_HIE01\n" FKFieldsComments="\n" relDirection="4" MidOffset="-2" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4903" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="265" />
 <RELATION ID="4929" RelationName="Rel_171" Kind="4" SrcTable="2800" DestTable="4925" FKFields="PAYMENT_CODE=PAYMENT_CODE_REG10\n" FKFieldsComments="\n" relDirection="2" MidOffset="4" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4931" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="267" />
-<RELATION ID="4934" RelationName="Rel_172" Kind="2" SrcTable="2808" DestTable="4925" FKFields="PAYMENT_TYPE_CODE=PAYMENT_TYPE_CODE_REG11\n" FKFieldsComments="\n" relDirection="4" MidOffset="-56" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4936" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="268" />
+<RELATION ID="4934" RelationName="Rel_172" Kind="2" SrcTable="2808" DestTable="4925" FKFields="PAYMENT_TYPE_CODE=PAYMENT_TYPE_CODE_REG11\n" FKFieldsComments="\n" relDirection="4" MidOffset="-69" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4936" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="268" />
 <RELATION ID="4952" RelationName="Rel_174" Kind="4" SrcTable="1316" DestTable="4794" FKFields="PROGRESSIVE=PROGRESSIVE_HIE02\n" FKFieldsComments="\n" relDirection="3" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4954" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="268" />
 <RELATION ID="4956" RelationName="Rel_175" Kind="2" SrcTable="1302" DestTable="4794" FKFields="PROGRESSIVE=PROGRESSIVE_HIE01\n" FKFieldsComments="\n" relDirection="3" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4958" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="269" />
 <RELATION ID="4987" RelationName="Rel_172" Kind="2" SrcTable="1406" DestTable="1724" FKFields="VAT_CODE=VAT_CODE_REG01\n" FKFieldsComments="\n" relDirection="3" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="4989" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="268" />
@@ -12282,6 +12583,17 @@
 <RELATION ID="9743" RelationName="Rel_326" Kind="1" SrcTable="1225" DestTable="9720" FKFields="FUNCTION_CODE=FUNCTION_CODE_SYS06\n" FKFieldsComments="\n" relDirection="3" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="9745" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="482" />
 <RELATION ID="9755" RelationName="Rel_329" Kind="1" SrcTable="1225" DestTable="9712" FKFields="FUNCTION_CODE=FUNCTION_CODE_SYS06\n" FKFieldsComments="\n" relDirection="3" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="9757" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="485" />
 <RELATION ID="9767" RelationName="Rel_330" Kind="1" SrcTable="1198" DestTable="9720" FKFields="PROGRESSIVE=PROGRESSIVE_SYS04\n" FKFieldsComments="\n" relDirection="3" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="9769" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="485" />
+<RELATION ID="9783" RelationName="Rel_329" Kind="1" SrcTable="1132" DestTable="9775" FKFields="COMPANY_CODE=COMPANY_CODE_SYS01\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="9785" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="484" />
+<RELATION ID="9794" RelationName="Rel_331" Kind="2" SrcTable="1051" DestTable="9775" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nWAREHOUSE_CODE=WAREHOUSE_CODE_WAR01\n" FKFieldsComments="\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="9797" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="485" />
+<RELATION ID="9820" RelationName="Rel_333" Kind="2" SrcTable="9775" DestTable="9801" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nPROGRESSIVE=PROGRESSIVE_WAR06\n" FKFieldsComments="\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="9823" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="487" />
+<RELATION ID="9824" RelationName="Rel_334" Kind="2" SrcTable="8365" DestTable="9801" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nITEM_CODE_ITM01=ITEM_CODE_ITM01\nVARIANT_TYPE_ITM06=VARIANT_TYPE_ITM06\nVARIANT_CODE_ITM11=VARIANT_CODE_ITM11\n" FKFieldsComments="\n\n\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="9829" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="488" />
+<RELATION ID="9836" RelationName="Rel_335" Kind="2" SrcTable="8536" DestTable="9801" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nITEM_CODE_ITM01=ITEM_CODE_ITM01\nVARIANT_TYPE_ITM07=VARIANT_TYPE_ITM07\nVARIANT_CODE_ITM12=VARIANT_CODE_ITM12\n" FKFieldsComments="\n\n\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="9841" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="489" />
+<RELATION ID="9842" RelationName="Rel_336" Kind="2" SrcTable="8543" DestTable="9801" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nITEM_CODE_ITM01=ITEM_CODE_ITM01\nVARIANT_TYPE_ITM08=VARIANT_TYPE_ITM08\nVARIANT_CODE_ITM13=VARIANT_CODE_ITM13\n" FKFieldsComments="\n\n\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="9847" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="490" />
+<RELATION ID="9848" RelationName="Rel_337" Kind="2" SrcTable="8549" DestTable="9801" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nITEM_CODE_ITM01=ITEM_CODE_ITM01\nVARIANT_TYPE_ITM09=VARIANT_TYPE_ITM09\nVARIANT_CODE_ITM14=VARIANT_CODE_ITM14\n" FKFieldsComments="\n\n\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="9853" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="491" />
+<RELATION ID="9854" RelationName="Rel_338" Kind="2" SrcTable="8555" DestTable="9801" FKFields="COMPANY_CODE_SYS01=COMPANY_CODE_SYS01\nITEM_CODE_ITM01=ITEM_CODE_ITM01\nVARIANT_TYPE_ITM10=VARIANT_TYPE_ITM10\nVARIANT_CODE_ITM15=VARIANT_CODE_ITM15\n" FKFieldsComments="\n\n\n\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="9859" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="492" />
+<RELATION ID="9893" RelationName="Rel_340" Kind="2" SrcTable="9801" DestTable="9889" FKFields="PROGRESSIVE=PROGRESSIVE_WAR07\n" FKFieldsComments="\n" relDirection="1" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="9895" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="494" />
+<RELATION ID="9901" RelationName="Rel_342" Kind="2" SrcTable="3867" DestTable="9775" FKFields="WAREHOUSE_MOTIVE=INV_POSITIVE_MOTIVE_WAR04\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="9902" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="496" />
+<RELATION ID="9903" RelationName="Rel_343" Kind="2" SrcTable="3867" DestTable="9775" FKFields="WAREHOUSE_MOTIVE=INV_NEGATIVE_MOTIVE_WAR04\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="9904" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="497" />
 </RELATIONS>
 <NOTES>
 </NOTES>

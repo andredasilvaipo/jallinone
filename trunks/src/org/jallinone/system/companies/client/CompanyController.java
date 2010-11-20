@@ -109,6 +109,14 @@ public class CompanyController extends FormController {
   }
 
 
+		/**
+		 * Callback method called after saving SUCCESSFULLY data in INSERT mode.
+		 */
+		public void afterInsertData() {
+			detailFrame.getOrganizationPanel().reload();
+		}
+
+
   /**
    * Method called by the Form panel to update existing data.
    * @param oldPersistentObject original value object, previous to the changes

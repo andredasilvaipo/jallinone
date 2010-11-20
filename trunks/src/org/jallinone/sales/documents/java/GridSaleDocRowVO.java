@@ -2,6 +2,7 @@ package org.jallinone.sales.documents.java;
 
 import org.openswing.swing.message.receive.java.*;
 import org.jallinone.commons.java.*;
+import java.math.BigDecimal;
 
 
 /**
@@ -63,6 +64,8 @@ public class GridSaleDocRowVO extends ValueObjectImpl {
   private String variantCodeItm15DOC02;
 
   private java.sql.Date deliveryDateDOC02;
+	private String serialNumberRequiredITM01;
+	private BigDecimal progressiveHie02DOC02;
 
 
   public GridSaleDocRowVO() {
@@ -253,6 +256,18 @@ public class GridSaleDocRowVO extends ValueObjectImpl {
   }
   public void setDeliveryDateDOC02(java.sql.Date deliveryDateDOC02) {
     this.deliveryDateDOC02 = deliveryDateDOC02;
+  }
+  public String getSerialNumberRequiredITM01() {
+    return serialNumberRequiredITM01;
+  }
+  public void setSerialNumberRequiredITM01(String serialNumberRequiredITM01) {
+    this.serialNumberRequiredITM01 = serialNumberRequiredITM01;
+  }
+  public BigDecimal getProgressiveHie02DOC02() {
+    return progressiveHie02DOC02;
+  }
+  public void setProgressiveHie02DOC02(BigDecimal progressiveHie02DOC02) {
+    this.progressiveHie02DOC02 = progressiveHie02DOC02;
   }
 
 

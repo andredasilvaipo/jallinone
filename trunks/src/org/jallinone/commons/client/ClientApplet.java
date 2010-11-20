@@ -92,7 +92,9 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
 //    ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "org.jvnet.substance.skin.SubstanceMistSilverLookAndFeel";
 
     try {
-      ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "com.jtattoo.plaf.aluminium.AluminiumLookAndFeel"; // "com.jtattoo.plaf.aero.McWinLookAndFeel";
+			String lookAndFeelClassName = System.getProperty("LOOK_AND_FEEL_CLASS_NAME");
+			if (lookAndFeelClassName!=null)
+				ClientSettings.LOOK_AND_FEEL_CLASS_NAME = lookAndFeelClassName; // "com.jtattoo.plaf.aero.McWinLookAndFeel";
       Properties props = new Properties();
       props.put("logoString", "JAllInOne");
       props.put("backgroundColor", "232 232 232");
@@ -103,10 +105,13 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
       props.put("menuTextFont", "Arial PLAIN 11");
       props.put("userTextFont", "Arial PLAIN 11");
       props.put("subTextFont", "Arial PLAIN 11");
-      Class.forName(ClientSettings.LOOK_AND_FEEL_CLASS_NAME).getMethod(
-          "setCurrentTheme", new Class[] {Properties.class}).invoke(null,
-          new Object[] {props});
-      UIManager.setLookAndFeel(ClientSettings.LOOK_AND_FEEL_CLASS_NAME);
+			if (lookAndFeelClassName!=null) {
+				Class.forName(ClientSettings.LOOK_AND_FEEL_CLASS_NAME).getMethod(
+						"setCurrentTheme", new Class[] {Properties.class}).invoke(null,
+						new Object[] {props});
+				UIManager.setLookAndFeel(ClientSettings.LOOK_AND_FEEL_CLASS_NAME);
+			}
+
 
     }
     catch (Throwable ex1) {
@@ -122,6 +127,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     xmlFiles.put("IT","Resources_it.xml");
     xmlFiles.put("ES","Resources_es.xml");
     xmlFiles.put("PTBR","Resources_PTBR.xml");
+		xmlFiles.put("DE","Resources_de.xml");
 
     // initialize internationalization settings, according to user language identifier...
     ClientSettings clientSettings = new ClientSettings(
@@ -174,6 +180,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     languagesDomain.addDomainPair("IT","italian");
     languagesDomain.addDomainPair("ES","spanish");
     languagesDomain.addDomainPair("PTBR","brazilian");
+		languagesDomain.addDomainPair("DE","german");
     domains.put(
       languagesDomain.getDomainId(),
       languagesDomain
@@ -629,6 +636,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     supportedLanguageIds.setProperty("IT","italian");
     supportedLanguageIds.setProperty("ES","spanish");
     supportedLanguageIds.setProperty("PTBR","brazilian");
+		supportedLanguageIds.setProperty("DE","german");
     String currentLanguageIdentifier = "EN";
     Locale locale = Locale.getDefault();
     if (supportedLanguageIds.containsKey(locale.getLanguage().toUpperCase()))
@@ -704,6 +712,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     xmlFiles.put("IT","Resources_it.xml");
     xmlFiles.put("ES","Resources_es.xml");
     xmlFiles.put("PTBR","Resources_PTBR.xml");
+		xmlFiles.put("DE","Resources_de.xml");
 
     // initialize internationalization settings, according to user language identifier...
     ClientSettings clientSettings = new ClientSettings(
