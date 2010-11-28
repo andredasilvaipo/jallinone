@@ -550,6 +550,8 @@ import org.openswing.swing.server.Action;
 import org.openswing.swing.server.ActionsCollection;
 import org.openswing.swing.server.ConnectionManager;
 import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.warehouse.server.*;
+import org.jallinone.hierarchies.server.LoadLeavesAction;
 
 
 /**
@@ -1234,6 +1236,23 @@ public class ApplicationActionClasses extends ActionsCollection {
     a = new UpdateGridPermissionsPerRoleAction(); put(a.getRequestName(),a);
 
     a = new SaleDocTotalsAction(); put(a.getRequestName(),a);
+
+		a = new ImportInventoryItemsAction(); put(a.getRequestName(),a);
+		a = new DeleteInventoriesAction(); put(a.getRequestName(),a);
+		a = new InsertInventoryAction(); put(a.getRequestName(),a);
+		a = new LoadInventoriesAction(); put(a.getRequestName(),a);
+		a = new LoadInventoryItemsAction(); put(a.getRequestName(),a);
+		a = new UpdateInventoriesAction(); put(a.getRequestName(),a);
+		a = new LoadLeavesAction(); put(a.getRequestName(),a);
+
+		a = new DeleteInventoryItemsAction(); put(a.getRequestName(),a);
+		a = new InsertInventoryItemAction(); put(a.getRequestName(),a);
+		a = new UpdateInventoryItemsAction(); put(a.getRequestName(),a);
+		a = new CloseInventoryAction(); put(a.getRequestName(),a);
+		a = new ConfirmInventoryAction(); put(a.getRequestName(),a);
+
+
+
 
 
 

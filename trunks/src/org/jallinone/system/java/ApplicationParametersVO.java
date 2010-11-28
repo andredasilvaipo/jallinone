@@ -382,4 +382,52 @@ public class ApplicationParametersVO extends ValueObjectImpl {
   }
 
 
+
+
+
+
+
+
+
+
+
+
+
+		public final String getInvNegCorrForGoodItemsValue() {
+			return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.NEG_INVCORR_GOOD_ITM);
+		}
+
+		public final void setInvNegCorrForGoodItemsValue(String value) {
+			applicationPars.put(ApplicationConsts.NEG_INVCORR_GOOD_ITM,value);
+		}
+
+
+		public final String getInvPosCorrForGoodItemsValue() {
+			return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.POS_INVCORR_GOOD_ITM);
+		}
+
+		public final void setInvPosCorrForGoodItemsValue(String value) {
+			applicationPars.put(ApplicationConsts.POS_INVCORR_GOOD_ITM,value);
+		}
+
+
+		public final String getInvNegCorrForDamagedItemsValue() {
+			return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.NEG_INVCORR_DAMG_ITM);
+		}
+
+		public final void setInvNegCorrForDamagedItemsValue(String value) {
+			applicationPars.put(ApplicationConsts.NEG_INVCORR_DAMG_ITM,value);
+		}
+
+
+		public final String getInvPosCorrForDamagedItemsValue() {
+			return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.POS_INVCORR_DAMG_ITM);
+		}
+
+		public final void setInvPosCorrForDamagedItemsValue(String value) {
+			applicationPars.put(ApplicationConsts.POS_INVCORR_DAMG_ITM,value);
+		}
+
+
+
 }

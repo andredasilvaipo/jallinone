@@ -108,6 +108,7 @@ import org.jallinone.warehouse.tables.movements.client.MovementsController;
 import org.openswing.swing.mdi.client.ClientFacade;
 import org.openswing.swing.mdi.client.MDIFrame;
 import org.openswing.swing.util.client.ClientSettings;
+import org.jallinone.warehouse.client.InventoryListFrame;
 
 
 /**
@@ -989,6 +990,10 @@ public class ApplicationClientFacade implements ClientFacade {
     new ETLProcessesGridController();
   }
 
+
+	public void getInventoryList() {
+		new InventoryListFrame();
+	}
 
 }
 

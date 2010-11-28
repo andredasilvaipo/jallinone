@@ -273,7 +273,6 @@ public class VariantsBean  implements Variants {
    * Business logic to execute.
    */
   public VOListResponse updateVariants(String tableName,ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable {
-
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;

@@ -57,7 +57,7 @@ import javax.sql.DataSource;
 public class ParamsBean  implements Params {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -65,9 +65,9 @@ public class ParamsBean  implements Params {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -77,7 +77,7 @@ public class ParamsBean  implements Params {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -89,7 +89,7 @@ public class ParamsBean  implements Params {
     this.custBean = custBean;
   }
 
-  
+
   private WarehousesBean wareBean;
 
   public void setWareBean(WarehousesBean wareBean) {
@@ -109,7 +109,7 @@ public class ParamsBean  implements Params {
    */
   public VOResponse loadUserParams(String companyCode,String serverLanguageId,String username,ArrayList custCompaniesList,ArrayList warCompaniesList) throws Throwable {
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -141,7 +141,7 @@ public class ParamsBean  implements Params {
             custCompaniesList
         );
         if (res.isError())
-          throw new Exception(res.getErrorMessage()); 
+          throw new Exception(res.getErrorMessage());
         java.util.List list = ((VOListResponse)res).getRows();
         if (list.size()>0) {
           GridCustomerVO custVO = (GridCustomerVO)list.get(0);
@@ -171,7 +171,7 @@ public class ParamsBean  implements Params {
             warCompaniesList
         );
         if (res.isError())
-        	throw new Exception(res.getErrorMessage()); 
+        	throw new Exception(res.getErrorMessage());
         java.util.List list = ((VOListResponse)res).getRows();
         if (list.size()>0) {
           WarehouseVO wareVO = (WarehouseVO)list.get(0);
@@ -392,7 +392,7 @@ public class ParamsBean  implements Params {
       }
       catch (Exception ex) {
       }
-   
+
       try {
         custBean.setConn(null);
         wareBean.setConn(null);
@@ -442,7 +442,7 @@ public class ParamsBean  implements Params {
       }
       catch (Exception ex3) {
       }
-      throw new Exception(ex.getMessage()); 
+      throw new Exception(ex.getMessage());
     } finally {
       try {
         pstmt.close();
@@ -457,7 +457,7 @@ public class ParamsBean  implements Params {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }
@@ -516,6 +516,67 @@ public class ParamsBean  implements Params {
       }
 
 
+
+
+
+			// update "inv.neg.corr. for good items" value for progressives...
+			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+			pstmt.setString(1,getInvNegCorrForGoodItemsValue(applicationPars).toString());
+			pstmt.setString(2,ApplicationConsts.NEG_INVCORR_GOOD_ITM);
+			rows = pstmt.executeUpdate();
+			pstmt.close();
+			if (rows==0) {
+				// record not yet exists: it will be inserted...
+				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+				pstmt.setString(1,ApplicationConsts.NEG_INVCORR_GOOD_ITM);
+				pstmt.setString(2,getInvNegCorrForGoodItemsValue(applicationPars).toString());
+				pstmt.executeUpdate();
+			}
+
+			// update "inv.pos.corr. for good items"  value for progressives...
+			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+			pstmt.setString(1,getInvPosCorrForGoodItemsValue(applicationPars).toString());
+			pstmt.setString(2,ApplicationConsts.POS_INVCORR_GOOD_ITM);
+			rows = pstmt.executeUpdate();
+			pstmt.close();
+			if (rows==0) {
+				// record not yet exists: it will be inserted...
+				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+				pstmt.setString(1,ApplicationConsts.POS_INVCORR_GOOD_ITM);
+				pstmt.setString(2,getInvPosCorrForGoodItemsValue(applicationPars).toString());
+				pstmt.executeUpdate();
+			}
+
+			// update "inv.pos.corr. for damaged items"  value for progressives...
+			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+			pstmt.setString(1,getInvPosCorrForDamagedItemsValue(applicationPars).toString());
+			pstmt.setString(2,ApplicationConsts.POS_INVCORR_DAMG_ITM);
+			rows = pstmt.executeUpdate();
+			pstmt.close();
+			if (rows==0) {
+				// record not yet exists: it will be inserted...
+				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+				pstmt.setString(1,ApplicationConsts.POS_INVCORR_DAMG_ITM);
+				pstmt.setString(2,getInvPosCorrForDamagedItemsValue(applicationPars).toString());
+				pstmt.executeUpdate();
+			}
+
+			// update "inv.neg.corr. for damaged items"  value for progressives...
+			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+			pstmt.setString(1,getInvNegCorrForDamagedItemsValue(applicationPars));
+			pstmt.setString(2,ApplicationConsts.NEG_INVCORR_DAMG_ITM);
+			rows = pstmt.executeUpdate();
+			pstmt.close();
+			if (rows==0) {
+				// record not yet exists: it will be inserted...
+				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+				pstmt.setString(1,ApplicationConsts.NEG_INVCORR_DAMG_ITM);
+				pstmt.setString(2,getInvNegCorrForDamagedItemsValue(applicationPars));
+				pstmt.executeUpdate();
+			}
+
+
+
       return new VOResponse(Boolean.TRUE);
     } catch (Exception ex) {
       Logger.error(username,this.getClass().getName(),"executeCommand","Error while storing application parameters",ex);
@@ -541,7 +602,7 @@ public class ParamsBean  implements Params {
           }
 
       }
-      catch (Exception exx) {} 
+      catch (Exception exx) {}
     }
 
   }
@@ -1164,12 +1225,12 @@ public class ParamsBean  implements Params {
    */
   public VOResponse loadCompanyParams(String companyCode,String serverLanguageId,String username) throws Throwable {
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       custBean.setConn(conn); // use same transaction...
-      
+
 
       CompanyParametersVO vo = new CompanyParametersVO();
       vo.setCompanyCodeSys01SYS21(companyCode);
@@ -1537,7 +1598,7 @@ public class ParamsBean  implements Params {
       try {
         custBean.setConn(null);
       } catch (Exception ex) {}
-      
+
       try {
           if (this.conn==null && conn!=null) {
               // close only local connection
@@ -1546,12 +1607,12 @@ public class ParamsBean  implements Params {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }
 
-  
+
 
   /**
    * Business logic to execute.
@@ -1604,7 +1665,7 @@ public class ParamsBean  implements Params {
       }
       catch (Exception ex) {
       }
-      
+
       try {
           if (this.conn==null && conn!=null) {
               // close only local connection
@@ -1613,15 +1674,15 @@ public class ParamsBean  implements Params {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }
 
 
-  
-  
-  
+
+
+
 
   /**
    * @erturn image repository path
@@ -1649,10 +1710,37 @@ public class ParamsBean  implements Params {
   }
 
 
-  
-  
-  
-  
+		/**
+		 * @erturn increment value for progressives
+		 */
+		public final String getInvPosCorrForGoodItemsValue(HashMap applicationPars) {
+			return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.POS_INVCORR_GOOD_ITM);
+		}
+
+		/**
+		 * @erturn increment value for progressives
+		 */
+		public final String getInvNegCorrForGoodItemsValue(HashMap applicationPars) {
+			return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.NEG_INVCORR_GOOD_ITM);
+		}
+
+		/**
+		 * @erturn increment value for progressives
+		 */
+		public final String getInvPosCorrForDamagedItemsValue(HashMap applicationPars) {
+			return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.POS_INVCORR_DAMG_ITM);
+		}
+
+		/**
+		 * @erturn increment value for progressives
+		 */
+		public final String getInvNegCorrForDamagedItemsValue(HashMap applicationPars) {
+			return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.NEG_INVCORR_DAMG_ITM);
+		}
+
+
+
+
 
 }
 

@@ -1,5 +1,13 @@
 
 
+Release Notes 2.3
+-----------------
+
+Added inventory functionality.
+Added new web application named "JAllInOne Mobile" for mobile devices, using the same database/business logic, 
+in order to manage warehouse: in/out delivery notes, validation of barcodes/serial numbers/item codes, inventory management.
+
+
 Release Notes 2.2
 -----------------
 
@@ -7,7 +15,6 @@ Added german translations to JAllInOne, thanks to Michael Roth.
 Added launchXX_nolnf.jnlp start files, which start client side application without the "Aluminium" look and feel.
 Fixed problem with unicode characters when adding languagues.
 Fixed problem on creating additional companies and updating new company data.
-
 
 
 Release Notes 2.1

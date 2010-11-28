@@ -803,5 +803,11 @@
      <property name="itemDiscountBean" ref="SaleItemTotalDiscountBean" />
      <property name="bean" ref="InsertSaleItemBean" />
    </bean>
+   <bean id="InventoriesBean" scope="prototype" class="org.jallinone.warehouse.server.InventoriesBean">
+     <property name="dataSource" ref="JALLINONE" />
+     <property name="bean" ref="HierarchiesBean" />
+   </bean>
+
+
 
 </beans>

@@ -93,6 +93,7 @@ public class InventoryFrame extends InternalFrame {
       wareController.setLookupValueObjectClassName("org.jallinone.warehouse.java.WarehouseVO");
       wareController.addLookup2ParentLink("warehouseCodeWAR01", "warehouseCodeWAR01");
       wareController.addLookup2ParentLink("descriptionWAR01","descriptionWAR01");
+			wareController.addLookup2ParentLink("progressiveHie02WAR01","progressiveHie02WAR01");
       wareController.setAllColumnVisible(false);
       wareController.setVisibleColumn("warehouseCodeWAR01", true);
       wareController.setVisibleColumn("descriptionWAR01", true);

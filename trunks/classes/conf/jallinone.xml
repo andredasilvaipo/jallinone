@@ -787,6 +787,10 @@
               <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/LoadSaleDocRows" /></inbound>
               <pooled-component><spring-object bean="LoadSaleDocRowsBean" ></spring-object></pooled-component>
          </service>
+         <service name="InventoriesService">
+              <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/Inventories" /></inbound>
+              <pooled-component><spring-object bean="InventoriesBean" ></spring-object></pooled-component>
+         </service>
 
      </model>
 </mule>

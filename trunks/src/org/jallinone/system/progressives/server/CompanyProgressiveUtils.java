@@ -128,7 +128,7 @@ public class CompanyProgressiveUtils {
       if (progressive!=null) {
         // record found: it will be incremented by 10...
         int rows = stmt.executeUpdate(
-            "update SYS20_COMPANY_PROGRESSIVES set VALUE=VALUE+10 where "+
+            "update SYS20_COMPANY_PROGRESSIVES set VALUE=VALUE+"+incrementValue+" where "+
             "COMPANY_CODE_SYS01='"+companyCode+"' and TABLE_NAME='"+tableName+"' and COLUMN_NAME='"+columnName+"' and VALUE="+progressive
         );
         if (rows==0)

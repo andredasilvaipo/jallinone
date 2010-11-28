@@ -33,7 +33,7 @@ import java.math.BigDecimal;
  */
 public class ApplicationConsts {
 
-  public static final int DB_VERSION = 5;
+  public static final int DB_VERSION = 6;
 
   public static final String DO_NOT_ADD_ENABLED = "DO_NOT_ADD_ENABLED";
 
@@ -49,6 +49,12 @@ public class ApplicationConsts {
   public static final String DOC_PATH = "DOC_PATH";
   public static final String IMAGE_PATH = "IMAGE_PATH";
   public static final String INCREMENT_VALUE = "INCREMENT_VALUE";
+
+	public static final String NEG_INVCORR_GOOD_ITM = "NEG_INVCORR_GOOD_ITM";
+	public static final String POS_INVCORR_GOOD_ITM = "POS_INVCORR_GOOD_ITM";
+	public static final String POS_INVCORR_DAMG_ITM = "POS_INVCORR_DAMG_ITM";
+	public static final String NEG_INVCORR_DAMG_ITM = "NEG_INVCORR_DAMG_ITM";
+
   public static final String INITIAL_VALUE = "INITIAL_VALUE";
   public static final String TREE_FILTER = "TREE_FILTER";
   public static final String DATE_FILTER = "DATE_FILTER";
@@ -259,6 +265,7 @@ public class ApplicationConsts {
   public static final String CONFIRMED = "C";
   public static final String CLOSED = "D";
   public static final String INVOICED = "I";
+	public static final String IN_PROGRESS = "P";
 
   public static final String QTY_SIGN_PLUS = "+";
   public static final String QTY_SIGN_MINUS = "-";
@@ -366,6 +373,6 @@ public class ApplicationConsts {
 
 	public static final String BLOCK_SIZE = "BLOCK_SIZE";
 
-
+	public static final String ID = "ID";
 
 }

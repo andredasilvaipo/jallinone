@@ -49,7 +49,7 @@ import org.jallinone.commons.java.*;
  */
 public class UpgradeBean {
 
-  
+
   public UpgradeBean() { }
 
 
@@ -58,7 +58,7 @@ public class UpgradeBean {
     ResultSet rset = null;
     try {
       SQLExecutionBean executer = new SQLExecutionBean();
-      
+
       pstmt = conn.prepareStatement("SELECT VALUE FROM SYS11_APPLICATION_PARS WHERE PARAM_CODE='VERSION'");
       rset = pstmt.executeQuery();
       int version = 1;
@@ -71,12 +71,15 @@ public class UpgradeBean {
         return;
 
       // retrieve supported languages...
-      pstmt = conn.prepareStatement("SELECT DISTINCT CLIENT_LANGUAGE_CODE FROM SYS09_LANGUAGES WHERE ENABLED='Y'");
+      pstmt = conn.prepareStatement("SELECT DISTINCT CLIENT_LANGUAGE_CODE,LANGUAGE_CODE FROM SYS09_LANGUAGES WHERE ENABLED='Y'");
       rset = pstmt.executeQuery();
-      ArrayList supportedLanguages = new ArrayList();
-      while (rset.next())
-        supportedLanguages.add(rset.getString(1));
-      rset.close();
+      ArrayList supportedClientLanguages = new ArrayList();
+			ArrayList supportedLanguages = new ArrayList();
+      while (rset.next()) {
+        supportedClientLanguages.add(rset.getString(1));
+				supportedLanguages.add(rset.getString(2));
+      }
+			rset.close();
       pstmt.close();
 
 
@@ -88,9 +91,10 @@ public class UpgradeBean {
         Logger.debug("NONAME",this.getClass().getName(),"maybeUpgradeDB","Applying SQL script 'defsql"+i+".ini'");
 
         executer.executeSQL(conn,vo,"defsql"+i+".ini");
-        for(int k=0;k<supportedLanguages.size();k++) {
-          Logger.debug("NONAME",this.getClass().getName(),"maybeUpgradeDB","Applying SQL script 'inssql"+i+"_"+supportedLanguages.get(k)+".ini'");
-          executer.executeSQL(conn,vo,"inssql"+i+"_"+supportedLanguages.get(k)+".ini");
+        for(int k=0;k<supportedClientLanguages.size();k++) {
+					vo.setLanguageCode(supportedLanguages.get(k).toString());
+          Logger.debug("NONAME",this.getClass().getName(),"maybeUpgradeDB","Applying SQL script 'inssql"+i+"_"+supportedClientLanguages.get(k)+".ini'");
+          executer.executeSQL(conn,vo,"inssql"+i+"_"+supportedClientLanguages.get(k)+".ini");
         }
       }
 
@@ -130,7 +134,7 @@ public class UpgradeBean {
       }
       catch (Exception ex2) {
       }
-  
+
     }
   }
 

@@ -22,6 +22,7 @@ import org.openswing.swing.mdi.client.MDIFrame;
 import javax.swing.border.*;
 import org.openswing.swing.lookup.client.LookupListener;
 import java.util.Collection;
+import org.jallinone.warehouse.tables.motives.java.MotiveVO;
 
 
 /**
@@ -73,6 +74,14 @@ public class ApplicationParametersFrame extends InternalFrame {
   TextControl controlDocPath = new TextControl();
   LabelControl labelIncrementVal = new LabelControl();
   NumericControl controlIncremVal = new NumericControl();
+  LabelControl labelNegDamg = new LabelControl();
+  LabelControl labelPosDamg = new LabelControl();
+  LabelControl labelNegGood = new LabelControl();
+  LabelControl labelPosGood = new LabelControl();
+  ComboBoxControl controlPosGood = new ComboBoxControl();
+  ComboBoxControl controlNegGood = new ComboBoxControl();
+  ComboBoxControl controlPosDamaged = new ComboBoxControl();
+  ComboBoxControl controlNegDamg = new ComboBoxControl();
 
 
 
@@ -82,8 +91,24 @@ public class ApplicationParametersFrame extends InternalFrame {
 
       mainPanel.setFormController(controller);
 
+			Response res = ClientUtils.getData("loadWarehouseMotives",new GridParams());
+			Domain d = new Domain("WAR_MOTIVES");
+			if (!res.isError()) {
+				MotiveVO vo = null;
+				java.util.List rows = null;
+				rows = ((VOListResponse)res).getRows();
+				for(int i=0;i<rows.size();i++) {
+					vo = (MotiveVO)rows.get(i);
+					d.addDomainPair(vo.getWarehouseMotiveWAR04(),vo.getDescriptionSYS10());
+				}
+			}
+			controlPosDamaged.setDomain(d);
+			controlNegDamg.setDomain(d);
+			controlPosGood.setDomain(d);
+			controlNegGood.setDomain(d);
 
-      setSize(450,200);
+
+      setSize(550,350);
     }
     catch(Exception e) {
       e.printStackTrace();
@@ -105,6 +130,17 @@ public class ApplicationParametersFrame extends InternalFrame {
     labelDocPath.setText("document repository path");
     labelIncrementVal.setText("increment value in progr");
     controlIncremVal.setMinValue(1.0);
+    controlIncremVal.setRequired(true);
+    labelNegDamg.setText("negdamaged");
+    labelPosDamg.setText("posdamaged");
+    labelNegGood.setText("neggood");
+    labelPosGood.setText("posgood");
+    controlPosGood.setRequired(true);
+    controlNegDamg.setRequired(true);
+    controlNegGood.setRequired(true);
+    controlPosDamaged.setRequired(true);
+    controlImagePath.setRequired(true);
+    controlDocPath.setRequired(true);
     topPanel.add(buttonsPanel,         new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 
@@ -126,17 +162,39 @@ public class ApplicationParametersFrame extends InternalFrame {
     controlDocPath.setAttributeName("documentPath");
     controlIncremVal.setAttributeName("incrementValue");
 
-    mainPanel.add(controlImagePath,           new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
+		controlPosDamaged.setAttributeName("invPosCorrForDamagedItemsValue");
+		controlNegDamg.setAttributeName("invNegCorrForDamagedItemsValue");
+		controlPosGood.setAttributeName("invPosCorrForGoodItemsValue");
+		controlNegGood.setAttributeName("invNegCorrForGoodItemsValue");
+
+
+    mainPanel.add(controlImagePath,               new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(labelImagePath,           new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+    mainPanel.add(labelImagePath,               new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
-    mainPanel.add(labelDocPath,        new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+    mainPanel.add(labelDocPath,            new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(controlDocPath,        new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+    mainPanel.add(controlDocPath,            new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(labelIncrementVal,   new GridBagConstraints(0, 2, 1, 1, 0.0, 1.0
+    mainPanel.add(labelIncrementVal,        new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    mainPanel.add(controlIncremVal,       new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    mainPanel.add(labelNegDamg,      new GridBagConstraints(0, 6, 1, 1, 0.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(controlIncremVal,  new GridBagConstraints(1, 2, 1, 1, 0.0, 1.0
+    mainPanel.add(labelPosDamg,     new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    mainPanel.add(labelNegGood,    new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    mainPanel.add(labelPosGood,   new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    mainPanel.add(controlPosGood,  new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    mainPanel.add(controlNegGood, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    mainPanel.add(controlPosDamaged,  new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    mainPanel.add(controlNegDamg,    new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
 

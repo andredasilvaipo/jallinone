@@ -1512,7 +1512,38 @@
   <object key="in pricelist" value="in pricelist" />
   <object key="import sale prices" value="Import sale prices" />
   <object key="treePosition" value="Position in menu" />
-
+  <object key="inventories list" value="Inventories list" />
+  <object key="stateWAR06" value="State" />
+  <object key="descriptionWAR06" value="Inventary" />
+  <object key="startDateWAR06" value="Start Date" />
+  <object key="endDateWAR06" value="End Date" />
+  <object key="an inventory is in progress" value="An inventory calculation is in progress" />
+  <object key="negdamaged" value="Inv. neg. correct. for damaged items Motive" />
+  <object key="posdamaged" value="Inv. pos. correct. for damaged items Motive" />
+  <object key="neggood" value="Inv. neg. correct. for good items Motive" />
+  <object key="posgood" value="Inv. pos. correct. for good items Motive" />
+  <object key="inventory" value="Inventory items definition" />
+  <object key="import items" value="Import items" />
+  <object key="import items that match the filtering conditions" value="Import items that match the filtering conditions" />
+  <object key="confirm inventory" value="Confirm inventory items" />
+  <object key="close inventory" value="Close inventory" />
+  <object key="stateWAR07" value="State" />
+  <object key="itemCodeItm01WAR07" value="Item code" />
+  <object key="progressiveHie02WAR07" value="Item type" />
+  <object key="progressiveHie01WAR07" value="Location" />
+  <object key="realProgressiveHie01WAR07" value="Real location" />
+  <object key="qtyWAR07" value="Qty" />
+  <object key="realQtyWAR07" value="Real qty" />
+  <object key="deltaQtyWAR07" value="Delta qty" />
+  <object key="items to include in inventory" value="Items to include in inventory" />
+  <object key="an import in inventory is already in progress" value="An import in inventory is already in progress" />
+  <object key="movement motive related to inventory correction not found" value="Movement motive related to inventory correction not found" />
+  <object key="cannot confirm the inventory" value="Cannot confirm the inventory" />
+  <object key="internal error on calculating progressive in WAR02" value="Internal error on calculating progressive in WAR02" />
+  <object key="items confirmed" value="Items confirmed" />
+  <object key="items confirmation completed" value="Items confirmation completed" />
+  <object key="inventory closed" value="Inventory closed" />
+  <object key="items import completed" value="Items import completed" />
 
   <currencySymbol>R$</currencySymbol>
   <decimalSymbol>,</decimalSymbol>

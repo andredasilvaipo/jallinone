@@ -359,7 +359,7 @@ public class HierarchiesBean  implements Hierarchies {
 		/**
 		 * Business logic to execute.
 		 */
-		public VOListResponse getLeaves(BigDecimal progressiveHIE02,String langId,String username) throws Throwable {
+		public VOListResponse getLeaves(BigDecimal progressiveHIE02,BigDecimal progressiveHIE01,String langId,String username) throws Throwable {
 			PreparedStatement pstmt = null;
 			Connection conn = null;
 			try {
@@ -427,9 +427,14 @@ public class HierarchiesBean  implements Hierarchies {
 				}
 				rset.close();
 
+				if (progressiveHIE01!=null) {
+					// remove all nodes not descendents of the node identified by progressiveHIE01...
+					rootNode = getNode(rootNode,progressiveHIE01);
+				}
 
 				ArrayList leaves = new ArrayList();
-				searchLeaves("", rootNode, leaves);
+				if (rootNode!=null)
+					searchLeaves("", rootNode, leaves);
 
 				return new VOListResponse(leaves,false,leaves.size());
 			} catch (Exception ex1) {
@@ -467,6 +472,26 @@ public class HierarchiesBean  implements Hierarchies {
 							(DefaultMutableTreeNode)node.getChildAt(i),
 							leaves
 						);
+				}
+			}
+
+
+			private DefaultMutableTreeNode getNode(DefaultMutableTreeNode node,BigDecimal progressiveHIE01) {
+				HierarchyLevelVO vo = (HierarchyLevelVO)node.getUserObject();
+				if (vo!=null && vo.getProgressiveHIE01().equals(progressiveHIE01)) {
+					return node;
+				}
+				else {
+					DefaultMutableTreeNode aux = null;
+					for(int i=0;i<node.getChildCount();i++) {
+						aux = getNode(
+							(DefaultMutableTreeNode)node.getChildAt(i),
+							progressiveHIE01
+						);
+						if (aux!=null)
+							return aux;
+					}
+					return null;
 				}
 			}
 

@@ -70,9 +70,9 @@ import org.jallinone.system.progressives.server.*;
  */
 public class AddMovementBean implements AddMovement {
 
-	
 
-	  private DataSource dataSource; 
+
+	  private DataSource dataSource;
 
 	  public void setDataSource(DataSource dataSource) {
 	    this.dataSource = dataSource;
@@ -80,9 +80,9 @@ public class AddMovementBean implements AddMovement {
 
 	  /** external connection */
 	  private Connection conn = null;
-	  
+
 	  /**
-	   * Set external connection. 
+	   * Set external connection.
 	   */
 	  public void setConn(Connection conn) {
 	    this.conn = conn;
@@ -95,10 +95,10 @@ public class AddMovementBean implements AddMovement {
 	    Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
 	  }
 
-	  
-	  
-	  
-	  
+
+
+
+
 
 	  /**
 	   * Add a new warehouse movement in WAR02 and consequently in WAR03.
@@ -115,8 +115,54 @@ public class AddMovementBean implements AddMovement {
 	    try {
 		    try {
 		      if (this.conn==null) conn = getConn(); else conn = this.conn;
-		   
-		
+
+
+				  // check if there exists an inventory in progress referring the specified item...
+					sql =
+						"SELECT * from WAR07_INVENTORY_ITEMS,WAR06_INVENTORIES WHERE where "+
+						"WAR07_INVENTORY_ITEMS.COMPANY_CODE_SYS01=WAR06_INVENTORIES.COMPANY_CODE_SYS01 and "+
+						"WAR07_INVENTORY_ITEMS.PROGRESSIVE_WAR06=WAR06_INVENTORIES.PROGRESSIVE and "+
+						"WAR06_INVENTORIES.ITEM_TYPE=? and "+
+						"(WAR07_INVENTORY_ITEMS.STATE=? or WAR07_INVENTORY_ITEMS.STATE=?) and "+
+						"WAR07_INVENTORY_ITEMS.COMPANY_CODE_SYS01=? and "+
+						"WAR06_INVENTORIES.WAREHOUSE_CODE_WAR01=? and "+
+						"WAR07_INVENTORY_ITEMS.PROGRESSIVE_HIE01=? and "+
+						"WAR07_INVENTORY_ITEMS.ITEM_CODE_ITM01=? and "+
+						"WAR07_INVENTORY_ITEMS.VARIANT_TYPE_ITM06=? and WAR07_INVENTORY_ITEMS.VARIANT_CODE_ITM11=? and "+
+						"WAR07_INVENTORY_ITEMS.VARIANT_TYPE_ITM07=? and WAR07_INVENTORY_ITEMS.VARIANT_CODE_ITM12=? and "+
+						"WAR07_INVENTORY_ITEMS.VARIANT_TYPE_ITM08=? and WAR07_INVENTORY_ITEMS.VARIANT_CODE_ITM13=? and "+
+						"WAR07_INVENTORY_ITEMS.VARIANT_TYPE_ITM09=? and WAR07_INVENTORY_ITEMS.VARIANT_CODE_ITM14=? and "+
+						"WAR07_INVENTORY_ITEMS.VARIANT_TYPE_ITM10=? and WAR07_INVENTORY_ITEMS.VARIANT_CODE_ITM15=? ";
+
+					 pstmt = conn.prepareStatement(sql);
+					 pstmt.setString(1, vo.getItemTypeWAR04());
+					 pstmt.setString(2, ApplicationConsts.CONFIRMED);
+					 pstmt.setString(3, ApplicationConsts.IN_PROGRESS);
+					 pstmt.setString(4, vo.getCompanyCodeSys01WAR02());
+					 pstmt.setString(5, vo.getWarehouseCodeWar01WAR02());
+					 pstmt.setBigDecimal(6, vo.getProgressiveHie01WAR02());
+					 pstmt.setString(7, vo.getItemCodeItm01WAR02());
+					 pstmt.setString(8, vo.getVariantTypeItm06WAR02());
+					 pstmt.setString(9, vo.getVariantCodeItm11WAR02());
+					 pstmt.setString(10, vo.getVariantTypeItm07WAR02());
+					 pstmt.setString(11, vo.getVariantCodeItm12WAR02());
+					 pstmt.setString(12, vo.getVariantTypeItm08WAR02());
+					 pstmt.setString(13, vo.getVariantCodeItm13WAR02());
+					 pstmt.setString(14, vo.getVariantTypeItm09WAR02());
+					 pstmt.setString(15, vo.getVariantCodeItm14WAR02());
+					 pstmt.setString(16, vo.getVariantTypeItm10WAR02());
+					 pstmt.setString(17, vo.getVariantCodeItm15WAR02());
+					 rset = pstmt.executeQuery();
+					 if (rset.next())  {
+						 rset.close();
+						 pstmt.close();
+						 throw new Exception("an inventory is in progress");
+					 }
+					 rset.close();
+					 pstmt.close();
+
+
+
 		      sql = "select QTY_SIGN,ITEM_TYPE from WAR04_WAREHOUSE_MOTIVES where WAREHOUSE_MOTIVE=?";
 		      pstmt = conn.prepareStatement(sql);
 		      pstmt.setString(1,vo.getWarehouseMotiveWar04WAR02());
@@ -144,7 +190,7 @@ public class AddMovementBean implements AddMovement {
 		      catch (Exception ex1) {
 		      }
 		    }
-		
+
 		    // update WAR03: if it fails then insert into it...
 		    int rows = 0;
 		    try {
@@ -161,13 +207,13 @@ public class AddMovementBean implements AddMovement {
 		          "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
 		          "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
 		          "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? ";
-		
+
 		      pstmt = conn.prepareStatement(sql);
 		      pstmt.setString(1,vo.getCompanyCodeSys01WAR02());
 		      pstmt.setString(2,vo.getWarehouseCodeWar01WAR02());
 		      pstmt.setBigDecimal(3,vo.getProgressiveHie01WAR02());
 		      pstmt.setString(4,vo.getItemCodeItm01WAR02());
-		
+
 		      pstmt.setString(5,vo.getVariantTypeItm06WAR02());
 		      pstmt.setString(6,vo.getVariantCodeItm11WAR02());
 		      pstmt.setString(7,vo.getVariantTypeItm07WAR02());
@@ -178,7 +224,7 @@ public class AddMovementBean implements AddMovement {
 		      pstmt.setString(12,vo.getVariantCodeItm14WAR02());
 		      pstmt.setString(13,vo.getVariantTypeItm10WAR02());
 		      pstmt.setString(14,vo.getVariantCodeItm15WAR02());
-		
+
 		      rows = pstmt.executeUpdate();
 		    }
 		    catch (Throwable ex){
@@ -198,7 +244,7 @@ public class AddMovementBean implements AddMovement {
 		      catch (Exception ex1) {
 		      }
 		    }
-		
+
 		    // update in WAR03 is failed: there will be inserted into it...
 		    if (rows==0)
 		      try {
@@ -220,7 +266,7 @@ public class AddMovementBean implements AddMovement {
 		          sign = new BigDecimal(1);
 		        else if (qtySign.equals(ApplicationConsts.QTY_SIGN_MINUS))
 		          sign = new BigDecimal(-1);
-		
+
 		        if (itemType.equals(ApplicationConsts.ITEM_GOOD)) {
 		          pstmt.setBigDecimal(5,vo.getDeltaQtyWAR02().multiply(sign));
 		          pstmt.setBigDecimal(6,new BigDecimal(0));
@@ -229,7 +275,7 @@ public class AddMovementBean implements AddMovement {
 		          pstmt.setBigDecimal(5,new BigDecimal(0));
 		          pstmt.setBigDecimal(6,vo.getDeltaQtyWAR02().multiply(sign));
 		        }
-		
+
 		        pstmt.setString(7,vo.getVariantTypeItm06WAR02()!=null?vo.getVariantTypeItm06WAR02():ApplicationConsts.JOLLY);
 		        pstmt.setString(8,vo.getVariantCodeItm11WAR02()!=null?vo.getVariantCodeItm11WAR02():ApplicationConsts.JOLLY);
 		        pstmt.setString(9,vo.getVariantTypeItm07WAR02()!=null?vo.getVariantTypeItm07WAR02():ApplicationConsts.JOLLY);
@@ -240,7 +286,7 @@ public class AddMovementBean implements AddMovement {
 		        pstmt.setString(14,vo.getVariantCodeItm14WAR02()!=null?vo.getVariantCodeItm14WAR02():ApplicationConsts.JOLLY);
 		        pstmt.setString(15,vo.getVariantTypeItm10WAR02()!=null?vo.getVariantTypeItm10WAR02():ApplicationConsts.JOLLY);
 		        pstmt.setString(16,vo.getVariantCodeItm15WAR02()!=null?vo.getVariantCodeItm15WAR02():ApplicationConsts.JOLLY);
-		
+
 		        pstmt.execute();
 		      }
 		    catch (Throwable ex){
@@ -265,7 +311,7 @@ public class AddMovementBean implements AddMovement {
 		    	catch (Exception ex1) {
 		    	}
 		    }
-		
+
 		    // insert movement in WAR02...
 		    try {
 		      sql = "insert into WAR02_WAREHOUSE_MOVEMENTS(PROGRESSIVE,COMPANY_CODE_SYS01,WAREHOUSE_CODE_WAR01,"+
@@ -320,7 +366,7 @@ public class AddMovementBean implements AddMovement {
 		      catch (Exception ex1) {
 		      }
 		    }
-		
+
 		    // insert serial numbers and bar codes in WAR05...
 		    try {
 		      if (qtySign.equals(ApplicationConsts.QTY_SIGN_PLUS)) {
@@ -338,7 +384,7 @@ public class AddMovementBean implements AddMovement {
 		          pstmt.setString(2,vo.getCompanyCodeSys01WAR02());
 		          pstmt.setString(3,vo.getItemCodeItm01WAR02());
 		          pstmt.setBigDecimal(4,vo.getProgressiveHie01WAR02());
-		
+
 		          pstmt.setString(5,vo.getVariantTypeItm06WAR02());
 		          pstmt.setString(6,vo.getVariantCodeItm11WAR02());
 		          pstmt.setString(7,vo.getVariantTypeItm07WAR02());
@@ -349,7 +395,7 @@ public class AddMovementBean implements AddMovement {
 		          pstmt.setString(12,vo.getVariantCodeItm14WAR02());
 		          pstmt.setString(13,vo.getVariantTypeItm10WAR02());
 		          pstmt.setString(14,vo.getVariantCodeItm15WAR02());
-		
+
 		          pstmt.execute();
 		        }
 		      }
@@ -370,7 +416,7 @@ public class AddMovementBean implements AddMovement {
 		    	}
 		    	catch (Exception ex3) {
 		    	}
-		    	throw new Exception(ex.getMessage()); 
+		    	throw new Exception(ex.getMessage());
 		    }
 		    finally {
 		      try {
@@ -379,7 +425,7 @@ public class AddMovementBean implements AddMovement {
 		      catch (Exception ex1) {
 		      }
 		    }
-		
+
 		    return new VOResponse(Boolean.TRUE);
 	      }
 	      finally {
@@ -391,10 +437,10 @@ public class AddMovementBean implements AddMovement {
 	              }
 
 	          }
-	          catch (Exception exx) {}    	  
+	          catch (Exception exx) {}
 	      }
 	    }
 
 
-	
+
 }

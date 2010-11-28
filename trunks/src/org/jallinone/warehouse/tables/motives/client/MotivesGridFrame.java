@@ -71,7 +71,7 @@ public class MotivesGridFrame extends InternalFrame {
     gridDataLocator.setServerMethodName("loadWarehouseMotives");
     try {
       jbInit();
-      setSize(580,400);
+      setSize(680,400);
       setMinimumSize(new Dimension(580,400));
 
     }
@@ -103,6 +103,7 @@ public class MotivesGridFrame extends InternalFrame {
     grid.setNavBar(navigatorBar);
     grid.setReloadButton(reloadButton);
     grid.setSaveButton(saveButton);
+		colMotive.setPreferredWidth(200);
     colMotive.setMaxCharacters(20);
     colMotive.setTrimText(true);
     colMotive.setUpperCase(true);
