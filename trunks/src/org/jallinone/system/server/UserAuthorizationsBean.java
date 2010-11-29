@@ -465,8 +465,10 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
       while(rset.next()) {
     	  // authorizations defined at company level...
     	  rset2 = stmt.executeQuery(
-    	    "select COMPANY_CODE_SYS01,CAN_INS,CAN_UPD,CAN_DEL from SYS02_COMPANIES_ACCESS "+
-    	    "where PROGRESSIVE_SYS04="+rset.getInt(2)+" and FUNCTION_CODE_SYS06='"+rset.getString(1)+"'");
+    	    "select SYS02_COMPANIES_ACCESS.COMPANY_CODE_SYS01,SYS02_COMPANIES_ACCESS.CAN_INS,SYS02_COMPANIES_ACCESS.CAN_UPD,SYS02_COMPANIES_ACCESS.CAN_DEL from SYS02_COMPANIES_ACCESS,SYS01_COMPANIES "+
+    	    "where SYS02_COMPANIES_ACCESS.PROGRESSIVE_SYS04="+rset.getInt(2)+" and SYS02_COMPANIES_ACCESS.FUNCTION_CODE_SYS06='"+rset.getString(1)+"' and "+
+				  "SYS02_COMPANIES_ACCESS.COMPANY_CODE_SYS01=SYS01_COMPANIES.COMPANY_CODE and "+
+   				"SYS01_COMPANIES.ENABLED='Y' ");
     	  while(rset2.next()) {
     		  companyBa.add(new ButtonCompanyAuthorization(
     				  rset.getString(1),

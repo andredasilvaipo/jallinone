@@ -1630,7 +1630,10 @@
   <object key="items confirmation completed" value="Conferma articoli completata" />
   <object key="inventory closed" value="Inventario chiuso" />
   <object key="items import completed" value="Importazione articoli completata" />
-
+  <object key="months" value="mesi" />
+  <object key="days" value="giorni" />
+  <object key="sales graph" value="Grafico delle vendite" />
+  <object key="month" value="Mese" />
 
 
 <!-- application translations -->

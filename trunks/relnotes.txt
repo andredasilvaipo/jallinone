@@ -1,11 +1,19 @@
 
 
+Release Notes 2.4
+-----------------
+
+Added sales graph functionality.
+
+
+
 Release Notes 2.3
 -----------------
 
 Added inventory functionality.
 Added new web application named "JAllInOne Mobile" for mobile devices, using the same database/business logic, 
 in order to manage warehouse: in/out delivery notes, validation of barcodes/serial numbers/item codes, inventory management.
+
 
 
 Release Notes 2.2

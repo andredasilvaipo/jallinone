@@ -109,6 +109,7 @@ import org.openswing.swing.mdi.client.ClientFacade;
 import org.openswing.swing.mdi.client.MDIFrame;
 import org.openswing.swing.util.client.ClientSettings;
 import org.jallinone.warehouse.client.InventoryListFrame;
+import org.jallinone.sales.reports.client.SalesReportFrame;
 
 
 /**
@@ -994,6 +995,12 @@ public class ApplicationClientFacade implements ClientFacade {
 	public void getInventoryList() {
 		new InventoryListFrame();
 	}
+
+
+	public void getSalesGraph() {
+		new SalesReportFrame();
+	}
+
 
 }
 

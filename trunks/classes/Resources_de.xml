@@ -1632,6 +1632,10 @@
   <object key="items confirmation completed" value="Items confirmation completed" />
   <object key="inventory closed" value="Inventory closed" />
   <object key="items import completed" value="Items import completed" />
+  <object key="months" value="months" />
+  <object key="month" value="Month" />
+  <object key="days" value="days" />
+  <object key="sales graph" value="Sales graph" />
 
   <currencySymbol>€</currencySymbol>
   <decimalSymbol>,</decimalSymbol>

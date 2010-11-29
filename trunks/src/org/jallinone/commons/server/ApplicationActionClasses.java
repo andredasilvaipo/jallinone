@@ -552,6 +552,7 @@ import org.openswing.swing.server.ConnectionManager;
 import org.openswing.swing.server.UserSessionParameters;
 import org.jallinone.warehouse.server.*;
 import org.jallinone.hierarchies.server.LoadLeavesAction;
+import org.jallinone.sales.reports.server.SalesReportAction;
 
 
 /**
@@ -1251,7 +1252,7 @@ public class ApplicationActionClasses extends ActionsCollection {
 		a = new CloseInventoryAction(); put(a.getRequestName(),a);
 		a = new ConfirmInventoryAction(); put(a.getRequestName(),a);
 
-
+		a = new SalesReportAction(); put(a.getRequestName(),a);
 
 
 
