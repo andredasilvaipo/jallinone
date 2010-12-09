@@ -91,6 +91,7 @@ public class SQLExecutionBean {
       boolean useDefaultValue =
           conn.getMetaData().getDriverName().equals("oracle.jdbc.driver.OracleDriver") ||
           conn.getMetaData().getDriverName().equals("com.microsoft.jdbc.sqlserver.SQLServerDriver") ||
+					conn.getMetaData().getDriverName().equals("com.microsoft.sqlserver.jdbc.SQLServerDriver") ||
           conn.getMetaData().getDriverName().equals("com.mysql.jdbc.Driver");
       while ( (line = br.readLine()) != null) {
         sql.append(' ').append(line);
@@ -106,6 +107,10 @@ public class SQLExecutionBean {
             sql = replace(sql, " TIMESTAMP", " DATETIME ");
             sql = replace(sql, " DATE ", " DATETIME  ");
           }
+					else if (vo.getDriverName().equals("com.microsoft.sqlserver.jdbc.SQLServerDriver")) {
+						sql = replace(sql, " TIMESTAMP", " DATETIME ");
+						sql = replace(sql, " DATE ", " DATETIME  ");
+					}
           else if (vo.getDriverName().toLowerCase().indexOf("postgres")!=-1) {
             sql = replace(sql, " DATETIME", " TIMESTAMP ");
             sql = replace(sql, " DATE ", " TIMESTAMP ");

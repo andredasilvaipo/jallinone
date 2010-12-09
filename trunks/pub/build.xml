@@ -109,6 +109,8 @@
         <include name="jasperreports-1.2.7.jar"/>
         <include name="itext-1.3.1.jar"/>
         <include name="jTattoo.jar"/>
+        <include name="jcalendar.jar"/>
+        <include name="jnlp.jar"/>
       </fileset>
       <fileset dir="${classes}">
         <include name="*.jnlp"/>
@@ -125,6 +127,7 @@
     <signjar jar="${webapps}/jAllInOne/itext-1.3.1.jar" alias="${ALIAS}" storepass="${STOREPASS}" keystore="${keystore}" />
     <signjar jar="${webapps}/jAllInOne/jTattoo.jar" alias="${ALIAS}" storepass="${STOREPASS}" keystore="${keystore}" />
     <signjar jar="${webapps}/jAllInOne/jcalendar.jar" alias="${ALIAS}" storepass="${STOREPASS}" keystore="${keystore}" />
+    <signjar jar="${webapps}/jAllInOne/jnlp.jar" alias="${ALIAS}" storepass="${STOREPASS}" keystore="${keystore}" />
 
     <copy todir="${webapps}/jAllInOne" >
       <fileset dir="${lib}">
@@ -179,6 +182,9 @@
         <include name="commons-logging.jar"/>
         <include name="jruleengine.jar"/>
         <include name="jsr94.jar"/>
+		<include name="jcommon-1.0.16.jar"/>
+		<include name="jfreechart-1.0.13.jar"/>
+		<include name="jfreechart-1.0.13-swt.jar"/>
       </fileset>
       <fileset dir="${libOpenSwing}">
         <include name="serveros.jar"/>
@@ -476,6 +482,9 @@
         <include name="jnlp-servlet.jar"/>
         <include name="jruleengine.jar"/>
         <include name="jsr94.jar"/>
+		<include name="jcommon-1.0.16.jar"/>
+		<include name="jfreechart-1.0.13.jar"/>
+		<include name="jfreechart-1.0.13-swt.jar"/>
       </fileset>
       <fileset dir="${libOpenSwing}">
         <include name="serveros.jar"/>

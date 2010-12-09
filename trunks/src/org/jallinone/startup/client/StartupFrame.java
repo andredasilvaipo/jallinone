@@ -176,7 +176,8 @@ public class StartupFrame extends JFrame {
       );
 
       dbTypeComboBox.addItem("Oracle");
-      dbTypeComboBox.addItem("MS SqlServer");
+      dbTypeComboBox.addItem("MS SqlServer (older JDBC driver)");
+			dbTypeComboBox.addItem("MS SqlServer (newer JDBC driver)");
       dbTypeComboBox.addItem("My SQL");
       dbTypeComboBox.addItem("Other Database");
       dbTypeComboBox.setSelectedIndex(0);
@@ -668,7 +669,17 @@ public class StartupFrame extends JFrame {
       else
         dbConnVO.setUrl("jdbc:microsoft:sqlserver://"+hostTF.getText().trim()+";DatabaseName="+sidTF.getText().trim()+";SelectMethod=cursor");
     }
-    else if (dbTypeComboBox.getSelectedIndex()==2) {
+		else if (dbTypeComboBox.getSelectedIndex()==2) {
+			// MS SqlServer database...
+			dbConnVO.setDriverName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			dbConnVO.setPassword(passwordTF.getText().trim());
+			dbConnVO.setUsername(usernameTF.getText().trim());
+			if (portTF.getText().trim().length()>0)
+				dbConnVO.setUrl("jdbc:sqlserver://"+hostTF.getText().trim()+":"+portTF.getText().trim()+";DatabaseName="+sidTF.getText().trim()+";SelectMethod=cursor");
+			else
+				dbConnVO.setUrl("jdbc:sqlserver://"+hostTF.getText().trim()+";DatabaseName="+sidTF.getText().trim()+";SelectMethod=cursor");
+		}
+    else if (dbTypeComboBox.getSelectedIndex()==3) {
       // MySQL database...
       dbConnVO.setDriverName("com.mysql.jdbc.Driver");
       dbConnVO.setPassword(passwordTF.getText().trim());
@@ -678,7 +689,7 @@ public class StartupFrame extends JFrame {
       else
         dbConnVO.setUrl("jdbc:mysql://"+hostTF.getText().trim()+"/"+sidTF.getText().trim());
     }
-    else if (dbTypeComboBox.getSelectedIndex()==3) {
+    else if (dbTypeComboBox.getSelectedIndex()==4) {
       // other database...
       dbConnVO.setDriverName(driverTF.getText().trim());
       dbConnVO.setPassword(otherPasswdTF.getText().trim());
@@ -771,7 +782,11 @@ public class StartupFrame extends JFrame {
         cardLayout2.show(dbTypePanel,"OSM");
         portTF.setText("1434");
       }
-      else if (dbTypeComboBox.getSelectedIndex()==2) {
+			else if (dbTypeComboBox.getSelectedIndex()==2) {
+				cardLayout2.show(dbTypePanel,"OSM");
+				portTF.setText("1434");
+			}
+      else if (dbTypeComboBox.getSelectedIndex()==3) {
         cardLayout2.show(dbTypePanel,"OSM");
         portTF.setText("3306");
       }

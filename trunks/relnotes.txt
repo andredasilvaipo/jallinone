@@ -1,5 +1,13 @@
 
 
+Release Notes 2.4.1
+-------------------
+
+Include 2.3.4 version of OpenSwing.
+Added support for newer version of SQLServer JDBC driver.
+
+
+
 Release Notes 2.4
 -----------------
 
