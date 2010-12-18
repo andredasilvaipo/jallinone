@@ -54,6 +54,7 @@ public class XMLResources extends ServerResourcesFactory {
     xmlFiles.put("ES",this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"Resources_es.xml");
 		xmlFiles.put("PTBR",this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"Resources_PTBR.xml");
 		xmlFiles.put("DE",this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"Resources_de.xml");
+		xmlFiles.put("HR",this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"Resources_hr.xml");
     factory = new XMLResourcesFactory(xmlFiles,false);
   }
 

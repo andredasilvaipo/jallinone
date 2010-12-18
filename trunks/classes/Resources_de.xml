@@ -195,6 +195,7 @@
   <object key="italian" value="Italienisch" />
   <object key="spanish" value="Spanisch" />
   <object key="brazilian" value="Brasilianisch" />
+  <object key="croatian" value="Croatian" />
 
   <object key="male" value="Mann" />
   <object key="female" value="Frau" />
@@ -1602,7 +1603,7 @@
 
   <object key="inventories list" value="Lagerbestand druken" />
   <object key="stateWAR06" value="State" />
-  <object key="descriptionWAR06" value="Inventary" />
+  <object key="descriptionWAR06" value="Inventory" />
   <object key="startDateWAR06" value="Start Date" />
   <object key="endDateWAR06" value="End Date" />
   <object key="an inventory is in progress" value="An inventory calculation is in progress" />

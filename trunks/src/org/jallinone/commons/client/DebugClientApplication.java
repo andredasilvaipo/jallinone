@@ -117,6 +117,7 @@ public class DebugClientApplication extends ClientApplet {
     xmlFiles.put("ES","Resources_es.xml");
 		xmlFiles.put("PTBR","Resources_PTBR.xml");
 		xmlFiles.put("DE","Resources_de.xml");
+		xmlFiles.put("HR","Resources_hr.xml");
 
 
     // initialize internationalization settings, according to user language identifier...

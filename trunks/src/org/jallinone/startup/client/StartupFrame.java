@@ -162,6 +162,7 @@ public class StartupFrame extends JFrame {
   JCheckBox varCheckBox3 = new JCheckBox();
   JCheckBox varCheckBox4 = new JCheckBox();
   JCheckBox varCheckBox5 = new JCheckBox();
+  JCheckBox unicodeCheckBox = new JCheckBox();
 
 
   public StartupFrame(ClientApplet clientApplet) {
@@ -186,6 +187,8 @@ public class StartupFrame extends JFrame {
       clientLanguageCodeComboBox.addItem("Italiano");
       clientLanguageCodeComboBox.addItem("Espanol");
       clientLanguageCodeComboBox.addItem("Portuguese/Brazilian");
+			clientLanguageCodeComboBox.addItem("German");
+			clientLanguageCodeComboBox.addItem("Croatian");
       clientLanguageCodeComboBox.setSelectedIndex(0);
 
       setVisible(true);
@@ -202,7 +205,7 @@ public class StartupFrame extends JFrame {
     this.setTitle("Application Setup");
     mainPanel.setLayout(cardLayout1);
     titleLabel.setFont(new java.awt.Font("Dialog", 1, 20));
-    titleLabel.setText("J-All-in-one-Setup");
+    titleLabel.setText("JAllInOne Setup");
     introPanel.setLayout(gridBagLayout1);
     textLabel.setText("This wizard will help you to setup this application.");
     textPanel.setLayout(gridBagLayout2);
@@ -320,6 +323,8 @@ public class StartupFrame extends JFrame {
     varCheckBox3.setText("Define also sub variant");
     varCheckBox4.setText("Define also sub variant");
     varCheckBox5.setText("Define also sub variant");
+    unicodeCheckBox.setSelected(true);
+    unicodeCheckBox.setText("Unicode database");
     this.getContentPane().add(northPanel, BorderLayout.NORTH);
     this.getContentPane().add(mainPanel, BorderLayout.CENTER);
     northPanel.add(titleLabel, null);
@@ -332,26 +337,28 @@ public class StartupFrame extends JFrame {
     dbPanel.add(dbTypePanel,  new GridBagConstraints(0, 1, 2, 1, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
     dbTypePanel.add(osmPanel,  "OSM");
-    osmPanel.add(hostLabel,   new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+    osmPanel.add(hostLabel,    new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    osmPanel.add(hostTF,   new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+    osmPanel.add(hostTF,    new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    osmPanel.add(portLabel,   new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+    osmPanel.add(portLabel,    new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    osmPanel.add(portTF,   new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+    osmPanel.add(portTF,    new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    osmPanel.add(sidLabel,   new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+    osmPanel.add(sidLabel,    new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    osmPanel.add(sidTF,   new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0
+    osmPanel.add(sidTF,    new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    osmPanel.add(usernameLabel,   new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+    osmPanel.add(usernameLabel,    new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    osmPanel.add(usernameTF,   new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
+    osmPanel.add(usernameTF,    new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    osmPanel.add(passwordLabel,  new GridBagConstraints(0, 4, 1, 1, 0.0, 1.0
+    osmPanel.add(passwordLabel,    new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
+    osmPanel.add(passwordTF,    new GridBagConstraints(1, 4, 1, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    osmPanel.add(passwordTF,  new GridBagConstraints(1, 4, 1, 1, 1.0, 1.0
-            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    osmPanel.add(unicodeCheckBox,     new GridBagConstraints(0, 5, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
     dbTypePanel.add(otherDbPanel,  "OTHERDB");
     otherDbPanel.add(driverLabel,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
@@ -684,10 +691,14 @@ public class StartupFrame extends JFrame {
       dbConnVO.setDriverName("com.mysql.jdbc.Driver");
       dbConnVO.setPassword(passwordTF.getText().trim());
       dbConnVO.setUsername(usernameTF.getText().trim());
-      if (portTF.getText().trim().length()>0)
-        dbConnVO.setUrl("jdbc:mysql://"+hostTF.getText().trim()+":"+portTF.getText().trim()+"/"+sidTF.getText().trim());
-      else
-        dbConnVO.setUrl("jdbc:mysql://"+hostTF.getText().trim()+"/"+sidTF.getText().trim());
+			 String jdbcUrl = null;
+     	 if (portTF.getText().trim().length()>0)
+     		jdbcUrl =	"jdbc:mysql://"+hostTF.getText().trim()+":"+portTF.getText().trim()+"/"+sidTF.getText().trim();
+			else
+				jdbcUrl =	"jdbc:mysql://"+hostTF.getText().trim()+"/"+sidTF.getText().trim();
+			if (unicodeCheckBox.isSelected())
+				jdbcUrl += "?characterEncoding=UTF-8&useUnicode=true";
+      dbConnVO.setUrl(jdbcUrl);
     }
     else if (dbTypeComboBox.getSelectedIndex()==4) {
       // other database...
@@ -754,8 +765,10 @@ public class StartupFrame extends JFrame {
       dbConnVO.setClientLanguageCode("ES");
     else if (clientLanguageCodeComboBox.getSelectedIndex()==3)
       dbConnVO.setClientLanguageCode("PTBR");
-		else
+		else if (clientLanguageCodeComboBox.getSelectedIndex()==4)
 			dbConnVO.setClientLanguageCode("DE");
+		else
+			dbConnVO.setClientLanguageCode("HR");
     dbConnVO.setAdminPassword(adminPasswdTF.getText().trim());
     Response response = ClientUtils.getData("createConfigFile",dbConnVO);
     if (response.isError()) {

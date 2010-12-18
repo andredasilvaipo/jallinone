@@ -1,5 +1,15 @@
 
 
+Release Notes 2.5
+-----------------
+
+Added croatian translations to JAllInOne.
+Added german translations to JAllInOne Mobile.
+Fixed problem with FK order.
+Added to setup wizard the selection SQLServer driver (older and newer)
+
+
+
 Release Notes 2.4.1
 -------------------
 

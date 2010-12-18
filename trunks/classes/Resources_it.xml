@@ -192,7 +192,8 @@
   <object key="spanish" value="Spagnolo" />
   <object key="brazilian" value="Brasiliano" />
   <object key="german" value="Tedesco" />
-
+  <object key="croatian" value="Croato" />
+  
   <object key="male" value="Maschio" />
   <object key="female" value="Femmina" />
 

@@ -128,6 +128,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     xmlFiles.put("ES","Resources_es.xml");
     xmlFiles.put("PTBR","Resources_PTBR.xml");
 		xmlFiles.put("DE","Resources_de.xml");
+		xmlFiles.put("HR","Resources_hr.xml");
 
     // initialize internationalization settings, according to user language identifier...
     ClientSettings clientSettings = new ClientSettings(
@@ -181,6 +182,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     languagesDomain.addDomainPair("ES","spanish");
     languagesDomain.addDomainPair("PTBR","brazilian");
 		languagesDomain.addDomainPair("DE","german");
+		languagesDomain.addDomainPair("HR","croatian");
     domains.put(
       languagesDomain.getDomainId(),
       languagesDomain
@@ -592,7 +594,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
    */
   public String getAboutText() {
     return
-        "JAllInOne ERP/CRM Application ver. 2.4\n"+
+        "JAllInOne ERP/CRM Application ver. 2.4.2\n"+
         "\n"+
         "Copyright: Copyright (C) 2010 Mauro Carniel\n"+
         "Author: Mauro Carniel\n"+
@@ -637,6 +639,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     supportedLanguageIds.setProperty("ES","spanish");
     supportedLanguageIds.setProperty("PTBR","brazilian");
 		supportedLanguageIds.setProperty("DE","german");
+		supportedLanguageIds.setProperty("HR","croatian");
     String currentLanguageIdentifier = "EN";
     Locale locale = Locale.getDefault();
     if (supportedLanguageIds.containsKey(locale.getLanguage().toUpperCase()))
@@ -713,6 +716,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
     xmlFiles.put("ES","Resources_es.xml");
     xmlFiles.put("PTBR","Resources_PTBR.xml");
 		xmlFiles.put("DE","Resources_de.xml");
+		xmlFiles.put("HR","Resources_hr.xml");
 
     // initialize internationalization settings, according to user language identifier...
     ClientSettings clientSettings = new ClientSettings(
