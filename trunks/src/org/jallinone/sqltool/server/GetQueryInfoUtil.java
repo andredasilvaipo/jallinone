@@ -95,6 +95,7 @@ public class GetQueryInfoUtil  {
       Hashtable tables = new Hashtable();
       String aux = null;
       String select = "select ";
+			String tName = null;
       for(int i=0;i<meta.getColumnCount();i++) {
         vo = new ColumnVO(tableVO);
         t = meta.getColumnType(i+1);
@@ -132,8 +133,9 @@ public class GetQueryInfoUtil  {
           vo.setColumnType(meta.getColumnTypeName(i+1)+"("+vo.getColumnSize().intValue()+")");
         }
 
-        tables.put(meta.getTableName(i+1),new ArrayList());
-        vo.setColumnName(meta.getTableName(i+1)+"."+meta.getColumnName(i+1));
+				tName = meta.getTableName(i+1);
+        tables.put(tName,new ArrayList());
+        vo.setColumnName(tName==null || tName.equals("")?"":(tName+".")+meta.getColumnName(i+1));
         select += vo.getColumnName()+",";
 //        else
 //          vo.setColumnName(colNames.get(i).toString());

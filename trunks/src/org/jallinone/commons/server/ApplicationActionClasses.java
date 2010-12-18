@@ -376,7 +376,7 @@ import org.jallinone.scheduler.activities.server.UpdateScheduledActivityAction;
 import org.jallinone.scheduler.activities.server.UpdateScheduledEmployeesAction;
 import org.jallinone.scheduler.activities.server.UpdateScheduledItemsAction;
 import org.jallinone.scheduler.activities.server.UpdateScheduledMachineriesAction;
-import org.jallinone.scheduler.callouts.server.CreateInvoiceFromScheduledActivityAction;
+import org.jallinone.scheduler.callouts.server.*;
 import org.jallinone.scheduler.callouts.server.DeleteCallOutItemsAction;
 import org.jallinone.scheduler.callouts.server.DeleteCallOutMachineriesAction;
 import org.jallinone.scheduler.callouts.server.DeleteCallOutRequestsAction;
@@ -1013,6 +1013,7 @@ public class ApplicationActionClasses extends ActionsCollection {
     a = new DeleteCallOutTypeAction(); put(a.getRequestName(),a);
     a = new LoadCallOutsAction(); put(a.getRequestName(),a);
     a = new ValidateCallOutCodeAction(); put(a.getRequestName(),a);
+		a = new CalloutRequestsReportAction(); put(a.getRequestName(),a);
 
     a = new LoadCallOutAction(); put(a.getRequestName(),a);
     a = new InsertCallOutAction(); put(a.getRequestName(),a);

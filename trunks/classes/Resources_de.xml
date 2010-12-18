@@ -1637,6 +1637,7 @@
   <object key="month" value="Month" />
   <object key="days" value="days" />
   <object key="sales graph" value="Sales graph" />
+  <object key="nr" value="Nr." />
 
   <currencySymbol>€</currencySymbol>
   <decimalSymbol>,</decimalSymbol>

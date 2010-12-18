@@ -5,8 +5,10 @@ Release Notes 2.5
 
 Added croatian translations to JAllInOne.
 Added german translations to JAllInOne Mobile.
+Added call-out requests graph in call-out requests list.
 Fixed problem with FK order.
 Added to setup wizard the selection SQLServer driver (older and newer)
+Added stop progress-bar button.
 
 
 

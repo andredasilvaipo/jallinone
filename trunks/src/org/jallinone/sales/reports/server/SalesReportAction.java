@@ -147,6 +147,13 @@ public class SalesReportAction implements Action {
 				 false                     // Show legend
 			);
 
+		  	try {
+				String tmpdir = System.getProperty("java.io.tmpdir");
+				new File(tmpdir).mkdirs();
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
+		  
 			RenderedImage img = chart.createBufferedImage(Math.max(400,(rows.length==12?60:25)*rows.length),200);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ImageIO.write(img, "png", baos);

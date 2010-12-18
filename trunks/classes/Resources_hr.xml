@@ -40,7 +40,7 @@
   <object key="export type" value="Oblik izvoza" />
 
 <!-- import -->
-  <object key="Import records (CTRL+M)" value="Uvesti zapise <CTRL+M>" />
+  <object key="Import records (CTRL+M)" value="Uvesti zapise CTRL+M" />
   <object key="grid import" value="Uvoz tablice" />
   <object key="import" value="Uvesti" />
   <object key="importmnemonic" value="M" />
@@ -72,13 +72,13 @@
   <object key="Error while loading data:" value="Gre&#353;ka &#269;itanja podataka - " />
 
 <!-- toolbar buttons -->
-  <object key="Delete record (CTRL+D)" value="Brisati zapis <CTRL+D>" />
-  <object key="Edit record (CTRL+E)" value="Urediti zapis <CTRL+E>" />
-  <object key="New record (CTRL+I)" value="Novi zapis <CTRL+I>" />
-  <object key="Reload record/Cancel current operation (CTRL+Z)" value="Ponovno u&#269;itati zapis - Napustiti trenutni postupak <CTRL+Z>" />
-  <object key="Save record (CTRL+S)" value="Pohraniti zapis <CTRL+S>" />
-  <object key="Copy record (CTRL+C)" value="Preslikati zapis <CTRL+C>" />
-  <object key="Export record (CTRL+X)" value="Izvesti zapis <CTRL+X>" />
+  <object key="Delete record (CTRL+D)" value="Brisati zapis CTRL+D" />
+  <object key="Edit record (CTRL+E)" value="Urediti zapis CTRL+E" />
+  <object key="New record (CTRL+I)" value="Novi zapis CTRL+I" />
+  <object key="Reload record/Cancel current operation (CTRL+Z)" value="Ponovno u&#269;itati zapis - Napustiti trenutni postupak CTRL+Z" />
+  <object key="Save record (CTRL+S)" value="Pohraniti zapis CTRL+S" />
+  <object key="Copy record (CTRL+C)" value="Preslikati zapis CTRL+C" />
+  <object key="Export record (CTRL+X)" value="Izvesti zapis CTRL+X" />
   <object key="Load the first block of records" value="U&#269;itati prvi blok zapisa" />
   <object key="Load the previous block of records" value="U&#269;itati prethodni blok zapisa" />
   <object key="Load the next block of records" value="U&#269;itati slijede&#263;i blok zapisa" />
@@ -125,7 +125,7 @@
   <object key="windowmnemonic" value="P" />
   <object key="Close All" value="Zatvoriti sve" />
   <object key="closeallmnemonic" value="Z" />
-  <object key="Press ENTER to find function" value= "<ENTER> za tra&#382;iti funkciju" />
+  <object key="Press ENTER to find function" value= "ENTER za tra&#382;iti funkciju" />
   <object key="Find Function" value= "Tra&#382;iti funkciju" />
   <object key="Operation in progress..." value="Radim..." />
   <object key="close window" value="Zatvoriti prozor" />
@@ -196,7 +196,7 @@
   <object key="brazilian" value="Portugalski" />
   <object key="german" value="German" />
   <object key="croatian" value="Hrvatska" />
-  
+
   <object key="male" value="Gospodin" />
   <object key="female" value="Gospo&#273;a" />
 
@@ -1054,7 +1054,7 @@
   <object key="open accounts" value="Otvoriti ra&#269;une" />
   <object key="opening account" value="Otvaranje ra&#269;una" />
   <object key="account" value="Ra&#269;un" />
-  
+
   <object key="application parameters" value="Postavke sustava" />
   <object key="image repository path" value="Put do spremnika slika" />
   <object key="image repository path selection" value="Izbor puta do spremnika slika" />
@@ -1599,22 +1599,7 @@
   <object key="for supplier" value="Za dobavlja&#269;a" />
   <object key="in pricelist" value="U cjenik" />
   <object key="import sale prices" value="Uvesti prodajne cijene" />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
-  <object key="" value="" />
+  <object key="nr" value="Nr." />
 
   <currencySymbol>Kn</currencySymbol>
   <decimalSymbol>,</decimalSymbol>

@@ -122,7 +122,8 @@ public class CompaniesComboControl extends ComboBoxControl {
                 catch (Throwable ex1) {
                   ex1.printStackTrace();
                 }
-                form.getVOModel().setValue(getAttributeName(),companiesList.get(0));
+								if (companiesList.size()>0)
+									form.getVOModel().setValue(getAttributeName(),companiesList.get(0));
                 try {
                   form.unbind(CompaniesComboControl.this);
                 }

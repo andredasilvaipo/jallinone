@@ -193,7 +193,7 @@
   <object key="brazilian" value="Brasiliano" />
   <object key="german" value="Tedesco" />
   <object key="croatian" value="Croato" />
-  
+
   <object key="male" value="Maschio" />
   <object key="female" value="Femmina" />
 
@@ -1635,6 +1635,7 @@
   <object key="days" value="giorni" />
   <object key="sales graph" value="Grafico delle vendite" />
   <object key="month" value="Mese" />
+  <object key="nr" value="Num." />
 
 
 <!-- application translations -->

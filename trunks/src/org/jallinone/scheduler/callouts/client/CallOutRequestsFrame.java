@@ -25,9 +25,8 @@ import java.util.ArrayList;
 import org.openswing.swing.message.receive.java.VOListResponse;
 import org.openswing.swing.domains.java.*;
 import org.jallinone.scheduler.callouts.java.CallOutTypeVO;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 import org.jallinone.commons.java.ApplicationConsts;
+import java.awt.event.*;
 
 
 /**
@@ -82,6 +81,7 @@ public class CallOutRequestsFrame extends InternalFrame {
   ComboColumn colState = new ComboColumn();
   DateTimeColumn colReqDate = new DateTimeColumn();
   TextColumn colUsername = new TextColumn();
+	GenericButton buttonGraph = new GenericButton(new ImageIcon(ClientUtils.getImage("graph.gif")));
 
 
   public CallOutRequestsFrame(CallOutRequestsController callOutRequestsController) {
@@ -122,7 +122,7 @@ public class CallOutRequestsFrame extends InternalFrame {
     colCompany.setColumnFilterable(true);
     colCompany.setColumnName("companyCodeSys01SCH03");
     colCompany.setColumnSortable(true);
-    colCompany.setPreferredWidth(70);
+    colCompany.setPreferredWidth(90);
     colCompany.setSortVersus(org.openswing.swing.util.java.Consts.ASC_SORTED);
     colCompany.setSortingOrder(1);
     grid.setAutoLoadData(true);
@@ -137,13 +137,13 @@ public class CallOutRequestsFrame extends InternalFrame {
     colProg.setColumnFilterable(true);
     colProg.setColumnName("progressiveSCH03");
     colProg.setColumnSortable(true);
-    colProg.setPreferredWidth(60);
+    colProg.setPreferredWidth(70);
     colProg.setSortingOrder(3);
     colProg.setSortVersus(org.openswing.swing.util.java.Consts.DESC_SORTED);
     colReqYear.setColumnFilterable(true);
     colReqYear.setColumnName("requestYearSCH03");
     colReqYear.setColumnSortable(true);
-    colReqYear.setPreferredWidth(70);
+    colReqYear.setPreferredWidth(80);
     colReqYear.setSortingOrder(2);
     colReqYear.setSortVersus(org.openswing.swing.util.java.Consts.DESC_SORTED);
     colName_2.setColumnName("name_2REG04");
@@ -165,6 +165,7 @@ public class CallOutRequestsFrame extends InternalFrame {
     colUsername.setColumnFilterable(true);
     colUsername.setColumnName("usernameSys03SCH03");
     colUsername.setColumnSortable(true);
+    buttonGraph.addActionListener(new CallOutRequestsFrame_buttonGraph_actionAdapter(this));
     this.getContentPane().add(buttonsPanel, BorderLayout.NORTH);
     this.getContentPane().add(grid, BorderLayout.CENTER);
     buttonsPanel.add(insertButton1,      new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
@@ -175,8 +176,12 @@ public class CallOutRequestsFrame extends InternalFrame {
             ,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
     buttonsPanel.add(exportButton1,      new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
-    buttonsPanel.add(navigatorBar1,          new GridBagConstraints(7, 0, 1, 1, 1.0, 0.0
+    buttonsPanel.add(navigatorBar1,          new GridBagConstraints(7, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
+		buttonsPanel.add(buttonGraph,          new GridBagConstraints(8, 0, 1, 1, 1.0, 0.0
+						,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
+
+
     grid.getColumnContainer().add(colCompany, null);
     grid.getColumnContainer().add(colReqYear, null);
     grid.getColumnContainer().add(colProg, null);
@@ -201,5 +206,20 @@ public class CallOutRequestsFrame extends InternalFrame {
     return gridDataLocator;
   }
 
+  void buttonGraph_actionPerformed(ActionEvent e) {
+		new CallOutRequestsReportFrame();
+  }
 
+
+}
+
+class CallOutRequestsFrame_buttonGraph_actionAdapter implements java.awt.event.ActionListener {
+  CallOutRequestsFrame adaptee;
+
+  CallOutRequestsFrame_buttonGraph_actionAdapter(CallOutRequestsFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.buttonGraph_actionPerformed(e);
+  }
 }
