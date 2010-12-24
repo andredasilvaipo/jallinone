@@ -147,7 +147,7 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
   /**
    * Business logic to execute.
    */
-  public int getCompaniesNumber() throws Throwable {
+	public String[] getCompanies() throws Throwable {
     PreparedStatement pstmt = null;
     Statement stmt = null;
     Connection conn = null;
@@ -158,13 +158,13 @@ public class UserAuthorizationsBean  implements UserAuthorizations {
       ResultSet rset = null;
 
       // count companies number...
-      int companiesNr = 0;
+			ArrayList companies = new ArrayList();
       rset = stmt.executeQuery("select COMPANY_CODE from SYS01_COMPANIES where ENABLED='Y'");
       while(rset.next())
-        companiesNr++;
+        companies.add(rset.getString(1));
       rset.close();
 
-      return companiesNr;
+      return (String[])companies.toArray(new String[companies.size()]);
     } catch (Exception ex1) {
       ex1.printStackTrace();
       throw new Exception(ex1.getMessage());

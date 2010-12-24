@@ -647,9 +647,32 @@ public class StartupFrame extends JFrame {
     }
     else if (pos==4) {
       setVisible(false);
-      // view the login window before viewing MDI frame...
-      LoginDialog d = new LoginDialog(null,false,clientApplet);
-      dispose();
+      
+      Response res = ClientUtils.getData("getBeansFactoryName",new Object[0]);
+      if (res.isError()) {
+          JOptionPane.showMessageDialog(
+                  this,
+                  res.getErrorMessage(),
+                  "Error",
+                  JOptionPane.ERROR_MESSAGE
+              );
+              return;
+      }
+	  String beanFactoryName = ((VOResponse)res).getVo().toString();
+	  if ("org.jallinone.commons.server.MuleBeansFactory".equals(beanFactoryName)) {
+          JOptionPane.showMessageDialog(
+                  this,
+                  "Before using JAllInOne with SOA you have to restart the web application!",
+                  "Attention",
+                  JOptionPane.INFORMATION_MESSAGE
+              );
+              return;
+      }
+	  else {
+	      // view the login window before viewing MDI frame...
+	      LoginDialog d = new LoginDialog(null,false,clientApplet);
+	      dispose();
+	  }
     }
   }
 
@@ -697,7 +720,7 @@ public class StartupFrame extends JFrame {
 			else
 				jdbcUrl =	"jdbc:mysql://"+hostTF.getText().trim()+"/"+sidTF.getText().trim();
 			if (unicodeCheckBox.isSelected())
-				jdbcUrl += "?characterEncoding=UTF-8&useUnicode=true";
+				jdbcUrl += "?characterEncoding=UTF-8&amp;useUnicode=true";
       dbConnVO.setUrl(jdbcUrl);
     }
     else if (dbTypeComboBox.getSelectedIndex()==4) {

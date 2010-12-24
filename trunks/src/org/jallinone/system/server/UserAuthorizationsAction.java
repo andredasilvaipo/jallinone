@@ -109,7 +109,8 @@ public class UserAuthorizationsAction implements Action {
 					bas[i]
 				);
 
-			int companiesNr = bean.getCompaniesNumber();
+		  String[] companies = bean.getCompanies();
+			int companiesNr = companies.length;
 			HashMap userRoles = bean.getUserRoles(langId, username);
 
 			HashMap gridPermissions = getGridPermissions(username, userRoles);
@@ -129,90 +130,100 @@ public class UserAuthorizationsAction implements Action {
 			// store application parameters in user session...
 			((JAIOUserSessionParameters)userSessionPars).setAppParams(applicationPars);
 
-                        // store variants descriptions...
-                        Variants vBean = (Variants)JAIOBeanFactory.getInstance().getBean(Variants.class);
+      // store variants descriptions...
+      Variants vBean = (Variants)JAIOBeanFactory.getInstance().getBean(Variants.class);
 
-                        String tableName = "ITM11_VARIANTS_1";
-                        String variantTypeJoin = "VARIANT_TYPE_ITM06";
-                        java.util.List rows = vBean.loadAllVariants(tableName,variantTypeJoin,langId,username).getRows();
-                        VariantVO vo = null;
-                        VariantDescriptionsVO d = null;
-                        for(int i=0;i<rows.size();i++) {
-                          vo = (VariantVO)rows.get(i);
-                          d = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(vo.getCompanyCodeSys01());
-                          if (d==null) {
-                            d = new VariantDescriptionsVO();
-                            ((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01(),d);
-                          }
-                          d.getVariant1Descriptions().put(
-                            vo.getVariantType()+"_"+vo.getVariantCode(),
-                            vo.getDescriptionSys10()
-                          );
-                        }
+      String tableName = "ITM11_VARIANTS_1";
+      String variantTypeJoin = "VARIANT_TYPE_ITM06";
+      java.util.List rows = vBean.loadAllVariants(tableName,variantTypeJoin,langId,username).getRows();
+      VariantVO vo = null;
+      VariantDescriptionsVO d = null;
+      for(int i=0;i<rows.size();i++) {
+        vo = (VariantVO)rows.get(i);
+        d = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(vo.getCompanyCodeSys01());
+        if (d==null) {
+          d = new VariantDescriptionsVO();
+          ((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01(),d);
+        }
+        d.getVariant1Descriptions().put(
+          vo.getVariantType()+"_"+vo.getVariantCode(),
+          vo.getDescriptionSys10()
+        );
+      }
 
-                        tableName = "ITM12_VARIANTS_2";
-                        variantTypeJoin = "VARIANT_TYPE_ITM07";
-                        rows = vBean.loadAllVariants(tableName,variantTypeJoin,langId,username).getRows();
-                        for(int i=0;i<rows.size();i++) {
-                          vo = (VariantVO)rows.get(i);
-                          d = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(vo.getCompanyCodeSys01());
-                          if (d==null) {
-                            d = new VariantDescriptionsVO();
-                            ((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01(),d);
-                          }
-                          d.getVariant2Descriptions().put(
-                            vo.getVariantType()+"_"+vo.getVariantCode(),
-                            vo.getDescriptionSys10()
-                          );
-                        }
+      tableName = "ITM12_VARIANTS_2";
+      variantTypeJoin = "VARIANT_TYPE_ITM07";
+      rows = vBean.loadAllVariants(tableName,variantTypeJoin,langId,username).getRows();
+      for(int i=0;i<rows.size();i++) {
+        vo = (VariantVO)rows.get(i);
+        d = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(vo.getCompanyCodeSys01());
+        if (d==null) {
+          d = new VariantDescriptionsVO();
+          ((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01(),d);
+        }
+        d.getVariant2Descriptions().put(
+          vo.getVariantType()+"_"+vo.getVariantCode(),
+          vo.getDescriptionSys10()
+        );
+      }
 
-                        tableName = "ITM13_VARIANTS_3";
-                        variantTypeJoin = "VARIANT_TYPE_ITM08";
-                        rows = vBean.loadAllVariants(tableName,variantTypeJoin,langId,username).getRows();
-                        for(int i=0;i<rows.size();i++) {
-                          vo = (VariantVO)rows.get(i);
-                          d = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(vo.getCompanyCodeSys01());
-                          if (d==null) {
-                            d = new VariantDescriptionsVO();
-                            ((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01(),d);
-                          }
-                          d.getVariant3Descriptions().put(
-                            vo.getVariantType()+"_"+vo.getVariantCode(),
-                            vo.getDescriptionSys10()
-                          );
-                        }
+      tableName = "ITM13_VARIANTS_3";
+      variantTypeJoin = "VARIANT_TYPE_ITM08";
+      rows = vBean.loadAllVariants(tableName,variantTypeJoin,langId,username).getRows();
+      for(int i=0;i<rows.size();i++) {
+        vo = (VariantVO)rows.get(i);
+        d = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(vo.getCompanyCodeSys01());
+        if (d==null) {
+          d = new VariantDescriptionsVO();
+          ((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01(),d);
+        }
+        d.getVariant3Descriptions().put(
+          vo.getVariantType()+"_"+vo.getVariantCode(),
+          vo.getDescriptionSys10()
+        );
+      }
 
-                        tableName = "ITM14_VARIANTS_4";
-                        variantTypeJoin = "VARIANT_TYPE_ITM09";
-                        rows = vBean.loadAllVariants(tableName,variantTypeJoin,langId,username).getRows();
-                        for(int i=0;i<rows.size();i++) {
-                          vo = (VariantVO)rows.get(i);
-                          d = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(vo.getCompanyCodeSys01());
-                          if (d==null) {
-                            d = new VariantDescriptionsVO();
-                            ((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01(),d);
-                          }
-                          d.getVariant4Descriptions().put(
-                            vo.getVariantType()+"_"+vo.getVariantCode(),
-                            vo.getDescriptionSys10()
-                          );
-                        }
+      tableName = "ITM14_VARIANTS_4";
+      variantTypeJoin = "VARIANT_TYPE_ITM09";
+      rows = vBean.loadAllVariants(tableName,variantTypeJoin,langId,username).getRows();
+      for(int i=0;i<rows.size();i++) {
+        vo = (VariantVO)rows.get(i);
+        d = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(vo.getCompanyCodeSys01());
+        if (d==null) {
+          d = new VariantDescriptionsVO();
+          ((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01(),d);
+        }
+        d.getVariant4Descriptions().put(
+          vo.getVariantType()+"_"+vo.getVariantCode(),
+          vo.getDescriptionSys10()
+        );
+      }
 
-                        tableName = "ITM15_VARIANTS_5";
-                        variantTypeJoin = "VARIANT_TYPE_ITM10";
-                        rows = vBean.loadAllVariants(tableName,variantTypeJoin,langId,username).getRows();
-                        for(int i=0;i<rows.size();i++) {
-                          vo = (VariantVO)rows.get(i);
-                          d = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(vo.getCompanyCodeSys01());
-                          if (d==null) {
-                            d = new VariantDescriptionsVO();
-                            ((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01(),d);
-                          }
-                          d.getVariant5Descriptions().put(
-                            vo.getVariantType()+"_"+vo.getVariantCode(),
-                            vo.getDescriptionSys10()
-                          );
-                        }
+      tableName = "ITM15_VARIANTS_5";
+      variantTypeJoin = "VARIANT_TYPE_ITM10";
+      rows = vBean.loadAllVariants(tableName,variantTypeJoin,langId,username).getRows();
+      for(int i=0;i<rows.size();i++) {
+        vo = (VariantVO)rows.get(i);
+        d = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(vo.getCompanyCodeSys01());
+        if (d==null) {
+          d = new VariantDescriptionsVO();
+          ((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01(),d);
+        }
+        d.getVariant5Descriptions().put(
+          vo.getVariantType()+"_"+vo.getVariantCode(),
+          vo.getDescriptionSys10()
+        );
+      }
+
+	    // check if there exists an entry in ((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO()
+			// for each supported company code...
+			for(int i=0;i<companies.length;i++) {
+				d = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(companies[i]);
+				if (d==null) {
+					d = new VariantDescriptionsVO();
+					((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(companies[i],d);
+				}
+			}
 
 			return new VOResponse(new ApplicationParametersVO(
 					userSessionPars.getLanguageId(),

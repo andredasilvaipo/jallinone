@@ -62,6 +62,10 @@
 	      <param-name>suppressInitPoolerError</param-name>
 	      <param-value>true</param-value>
 	    </init-param>
+	    <init-param>
+		  <param-name>alwaysAvailableRequests</param-name>
+		  <param-value>getBeansFactoryName</param-value>
+	    </init-param>
 	    <load-on-startup>1</load-on-startup>
         </servlet>
         <servlet>

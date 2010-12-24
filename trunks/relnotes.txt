@@ -1,5 +1,14 @@
 
 
+Release Notes 2.5.1
+-------------------
+
+Include 2.3.6 version of OpenSwing.
+Added a "restart web application" message in setup procedure, in case of installation of SOA version.
+Fixed NullPointerException in item availabilities when the database is empty (after installation).
+Fixed problem on inserting items without variants in sale documents.
+
+
 Release Notes 2.5
 -----------------
 

@@ -79,6 +79,7 @@ public class PurchaseDocRowController extends CompanyFormController {
    * @return an ErrorResponse value object in case of errors, VOResponse if the operation is successfully completed
    */
   public Response insertRecord(ValueObject newPersistentObject) throws Exception {
+		panel.controlPriceUnit_focusLost(null);
     DetailPurchaseDocRowVO vo = (DetailPurchaseDocRowVO)newPersistentObject;
     Response res = null;
 
@@ -136,6 +137,7 @@ public class PurchaseDocRowController extends CompanyFormController {
    * @return an ErrorResponse value object in case of errors, VOResponse if the operation is successfully completed
    */
   public Response updateRecord(ValueObject oldPersistentObject,ValueObject persistentObject) throws Exception {
+    panel.controlPriceUnit_focusLost(null);
     Response res = ClientUtils.getData("updatePurchaseDocRow",new ValueObject[]{oldPersistentObject,persistentObject});
     if (!res.isError()) {
       panel.getGrid().reloadData();

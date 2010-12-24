@@ -15,6 +15,7 @@ import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.server.Action;
 import org.openswing.swing.server.Controller;
 import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -67,6 +68,9 @@ public class InsertCompanyAction implements Action {
 
 			Companies bean = (Companies)JAIOBeanFactory.getInstance().getBean(Companies.class);
 			Response answer = bean.insertCompany(vo,t1,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+
+			VariantDescriptionsVO d = new VariantDescriptionsVO();
+			((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01REG04(),d);
 
 			return answer;
 		}

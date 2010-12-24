@@ -75,6 +75,7 @@ import org.jallinone.expirations.server.UpdateExpirationsAction;
 import org.jallinone.hierarchies.server.DeleteLevelAction;
 import org.jallinone.hierarchies.server.InsertLevelAction;
 import org.jallinone.hierarchies.server.LoadHierarchyAction;
+import org.jallinone.hierarchies.server.LoadLeavesAction;
 import org.jallinone.hierarchies.server.RootLevelAction;
 import org.jallinone.hierarchies.server.UpdateLevelAction;
 import org.jallinone.items.server.CreateBarcodeLabelsDataAction;
@@ -354,6 +355,7 @@ import org.jallinone.sales.pricelist.server.UpdatePricesAction;
 import org.jallinone.sales.pricelist.server.UpdateVariantsPricesAction;
 import org.jallinone.sales.pricelist.server.ValidatePricelistCodeAction;
 import org.jallinone.sales.reports.server.SalesPivotAction;
+import org.jallinone.sales.reports.server.SalesReportAction;
 import org.jallinone.scheduler.activities.server.CloseScheduledActivityAction;
 import org.jallinone.scheduler.activities.server.DeleteAttachedDocsAction;
 import org.jallinone.scheduler.activities.server.DeleteScheduledActivitiesAction;
@@ -376,7 +378,8 @@ import org.jallinone.scheduler.activities.server.UpdateScheduledActivityAction;
 import org.jallinone.scheduler.activities.server.UpdateScheduledEmployeesAction;
 import org.jallinone.scheduler.activities.server.UpdateScheduledItemsAction;
 import org.jallinone.scheduler.activities.server.UpdateScheduledMachineriesAction;
-import org.jallinone.scheduler.callouts.server.*;
+import org.jallinone.scheduler.callouts.server.CalloutRequestsReportAction;
+import org.jallinone.scheduler.callouts.server.CreateInvoiceFromScheduledActivityAction;
 import org.jallinone.scheduler.callouts.server.DeleteCallOutItemsAction;
 import org.jallinone.scheduler.callouts.server.DeleteCallOutMachineriesAction;
 import org.jallinone.scheduler.callouts.server.DeleteCallOutRequestsAction;
@@ -412,7 +415,7 @@ import org.jallinone.sqltool.server.GetQueryInfoAction;
 import org.jallinone.sqltool.server.InsertTablesAction;
 import org.jallinone.sqltool.server.LoadEntitiesAction;
 import org.jallinone.sqltool.server.UpdateTablesAction;
-import org.jallinone.startup.server.CreateConfigFileAction;
+import org.jallinone.startup.server.*;
 import org.jallinone.subjects.server.DeleteReferencesAction;
 import org.jallinone.subjects.server.DeleteSubjectHierarchyAction;
 import org.jallinone.subjects.server.DeleteSubjectsLinksAction;
@@ -528,11 +531,22 @@ import org.jallinone.warehouse.documents.server.UpdateOutDeliveryNoteAction;
 import org.jallinone.warehouse.documents.server.UpdateOutDeliveryNoteRowsAction;
 import org.jallinone.warehouse.movements.server.InsertManualMovementAction;
 import org.jallinone.warehouse.movements.server.InsertManualMovementsAction;
+import org.jallinone.warehouse.server.CloseInventoryAction;
+import org.jallinone.warehouse.server.ConfirmInventoryAction;
+import org.jallinone.warehouse.server.DeleteInventoriesAction;
+import org.jallinone.warehouse.server.DeleteInventoryItemsAction;
 import org.jallinone.warehouse.server.DeleteWarehouseAction;
+import org.jallinone.warehouse.server.ImportInventoryItemsAction;
+import org.jallinone.warehouse.server.InsertInventoryAction;
+import org.jallinone.warehouse.server.InsertInventoryItemAction;
 import org.jallinone.warehouse.server.InsertWarehouseAction;
+import org.jallinone.warehouse.server.LoadInventoriesAction;
+import org.jallinone.warehouse.server.LoadInventoryItemsAction;
 import org.jallinone.warehouse.server.LoadStoredSerialNumbersAction;
 import org.jallinone.warehouse.server.LoadWarehouseAction;
 import org.jallinone.warehouse.server.LoadWarehousesAction;
+import org.jallinone.warehouse.server.UpdateInventoriesAction;
+import org.jallinone.warehouse.server.UpdateInventoryItemsAction;
 import org.jallinone.warehouse.server.UpdateWarehouseAction;
 import org.jallinone.warehouse.server.ValidateStoredSerialNumberAction;
 import org.jallinone.warehouse.server.ValidateWarehouseCodeAction;
@@ -550,9 +564,6 @@ import org.openswing.swing.server.Action;
 import org.openswing.swing.server.ActionsCollection;
 import org.openswing.swing.server.ConnectionManager;
 import org.openswing.swing.server.UserSessionParameters;
-import org.jallinone.warehouse.server.*;
-import org.jallinone.hierarchies.server.LoadLeavesAction;
-import org.jallinone.sales.reports.server.SalesReportAction;
 
 
 /**
@@ -1255,6 +1266,7 @@ public class ApplicationActionClasses extends ActionsCollection {
 
 		a = new SalesReportAction(); put(a.getRequestName(),a);
 
+		a = new GetBeansFactoryNameAction(); put(a.getRequestName(),a);
 
 
 

@@ -47,7 +47,7 @@ public interface UserAuthorizations {
 
     public HashMap getUserRoles(String serverLanguageId,String username) throws Throwable;
 
-    public int getCompaniesNumber() throws Throwable;
+    public String[] getCompanies() throws Throwable;
 
     public CustomizedWindows getWindowCustomizations(String langId) throws Throwable;
 

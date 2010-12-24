@@ -259,6 +259,17 @@ public class SaleEstimateDocRowsGridPanel extends JPanel implements CurrencyColu
             vo.setQtyDOC02(null);
           }
           else {
+	          vo.setVariantTypeItm06DOC02(ApplicationConsts.JOLLY);
+	          vo.setVariantTypeItm07DOC02(ApplicationConsts.JOLLY);
+						vo.setVariantTypeItm08DOC02(ApplicationConsts.JOLLY);
+						vo.setVariantTypeItm09DOC02(ApplicationConsts.JOLLY);
+						vo.setVariantTypeItm10DOC02(ApplicationConsts.JOLLY);
+						vo.setVariantCodeItm11DOC02(ApplicationConsts.JOLLY);
+						vo.setVariantCodeItm12DOC02(ApplicationConsts.JOLLY);
+						vo.setVariantCodeItm13DOC02(ApplicationConsts.JOLLY);
+						vo.setVariantCodeItm14DOC02(ApplicationConsts.JOLLY);
+						vo.setVariantCodeItm15DOC02(ApplicationConsts.JOLLY);
+
             vo.setQtyDOC02(vo.getMinSellingQtyItm01DOC02());
             controlQty.setMinValue(vo.getMinSellingQtyItm01DOC02().doubleValue());
             controlQty.setDecimals(vo.getDecimalsReg02DOC02().intValue());
