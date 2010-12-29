@@ -119,7 +119,7 @@ public class AddMovementBean implements AddMovement {
 
 				  // check if there exists an inventory in progress referring the specified item...
 					sql =
-						"SELECT * from WAR07_INVENTORY_ITEMS,WAR06_INVENTORIES WHERE where "+
+						"SELECT * from WAR07_INVENTORY_ITEMS,WAR06_INVENTORIES WHERE "+
 						"WAR07_INVENTORY_ITEMS.COMPANY_CODE_SYS01=WAR06_INVENTORIES.COMPANY_CODE_SYS01 and "+
 						"WAR07_INVENTORY_ITEMS.PROGRESSIVE_WAR06=WAR06_INVENTORIES.PROGRESSIVE and "+
 						"WAR06_INVENTORIES.ITEM_TYPE=? and "+

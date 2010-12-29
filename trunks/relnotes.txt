@@ -1,5 +1,13 @@
 
 
+Release Notes 2.5.2
+-------------------
+
+Include 2.3.6 version of OpenSwing.
+Fixed problem with werehouse movement and with manual movement in warehouse.
+
+
+
 Release Notes 2.5.1
 -------------------
 
