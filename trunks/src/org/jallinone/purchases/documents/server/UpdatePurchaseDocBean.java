@@ -168,6 +168,7 @@ public class UpdatePurchaseDocBean  implements UpdatePurchaseDoc {
       attribute2dbField.put("companyCodeSys01Doc06DOC06","COMPANY_CODE_SYS01_DOC06");
       attribute2dbField.put("docTypeDoc06DOC06","DOC_TYPE_DOC06");
       attribute2dbField.put("docYearDoc06DOC06","DOC_YEAR_DOC06");
+      attribute2dbField.put("docSequenceDOC06","DOC_SEQUENCE");
       attribute2dbField.put("docNumberDoc06DOC06","DOC_NUMBER_DOC06");
       attribute2dbField.put("discountValueDOC06","DISCOUNT_VALUE");
       attribute2dbField.put("discountPercDOC06","DISCOUNT_PERC");
