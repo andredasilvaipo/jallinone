@@ -88,6 +88,7 @@ public class PurchaseInvoiceDocFromPurchaseDocFrame extends InternalFrame implem
   BorderLayout borderLayin5 = new BorderLayout();
   GenericButton confirmButton = new GenericButton(new ImageIcon(ClientUtils.getImage("workflow.gif")));
   GenericButton printButton = new GenericButton(new ImageIcon(ClientUtils.getImage("printer.gif")));
+	PurchaseDiscChargesPanel purchaseDiscChargesPanel1 = new PurchaseDiscChargesPanel(headerFormPanel);
 
 
   public PurchaseInvoiceDocFromPurchaseDocFrame(PurchaseInvoiceDocFromPurchaseDocController controller) {
@@ -169,8 +170,12 @@ public class PurchaseInvoiceDocFromPurchaseDocFrame extends InternalFrame implem
    * Define input controls editable settings according to the document state.
    */
   private void init() {
-    // disable discounts and charges when the no lines are not yet to added...
-    HashSet attributeNameToDisable = new HashSet();
+		// disable discounts and charges when the no lines are not yet to added...
+		HashSet attributeNameToDisable = new HashSet();
+		attributeNameToDisable.add("discountValueDOC06");
+		attributeNameToDisable.add("discountPercDOC06");
+		attributeNameToDisable.add("chargeValueDOC06");
+		attributeNameToDisable.add("chargePercDOC06");
     attributeNameToDisable.add("supplierCodePUR01");
     attributeNameToDisable.add("pricelistCodePur03DOC06");
     attributeNameToDisable.add("paymentCodeReg10DOC06");
@@ -259,7 +264,9 @@ public class PurchaseInvoiceDocFromPurchaseDocFrame extends InternalFrame implem
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
     headerFormPanel.add(warePanel,   new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-    headerFormPanel.add(purchaseTotalsPanel1,    new GridBagConstraints(0, 3, 1, 1, 1.0, 1.0
+		headerFormPanel.add(purchaseDiscChargesPanel1,   new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0
+						,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+    headerFormPanel.add(purchaseTotalsPanel1,    new GridBagConstraints(0, 4, 1, 1, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 
     confirmButton.setToolTipText(ClientSettings.getInstance().getResources().getResource("invoice closing"));
@@ -283,23 +290,37 @@ public class PurchaseInvoiceDocFromPurchaseDocFrame extends InternalFrame implem
   }
 
 
+  public final void updateCurrencySettings(DetailPurchaseDocVO vo) {
+		purchaseTotalsPanel1.getControlTaxableIncome().setDecimals(vo.getDecimalsREG03().intValue());
+		purchaseTotalsPanel1.getControlTaxableIncome().setCurrencySymbol(vo.getCurrencySymbolREG03());
+		purchaseTotalsPanel1.getControlTaxableIncome().setDecimalSymbol(vo.getDecimalSymbolREG03().charAt(0));
+		purchaseTotalsPanel1.getControlTaxableIncome().setGroupingSymbol(vo.getThousandSymbolREG03().charAt(0));
+
+		purchaseTotalsPanel1.getControlTotal().setDecimals(vo.getDecimalsREG03().intValue());
+		purchaseTotalsPanel1.getControlTotal().setCurrencySymbol(vo.getCurrencySymbolREG03());
+		purchaseTotalsPanel1.getControlTotal().setDecimalSymbol(vo.getDecimalSymbolREG03().charAt(0));
+		purchaseTotalsPanel1.getControlTotal().setGroupingSymbol(vo.getThousandSymbolREG03().charAt(0));
+
+		purchaseTotalsPanel1.getControlTotalVat().setDecimals(vo.getDecimalsREG03().intValue());
+		purchaseTotalsPanel1.getControlTotalVat().setCurrencySymbol(vo.getCurrencySymbolREG03());
+		purchaseTotalsPanel1.getControlTotalVat().setDecimalSymbol(vo.getDecimalSymbolREG03().charAt(0));
+		purchaseTotalsPanel1.getControlTotalVat().setGroupingSymbol(vo.getThousandSymbolREG03().charAt(0));
+
+		purchaseDiscChargesPanel1.getControlChargeValue().setDecimals(vo.getDecimalsREG03().intValue());
+		purchaseDiscChargesPanel1.getControlChargeValue().setCurrencySymbol(vo.getCurrencySymbolREG03());
+		purchaseDiscChargesPanel1.getControlChargeValue().setDecimalSymbol(vo.getDecimalSymbolREG03().charAt(0));
+		purchaseDiscChargesPanel1.getControlChargeValue().setGroupingSymbol(vo.getThousandSymbolREG03().charAt(0));
+
+		purchaseDiscChargesPanel1.getControlDiscValue().setDecimals(vo.getDecimalsREG03().intValue());
+		purchaseDiscChargesPanel1.getControlDiscValue().setCurrencySymbol(vo.getCurrencySymbolREG03());
+		purchaseDiscChargesPanel1.getControlDiscValue().setDecimalSymbol(vo.getDecimalSymbolREG03().charAt(0));
+		purchaseDiscChargesPanel1.getControlDiscValue().setGroupingSymbol(vo.getThousandSymbolREG03().charAt(0));
+  }
+
+
   public void loadDataCompleted(boolean error,PurchaseDocPK pk) {
     DetailPurchaseDocVO vo = (DetailPurchaseDocVO)headerFormPanel.getVOModel().getValueObject();
-
-    purchaseTotalsPanel1.getControlTaxableIncome().setDecimals(vo.getDecimalsREG03().intValue());
-    purchaseTotalsPanel1.getControlTaxableIncome().setCurrencySymbol(vo.getCurrencySymbolREG03());
-    purchaseTotalsPanel1.getControlTaxableIncome().setDecimalSymbol(vo.getDecimalSymbolREG03().charAt(0));
-    purchaseTotalsPanel1.getControlTaxableIncome().setGroupingSymbol(vo.getThousandSymbolREG03().charAt(0));
-
-    purchaseTotalsPanel1.getControlTotal().setDecimals(vo.getDecimalsREG03().intValue());
-    purchaseTotalsPanel1.getControlTotal().setCurrencySymbol(vo.getCurrencySymbolREG03());
-    purchaseTotalsPanel1.getControlTotal().setDecimalSymbol(vo.getDecimalSymbolREG03().charAt(0));
-    purchaseTotalsPanel1.getControlTotal().setGroupingSymbol(vo.getThousandSymbolREG03().charAt(0));
-
-    purchaseTotalsPanel1.getControlTotalVat().setDecimals(vo.getDecimalsREG03().intValue());
-    purchaseTotalsPanel1.getControlTotalVat().setCurrencySymbol(vo.getCurrencySymbolREG03());
-    purchaseTotalsPanel1.getControlTotalVat().setDecimalSymbol(vo.getDecimalSymbolREG03().charAt(0));
-    purchaseTotalsPanel1.getControlTotalVat().setGroupingSymbol(vo.getThousandSymbolREG03().charAt(0));
+		updateCurrencySettings(vo);
 
     rowsPanel.setParentVO(vo);
     rowsPanel.getGrid().getOtherGridParams().put(ApplicationConsts.PURCHASE_DOC_PK,pk);

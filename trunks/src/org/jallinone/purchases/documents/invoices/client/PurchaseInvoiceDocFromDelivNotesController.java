@@ -168,7 +168,9 @@ public class PurchaseInvoiceDocFromDelivNotesController extends CompanyFormContr
     }
 
     DetailPurchaseDocVO vo = (DetailPurchaseDocVO)frame.getHeaderFormPanel().getVOModel().getValueObject();
-    frame.getRowsPanel().setParentVO(vo);
+		frame.updateCurrencySettings(vo);
+
+	  frame.getRowsPanel().setParentVO(vo);
     frame.getRowsPanel().getGrid().getOtherGridParams().put(ApplicationConsts.PURCHASE_DOC_PK,pk);
     frame.getRowsPanel().getGrid().reloadData();
 

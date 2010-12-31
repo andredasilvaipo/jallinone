@@ -66,6 +66,8 @@ public class PurchaseInvoiceDocRowController extends CompanyFormController {
    * @return a VOResponse object if data loading is successfully completed, or an ErrorResponse object if an error occours
    */
   public Response loadData(Class valueObjectClass) {
+		if (pk==null)
+			return new VOResponse(new DetailPurchaseDocRowVO());
     return ClientUtils.getData("loadPurchaseDocRow",pk);
   }
 
@@ -143,6 +145,9 @@ public class PurchaseInvoiceDocRowController extends CompanyFormController {
       return;
 
     DetailPurchaseDocRowVO vo = (DetailPurchaseDocRowVO)panel.getDetailPanel().getVOModel().getValueObject();
+		if (vo.getItemCodeItm01DOC07()==null)
+			// case no rows in grid...
+			return;
 
     panel.getBookedItemsPanel().getControlItemType().setValue(vo.getProgressiveHie02DOC07());
     panel.getBookedItemsPanel().getControlItemCode().setValue(vo.getItemCodeItm01DOC07());
