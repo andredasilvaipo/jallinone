@@ -405,37 +405,7 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 
 			 }
 
-			 // generate progressive for doc. sequence...
-			 if (docVO.getDocTypeDOC06().equals(ApplicationConsts.PURCHASE_INVOICE_DOC_TYPE) ||
-					 docVO.getDocTypeDOC06().equals(ApplicationConsts.PURCHASE_INVOICE_FROM_DN_DOC_TYPE) ||
-					 docVO.getDocTypeDOC06().equals(ApplicationConsts.PURCHASE_INVOICE_FROM_PD_DOC_TYPE)) {
-				 // invoice...
-				 pstmt = conn.prepareStatement(
-						 "select max(DOC_SEQUENCE) from DOC06_PURCHASE where COMPANY_CODE_SYS01=? and DOC_TYPE in (?,?,?) and DOC_YEAR=? and DOC_SEQUENCE is not null"
-				 );
-				 pstmt.setString(1,pk.getCompanyCodeSys01DOC06());
-				 pstmt.setString(2,ApplicationConsts.PURCHASE_INVOICE_DOC_TYPE);
-				 pstmt.setString(3,ApplicationConsts.PURCHASE_INVOICE_FROM_DN_DOC_TYPE);
-				 pstmt.setString(4,ApplicationConsts.PURCHASE_INVOICE_FROM_PD_DOC_TYPE);
-				 pstmt.setBigDecimal(5,pk.getDocYearDOC06());
-			 }
-			 else {
-				 // other sale document (e.g. debiting note)...
-				 pstmt = conn.prepareStatement(
-						 "select max(DOC_SEQUENCE) from DOC06_PURCHASE where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_SEQUENCE is not null"
-				 );
-				 pstmt.setString(1,pk.getCompanyCodeSys01DOC06());
-				 pstmt.setString(2,pk.getDocTypeDOC06());
-				 pstmt.setBigDecimal(3,pk.getDocYearDOC06());
-			 }
-			 rset = pstmt.executeQuery();
-			 int docSequenceDOC06 = 1;
-			 if (rset.next())
-				 docSequenceDOC06 = rset.getInt(1)+1;
-			 rset.close();
-			 pstmt.close();
-			 docVO.setDocSequenceDOC06(new BigDecimal(docSequenceDOC06));
-
+                         int docSequenceDOC06 = docVO.getDocSequenceDOC06().intValue();
 
 			 // retrieve payment instalments...
 			 res = payAction.validatePaymentCode(new LookupValidationParams(docVO.getPaymentCodeReg10DOC06(),new HashMap()),serverLanguageId,username,new ArrayList());
@@ -511,13 +481,12 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 
 
 			 // change doc state to close...
-			 pstmt = conn.prepareStatement("update DOC06_PURCHASE set DOC_STATE=?,DOC_SEQUENCE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
+			 pstmt = conn.prepareStatement("update DOC06_PURCHASE set DOC_STATE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
 			 pstmt.setString(1,ApplicationConsts.CLOSED);
-			 pstmt.setInt(2,docSequenceDOC06);
-			 pstmt.setString(3,pk.getCompanyCodeSys01DOC06());
-			 pstmt.setString(4,pk.getDocTypeDOC06());
-			 pstmt.setBigDecimal(5,pk.getDocYearDOC06());
-			 pstmt.setBigDecimal(6,pk.getDocNumberDOC06());
+			 pstmt.setString(2,pk.getCompanyCodeSys01DOC06());
+			 pstmt.setString(3,pk.getDocTypeDOC06());
+			 pstmt.setBigDecimal(4,pk.getDocYearDOC06());
+			 pstmt.setBigDecimal(5,pk.getDocNumberDOC06());
 			 pstmt.execute();
 
 
