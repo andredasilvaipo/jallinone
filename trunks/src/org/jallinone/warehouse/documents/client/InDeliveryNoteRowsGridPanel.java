@@ -277,6 +277,7 @@ public class InDeliveryNoteRowsGridPanel extends JPanel implements GenericButton
       });
 
       // warehouse position code lookup...
+      colPositionLookup.setColumnRequired(false);
       colPositionLookup.setLookupController(posController);
       posController.setLookupDataLocator(posDataLocator);
       posController.setFrameTitle("warehouse positions");
