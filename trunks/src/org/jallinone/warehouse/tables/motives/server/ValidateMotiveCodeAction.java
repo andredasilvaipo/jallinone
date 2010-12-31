@@ -59,7 +59,7 @@ public class ValidateMotiveCodeAction implements Action {
 		LookupValidationParams validationPars = (LookupValidationParams)inputPar;
 		try {
 
-			WarehouseMotivesBean bean = (WarehouseMotivesBean)JAIOBeanFactory.getInstance().getBean(WarehouseMotivesBean.class);
+			WarehouseMotives bean = (WarehouseMotivesBean)JAIOBeanFactory.getInstance().getBean(WarehouseMotives.class);
 			Response answer = bean.validateWarehouseMotiveCode(validationPars,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
 			return answer;
