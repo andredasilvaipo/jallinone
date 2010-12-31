@@ -61,7 +61,7 @@ import org.jallinone.system.progressives.server.*;
 public class InsertPurchaseDocBean implements InsertPurchaseDoc {
 
 
-  private DataSource dataSource;
+  private DataSource dataSource; 
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -69,9 +69,9 @@ public class InsertPurchaseDocBean implements InsertPurchaseDoc {
 
   /** external connection */
   private Connection conn = null;
-
+  
   /**
-   * Set external connection.
+   * Set external connection. 
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -81,7 +81,7 @@ public class InsertPurchaseDocBean implements InsertPurchaseDoc {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-
+    
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -111,7 +111,7 @@ public class InsertPurchaseDocBean implements InsertPurchaseDoc {
    */
   public VOResponse insertPurchaseDoc(DetailPurchaseDocVO vo,String companyCode,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable {
     PreparedStatement pstmt = null;
-
+    
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -172,7 +172,7 @@ public class InsertPurchaseDocBean implements InsertPurchaseDoc {
       attribute2dbField.put("docTypeDoc06DOC06","DOC_TYPE_DOC06");
       attribute2dbField.put("docYearDoc06DOC06","DOC_YEAR_DOC06");
       attribute2dbField.put("docNumberDoc06DOC06","DOC_NUMBER_DOC06");
-			attribute2dbField.put("docSequenceDoc06DOC06","DOC_SEQUENCE_DOC06");
+      attribute2dbField.put("docSequenceDOC06","DOC_SEQUENCE");
       attribute2dbField.put("discountValueDOC06","DISCOUNT_VALUE");
       attribute2dbField.put("discountPercDOC06","DISCOUNT_PERC");
       attribute2dbField.put("chargeValueDOC06","CHARGE_VALUE");
@@ -215,10 +215,10 @@ public class InsertPurchaseDocBean implements InsertPurchaseDoc {
     	  throw new Exception(res.getErrorMessage());
       else
     	  return (VOResponse)res;
-
+      
     }
     catch (Exception ex) {
-
+    	
         try {
       	  if (this.conn==null && conn!=null)
       		  // rollback only local connection
