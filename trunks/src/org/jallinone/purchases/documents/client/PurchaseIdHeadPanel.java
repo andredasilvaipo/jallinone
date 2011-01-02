@@ -172,7 +172,7 @@ public class PurchaseIdHeadPanel extends JPanel {
     labelDocState.setText("docState");
     controlDocNumber.setLinkLabel(labelDocNum);
     controlDocNumber.setMaxCharacters(255);
-    //controlDocNumber.setRequired(false);
+    controlDocNumber.setRequired(true);
     //controlDocNumber.setEnabledOnInsert(false);
     //controlDocNumber.setEnabledOnEdit(false);
     controlDocNumber.setAttributeName("docSequenceDOC06");

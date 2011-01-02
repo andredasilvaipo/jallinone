@@ -405,7 +405,7 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 
 			 }
 
-                         int docSequenceDOC06 = docVO.getDocSequenceDOC06().intValue();
+       int docSequenceDOC06 = docVO.getDocSequenceDOC06().intValue();
 
 			 // retrieve payment instalments...
 			 res = payAction.validatePaymentCode(new LookupValidationParams(docVO.getPaymentCodeReg10DOC06(),new HashMap()),serverLanguageId,username,new ArrayList());
