@@ -12,6 +12,8 @@ import org.openswing.swing.form.client.Form;
 import org.openswing.swing.lookup.client.LookupListener;
 import org.openswing.swing.message.receive.java.*;
 import java.util.Collection;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 /**
   * <p>Title: JAllInOne ERP/CRM application</p>
@@ -64,7 +66,7 @@ public class PurchaseIdHeadPanel extends JPanel {
 
 
 
-  public PurchaseIdHeadPanel(Form form,boolean showDocRefLookup,boolean docNumberEditable) {
+  public PurchaseIdHeadPanel(final Form form,boolean showDocRefLookup,boolean docNumberEditable) {
     this.showDocRefLookup = showDocRefLookup;
     try {
       jbInit();
@@ -148,6 +150,11 @@ public class PurchaseIdHeadPanel extends JPanel {
 				controlDocNumber.setRequired(true);
 				controlDocNumber.setEnabledOnInsert(true);
 				controlDocNumber.setEnabledOnEdit(true);
+				controlDocNumber.addFocusListener(new FocusAdapter() {
+					public void focusLost(FocusEvent e) {
+				    form.getVOModel().setValue("docSequenceDOC06",controlDocNumber.getValue());
+					}
+				});
 			}
 			else {
 				controlDocNumber.setRequired(false);

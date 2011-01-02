@@ -129,7 +129,7 @@ public class PurchaseInvoiceDocFromPurchaseDocFrame extends InternalFrame implem
               purchaseDocVO.setDocSequenceDoc06DOC06(vo.getDocSequenceDOC06());
               purchaseDocVO.setDocTypeDOC06(ApplicationConsts.PURCHASE_INVOICE_FROM_PD_DOC_TYPE);
               purchaseDocVO.setDocNumberDOC06(null);
-              purchaseDocVO.setDocSequenceDOC06(null);
+              purchaseDocVO.setDocSequenceDOC06(oldPurchaseDocVO.getDocSequenceDOC06());
               purchaseDocVO.setDocStateDOC06(ApplicationConsts.OPENED);
               purchaseDocVO.setDocDateDOC06(oldPurchaseDocVO.getDocDateDOC06());
               headerFormPanel.getVOModel().setValueObject(purchaseDocVO);
