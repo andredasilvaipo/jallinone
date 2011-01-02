@@ -64,7 +64,7 @@ public class PurchaseIdHeadPanel extends JPanel {
 
 
 
-  public PurchaseIdHeadPanel(Form form,boolean showDocRefLookup) {
+  public PurchaseIdHeadPanel(Form form,boolean showDocRefLookup,boolean docNumberEditable) {
     this.showDocRefLookup = showDocRefLookup;
     try {
       jbInit();
@@ -144,6 +144,16 @@ public class PurchaseIdHeadPanel extends JPanel {
 
       });
 
+			if (docNumberEditable) {
+				controlDocNumber.setRequired(true);
+				controlDocNumber.setEnabledOnInsert(true);
+				controlDocNumber.setEnabledOnEdit(true);
+			}
+			else {
+				controlDocNumber.setRequired(false);
+				controlDocNumber.setEnabledOnInsert(false);
+				controlDocNumber.setEnabledOnEdit(false);
+			}
 
     }
     catch(Exception e) {
@@ -172,9 +182,6 @@ public class PurchaseIdHeadPanel extends JPanel {
     labelDocState.setText("docState");
     controlDocNumber.setLinkLabel(labelDocNum);
     controlDocNumber.setMaxCharacters(255);
-    controlDocNumber.setRequired(true);
-    //controlDocNumber.setEnabledOnInsert(false);
-    //controlDocNumber.setEnabledOnEdit(false);
     controlDocNumber.setAttributeName("docSequenceDOC06");
     controlDocYear.setLinkLabel(labelDocYear);
     controlDocYear.setEnabledOnInsert(false);

@@ -80,7 +80,7 @@ public class PurchaseInvoiceDocFromPurchaseDocFrame extends InternalFrame implem
   ReloadButton reloadButton1 = new ReloadButton();
   DeleteButton deleteButton1 = new DeleteButton();
   GridBagLayout gridBagLayin1 = new GridBagLayout();
-  PurchaseIdHeadPanel purchaseIdHeadPanel1 = new PurchaseIdHeadPanel(headerFormPanel,true);
+  PurchaseIdHeadPanel purchaseIdHeadPanel1 = new PurchaseIdHeadPanel(headerFormPanel,true,true);
   PurchaseSupplierHeadPanel purchaseSupplierHeadPanel1 = new PurchaseSupplierHeadPanel(headerFormPanel);
   PurchaseTotalsPanel purchaseTotalsPanel1 = new PurchaseTotalsPanel();
   PurchaseInvoiceDocRowsGridPanel rowsPanel = new PurchaseInvoiceDocRowsGridPanel(this,headerFormPanel,false,true);

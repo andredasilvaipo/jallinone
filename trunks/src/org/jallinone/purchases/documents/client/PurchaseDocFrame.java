@@ -76,7 +76,7 @@ public class PurchaseDocFrame extends InternalFrame implements GenericButtonCont
   ReloadButton reloadButton1 = new ReloadButton();
   DeleteButton deleteButton1 = new DeleteButton();
   GridBagLayout gridBagLayout1 = new GridBagLayout();
-  PurchaseIdHeadPanel purchaseIdHeadPanel1 = new PurchaseIdHeadPanel(headerFormPanel,false);
+  PurchaseIdHeadPanel purchaseIdHeadPanel1 = new PurchaseIdHeadPanel(headerFormPanel,false,false);
   PurchaseSupplierHeadPanel purchaseSupplierHeadPanel1 = new PurchaseSupplierHeadPanel(headerFormPanel);
   PurchaseDiscChargesPanel purchaseDiscChargesPanel1 = new PurchaseDiscChargesPanel(headerFormPanel);
   PurchaseTotalsPanel purchaseTotalsPanel1 = new PurchaseTotalsPanel();
