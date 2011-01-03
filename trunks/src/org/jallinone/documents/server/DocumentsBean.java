@@ -71,7 +71,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class DocumentsBean  implements Documents {
 
 
-	private DataSource dataSource; 
+	private DataSource dataSource;
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -81,7 +81,7 @@ public class DocumentsBean  implements Documents {
 	private Connection conn = null;
 
 	/**
-	 * Set external connection. 
+	 * Set external connection.
 	 */
 	public void setConn(Connection conn) {
 		this.conn = conn;
@@ -96,34 +96,38 @@ public class DocumentsBean  implements Documents {
 
 
 	private LoadDocumentLinksBean bean;
-	
+
 	public void setBean(LoadDocumentLinksBean bean) {
 		this.bean = bean;
 	}
-	
 
+	private InsertDocumentLinkBean insertDocumentLinkBean;
+
+  public void setInsertDocumentLinkBean(InsertDocumentLinkBean insertDocumentLinkBean) {
+		this.insertDocumentLinkBean = insertDocumentLinkBean;
+	}
 
 	public DocumentsBean() {
 	}
 
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public GridDocumentVO getGridDocument(HierarchyLevelVO pk) {
-		throw new UnsupportedOperationException();	
+		throw new UnsupportedOperationException();
 	}
-	
-	
+
+
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public DocPropertyVO getDocProperty() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public LevelPropertyVO getLevelProperty() {
 		throw new UnsupportedOperationException();
@@ -544,13 +548,12 @@ public class DocumentsBean  implements Documents {
 	/**
 	 * Business logic to execute.
 	 */
-	public VOResponse updateDocument(DetailDocumentVO oldVO,DetailDocumentVO newVO,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable {
-		
+	public VOResponse updateDocument(DetailDocumentVO oldVO,DetailDocumentVO newVO,String serverLanguageId,String username,ArrayList customizedFields,String docPath) throws Throwable {
 		Statement stmt = null;
-
 		Connection conn = null;
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
+			insertDocumentLinkBean.setConn(conn);
 
 			Map attribute2dbField = new HashMap();
 			attribute2dbField.put("companyCodeSys01DOC14","COMPANY_CODE_SYS01");
@@ -581,10 +584,11 @@ public class DocumentsBean  implements Documents {
 			// check if v.o. contains also a new document version...
 			if (newVO.getDocument()!=null) {
 				// insert the new document version...
-				Response res = insertDocumentVersion(
+				Response res = insertDocumentLinkBean.insertDocumentVersion(
 						new DocumentPK(newVO.getCompanyCodeSys01DOC14(),newVO.getProgressiveDOC14()),
 						newVO.getDocument(),
-						serverLanguageId,username
+						username,
+						docPath
 				);
 				if (res.isError()) {
 					throw new Exception(res.getErrorMessage());
@@ -607,6 +611,11 @@ public class DocumentsBean  implements Documents {
 		}
 		finally {
 			try {
+				insertDocumentLinkBean.setConn(null);
+			}
+			catch (Exception ex2) {
+			}
+			try {
 				stmt.close();
 			}
 			catch (Exception ex2) {
@@ -618,7 +627,7 @@ public class DocumentsBean  implements Documents {
 					conn.close();
 				}
 			}
-			catch (Exception exx) {}			
+			catch (Exception exx) {}
 		}
 	}
 
@@ -687,10 +696,12 @@ public class DocumentsBean  implements Documents {
 	/**
 	 * Business logic to execute.
 	 */
-	public VOResponse insertDocument(DetailDocumentVO vo,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable {
+	public VOResponse insertDocument(DetailDocumentVO vo,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields,String docPath) throws Throwable {
 		Connection conn = null;
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
+			insertDocumentLinkBean.setConn(conn);
+
 			String companyCode = companiesList.get(0).toString();
 
 			if (vo.getCompanyCodeSys01DOC14()==null)
@@ -728,7 +739,7 @@ public class DocumentsBean  implements Documents {
 			linkVO.setCompanyCodeSys01DOC17(vo.getCompanyCodeSys01DOC14());
 			linkVO.setProgressiveDoc14DOC17(vo.getProgressiveDOC14());
 			linkVO.setProgressiveHie01DOC17(vo.getProgressiveHie01DOC17());
-			Response res = insertDocumentLink(
+			Response res = insertDocumentLinkBean.insertDocumentLink(
 					linkVO,
 					username
 			);
@@ -737,10 +748,11 @@ public class DocumentsBean  implements Documents {
 			}
 
 			// insert the new document version...
-			res = insertDocumentVersion(
+			res = insertDocumentLinkBean.insertDocumentVersion(
 					new DocumentPK(vo.getCompanyCodeSys01DOC14(),vo.getProgressiveDOC14()),
 					vo.getDocument(),
-					serverLanguageId,username
+					username,
+					docPath
 			);
 			if (res.isError()) {
 				throw new Exception(res.getErrorMessage());
@@ -763,13 +775,18 @@ public class DocumentsBean  implements Documents {
 		}
 		finally {
 			try {
+				insertDocumentLinkBean.setConn(null);
+			}
+			catch (Exception ex2) {
+			}
+			try {
 				if (this.conn==null && conn!=null) {
 					// close only local connection
 					conn.commit();
 					conn.close();
 				}
 			}
-			catch (Exception exx) {}			
+			catch (Exception exx) {}
 		}
 	}
 
@@ -782,6 +799,8 @@ public class DocumentsBean  implements Documents {
 		Connection conn = null;
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
+			insertDocumentLinkBean.setConn(conn);
+
 			DocumentLinkVO vo = null;
 			Response res = null;
 
@@ -789,7 +808,7 @@ public class DocumentsBean  implements Documents {
 				vo = (DocumentLinkVO)list.get(i);
 
 				// insert into DOC17...
-				res = insertDocumentLink(vo,username);
+				res = insertDocumentLinkBean.insertDocumentLink(vo,username);
 				if (res.isError()) {
 					throw new Exception(res.getErrorMessage());
 				}
@@ -811,62 +830,7 @@ public class DocumentsBean  implements Documents {
 		}
 		finally {
 			try {
-				if (this.conn==null && conn!=null) {
-					// close only local connection
-					conn.commit();
-					conn.close();
-				}
-			}
-			catch (Exception exx) {}			
-		}
-
-	}
-
-
-
-	/**
-	 * Insert new document link in DOC17 table.
-	 * This method does not create or release connection and does not commit/rollback connection.
-	 */
-	public final VOResponse insertDocumentLink(DocumentLinkVO vo,String username) throws Throwable {
-		Statement stmt = null;
-		try {
-
-			Map attribute2dbField = new HashMap();
-			attribute2dbField.put("companyCodeSys01DOC17","COMPANY_CODE_SYS01");
-			attribute2dbField.put("progressiveDoc14DOC17","PROGRESSIVE_DOC14");
-			attribute2dbField.put("progressiveHie01DOC17","PROGRESSIVE_HIE01");
-
-			// insert into DOC17...
-			Response res = QueryUtil.insertTable(
-					conn,
-					new UserSessionParameters(username),
-					vo,
-					"DOC17_DOCUMENT_LINKS",
-					attribute2dbField,
-					"Y",
-					"N",
-					null,
-					true
-			);
-
-			return new VOResponse(Boolean.TRUE);
-		}
-		catch (Throwable ex) {
-			Logger.error(username, this.getClass().getName(),
-					"insertDocumentLink", "Error while inserting a new document link", ex);
-		      try {
-		    	  if (this.conn==null && conn!=null)
-		    		  // rollback only local connection
-		    		  conn.rollback();
-		      }
-		      catch (Exception ex3) {
-		      }
-		      throw new Exception(ex.getMessage());
-		}
-		finally {
-			try {
-				stmt.close();
+				insertDocumentLinkBean.setConn(null);
 			}
 			catch (Exception ex2) {
 			}
@@ -882,115 +846,6 @@ public class DocumentsBean  implements Documents {
 
 	}
 
-
-
-
-	/**
-	 * Insert new document version in DOC15 and save the document in the file system.
-	 * This method does not create or release connection and does not commit/rollback connection.
-	 */
-	public VOResponse insertDocumentVersion(
-			DocumentPK pk,
-			byte[] document,
-			String username,
-			String docPath) throws Throwable {
-		PreparedStatement pstmt = null;
-
-		Connection conn = null;
-		try {
-			if (this.conn==null) conn = getConn(); else conn = this.conn;
-
-			// calculate the next document version...
-			DocumentVersionVO vo = new DocumentVersionVO();
-			pstmt = conn.prepareStatement("select max(VERSION) from DOC15_DOCUMENT_VERSIONS where COMPANY_CODE_SYS01=? and PROGRESSIVE_DOC14=?");
-			pstmt.setString(1,pk.getCompanyCodeSys01DOC14());
-			pstmt.setBigDecimal(2,pk.getProgressiveDOC14());
-			ResultSet rset = pstmt.executeQuery();
-			if (rset.next())
-				vo.setVersionDOC15(rset.getBigDecimal(1));
-			rset.close();
-			if (vo.getVersionDOC15()==null)
-				vo.setVersionDOC15(new BigDecimal(0));
-
-			vo.setVersionDOC15(vo.getVersionDOC15().add(new BigDecimal(1)));
-			vo.setCompanyCodeSys01DOC15(pk.getCompanyCodeSys01DOC14());
-			vo.setProgressiveDoc14DOC15(pk.getProgressiveDOC14());
-			vo.setCreateDateDOC15(new java.sql.Timestamp(System.currentTimeMillis()));
-			vo.setCreateUsernameDOC15(username);
-
-			Map attribute2dbField = new HashMap();
-			attribute2dbField.put("companyCodeSys01DOC15","COMPANY_CODE_SYS01");
-			attribute2dbField.put("progressiveDoc14DOC15","PROGRESSIVE_DOC14");
-			attribute2dbField.put("createDateDOC15","CREATE_DATE");
-			attribute2dbField.put("createUsernameDOC15","CREATE_USERNAME");
-			attribute2dbField.put("versionDOC15","VERSION");
-
-			// insert into DOC15...
-			Response res = QueryUtil.insertTable(
-					conn,
-					new UserSessionParameters(username),
-					vo,
-					"DOC15_DOCUMENT_VERSIONS",
-					attribute2dbField,
-					"Y",
-					"N",
-					null,
-					true
-			);
-
-			if (res.isError())
-				throw new Exception(res.getErrorMessage());
-
-			// save the document in the file system...
-			String appPath = docPath; //(String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.DOC_PATH);
-			appPath = appPath.replace('\\','/');
-			if (!appPath.endsWith("/"))
-				appPath += "/";
-			if (!new File(appPath).isAbsolute()) {
-				// relative path (to "WEB-INF/classes/" folder)
-				appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
-			}
-			new File(appPath).mkdirs();
-			FileOutputStream out = new FileOutputStream(appPath+"DOC"+vo.getProgressiveDoc14DOC15()+"_"+vo.getVersionDOC15());
-			out.write(document);
-			out.close();
-
-			Response answer = new VOResponse(vo);
-
-
-
-			if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (VOResponse)answer;
-		}
-		catch (Throwable ex) {
-			Logger.error(username, this.getClass().getName(),
-					"insertDocumentVersion", "Error while inserting a new document version", ex);
-		      try {
-		    	  if (this.conn==null && conn!=null)
-		    		  // rollback only local connection
-		    		  conn.rollback();
-		      }
-		      catch (Exception ex3) {
-		      }
-		      throw new Exception(ex.getMessage());
-		}
-		finally {
-          try {
-              pstmt.close();
-        }
-          catch (Exception exx) {}
-          try {
-              if (this.conn==null && conn!=null) {
-                // close only local connection
-                conn.commit();
-                conn.close();
-            }
-
-          }
-          catch (Exception exx) {}
-		}
-		
-
-	}
 
 
 
@@ -1221,7 +1076,7 @@ public class DocumentsBean  implements Documents {
 					conn.close();
 				}
 			}
-			catch (Exception exx) {}			
+			catch (Exception exx) {}
 		}
 
 	}
@@ -1308,7 +1163,7 @@ public class DocumentsBean  implements Documents {
 					conn.close();
 				}
 			}
-			catch (Exception exx) {}			
+			catch (Exception exx) {}
 		}
 
 	}
@@ -1341,7 +1196,10 @@ public class DocumentsBean  implements Documents {
 				// relative path (to "WEB-INF/classes/" folder)
 				appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
 			}
-			File file = new File(appPath+"DOC"+vo.getProgressiveDoc14DOC15()+"_"+vo.getVersionDOC15());
+			String relativePath = FileUtils.getFilePath(appPath,"DOC14",vo.getCreateDateDOC15());
+			File file = new File(appPath+"DOC"+vo.getProgressiveDoc14DOC15()+"_"+vo.getVersionDOC15()); // retro-compatibility...
+			if (!file.exists())
+			  file = new File(appPath+relativePath+"DOC"+vo.getProgressiveDoc14DOC15()+"_"+vo.getVersionDOC15());
 			FileInputStream fis = new FileInputStream(file);
 			byte[] doc = new byte[(int)file.length()];
 			fis.read(doc);

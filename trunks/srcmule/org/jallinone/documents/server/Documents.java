@@ -72,18 +72,9 @@ public interface Documents {
 
 	public VOResponse deleteLevelProperties(ArrayList list,String serverLanguageId,String username) throws Throwable;
 
-	public VOResponse insertDocument(DetailDocumentVO vo,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable;
-
-	public VOResponse insertDocumentLink(DocumentLinkVO vo,String username) throws Throwable;
+	public VOResponse insertDocument(DetailDocumentVO vo,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields,String docPath) throws Throwable;
 
 	public VOListResponse insertDocumentLinks(ArrayList list,String serverLanguageId,String username) throws Throwable;
-
-	public VOResponse insertDocumentVersion(
-			DocumentPK pk,
-			byte[] document,
-			String username,
-			String docPath
-	) throws Throwable;
 
 	public VOListResponse insertLevelProperties(ArrayList list,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
 
@@ -97,7 +88,7 @@ public interface Documents {
 
 	public VOListResponse updateDocProperties(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
 
-	public VOResponse updateDocument(DetailDocumentVO oldVO,DetailDocumentVO newVO,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
+	public VOResponse updateDocument(DetailDocumentVO oldVO,DetailDocumentVO newVO,String serverLanguageId,String username,ArrayList customizedFields,String docPath) throws Throwable;
 
 	public VOListResponse updateLevelProperties(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
 

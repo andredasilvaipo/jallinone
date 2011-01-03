@@ -1,5 +1,17 @@
 
 
+Release Notes 2.5.3
+-------------------
+
+Include 2.3.5 version of OpenSwing.
+Added discounts/costs panel to all invoice frames.
+Fixed problem with werehouse movement and with manual movement in warehouse.
+Added "no warehouse movements" flag in item detail.
+Enabled "alternative items" in item detail folder, also when the item is not a component.
+Fixed problem on loading/saving documents in "document management".
+
+
+
 Release Notes 2.5.2
 -------------------
 

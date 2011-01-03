@@ -24,6 +24,7 @@ import org.jallinone.system.progressives.server.*;
 
 
 import javax.sql.DataSource;
+import org.jallinone.documents.server.FileUtils;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -56,7 +57,7 @@ import javax.sql.DataSource;
 public class InsertItemBean  implements InsertItem {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -64,9 +65,9 @@ public class InsertItemBean  implements InsertItem {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -76,7 +77,7 @@ public class InsertItemBean  implements InsertItem {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -87,7 +88,7 @@ public class InsertItemBean  implements InsertItem {
   }
 
 
-  
+
 
   /**
    * Business logic to execute.
@@ -95,11 +96,9 @@ public class InsertItemBean  implements InsertItem {
   public VOResponse insertItem(DetailItemVO vo,String t1,String serverLanguageId,String username,String imagePath,ArrayList companiesList,ArrayList customizedFields) throws Throwable {
     Statement stmt = null;
     PreparedStatement pstmt = null;
-    
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-
 
       String companyCode = companiesList.get(0).toString();
       if (vo.getUseVariant1ITM01()==null)
@@ -191,10 +190,6 @@ public class InsertItemBean  implements InsertItem {
 
 
       if (vo.getSmallImage()!=null) {
-        BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01(),"ITM01_ITEMS","SMALL_IMG",conn);
-        vo.setSmallImageITM01("SMALL_IMG"+imageProgressive);
-        attribute2dbField.put("smallImageITM01",imageProgressive);
-
         // save image on file system...
         String appPath = imagePath;
         appPath = appPath.replace('\\','/');
@@ -204,16 +199,19 @@ public class InsertItemBean  implements InsertItem {
           // relative path (to "WEB-INF/classes/" folder)
           appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
         }
-        new File(appPath).mkdirs();
+
+				BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01(),"ITM01_ITEMS","SMALL_IMG",conn);
+				String relativePath = FileUtils.getFilePath(appPath,"ITM01");
+				vo.setSmallImageITM01(relativePath+"SMALL_IMG"+imageProgressive);
+				attribute2dbField.put("smallImageITM01",imageProgressive);
+
+        new File(appPath+relativePath).mkdirs();
         FileOutputStream out = new FileOutputStream(appPath+vo.getSmallImageITM01());
         out.write(vo.getSmallImage());
         out.close();
       }
 
       if (vo.getLargeImage()!=null) {
-        BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01(),"ITM01_ITEMS","LARGE_IMG",conn);
-        vo.setLargeImageITM01("LARGE_IMG"+imageProgressive);
-        attribute2dbField.put("largeImageITM01",imageProgressive);
 
         // save image on file system...
         String appPath = imagePath;
@@ -224,7 +222,13 @@ public class InsertItemBean  implements InsertItem {
           // relative path (to "WEB-INF/classes/" folder)
           appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
         }
-        new File(appPath).mkdirs();
+
+				BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01(),"ITM01_ITEMS","LARGE_IMG",conn);
+				String relativePath = FileUtils.getFilePath(appPath,"ITM01");
+				vo.setLargeImageITM01(relativePath+"LARGE_IMG"+imageProgressive);
+				attribute2dbField.put("largeImageITM01",imageProgressive);
+
+        new File(appPath+relativePath).mkdirs();
         FileOutputStream out = new FileOutputStream(appPath+vo.getLargeImageITM01());
         out.write(vo.getLargeImage());
         out.close();
@@ -345,7 +349,7 @@ public class InsertItemBean  implements InsertItem {
       }
       catch (Exception ex2) {
       }
-    
+
       try {
           if (this.conn==null && conn!=null) {
               // close only local connection

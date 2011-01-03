@@ -38,6 +38,10 @@
                <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/LoadDocumentLinks" /></inbound>
                <pooled-component><spring-object bean="LoadDocumentLinksBean" ></spring-object></pooled-component>
           </service>
+          <service name="InsertDocumentLinkService">
+               <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/InsertDocumentLink" /></inbound>
+               <pooled-component><spring-object bean="InsertDocumentLinkBean" ></spring-object></pooled-component>
+          </service>
           <service name="DocumentsService">
                <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/Documents" /></inbound>
                <pooled-component><spring-object bean="DocumentsBean" ></spring-object></pooled-component>

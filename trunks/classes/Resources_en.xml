@@ -1356,7 +1356,7 @@
   <object key="order closing" value="Order closing" />
   <object key="close production order?" value="Close production order?" />
   <object key="print bill of materials" value="Print bill of materials" />
-  <object key="alternativeComponents" value="Alternative Components" />
+  <object key="alternativeComponents" value="Alternative Items" />
   <object key="you cannot define this item as a product because there are alternative components defined." value="You cannot define this item as a product because there are alternative components defined." />
   <object key="itemCodeItm01ITM04" value="Alt.Item Code" />
   <object key="you cannot set the current item as alternative component" value="You cannot set the current item as alternative component." />

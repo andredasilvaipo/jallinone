@@ -89,8 +89,8 @@ public class AltComponentsController extends CompanyGridController {
       return false;
 
     DetailItemVO itemVO = (DetailItemVO)panel.getFrame().getFormPanel().getVOModel().getValueObject();
-    if (itemVO.getManufactureCodePro01ITM01()!=null)
-      return false;
+//    if (itemVO.getManufactureCodePro01ITM01()!=null)
+//      return false;
     return true;
   }
 

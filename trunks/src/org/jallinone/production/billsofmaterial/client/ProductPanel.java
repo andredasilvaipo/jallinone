@@ -527,6 +527,8 @@ public class ProductPanel extends JPanel {
     titledBorder2 = new TitledBorder("");
     componentsGrid.setMaxNumberOfRowsOnInsert(50);
     componentsGrid.setValueObjectClassName("org.jallinone.production.billsofmaterial.java.ComponentVO");
+    componentsGrid.setAllowColumnsPermission(false);
+    componentsGrid.setAllowColumnsProfile(false);
 
     topPanel.setLayout(gridBagLayout1);
 
@@ -536,12 +538,15 @@ public class ProductPanel extends JPanel {
     altCompsGrid.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     altCompsGrid.setDeleteButton(deleteButton3);
     altCompsGrid.setExportButton(exportButton3);
+    altCompsGrid.setFunctionId("ITM03");
     //altCompsGrid.setFunctionId("ITM03");
     altCompsGrid.setMaxNumberOfRowsOnInsert(50);
     altCompsGrid.setInsertButton(insertButton3);
     altCompsGrid.setReloadButton(reloadButton3);
     altCompsGrid.setSaveButton(saveButton3);
     altCompsGrid.setValueObjectClassName("org.jallinone.production.billsofmaterial.java.AltComponentVO");
+    altCompsGrid.setAllowColumnsPermission(false);
+    altCompsGrid.setAllowColumnsProfile(false);
     altCompsButtonsPanel.setLayout(flowLayout1);
     flowLayout1.setAlignment(FlowLayout.LEFT);
     insertButton3.setText("insertButton1");
@@ -608,8 +613,6 @@ public class ProductPanel extends JPanel {
     componentsGrid.setEditButton(editButton2);
     componentsGrid.setExportButton(exportButton1);
     componentsGrid.setFunctionId("ITM03");
-    componentsGrid.setAllowColumnsPermission(false);
-    componentsGrid.setAllowColumnsProfile(false);
     componentsGrid.setInsertButton(insertButton2);
     componentsGrid.setNavBar(navigatorBar1);
     componentsGrid.setReloadButton(reloadButton2);

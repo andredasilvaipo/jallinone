@@ -66,9 +66,10 @@ public class UpdateDocumentAction implements Action {
 		try {
 			CustomizedWindows cust = ((JAIOUserSessionParameters)userSessionPars).getCustomizedWindows();
 			ArrayList customizedFields = cust.getCustomizedFields(ApplicationConsts.ID_DOCUMENT);
+			String docPath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.DOC_PATH);
 
 			Documents bean = (Documents)JAIOBeanFactory.getInstance().getBean(Documents.class);
-			Response answer = bean.updateDocument(oldVO,newVO,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),customizedFields);
+			Response answer = bean.updateDocument(oldVO,newVO,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),customizedFields,docPath);
 
 			return answer;
 		}

@@ -48,9 +48,13 @@
    <bean id="LoadDocumentLinksBean" scope="prototype" class="org.jallinone.documents.server.LoadDocumentLinksBean">
      <property name="dataSource" ref="JALLINONE" />
    </bean>
+   <bean id="InsertDocumentLinkBean" scope="prototype" class="org.jallinone.documents.server.InsertDocumentLinkBean">
+     <property name="dataSource" ref="JALLINONE" />
+   </bean>
    <bean id="DocumentsBean" scope="prototype" class="org.jallinone.documents.server.DocumentsBean">
      <property name="dataSource" ref="JALLINONE" />
      <property name="bean" ref="LoadDocumentLinksBean" />
+     <property name="insertDocumentLinkBean" ref="InsertDocumentLinkBean" />
    </bean>
    <bean id="DocumentTypesBean" scope="prototype" class="org.jallinone.documents.server.DocumentTypesBean">
      <property name="dataSource" ref="JALLINONE" />

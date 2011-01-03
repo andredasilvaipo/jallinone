@@ -64,10 +64,11 @@ public class InsertDocumentAction implements Action {
 		try {
 			CustomizedWindows cust = ((JAIOUserSessionParameters)userSessionPars).getCustomizedWindows();
 			ArrayList customizedFields = cust.getCustomizedFields(ApplicationConsts.ID_DOCUMENT);
+			String docPath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.DOC_PATH);
 
 			ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("DOC14");
 			Documents bean = (Documents)JAIOBeanFactory.getInstance().getBean(Documents.class);
-			Response answer = bean.insertDocument(vo,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList,customizedFields);
+			Response answer = bean.insertDocument(vo,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList,customizedFields,docPath);
 
 			return answer;
 		}

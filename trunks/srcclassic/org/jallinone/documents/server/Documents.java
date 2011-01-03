@@ -49,20 +49,20 @@ import org.jallinone.hierarchies.java.HierarchyLevelVO;
 public interface Documents {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public GridDocumentVO getGridDocument(HierarchyLevelVO pk);
-	
+
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public DocPropertyVO getDocProperty();
-	
+
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public LevelPropertyVO getLevelProperty();
-	
+
 
 	public VOResponse deleteDocumentLinks(ArrayList list,String serverLanguageId,String username) throws Throwable;
 
@@ -72,18 +72,11 @@ public interface Documents {
 
 	public VOResponse deleteLevelProperties(ArrayList list,String serverLanguageId,String username) throws Throwable;
 
-	public VOResponse insertDocument(DetailDocumentVO vo,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable;
+	public VOResponse insertDocument(DetailDocumentVO vo,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields,String docPath) throws Throwable;
 
-	public VOResponse insertDocumentLink(DocumentLinkVO vo,String username) throws Throwable;
 
 	public VOListResponse insertDocumentLinks(ArrayList list,String serverLanguageId,String username) throws Throwable;
 
-	public VOResponse insertDocumentVersion(
-			DocumentPK pk,
-			byte[] document,
-			String username,
-			String docPath
-	) throws Throwable;
 
 	public VOListResponse insertLevelProperties(ArrayList list,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
 
@@ -97,7 +90,7 @@ public interface Documents {
 
 	public VOListResponse updateDocProperties(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
 
-	public VOResponse updateDocument(DetailDocumentVO oldVO,DetailDocumentVO newVO,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
+	public VOResponse updateDocument(DetailDocumentVO oldVO,DetailDocumentVO newVO,String serverLanguageId,String username,ArrayList customizedFields,String docPath) throws Throwable;
 
 	public VOListResponse updateLevelProperties(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
 

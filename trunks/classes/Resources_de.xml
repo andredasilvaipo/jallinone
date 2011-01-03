@@ -1356,7 +1356,7 @@
   <object key="order closing" value="schlie&#xDF;e Auftrag" />
   <object key="close production order?" value="Produktionsauftrag abschlie&#xDF;en?" />
   <object key="print bill of materials" value="St&#xFC;ckliste drucken" />
-  <object key="alternativeComponents" value="Alternative Komponenten" />
+  <object key="alternativeComponents" value="Alternative Artikels" />
   <object key="you cannot define this item as a product because there are alternative components defined." value="Sie k&#xF6;nnen diese Position nicht als Produkt definieren weil alternativ Komponenten angebeben sind." />
   <object key="itemCodeItm01ITM04" value="Alt.Pos. Code" />
   <object key="you cannot set the current item as alternative component" value="Sie k&#xF6;nnen die aktuelle Position nicht als alternativ Komponente definieren." />

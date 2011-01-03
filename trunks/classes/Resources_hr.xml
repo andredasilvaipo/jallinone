@@ -1356,7 +1356,7 @@
   <object key="order closing" value="Zatvaranje naloga" />
   <object key="close production order?" value="Zatvoriti proizvodni nalog" />
   <object key="print bill of materials" value="Tiskati sastavnicu materijala" />
-  <object key="alternativeComponents" value="Zamjenske komponente" />
+  <object key="alternativeComponents" value="Zamjenske proizvode" />
   <object key="you cannot define this item as a product because there are alternative components defined." value="Ne mogu postaviti proizvod jer su postavljene zamjenske komponente" />
   <object key="itemCodeItm01ITM04" value="Alt.Item Code" />
   <object key="you cannot set the current item as alternative component" value="Ne mogu postaviti kao zamjensku komponentu" />

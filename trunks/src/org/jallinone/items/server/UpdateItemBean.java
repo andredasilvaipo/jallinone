@@ -24,6 +24,7 @@ import org.jallinone.system.progressives.server.*;
 
 
 import javax.sql.DataSource;
+import org.jallinone.documents.server.FileUtils;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -56,7 +57,7 @@ import javax.sql.DataSource;
 public class UpdateItemBean  implements UpdateItem {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -64,9 +65,9 @@ public class UpdateItemBean  implements UpdateItem {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -76,7 +77,7 @@ public class UpdateItemBean  implements UpdateItem {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -161,23 +162,26 @@ public class UpdateItemBean  implements UpdateItem {
         new File(appPath+oldVO.getSmallImageITM01()).delete();
       }
       else if (newVO.getSmallImage()!=null) {
+				// save image on file system...
+				String appPath = imagePath;
+				appPath = appPath.replace('\\','/');
+				if (!appPath.endsWith("/"))
+					appPath += "/";
+				if (!new File(appPath).isAbsolute()) {
+					// relative path (to "WEB-INF/classes/" folder)
+					appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
+				}
+				new File(appPath).mkdirs();
+
         if (oldVO.getSmallImage()==null) {
+					String relativePath = FileUtils.getFilePath(appPath,"ITM01");
           BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(newVO.getCompanyCodeSys01(),"ITM01_ITEMS","SMALL_IMG",conn);
-          newVO.setSmallImageITM01("SMALL_IMG"+imageProgressive);
+          newVO.setSmallImageITM01(relativePath+"SMALL_IMG"+imageProgressive);
+					new File(appPath+relativePath).mkdirs();
         }
         else
           newVO.setSmallImageITM01(oldVO.getSmallImageITM01());
 
-        // save image on file system...
-        String appPath = imagePath;
-        appPath = appPath.replace('\\','/');
-        if (!appPath.endsWith("/"))
-          appPath += "/";
-        if (!new File(appPath).isAbsolute()) {
-          // relative path (to "WEB-INF/classes/" folder)
-          appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
-        }
-        new File(appPath).mkdirs();
         File f = new File(appPath+newVO.getSmallImageITM01());
         f.delete();
         FileOutputStream out = new FileOutputStream(f);
@@ -199,23 +203,26 @@ public class UpdateItemBean  implements UpdateItem {
         new File(appPath+oldVO.getLargeImageITM01()).delete();
       }
       else if (newVO.getLargeImage()!=null) {
+				// save image on file system...
+				String appPath = imagePath;
+				appPath = appPath.replace('\\','/');
+				if (!appPath.endsWith("/"))
+					appPath += "/";
+				if (!new File(appPath).isAbsolute()) {
+					// relative path (to "WEB-INF/classes/" folder)
+					appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
+				}
+				new File(appPath).mkdirs();
+
         if (oldVO.getLargeImage()==null) {
+					String relativePath = FileUtils.getFilePath(appPath,"ITM01");
           BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(newVO.getCompanyCodeSys01(),"ITM01_ITEMS","LARGE_IMG",conn);
-          newVO.setLargeImageITM01("LARGE_IMG"+imageProgressive);
+          newVO.setLargeImageITM01(relativePath+"LARGE_IMG"+imageProgressive);
+					new File(appPath+relativePath).mkdirs();
         }
         else
           newVO.setLargeImageITM01(oldVO.getLargeImageITM01());
 
-        // save image on file system...
-        String appPath = imagePath;
-        appPath = appPath.replace('\\','/');
-        if (!appPath.endsWith("/"))
-          appPath += "/";
-        if (!new File(appPath).isAbsolute()) {
-          // relative path (to "WEB-INF/classes/" folder)
-          appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
-        }
-        new File(appPath).mkdirs();
         File f = new File(appPath+newVO.getLargeImageITM01());
         f.delete();
         FileOutputStream out = new FileOutputStream(f);
