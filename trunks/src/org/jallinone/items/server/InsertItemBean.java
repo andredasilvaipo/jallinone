@@ -188,6 +188,8 @@ public class InsertItemBean  implements InsertItem {
       attribute2dbField.put("barCodeITM01","BAR_CODE");
       attribute2dbField.put("barcodeTypeITM01","BARCODE_TYPE");
 
+      attribute2dbField.put("isServiceITM01","IS_SERVICE");
+
 
       if (vo.getSmallImage()!=null) {
         // save image on file system...

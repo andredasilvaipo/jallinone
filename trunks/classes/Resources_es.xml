@@ -465,6 +465,7 @@
 
   <object key="private" value="Private" />
 
+
   <object key="payment types" value="Payment Types" />
   <object key="paymentTypeCodeREG11" value="Payment Type Code" />
   <object key="paymentTypeDescription" value="Paym. Type Description" />
@@ -680,6 +681,7 @@
   <object key="the price is no more valid" value="The price is no more valid." />
   <object key="itemCodeItm01PUR02" value="Item Code" />
   <object key="item" value="Item" />
+  <object key="no warehouse movements" value="No warehouse movements" />
   <object key="confirm purchase order?" value="Confirm purchase order?&#10;After confirmation the order is no more editable." />
   <object key="order confirmation" value="Order Confirmation" />
   <object key="deliveryDateDOC07" value="Estim. Delivery Date" />

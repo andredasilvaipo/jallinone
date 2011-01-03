@@ -268,6 +268,7 @@ public class UpdateItemBean  implements UpdateItem {
       attribute2dbField.put("barCodeITM01","BAR_CODE");
       attribute2dbField.put("barcodeTypeITM01","BARCODE_TYPE");
 
+      attribute2dbField.put("isServiceITM01","IS_SERVICE");
 
       HashSet pkAttributes = new HashSet();
       pkAttributes.add("companyCodeSys01ITM01");

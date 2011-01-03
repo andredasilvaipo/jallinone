@@ -79,6 +79,8 @@ public class DetailItemVO extends BaseValueObject implements VariantsItemDescrip
   private java.sql.Date startDateITM01;
   private String manufactureDescriptionSYS10;
 
+  private Boolean isServiceITM01;
+
   private Boolean useVariant1ITM01;
   private Boolean useVariant2ITM01;
   private Boolean useVariant3ITM01;
@@ -105,6 +107,13 @@ public class DetailItemVO extends BaseValueObject implements VariantsItemDescrip
   public DetailItemVO() {
   }
 
+    public Boolean getIsServiceITM01() {
+        return isServiceITM01;
+    }
+
+    public void setIsServiceITM01(Boolean isServiceITM01) {
+        this.isServiceITM01 = isServiceITM01;
+    }
 
   public String getCompanyCodeSys01ITM01() {
     return companyCodeSys01ITM01;

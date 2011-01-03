@@ -633,6 +633,7 @@
   <object key="the price is no more valid" value="Il prezzo non &#232; piu' valido." />
   <object key="itemCodeItm01PUR02" value="Cod.Art." />
   <object key="item" value="Articolo" />
+  <object key="no warehouse movements" value="Movimenta magazzino" />
   <object key="confirm purchase order?" value="Conferma ordine di acquisto?&#10;Dopo la conferma l'ordine non sar&#224; piu' modificabile." />
   <object key="order confirmation" value="Conferma Ordine" />
   <object key="deliveryDateDOC07" value="Data prev. di consegna" />

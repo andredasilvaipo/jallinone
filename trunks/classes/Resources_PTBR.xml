@@ -589,6 +589,7 @@
   <object key="the price is no more valid" value="O preço não é mais válida. "/>
   <object key="itemCodeItm01PUR02" value="Código do item"/>
   <object key="item" value="Número"/>
+  <object key="no warehouse movements" value="No warehouse movements" />
   <object key="confirm purchase order?" value="Confirmação de encomenda? Após a confirmação da ordem não é mais editável. "/>
   <object key="order confirmation" value="Ordem Confirmação"/>
   <object key="deliveryDateDOC07" value="Estim. Data de entrega"/>
@@ -1418,6 +1419,7 @@
   <object key="hierarchy levels names" value="Hierarchy levels names" />
   <object key="variant names" value="Variant names" />
   <object key="variant type" value="Variant type" />
+
   <object key="task descriptions" value="Task descriptions" />
   <object key="payment descriptions" value="Payment descriptions" />
   <object key="payment type descriptions" value="Payment type descriptions" />

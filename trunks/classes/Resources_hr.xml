@@ -641,6 +641,7 @@
   <object key="the price is no more valid" value="Cijena vi&#353;e nije valjana" />
   <object key="itemCodeItm01PUR02" value="ID artikla" />
   <object key="item" value="Artikl" />
+  <object key="no warehouse movements" value="No warehouse movements" />
   <object key="confirm purchase order?" value="Potvrditi narud&#382;benicu?&#10;Nakon potvrde urediti" />
   <object key="order confirmation" value="Potvrda narud&#382;be" />
   <object key="deliveryDateDOC07" value="Planiran datum isporuke" />
