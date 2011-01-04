@@ -143,6 +143,8 @@ public class PosFrame extends JFrame {
   GenericButton buttonClose = new GenericButton();
   LookupController barCodeController = new LookupController();
   LookupServerDataLocator barcodeLocator = new LookupServerDataLocator();
+  private NumericControl controlDiscountPerc = new NumericControl();
+  private JPanel panControlDiscountPerc = new JPanel(new BorderLayout());
 
   public static final int START_SALE = 0;
   public static final int INS_BARCODE = 1;
@@ -318,6 +320,10 @@ public class PosFrame extends JFrame {
     colTotDisc.setCurrencySymbol(currVO.getCurrencySymbolREG03());
     colTotDisc.setDecimals(currVO.getDecimalsREG03().intValue());
 
+    controlDiscountPerc.setDecimals(3);
+    controlDiscountPerc.setColumns(5);
+    panControlDiscountPerc.add(controlDiscountPerc, BorderLayout.CENTER);
+    panControlDiscountPerc.add(new JLabel("%"), BorderLayout.EAST);
 
     // barcode lookup...
     controlBarcode.setTrimText(true);
@@ -1060,6 +1066,8 @@ public class PosFrame extends JFrame {
     controlChange.setColumns(15);
     controlChange.setFont(new java.awt.Font("Dialog", 1, 14));
     controlChange.setEnabled(false);
+    controlDiscountPerc.setEnabled(false);
+    controlDiscountPerc.addFocusListener(new PosFrame_controlDiscountPerc_focusAdapter(this));
 
     buttonBack.setButtonBehavior(Consts.BUTTON_IMAGE_AND_TEXT);
     buttonBack.setEnabled(false);
@@ -1221,7 +1229,9 @@ public class PosFrame extends JFrame {
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     totPanel.add(controlSubtotal,   new GridBagConstraints(1, 2, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    totPanel.add(controlDiscount,   new GridBagConstraints(1, 3, 2, 1, 0.0, 0.0
+    totPanel.add(controlDiscount,   new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    totPanel.add(panControlDiscountPerc,   new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     totPanel.add(controlPayed,   new GridBagConstraints(1, 4, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
@@ -1479,6 +1489,32 @@ public class PosFrame extends JFrame {
   }
 
   void controlDiscount_focusLost(FocusEvent e) {
+    System.out.println("controlDiscount_focusLost");
+    BigDecimal subtotal = controlSubtotal.getBigDecimal();
+    BigDecimal discount = controlDiscount.getBigDecimal();
+    if (subtotal!=null && discount!=null) {
+      System.out.println("res: "+discount.doubleValue()/subtotal.doubleValue()*100);
+      controlDiscountPerc.setValue(discount.doubleValue()/subtotal.doubleValue()*100);
+      //controlDiscountPerc.setValue(discount.divide(subtotal).multiply(new BigDecimal(100)));
+    } else {
+      controlDiscountPerc.setValue(null);
+    }
+    updateTotal();
+  }
+
+  void controlDiscountPerc_focusLost(FocusEvent e) {
+    System.out.println("controlDiscountPerc_focusLost");
+    BigDecimal subtotal = controlSubtotal.getBigDecimal();
+    BigDecimal discountPerc = controlDiscountPerc.getBigDecimal();
+    if (discountPerc!=null && subtotal!=null) {
+      controlDiscount.setValue(subtotal.doubleValue()*discountPerc.doubleValue()/100);
+    } else {
+      controlDiscount.setValue(null);
+    }
+    updateTotal();
+  }
+
+  private void updateTotal() {
     BigDecimal subtotal = controlSubtotal.getBigDecimal();
     BigDecimal discount = controlDiscount.getBigDecimal();
     if (subtotal!=null && discount!=null) {
@@ -1488,7 +1524,6 @@ public class PosFrame extends JFrame {
         controlTotal.setValue(subtotal.subtract(discount));
     }
   }
-
 
   private void updateTotals() {
     detailSaleDocVO.setTaxableIncomeDOC01(new BigDecimal(0));
@@ -1507,9 +1542,10 @@ public class PosFrame extends JFrame {
 
     BigDecimal discount = controlDiscount.getBigDecimal();
     if (subtotal!=null && discount!=null) {
-      if (discount.doubleValue()>subtotal.doubleValue())
+      if (discount.doubleValue()>subtotal.doubleValue()) {
         controlDiscount.setValue(null);
-      else
+        controlDiscountPerc.setValue(null);
+      } else
         controlTotal.setValue(subtotal.subtract(discount));
     }
     else
@@ -1660,6 +1696,8 @@ public class PosFrame extends JFrame {
     controlBarcode.setEnabled(false);
     controlDiscount.setValue(null);
     controlDiscount.setEnabled(false);
+    controlDiscountPerc.setValue(null);
+    controlDiscountPerc.setEnabled(false);
     controlPayed.setValue(null);
     controlPayed.setEnabled(false);
     controlTotal.setValue(null);
@@ -1747,6 +1785,7 @@ public class PosFrame extends JFrame {
     grid.reloadData();
     controlBarcode.setEnabled(true);
     controlDiscount.setEnabled(true);
+    controlDiscountPerc.setEnabled(true);
     controlPayed.setEnabled(true);
     state = INS_BARCODE;
     updateContext();
@@ -1992,6 +2031,17 @@ class PosFrame_controlDiscount_focusAdapter extends java.awt.event.FocusAdapter 
   }
   public void focusLost(FocusEvent e) {
     adaptee.controlDiscount_focusLost(e);
+  }
+}
+
+class PosFrame_controlDiscountPerc_focusAdapter extends java.awt.event.FocusAdapter {
+  PosFrame adaptee;
+
+  PosFrame_controlDiscountPerc_focusAdapter(PosFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void focusLost(FocusEvent e) {
+    adaptee.controlDiscountPerc_focusLost(e);
   }
 }
 
