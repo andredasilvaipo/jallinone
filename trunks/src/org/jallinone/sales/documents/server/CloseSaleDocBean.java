@@ -698,7 +698,11 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
         docSequenceDOC01 = rset.getInt(1)+1;
       rset.close();
       pstmt.close();
-      docVO.setDocSequenceDOC01(new BigDecimal(docSequenceDOC01));
+      if (docVO.getDocSequenceDOC01() == null || docVO.getDocSequenceDOC01().intValue() == 0) {
+        docVO.setDocSequenceDOC01(new BigDecimal(docSequenceDOC01));
+      } else {
+        docSequenceDOC01 = docVO.getDocSequenceDOC01().intValue();
+      }
 
 
 
