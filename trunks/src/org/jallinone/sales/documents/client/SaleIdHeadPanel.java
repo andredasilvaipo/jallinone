@@ -123,9 +123,10 @@ public class SaleIdHeadPanel extends JPanel {
         public void beforeLookupAction(ValueObject parentVO) {
           docRefDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_TYPE,controlDocTypeRef.getValue());
           docRefDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_TYPE,controlDocTypeRef.getValue());
-          docRefDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CONFIRMED);
-          docRefDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CONFIRMED);
-
+          //docRefDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CONFIRMED);
+          //docRefDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CONFIRMED);
+          docRefDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CLOSED);
+          docRefDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CLOSED);
         }
 
         public void forceValidate() {}
