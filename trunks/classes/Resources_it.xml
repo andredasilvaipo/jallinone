@@ -1147,12 +1147,12 @@
 
   <object key="activityTypeSCH06" value="Tipo Attiv." />
   <object key="generic task" value="Attivit&#224; generica" />
-  <object key="appointment" value="Appountamento" />
+  <object key="appointment" value="Appuntamento" />
   <object key="send email" value="Invio Email" />
   <object key="send fax" value="Invio Fax" />
   <object key="meeting" value="Incontro" />
   <object key="telephone call" value="Telefonata" />
-  <object key="telephone" value="Telefobo" />
+  <object key="telephone" value="Telefono" />
   <object key="call-out" value="Intervento" />
   <object key="absence" value="Assenza" />
   <object key="holiday" value="Vacanza" />
