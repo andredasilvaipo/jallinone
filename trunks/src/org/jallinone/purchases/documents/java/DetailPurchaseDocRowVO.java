@@ -77,6 +77,8 @@ public class DetailPurchaseDocRowVO extends BaseValueObject {
   private String variantTypeItm10DOC07;
   private String variantCodeItm15DOC07;
 
+	private Boolean noWarehouseMovITM01;
+
 
   public DetailPurchaseDocRowVO() {
   }
@@ -356,6 +358,12 @@ public class DetailPurchaseDocRowVO extends BaseValueObject {
   }
   public void setVariantCodeItm11DOC07(String variantCodeItm11DOC07) {
     this.variantCodeItm11DOC07 = variantCodeItm11DOC07;
+  }
+  public Boolean getNoWarehouseMovITM01() {
+    return noWarehouseMovITM01;
+  }
+  public void setNoWarehouseMovITM01(Boolean noWarehouseMovITM01) {
+    this.noWarehouseMovITM01 = noWarehouseMovITM01;
   }
 
 

@@ -110,6 +110,7 @@ import org.openswing.swing.mdi.client.MDIFrame;
 import org.openswing.swing.util.client.ClientSettings;
 import org.jallinone.warehouse.client.InventoryListFrame;
 import org.jallinone.sales.reports.client.SalesReportFrame;
+import org.jallinone.items.spareparts.client.*;
 
 
 /**
@@ -999,6 +1000,28 @@ public class ApplicationClientFacade implements ClientFacade {
 
 	public void getSalesGraph() {
 		new SalesReportFrame();
+	}
+
+
+	/**
+	 * Show an editable grid used to define sheets levels and names and sheets definition, for spare parts catalogue
+	 */
+	public void getSheetLevelsFrame() {
+		new SheetLevelsFrame();
+	}
+
+	/**
+	 * Show an editable spare parts catalogue, used to define links among sheets, documents and spare parts.
+	 */
+	public void getSparePartsDefFrame() {
+		new SparePartsCatalogueFrame(false);
+	}
+
+	/**
+	 * Show a read only spare parts catalogue.
+	 */
+	public void getSparePartsCatFrame() {
+		new SparePartsCatalogueFrame(true);
 	}
 
 

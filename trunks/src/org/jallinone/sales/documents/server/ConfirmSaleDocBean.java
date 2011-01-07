@@ -184,6 +184,11 @@ public class ConfirmSaleDocBean  implements ConfirmSaleDoc {
         ArrayList aux = null;
         for(int i=0;i<rows.size();i++) {
           gridRowVO = (GridSaleDocRowVO)rows.get(i);
+
+	         // skip rows to do not move in warehouse...
+					 if (gridRowVO.getNoWarehouseMovITM01().booleanValue())
+						 continue;
+
           aux = (ArrayList)map.get(gridRowVO.getDeliveryDateDOC02());
           if (aux==null) {
             aux = new ArrayList();

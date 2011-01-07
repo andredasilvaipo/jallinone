@@ -54,7 +54,7 @@ import org.jallinone.events.server.*;
 public class ValidatePriceItemCodeBean implements ValidatePriceItemCode {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -62,9 +62,9 @@ public class ValidatePriceItemCodeBean implements ValidatePriceItemCode {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -74,7 +74,7 @@ public class ValidatePriceItemCodeBean implements ValidatePriceItemCode {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -84,14 +84,14 @@ public class ValidatePriceItemCodeBean implements ValidatePriceItemCode {
   public ValidatePriceItemCodeBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public PriceItemVO getPriceItem() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
@@ -107,7 +107,7 @@ public class ValidatePriceItemCodeBean implements ValidatePriceItemCode {
       String sql =
           "select SAL02_PRICES.COMPANY_CODE_SYS01,SAL02_PRICES.ITEM_CODE_ITM01,"+
           "ITM01_ITEMS.PROGRESSIVE_HIE02,ITM01_ITEMS.PROGRESSIVE_HIE01,ITM01_ITEMS.MIN_SELLING_QTY,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,"+
-          "SYS10_TRANSLATIONS.DESCRIPTION,REG02_MEASURE_UNITS.DECIMALS,"+
+          "SYS10_TRANSLATIONS.DESCRIPTION,REG02_MEASURE_UNITS.DECIMALS,ITM01_ITEMS.NO_WAREHOUSE_MOV,"+
           "ITM01_ITEMS.VAT_CODE_REG01,SYS10_VAT.DESCRIPTION,REG01_VATS.DEDUCTIBLE,REG01_VATS.VALUE,"+
           "SAL02_PRICES.VALUE,SAL02_PRICES.START_DATE,SAL02_PRICES.END_DATE,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED, "+
           "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 "+
@@ -149,6 +149,7 @@ public class ValidatePriceItemCodeBean implements ValidatePriceItemCode {
       attribute2dbField.put("startDateSAL02","SAL02_PRICES.START_DATE");
       attribute2dbField.put("endDateSAL02","SAL02_PRICES.END_DATE");
       attribute2dbField.put("serialNumberRequiredITM01","ITM01_ITEMS.SERIAL_NUMBER_REQUIRED");
+			attribute2dbField.put("noWarehouseMovITM01","ITM01_ITEMS.NO_WAREHOUSE_MOV");
 
       attribute2dbField.put("useVariant1ITM01","ITM01_ITEMS.USE_VARIANT_1");
       attribute2dbField.put("useVariant2ITM01","ITM01_ITEMS.USE_VARIANT_2");

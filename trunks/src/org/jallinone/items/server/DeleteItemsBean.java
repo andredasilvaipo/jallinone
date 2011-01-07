@@ -46,7 +46,7 @@ import javax.sql.DataSource;
 public class DeleteItemsBean  implements DeleteItems {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -54,9 +54,9 @@ public class DeleteItemsBean  implements DeleteItems {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -66,7 +66,7 @@ public class DeleteItemsBean  implements DeleteItems {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -84,17 +84,11 @@ public class DeleteItemsBean  implements DeleteItems {
   public VOResponse deleteItems(ArrayList list,String serverLanguageId,String username) throws Throwable {
     Statement stmt = null;
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-
-
-
-
-
       ItemPK pk = null;
-
       stmt = conn.createStatement();
 
       for(int i=0;i<list.size();i++) {
@@ -142,7 +136,7 @@ public class DeleteItemsBean  implements DeleteItems {
       }
       catch (Exception ex2) {
       }
-    
+
       try {
           if (this.conn==null && conn!=null) {
             // close only local connection

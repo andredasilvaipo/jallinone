@@ -78,7 +78,7 @@ public class VariantsController extends GridController {
    */
   public boolean validateCell(int rowNumber,String attributeName,Object oldValue,Object newValue) {
     VariantVO vo = (VariantVO)gridFrame.getGrid().getVOListTableModel().getObjectForRow(rowNumber);
-    if (attributeName.equals("variantCode") && newValue!=null && (vo.getDescriptionSys10()==null || !vo.getDescriptionSys10().equals("")))
+    if (attributeName.equals("variantCode") && newValue!=null && (vo.getDescriptionSys10()==null || vo.getDescriptionSys10().equals("")))
       vo.setDescriptionSys10(newValue.toString());
     return true;
   }

@@ -88,6 +88,17 @@ public class OutDeliveryNoteRowsController extends CompanyGridController {
     vo.setDocTypeDoc01DOC10(ApplicationConsts.PURCHASE_ORDER_DOC_TYPE);
     vo.setWarehouseCodeWar01DOC08(panel.getParentVO().getWarehouseCodeWar01DOC08());
     vo.setQtyDOC10(new BigDecimal(1));
+		vo.setVariantCodeItm11DOC10("*");
+		vo.setVariantCodeItm12DOC10("*");
+		vo.setVariantCodeItm13DOC10("*");
+		vo.setVariantCodeItm14DOC10("*");
+		vo.setVariantCodeItm15DOC10("*");
+		vo.setVariantTypeItm06DOC10("*");
+		vo.setVariantTypeItm07DOC10("*");
+		vo.setVariantTypeItm08DOC10("*");
+		vo.setVariantTypeItm10DOC10("*");
+		vo.setVariantTypeItm10DOC10("*");
+		vo.setLocationDescriptionSYS10("");
 
     Response res = ClientUtils.getData("getRootLevel",panel.getParentVO().getProgressiveHie02WAR01());
     if (!res.isError()) {

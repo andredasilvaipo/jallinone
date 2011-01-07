@@ -257,6 +257,7 @@ public class SQLExecutionBean {
         			  sql.charAt(i)=='D' ||
         			  sql.charAt(i)=='E' ||
 								sql.charAt(i)=='F')
+							if (unicode.length() < 4)
         			  unicode.append(sql.charAt(i));
         		  else
         			  break;

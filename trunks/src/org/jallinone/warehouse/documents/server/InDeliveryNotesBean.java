@@ -268,7 +268,7 @@ public class InDeliveryNotesBean  implements InDeliveryNotes {
           "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
           "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? ";
 
-      String sql2 =
+				String sql2 =
           "update DOC07_PURCHASE_ITEMS set IN_QTY=?,ORDER_QTY=? where "+
           "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and IN_QTY=? and "+
           "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+

@@ -52,6 +52,8 @@ public class PriceItemVO extends PriceVO implements VariantsItemDescriptor {
   private Boolean useVariant4ITM01;
   private Boolean useVariant5ITM01;
 
+	private Boolean noWarehouseMovITM01;
+
 
   public PriceItemVO() {
   }
@@ -148,6 +150,12 @@ public class PriceItemVO extends PriceVO implements VariantsItemDescriptor {
   }
   public String getItemCodeItm01() {
     return getItemCodeItm01SAL02();
+  }
+  public Boolean getNoWarehouseMovITM01() {
+    return noWarehouseMovITM01;
+  }
+  public void setNoWarehouseMovITM01(Boolean noWarehouseMovITM01) {
+    this.noWarehouseMovITM01 = noWarehouseMovITM01;
   }
 
 

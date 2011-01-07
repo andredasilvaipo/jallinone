@@ -13,6 +13,10 @@ import org.openswing.swing.lookup.client.LookupListener;
 import org.openswing.swing.message.receive.java.*;
 import java.util.Collection;
 import javax.swing.SwingConstants;
+import org.jallinone.commons.client.ClientApplet;
+import org.openswing.swing.mdi.client.MDIFrame;
+import org.jallinone.commons.client.ApplicationClientFacade;
+import org.jallinone.system.java.ApplicationParametersVO;
 
 /**
   * <p>Title: JAllInOne ERP/CRM application</p>
@@ -123,10 +127,9 @@ public class SaleIdHeadPanel extends JPanel {
         public void beforeLookupAction(ValueObject parentVO) {
           docRefDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_TYPE,controlDocTypeRef.getValue());
           docRefDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_TYPE,controlDocTypeRef.getValue());
-          //docRefDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CONFIRMED);
-          //docRefDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CONFIRMED);
-          docRefDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CLOSED);
-          docRefDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CLOSED);
+					// filter sale documents having state confirmed, i.e. not yet invoiced...
+          docRefDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CONFIRMED);
+          docRefDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CONFIRMED);
         }
 
         public void forceValidate() {}
@@ -160,6 +163,14 @@ public class SaleIdHeadPanel extends JPanel {
     controlDocRifLookup.setAttributeName("docSequenceDoc01DOC01");
     labelDocDate.setText("docDate");
     labelDocState.setText("docState");
+
+		ClientApplet applet = ( (ApplicationClientFacade) MDIFrame.getInstance().getClientFacade()).getMainClass();
+		ApplicationParametersVO appVO = applet.getAuthorizations();
+		if (!appVO.getManualDocNumInSaleDocs().booleanValue()) {
+			controlDocNumber.setEnabledOnInsert(false);
+			controlDocNumber.setEnabledOnEdit(false);
+		}
+
     controlDocNumber.setLinkLabel(labelDocNum);
     controlDocNumber.setMaxCharacters(255);
     controlDocNumber.setRequired(false);

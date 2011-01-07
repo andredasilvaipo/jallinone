@@ -67,6 +67,8 @@ public class GridSaleDocRowVO extends ValueObjectImpl {
 	private String serialNumberRequiredITM01;
 	private BigDecimal progressiveHie02DOC02;
 
+	private Boolean noWarehouseMovITM01;
+
 
   public GridSaleDocRowVO() {
   }
@@ -268,6 +270,12 @@ public class GridSaleDocRowVO extends ValueObjectImpl {
   }
   public void setProgressiveHie02DOC02(BigDecimal progressiveHie02DOC02) {
     this.progressiveHie02DOC02 = progressiveHie02DOC02;
+  }
+  public Boolean getNoWarehouseMovITM01() {
+    return noWarehouseMovITM01;
+  }
+  public void setNoWarehouseMovITM01(Boolean noWarehouseMovITM01) {
+    this.noWarehouseMovITM01 = noWarehouseMovITM01;
   }
 
 

@@ -212,6 +212,8 @@ public class InDeliveryNoteRowsGridPanel extends JPanel implements GenericButton
       itemDataLocator.setValidationMethodName("validateSupplierItemCode");
       itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.SHOW_ITEMS_WITHOUT_VARIANTS,Boolean.TRUE);
       itemDataLocator.getLookupFrameParams().put(ApplicationConsts.SHOW_ITEMS_WITHOUT_VARIANTS,Boolean.TRUE);
+			itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.SHOW_ONLY_MOVABLE_ITEMS,Boolean.TRUE);
+      itemDataLocator.getLookupFrameParams().put(ApplicationConsts.SHOW_ONLY_MOVABLE_ITEMS,Boolean.TRUE);
 
       colItemCodeLookup.setLookupController(itemController);
       itemController.setLookupDataLocator(itemDataLocator);

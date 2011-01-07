@@ -4,12 +4,18 @@ Release Notes 2.5.3
 -------------------
 
 Include 2.3.5 version of OpenSwing.
+New feature: spare parts supports (linkage with items through items model) and spare parts catalogue
+with technical documents management.
 Added discounts/costs panel to all invoice frames.
-Fixed problem with werehouse movement and with manual movement in warehouse.
 Added "no warehouse movements" flag in item detail.
+Improved POS window: now it is possible to specify a percentage total discount (thanks to Michele Milidoni).
+Fixed problem with retail sale when applying discounts.
+Fixed problem with warehouse movement and with manual movement in warehouse.
 Enabled "alternative items" in item detail folder, also when the item is not a component.
 Fixed problem on loading/saving documents in "document management".
-
+Fixed problem when inserting items without variants in sale/purchase documents and in deliv. note documents.
+Fixed bug when creating sale invoices starting from delivery notes.
+Relaxed customers filter in sale orders: now it is possible to manage private customers too.
 
 
 Release Notes 2.5.2

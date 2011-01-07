@@ -79,8 +79,6 @@ public class DetailItemVO extends BaseValueObject implements VariantsItemDescrip
   private java.sql.Date startDateITM01;
   private String manufactureDescriptionSYS10;
 
-  private Boolean isServiceITM01;
-
   private Boolean useVariant1ITM01;
   private Boolean useVariant2ITM01;
   private Boolean useVariant3ITM01;
@@ -103,17 +101,12 @@ public class DetailItemVO extends BaseValueObject implements VariantsItemDescrip
 
   private java.math.BigDecimal progressiveHie01HIE02;
 
+	private Boolean noWarehouseMovITM01;
+	private String sheetCodeItm25ITM01;
+
 
   public DetailItemVO() {
   }
-
-    public Boolean getIsServiceITM01() {
-        return isServiceITM01;
-    }
-
-    public void setIsServiceITM01(Boolean isServiceITM01) {
-        this.isServiceITM01 = isServiceITM01;
-    }
 
   public String getCompanyCodeSys01ITM01() {
     return companyCodeSys01ITM01;
@@ -491,6 +484,18 @@ public class DetailItemVO extends BaseValueObject implements VariantsItemDescrip
   }
   public void setProgressiveHie01HIE02(java.math.BigDecimal progressiveHie01HIE02) {
     this.progressiveHie01HIE02 = progressiveHie01HIE02;
+  }
+  public Boolean getNoWarehouseMovITM01() {
+    return noWarehouseMovITM01;
+  }
+  public void setNoWarehouseMovITM01(Boolean noWarehouseMovITM01) {
+    this.noWarehouseMovITM01 = noWarehouseMovITM01;
+  }
+  public String getSheetCodeItm25ITM01() {
+    return sheetCodeItm25ITM01;
+  }
+  public void setSheetCodeItm25ITM01(String sheetCodeItm25ITM01) {
+    this.sheetCodeItm25ITM01 = sheetCodeItm25ITM01;
   }
 
 

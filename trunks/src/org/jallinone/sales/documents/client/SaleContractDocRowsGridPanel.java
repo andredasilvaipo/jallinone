@@ -224,6 +224,7 @@ public class SaleContractDocRowsGridPanel extends JPanel implements CurrencyColu
       itemController.addLookup2ParentLink("valueSAL02", "valueSal02DOC02");
       itemController.addLookup2ParentLink("startDateSAL02", "startDateSal02DOC02");
       itemController.addLookup2ParentLink("endDateSAL02", "endDateSal02DOC02");
+			itemController.addLookup2ParentLink("noWarehouseMovITM01", "noWarehouseMovITM01");
 
       itemController.setAllColumnVisible(false);
       itemController.setVisibleColumn("itemCodeItm01SAL02", true);
@@ -276,11 +277,17 @@ public class SaleContractDocRowsGridPanel extends JPanel implements CurrencyColu
             bookedItemsPanel.getControlItemType().setValue(lookupVO.getProgressiveHie02ITM01());
             bookedItemsPanel.getControlItemCode().setValue(vo.getItemCodeItm01DOC02());
             bookedItemsPanel.getControlItemCode().getLookupController().forceValidate();
-            bookedItemsPanel.getGrid().reloadData();
+						if (lookupVO.getNoWarehouseMovITM01().booleanValue())
+							bookedItemsPanel.getGrid().clearData();
+						else
+							bookedItemsPanel.getGrid().reloadData();
             orderedItemsPanel.getControlItemType().setValue(lookupVO.getProgressiveHie02ITM01());
             orderedItemsPanel.getControlItemCode().setValue(vo.getItemCodeItm01DOC02());
             orderedItemsPanel.getControlItemCode().getLookupController().forceValidate();
-            orderedItemsPanel.getGrid().reloadData();
+						if (lookupVO.getNoWarehouseMovITM01().booleanValue())
+							orderedItemsPanel.getGrid().clearData();
+						else
+							orderedItemsPanel.getGrid().reloadData();
 
             DetailSaleDocVO pVO = (DetailSaleDocVO)SaleContractDocRowsGridPanel.this.parentVO;
             if (pVO!=null && pVO.getCustomerVatCodeReg01DOC01()!=null && !pVO.getCustomerVatCodeReg01DOC01().equals("")) {

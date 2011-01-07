@@ -107,6 +107,8 @@ public class ItemController extends CompanyFormController {
       frame.getBomTabbedPane().getExplosionPanel().clearTree();
       frame.getBomTabbedPane().getImplosionPanel().clearTree();
 
+			frame.getItemSparePartsPanel().init(null,true);
+
       frame.getSupplierPrices().getPricesGrid().clearData();
       frame.getSupplierPrices().setButtonsEnabled(false);
 
@@ -130,7 +132,9 @@ public class ItemController extends CompanyFormController {
   public Response loadData(Class valueObjectClass) {
     // since this method could be invoked also when selecting another row on the linked grid,
    // the pk attribute must be recalculated from the grid...
-   int row = parentFrame.getGrid().getSelectedRow();
+   int row = -1;
+	 if (parentFrame!=null)
+		 parentFrame.getGrid().getSelectedRow();
    if (row!=-1) {
      GridItemVO gridVO = (GridItemVO)parentFrame.getGrid().getVOListTableModel().getObjectForRow(row);
      pk = new ItemPK(gridVO.getCompanyCodeSys01ITM01(),gridVO.getItemCodeITM01());
@@ -172,6 +176,8 @@ public class ItemController extends CompanyFormController {
       frame.getSupplierPrices().getPricesGrid().getOtherGridParams().put(ApplicationConsts.ITEM_PK,pk);
       frame.getSupplierPrices().setButtonsEnabled(true);
       frame.getSupplierPrices().getPricesGrid().reloadData();
+
+			frame.getItemSparePartsPanel().init(vo,false);
 
       frame.getBookedItemsPanel().setEnabled(true);
       frame.getOrderedItemsPanel().setEnabled(true);
@@ -262,6 +268,7 @@ public class ItemController extends CompanyFormController {
       frame.getItemVariantsPanel().clearData();
       frame.getVariantBarcodesPanel().clearData();
       frame.getVariantMinStockPanel().clearData();
+			frame.getItemSparePartsPanel().init(null,false);
 
       frame.getSupplierPrices().setButtonsEnabled(false);
       frame.getSupplierPrices().getPricesGrid().clearData();
@@ -275,6 +282,18 @@ public class ItemController extends CompanyFormController {
   }
 
 
+  public boolean beforeEditData(Form form) {
+    boolean ok = super.beforeEditData(form);
+		if (ok) {
+			DetailItemVO vo = (DetailItemVO) form.getVOModel().getValueObject();
+			if (vo.getSheetCodeItm25ITM01()==null)
+				frame.getItemSparePartsPanel().init(vo,true);
+		}
+		return ok;
+	}
+
+
+
   /**
    * Callback method called by the Form panel when the Form is set to INSERT mode.
    * The method can pre-set some v.o. attributes, so that some input controls will have a predefined value associated.
@@ -286,13 +305,15 @@ public class ItemController extends CompanyFormController {
     vo.setVersionITM01(new BigDecimal(1));
     vo.setRevisionITM01(new BigDecimal(1));
 
-    HierarchyLevelVO levelVO = (HierarchyLevelVO)parentFrame.getHierarTreePanel().getSelectedNode().getUserObject();
-    vo.setProgressiveHie01ITM01(levelVO.getProgressiveHIE01());
-    vo.setProgressiveHie02ITM01(levelVO.getProgressiveHie02HIE01());
-    vo.setLevelDescriptionSYS10(levelVO.getDescriptionSYS10());
-    vo.setProgressiveHie01HIE02(levelVO.getProgressiveHie01HIE02());
+		if (parentFrame != null) {
+			HierarchyLevelVO levelVO = (HierarchyLevelVO)parentFrame.getHierarTreePanel().getSelectedNode().getUserObject();
+			vo.setProgressiveHie01ITM01(levelVO.getProgressiveHIE01());
+			vo.setProgressiveHie02ITM01(levelVO.getProgressiveHie02HIE01());
+			vo.setLevelDescriptionSYS10(levelVO.getDescriptionSYS10());
+			vo.setProgressiveHie01HIE02(levelVO.getProgressiveHie01HIE02());
+			vo.setCompanyCodeSys01ITM01(parentFrame.getSelectedItemType().getCompanyCodeSys01ITM02());
+		}
 
-    vo.setCompanyCodeSys01ITM01(parentFrame.getSelectedItemType().getCompanyCodeSys01ITM02());
 
     frame.setVariants(vo.getCompanyCodeSys01ITM01());
 

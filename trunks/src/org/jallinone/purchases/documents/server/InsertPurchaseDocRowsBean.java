@@ -63,7 +63,7 @@ import javax.sql.DataSource;
 public class InsertPurchaseDocRowsBean  implements InsertPurchaseDocRows {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -71,9 +71,9 @@ public class InsertPurchaseDocRowsBean  implements InsertPurchaseDocRows {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -83,7 +83,7 @@ public class InsertPurchaseDocRowsBean  implements InsertPurchaseDocRows {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -112,7 +112,7 @@ public class InsertPurchaseDocRowsBean  implements InsertPurchaseDocRows {
    */
   public VOResponse insertPurchaseDocRows(DetailPurchaseDocRowVO voTemplate,VariantsMatrixVO matrixVO,Object[][] cells,BigDecimal currencyDecimals,String serverLanguageId,String username) throws Throwable {
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -175,14 +175,19 @@ public class InsertPurchaseDocRowsBean  implements InsertPurchaseDocRows {
             vo = (DetailPurchaseDocRowVO)voTemplate.clone();
             VariantsMatrixUtils.setVariantTypesAndCodes(vo,"DOC07",matrixVO,rowVO,null);
             try {
-				vo.setQtyDOC07((BigDecimal)cells[i][0]);
-			} catch (Exception e) {
-				continue;
-			}
+								vo.setQtyDOC07((BigDecimal)cells[i][0]);
+							} catch (Exception e) {
+								continue;
+							}
 
             PurchaseUtils.updateTotals(vo,currencyDecimals.intValue());
 
             vo.setInQtyDOC07(new BigDecimal(0));
+
+						if (vo.getDocTypeDOC07().equals(ApplicationConsts.PURCHASE_ORDER_DOC_TYPE) &&
+								Boolean.TRUE.equals(vo.getNoWarehouseMovITM01()))
+							vo.setInQtyDOC07(vo.getQtyDOC07());
+
             vo.setOrderQtyDOC07(vo.getQtyDOC07());
             if (vo.getInvoiceQtyDOC07()==null)
               vo.setInvoiceQtyDOC07(new BigDecimal(0));
@@ -302,7 +307,7 @@ public class InsertPurchaseDocRowsBean  implements InsertPurchaseDocRows {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
       try {
           totalBean.setConn(null);
           docBean.setConn(null);

@@ -217,6 +217,16 @@ public class PurchaseInvoiceDocRowController extends CompanyFormController {
     vo.setDocNumberDOC07(parentVO.getDocNumberDOC06());
     vo.setDeliveryDateDOC07(new java.sql.Date(System.currentTimeMillis()));
     vo.setCurrencyCodeReg03DOC06(panel.getParentVO().getCurrencyCodeReg03DOC06());
+		vo.setVariantCodeItm11DOC07("*");
+		vo.setVariantCodeItm12DOC07("*");
+		vo.setVariantCodeItm13DOC07("*");
+		vo.setVariantCodeItm14DOC07("*");
+		vo.setVariantCodeItm15DOC07("*");
+		vo.setVariantTypeItm06DOC07("*");
+		vo.setVariantTypeItm07DOC07("*");
+		vo.setVariantTypeItm08DOC07("*");
+		vo.setVariantTypeItm09DOC07("*");
+		vo.setVariantTypeItm10DOC07("*");
 
   }
 

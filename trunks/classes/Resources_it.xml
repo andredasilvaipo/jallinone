@@ -633,7 +633,6 @@
   <object key="the price is no more valid" value="Il prezzo non &#232; piu' valido." />
   <object key="itemCodeItm01PUR02" value="Cod.Art." />
   <object key="item" value="Articolo" />
-  <object key="no warehouse movements" value="Non movimenta magazz." />
   <object key="confirm purchase order?" value="Conferma ordine di acquisto?&#10;Dopo la conferma l'ordine non sar&#224; piu' modificabile." />
   <object key="order confirmation" value="Conferma Ordine" />
   <object key="deliveryDateDOC07" value="Data prev. di consegna" />
@@ -1639,6 +1638,33 @@
   <object key="month" value="Mese" />
   <object key="nr" value="Num." />
 
+  <object key="cannot delete sheet: it is currently referenced by another sheet" value="Cancellazione non consentita: tavola riferita da un'altra tavola" />
+  <object key="cannot delete sheet: it is currently referenced in a model" value="Cancellazione non consentita: tavola riferita da un modello" />
+
+  <object key="no warehouse movements" value="Non movimenta il magazzino" />
+
+  <object key="cannot delete sheet: it is currently referenced by another sheet" value="Cancellazione non consentita: tavola riferita da un'altra tavola" />
+  <object key="cannot delete sheet: it is currently referenced in an item" value="Cancellazione non consentita: tavola riferita da un articolo" />
+  <object key="item spare parts" value="Ricambi articolo" />
+  <object key="image" value="Immagine" />
+  <object key="item models" value="Modelli articolo" />
+  <object key="sheetCodeITM25" value="Cod. Tavola" />
+  <object key="sheets" value="Tavole" />
+  <object key="spare parts catalogue" value="Catalogo Ricambi" />
+  <object key="start region" value="Inizia regione" />
+  <object key="clear region" value="Svuota regione" />
+  <object key="save region" value="Salva regione" />
+  <object key="cannot delete levels: there are sheets having these levels" value="Cancellazione non consentita: ci sono tavole associate al livello corrente." />
+  <object key="cannot insert levels: there are sheets binded to spare parts" value="Cancellazione non consentita: ci sono tavole con ricambi associati" />
+  <object key="levelITM29" value="Livello" />
+  <object key="spare parts sheets levels" value="Livelli tavole ricambi" />
+  <object key="spare parts sheets for level" value="Tavole ricambi del livello" />
+  <object key="imageITM05" value="Immagine" />
+  <object key="item model" value="Modello articolo" />
+  <object key="itemCodeItm01ITM28" value="Cod. Ricambio" />
+  <object key="path" value="Percorso" />
+  <object key="spare parts" value="Ricambi" />
+  <object key="manual doc num in sale docs" value="Consenti numeraz. manuale nei docum. di vend." />
 
 <!-- application translations -->
 

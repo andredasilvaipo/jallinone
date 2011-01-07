@@ -140,6 +140,8 @@ public class InsertItemBean  implements InsertItem {
       vo.setEnabledITM01("Y");
       if (vo.getCompanyCodeSys01ITM01()==null)
         vo.setCompanyCodeSys01ITM01(companyCode);
+			if (vo.getNoWarehouseMovITM01()==null)
+				vo.setNoWarehouseMovITM01(Boolean.FALSE);
 
       // generate progressive for item description...
       BigDecimal progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ITM01(),conn);
@@ -188,7 +190,8 @@ public class InsertItemBean  implements InsertItem {
       attribute2dbField.put("barCodeITM01","BAR_CODE");
       attribute2dbField.put("barcodeTypeITM01","BARCODE_TYPE");
 
-      attribute2dbField.put("isServiceITM01","IS_SERVICE");
+			attribute2dbField.put("noWarehouseMovITM01","NO_WAREHOUSE_MOV");
+			attribute2dbField.put("sheetCodeItm25ITM01","SHEET_CODE_ITM25");
 
 
       if (vo.getSmallImage()!=null) {

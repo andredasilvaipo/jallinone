@@ -153,7 +153,7 @@ public class LoadSaleDocRowsBean implements LoadSaleDocRows {
 	          "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM08,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM13,"+
 	          "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM09,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM14,"+
 	          "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM10,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM15, "+
-	          "DOC02_SELLING_ITEMS.DELIVERY_DATE "+
+	          "DOC02_SELLING_ITEMS.DELIVERY_DATE,ITM01_ITEMS.NO_WAREHOUSE_MOV "+
 	          " from DOC02_SELLING_ITEMS,ITM01_ITEMS,SYS10_TRANSLATIONS where "+
 	          "DOC02_SELLING_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
 	          "DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
@@ -194,6 +194,7 @@ public class LoadSaleDocRowsBean implements LoadSaleDocRows {
 
 	      attribute2dbField.put("deliveryDateDOC02","DOC02_SELLING_ITEMS.DELIVERY_DATE");
 				attribute2dbField.put("serialNumberRequiredITM01","ITM01_ITEMS.SERIAL_NUMBER_REQUIRED");
+				attribute2dbField.put("noWarehouseMovITM01","ITM01_ITEMS.NO_WAREHOUSE_MOV");
 
 	      ArrayList values = new ArrayList();
 	      values.add(serverLanguageId);

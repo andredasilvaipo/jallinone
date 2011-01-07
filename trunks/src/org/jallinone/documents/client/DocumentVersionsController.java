@@ -11,7 +11,6 @@ import org.openswing.swing.util.java.Consts;
 import org.jallinone.commons.client.CompanyGridController;
 import org.openswing.swing.client.GridControl;
 import org.openswing.swing.util.client.ClientSettings;
-import org.jallinone.documents.server.Document;
 
 
 /**
@@ -82,8 +81,7 @@ public class DocumentVersionsController extends CompanyGridController {
       );
     }
     else {
-			Document doc = (Document)((VOResponse)res).getVo();
-      String docId = (String)doc.getDocId();
+      String docId = (String)((VOResponse)res).getVo();
       try {
         ClientUtils.showDocument(docId);
       }

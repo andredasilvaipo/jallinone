@@ -67,7 +67,7 @@ public class LoadDocumentVersionAction implements Action {
 			Document document = bean.loadDocumentVersion(vo,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),docPath);
 			context.setAttribute(document.getDocId(),document.getDoc());
 
-			return new VOResponse(document);
+			return new VOResponse(document.getDocId());
 		}
 		catch (Throwable ex) {
 			Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"executeCommand","Error while processing request",ex);

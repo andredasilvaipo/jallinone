@@ -589,7 +589,6 @@
   <object key="the price is no more valid" value="O preço não é mais válida. "/>
   <object key="itemCodeItm01PUR02" value="Código do item"/>
   <object key="item" value="Número"/>
-  <object key="no warehouse movements" value="No warehouse movements" />
   <object key="confirm purchase order?" value="Confirmação de encomenda? Após a confirmação da ordem não é mais editável. "/>
   <object key="order confirmation" value="Ordem Confirmação"/>
   <object key="deliveryDateDOC07" value="Estim. Data de entrega"/>
@@ -1553,6 +1552,31 @@
   <object key="days" value="days" />
   <object key="sales graph" value="Sales graph" />
   <object key="nr" value="Nr." />
+
+  <object key="no warehouse movements" value="No warehouse movements" />
+
+  <object key="cannot delete sheet: it is currently referenced by another sheet" value="Cannot delete sheet: it is currently referenced by another sheet" />
+  <object key="cannot delete sheet: it is currently referenced in an item" value="Cannot delete sheet: it is currently referenced in an item" />
+  <object key="item spare parts" value="Item's Spare parts" />
+  <object key="image" value="Image" />
+  <object key="item models" value="Item Models" />
+  <object key="sheetCodeITM25" value="Sheet Code" />
+  <object key="sheets" value="Sheets" />
+  <object key="spare parts catalogue" value="Spare parts Catalogue" />
+  <object key="start region" value="Start region" />
+  <object key="clear region" value="Clear region" />
+  <object key="save region" value="Save region" />
+  <object key="cannot delete levels: there are sheets having these levels" value="Cannot delete levels: there are sheets having these levels." />
+  <object key="cannot insert levels: there are sheets binded to spare parts" value="Cannot insert levels: there are sheets binded to spare parts" />
+  <object key="levelITM29" value="Level" />
+  <object key="spare parts sheets levels" value="Spare parts sheets levels" />
+  <object key="spare parts sheets for level" value="Spare parts sheets for level" />
+  <object key="imageITM05" value="Image" />
+  <object key="item model" value="Item Model" />
+  <object key="itemCodeItm01ITM28" value="Spare Part Code" />
+  <object key="path" value="Path" />
+  <object key="spare parts" value="Spare parts" />
+  <object key="manual doc num in sale docs" value="Allow manual numer. in sales documents" />
 
   <currencySymbol>R$</currencySymbol>
   <decimalSymbol>,</decimalSymbol>

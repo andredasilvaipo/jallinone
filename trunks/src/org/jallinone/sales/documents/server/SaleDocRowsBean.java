@@ -200,6 +200,13 @@ public class SaleDocRowsBean  implements SaleDocRows {
       pkAttributes.add("variantTypeItm10DOC02");
       pkAttributes.add("variantCodeItm15DOC02");
 
+			if ((newVO.getDocTypeDOC02().equals(ApplicationConsts.SALE_CONTRACT_DOC_TYPE) ||
+					 newVO.getDocTypeDOC02().equals(ApplicationConsts.SALE_ORDER_DOC_TYPE) ||
+					 newVO.getDocTypeDOC02().equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
+					 newVO.getDocTypeDOC02().equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE)) &&
+					Boolean.TRUE.equals(newVO.getNoWarehouseMovITM01()))
+				newVO.setOutQtyDOC02(newVO.getQtyDOC02());
+
       // update DOC02 table...
       Response res = QueryUtil.updateTable(
           conn,
@@ -351,12 +358,20 @@ public class SaleDocRowsBean  implements SaleDocRows {
           if (cells[i][0]!=null) {
             vo = (DetailSaleDocRowVO)voTemplate.clone();
             try {
-				vo.setQtyDOC02((BigDecimal)cells[i][0]);
-			} catch (Exception e) {
-				continue;
-			}
-            VariantsMatrixUtils.setVariantTypesAndCodes(vo,"DOC02",matrixVO,rowVO,null);
+								vo.setQtyDOC02((BigDecimal)cells[i][0]);
+							} catch (Exception e) {
+								continue;
+							}
+						VariantsMatrixUtils.setVariantTypesAndCodes(vo,"DOC02",matrixVO,rowVO,null);
             vo.setOutQtyDOC02(new BigDecimal(0));
+
+						if ((vo.getDocTypeDOC02().equals(ApplicationConsts.SALE_CONTRACT_DOC_TYPE) ||
+								 vo.getDocTypeDOC02().equals(ApplicationConsts.SALE_ORDER_DOC_TYPE) ||
+								 vo.getDocTypeDOC02().equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
+								 vo.getDocTypeDOC02().equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE)) &&
+								Boolean.TRUE.equals(vo.getNoWarehouseMovITM01()))
+							vo.setOutQtyDOC02(vo.getQtyDOC02());
+
             if (vo.getInvoiceQtyDOC02()==null)
               vo.setInvoiceQtyDOC02(new BigDecimal(0));
 
@@ -388,6 +403,12 @@ public class SaleDocRowsBean  implements SaleDocRows {
               }
               VariantsMatrixUtils.setVariantTypesAndCodes(vo,"DOC02",matrixVO,rowVO,colVO);
               vo.setOutQtyDOC02(new BigDecimal(0));
+							if ((vo.getDocTypeDOC02().equals(ApplicationConsts.SALE_CONTRACT_DOC_TYPE) ||
+									 vo.getDocTypeDOC02().equals(ApplicationConsts.SALE_ORDER_DOC_TYPE) ||
+									 vo.getDocTypeDOC02().equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
+									 vo.getDocTypeDOC02().equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE)) &&
+									Boolean.TRUE.equals(vo.getNoWarehouseMovITM01()))
+								vo.setOutQtyDOC02(vo.getQtyDOC02());
               if (vo.getInvoiceQtyDOC02()==null)
                 vo.setInvoiceQtyDOC02(new BigDecimal(0));
 
@@ -416,12 +437,13 @@ public class SaleDocRowsBean  implements SaleDocRows {
           voTemplate.getDocYearDOC02(),
           voTemplate.getDocNumberDOC02()
       );
-      pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
+      pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and DOC_STATE=?");
       pstmt.setString(1,ApplicationConsts.HEADER_BLOCKED);
       pstmt.setString(2,pk.getCompanyCodeSys01DOC01());
       pstmt.setString(3,pk.getDocTypeDOC01());
       pstmt.setBigDecimal(4,pk.getDocYearDOC01());
       pstmt.setBigDecimal(5,pk.getDocNumberDOC01());
+			pstmt.setString(6,ApplicationConsts.OPENED);
       pstmt.execute();
 
       // recalculate totals...

@@ -86,6 +86,7 @@ public class DetailSaleDocRowVO extends BaseValueObject {
   private String variantCodeItm15DOC02;
 
   private java.math.BigDecimal discountValue;
+	private Boolean noWarehouseMovITM01;
 
 
   public DetailSaleDocRowVO() {
@@ -384,6 +385,12 @@ public class DetailSaleDocRowVO extends BaseValueObject {
   }
   public void setDiscountValue(java.math.BigDecimal discountValue) {
     this.discountValue = discountValue;
+  }
+  public Boolean getNoWarehouseMovITM01() {
+    return noWarehouseMovITM01;
+  }
+  public void setNoWarehouseMovITM01(Boolean noWarehouseMovITM01) {
+    this.noWarehouseMovITM01 = noWarehouseMovITM01;
   }
 
 

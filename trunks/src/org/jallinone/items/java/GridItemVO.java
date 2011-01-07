@@ -49,6 +49,9 @@ public class GridItemVO extends ValueObjectImpl implements VariantsItemDescripto
   private Boolean useVariant4ITM01;
   private Boolean useVariant5ITM01;
 
+	private Boolean noWarehouseMovITM01;
+	private String sheetCodeItm25ITM01;
+
 
   public GridItemVO() {
   }
@@ -139,6 +142,18 @@ public class GridItemVO extends ValueObjectImpl implements VariantsItemDescripto
 
   public String getItemCodeItm01() {
     return itemCodeITM01;
+  }
+  public Boolean getNoWarehouseMovITM01() {
+    return noWarehouseMovITM01;
+  }
+  public void setNoWarehouseMovITM01(Boolean noWarehouseMovITM01) {
+    this.noWarehouseMovITM01 = noWarehouseMovITM01;
+  }
+  public String getSheetCodeItm25ITM01() {
+    return sheetCodeItm25ITM01;
+  }
+  public void setSheetCodeItm25ITM01(String sheetCodeItm25ITM01) {
+    this.sheetCodeItm25ITM01 = sheetCodeItm25ITM01;
   }
 
 

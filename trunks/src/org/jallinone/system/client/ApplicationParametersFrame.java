@@ -82,6 +82,8 @@ public class ApplicationParametersFrame extends InternalFrame {
   ComboBoxControl controlNegGood = new ComboBoxControl();
   ComboBoxControl controlPosDamaged = new ComboBoxControl();
   ComboBoxControl controlNegDamg = new ComboBoxControl();
+  LabelControl labelManualDocNumInSaleDocs = new LabelControl();
+  CheckBoxControl controlManualDocNumInSaleDocs = new CheckBoxControl();
 
 
 
@@ -108,7 +110,7 @@ public class ApplicationParametersFrame extends InternalFrame {
 			controlNegGood.setDomain(d);
 
 
-      setSize(550,350);
+      setSize(600,350);
     }
     catch(Exception e) {
       e.printStackTrace();
@@ -141,6 +143,9 @@ public class ApplicationParametersFrame extends InternalFrame {
     controlPosDamaged.setRequired(true);
     controlImagePath.setRequired(true);
     controlDocPath.setRequired(true);
+    labelManualDocNumInSaleDocs.setText("manual doc num in sale docs");
+    controlManualDocNumInSaleDocs.setAttributeName("manualDocNumInSaleDocs");
+    controlManualDocNumInSaleDocs.setText("");
     topPanel.add(buttonsPanel,         new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 
@@ -168,34 +173,38 @@ public class ApplicationParametersFrame extends InternalFrame {
 		controlNegGood.setAttributeName("invNegCorrForGoodItemsValue");
 
 
-    mainPanel.add(controlImagePath,               new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
+    mainPanel.add(controlImagePath,                new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(labelImagePath,               new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+    mainPanel.add(labelImagePath,                new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
-    mainPanel.add(labelDocPath,            new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+    mainPanel.add(labelDocPath,             new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(controlDocPath,            new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+    mainPanel.add(controlDocPath,             new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(labelIncrementVal,        new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+    mainPanel.add(labelIncrementVal,         new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(controlIncremVal,       new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0
+    mainPanel.add(controlIncremVal,        new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(labelNegDamg,      new GridBagConstraints(0, 6, 1, 1, 0.0, 1.0
+    mainPanel.add(labelNegDamg,       new GridBagConstraints(0, 7, 1, 1, 0.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(labelPosDamg,     new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+    mainPanel.add(labelPosDamg,      new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(labelNegGood,    new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+    mainPanel.add(labelNegGood,     new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(labelPosGood,   new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+    mainPanel.add(labelPosGood,     new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(controlPosGood,  new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
+    mainPanel.add(controlNegGood,  new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(controlNegGood, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
+    mainPanel.add(controlPosDamaged,   new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(controlPosDamaged,  new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    mainPanel.add(controlNegDamg,    new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0
+    mainPanel.add(controlNegDamg,     new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    mainPanel.add(labelManualDocNumInSaleDocs,   new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    mainPanel.add(controlPosGood, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    mainPanel.add(controlManualDocNumInSaleDocs,   new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 0, 5, 5), 0, 0));
 
 
 

@@ -64,7 +64,7 @@ public class UpdateApplicationParamsAction implements Action {
 
 			Params bean = (Params)JAIOBeanFactory.getInstance().getBean(Params.class);
 			bean.updateApplicationParams(vo.getApplicationPars(),((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
-			return new VOResponse(vo.getApplicationPars());
+			return new VOResponse(vo);
 		}
 		catch (Throwable ex) {
 			Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"executeCommand","Error while processing request",ex);

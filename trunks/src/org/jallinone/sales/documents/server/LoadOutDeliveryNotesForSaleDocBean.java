@@ -54,7 +54,7 @@ import javax.sql.DataSource;
 public class LoadOutDeliveryNotesForSaleDocBean  implements LoadOutDeliveryNotesForSaleDoc {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -62,9 +62,9 @@ public class LoadOutDeliveryNotesForSaleDocBean  implements LoadOutDeliveryNotes
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -74,7 +74,7 @@ public class LoadOutDeliveryNotesForSaleDocBean  implements LoadOutDeliveryNotes
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -86,18 +86,19 @@ public class LoadOutDeliveryNotesForSaleDocBean  implements LoadOutDeliveryNotes
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public OutDeliveryNotesVO getOutDeliveryNotes(DetailSaleDocVO vo) {
-	  throw new UnsupportedOperationException();	
+	  throw new UnsupportedOperationException();
   }
-  
-  
+
+
   /**
    * Business logic to execute.
    */
   public VOListResponse loadOutDeliveryNotesForSaleDoc(GridParams pars,String serverLanguageId,String username,ArrayList companiesList) throws Throwable {
     PreparedStatement pstmt = null;
+		ResultSet rset = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -107,6 +108,31 @@ public class LoadOutDeliveryNotesForSaleDocBean  implements LoadOutDeliveryNotes
       for(int i=0;i<companiesList.size();i++)
         companies += "'"+companiesList.get(i).toString()+"',";
       companies = companies.substring(0,companies.length()-1);
+
+			DetailSaleDocVO docVO = (DetailSaleDocVO)pars.getOtherGridParams().get(ApplicationConsts.SALE_DOC_VO); // invoice document...
+
+      // retrieve deliv.note requests related to the specified sale doc..
+			pstmt = conn.prepareStatement(
+			  "select DOC_YEAR,DOC_NUMBER from DOC01_SELLING WHERE COMPANY_CODE_SYS01=? AND DOC_TYPE_DOC01=? AND DOC_YEAR_DOC01=? AND DOC_NUMBER_DOC01=?"
+			);
+		  pstmt.setString(1,docVO.getCompanyCodeSys01DOC01()); // starting sale doc...
+			pstmt.setString(2,docVO.getDocTypeDoc01DOC01());
+			pstmt.setBigDecimal(3,docVO.getDocYearDoc01DOC01());
+			pstmt.setBigDecimal(4,docVO.getDocNumberDoc01DOC01());
+		  rset = pstmt.executeQuery();
+			String where = "";
+			while(rset.next()) {
+				where +=
+					" DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_YEAR_DOC01="+rset.getInt(1)+" and "+
+					" DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_NUMBER_DOC01="+rset.getInt(2)+" or ";
+			}
+			rset.close();
+			pstmt.close();
+			if (where.length()==0) {
+				return new VOListResponse(new ArrayList(),false,0);
+			}
+			where = " and ("+where.substring(0,where.length()-3)+") ";
+
 
       String sql =
           "select DOC08_DELIVERY_NOTES.COMPANY_CODE_SYS01,DOC08_DELIVERY_NOTES.DOC_TYPE,"+
@@ -118,15 +144,13 @@ public class LoadOutDeliveryNotesForSaleDocBean  implements LoadOutDeliveryNotes
           "DOC08_DELIVERY_NOTES.ENABLED='Y' and "+
           "DOC08_DELIVERY_NOTES.DOC_TYPE=? and "+
           "DOC08_DELIVERY_NOTES.DOC_STATE=? and "+
-          "(DOC08_DELIVERY_NOTES.COMPANY_CODE_SYS01,DOC08_DELIVERY_NOTES.DOC_TYPE,DOC08_DELIVERY_NOTES.DOC_YEAR,DOC08_DELIVERY_NOTES.DOC_NUMBER) "+
-          " in (select DOC10_OUT_DELIVERY_NOTE_ITEMS.COMPANY_CODE_SYS01,DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_TYPE,DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_YEAR,DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_NUMBER "+
+          "DOC08_DELIVERY_NOTES.DOC_NUMBER in ("+
+					" select DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_NUMBER "+
           " from DOC10_OUT_DELIVERY_NOTE_ITEMS where "+
           " DOC10_OUT_DELIVERY_NOTE_ITEMS.COMPANY_CODE_SYS01=? and "+
-          " DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_TYPE_DOC01=? and "+
-          " DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_YEAR_DOC01=? and "+
-          " DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_NUMBER_DOC01=? ";
+          " DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_TYPE_DOC01=?  "+ // deliv. req. note
+					where;
 
-      DetailSaleDocVO docVO = (DetailSaleDocVO)pars.getOtherGridParams().get(ApplicationConsts.SALE_DOC_VO); // invoice document...
       if (docVO.getDocNumberDOC01()==null)
         sql += " and DOC10_OUT_DELIVERY_NOTE_ITEMS.QTY-DOC10_OUT_DELIVERY_NOTE_ITEMS.INVOICE_QTY>0)";
       else
@@ -147,9 +171,7 @@ public class LoadOutDeliveryNotesForSaleDocBean  implements LoadOutDeliveryNotes
       values.add(ApplicationConsts.OUT_DELIVERY_NOTE_DOC_TYPE);
       values.add(ApplicationConsts.CLOSED);
       values.add(docVO.getCompanyCodeSys01DOC01());
-      values.add(docVO.getDocTypeDoc01DOC01());
-      values.add(docVO.getDocYearDoc01DOC01());
-      values.add(docVO.getDocNumberDoc01DOC01());
+      values.add(ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE);
 
 
       // read from DOC08 table...
@@ -203,7 +225,7 @@ public class LoadOutDeliveryNotesForSaleDocBean  implements LoadOutDeliveryNotes
         pstmt.setBigDecimal(9,docVO.getDocNumberDOC01());
 
         HashSet docNumberDOC08s = new HashSet();
-        ResultSet rset = pstmt.executeQuery();
+        rset = pstmt.executeQuery();
         while(rset.next())
           docNumberDOC08s.add(rset.getBigDecimal(1));
         rset.close();
@@ -225,6 +247,10 @@ public class LoadOutDeliveryNotesForSaleDocBean  implements LoadOutDeliveryNotes
       throw new Exception(ex.getMessage());
     }
     finally {
+				try {
+						rset.close();
+				}
+				catch (Exception exx) {}
         try {
             pstmt.close();
         }

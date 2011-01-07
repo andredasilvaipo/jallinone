@@ -564,6 +564,7 @@ import org.openswing.swing.server.Action;
 import org.openswing.swing.server.ActionsCollection;
 import org.openswing.swing.server.ConnectionManager;
 import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.items.spareparts.server.*;
 
 
 /**
@@ -1268,7 +1269,28 @@ public class ApplicationActionClasses extends ActionsCollection {
 
 		a = new GetBeansFactoryNameAction(); put(a.getRequestName(),a);
 
+		a = new LoadItemVariantsAction(); put(a.getRequestName(),a);
 
+		a = new ValidateSheetCodeAction(); put(a.getRequestName(),a);
+		a = new InsertItemSheetAction(); put(a.getRequestName(),a);
+		a = new UpdateItemSheetsAction(); put(a.getRequestName(),a);
+		a = new DeleteItemSheetsAction(); put(a.getRequestName(),a);
+		a = new InsertItemSheetLevelsAction(); put(a.getRequestName(),a);
+		a = new InsertSheetSparePartsAction(); put(a.getRequestName(),a);
+		a = new DeleteSheetSparePartsAction	(); put(a.getRequestName(),a);
+		a = new DeleteSheetAttachedDocsAction(); put(a.getRequestName(),a);
+		a = new InsertSheetAttachedDocsAction(); put(a.getRequestName(),a);
+		a = new InsertChildrenSheetsAction(); put(a.getRequestName(),a);
+		a = new DeleteChildrenSheetsAction(); put(a.getRequestName(),a);
+		a = new LoadItemSheetsAction(); put(a.getRequestName(),a);
+		a = new LoadItemSparePartsAction(); put(a.getRequestName(),a);
+		a = new LoadItemSheetImageAction(); put(a.getRequestName(),a);
+		a = new LoadItemSheetLevelsAction(); put(a.getRequestName(),a);
+		a = new LoadSheetAttachedDocsAction(); put(a.getRequestName(),a);
+		a = new LoadSheetSparePartsAction(); put(a.getRequestName(),a);
+		a = new UpdateSubsheetAction(); put(a.getRequestName(),a);
+		a = new DeleteItemSheetLevelsAction(); put(a.getRequestName(),a);
+		a = new UpdateItemSheetLevelsAction(); put(a.getRequestName(),a);
 
     put("changeLanguage",new Action() {
 

@@ -52,7 +52,7 @@ import javax.sql.DataSource;
 public class ValidateSupplierPriceItemCodeBean  implements ValidateSupplierPriceItemCode {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -60,9 +60,9 @@ public class ValidateSupplierPriceItemCodeBean  implements ValidateSupplierPrice
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -72,7 +72,7 @@ public class ValidateSupplierPriceItemCodeBean  implements ValidateSupplierPrice
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -82,14 +82,14 @@ public class ValidateSupplierPriceItemCodeBean  implements ValidateSupplierPrice
   public ValidateSupplierPriceItemCodeBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public SupplierPriceItemVO getSupplierPriceItem() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
 
   /**
@@ -111,7 +111,8 @@ public class ValidateSupplierPriceItemCodeBean  implements ValidateSupplierPrice
           "PUR02_SUPPLIER_ITEMS.UM_CODE_REG02,PUR02_SUPPLIER_ITEMS.ENABLED,SYS10_TRANSLATIONS.DESCRIPTION,REG02_MEASURE_UNITS.DECIMALS,"+
           "ITM01_ITEMS.VAT_CODE_REG01,SYS10_VAT.DESCRIPTION,REG01_VATS.DEDUCTIBLE,REG01_VATS.VALUE,"+
           "PUR04_SUPPLIER_PRICES.VALUE,PUR04_SUPPLIER_PRICES.START_DATE,PUR04_SUPPLIER_PRICES.END_DATE,"+
-          "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 "+
+          "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5, "+
+					"ITM01_ITEMS.NO_WAREHOUSE_MOV "+
           " from PUR02_SUPPLIER_ITEMS,SYS10_TRANSLATIONS,ITM01_ITEMS,REG02_MEASURE_UNITS,SYS10_TRANSLATIONS SYS10_VAT,REG01_VATS,PUR04_SUPPLIER_PRICES where "+
           "PUR02_SUPPLIER_ITEMS.UM_CODE_REG02=REG02_MEASURE_UNITS.UM_CODE and "+
           "PUR02_SUPPLIER_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
@@ -159,6 +160,8 @@ public class ValidateSupplierPriceItemCodeBean  implements ValidateSupplierPrice
       attribute2dbField.put("useVariant3ITM01","ITM01_ITEMS.USE_VARIANT_3");
       attribute2dbField.put("useVariant4ITM01","ITM01_ITEMS.USE_VARIANT_4");
       attribute2dbField.put("useVariant5ITM01","ITM01_ITEMS.USE_VARIANT_5");
+
+			attribute2dbField.put("noWarehouseMovITM01","ITM01_ITEMS.NO_WAREHOUSE_MOV");
 
       ArrayList values = new ArrayList();
       values.add(serverLanguageId);

@@ -53,7 +53,7 @@ import javax.sql.DataSource;
 public class LoadItemsBean  implements LoadItems {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -61,9 +61,9 @@ public class LoadItemsBean  implements LoadItems {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -82,16 +82,16 @@ public class LoadItemsBean  implements LoadItems {
   public LoadItemsBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public GridItemVO getGridItem(HierarchyLevelVO pk) {
 	  throw new UnsupportedOperationException();
   }
-  
-  
-  
+
+
+
 
 
   /**
@@ -124,7 +124,8 @@ public class LoadItemsBean  implements LoadItems {
 
       String sql =
           "select ITM01_ITEMS.COMPANY_CODE_SYS01,ITM01_ITEMS.ITEM_CODE,SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,"+
-          "ITM01_ITEMS.PROGRESSIVE_HIE01,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,REG02_MEASURE_UNITS.DECIMALS, "+
+          "ITM01_ITEMS.PROGRESSIVE_HIE01,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,REG02_MEASURE_UNITS.DECIMALS,"+
+					"ITM01_ITEMS.SHEET_CODE_ITM25,ITM01_ITEMS.NO_WAREHOUSE_MOV, "+
           "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 "+
           " from ITM01_ITEMS,SYS10_TRANSLATIONS,REG02_MEASURE_UNITS where "+
           "ITM01_ITEMS.PROGRESSIVE_HIE02=? and "+
@@ -147,6 +148,10 @@ public class LoadItemsBean  implements LoadItems {
             " and ITM01_ITEMS.USE_VARIANT_3='N' "+
             " and ITM01_ITEMS.USE_VARIANT_4='N' "+
             " and ITM01_ITEMS.USE_VARIANT_5='N' ";
+
+			if (Boolean.TRUE.equals(pars.getOtherGridParams().get(ApplicationConsts.SHOW_ONLY_MOVABLE_ITEMS)))
+					sql +=
+            " and ITM01_ITEMS.NO_WAREHOUSE_MOV='N' ";
 
       if (rootProgressiveHIE01==null || !rootProgressiveHIE01.equals(progressiveHIE01)) {
         // retrieve all subnodes of the specified node...
@@ -198,13 +203,14 @@ public class LoadItemsBean  implements LoadItems {
       attribute2dbField.put("progressiveHie01ITM01","ITM01_ITEMS.PROGRESSIVE_HIE01");
       attribute2dbField.put("serialNumberRequiredITM01","ITM01_ITEMS.SERIAL_NUMBER_REQUIRED");
       attribute2dbField.put("decimalsREG02","REG02_MEASURE_UNITS.DECIMALS");
-
+      attribute2dbField.put("sheetCodeItm25ITM01","ITM01_ITEMS.SHEET_CODE_ITM25");
       attribute2dbField.put("useVariant1ITM01","ITM01_ITEMS.USE_VARIANT_1");
       attribute2dbField.put("useVariant2ITM01","ITM01_ITEMS.USE_VARIANT_2");
       attribute2dbField.put("useVariant3ITM01","ITM01_ITEMS.USE_VARIANT_3");
       attribute2dbField.put("useVariant4ITM01","ITM01_ITEMS.USE_VARIANT_4");
       attribute2dbField.put("useVariant5ITM01","ITM01_ITEMS.USE_VARIANT_5");
 
+			attribute2dbField.put("noWarehouseMovITM01","ITM01_ITEMS.NO_WAREHOUSE_MOV");
 
       ArrayList values = new ArrayList();
       values.add(progressiveHIE02);
@@ -248,8 +254,6 @@ public class LoadItemsBean  implements LoadItems {
         }
         catch (Exception exx) {}
     }
-
-
   }
 
 

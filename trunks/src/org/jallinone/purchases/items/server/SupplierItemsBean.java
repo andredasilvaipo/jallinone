@@ -58,7 +58,7 @@ import javax.sql.DataSource;
 public class SupplierItemsBean  implements SupplierItems {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -66,9 +66,9 @@ public class SupplierItemsBean  implements SupplierItems {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -78,7 +78,7 @@ public class SupplierItemsBean  implements SupplierItems {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -96,10 +96,10 @@ public class SupplierItemsBean  implements SupplierItems {
   public SupplierItemsBean() {
   }
 
-  
+
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public SupplierItemVO getSupplierItem(HierarchyLevelVO pk) {
 	  throw new UnsupportedOperationException();
@@ -113,7 +113,7 @@ public class SupplierItemsBean  implements SupplierItems {
 	Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
- 
+
       String companyCode = companiesList.get(0).toString();
       SupplierItemVO vo = null;
 
@@ -179,7 +179,7 @@ public class SupplierItemsBean  implements SupplierItems {
           }
 
         }
-        catch (Exception exx) {}    	
+        catch (Exception exx) {}
     }
   }
 
@@ -230,6 +230,9 @@ public class SupplierItemsBean  implements SupplierItems {
             " and ITM01_ITEMS.USE_VARIANT_3='N' "+
             " and ITM01_ITEMS.USE_VARIANT_4='N' "+
             " and ITM01_ITEMS.USE_VARIANT_5='N' ";
+			if (Boolean.TRUE.equals(pars.getOtherGridParams().get(ApplicationConsts.SHOW_ONLY_MOVABLE_ITEMS)))
+					sql +=
+						" and ITM01_ITEMS.NO_WAREHOUSE_MOV='N' "; // show only items that can be move in warehouse
 
       if (rootProgressiveHIE01==null || !rootProgressiveHIE01.equals(progressiveHIE01)) {
         // retrieve all subnodes of the specified node...
@@ -348,11 +351,11 @@ public class SupplierItemsBean  implements SupplierItems {
       }
       catch (Exception ex2) {
       }
-    
+
       try {
         convBean.setConn(null);
       } catch (Exception ex) {}
-      
+
       try {
           if (this.conn==null && conn!=null) {
             // close only local connection
@@ -361,7 +364,7 @@ public class SupplierItemsBean  implements SupplierItems {
         }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }
@@ -436,7 +439,7 @@ public class SupplierItemsBean  implements SupplierItems {
       }
       catch (Exception ex2) {
       }
-    
+
       try {
           if (this.conn==null && conn!=null) {
             // close only local connection
@@ -503,7 +506,7 @@ public class SupplierItemsBean  implements SupplierItems {
       }
       catch (Exception ex2) {
       }
-    
+
       try {
           if (this.conn==null && conn!=null) {
             // close only local connection
@@ -601,8 +604,8 @@ public class SupplierItemsBean  implements SupplierItems {
 
         }
         catch (Exception exx) {}
-        
-        
+
+
     }
 
   }
@@ -645,6 +648,9 @@ public class SupplierItemsBean  implements SupplierItems {
             " and ITM01_ITEMS.USE_VARIANT_3='N' "+
             " and ITM01_ITEMS.USE_VARIANT_4='N' "+
             " and ITM01_ITEMS.USE_VARIANT_5='N' ";
+			if (Boolean.TRUE.equals(pars.getLookupValidationParameters().get(ApplicationConsts.SHOW_ONLY_MOVABLE_ITEMS)))
+					sql +=
+						" and ITM01_ITEMS.NO_WAREHOUSE_MOV='N' "; // show only items that can be move in warehouse
 
 
       Map attribute2dbField = new HashMap();
@@ -719,11 +725,11 @@ public class SupplierItemsBean  implements SupplierItems {
       }
       catch (Exception ex2) {
       }
-    
+
       try {
         convBean.setConn(null);
       } catch (Exception ex) {}
-      
+
       try {
           if (this.conn==null && conn!=null) {
             // close only local connection
@@ -732,7 +738,7 @@ public class SupplierItemsBean  implements SupplierItems {
         }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }

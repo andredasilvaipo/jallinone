@@ -135,6 +135,7 @@ public class SaleDeskDocFrame extends InternalFrame implements SaleDocument {
       wareDataLocator.setValidationMethodName("validateWarehouseCode");
 
       controlWarehouseCode.setLookupController(wareController);
+			controlWarehouseCode.setLinkLabel(labelWarehouseCode);
       controlWarehouseCode.setControllerMethodName("getWarehousesList");
       wareController.setLookupDataLocator(wareDataLocator);
       wareController.setFrameTitle("warehouses");
@@ -253,7 +254,7 @@ public class SaleDeskDocFrame extends InternalFrame implements SaleDocument {
     controlDescr.setEnabledOnInsert(false);
     controlDescr.setEnabledOnEdit(false);
     controlDescr.setAttributeName("descriptionWar01DOC01");
-    controlDescr.setRequired(true);
+    controlDescr.setRequired(false);
     controlWarehouseCode.setAttributeName("warehouseCodeWar01DOC01");
     controlWarehouseCode.setCanCopy(true);
     controlWarehouseCode.setLinkLabel(labelWarehouseCode);

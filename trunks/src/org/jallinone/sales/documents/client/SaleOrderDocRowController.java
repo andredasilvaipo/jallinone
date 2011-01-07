@@ -161,7 +161,10 @@ public class SaleOrderDocRowController extends CompanyFormController {
     panel.getBookedItemsPanel().getControlItemCode().getLookupController().getLookupDataLocator().getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC02());
     panel.getBookedItemsPanel().getControlItemCode().getLookupController().getLookupDataLocator().getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC02());
     panel.getBookedItemsPanel().getControlItemCode().getLookupController().forceValidate();
-    panel.getBookedItemsPanel().getGrid().reloadData();
+		if (vo.getNoWarehouseMovITM01().booleanValue())
+			panel.getBookedItemsPanel().getGrid().clearData();
+		else
+			panel.getBookedItemsPanel().getGrid().reloadData();
 
     panel.getOrderedItemsPanel().getGrid().getOtherGridParams().put(ApplicationConsts.ITEM_PK,new ItemPK(vo.getCompanyCodeSys01DOC02(),vo.getItemCodeItm01DOC02()));
     panel.getOrderedItemsPanel().getControlItemType().setValue(vo.getProgressiveHie02DOC02());
@@ -169,7 +172,10 @@ public class SaleOrderDocRowController extends CompanyFormController {
     panel.getOrderedItemsPanel().getControlItemCode().getLookupController().getLookupDataLocator().getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC02());
     panel.getOrderedItemsPanel().getControlItemCode().getLookupController().getLookupDataLocator().getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC02());
     panel.getOrderedItemsPanel().getControlItemCode().getLookupController().forceValidate();
-    panel.getOrderedItemsPanel().getGrid().reloadData();
+		if (vo.getNoWarehouseMovITM01().booleanValue())
+			panel.getOrderedItemsPanel().getGrid().clearData();
+		else
+			panel.getOrderedItemsPanel().getGrid().reloadData();
 
   }
 
@@ -230,6 +236,16 @@ public class SaleOrderDocRowController extends CompanyFormController {
     vo.setDocNumberDOC02(parentVO.getDocNumberDOC01());
     vo.setDeliveryDateDOC02(new java.sql.Date(System.currentTimeMillis()));
     vo.setCurrencyCodeReg03DOC01(panel.getParentVO().getCurrencyCodeReg03DOC01());
+		vo.setVariantCodeItm11DOC02("*");
+		vo.setVariantCodeItm12DOC02("*");
+		vo.setVariantCodeItm13DOC02("*");
+		vo.setVariantCodeItm14DOC02("*");
+		vo.setVariantCodeItm15DOC02("*");
+		vo.setVariantTypeItm06DOC02("*");
+		vo.setVariantTypeItm07DOC02("*");
+		vo.setVariantTypeItm08DOC02("*");
+		vo.setVariantTypeItm09DOC02("*");
+		vo.setVariantTypeItm10DOC02("*");
 
     panel.getDiscountsPanel().setEnabled(false);
     panel.getDiscountsPanel().getGrid().clearData();

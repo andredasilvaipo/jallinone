@@ -51,7 +51,7 @@ import javax.sql.DataSource;
 public class ValidateItemCodeBean  implements ValidateItemCode {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -59,9 +59,9 @@ public class ValidateItemCodeBean  implements ValidateItemCode {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -71,7 +71,7 @@ public class ValidateItemCodeBean  implements ValidateItemCode {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -81,9 +81,9 @@ public class ValidateItemCodeBean  implements ValidateItemCode {
   public ValidateItemCodeBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public GridItemVO getGridItem() {
 	  throw new UnsupportedOperationException();
@@ -109,6 +109,7 @@ public class ValidateItemCodeBean  implements ValidateItemCode {
       String sql =
           "select ITM01_ITEMS.COMPANY_CODE_SYS01,ITM01_ITEMS.ITEM_CODE,SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,"+
           "ITM01_ITEMS.PROGRESSIVE_HIE01,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,REG02_MEASURE_UNITS.DECIMALS, "+
+					"ITM01_ITEMS.NO_WAREHOUSE_MOV,ITM01_ITEMS.SHEET_CODE_ITM25,"+
           "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 "+
           " from ITM01_ITEMS,SYS10_TRANSLATIONS,REG02_MEASURE_UNITS where "+
           "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
@@ -143,6 +144,10 @@ public class ValidateItemCodeBean  implements ValidateItemCode {
             " and ITM01_ITEMS.USE_VARIANT_4='N' "+
             " and ITM01_ITEMS.USE_VARIANT_5='N' ";
 
+			if (Boolean.TRUE.equals(pars.getLookupValidationParameters().get(ApplicationConsts.SHOW_ONLY_MOVABLE_ITEMS)))
+					sql +=
+						" and ITM01_ITEMS.NO_WAREHOUSE_MOV='N' ";
+
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01ITM01","ITM01_ITEMS.COMPANY_CODE_SYS01");
       attribute2dbField.put("itemCodeITM01","ITM01_ITEMS.ITEM_CODE");
@@ -152,6 +157,8 @@ public class ValidateItemCodeBean  implements ValidateItemCode {
       attribute2dbField.put("progressiveHie01ITM01","ITM01_ITEMS.PROGRESSIVE_HIE01");
       attribute2dbField.put("serialNumberRequiredITM01","ITM01_ITEMS.SERIAL_NUMBER_REQUIRED");
       attribute2dbField.put("decimalsREG02","REG02_MEASURE_UNITS.DECIMALS");
+			attribute2dbField.put("noWarehouseMovITM01","ITM01_ITEMS.NO_WAREHOUSE_MOV");
+			attribute2dbField.put("sheetCodeItm25ITM01","ITM01_ITEMS.SHEET_CODE_ITM25");
 
       attribute2dbField.put("useVariant1ITM01","ITM01_ITEMS.USE_VARIANT_1");
       attribute2dbField.put("useVariant2ITM01","ITM01_ITEMS.USE_VARIANT_2");
@@ -200,8 +207,6 @@ public class ValidateItemCodeBean  implements ValidateItemCode {
         }
         catch (Exception exx) {}
     }
-
-
   }
 
 

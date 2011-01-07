@@ -233,11 +233,22 @@ public class ApplicationParametersVO extends ValueObjectImpl {
 
 
   /**
-   * @erturn document repository path
+   * @return document repository path
    */
   public final String getDocumentPath() {
     return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.DOC_PATH);
   }
+
+
+	/**
+	 * @return flag used to manually insert doc num in sale docs
+	 */
+	 public final Boolean getManualDocNumInSaleDocs() {
+		if (applicationPars==null)
+			return null;
+		String value = (String)applicationPars.get(ApplicationConsts.DOC_NUM_IN_SALE_DOCS);
+		return new Boolean("Y".equals(value));
+	 }
 
 
   /**
@@ -428,6 +439,9 @@ public class ApplicationParametersVO extends ValueObjectImpl {
 			applicationPars.put(ApplicationConsts.POS_INVCORR_DAMG_ITM,value);
 		}
 
+		 public final void setManualDocNumInSaleDocs(Boolean value) {
+			applicationPars.put(ApplicationConsts.DOC_NUM_IN_SALE_DOCS,value.booleanValue()?"Y":"N");
+		 }
 
 
 }

@@ -220,6 +220,7 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
       itemController.addLookup2ParentLink("valuePUR04", "valuePur04DOC07");
       itemController.addLookup2ParentLink("startDatePUR04", "startDatePur04DOC07");
       itemController.addLookup2ParentLink("endDatePUR04", "endDatePur04DOC07");
+      itemController.addLookup2ParentLink("noWarehouseMovITM01", "noWarehouseMovITM01");
 
       itemController.setAllColumnVisible(false);
       itemController.setVisibleColumn("itemCodeItm01PUR02", true);

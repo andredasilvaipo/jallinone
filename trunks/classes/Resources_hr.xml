@@ -641,7 +641,6 @@
   <object key="the price is no more valid" value="Cijena vi&#353;e nije valjana" />
   <object key="itemCodeItm01PUR02" value="ID artikla" />
   <object key="item" value="Artikl" />
-  <object key="no warehouse movements" value="No warehouse movements" />
   <object key="confirm purchase order?" value="Potvrditi narud&#382;benicu?&#10;Nakon potvrde urediti" />
   <object key="order confirmation" value="Potvrda narud&#382;be" />
   <object key="deliveryDateDOC07" value="Planiran datum isporuke" />
@@ -1602,6 +1601,31 @@
   <object key="in pricelist" value="U cjenik" />
   <object key="import sale prices" value="Uvesti prodajne cijene" />
   <object key="nr" value="Nr." />
+
+  <object key="no warehouse movements" value="No warehouse movements" />
+
+  <object key="cannot delete sheet: it is currently referenced by another sheet" value="Cannot delete sheet: it is currently referenced by another sheet" />
+  <object key="cannot delete sheet: it is currently referenced in an item" value="Cannot delete sheet: it is currently referenced in an item" />
+  <object key="item spare parts" value="Item's Spare parts" />
+  <object key="image" value="Image" />
+  <object key="item models" value="Item Models" />
+  <object key="sheetCodeITM25" value="Sheet Code" />
+  <object key="sheets" value="Sheets" />
+  <object key="spare parts catalogue" value="Spare parts Catalogue" />
+  <object key="start region" value="Start region" />
+  <object key="clear region" value="Clear region" />
+  <object key="save region" value="Save region" />
+  <object key="cannot delete levels: there are sheets having these levels" value="Cannot delete levels: there are sheets having these levels." />
+  <object key="cannot insert levels: there are sheets binded to spare parts" value="Cannot insert levels: there are sheets binded to spare parts" />
+  <object key="levelITM29" value="Level" />
+  <object key="spare parts sheets levels" value="Spare parts sheets levels" />
+  <object key="spare parts sheets for level" value="Spare parts sheets for level" />
+  <object key="imageITM05" value="Image" />
+  <object key="item model" value="Item Model" />
+  <object key="itemCodeItm01ITM28" value="Spare Part Code" />
+  <object key="path" value="Path" />
+  <object key="spare parts" value="Spare parts" />
+  <object key="manual doc num in sale docs" value="Allow manual numer. in sales documents" />
 
   <currencySymbol>Kn</currencySymbol>
   <decimalSymbol>,</decimalSymbol>

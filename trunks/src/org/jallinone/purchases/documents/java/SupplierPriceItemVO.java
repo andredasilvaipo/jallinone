@@ -50,6 +50,8 @@ public class SupplierPriceItemVO extends SupplierItemVO implements VariantsItemD
   private Boolean useVariant4ITM01;
   private Boolean useVariant5ITM01;
 
+	private Boolean noWarehouseMovITM01;
+
 
   public SupplierPriceItemVO() {
   }
@@ -134,6 +136,12 @@ public class SupplierPriceItemVO extends SupplierItemVO implements VariantsItemD
   }
   public String getItemCodeItm01() {
     return getItemCodeItm01PUR02();
+  }
+  public Boolean getNoWarehouseMovITM01() {
+    return noWarehouseMovITM01;
+  }
+  public void setNoWarehouseMovITM01(Boolean noWarehouseMovITM01) {
+    this.noWarehouseMovITM01 = noWarehouseMovITM01;
   }
 
 }

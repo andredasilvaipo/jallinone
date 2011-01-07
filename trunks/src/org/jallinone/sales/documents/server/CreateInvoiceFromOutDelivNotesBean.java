@@ -218,6 +218,30 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
         docVO.getDocNumberDoc01DOC01()
       );
 
+
+			// retrieve deliv.note requests related to the specified sale doc..
+			pstmt = conn.prepareStatement(
+				"select DOC_YEAR,DOC_NUMBER from DOC01_SELLING WHERE COMPANY_CODE_SYS01=? AND DOC_TYPE_DOC01=? AND DOC_YEAR_DOC01=? AND DOC_NUMBER_DOC01=?"
+			);
+			pstmt.setString(1,docVO.getCompanyCodeSys01DOC01()); // starting sale doc...
+			pstmt.setString(2,docVO.getDocTypeDoc01DOC01());
+			pstmt.setBigDecimal(3,docVO.getDocYearDoc01DOC01());
+			pstmt.setBigDecimal(4,docVO.getDocNumberDoc01DOC01());
+			ResultSet rset = pstmt.executeQuery();
+			String where = "";
+			while(rset.next()) {
+				where +=
+					" DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_YEAR_DOC01="+rset.getInt(1)+" and "+
+					" DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_NUMBER_DOC01="+rset.getInt(2)+" or ";
+			}
+			rset.close();
+			pstmt.close();
+			if (where.length()==0) {
+				throw new Exception("Invalid documents");
+			}
+			where = " and ("+where.substring(0,where.length()-3)+") ";
+
+
       // retrieve the list of items referred by the selected delivery notes...
       Hashtable selectedItems = new Hashtable(); // collection of pairs <itemcode,qty>
       BigDecimal qty = null;
@@ -233,11 +257,9 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
         "DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_TYPE=? and "+
         "DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_YEAR=? and "+
         "DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_NUMBER=? and "+
-        "DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_TYPE_DOC01=? and "+
-        "DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_YEAR_DOC01=? and "+
-        "DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_NUMBER_DOC01=? "
+				"DOC10_OUT_DELIVERY_NOTE_ITEMS.DOC_TYPE_DOC01=?  "+ // deliv. req. note
+				where
       );
-      ResultSet rset = null;
       OutDeliveryNotesVO delivVO = null;
       VariantItemPK variantItemPK = null;
       for(int i=0;i<delivNotes.size();i++) {
@@ -246,9 +268,7 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
         pstmt.setString(2,delivVO.getDocTypeDOC08());
         pstmt.setBigDecimal(3,delivVO.getDocYearDOC08());
         pstmt.setBigDecimal(4,delivVO.getDocNumberDOC08());
-        pstmt.setString(5,refPK.getDocTypeDOC01());
-        pstmt.setBigDecimal(6,refPK.getDocYearDOC01());
-        pstmt.setBigDecimal(7,refPK.getDocNumberDOC01());
+        pstmt.setString(5,ApplicationConsts.DELIVERY_REQUEST_DOC_TYPE);
         rset = pstmt.executeQuery();
         while(rset.next()) {
 

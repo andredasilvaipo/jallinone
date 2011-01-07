@@ -149,6 +149,7 @@ public class InsertSaleItemBean implements InsertSaleItem {
 	      attribute2dbField.put("variantTypeItm10DOC02","DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM10");
 	      attribute2dbField.put("variantCodeItm15DOC02","DOC02_SELLING_ITEMS.VARIANT_CODE_ITM15");
 
+				attribute2dbField.put("noWarehouseMovITM01","ITM01_ITEMS.NO_WAREHOUSE_MOV");
 
 
 	      String baseSQL =
@@ -160,6 +161,7 @@ public class InsertSaleItemBean implements InsertSaleItem {
 	          "DOC02_SELLING_ITEMS.VALUE_REG01,DOC02_SELLING_ITEMS.DEDUCTIBLE_REG01,DOC02_SELLING_ITEMS.TAXABLE_INCOME,DOC02_SELLING_ITEMS.PROGRESSIVE_HIE02,DOC02_SELLING_ITEMS.DELIVERY_DATE,"+
 	          "DOC02_SELLING_ITEMS.OUT_QTY,DOC01_SELLING.CURRENCY_CODE_REG03,DOC02_SELLING_ITEMS.PROGRESSIVE_HIE01, "+
 	          "DOC02_SELLING_ITEMS.DISCOUNT_VALUE,DOC02_SELLING_ITEMS.DISCOUNT_PERC,DOC02_SELLING_ITEMS.INVOICE_QTY, "+
+						"ITM01_ITEMS.NO_WAREHOUSE_MOV,"+
 	          "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM06,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM11,"+
 	          "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM07,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM12,"+
 	          "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM08,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM13,"+
@@ -393,19 +395,19 @@ public class InsertSaleItemBean implements InsertSaleItem {
 
 
 
-          private String getVariantCodeAndTypeDesc(
-              HashMap variantDescriptions,
-              DetailSaleDocRowVO vo,
-              String varType,
-              String varCode,
-              String serverLanguageId,
-              String username
-          ) throws Throwable {
-            String varDescr = (String)variantDescriptions.get(varType+"_"+varCode);
-            if (varDescr==null)
-              varDescr = ApplicationConsts.JOLLY.equals(varCode)?"":varCode;
-            return varDescr;
-          }
+    private String getVariantCodeAndTypeDesc(
+        HashMap variantDescriptions,
+        DetailSaleDocRowVO vo,
+        String varType,
+        String varCode,
+        String serverLanguageId,
+        String username
+    ) throws Throwable {
+      String varDescr = (String)variantDescriptions.get(varType+"_"+varCode);
+      if (varDescr==null)
+        varDescr = ApplicationConsts.JOLLY.equals(varCode)?"":varCode;
+      return varDescr;
+    }
 
 
 
@@ -426,6 +428,13 @@ public class InsertSaleItemBean implements InsertSaleItem {
 	        vo.setQtyDOC02(new BigDecimal(0));
 	      if (vo.getInvoiceQtyDOC02()==null)
 	        vo.setInvoiceQtyDOC02(new BigDecimal(0));
+
+				if ((vo.getDocTypeDOC02().equals(ApplicationConsts.SALE_CONTRACT_DOC_TYPE) ||
+						 vo.getDocTypeDOC02().equals(ApplicationConsts.SALE_ORDER_DOC_TYPE) ||
+						 vo.getDocTypeDOC02().equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
+						 vo.getDocTypeDOC02().equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE)) &&
+						Boolean.TRUE.equals(vo.getNoWarehouseMovITM01()))
+					vo.setOutQtyDOC02(vo.getQtyDOC02());
 
 	      Map attribute2dbField = new HashMap();
 	      attribute2dbField.put("companyCodeSys01DOC02","COMPANY_CODE_SYS01");
@@ -485,6 +494,22 @@ public class InsertSaleItemBean implements InsertSaleItem {
 	      if (res.isError()) {
 	        throw new Exception(res.getErrorMessage());
 	      }
+
+				// update doc state...
+				SaleDocPK pk = new SaleDocPK(
+						vo.getCompanyCodeSys01DOC02(),
+						vo.getDocTypeDOC02(),
+						vo.getDocYearDOC02(),
+						vo.getDocNumberDOC02()
+				);
+				pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and DOC_STATE=?");
+				pstmt.setString(1,ApplicationConsts.HEADER_BLOCKED);
+				pstmt.setString(2,pk.getCompanyCodeSys01DOC01());
+				pstmt.setString(3,pk.getDocTypeDOC01());
+				pstmt.setBigDecimal(4,pk.getDocYearDOC01());
+				pstmt.setBigDecimal(5,pk.getDocNumberDOC01());
+				pstmt.setString(6,ApplicationConsts.OPENED);
+				pstmt.execute();
 
 	      return new VOResponse(vo);
 	    }

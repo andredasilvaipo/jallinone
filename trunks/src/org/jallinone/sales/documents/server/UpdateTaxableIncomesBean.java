@@ -336,6 +336,66 @@ public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
         }
       }
 
+      // +MC 7/1/2011 (as in SaleDocTotalsBean.getSaleDocTotals)
+			// apply discount (eventually) defined at row level...
+			if (vo.getDiscountValueDOC01()!=null) {
+
+				for(int i=0;i<detailItemRows.size();i++) {
+					detailItemVO = (DetailSaleDocRowVO)detailItemRows.get(i);
+					detailItemVO.setTaxableIncomeDOC02(
+						detailItemVO.getTaxableIncomeDOC02().subtract(vo.getDiscountValueDOC01().multiply((BigDecimal)coeff.get(detailItemVO))).
+						setScale(vo.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP)
+					);
+				}
+
+				for(int i=0;i<actsRows.size();i++) {
+					actVO = (SaleDocActivityVO)actsRows.get(i);
+					actVO.setTaxableIncomeDOC13(
+						actVO.getTaxableIncomeDOC13().subtract(vo.getDiscountValueDOC01().multiply((BigDecimal)coeff.get(actVO))).
+						setScale(vo.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP)
+					);
+				}
+
+				for(int i=0;i<chargesRows.size();i++) {
+					chargeVO = (SaleDocChargeVO)chargesRows.get(i);
+					if (chargeVO.getValueDOC03()!=null) {
+						chargeVO.setTaxableIncomeDOC03(
+							chargeVO.getTaxableIncomeDOC03().subtract(vo.getDiscountValueDOC01().multiply((BigDecimal)coeff.get(chargeVO))).
+							setScale(vo.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP)
+						);
+					}
+				}
+
+			}
+			else if (vo.getDiscountPercDOC01()!=null) {
+				for(int i=0;i<detailItemRows.size();i++) {
+					detailItemVO = (DetailSaleDocRowVO)detailItemRows.get(i);
+					detailItemVO.setTaxableIncomeDOC02(
+						detailItemVO.getTaxableIncomeDOC02().subtract(detailItemVO.getTaxableIncomeDOC02().multiply(vo.getDiscountPercDOC01().divide(new BigDecimal(100),BigDecimal.ROUND_HALF_UP))).
+						setScale(vo.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP)
+					);
+				}
+
+				for(int i=0;i<actsRows.size();i++) {
+					actVO = (SaleDocActivityVO)actsRows.get(i);
+					actVO.setTaxableIncomeDOC13(
+						actVO.getTaxableIncomeDOC13().subtract(actVO.getTaxableIncomeDOC13().multiply(vo.getDiscountPercDOC01().divide(new BigDecimal(100),BigDecimal.ROUND_HALF_UP))).
+						setScale(vo.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP)
+					);
+				}
+
+				for(int i=0;i<chargesRows.size();i++) {
+					chargeVO = (SaleDocChargeVO)chargesRows.get(i);
+					if (chargeVO.getValueDOC03()!=null) {
+						chargeVO.setTaxableIncomeDOC03(
+							chargeVO.getTaxableIncomeDOC03().subtract(chargeVO.getTaxableIncomeDOC03().multiply(vo.getDiscountPercDOC01().divide(new BigDecimal(100),BigDecimal.ROUND_HALF_UP))).
+							setScale(vo.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP)
+						);
+					}
+				}
+
+			}
+
       // retrieve header discounts..
       rowsResponse = rowsBean.loadSaleDocDiscounts(pars,serverLanguageId,username);
       if (rowsResponse.isError())

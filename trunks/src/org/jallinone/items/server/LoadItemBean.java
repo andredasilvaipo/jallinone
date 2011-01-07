@@ -54,7 +54,7 @@ import org.jallinone.events.server.*;
 public class LoadItemBean implements LoadItem {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -62,9 +62,9 @@ public class LoadItemBean implements LoadItem {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -74,7 +74,7 @@ public class LoadItemBean implements LoadItem {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -84,7 +84,7 @@ public class LoadItemBean implements LoadItem {
   public LoadItemBean() {
   }
 
-  
+
 
   /**
    * Business logic to execute.
@@ -111,12 +111,12 @@ public class LoadItemBean implements LoadItem {
 			  progressiveHie01HIE02 = rset.getBigDecimal(1);
 		  rset.close();
 		  pstmt.close();
-		  
+
 		  return progressiveHie01HIE02;
 	  }
 	  catch (Throwable ex) {
 		  Logger.error(username,this.getClass().getName(),"loadItem","Error while fetching an existing item",ex);
-		  throw new Exception(ex.getMessage()); 
+		  throw new Exception(ex.getMessage());
 	  }
 	  finally {
 		  try {
@@ -141,7 +141,7 @@ public class LoadItemBean implements LoadItem {
 		  catch (Exception exx) {}
 	  }
   }
-  
+
 
   /**
    * Business logic to execute.
@@ -197,7 +197,6 @@ public class LoadItemBean implements LoadItem {
 //      attribute2dbField.put("colorDescriptionSYS10","D.DESCRIPTION");
 //      attribute2dbField.put("sizeDescriptionSYS10","E.DESCRIPTION");
       attribute2dbField.put("enabledITM01","ITM01_ITEMS.ENABLED");
-      attribute2dbField.put("isServiceITM01","ITM01_ITEMS.IS_SERVICE");
       attribute2dbField.put("serialNumberRequiredITM01","ITM01_ITEMS.SERIAL_NUMBER_REQUIRED");
       attribute2dbField.put("versionITM01","ITM01_ITEMS.VERSION");
       attribute2dbField.put("revisionITM01","ITM01_ITEMS.REVISION");
@@ -213,6 +212,9 @@ public class LoadItemBean implements LoadItem {
 
       attribute2dbField.put("barCodeITM01","ITM01_ITEMS.BAR_CODE");
       attribute2dbField.put("barcodeTypeITM01","ITM01_ITEMS.BARCODE_TYPE");
+
+			attribute2dbField.put("noWarehouseMovITM01","ITM01_ITEMS.NO_WAREHOUSE_MOV");
+			attribute2dbField.put("sheetCodeItm25ITM01","ITM01_ITEMS.SHEET_CODE_ITM25");
 
 
       HashSet pkAttributes = new HashSet();
@@ -231,7 +233,7 @@ public class LoadItemBean implements LoadItem {
           "C.DESCRIPTION,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,PRO01.DESCRIPTION,ITM01_ITEMS.VERSION,ITM01_ITEMS.REVISION, "+
           "ITM01_ITEMS.START_DATE,ITM01_ITEMS.MANUFACTURE_CODE_PRO01, "+
           "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5," +
-          "ITM01_ITEMS.IS_SERVICE"+
+          "ITM01_ITEMS.NO_WAREHOUSE_MOV,ITM01_ITEMS.SHEET_CODE_ITM25 "+
           " from "+
           "SYS10_TRANSLATIONS A,SYS10_TRANSLATIONS B,REG01_VATS,REG02_MEASURE_UNITS REG02_A,SYS10_TRANSLATIONS C,HIE01_LEVELS,ITM01_ITEMS "+
           "LEFT OUTER JOIN "+
@@ -473,14 +475,14 @@ public class LoadItemBean implements LoadItem {
       } // end if on isError
 
 
-      if (res.isError())  
-    	  throw new Exception(res.getErrorMessage()); 
-      else 
+      if (res.isError())
+    	  throw new Exception(res.getErrorMessage());
+      else
     	  return (DetailItemVO)((VOResponse)res).getVo();
     }
     catch (Throwable ex) {
       Logger.error(username,this.getClass().getName(),"loadItem","Error while fetching an existing item",ex);
-      throw new Exception(ex.getMessage()); 
+      throw new Exception(ex.getMessage());
     }
     finally {
       try {

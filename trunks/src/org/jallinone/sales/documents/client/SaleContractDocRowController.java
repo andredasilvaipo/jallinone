@@ -230,6 +230,16 @@ public class SaleContractDocRowController extends CompanyFormController {
     vo.setDocNumberDOC02(parentVO.getDocNumberDOC01());
     vo.setDeliveryDateDOC02(new java.sql.Date(System.currentTimeMillis()));
     vo.setCurrencyCodeReg03DOC01(panel.getParentVO().getCurrencyCodeReg03DOC01());
+		vo.setVariantCodeItm11DOC02("*");
+		vo.setVariantCodeItm12DOC02("*");
+		vo.setVariantCodeItm13DOC02("*");
+		vo.setVariantCodeItm14DOC02("*");
+		vo.setVariantCodeItm15DOC02("*");
+		vo.setVariantTypeItm06DOC02("*");
+		vo.setVariantTypeItm07DOC02("*");
+		vo.setVariantTypeItm08DOC02("*");
+		vo.setVariantTypeItm09DOC02("*");
+		vo.setVariantTypeItm10DOC02("*");
 
     panel.getDiscountsPanel().setEnabled(false);
     panel.getDiscountsPanel().getGrid().clearData();

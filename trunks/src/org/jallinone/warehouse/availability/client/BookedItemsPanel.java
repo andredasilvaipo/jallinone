@@ -130,6 +130,9 @@ public class BookedItemsPanel extends JPanel {
       itemDataLocator.setGridMethodName("loadItems");
       itemDataLocator.setValidationMethodName("validateItemCode");
 
+      itemDataLocator.getLookupFrameParams().put(ApplicationConsts.SHOW_ONLY_MOVABLE_ITEMS,Boolean.TRUE);
+			itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.SHOW_ONLY_MOVABLE_ITEMS,Boolean.TRUE);
+
       controlItemCode.setLookupController(itemController);
       itemController.setLookupDataLocator(itemDataLocator);
       itemController.setFrameTitle("items");

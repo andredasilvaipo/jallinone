@@ -515,6 +515,19 @@ public class ParamsBean  implements Params {
         pstmt.executeUpdate();
       }
 
+			// update flag for sale doc nums value for progressives...
+			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+			pstmt.setString(1,getManualDocNumInSaleDocs(applicationPars));
+			pstmt.setString(2,ApplicationConsts.DOC_NUM_IN_SALE_DOCS);
+			rows = pstmt.executeUpdate();
+			pstmt.close();
+			if (rows==0) {
+				// record not yet exists: it will be inserted...
+				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+				pstmt.setString(1,ApplicationConsts.DOC_NUM_IN_SALE_DOCS);
+				pstmt.setString(2,getManualDocNumInSaleDocs(applicationPars));
+				pstmt.executeUpdate();
+			}
 
 
 
@@ -1699,6 +1712,13 @@ public class ParamsBean  implements Params {
     return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.DOC_PATH);
   }
 
+
+	/**
+	 * @erturn flag for sale doc nums value for progressives
+	 */
+	public final String getManualDocNumInSaleDocs(HashMap applicationPars) {
+		return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.DOC_NUM_IN_SALE_DOCS);
+	}
 
 
   /**

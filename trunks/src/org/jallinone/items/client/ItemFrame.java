@@ -42,6 +42,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import org.jallinone.variants.client.ProductVariantsPanel;
 import org.jallinone.variants.client.ProductVariantsController;
+import org.jallinone.items.spareparts.client.ItemSparePartsPanel;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -117,7 +118,7 @@ public class ItemFrame extends InternalFrame {
   TextControl controlVatDescr = new TextControl();
   LabelControl labelNote = new LabelControl();
   TextAreaControl controlNote = new TextAreaControl();
-  CheckBoxControl checkIsService = new CheckBoxControl();
+  CheckBoxControl controlNoWarehouseMov = new CheckBoxControl();
   LookupController levelController = new LookupController();
   LookupServerDataLocator levelDataLocator = new LookupServerDataLocator();
   TreeServerDataLocator treeLevelDataLocator = new TreeServerDataLocator();
@@ -243,6 +244,8 @@ public class ItemFrame extends InternalFrame {
   LabelControl labelMinStock = new LabelControl();
   NumericControl controlMinStock = new NumericControl();
   private CustomizedControls customizedControls = null;
+	private ItemSparePartsPanel itemSparePartsPanel = new ItemSparePartsPanel(formPanel);
+
 
   public ItemFrame(ItemController controller, boolean productsOnly) {
     try {
@@ -260,7 +263,8 @@ public class ItemFrame extends InternalFrame {
       HashSet pk = new HashSet();
       pk.add("companyCodeSys01ITM01");
       pk.add("itemCodeITM01");
-      formPanel.linkGrid(controller.getParentFrame().getGrid(), pk, true, true, true, navigatorBar);
+			if (controller.getParentFrame()!=null)
+				formPanel.linkGrid(controller.getParentFrame().getGrid(), pk, true, true, true, navigatorBar);
 
       tab.addChangeListener(new ChangeListener() {
 
@@ -310,7 +314,12 @@ public class ItemFrame extends InternalFrame {
                   && tab.getSelectedComponent().equals(billOfMaterialsPanel)) {
             bomTabbedPane.getAltCompsGrid().reloadData();
             bomTabbedPane.getComponentsGrid().reloadData();
-          }
+          } else if (tab.getSelectedComponent() != null
+						     	&& tab.getSelectedComponent().equals(itemSparePartsPanel)) {
+						DetailItemVO vo = (DetailItemVO) formPanel.getVOModel().getValueObject();
+						itemSparePartsPanel.init(vo,false);
+				   }
+
         }
       });
 
@@ -583,9 +592,10 @@ public class ItemFrame extends InternalFrame {
       }
 
 
-
-      HierarchyLevelVO levelVO = (HierarchyLevelVO) controller.getParentFrame().getHierarTreePanel().getSelectedNode().getUserObject();
-      customizedControls = new CustomizedControls(tab, formPanel, levelVO.getProgressiveHie01HIE02());
+			if (controller.getParentFrame()!=null) {
+				HierarchyLevelVO levelVO = (HierarchyLevelVO) controller.getParentFrame().getHierarTreePanel().getSelectedNode().getUserObject();
+				customizedControls = new CustomizedControls(tab, formPanel, levelVO.getProgressiveHie01HIE02());
+			}
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -634,12 +644,12 @@ public class ItemFrame extends InternalFrame {
         tab.remove(getItemVariantsPanel());
         tab.remove(getVariantBarcodesPanel());
         tab.remove(getVariantMinStockPanel());
-        tab.add(getItemVariantsPanel(), 8);
-        tab.add(getVariantBarcodesPanel(), 9);
-        tab.add(getVariantMinStockPanel(), 10);
-        tab.setTitleAt(8, ClientSettings.getInstance().getResources().getResource("variantsPanel"));
-        tab.setTitleAt(9, ClientSettings.getInstance().getResources().getResource("barcodesPanel"));
-        tab.setTitleAt(10, ClientSettings.getInstance().getResources().getResource("min stock"));
+        tab.add(getItemVariantsPanel(), 9);
+        tab.add(getVariantBarcodesPanel(), 10);
+        tab.add(getVariantMinStockPanel(), 11);
+        tab.setTitleAt(9, ClientSettings.getInstance().getResources().getResource("variantsPanel"));
+        tab.setTitleAt(10, ClientSettings.getInstance().getResources().getResource("barcodesPanel"));
+        tab.setTitleAt(11, ClientSettings.getInstance().getResources().getResource("min stock"));
 
 //         tab.setIconAt(8,new ImageIcon(ClientUtils.getImage("colors.gif")));
 //         tab.setIconAt(9,new ImageIcon(ClientUtils.getImage("barcode.gif")));
@@ -770,6 +780,10 @@ public class ItemFrame extends InternalFrame {
       customizedControls.revalidate();
       customizedControls.repaint();
     }
+		else if (tab.getSelectedComponent() != null
+						&& tab.getSelectedComponent().equals(getItemSparePartsPanel())) {
+			getItemSparePartsPanel().init(vo, false);
+		} //    else if (tab.getSelectedIndex()==9) {
   }
 
   /**
@@ -850,13 +864,13 @@ public class ItemFrame extends InternalFrame {
     controlNote.setCanCopy(true);
     controlNote.setLinkLabel(labelNote);
     controlNote.setMaxCharacters(2000);
-    checkIsService.setAttributeName("isServiceITM01");
-    checkIsService.setCanCopy(true);
-    checkIsService.setEnabledOnInsert(true);
-    checkIsService.setEnabledOnEdit(false);
-    checkIsService.setPreferredSize(new java.awt.Dimension(259, 17));
-    checkIsService.setText(ClientSettings.getInstance().getResources().getResource("no warehouse movements"));
-    checkIsService.addItemListener(new ItemFrame_checkIsService_itemAdapter(this));
+    controlNoWarehouseMov.setAttributeName("noWarehouseMovITM01");
+    controlNoWarehouseMov.setCanCopy(true);
+    controlNoWarehouseMov.setEnabledOnInsert(true);
+    controlNoWarehouseMov.setEnabledOnEdit(false);
+    controlNoWarehouseMov.setPreferredSize(new java.awt.Dimension(259, 17));
+    controlNoWarehouseMov.setText(ClientSettings.getInstance().getResources().getResource("no warehouse movements"));
+    controlNoWarehouseMov.addItemListener(new ItemFrame_controlNoWarehouseMov_itemAdapter(this));
     controlItemCode.setAttributeName("itemCodeITM01");
     controlItemCode.setCanCopy(false);
     controlItemCode.setLinkLabel(labelItemCode);
@@ -1255,6 +1269,7 @@ public class ItemFrame extends InternalFrame {
     pricesButtonsPanel.add(exportButton2, null);
     pricesButtonsPanel.add(navigatorBar2, null);
 
+		tab.add(itemSparePartsPanel, "itemSparePartsPanel");
     tab.add(variantsPanel, "variantsPanel");
     tab.add(barcodesPanel, "barcodesPanel");
     tab.add(minStocksPanel, "minStocksPanel");
@@ -1271,9 +1286,10 @@ public class ItemFrame extends InternalFrame {
     tab.setTitleAt(5, ClientSettings.getInstance().getResources().getResource("bookedItemsPanel"));
     tab.setTitleAt(6, ClientSettings.getInstance().getResources().getResource("orderedItemsPanel"));
     tab.setTitleAt(7, ClientSettings.getInstance().getResources().getResource("billofmaterial"));
-    tab.setTitleAt(8, ClientSettings.getInstance().getResources().getResource("variantsPanel"));
-    tab.setTitleAt(9, ClientSettings.getInstance().getResources().getResource("barcodesPanel"));
-    tab.setTitleAt(10, ClientSettings.getInstance().getResources().getResource("min stock"));
+		tab.setTitleAt(8, ClientSettings.getInstance().getResources().getResource("item spare parts"));
+    tab.setTitleAt(9, ClientSettings.getInstance().getResources().getResource("variantsPanel"));
+    tab.setTitleAt(10, ClientSettings.getInstance().getResources().getResource("barcodesPanel"));
+    tab.setTitleAt(11, ClientSettings.getInstance().getResources().getResource("min stock"));
 
     tab.repaint();
     repaint();
@@ -1302,7 +1318,7 @@ public class ItemFrame extends InternalFrame {
     pricesGrid.getColumnContainer().add(colPriceStartDate, null);
     pricesGrid.getColumnContainer().add(colPriceEndDate, null);
     billOfMaterialsPanel.add(bomTabbedPane, BorderLayout.CENTER);
-    varsPanel.add(checkIsService);
+    varsPanel.add(controlNoWarehouseMov);
     varsPanel.add(checkBoxControl1);
     varsPanel.add(checkBoxControl2, null);
     varsPanel.add(checkBoxControl3, null);
@@ -1496,7 +1512,7 @@ public class ItemFrame extends InternalFrame {
     setMinStockControl();
   }
 
-  void checkIsService_itemStateChanged(ItemEvent e) {
+  void controlNoWarehouseMov_itemStateChanged(ItemEvent e) {
     setTabControl();
   }
 
@@ -1543,9 +1559,16 @@ public class ItemFrame extends InternalFrame {
   }
 
   private void setTabControl() {
-    tab.setEnabledAt(5, !checkIsService.isSelected());
-    tab.setEnabledAt(6, !checkIsService.isSelected());
-    tab.setEnabledAt(10, !checkIsService.isSelected());
+    tab.setEnabledAt(5, !controlNoWarehouseMov.isSelected());
+    tab.setEnabledAt(6, !controlNoWarehouseMov.isSelected());
+		tab.setEnabledAt(7, !controlNoWarehouseMov.isSelected());
+		tab.setEnabledAt(8, !controlNoWarehouseMov.isSelected());
+		tab.setEnabledAt(9, !controlNoWarehouseMov.isSelected());
+		tab.setEnabledAt(10, !controlNoWarehouseMov.isSelected());
+    tab.setEnabledAt(11, !controlNoWarehouseMov.isSelected());
+  }
+  public ItemSparePartsPanel getItemSparePartsPanel() {
+    return itemSparePartsPanel;
   }
 }
 
@@ -1666,16 +1689,16 @@ class ItemFrame_checkBoxControl5_itemAdapter implements java.awt.event.ItemListe
   }
 }
 
-class ItemFrame_checkIsService_itemAdapter implements java.awt.event.ItemListener {
+class ItemFrame_controlNoWarehouseMov_itemAdapter implements java.awt.event.ItemListener {
 
   ItemFrame adaptee;
 
-  ItemFrame_checkIsService_itemAdapter(ItemFrame adaptee) {
+  ItemFrame_controlNoWarehouseMov_itemAdapter(ItemFrame adaptee) {
     this.adaptee = adaptee;
   }
 
   public void itemStateChanged(ItemEvent e) {
-    adaptee.checkIsService_itemStateChanged(e);
+    adaptee.controlNoWarehouseMov_itemStateChanged(e);
   }
 }
 

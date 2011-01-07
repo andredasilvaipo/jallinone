@@ -33,7 +33,7 @@ import java.math.BigDecimal;
  */
 public class ApplicationConsts {
 
-  public static final int DB_VERSION = 7;
+  public static final int DB_VERSION = 8;
 
   public static final String DO_NOT_ADD_ENABLED = "DO_NOT_ADD_ENABLED";
 
@@ -49,6 +49,7 @@ public class ApplicationConsts {
   public static final String DOC_PATH = "DOC_PATH";
   public static final String IMAGE_PATH = "IMAGE_PATH";
   public static final String INCREMENT_VALUE = "INCREMENT_VALUE";
+	public static final String DOC_NUM_IN_SALE_DOCS = "DOC_NUM_IN_SALE_DOCS";
 
 	public static final String NEG_INVCORR_GOOD_ITM = "NEG_INVCORR_GOOD_ITM";
 	public static final String POS_INVCORR_GOOD_ITM = "POS_INVCORR_GOOD_ITM";
@@ -374,5 +375,7 @@ public class ApplicationConsts {
 	public static final String BLOCK_SIZE = "BLOCK_SIZE";
 
 	public static final String ID = "ID";
+	public static final String LEVEL = "LEVEL";
+	public static final String SHOW_ONLY_MOVABLE_ITEMS = "SHOW_ONLY_MOVABLE_ITEMS";
 
 }

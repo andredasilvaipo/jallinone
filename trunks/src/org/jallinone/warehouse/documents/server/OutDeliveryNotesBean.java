@@ -1161,7 +1161,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
           " EXISTS(SELECT * FROM DOC02_SELLING_ITEMS WHERE "+
           " COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? "+
           " GROUP BY COMPANY_CODE_SYS01,DOC_TYPE,DOC_YEAR,DOC_NUMBER "+
-          " HAVING SUM(QTY-OUT_QTY)=0 )";
+          " HAVING SUM(QTY-OUT_QTY)=0 )"; // used to close delivery note requests documents
 
       pstmt1 = conn.prepareStatement(sql1);
       pstmt2 = conn.prepareStatement(sql2);
@@ -1233,6 +1233,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
         else
           rset1.close();
 
+			  // close delivery note requests document...
         pstmt3.setString(1,ApplicationConsts.CLOSED);
         pstmt3.setString(2,vo.getCompanyCodeSys01DOC10());
         pstmt3.setString(3,vo.getDocTypeDoc01DOC10());
@@ -1787,7 +1788,8 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
 							 "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM07,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM12,"+
 							 "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM08,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM13,"+
 							 "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM09,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM14,"+
-							 "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM10,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM15 "+
+							 "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM10,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM15, "+
+							 "ITM01_ITEMS.NO_WAREHOUSE_MOV "+
 							 "from DOC02_SELLING_ITEMS,ITM01_ITEMS,SYS10_TRANSLATIONS where "+
 							 "DOC02_SELLING_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
 							 "DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
@@ -1827,6 +1829,8 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
 					 attribute2dbField.put("variantCodeItm14DOC02","DOC02_SELLING_ITEMS.VARIANT_CODE_ITM14");
 					 attribute2dbField.put("variantTypeItm10DOC02","DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM10");
 					 attribute2dbField.put("variantCodeItm15DOC02","DOC02_SELLING_ITEMS.VARIANT_CODE_ITM15");
+
+					 attribute2dbField.put("noWarehouseMovITM01","ITM01_ITEMS.NO_WAREHOUSE_MOV");
 
 					 values.clear();
 					 values.add(serverLanguageId);
