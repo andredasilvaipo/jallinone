@@ -1430,6 +1430,7 @@
   <object key="subtotal" value="Ukupno" />
   <object key="discount" value="Popust" />
   <object key="payed" value="Pla&#263;eno" />
+  <object key="discount on total value" value="Discount (on total)" />
   <object key="change" value="Izvratiti" />
   <object key="enter" value="Zabilje&#382;iti" />
   <object key="cancel" value="Napustiti" />

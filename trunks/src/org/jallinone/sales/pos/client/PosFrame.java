@@ -119,17 +119,21 @@ public class PosFrame extends JFrame {
   GridBagLayout gridBagLayout5 = new GridBagLayout();
   LabelControl labelSubTot = new LabelControl();
   LabelControl labelDisc = new LabelControl();
-  LabelControl labelPayed = new LabelControl();
+  LabelControl labelPaid = new LabelControl();
   LabelControl labelTotal = new LabelControl();
   LabelControl labelChange = new LabelControl();
   LabelControl labelQty = new LabelControl();
   LabelControl labelItemPercDiscount = new LabelControl();
   LabelControl labelItemValDiscount = new LabelControl();
+  LabelControl labelValDiscountTotal = new LabelControl();
+  LabelControl labelValPaidTotal = new LabelControl();
   NumericControl controlQty = new NumericControl();
   CurrencyControl controlItemValDiscount = new CurrencyControl();
+  CurrencyControl controlValDiscountTotal = new CurrencyControl();
+  CurrencyControl controlValPaidTotal = new CurrencyControl();
   CurrencyControl controlSubtotal = new CurrencyControl();
   CurrencyControl controlDiscount = new CurrencyControl();
-  CurrencyControl controlPayed = new CurrencyControl();
+  CurrencyControl controlPaid = new CurrencyControl();
   CurrencyControl controlTotal = new CurrencyControl();
   CurrencyControl controlChange = new CurrencyControl();
   GenericButton buttonCustomer = new GenericButton();
@@ -139,6 +143,8 @@ public class PosFrame extends JFrame {
   GenericButton buttonDel = new GenericButton();
   GenericButton buttonQty = new GenericButton();
   GenericButton buttonDiscount = new GenericButton();
+  GenericButton buttonDiscountTotal = new GenericButton();
+  GenericButton buttonPaidTotal = new GenericButton();
   GenericButton buttonStart = new GenericButton();
   GenericButton buttonClose = new GenericButton();
   LookupController barCodeController = new LookupController();
@@ -151,7 +157,9 @@ public class PosFrame extends JFrame {
   public static final int OTHER_COMMANDS = 2;
   public static final int INS_QTY = 3;
   public static final int INS_DISCOUNT = 4;
+  public static final int INS_DISCOUNT_TOTAL = 41;
   public static final int INS_CUSTOMER = 5;
+  public static final int INS_PAID_TOTAL = 6;
   private int state = START_SALE;
 
   private ArrayList rows = new ArrayList();
@@ -298,10 +306,10 @@ public class PosFrame extends JFrame {
     controlDiscount.setDecimalSymbol(currVO.getDecimalSymbolREG03().charAt(0));
     controlDiscount.setGroupingSymbol(currVO.getThousandSymbolREG03().charAt(0));
     controlDiscount.setDecimals(currVO.getDecimalsREG03().intValue());
-    controlPayed.setCurrencySymbol(currVO.getCurrencySymbolREG03());
-    controlPayed.setDecimalSymbol(currVO.getDecimalSymbolREG03().charAt(0));
-    controlPayed.setGroupingSymbol(currVO.getThousandSymbolREG03().charAt(0));
-    controlPayed.setDecimals(currVO.getDecimalsREG03().intValue());
+    controlPaid.setCurrencySymbol(currVO.getCurrencySymbolREG03());
+    controlPaid.setDecimalSymbol(currVO.getDecimalSymbolREG03().charAt(0));
+    controlPaid.setGroupingSymbol(currVO.getThousandSymbolREG03().charAt(0));
+    controlPaid.setDecimals(currVO.getDecimalsREG03().intValue());
     controlSubtotal.setCurrencySymbol(currVO.getCurrencySymbolREG03());
     controlSubtotal.setDecimalSymbol(currVO.getDecimalSymbolREG03().charAt(0));
     controlSubtotal.setGroupingSymbol(currVO.getThousandSymbolREG03().charAt(0));
@@ -315,6 +323,14 @@ public class PosFrame extends JFrame {
     controlItemValDiscount.setDecimalSymbol(currVO.getDecimalSymbolREG03().charAt(0));
     controlItemValDiscount.setGroupingSymbol(currVO.getThousandSymbolREG03().charAt(0));
     controlItemValDiscount.setDecimals(currVO.getDecimalsREG03().intValue());
+    controlValDiscountTotal.setCurrencySymbol(currVO.getCurrencySymbolREG03());
+    controlValDiscountTotal.setDecimalSymbol(currVO.getDecimalSymbolREG03().charAt(0));
+    controlValDiscountTotal.setGroupingSymbol(currVO.getThousandSymbolREG03().charAt(0));
+    controlValDiscountTotal.setDecimals(currVO.getDecimalsREG03().intValue());
+    controlValPaidTotal.setCurrencySymbol(currVO.getCurrencySymbolREG03());
+    controlValPaidTotal.setDecimalSymbol(currVO.getDecimalSymbolREG03().charAt(0));
+    controlValPaidTotal.setGroupingSymbol(currVO.getThousandSymbolREG03().charAt(0));
+    controlValPaidTotal.setDecimals(currVO.getDecimalsREG03().intValue());
     colTot.setCurrencySymbol(currVO.getCurrencySymbolREG03());
     colTot.setDecimals(currVO.getDecimalsREG03().intValue());
     colTotDisc.setCurrencySymbol(currVO.getCurrencySymbolREG03());
@@ -699,6 +715,18 @@ public class PosFrame extends JFrame {
           buttonBack_actionPerformed(null);
       }
     });
+    controlValDiscountTotal.addKeyListener(new KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode()==e.VK_ESCAPE && buttonBack.isEnabled())
+          buttonBack_actionPerformed(null);
+      }
+    });
+    controlValPaidTotal.addKeyListener(new KeyAdapter() {
+      public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode()==e.VK_ESCAPE && buttonBack.isEnabled())
+          buttonBack_actionPerformed(null);
+      }
+    });
 
 
   } // end init method
@@ -1028,6 +1056,8 @@ public class PosFrame extends JFrame {
 
     controlQty.setFont(new java.awt.Font("Dialog", 1, 14));
     controlItemValDiscount.setFont(new java.awt.Font("Dialog", 1, 14));
+    controlValDiscountTotal.setFont(new java.awt.Font("Dialog", 1, 14));
+    controlValPaidTotal.setFont(new java.awt.Font("Dialog", 1, 14));
 
     controlBarcode.setMaxCharacters(255);
     colItemDescr.setColumnName("descriptionSYS10");
@@ -1047,7 +1077,7 @@ public class PosFrame extends JFrame {
     totPanel.setLayout(gridBagLayout5);
     labelSubTot.setLabel("subtotal");
     labelDisc.setLabel("discount");
-    labelPayed.setLabel("payed");
+    labelPaid.setLabel("payed");
     labelTotal.setFont(new java.awt.Font("Dialog", 1, 14));
     labelTotal.setLabel("total");
     labelChange.setFont(new java.awt.Font("Dialog", 1, 14));
@@ -1057,9 +1087,9 @@ public class PosFrame extends JFrame {
     controlDiscount.setColumns(15);
     controlDiscount.setEnabled(false);
     controlDiscount.addFocusListener(new PosFrame_controlDiscount_focusAdapter(this));
-    controlPayed.setColumns(15);
-    controlPayed.setEnabled(false);
-    controlPayed.addFocusListener(new PosFrame_controlPayed_focusAdapter(this));
+    controlPaid.setColumns(15);
+    controlPaid.setEnabled(false);
+    controlPaid.addFocusListener(new PosFrame_controlPaid_focusAdapter(this));
     controlTotal.setColumns(15);
     controlTotal.setFont(new java.awt.Font("Dialog", 1, 14));
     controlTotal.setEnabled(false);
@@ -1100,6 +1130,12 @@ public class PosFrame extends JFrame {
     buttonDiscount.setIcon(new ImageIcon(ClientUtils.getImage("coins.gif")));
     buttonDiscount.setMinimumSize(new Dimension(80,50));
     buttonDiscount.setBorder(BorderFactory.createEmptyBorder());
+
+    buttonDiscountTotal.setButtonBehavior(Consts.BUTTON_TEXT_ONLY);
+    buttonDiscountTotal.setText("discount");
+
+    buttonPaidTotal.setButtonBehavior(Consts.BUTTON_TEXT_ONLY);
+    buttonPaidTotal.setText("payed");
 
     buttonCustomer.setButtonBehavior(Consts.BUTTON_IMAGE_AND_TEXT);
     buttonCustomer.setEnabled(true);
@@ -1142,6 +1178,8 @@ public class PosFrame extends JFrame {
     buttonDel.addActionListener(new PosFrame_buttonDel_actionAdapter(this));
     buttonQty.addActionListener(new PosFrame_buttonQty_actionAdapter(this));
     buttonDiscount.addActionListener(new PosFrame_buttonDiscount_actionAdapter(this));
+    buttonDiscountTotal.addActionListener(new PosFrame_buttonDiscountTotal_actionAdapter(this));
+    buttonPaidTotal.addActionListener(new PosFrame_buttonPaidTotal_actionAdapter(this));
     buttonClose.addActionListener(new PosFrame_buttonClose_actionAdapter(this));
     controlPayDescr.setEnabled(false);
     suggstmtPanel.setLayout(borderLayout2);
@@ -1213,15 +1251,19 @@ public class PosFrame extends JFrame {
     labelQty.setFont(new java.awt.Font("Dialog", 1, 14));
     labelQty.setFont(new java.awt.Font("Dialog", 1, 14));
     labelItemValDiscount.setFont(new java.awt.Font("Dialog", 1, 14));
+    labelValDiscountTotal.setFont(new java.awt.Font("Dialog", 1, 14));
+    labelValPaidTotal.setFont(new java.awt.Font("Dialog", 1, 14));
     labelItemPercDiscount.setText("discount perc");
     labelItemValDiscount.setText("discount value");
+    labelValDiscountTotal.setText("discount on total value");
+    labelValPaidTotal.setText("payed");
     itemsPanel.add(voidPanel,     new GridBagConstraints(3, 0, 1, 1, 1.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
     totPanel.add(labelSubTot,   new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    totPanel.add(labelDisc,   new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+    totPanel.add(buttonDiscountTotal,   new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    totPanel.add(labelPayed,   new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+    totPanel.add(buttonPaidTotal,   new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     totPanel.add(labelTotal,   new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
@@ -1233,7 +1275,7 @@ public class PosFrame extends JFrame {
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     totPanel.add(panControlDiscountPerc,   new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    totPanel.add(controlPayed,   new GridBagConstraints(1, 4, 2, 1, 0.0, 0.0
+    totPanel.add(controlPaid,   new GridBagConstraints(1, 4, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     totPanel.add(controlTotal,   new GridBagConstraints(1, 5, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
@@ -1422,6 +1464,64 @@ public class PosFrame extends JFrame {
 
       });
     }
+    else if (state==INS_DISCOUNT_TOTAL) {
+
+      removeItemsPanelContent();
+      itemsPanel.add(labelValDiscountTotal,          new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+              ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+      itemsPanel.add(controlValDiscountTotal,        new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
+                  ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 0, 0));
+      itemsPanel.revalidate();
+      itemsPanel.repaint();
+
+      buttonBack.setEnabled(true);
+      buttonDel.setEnabled(false);
+      buttonQty.setEnabled(false);
+      buttonDiscount.setEnabled(false);
+      buttonCustomer.setEnabled(false);
+      buttonClose.setEnabled(false);
+      buttonExit.setEnabled(false);
+
+      controlBarcode.setEnabled(false);
+      
+      SwingUtilities.invokeLater(new Runnable() {
+
+        public void run() {
+          controlValDiscountTotal.requestFocus();
+        }
+
+      });
+    }
+    else if (state==INS_PAID_TOTAL) {
+
+      removeItemsPanelContent();
+      itemsPanel.add(labelValPaidTotal,          new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+              ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+      itemsPanel.add(controlValPaidTotal,        new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
+                  ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 0, 0));
+      itemsPanel.revalidate();
+      itemsPanel.repaint();
+
+      buttonBack.setEnabled(true);
+      buttonDel.setEnabled(false);
+      buttonQty.setEnabled(false);
+      buttonDiscount.setEnabled(false);
+      buttonCustomer.setEnabled(false);
+      buttonClose.setEnabled(false);
+      buttonExit.setEnabled(false);
+
+      controlBarcode.setEnabled(false);
+
+      SwingUtilities.invokeLater(new Runnable() {
+
+        public void run() {
+          PosFrame.this.updateTotalFromDiscount();
+          controlValPaidTotal.setValue(controlTotal.getValue());
+          controlValPaidTotal.requestFocus();
+        }
+
+      });
+    }
     else if (state==INS_CUSTOMER) {
 
       removeItemsPanelContent();
@@ -1477,33 +1577,29 @@ public class PosFrame extends JFrame {
   }
 
 
-  void controlPayed_focusLost(FocusEvent e) {
+  void controlPaid_focusLost(FocusEvent e) {
+    updateTotalFromPaid();
+  }
+
+  void updateTotalFromPaid() {
     BigDecimal total = controlTotal.getBigDecimal();
-    BigDecimal payed = controlPayed.getBigDecimal();
-    if (total!=null && payed!=null) {
-      if (payed.doubleValue()<total.doubleValue())
-        controlPayed.setValue(null);
-      else
-        controlChange.setValue(payed.subtract(total));
+    BigDecimal paid = controlPaid.getBigDecimal();
+    if (total != null && paid != null) {
+      if (paid.doubleValue() < total.doubleValue()) {
+        controlPaid.setValue(null);
+        controlChange.setValue(null);
+      } else {
+        controlChange.setValue(paid.subtract(total));
+      }
     }
   }
 
   void controlDiscount_focusLost(FocusEvent e) {
-    System.out.println("controlDiscount_focusLost");
-    BigDecimal subtotal = controlSubtotal.getBigDecimal();
-    BigDecimal discount = controlDiscount.getBigDecimal();
-    if (subtotal!=null && discount!=null) {
-      System.out.println("res: "+discount.doubleValue()/subtotal.doubleValue()*100);
-      controlDiscountPerc.setValue(discount.doubleValue()/subtotal.doubleValue()*100);
-      //controlDiscountPerc.setValue(discount.divide(subtotal).multiply(new BigDecimal(100)));
-    } else {
-      controlDiscountPerc.setValue(null);
-    }
-    updateTotal();
+    updateDiscountPerc();
+    updateTotalFromDiscount();
   }
 
   void controlDiscountPerc_focusLost(FocusEvent e) {
-    System.out.println("controlDiscountPerc_focusLost");
     BigDecimal subtotal = controlSubtotal.getBigDecimal();
     BigDecimal discountPerc = controlDiscountPerc.getBigDecimal();
     if (discountPerc!=null && subtotal!=null) {
@@ -1511,10 +1607,20 @@ public class PosFrame extends JFrame {
     } else {
       controlDiscount.setValue(null);
     }
-    updateTotal();
+    updateTotalFromDiscount();
   }
 
-  private void updateTotal() {
+  private void updateDiscountPerc() {
+    BigDecimal subtotal = controlSubtotal.getBigDecimal();
+    BigDecimal discount = controlDiscount.getBigDecimal();
+    if (subtotal!=null && discount!=null) {
+      controlDiscountPerc.setValue(discount.doubleValue()/subtotal.doubleValue()*100);
+    } else {
+      controlDiscountPerc.setValue(null);
+    }
+  }
+
+  private void updateTotalFromDiscount() {
     BigDecimal subtotal = controlSubtotal.getBigDecimal();
     BigDecimal discount = controlDiscount.getBigDecimal();
     if (subtotal!=null && discount!=null) {
@@ -1552,12 +1658,12 @@ public class PosFrame extends JFrame {
       discount = new BigDecimal(0);
 
     BigDecimal total = controlTotal.getBigDecimal();
-    BigDecimal payed = controlPayed.getBigDecimal();
-    if (total!=null && payed!=null) {
-      if (payed.doubleValue()<total.doubleValue())
-        controlPayed.setValue(null);
+    BigDecimal paid = controlPaid.getBigDecimal();
+    if (total!=null && paid!=null) {
+      if (paid.doubleValue()<total.doubleValue())
+        controlPaid.setValue(null);
       else
-        controlChange.setValue(payed.subtract(total));
+        controlChange.setValue(paid.subtract(total));
     }
 
     detailSaleDocVO.setAllowanceDOC01(discount);
@@ -1585,6 +1691,24 @@ public class PosFrame extends JFrame {
         ClientSettings.getInstance().getResources().getResource("yes"),
         ClientSettings.getInstance().getResources().getResource("no")
     };
+
+    updateTotalFromDiscount();
+    updateTotalFromPaid();
+    if (controlTotal.getBigDecimal().floatValue() < 0) {
+      JOptionPane.showMessageDialog(
+              this,
+              ClientSettings.getInstance().getResources().getResource("negative total"),
+              ClientSettings.getInstance().getResources().getResource("sale closing"),
+              JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+
+    if (controlPaid.getBigDecimal() == null || controlPaid.getBigDecimal().floatValue() < 0) {
+      state = INS_PAID_TOTAL;
+      updateContext();
+      return;
+    }
+
     if (JOptionPane.showOptionDialog(
         this,
         ClientSettings.getInstance().getResources().getResource("confirm sale closing"),
@@ -1654,7 +1778,7 @@ public class PosFrame extends JFrame {
         invoiceVO.setDocTypeDoc01DOC01(detailSaleDocVO.getDocTypeDOC01());
         invoiceVO.setDocYearDoc01DOC01(detailSaleDocVO.getDocYearDOC01());
         invoiceVO.setDocNumberDoc01DOC01(detailSaleDocVO.getDocNumberDOC01());
-        invoiceVO.setDocSequenceDoc01DOC01(detailSaleDocVO.getDocSequenceDOC01());
+        invoiceVO.setDocSequenceDoc01DOC01(((BigDecimal)((VOResponse)res).getVo()));
         invoiceVO.setDocYearDOC01(new BigDecimal(cal.get(cal.YEAR)));
         invoiceVO.setDocDateDOC01(new java.sql.Date(System.currentTimeMillis()));
         invoiceVO.setDocTypeDOC01(ApplicationConsts.SALE_INVOICE_FROM_SD_DOC_TYPE);
@@ -1698,8 +1822,8 @@ public class PosFrame extends JFrame {
     controlDiscount.setEnabled(false);
     controlDiscountPerc.setValue(null);
     controlDiscountPerc.setEnabled(false);
-    controlPayed.setValue(null);
-    controlPayed.setEnabled(false);
+    controlPaid.setValue(null);
+    controlPaid.setEnabled(false);
     controlTotal.setValue(null);
     controlSubtotal.setValue(null);
     controlChange.setValue(null);
@@ -1735,6 +1859,16 @@ public class PosFrame extends JFrame {
     updateContext();
   }
 
+  void buttonDiscountTotal_actionPerformed(ActionEvent e) {
+    state = INS_DISCOUNT_TOTAL;
+    updateContext();
+  }
+
+  void buttonPaidTotal_actionPerformed(ActionEvent e) {
+    state = INS_PAID_TOTAL;
+    updateContext();
+  }
+
   void buttonQty_actionPerformed(ActionEvent e) {
     state = INS_QTY;
     updateContext();
@@ -1765,7 +1899,8 @@ public class PosFrame extends JFrame {
       updateContext();
       this.requestFocus();
     }
-    else if (state==OTHER_COMMANDS || state==INS_QTY || state==INS_DISCOUNT) {
+    else if (state==OTHER_COMMANDS || state==INS_QTY || state==INS_DISCOUNT || 
+            state==INS_DISCOUNT_TOTAL || state==INS_PAID_TOTAL) {
       controlBarcode.setEnabled(true);
       state = INS_BARCODE;
       updateContext();
@@ -1786,7 +1921,7 @@ public class PosFrame extends JFrame {
     controlBarcode.setEnabled(true);
     controlDiscount.setEnabled(true);
     controlDiscountPerc.setEnabled(true);
-    controlPayed.setEnabled(true);
+    controlPaid.setEnabled(true);
     state = INS_BARCODE;
     updateContext();
 
@@ -1851,8 +1986,26 @@ public class PosFrame extends JFrame {
       state = INS_BARCODE;
       updateContext();
     }
-
-
+    else if (controlValDiscountTotal.isVisible() &&
+             controlValDiscountTotal.getBigDecimal()!=null) {
+      controlBarcode.setEnabled(true);
+      controlDiscount.setValue(controlValDiscountTotal.getBigDecimal());
+      updateDiscountPerc();
+      updateTotalFromDiscount();
+      controlValDiscountTotal.setValue(null);
+      state = INS_BARCODE;
+      updateContext();
+    }
+    else if (controlValPaidTotal.isVisible() &&
+             controlValPaidTotal.getBigDecimal()!=null) {
+      controlBarcode.setEnabled(true);
+      controlPaid.setValue(controlValPaidTotal.getBigDecimal());
+      updateTotalFromPaid();
+      controlValPaidTotal.setValue(null);
+      state = OTHER_COMMANDS;
+      updateContext();
+      buttonClose.doClick();
+    }
   }
 
   void bc_actionPerformed(ActionEvent e) {
@@ -2012,14 +2165,14 @@ class PosFrame_buttonExit_actionAdapter implements java.awt.event.ActionListener
   }
 }
 
-class PosFrame_controlPayed_focusAdapter extends java.awt.event.FocusAdapter {
+class PosFrame_controlPaid_focusAdapter extends java.awt.event.FocusAdapter {
   PosFrame adaptee;
 
-  PosFrame_controlPayed_focusAdapter(PosFrame adaptee) {
+  PosFrame_controlPaid_focusAdapter(PosFrame adaptee) {
     this.adaptee = adaptee;
   }
   public void focusLost(FocusEvent e) {
-    adaptee.controlPayed_focusLost(e);
+    adaptee.controlPaid_focusLost(e);
   }
 }
 
@@ -2075,6 +2228,28 @@ class PosFrame_buttonDiscount_actionAdapter implements java.awt.event.ActionList
   }
   public void actionPerformed(ActionEvent e) {
     adaptee.buttonDiscount_actionPerformed(e);
+  }
+}
+
+class PosFrame_buttonDiscountTotal_actionAdapter implements java.awt.event.ActionListener {
+  PosFrame adaptee;
+
+  PosFrame_buttonDiscountTotal_actionAdapter(PosFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.buttonDiscountTotal_actionPerformed(e);
+  }
+}
+
+class PosFrame_buttonPaidTotal_actionAdapter implements java.awt.event.ActionListener {
+  PosFrame adaptee;
+
+  PosFrame_buttonPaidTotal_actionAdapter(PosFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.buttonPaidTotal_actionPerformed(e);
   }
 }
 

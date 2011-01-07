@@ -1430,6 +1430,7 @@
   <object key="subtotal" value="Zwischensumme" />
   <object key="discount" value="Rabatt" />
   <object key="payed" value="Bezahlt" />
+  <object key="discount on total value" value="Discount (on total)" />
   <object key="change" value="&#xC4;ndern" />
   <object key="enter" value="Eingabe" />
   <object key="cancel" value="Abbr." />

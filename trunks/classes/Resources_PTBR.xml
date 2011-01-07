@@ -1364,6 +1364,7 @@
   <object key="6 close tooltip" value="Close current retail sale" />
   <object key="variantDesc" value="Variant description" />
   <object key="payed" value="Payed" />
+  <object key="discount on total value" value="Discount (on total)" />
   <object key="barcode" value="Barcode" />
   <object key="serialNumbers" value="Serial numbers" />
   <object key="confirm sale closing" value="Confirm sale closing?" />
