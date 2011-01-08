@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+    <!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
+    "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+	
+	
+	<web-app>
+	  <context-param>
+	      <param-name>beansFactory</param-name>
+		  <param-value>org.jallinone.commons.server.MuleBeansFactory</param-value>
+	      <!--<param-value>org.jallinone.commons.server.SimpleBeansFactory</param-value>-->
+	  </context-param> 
+	  <context-param>
+	      <param-name>org.mule.config</param-name>
+		  <param-value>conf/jallinone.xml</param-value>
+	  </context-param> 
+	  <context-param>
+	      <param-name>muleURL</param-name>
+		  <param-value>http://localhost:8777/services/</param-value>
+	  </context-param> 
+	  <context-param>
+	      <param-name>loggingInterceptorLevel</param-name>
+		  <param-value>0</param-value>
+	  </context-param> 	  
+	  <context-param>
+		<param-name>log4jExposeWebAppRoot</param-name>
+		<param-value>false</param-value>
+	  </context-param>
+	  <context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/classes/log4j.properties</param-value>
+	  </context-param>
+	  
+      <servlet>
+        <servlet-name>controller</servlet-name>
+        <servlet-class>org.openswing.swing.server.Controller</servlet-class>
+	    <init-param>
+	      <param-name>actionClasses</param-name>
+	      <param-value>org.jallinone.commons.server.ApplicationActionClasses</param-value>
+	    </init-param>
+	    <init-param>
+	      <param-name>connectionSource</param-name>
+	      <param-value>org.openswing.swing.server.PoolerConnectionSource</param-value>
+	    </init-param>
+	    <init-param>
+	      <param-name>resourceFactory</param-name>
+	      <param-value>org.jallinone.commons.server.XMLResources</param-value>
+	    </init-param>
+	    <init-param>
+	      <param-name>sessionIdGenerator</param-name>
+	      <param-value>org.openswing.swing.server.DefaultSessionIdGenerator</param-value>
+	    </init-param>
+	    <init-param>
+	      <param-name>logger</param-name>
+	      <param-value>org.openswing.swing.logger.server.ConsoleLogger</param-value>
+	    </init-param>
+	    <init-param>
+	      <param-name>controllerCallbacks</param-name>
+	      <param-value>org.jallinone.commons.server.ApplicationControllerCallbacks</param-value>
+	    </init-param>
+	    <init-param>
+	      <param-name>suppressInitPoolerError</param-name>
+	      <param-value>true</param-value>
+	    </init-param>
+	    <init-param>
+		  <param-name>alwaysAvailableRequests</param-name>
+		  <param-value>getBeansFactoryName</param-value>
+	    </init-param>
+	    <load-on-startup>2</load-on-startup>
+      </servlet>
+      <servlet>
+           <servlet-name>JnlpDownloadServlet</servlet-name>
+           <servlet-class>com.sun.javaws.servlet.JnlpDownloadServlet</servlet-class>
+      </servlet>
+
+ <!-- uncomment this lines if Mule server is not embedded with JAllInOne web app 
+      <servlet>
+           <servlet-name>muleServlet</servlet-name>
+           <servlet-class>org.mule.tranport.servlet.MuleReceiverServlet</servlet-class>
+		   <load-on-startup>1</load-on-startup>
+      </servlet>
+ -->
+
+      <servlet-mapping>
+            <servlet-name>controller</servlet-name>
+            <url-pattern>controller</url-pattern>
+      </servlet-mapping>
+      <servlet-mapping>
+            <servlet-name>JnlpDownloadServlet</servlet-name>
+            <url-pattern>*.jnlp</url-pattern>
+      </servlet-mapping>
+<!-- uncomment this lines if Mule server is not embedded with JAllInOne web app 	  
+      <servlet-mapping>
+            <servlet-name>muleServlet</servlet-name>
+            <url-pattern>/services/*</url-pattern>
+      </servlet-mapping>
+-->
+	  
+	  <!-- comment these lines if Mule server is not embedded with JAllInOne web app -->
+	  <listener>	
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	  </listener>	  
+	  <listener>
+		<listener-class>org.mule.config.builders.MuleXmlBuilderContextListener</listener-class>
+	  </listener>
+	  
+    </web-app>
