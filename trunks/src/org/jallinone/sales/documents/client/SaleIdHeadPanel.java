@@ -104,10 +104,15 @@ public class SaleIdHeadPanel extends JPanel {
       docRefController.setPreferredWidthColumn("docStateDOC01",60);
       docRefController.setPreferredWidthColumn("docTypeDOC01",60);
       docRefController.setPreferredWidthColumn("docYearDOC01",60);
-      docRefController.setPreferredWidthColumn("docSequenceDOC01",80);
+      docRefController.setPreferredWidthColumn("docSequenceDOC01",90);
       docRefController.setPreferredWidthColumn("name_1REG04",150);
       docRefController.setPreferredWidthColumn("name_2REG04",140);
       docRefController.setPreferredWidthColumn("docDateDOC01",80);
+
+	     docRefController.setSortedColumn("companyCodeSys01DOC01","ASC",1);
+			 docRefController.setSortedColumn("docTypeDOC01","ASC",2);
+			 docRefController.setSortedColumn("docYearDOC01","ASC",3);
+			 docRefController.setSortedColumn("docSequenceDOC01","ASC",4);
 
       docRefController.setVisibleColumn("companyCodeSys01DOC01", true);
       docRefController.setVisibleColumn("docTypeDOC01", true);
@@ -127,9 +132,15 @@ public class SaleIdHeadPanel extends JPanel {
         public void beforeLookupAction(ValueObject parentVO) {
           docRefDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_TYPE,controlDocTypeRef.getValue());
           docRefDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_TYPE,controlDocTypeRef.getValue());
-					// filter sale documents having state confirmed, i.e. not yet invoiced...
-          docRefDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CONFIRMED);
-          docRefDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CONFIRMED);
+					// filter sale documents having state confirmed, i.e. not yet invoiced, except for sale desk docs...
+					if (ApplicationConsts.SALE_DESK_DOC_TYPE.equals(controlDocTypeRef.getValue())) {
+						docRefDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CLOSED);
+						docRefDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CLOSED);
+					}
+					else {
+						docRefDataLocator.getLookupFrameParams().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CONFIRMED);
+						docRefDataLocator.getLookupValidationParameters().put(ApplicationConsts.DOC_STATE,ApplicationConsts.CONFIRMED);
+					}
         }
 
         public void forceValidate() {}
