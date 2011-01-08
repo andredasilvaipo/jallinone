@@ -811,7 +811,9 @@
      <property name="dataSource" ref="JALLINONE" />
      <property name="bean" ref="HierarchiesBean" />
    </bean>
-
+   <bean id="ItemSheetsBean" scope="prototype" class="org.jallinone.warehouse.server.ItemSheetsBean">
+     <property name="dataSource" ref="JALLINONE" />
+   </bean>
 
 
 </beans>

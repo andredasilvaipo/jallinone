@@ -568,7 +568,7 @@ public class ItemSheetsBean implements ItemSheets {
 					true
 			);
 
-		  if (!res.isError()) {
+		  if (!res.isError() && vo.getLevelITM25().intValue()==1) {
 				 pstmt = conn.prepareStatement("insert into ITM30_SUBSHEETS(COMPANY_CODE_SYS01,PARENT_SHEET_CODE_ITM25,SHEET_CODE_ITM25) VALUES(?,?,?)");
 				 pstmt.setString(1,vo.getCompanyCodeSys01ITM25());
 				 pstmt.setString(2,vo.getSheetCodeITM25());
@@ -1246,12 +1246,14 @@ public class ItemSheetsBean implements ItemSheets {
 			pstmt.setString(2,sheetCodeITM25);
 			rset = pstmt.executeQuery();
 			HashSet sheetCodesToCheck = new HashSet();
+
 			while(rset.next()) {
 				if (rset.getString(2)!=null) {
 					// found a leaf...
-					sheetCodes.add(rset.getString(1));
+					if (!sheetCodes.contains(rset.getString(1)))
+						sheetCodes.add(rset.getString(1));
 				}
-				else
+				else if (!sheetCodesToCheck.contains(rset.getString(1)))
 					sheetCodesToCheck.add(rset.getString(1));
 			}
 			rset.close();

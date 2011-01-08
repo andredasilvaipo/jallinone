@@ -96,17 +96,22 @@ public class UserAuthorizationsAction implements Action {
 			ButtonCompanyAuthorizations companyBa = new ButtonCompanyAuthorizations();
 			ButtonCompanyAuthorization[] companyBas = bean.getButtonCompanyAuthorizations(langId, username);
 			for(int i=0;i<companyBas.length;i++)
-				companyBa.getAuthorizations().put(
-					companyBas[i].getFunctionId()+"_"+companyBas[i].getCompanyCode(),
-					companyBas[i]
+				companyBa.addButtonAuthorization(
+					companyBas[i].getFunctionId(),
+					companyBas[i].getCompanyCode(),
+					companyBas[i].isInsertEnabled(),
+					companyBas[i].isEditEnabled(),
+					companyBas[i].isDeleteEnabled()
 				);
 
 			ButtonsAuthorizations ba = new ButtonsAuthorizations();
 			ButtonAuthorization[] bas = bean.getButtonsAuthorizations(langId, username);
 			for(int i=0;i<bas.length;i++)
-				ba.getAuthorizations().put(
+				ba.addButtonAuthorization(
 					bas[i].getFunctionId(),
-					bas[i]
+					bas[i].isInsertEnabled(),
+					bas[i].isEditEnabled(),
+					bas[i].isDeleteEnabled()
 				);
 
 		  String[] companies = bean.getCompanies();
