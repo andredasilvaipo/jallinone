@@ -9,6 +9,7 @@ bottomPanel,JPanel,false,false, , ,false,<default>
 buttonsPanel2,JPanel,false,false, , ,false,<default>
 buttonsPanel3,JPanel,false,false, , ,false,<default>
 bytes,byte[],false,false, , ,false,<default>
+callbacks,SparePartsCatalogueCallbacks,false,false, , ,false,<default>
 colItemCode,CodLookupColumn,false,false, , ,false,<default>
 colItemDescr,TextColumn,false,false, , ,false,<default>
 colItemType,ComboColumn,false,false, , ,false,<default>

@@ -2401,7 +2401,7 @@ public class ItemSheetsBean implements ItemSheets {
 
 			String sql =
 					"select ITM28_ROOT_SHEET_SPARE_PARTS.COMPANY_CODE_SYS01,ITM28_ROOT_SHEET_SPARE_PARTS.ROOT_SHEET_CODE_ITM25,"+
-					"ITM28_ROOT_SHEET_SPARE_PARTS.ITEM_CODE_ITM01,SYS10_TRANSLATIONS.DESCRIPTION "+
+					"ITM28_ROOT_SHEET_SPARE_PARTS.ITEM_CODE_ITM01,SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
 					" from ITM28_ROOT_SHEET_SPARE_PARTS,ITM01_ITEMS I,ITM01_ITEMS,SYS10_TRANSLATIONS where "+
 					"I.COMPANY_CODE_SYS01=? and "+
 					"I.ITEM_CODE=? and "+
@@ -2422,6 +2422,7 @@ public class ItemSheetsBean implements ItemSheets {
 			attribute2dbField.put("rootSheetCodeItm25ITM28","ITM28_ROOT_SHEET_SPARE_PARTS.ROOT_SHEET_CODE_ITM25");
 			attribute2dbField.put("itemCodeItm01ITM28","ITM28_ROOT_SHEET_SPARE_PARTS.ITEM_CODE_ITM01");
 			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
 
 			// read from ITM28 table...
 			Response answer = QueryUtil.getQuery(

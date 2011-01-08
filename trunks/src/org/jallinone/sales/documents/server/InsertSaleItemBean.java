@@ -436,6 +436,28 @@ public class InsertSaleItemBean implements InsertSaleItem {
 						Boolean.TRUE.equals(vo.getNoWarehouseMovITM01()))
 					vo.setOutQtyDOC02(vo.getQtyDOC02());
 
+				if (vo.getVariantCodeItm11DOC02()==null)
+					vo.setVariantCodeItm11DOC02("*");
+				if (vo.getVariantCodeItm12DOC02()==null)
+					vo.setVariantCodeItm12DOC02("*");
+				if (vo.getVariantCodeItm13DOC02()==null)
+					vo.setVariantCodeItm13DOC02("*");
+				if (vo.getVariantCodeItm14DOC02()==null)
+					vo.setVariantCodeItm14DOC02("*");
+				if (vo.getVariantCodeItm15DOC02()==null)
+					vo.setVariantCodeItm15DOC02("*");
+				if (vo.getVariantTypeItm06DOC02()==null)
+					vo.setVariantTypeItm06DOC02("*");
+				if (vo.getVariantTypeItm07DOC02()==null)
+					vo.setVariantTypeItm07DOC02("*");
+				if (vo.getVariantTypeItm08DOC02()==null)
+					vo.setVariantTypeItm08DOC02("*");
+				if (vo.getVariantTypeItm09DOC02()==null)
+					vo.setVariantTypeItm09DOC02("*");
+				if (vo.getVariantTypeItm10DOC02()==null)
+					vo.setVariantTypeItm10DOC02("*");
+
+
 	      Map attribute2dbField = new HashMap();
 	      attribute2dbField.put("companyCodeSys01DOC02","COMPANY_CODE_SYS01");
 	      attribute2dbField.put("docTypeDOC02","DOC_TYPE");

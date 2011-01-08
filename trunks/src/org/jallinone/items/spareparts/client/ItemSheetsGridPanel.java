@@ -137,6 +137,7 @@ public class ItemSheetsGridPanel	extends JPanel {
 	private	java.util.List itemTypes = null;
 	ComboColumn colItemType = new ComboColumn();
 	private GridControl itemSparePartsGrid = null;
+	private SparePartsCatalogueCallbacks callbacks = null;
 
 
 	public ItemSheetsGridPanel() {
@@ -796,6 +797,12 @@ public class ItemSheetsGridPanel	extends JPanel {
   }
   public GridControl getItemSparePartsGrid() {
     return itemSparePartsGrid;
+  }
+  public void setCallbacks(SparePartsCatalogueCallbacks callbacks) {
+    this.callbacks = callbacks;
+  }
+  public SparePartsCatalogueCallbacks getCallbacks() {
+    return callbacks;
   }
 
 	/**

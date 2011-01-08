@@ -197,7 +197,8 @@ public class CallOutRequestController extends CompanyFormController {
     vo.setPrioritySCH03(ApplicationConsts.PRIORITY_NORMAL);
     vo.setRequestYearSCH03(new BigDecimal(vo.getRequestDateSCH03().getYear()+1900));
     vo.setUsernameSys03SCH03(applet.getUsername());
-    frame.getControlCallOutType().getComboBox().setSelectedIndex(0);
+		if (frame.getControlCallOutType().getComboBox().getModel().getSize()>0)
+				frame.getControlCallOutType().getComboBox().setSelectedIndex(0);
     vo.setProgressiveHie02SCH10((BigDecimal)frame.getControlCallOutType().getValue());
   }
 

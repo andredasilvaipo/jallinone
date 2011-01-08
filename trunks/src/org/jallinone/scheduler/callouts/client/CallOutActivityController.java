@@ -79,6 +79,7 @@ public class CallOutActivityController extends CompanyFormController {
   public Response insertRecord(ValueObject newPersistentObject) throws Exception {
     DetailCallOutRequestVO vo = (DetailCallOutRequestVO)frame.getCalloutPanel().getVOModel().getValueObject();
     vo.setScheduledActivityVO((ScheduledActivityVO)newPersistentObject);
+		vo.getScheduledActivityVO().setCompanyCodeSys01SCH06(vo.getCompanyCodeSys01SCH03());
     Response response = ClientUtils.getData("linkScheduledActivityToCallOutRequest",vo);
     if (!response.isError()) {
       vo = (DetailCallOutRequestVO)((VOResponse)response).getVo();
@@ -158,13 +159,16 @@ public class CallOutActivityController extends CompanyFormController {
     frame.getResourcesPanel().getTasksGrid().getOtherGridParams().put(ApplicationConsts.SCHEDULED_ACTIVITY_PK,pk);
     frame.getResourcesPanel().getTasksGrid().reloadData();
 
-    if (!vo.getActivityStateSCH06().equals(ApplicationConsts.CLOSED) &&
-        !vo.getActivityStateSCH06().equals(ApplicationConsts.INVOICED)) {
-      frame.getActPanel().getConfirmButton().setEnabled(true);
-      frame.getInvoiceButton().setEnabled(false);
-    }
-    else if (vo.getActivityStateSCH06().equals(ApplicationConsts.CLOSED))
-      frame.getInvoiceButton().setEnabled(true);
+		if (vo!=null) {
+			if (vo.getActivityStateSCH06()!=null &&
+					!vo.getActivityStateSCH06().equals(ApplicationConsts.CLOSED) &&
+					!vo.getActivityStateSCH06().equals(ApplicationConsts.INVOICED)) {
+				frame.getActPanel().getConfirmButton().setEnabled(true);
+				frame.getInvoiceButton().setEnabled(false);
+			}
+			else if (vo.getActivityStateSCH06()!=null && vo.getActivityStateSCH06().equals(ApplicationConsts.CLOSED))
+				frame.getInvoiceButton().setEnabled(true);
+		}
   }
 
 

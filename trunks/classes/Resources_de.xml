@@ -1664,7 +1664,11 @@
   <object key="path" value="Path" />
   <object key="spare parts" value="Spare parts" />
   <object key="manual doc num in sale docs" value="Allow manual numer. in sales documents" />
-
+  <object key="show purchased items" value="Show purchased items" />
+  <object key="show only spare parts" value="Show only spare parts" />
+  <object key="sale date" value="Sale date" />
+  <object key="item sold on" value="Item sold on" />
+  
   <currencySymbol>€</currencySymbol>
   <decimalSymbol>,</decimalSymbol>
   <groupingSymbol>.</groupingSymbol>

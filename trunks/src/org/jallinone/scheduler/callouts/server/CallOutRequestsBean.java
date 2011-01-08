@@ -55,7 +55,7 @@ import javax.sql.DataSource;
 public class CallOutRequestsBean  implements CallOutRequests {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -63,9 +63,9 @@ public class CallOutRequestsBean  implements CallOutRequests {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -75,7 +75,7 @@ public class CallOutRequestsBean  implements CallOutRequests {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -93,17 +93,17 @@ public class CallOutRequestsBean  implements CallOutRequests {
   public CallOutRequestsBean() {
   }
 
-  
+
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public GridCallOutRequestVO getGridCallOutRequest(CallOutPK pk) {
 	  throw new UnsupportedOperationException();
   }
 
-  
+
 
   /**
    * Business logic to execute.
@@ -137,6 +137,7 @@ public class CallOutRequestsBean  implements CallOutRequests {
       attribute2dbField.put("progressiveReg04SCH03","PROGRESSIVE_REG04");
       attribute2dbField.put("progressiveSch06SCH03","PROGRESSIVE_SCH06");
       attribute2dbField.put("subjectTypeReg04SCH03","SUBJECT_TYPE_REG04");
+			attribute2dbField.put("itemCodeItm01SCH03","ITEM_CODE_ITM01");
 
       // insert into SCH03...
       Response res = CustomizeQueryUtil.insertTable(
@@ -149,7 +150,7 @@ public class CallOutRequestsBean  implements CallOutRequests {
           "N",
           null,
           true,
-          customizedFields 
+          customizedFields
       );
 
       Response answer = res;
@@ -204,8 +205,18 @@ public class CallOutRequestsBean  implements CallOutRequests {
           "SCH03_CALL_OUT_REQUESTS.CALL_OUT_STATE,SCH03_CALL_OUT_REQUESTS.USERNAME_SYS03,SCH03_CALL_OUT_REQUESTS.SUBJECT_TYPE_REG04,"+
           "SCH03_CALL_OUT_REQUESTS.PRIORITY,SCH03_CALL_OUT_REQUESTS.REQUEST_DATE,SCH10_CALL_OUTS.PROGRESSIVE_HIE02,"+
           "SCH03_CALL_OUT_REQUESTS.NOTE,SCH03_CALL_OUT_REQUESTS.DOC_TYPE_DOC01,SCH03_CALL_OUT_REQUESTS.DOC_NUMBER_DOC01,"+
-          "SCH03_CALL_OUT_REQUESTS.DOC_YEAR_DOC01,SCH03_CALL_OUT_REQUESTS.PROGRESSIVE_REG04,SCH03_CALL_OUT_REQUESTS.PROGRESSIVE_SCH06 "+
-          " from SCH03_CALL_OUT_REQUESTS,SCH10_CALL_OUTS,SYS10_TRANSLATIONS where "+
+          "SCH03_CALL_OUT_REQUESTS.DOC_YEAR_DOC01,SCH03_CALL_OUT_REQUESTS.PROGRESSIVE_REG04,SCH03_CALL_OUT_REQUESTS.PROGRESSIVE_SCH06, "+
+					"ITM.PROGRESSIVE_HIE02,SCH03_CALL_OUT_REQUESTS.ITEM_CODE_ITM01,ITM.DESCRIPTION "+
+          "from SCH10_CALL_OUTS,SYS10_TRANSLATIONS,SCH03_CALL_OUT_REQUESTS "+
+					"LEFT OUTER JOIN ("+
+					" SELECT ITM01_ITEMS.COMPANY_CODE_SYS01,ITM01_ITEMS.ITEM_CODE,SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
+					" FROM ITM01_ITEMS,SYS10_TRANSLATIONS WHERE "+
+					" ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE AND "+
+					" SYS10_TRANSLATIONS.LANGUAGE_CODE=? "+
+					") ITM ON "+
+					" SCH03_CALL_OUT_REQUESTS.COMPANY_CODE_SYS01=ITM.COMPANY_CODE_SYS01 AND "+
+					" SCH03_CALL_OUT_REQUESTS.ITEM_CODE_ITM01=ITM.ITEM_CODE "+
+					"where "+
           "SCH03_CALL_OUT_REQUESTS.CALL_OUT_CODE_SCH10=SCH10_CALL_OUTS.CALL_OUT_CODE and "+
           "SCH10_CALL_OUTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
@@ -233,7 +244,12 @@ public class CallOutRequestsBean  implements CallOutRequests {
       attribute2dbField.put("subjectTypeReg04SCH03","SCH03_CALL_OUT_REQUESTS.SUBJECT_TYPE_REG04");
       attribute2dbField.put("progressiveHie02SCH10","SCH10_CALL_OUTS.PROGRESSIVE_HIE02");
 
+			attribute2dbField.put("progressiveHie02ITM01","ITM.PROGRESSIVE_HIE02");
+			attribute2dbField.put("itemCodeItm01SCH03","SCH03_CALL_OUT_REQUESTS.ITEM_CODE_ITM01");
+			attribute2dbField.put("descriptionSYS10","ITM.DESCRIPTION");
+
       ArrayList values = new ArrayList();
+			values.add(serverLanguageId);
       values.add(serverLanguageId);
       values.add(pk.getCompanyCodeSys01SCH03());
       values.add(pk.getRequestYearSCH03());
@@ -251,7 +267,7 @@ public class CallOutRequestsBean  implements CallOutRequests {
           "N",
           null,
           true,
-          customizedFields 
+          customizedFields
       );
 
 
@@ -410,6 +426,7 @@ public class CallOutRequestsBean  implements CallOutRequests {
       attribute2dbField.put("progressiveReg04SCH03","PROGRESSIVE_REG04");
       attribute2dbField.put("progressiveSch06SCH03","PROGRESSIVE_SCH06");
       attribute2dbField.put("subjectTypeReg04SCH03","SUBJECT_TYPE_REG04");
+			attribute2dbField.put("itemCodeItm01SCH03","ITEM_CODE_ITM01");
 
       HashSet pkAttributes = new HashSet();
       pkAttributes.add("companyCodeSys01SCH03");
@@ -429,7 +446,7 @@ public class CallOutRequestsBean  implements CallOutRequests {
           "N",
           null,
           true,
-          customizedFields 
+          customizedFields
       );
 
       if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (VOResponse)answer;
@@ -545,7 +562,7 @@ public class CallOutRequestsBean  implements CallOutRequests {
     		}
 
     	}
-    	catch (Exception exx) {}    
+    	catch (Exception exx) {}
     	try {
     		delAct.setConn(null);
     	} catch (Exception ex) {}

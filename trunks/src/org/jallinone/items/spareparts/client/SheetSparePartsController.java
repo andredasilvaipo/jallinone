@@ -71,7 +71,10 @@ public class SheetSparePartsController extends GridController {
 
 	public void doubleClick(int rowNumber,ValueObject persistentObject) {
 		SheetSparePartVO vo = (SheetSparePartVO)persistentObject;
-		new ItemController(null,new ItemPK(vo.getCompanyCodeSys01ITM27(),vo.getItemCodeItm01ITM27()),false);
+		if (gridPanel.getCallbacks()!=null)
+			gridPanel.getCallbacks().sparePartDoubleClick(vo.getProgressiveHie02ITM01(),vo.getCompanyCodeSys01ITM27(),vo.getItemCodeItm01ITM27(),vo.getDescriptionSYS10());
+		else
+			new ItemController(null,new ItemPK(vo.getCompanyCodeSys01ITM27(),vo.getItemCodeItm01ITM27()),false);
 	}
 
 

@@ -1,5 +1,15 @@
 
 
+Release Notes 2.5.4
+-------------------
+
+Improved call-outs management: 
+- now it is possible to link an item to a call-out request and manage its spare parts as call-out resources.
+- added spare parts catalogue shortcut in call-out request window.
+Fixed problem on creating invoice from a call-out document having items without variants.
+
+
+
 Release Notes 2.5.3
 -------------------
 
@@ -12,10 +22,12 @@ Improved POS window: now it is possible to specify a percentage total discount (
 Fixed problem with retail sale when applying discounts.
 Fixed problem with warehouse movement and with manual movement in warehouse.
 Enabled "alternative items" in item detail folder, also when the item is not a component.
+Relaxed customers filter in sale orders: now it is possible to manage private customers too.
 Fixed problem on loading/saving documents in "document management".
 Fixed problem when inserting items without variants in sale/purchase documents and in deliv. note documents.
 Fixed bug when creating sale invoices starting from delivery notes.
-Relaxed customers filter in sale orders: now it is possible to manage private customers too.
+Fixed bug on creating sale invoice from a sale desk document.
+Fixed bug on roles frame.
 
 
 Release Notes 2.5.2

@@ -40,6 +40,9 @@ import java.util.HashSet;
 import org.jallinone.scheduler.activities.java.ScheduledActivityVO;
 import org.jallinone.sales.documents.invoices.client.SaleInvoiceDocController;
 import org.jallinone.sales.documents.java.SaleDocPK;
+import org.jallinone.items.java.GridItemVO;
+import org.jallinone.subjects.java.Subject;
+import java.text.SimpleDateFormat;
 
 
 /**
@@ -144,12 +147,27 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
   private CallOutRequestsFrame gridFrame = null;
   GenericButton invoiceButton = new GenericButton(new ImageIcon(ClientUtils.getImage("doc3.gif")));
   GenericButton viewInvoiceButton = new GenericButton(new ImageIcon(ClientUtils.getImage("docs.gif")));
+  LabelControl labelItemType = new LabelControl();
+  ComboBoxControl controlItemType = new ComboBoxControl();
+  CodLookupControl controlItemCode = new CodLookupControl();
+  TextControl controlItemDescr = new TextControl();
+  CheckBoxControl controlFilterItems = new CheckBoxControl();
+
+	/** item code lookup data locator */
+	LookupServerDataLocator itemDataLocator = new LookupServerDataLocator();
+
+	/** item code lookup controller */
+	LookupController itemController = new LookupController();
+
+	LookupServerDataLocator levelDataLocator = new LookupServerDataLocator();
+	TreeServerDataLocator treeLevelDataLocator = new TreeServerDataLocator();
+
+	private	java.util.List itemTypes = null;
 
 
   public CallOutRequestFrame(CallOutRequestController controller,CallOutRequestsFrame gridFrame) {
     this.gridFrame = gridFrame;
     try {
-
       jbInit();
       setSize(750,640);
       setMinimumSize(new Dimension(750,640));
@@ -342,6 +360,7 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
   }
 
 
+
   public Form getSubjectForm() {
     DetailCallOutRequestVO vo = (DetailCallOutRequestVO)calloutPanel.getVOModel().getValueObject();
     if (vo.getSubjectTypeReg04SCH03().equals(ApplicationConsts.SUBJECT_ORGANIZATION)) {
@@ -432,6 +451,13 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
       viewInvoiceButton.setEnabled(false);
     }
 
+		if (vo.getItemCodeItm01SCH03()==null) {
+			resourcesPanel.setItem(null,null,null);
+		}
+		else {
+			resourcesPanel.setItem(vo.getProgressiveHie02ITM01(),vo.getCompanyCodeSys01SCH03(),vo.getItemCodeItm01SCH03());
+		}
+
   }
 
 
@@ -520,13 +546,116 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
     else
       controlCallOutType.getComboBox().setSelectedIndex(-1);
 
-    // add item listener in subject type input control...
+    // add listener in subject type input control...
     controlSubjectType.getComboBox().addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent e) {
         if (e.getStateChange()==e.SELECTED)
           subjectChanged((String)controlSubjectType.getValue());
       }
     });
+
+
+		// retrieve item types..
+		res = ClientUtils.getData("loadItemTypes",new GridParams());
+		final Domain dd = new Domain("ITEM_TYPES");
+		if (!res.isError()) {
+			ItemTypeVO vo = null;
+			itemTypes = ((VOListResponse)res).getRows();
+			for(int i=0;i<itemTypes.size();i++) {
+				vo = (ItemTypeVO)itemTypes.get(i);
+				dd.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
+			}
+		}
+		controlItemType.setDomain(dd);
+		controlItemType.getComboBox().addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if (calloutPanel.getMode()!=Consts.READONLY && e.getStateChange()==e.SELECTED) {
+					try {
+						int selIndex = ((JComboBox)e.getSource()).getSelectedIndex();
+						Object selValue = dd.getDomainPairList()[selIndex].getCode();
+						ItemTypeVO vo = (ItemTypeVO)itemTypes.get(selIndex);
+						treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,selValue);
+						treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01ITM02());
+						itemDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01ITM02());
+						itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01ITM02());
+
+
+						controlItemCode.setValue(null);
+						controlItemCode.validateCode(null);
+					}
+					catch (Exception ex) {
+					}
+
+				}
+			}
+		});
+
+		// item code lookup...
+		itemDataLocator.setGridMethodName("loadItems");
+		itemDataLocator.setValidationMethodName("validateItemCode");
+
+		controlItemCode.setLookupController(itemController);
+		itemController.setLookupDataLocator(itemDataLocator);
+		itemController.setFrameTitle("items");
+
+		itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
+		treeLevelDataLocator.setServerMethodName("loadHierarchy");
+		itemDataLocator.setTreeDataLocator(treeLevelDataLocator);
+		itemDataLocator.setNodeNameAttribute("descriptionSYS10");
+
+		itemController.setLookupValueObjectClassName("org.jallinone.items.java.GridItemVO");
+
+		itemController.addLookup2ParentLink("itemCodeITM01", "itemCodeItm01SCH03");
+		itemController.addLookup2ParentLink("descriptionSYS10", "descriptionSYS10");
+		itemController.setAllColumnVisible(false);
+		itemController.setVisibleColumn("companyCodeSys01ITM01", true);
+		itemController.setVisibleColumn("itemCodeITM01", true);
+		itemController.setVisibleColumn("descriptionSYS10", true);
+		itemController.setVisibleColumn("docDateDOC01", true);
+		itemController.setPreferredWidthColumn("descriptionSYS10", 200);
+		itemController.setFramePreferedSize(new Dimension(730,500));
+		itemController.setShowErrorMessage(false);
+		itemController.addLookupListener(new LookupListener() {
+
+			public void codeValidated(boolean validated) {}
+
+			public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {
+				GridItemVO vo = (GridItemVO)itemController.getLookupVO();
+				if (vo==null || vo.getItemCodeITM01()==null) {
+					resourcesPanel.setItem(null,null,null);
+				}
+				else {
+					SimpleDateFormat sdf = new SimpleDateFormat(ClientSettings.getInstance().getResources().getDateMask(Consts.TYPE_DATE));
+					controlNote.setText(
+					  ClientSettings.getInstance().getResources().getResource("item sold on")+" "+
+						sdf.format(vo.getDocDateDOC01())
+					);
+				  resourcesPanel.setItem(vo.getProgressiveHie02ITM01(),vo.getCompanyCodeSys01ITM01(),vo.getItemCodeITM01());
+				}
+			}
+
+			public void beforeLookupAction(ValueObject gridVO) {
+				DetailCallOutRequestVO vo = (DetailCallOutRequestVO)calloutPanel.getVOModel().getValueObject();
+				Subject subVO = (Subject)getSubjectForm().getVOModel().getValueObject();
+				vo.setCompanyCodeSys01SCH03(subVO.getCompanyCodeSys01REG04());
+				vo.setProgressiveReg04SCH03(subVO.getProgressiveREG04());
+				itemDataLocator.getLookupFrameParams().put(ApplicationConsts.SHOW_ONLY_PURCHASED_ITEMS,new Boolean(controlFilterItems.isSelected()));
+				itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.SHOW_ONLY_PURCHASED_ITEMS,new Boolean(controlFilterItems.isSelected()));
+				if (vo.getProgressiveReg04SCH03()!=null) {
+					itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_REG04,vo.getProgressiveReg04SCH03());
+					itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.PROGRESSIVE_REG04,vo.getProgressiveReg04SCH03());
+				}
+				else {
+					itemDataLocator.getLookupFrameParams().remove(ApplicationConsts.PROGRESSIVE_REG04);
+					itemDataLocator.getLookupValidationParameters().remove(ApplicationConsts.PROGRESSIVE_REG04);
+				}
+			}
+
+			public void forceValidate() {}
+
+		});
+
+
 
   }
 
@@ -696,6 +825,18 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
     controlCallOutDescr.setAttributeName("callOutDescriptionSYS10");
     controlCallOutDescr.setEnabledOnInsert(false);
     controlCallOutDescr.setEnabledOnEdit(false);
+    labelItemType.setText("itemType");
+    controlItemCode.setAttributeName("itemCodeItm01SCH03");
+    controlItemCode.setColumns(5);
+    controlItemCode.setEnabledOnEdit(false);
+    controlItemCode.setMaxCharacters(20);
+    controlItemDescr.setAttributeName("descriptionSYS10");
+    controlItemDescr.setEnabledOnInsert(false);
+    controlItemDescr.setEnabledOnEdit(false);
+    controlItemType.setAttributeName("progressiveHie02ITM01");
+    controlItemType.setEnabledOnEdit(false);
+    controlFilterItems.setText("show purchased items");
+    controlFilterItems.addItemListener(new CallOutRequestFrame_controlFilterItems_itemAdapter(this));
     peoplePanel.add(filterPeopleButton,    new GridBagConstraints(6, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 0, 0));
     organizationPanel.add(filterOrgButton,    new GridBagConstraints(7, 1, 1, 1, 0.0, 0.0
@@ -811,9 +952,9 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
     controlPriority.setAttributeName("prioritySCH03");
 
     detailPanel.add(calloutPanel,  BorderLayout.CENTER);
-    calloutPanel.add(controlProg,      new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+    calloutPanel.add(controlProg,       new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(labelProg,     new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+    calloutPanel.add(labelProg,      new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     subjectTypePanel.add(labelCompanyCode,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
@@ -830,42 +971,52 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     subjectTypePanel.add(controlSubjectType,     new GridBagConstraints(3, 0, 1, 1, 1.0, 1.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 60, 0));
-    calloutPanel.add(labelYear,      new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
+    calloutPanel.add(labelYear,       new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(controlYear,      new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0
+    calloutPanel.add(controlYear,       new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(labelDate,       new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0
+    calloutPanel.add(labelDate,        new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(controlDate,        new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0
+    calloutPanel.add(controlDate,         new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(labelDescr,      new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+    calloutPanel.add(labelDescr,       new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(controlDescr,      new GridBagConstraints(1, 2, 5, 1, 1.0, 0.0
+    calloutPanel.add(controlDescr,       new GridBagConstraints(1, 2, 5, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(labelPriority,       new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+    calloutPanel.add(labelPriority,        new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(controlPriority,      new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
+    calloutPanel.add(controlPriority,       new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(labelState,     new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0
+    calloutPanel.add(labelState,      new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-    calloutPanel.add(controlNote,     new GridBagConstraints(1, 4, 5, 1, 1.0, 1.0
+    calloutPanel.add(controlNote,       new GridBagConstraints(1, 5, 5, 1, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(labelNote,     new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(labelUsername,     new GridBagConstraints(4, 3, 1, 1, 0.0, 0.0
+    calloutPanel.add(labelNote,      new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
+    calloutPanel.add(labelUsername,      new GridBagConstraints(4, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(controlUsername,    new GridBagConstraints(5, 3, 1, 1, 0.0, 0.0
+    calloutPanel.add(controlUsername,     new GridBagConstraints(5, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(controlState,     new GridBagConstraints(3, 3, 1, 1, 0.0, 0.0
+    calloutPanel.add(controlState,      new GridBagConstraints(3, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(labelCallOutType,   new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+    calloutPanel.add(labelCallOutType,    new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(controlCallOutType,   new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+    calloutPanel.add(controlCallOutType,    new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(controlCallOutCode,  new GridBagConstraints(2, 1, 2, 1, 0.0, 0.0
+    calloutPanel.add(controlCallOutCode,   new GridBagConstraints(2, 1, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    calloutPanel.add(controlCallOutDescr,    new GridBagConstraints(4, 1, 2, 1, 1.0, 0.0
+    calloutPanel.add(controlCallOutDescr,     new GridBagConstraints(4, 1, 2, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    calloutPanel.add(labelItemType,   new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    calloutPanel.add(controlItemType,   new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    calloutPanel.add(controlItemCode, new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    calloutPanel.add(controlItemDescr,  new GridBagConstraints(3, 4, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    calloutPanel.add(controlFilterItems,  new GridBagConstraints(5, 4, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
 
   }
@@ -983,6 +1134,10 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
     return gridFrame;
   }
 
+  void controlFilterItems_itemStateChanged(ItemEvent e) {
+
+  }
+
 
 
 }
@@ -1039,5 +1194,16 @@ class CallOutRequestFrame_viewInvoiceButton_actionAdapter implements java.awt.ev
   }
   public void actionPerformed(ActionEvent e) {
     adaptee.viewInvoiceButton_actionPerformed(e);
+  }
+}
+
+class CallOutRequestFrame_controlFilterItems_itemAdapter implements java.awt.event.ItemListener {
+  CallOutRequestFrame adaptee;
+
+  CallOutRequestFrame_controlFilterItems_itemAdapter(CallOutRequestFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void itemStateChanged(ItemEvent e) {
+    adaptee.controlFilterItems_itemStateChanged(e);
   }
 }

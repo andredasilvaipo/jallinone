@@ -1,6 +1,7 @@
 package org.jallinone.items.spareparts.java;
 
 import org.openswing.swing.message.receive.java.*;
+import java.math.BigDecimal;
 
 
 /**
@@ -37,6 +38,7 @@ public class ItemSparePartVO extends ValueObjectImpl {
 	private String rootSheetCodeItm25ITM28;
 	private String itemCodeItm01ITM28;
 	private String descriptionSYS10;
+	private BigDecimal progressiveHie02ITM01;
 
 
 	public String getCompanyCodeSys01ITM28() {
@@ -63,6 +65,12 @@ public class ItemSparePartVO extends ValueObjectImpl {
   }
   public void setRootSheetCodeItm25ITM28(String rootSheetCodeItm25ITM28) {
     this.rootSheetCodeItm25ITM28 = rootSheetCodeItm25ITM28;
+  }
+  public BigDecimal getProgressiveHie02ITM01() {
+    return progressiveHie02ITM01;
+  }
+  public void setProgressiveHie02ITM01(BigDecimal progressiveHie02ITM01) {
+    this.progressiveHie02ITM01 = progressiveHie02ITM01;
   }
 
 

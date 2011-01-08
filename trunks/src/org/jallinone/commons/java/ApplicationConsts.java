@@ -33,7 +33,7 @@ import java.math.BigDecimal;
  */
 public class ApplicationConsts {
 
-  public static final int DB_VERSION = 8;
+  public static final int DB_VERSION = 9;
 
   public static final String DO_NOT_ADD_ENABLED = "DO_NOT_ADD_ENABLED";
 
@@ -377,5 +377,8 @@ public class ApplicationConsts {
 	public static final String ID = "ID";
 	public static final String LEVEL = "LEVEL";
 	public static final String SHOW_ONLY_MOVABLE_ITEMS = "SHOW_ONLY_MOVABLE_ITEMS";
+
+	public static final String SHOW_ONLY_PURCHASED_ITEMS = "SHOW_ONLY_PURCHASED_ITEMS";
+
 
 }

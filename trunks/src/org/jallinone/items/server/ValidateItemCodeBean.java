@@ -104,40 +104,65 @@ public class ValidateItemCodeBean  implements ValidateItemCode {
       BigDecimal progressiveHIE02 = (BigDecimal)pars.getLookupValidationParameters().get(ApplicationConsts.PROGRESSIVE_HIE02);
       Boolean productsOnly = (Boolean)pars.getLookupValidationParameters().get(ApplicationConsts.PRODUCTS_ONLY);
       Boolean compsOnly = (Boolean)pars.getLookupValidationParameters().get(ApplicationConsts.COMPONENTS_ONLY);
+			Boolean showOnlyPurchasedItems = (Boolean)pars.getLookupValidationParameters().get(ApplicationConsts.SHOW_ONLY_PURCHASED_ITEMS); // used in call-out request to filter purchased items only
+			BigDecimal progressiveREG04 = (BigDecimal)pars.getLookupValidationParameters().get(ApplicationConsts.PROGRESSIVE_REG04);
 
 
-      String sql =
+			Map attribute2dbField = new HashMap();
+			attribute2dbField.put("companyCodeSys01ITM01","ITM01_ITEMS.COMPANY_CODE_SYS01");
+			attribute2dbField.put("itemCodeITM01","ITM01_ITEMS.ITEM_CODE");
+			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
+			attribute2dbField.put("minSellingQtyUmCodeReg02ITM01","ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02");
+			attribute2dbField.put("progressiveHie01ITM01","ITM01_ITEMS.PROGRESSIVE_HIE01");
+			attribute2dbField.put("serialNumberRequiredITM01","ITM01_ITEMS.SERIAL_NUMBER_REQUIRED");
+			attribute2dbField.put("decimalsREG02","REG02_MEASURE_UNITS.DECIMALS");
+			attribute2dbField.put("noWarehouseMovITM01","ITM01_ITEMS.NO_WAREHOUSE_MOV");
+			attribute2dbField.put("sheetCodeItm25ITM01","ITM01_ITEMS.SHEET_CODE_ITM25");
+
+			attribute2dbField.put("useVariant1ITM01","ITM01_ITEMS.USE_VARIANT_1");
+			attribute2dbField.put("useVariant2ITM01","ITM01_ITEMS.USE_VARIANT_2");
+			attribute2dbField.put("useVariant3ITM01","ITM01_ITEMS.USE_VARIANT_3");
+			attribute2dbField.put("useVariant4ITM01","ITM01_ITEMS.USE_VARIANT_4");
+			attribute2dbField.put("useVariant5ITM01","ITM01_ITEMS.USE_VARIANT_5");
+
+
+
+      String select =
           "select ITM01_ITEMS.COMPANY_CODE_SYS01,ITM01_ITEMS.ITEM_CODE,SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,"+
           "ITM01_ITEMS.PROGRESSIVE_HIE01,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,REG02_MEASURE_UNITS.DECIMALS, "+
 					"ITM01_ITEMS.NO_WAREHOUSE_MOV,ITM01_ITEMS.SHEET_CODE_ITM25,"+
-          "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 "+
-          " from ITM01_ITEMS,SYS10_TRANSLATIONS,REG02_MEASURE_UNITS where "+
+          "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 ";
+			String from =
+          "from ITM01_ITEMS,SYS10_TRANSLATIONS,REG02_MEASURE_UNITS ";
+			String where =
+					"where "+
           "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "ITM01_ITEMS.COMPANY_CODE_SYS01 ='"+companyCodeSYS10+"' and ";
 
           if (Boolean.TRUE.equals(pars.getLookupValidationParameters().get(ApplicationConsts.VALIDATE_BARCODE))) {
-            sql += "ITM01_ITEMS.BAR_CODE = '"+pars.getCode()+"' and ";
+            where += "ITM01_ITEMS.BAR_CODE = '"+pars.getCode()+"' and ";
           }
           else {
-            sql += "ITM01_ITEMS.ITEM_CODE = '"+pars.getCode()+"' and ";
+            where += "ITM01_ITEMS.ITEM_CODE = '"+pars.getCode()+"' and ";
           }
 
-      sql +=
+      where +=
           "ITM01_ITEMS.ENABLED='Y' and "+
           "ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02=REG02_MEASURE_UNITS.UM_CODE ";
 
       if (progressiveHIE02!=null)
-        sql += " and ITM01_ITEMS.PROGRESSIVE_HIE02="+progressiveHIE02;
+        where += " and ITM01_ITEMS.PROGRESSIVE_HIE02="+progressiveHIE02;
 
       if (productsOnly!=null && productsOnly.booleanValue())
-        sql += " and ITM01_ITEMS.MANUFACTURE_CODE_PRO01 is not null ";
+        where += " and ITM01_ITEMS.MANUFACTURE_CODE_PRO01 is not null ";
 
       if (compsOnly!=null && compsOnly.booleanValue())
-        sql += " and ITM01_ITEMS.MANUFACTURE_CODE_PRO01 is null ";
+        where += " and ITM01_ITEMS.MANUFACTURE_CODE_PRO01 is null ";
 
       if (Boolean.TRUE.equals(pars.getLookupValidationParameters().get(ApplicationConsts.SHOW_ITEMS_WITHOUT_VARIANTS)))
-          sql +=
+          where +=
             " and ITM01_ITEMS.USE_VARIANT_1='N' "+
             " and ITM01_ITEMS.USE_VARIANT_2='N' "+
             " and ITM01_ITEMS.USE_VARIANT_3='N' "+
@@ -145,26 +170,28 @@ public class ValidateItemCodeBean  implements ValidateItemCode {
             " and ITM01_ITEMS.USE_VARIANT_5='N' ";
 
 			if (Boolean.TRUE.equals(pars.getLookupValidationParameters().get(ApplicationConsts.SHOW_ONLY_MOVABLE_ITEMS)))
-					sql +=
+					where +=
 						" and ITM01_ITEMS.NO_WAREHOUSE_MOV='N' ";
 
-      Map attribute2dbField = new HashMap();
-      attribute2dbField.put("companyCodeSys01ITM01","ITM01_ITEMS.COMPANY_CODE_SYS01");
-      attribute2dbField.put("itemCodeITM01","ITM01_ITEMS.ITEM_CODE");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
-      attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
-      attribute2dbField.put("minSellingQtyUmCodeReg02ITM01","ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02");
-      attribute2dbField.put("progressiveHie01ITM01","ITM01_ITEMS.PROGRESSIVE_HIE01");
-      attribute2dbField.put("serialNumberRequiredITM01","ITM01_ITEMS.SERIAL_NUMBER_REQUIRED");
-      attribute2dbField.put("decimalsREG02","REG02_MEASURE_UNITS.DECIMALS");
-			attribute2dbField.put("noWarehouseMovITM01","ITM01_ITEMS.NO_WAREHOUSE_MOV");
-			attribute2dbField.put("sheetCodeItm25ITM01","ITM01_ITEMS.SHEET_CODE_ITM25");
+			if (Boolean.TRUE.equals(showOnlyPurchasedItems) && progressiveREG04!=null) {
+					select +=
+						",DOC01_SELLING.DOC_DATE ";
+					from +=
+						"INNER JOIN DOC01_SELLING ON "+
+						" ITM01_ITEMS.COMPANY_CODE_SYS01=DOC01_SELLING.COMPANY_CODE_SYS01 and "+
+						" DOC01_SELLING.DOC_STATE='"+ApplicationConsts.CLOSED+"' AND NOT DOC01_SELLING.DOC_TYPE='"+ApplicationConsts.SALE_ESTIMATE_DOC_TYPE+"' AND "+
+						" DOC01_SELLING.ENABLED='Y' AND DOC01_SELLING.PROGRESSIVE_REG04="+progressiveREG04+
+						" AND EXISTS (SELECT * FROM DOC02_SELLING_ITEMS where "+
+						" DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01=DOC01_SELLING.COMPANY_CODE_SYS01 and "+
+						" DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01=DOC01_SELLING.COMPANY_CODE_SYS01 AND "+
+						" DOC02_SELLING_ITEMS.DOC_TYPE=DOC01_SELLING.DOC_TYPE AND "+
+						" DOC02_SELLING_ITEMS.DOC_YEAR=DOC01_SELLING.DOC_YEAR AND "+
+						" DOC02_SELLING_ITEMS.DOC_NUMBER=DOC01_SELLING.DOC_NUMBER AND "+
+						" DOC02_SELLING_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE "+
+						") ";
 
-      attribute2dbField.put("useVariant1ITM01","ITM01_ITEMS.USE_VARIANT_1");
-      attribute2dbField.put("useVariant2ITM01","ITM01_ITEMS.USE_VARIANT_2");
-      attribute2dbField.put("useVariant3ITM01","ITM01_ITEMS.USE_VARIANT_3");
-      attribute2dbField.put("useVariant4ITM01","ITM01_ITEMS.USE_VARIANT_4");
-      attribute2dbField.put("useVariant5ITM01","ITM01_ITEMS.USE_VARIANT_5");
+					 attribute2dbField.put("docDateDOC01","DOC01_SELLING.DOC_DATE");
+			}
 
 
       ArrayList values = new ArrayList();
@@ -174,7 +201,7 @@ public class ValidateItemCodeBean  implements ValidateItemCode {
       Response answer = QueryUtil.getQuery(
           conn,
           new UserSessionParameters(username),
-          sql,
+          select+from+where,
           values,
           attribute2dbField,
           GridItemVO.class,

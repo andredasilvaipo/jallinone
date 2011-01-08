@@ -1665,7 +1665,11 @@
   <object key="path" value="Percorso" />
   <object key="spare parts" value="Ricambi" />
   <object key="manual doc num in sale docs" value="Consenti numeraz. manuale nei docum. di vend." />
-
+  <object key="show purchased items" value="Mostra art. acquistati" />
+  <object key="show only spare parts" value="Mostra solo ricambi" />
+  <object key="sale date" value="Data di vend." />
+  <object key="item sold on" value="Articolo venduto il" />
+  
 <!-- application translations -->
 
   <currencySymbol>&#8364;</currencySymbol>

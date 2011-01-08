@@ -53,6 +53,10 @@ public class DetailCallOutRequestVO extends BaseValueObject {
   private java.math.BigDecimal progressiveHie02SCH10;
   private String prioritySCH03;
 
+	private java.math.BigDecimal progressiveHie02ITM01;
+	private String itemCodeItm01SCH03;
+	private String descriptionSYS10;
+
 
   private ScheduledActivityVO scheduledActivityVO;
   private java.math.BigDecimal docNumberDoc01SCH03;
@@ -176,6 +180,24 @@ public class DetailCallOutRequestVO extends BaseValueObject {
   }
   public void setScheduledActivityVO(ScheduledActivityVO scheduledActivityVO) {
     this.scheduledActivityVO = scheduledActivityVO;
+  }
+  public String getDescriptionSYS10() {
+    return descriptionSYS10;
+  }
+  public String getItemCodeItm01SCH03() {
+    return itemCodeItm01SCH03;
+  }
+  public java.math.BigDecimal getProgressiveHie02ITM01() {
+    return progressiveHie02ITM01;
+  }
+  public void setProgressiveHie02ITM01(java.math.BigDecimal progressiveHie02ITM01) {
+    this.progressiveHie02ITM01 = progressiveHie02ITM01;
+  }
+  public void setItemCodeItm01SCH03(String itemCodeItm01SCH03) {
+    this.itemCodeItm01SCH03 = itemCodeItm01SCH03;
+  }
+  public void setDescriptionSYS10(String descriptionSYS10) {
+    this.descriptionSYS10 = descriptionSYS10;
   }
 
 

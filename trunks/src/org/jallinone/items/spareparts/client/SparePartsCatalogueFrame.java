@@ -39,6 +39,7 @@ import java.util.HashMap;
 import org.jallinone.items.java.ItemTypeVO;
 import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.util.java.Consts;
+import org.openswing.swing.lookup.client.*;
 
 
 /**
@@ -103,6 +104,8 @@ public class SparePartsCatalogueFrame extends InternalFrame {
 
 	private	java.util.List itemTypes = null;
 
+	private SparePartsCatalogueCallbacks callbacks = null;
+
 
 	public SparePartsCatalogueFrame(boolean readOnly) {
 		sheets = new ItemSheetsGridPanel(readOnly,gridItemSpareParts);
@@ -111,7 +114,10 @@ public class SparePartsCatalogueFrame extends InternalFrame {
 
 			public void doubleClick(int rowNumber,ValueObject persistentObject) {
 				ItemSparePartVO vo = (ItemSparePartVO)persistentObject;
-				new ItemController(null,new ItemPK(vo.getCompanyCodeSys01ITM28(),vo.getItemCodeItm01ITM28()),false);
+				if (callbacks!=null)
+					callbacks.sparePartDoubleClick(vo.getProgressiveHie02ITM01(),vo.getCompanyCodeSys01ITM28(),vo.getItemCodeItm01ITM28(),vo.getDescriptionSYS10());
+				else
+					new ItemController(null,new ItemPK(vo.getCompanyCodeSys01ITM28(),vo.getItemCodeItm01ITM28()),false);
 			}
 
 		});
@@ -126,6 +132,19 @@ public class SparePartsCatalogueFrame extends InternalFrame {
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+
+	public final void setItem(BigDecimal progressiveHie02ITM01,String companyCode,String itemCode) {
+		try {
+			controlItemType.setValue(progressiveHie02ITM01);
+			controlItemCode.setValue(itemCode);
+			controlItemCode.getLookupController().getLookupDataLocator().getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,companyCode);
+			controlItemCode.getLookupController().getLookupDataLocator().getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,companyCode);
+			controlItemCode.validateCode(itemCode);
+		}
+		catch (Exception ex) {
 		}
 	}
 
@@ -283,6 +302,12 @@ public class SparePartsCatalogueFrame extends InternalFrame {
 		filterPanel.add(controlDescr,   new GridBagConstraints(3, 0, 1, 1, 1.0, 0.0
 						,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 	}
+
+
+  public void setCallbacks(SparePartsCatalogueCallbacks callbacks) {
+    this.callbacks = callbacks;
+		sheets.setCallbacks(callbacks);
+  }
 
 
 

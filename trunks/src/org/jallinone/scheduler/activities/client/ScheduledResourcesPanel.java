@@ -34,6 +34,10 @@ import org.jallinone.documents.java.GridDocumentVO;
 import java.util.HashSet;
 import org.jallinone.scheduler.gantt.client.ActivityGanttController;
 import org.jallinone.documents.java.DocumentTypeVO;
+import org.jallinone.items.spareparts.client.SparePartsCatalogueFrame;
+import org.jallinone.items.spareparts.client.SparePartsCatalogueCallbacks;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 
 /**
@@ -154,6 +158,11 @@ public class ScheduledResourcesPanel extends JPanel {
   JTabbedPane tab = new JTabbedPane();
   private GenericButtonController genericButtonController = null;
   ButtonColumn colGantt = new ButtonColumn();
+  GenericButton buttonSparePartsCat = new GenericButton(new ImageIcon(ClientUtils.getImage("hierarchies.gif")));
+	private SparePartsCatalogueFrame frame = null;
+	private String companyCodeSys01SCH03 = null;
+	private String itemCodeItm01SCH03 = null;
+	private BigDecimal progressiveHie02ITM01;
 
 
   public ScheduledResourcesPanel(GenericButtonController genericButtonController) {
@@ -429,6 +438,8 @@ public class ScheduledResourcesPanel extends JPanel {
 
 
   private void jbInit() throws Exception {
+	   buttonSparePartsCat.setToolTipText(ClientSettings.getInstance().getResources().getResource("spare parts catalogue"));
+
     docPanel.setLayout(gridBagLayout3);
     docsGrid.setMaxNumberOfRowsOnInsert(50);
     tasksGrid.setMaxNumberOfRowsOnInsert(50);
@@ -601,6 +612,7 @@ public class ScheduledResourcesPanel extends JPanel {
     colDocType.setColumnName("progressiveHie02HIE01");
     colDocType.setColumnRequired(false);
     colDocType.setHeaderColumnName("docType");
+    buttonSparePartsCat.addActionListener(new ScheduledResourcesPanel_buttonSparePartsCat_actionAdapter(this));
     tasksButtonsPanel.add(insertButton2, null);
     tasksButtonsPanel.add(editButton2, null);
     tasksButtonsPanel.add(saveButton2, null);
@@ -635,6 +647,7 @@ public class ScheduledResourcesPanel extends JPanel {
     itemsButtonsPanel.add(reloadButton4, null);
     itemsButtonsPanel.add(deleteButton4, null);
     itemsButtonsPanel.add(navigatorBar4, null);
+    itemsButtonsPanel.add(buttonSparePartsCat, null);
     resourcesPanel.add(itemsGrid,   new GridBagConstraints(0, 7, 1, 1, 1.0, 1.0
             ,GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
     itemsGrid.getColumnContainer().add(colItemType, null);
@@ -676,6 +689,8 @@ public class ScheduledResourcesPanel extends JPanel {
     docsGrid.getColumnContainer().add(colDocProg, null);
     docsGrid.getColumnContainer().add(collDocName, null);
   }
+
+
   public ScheduledActivityVO getActVO() {
     return actVO;
   }
@@ -722,6 +737,62 @@ public class ScheduledResourcesPanel extends JPanel {
   }
 
 
+
+  void buttonSparePartsCat_actionPerformed(ActionEvent e) {
+		if (frame==null) {
+			frame = new SparePartsCatalogueFrame(true);
+			frame.addInternalFrameListener(new InternalFrameAdapter() {
+
+				public void internalFrameClosed(InternalFrameEvent e) {
+					frame = null;
+				}
+
+			});
+			frame.setCallbacks(new SparePartsCatalogueCallbacks() {
+
+				/**
+				 * Callback invoked when a user double clicks on a spare part
+				 */
+				public void sparePartDoubleClick(BigDecimal progressiveHie02ITM01,String companyCode,String itemCode,String itemDescr) {
+					ClientUtils.getParentInternalFrame(ScheduledResourcesPanel.this).toFront();
+					if (itemsGrid.getMode()==Consts.INSERT) {
+						 ScheduledItemVO vo = (ScheduledItemVO)itemsGrid.getVOListTableModel().getObjectForRow(0);
+						 vo.setProgressiveHie02ITM01(progressiveHie02ITM01);
+						 vo.setCompanyCodeSys01SCH15(companyCode);
+						 vo.setItemCodeItm01SCH15(itemCode);
+						 vo.setDescriptionSYS10(itemDescr);
+					}
+					else if (itemsGrid.getMode()==Consts.READONLY) {
+						 itemsGrid.getTable().insert();
+						 ScheduledItemVO vo = (ScheduledItemVO)itemsGrid.getVOListTableModel().getObjectForRow(0);
+						 vo.setProgressiveHie02ITM01(progressiveHie02ITM01);
+						 vo.setCompanyCodeSys01SCH15(companyCode);
+						 vo.setItemCodeItm01SCH15(itemCode);
+						 vo.setDescriptionSYS10(itemDescr);
+					}
+					int modelIndex = itemsGrid.getTable().getGrid().getColumnIndex("qtySCH15");
+					if (!itemsGrid.getTable().getGrid().hasFocus())
+						itemsGrid.getTable().getGrid().requestFocus();
+					itemsGrid.getTable().getGrid().editCellAt(0,itemsGrid.getTable().getGrid().convertColumnIndexToView(modelIndex));
+
+				}
+
+			});
+		}
+		else {
+			frame.toFront();
+		}
+		frame.setItem(progressiveHie02ITM01,companyCodeSys01SCH03,itemCodeItm01SCH03);
+  }
+
+
+  public void setItem(BigDecimal progressiveHie02ITM01,String companyCodeSys01SCH03,String itemCodeItm01SCH03) {
+		this.progressiveHie02ITM01 = progressiveHie02ITM01;
+		this.companyCodeSys01SCH03 = companyCodeSys01SCH03;
+    this.itemCodeItm01SCH03 = itemCodeItm01SCH03;
+  }
+
+
 }
 
 class ScheduledResourcesPanel_ganttButton_actionAdapter implements java.awt.event.ActionListener {
@@ -734,3 +805,15 @@ class ScheduledResourcesPanel_ganttButton_actionAdapter implements java.awt.even
     adaptee.ganttButton_actionPerformed(e);
   }
 }
+
+class ScheduledResourcesPanel_buttonSparePartsCat_actionAdapter implements java.awt.event.ActionListener {
+  ScheduledResourcesPanel adaptee;
+
+  ScheduledResourcesPanel_buttonSparePartsCat_actionAdapter(ScheduledResourcesPanel adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.buttonSparePartsCat_actionPerformed(e);
+  }
+}
+
