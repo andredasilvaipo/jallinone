@@ -111,6 +111,13 @@ public class ConfirmSaleDocBean  implements ConfirmSaleDoc {
 	  this.insbean = insbean;
   }
 
+	private LoadSaleDocRowBean loadSaleDocRowBean;
+
+	public void setLoadSaleDocRowBean(LoadSaleDocRowBean loadSaleDocRowBean) {
+		this.loadSaleDocRowBean = loadSaleDocRowBean;
+	}
+
+
 
   public ConfirmSaleDocBean() {
   }
@@ -135,6 +142,8 @@ public class ConfirmSaleDocBean  implements ConfirmSaleDoc {
       rowsBean.setConn(conn); // use same transaction...
       insbean.setConn(conn);
       loadSaleDocBean.setConn(conn);
+			loadSaleDocRowBean.setConn(conn);
+
 
       // generate progressive for doc. sequence...
       pstmt = conn.prepareStatement(
@@ -247,7 +256,7 @@ public class ConfirmSaleDocBean  implements ConfirmSaleDoc {
             gridRowVO = (GridSaleDocRowVO)aux.get(k);
 
             // retrieve detail...
-            res = insbean.loadSaleDocRow(
+            res = loadSaleDocRowBean.loadSaleDocRow(
                 variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,
                 new SaleDocRowPK(
                   gridRowVO.getCompanyCodeSys01DOC02(),
@@ -278,6 +287,11 @@ public class ConfirmSaleDocBean  implements ConfirmSaleDoc {
             rowVO.setDocNumberDOC02(vo.getDocNumberDOC01());
 
             insbean.insertSaleItem(
+								variant1Descriptions,
+								variant2Descriptions,
+								variant3Descriptions,
+								variant4Descriptions,
+								variant5Descriptions,
                 rowVO,
                 serverLanguageId,
                 username
@@ -338,6 +352,7 @@ public class ConfirmSaleDocBean  implements ConfirmSaleDoc {
         rowsBean.setConn(null);
         insbean.setConn(null);
         loadSaleDocBean.setConn(null);
+				loadSaleDocRowBean.setConn(null);
       } catch (Exception ex) {}
     }
   }

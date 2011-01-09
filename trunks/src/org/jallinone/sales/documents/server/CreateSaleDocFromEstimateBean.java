@@ -161,6 +161,14 @@ public class CreateSaleDocFromEstimateBean  implements CreateSaleDocFromEstimate
 	  this.insBean = insBean;
   }
 
+	private LoadSaleDocRowBean loadSaleDocRowBean;
+
+	public void setLoadSaleDocRowBean(LoadSaleDocRowBean loadSaleDocRowBean) {
+		this.loadSaleDocRowBean = loadSaleDocRowBean;
+	}
+
+
+
   public CreateSaleDocFromEstimateBean() {}
 
 
@@ -191,6 +199,7 @@ public class CreateSaleDocFromEstimateBean  implements CreateSaleDocFromEstimate
       bean.setConn(conn);
       loadSaleDocBean.setConn(conn);
       insBean.setConn(conn);
+			loadSaleDocRowBean.setConn(conn);
 
       // retrieve document header...
       DetailSaleDocVO docVO = loadSaleDocBean.loadSaleDoc(pk,serverLanguageId,username,new ArrayList());
@@ -254,14 +263,21 @@ public class CreateSaleDocFromEstimateBean  implements CreateSaleDocFromEstimate
             gridRowVO.getVariantCodeItm15DOC02()
 
         );
-        res = bean.loadSaleDocRow(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,docRowPK,serverLanguageId,username);
+        res = loadSaleDocRowBean.loadSaleDocRow(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,docRowPK,serverLanguageId,username);
         if (res.isError()) {
           throw new Exception(res.getErrorMessage());
         }
         rowVO = (DetailSaleDocRowVO)((VOResponse)res).getVo();
         rowVO.setDocTypeDOC02(docVO.getDocTypeDOC01());
         rowVO.setDocNumberDOC02(docVO.getDocNumberDOC01());
-        res = bean.insertSaleItem(rowVO,serverLanguageId,username);
+        res = bean.insertSaleItem(
+					variant1Descriptions,
+					variant2Descriptions,
+					variant3Descriptions,
+					variant4Descriptions,
+					variant5Descriptions,
+          rowVO,serverLanguageId,username
+				);
         if (res.isError()) {
           throw new Exception(res.getErrorMessage());
         }
@@ -394,6 +410,7 @@ public class CreateSaleDocFromEstimateBean  implements CreateSaleDocFromEstimate
         bean.setConn(null);
         loadSaleDocBean.setConn(null);
         insBean.setConn(null);
+				loadSaleDocRowBean.setConn(conn);
       } catch (Exception ex) {}
     }
   }

@@ -86,7 +86,7 @@ public class ItemSheetsForALevelController extends GridController {
 		ItemSheetVO vo = (ItemSheetVO)valueObject;
 		String companyCode = frame.getLevelVO().getCompanyCodeSys01ITM29();
 		vo.setCompanyCodeSys01ITM25(companyCode);
-		vo.setLevelITM25(frame.getLevelVO().getLevelITM29());
+		vo.setLevITM25(frame.getLevelVO().getLevITM29());
 		frame.getImagePanel().setImage(new byte[0]);
 	}
 

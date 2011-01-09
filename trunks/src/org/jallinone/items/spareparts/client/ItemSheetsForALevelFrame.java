@@ -110,7 +110,7 @@ public class ItemSheetsForALevelFrame extends InternalFrame {
 	public ItemSheetsForALevelFrame(ItemSheetLevelVO levelVO) {
 		this.levelVO = levelVO;
 		grid.getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,levelVO.getCompanyCodeSys01ITM29());
-		grid.getOtherGridParams().put(ApplicationConsts.LEVEL,levelVO.getLevelITM29());
+		grid.getOtherGridParams().put(ApplicationConsts.LEVEL,levelVO.getLevITM29());
 		grid.setController(new ItemSheetsForALevelController(this));
 
 		grid.setGridDataLocator(gridDataLocator);

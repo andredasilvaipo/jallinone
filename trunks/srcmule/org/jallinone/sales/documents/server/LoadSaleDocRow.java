@@ -32,6 +32,7 @@ import org.jallinone.commons.java.*;
 import javax.jws.WebService;
 import javax.sql.DataSource;
 
+
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
  * * <p>Description: Bean used to manage sales order rows.</p>
@@ -61,16 +62,15 @@ import javax.sql.DataSource;
  * @version 1.0
  */
 @WebService
-public interface InsertSaleItem {
+public interface LoadSaleDocRow {
 
-
-	public VOResponse insertSaleItem(
+	public VOResponse loadSaleDocRow(
 		  	  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
 		      @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
 		      @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
 		      @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
 		      @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
-			  DetailSaleDocRowVO vo,String serverLanguageId,String username) throws Throwable;
+		      SaleDocRowPK pk,String serverLanguageId,String username) throws Throwable;
 
-	
+
 }

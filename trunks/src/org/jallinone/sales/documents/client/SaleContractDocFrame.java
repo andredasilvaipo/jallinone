@@ -398,7 +398,7 @@ public class SaleContractDocFrame extends InternalFrame implements SaleDocument 
         headerFormPanel.setMode(Consts.READONLY);
         headerFormPanel.executeReload();
         if (getContracts()!=null)
-          getContracts().reloadData();
+          getContracts().reloadCurrentBlockOfData();
       }
       else JOptionPane.showMessageDialog(
               ClientUtils.getParentFrame(this),

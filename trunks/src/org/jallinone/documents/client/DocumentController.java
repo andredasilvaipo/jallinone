@@ -138,7 +138,7 @@ public class DocumentController extends CompanyFormController {
       frame.getControlDocSize().setText("");
       pk = new DocumentPK(vo.getCompanyCodeSys01DOC14(),vo.getProgressiveDOC14());
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
       }
 
       frame.getLinksgrid().getOtherGridParams().put(
@@ -176,7 +176,7 @@ public class DocumentController extends CompanyFormController {
       frame.getVgrid().reloadData();
       frame.getPropPanel().reloadData(frame);
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
       }
     }
     return res;
@@ -195,7 +195,7 @@ public class DocumentController extends CompanyFormController {
     Response res = ClientUtils.getData("deleteDocuments",pks);
     if (!res.isError()) {
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
       }
       frame.getLinksgrid().clearData();
       frame.getVgrid().clearData();

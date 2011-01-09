@@ -107,6 +107,13 @@ public class SaleDocRowsBean  implements SaleDocRows {
 	  this.bean = bean;
   }
 
+		private LoadSaleDocRowBean loadSaleDocRowBean;
+
+		public void setLoadSaleDocRowBean(LoadSaleDocRowBean loadSaleDocRowBean) {
+			this.loadSaleDocRowBean = loadSaleDocRowBean;
+		}
+
+
 
 
   public SaleDocRowsBean() {
@@ -139,7 +146,7 @@ public class SaleDocRowsBean  implements SaleDocRows {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       totals.setConn(conn); // use same transaction...
       serialNumBean.setConn(conn); // use same transaction...
-      bean.setConn(conn);
+      loadSaleDocRowBean.setConn(conn);
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01DOC02","COMPANY_CODE_SYS01");
@@ -256,7 +263,7 @@ public class SaleDocRowsBean  implements SaleDocRows {
       }
 
       // reload v.o. after updating taxable incomes...
-      res = bean.loadSaleDocRow(
+      res = loadSaleDocRowBean.loadSaleDocRow(
         variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,
         new SaleDocRowPK(
           pk.getCompanyCodeSys01DOC01(),
@@ -314,7 +321,7 @@ public class SaleDocRowsBean  implements SaleDocRows {
       }
       catch (Exception exx) {}
       try {
-    	  bean.setConn(null);
+    	  loadSaleDocRowBean.setConn(null);
     	  totals.setConn(null);
     	  serialNumBean.setConn(null);
       } catch (Exception ex) {}
@@ -375,7 +382,14 @@ public class SaleDocRowsBean  implements SaleDocRows {
             if (vo.getInvoiceQtyDOC02()==null)
               vo.setInvoiceQtyDOC02(new BigDecimal(0));
 
-            res = bean.insertSaleItem(vo,serverLanguageId,username);
+            res = bean.insertSaleItem(
+							variant1Descriptions,
+							variant2Descriptions,
+							variant3Descriptions,
+							variant4Descriptions,
+							variant5Descriptions,
+							vo,serverLanguageId,username
+				     );
             if (res.isError()) {
               throw new Exception(res.getErrorMessage());
             }
@@ -412,7 +426,14 @@ public class SaleDocRowsBean  implements SaleDocRows {
               if (vo.getInvoiceQtyDOC02()==null)
                 vo.setInvoiceQtyDOC02(new BigDecimal(0));
 
-              res = bean.insertSaleItem(vo,serverLanguageId,username);
+              res = bean.insertSaleItem(
+								variant1Descriptions,
+								variant2Descriptions,
+								variant3Descriptions,
+								variant4Descriptions,
+								variant5Descriptions,
+				        vo,serverLanguageId,username
+				       );
               if (res.isError()) {
                 throw new Exception(res.getErrorMessage());
               }

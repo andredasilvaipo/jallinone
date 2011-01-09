@@ -36,7 +36,7 @@ public class ItemSheetVO extends ValueObjectImpl {
 	private String companyCodeSys01ITM25;
 	private String sheetCodeITM25;
 	private String descriptionSYS10;
-	private java.math.BigDecimal levelITM25;
+	private java.math.BigDecimal levITM25;
 	private java.math.BigDecimal progressiveSys10ITM25;
 	private String imageNameITM25;
 	private byte[] imageITM25;
@@ -131,8 +131,8 @@ public class ItemSheetVO extends ValueObjectImpl {
   public String getImageNameITM25() {
     return imageNameITM25;
   }
-  public java.math.BigDecimal getLevelITM25() {
-    return levelITM25;
+  public java.math.BigDecimal getLevITM25() {
+    return levITM25;
   }
   public java.math.BigDecimal getNProp0ITM25() {
     return nProp0ITM25;
@@ -264,8 +264,8 @@ public class ItemSheetVO extends ValueObjectImpl {
   public void setImageNameITM25(String imageNameITM25) {
     this.imageNameITM25 = imageNameITM25;
   }
-  public void setLevelITM25(java.math.BigDecimal levelITM25) {
-    this.levelITM25 = levelITM25;
+  public void setLevITM25(java.math.BigDecimal levITM25) {
+    this.levITM25 = levITM25;
   }
   public void setNProp0ITM25(java.math.BigDecimal NProp0ITM25) {
     this.nProp0ITM25 = NProp0ITM25;

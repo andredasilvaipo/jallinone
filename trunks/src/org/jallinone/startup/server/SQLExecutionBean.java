@@ -274,7 +274,22 @@ public class SQLExecutionBean {
               pstmt.setObject(i + 1, vals.get(i));
             }
 
-            pstmt.execute();
+						try {
+							pstmt.execute();
+						}
+						catch (SQLException ex4) {
+							try {
+								if (sql.toString().toUpperCase().indexOf("DROP TABLE")!=-1) {
+//									Logger.error("NONAME", this.getClass().getName(), "executeSQL",
+//															 "Invalid SQL: " + sql, ex4);
+								}
+								else
+									throw ex4;
+							}
+							catch (Exception exx4) {
+								throw ex4;
+							}
+						}
             pstmt.close();
           }
 

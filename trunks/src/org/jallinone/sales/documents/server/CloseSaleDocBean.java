@@ -175,11 +175,11 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
     this.parsBean = parsBean;
   }
 
-  private InsertSaleItemBean bean;
+	private LoadSaleDocRowBean loadSaleDocRowBean;
 
-  public void setBean(InsertSaleItemBean bean) {
-	  this.bean = bean;
-  }
+	public void setLoadSaleDocRowBean(LoadSaleDocRowBean loadSaleDocRowBean) {
+		this.loadSaleDocRowBean = loadSaleDocRowBean;
+	}
 
 
 
@@ -221,7 +221,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
       taxableIncomeAction.setConn(conn); // use same transaction...
       vatRegisterAction.setConn(conn); // use same transaction...
       parsBean.setConn(conn); // use same transaction...
-      bean.setConn(conn);
+			loadSaleDocRowBean.setConn(conn);
 
 
       // retrieve document header...
@@ -263,7 +263,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
             availVO = (BookedItemQtyVO) availRows.get(0);
             if (availVO.getAvailableQtyWAR03().doubleValue()>=vo.getQtyDOC02().doubleValue()) {
               // unload item from the specified warehouse...
-              res = bean.loadSaleDocRow(
+              res = loadSaleDocRowBean.loadSaleDocRow(
                   variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,
                   new SaleDocRowPK(
                     vo.getCompanyCodeSys01DOC02(),
@@ -355,7 +355,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
         BigDecimal rowNumber = null;
         for(int i=0;i<rows.size();i++) {
           vo = (GridSaleDocRowVO)rows.get(i);
-          res = bean.loadSaleDocRow(
+          res = loadSaleDocRowBean.loadSaleDocRow(
               variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,
               new SaleDocRowPK(
                 docVO.getCompanyCodeSys01Doc01DOC01(),
@@ -1129,7 +1129,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
         taxableIncomeAction.setConn(null);
         vatRegisterAction.setConn(null);
         parsBean.setConn(null);
-        bean.setConn(null);
+				loadSaleDocRowBean.setConn(conn);
       } catch (Exception ex) {}
     }
   }

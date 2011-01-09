@@ -217,7 +217,7 @@ public class SaleOrderDocController extends CompanyFormController {
     Response res = ClientUtils.getData("deleteSaleDocs",pks);
     if (!res.isError()) {
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
       }
       frame.getRowsPanel().getGrid().clearData();
       frame.getDiscPanel().getGrid().clearData();

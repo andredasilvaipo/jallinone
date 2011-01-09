@@ -152,7 +152,7 @@ public class ProdOrderController extends CompanyFormController {
     Response res = ClientUtils.getData("updateProdOrder",new ValueObject[]{oldPersistentObject,persistentObject});
     if (!res.isError()) {
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
       }
     }
     return res;
@@ -171,7 +171,7 @@ public class ProdOrderController extends CompanyFormController {
     Response res = ClientUtils.getData("deleteProdOrders",pks);
     if (!res.isError()) {
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
       }
       frame.getProductsGrid().clearData();
       frame.getCompsGrid().clearData();

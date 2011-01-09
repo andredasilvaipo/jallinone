@@ -489,7 +489,7 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
 
     resourcesPanel.setButtonsEnabled(false);
     if (gridFrame!=null)
-      gridFrame.getGrid().reloadData();
+      gridFrame.getGrid().reloadCurrentBlockOfData();
 
   }
 

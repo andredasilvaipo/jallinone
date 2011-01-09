@@ -212,7 +212,7 @@ public class SaleOrderDocRowController extends CompanyFormController {
       panel.getGrid().reloadData();
       panel.getHeaderPanel().setMode(Consts.READONLY);
       panel.getHeaderPanel().executeReload();
-      panel.getOrders().reloadData();
+      panel.getOrders().reloadCurrentBlockOfData();
 
       panel.getDiscountsPanel().setEnabled(false);
       panel.getDiscountsPanel().getGrid().clearData();

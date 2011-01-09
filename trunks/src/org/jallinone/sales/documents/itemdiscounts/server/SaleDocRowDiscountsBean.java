@@ -101,7 +101,6 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
 
   private SaleDocTotalsBean totalBean;
   private LoadSaleDocBean docBean;
-  private InsertSaleItemBean rowBean;
   private SaleItemTotalDiscountBean itemDiscountBean;
 
   private InsertSaleDocRowDiscountsBean bean;
@@ -109,6 +108,12 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
   public void setBean(InsertSaleDocRowDiscountsBean bean) {
 	  this.bean = bean;
   }
+
+	private LoadSaleDocRowBean loadSaleDocRowBean;
+
+	public void setLoadSaleDocRowBean(LoadSaleDocRowBean loadSaleDocRowBean) {
+		this.loadSaleDocRowBean = loadSaleDocRowBean;
+	}
 
 
 
@@ -120,9 +125,6 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
 	  this.docBean = docBean;
   }
 
-  public void setRowBean(InsertSaleItemBean rowBean) {
-	  this.rowBean = rowBean;
-  }
 
    public void setItemDiscountBean(SaleItemTotalDiscountBean itemDiscountBean) {
 	   this.itemDiscountBean = itemDiscountBean;
@@ -174,7 +176,7 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       totalBean.setConn(conn); // use same transaction...
       docBean.setConn(conn); // use same transaction...
-      rowBean.setConn(conn); // use same transaction...
+      loadSaleDocRowBean.setConn(conn); // use same transaction...
       itemDiscountBean.setConn(conn);
 
        // retrieve document header value object...
@@ -187,7 +189,7 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
       DetailSaleDocVO vo = docBean.loadSaleDoc(docPK,serverLanguageId,username,new ArrayList());
 
       // recalculate item row totals...
-      Response rowResponse = rowBean.loadSaleDocRow(
+      Response rowResponse = loadSaleDocRowBean.loadSaleDocRow(
           variant1Descriptions,
           variant2Descriptions,
           variant3Descriptions,
@@ -278,7 +280,7 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
       try {
           totalBean.setConn(null);
           docBean.setConn(null);
-          rowBean.setConn(null);
+          loadSaleDocRowBean.setConn(null);
           itemDiscountBean.setConn(null);
         } catch (Exception ex) {}
      }

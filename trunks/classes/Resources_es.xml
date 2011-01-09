@@ -1691,7 +1691,7 @@
   <object key="save region" value="Save region" />
   <object key="cannot delete levels: there are sheets having these levels" value="Cannot delete levels: there are sheets having these levels." />
   <object key="cannot insert levels: there are sheets binded to spare parts" value="Cannot insert levels: there are sheets binded to spare parts" />
-  <object key="levelITM29" value="Level" />
+  <object key="levITM29" value="Level" />
   <object key="spare parts sheets levels" value="Spare parts sheets levels" />
   <object key="spare parts sheets for level" value="Spare parts sheets for level" />
   <object key="imageITM05" value="Image" />

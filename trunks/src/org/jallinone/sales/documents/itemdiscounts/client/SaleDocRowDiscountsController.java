@@ -73,7 +73,7 @@ public class SaleDocRowDiscountsController extends CompanyGridController {
     vo.setVariantTypeItm08DOC04(panel.getParentVO().getVariantTypeItm08DOC02());
     vo.setVariantTypeItm09DOC04(panel.getParentVO().getVariantTypeItm09DOC02());
     vo.setVariantTypeItm10DOC04(panel.getParentVO().getVariantTypeItm10DOC02());
-    
+
     vo.setVariantCodeItm11DOC04(panel.getParentVO().getVariantCodeItm11DOC02());
     vo.setVariantCodeItm12DOC04(panel.getParentVO().getVariantCodeItm12DOC02());
     vo.setVariantCodeItm13DOC04(panel.getParentVO().getVariantCodeItm13DOC02());
@@ -184,7 +184,7 @@ public class SaleDocRowDiscountsController extends CompanyGridController {
    * The method is called ONLY if the operation is successfully completed.
    */
   public void afterEditGrid(GridControl grid) {
-    panel.getParentGrid().reloadData();
+    panel.getParentGrid().reloadCurrentBlockOfData();
     panel.getParentDetail().reload();
     panel.getParentFrame().getHeaderFormPanel().setMode(Consts.READONLY);
     panel.getParentFrame().getHeaderFormPanel().executeReload();
@@ -196,7 +196,7 @@ public class SaleDocRowDiscountsController extends CompanyGridController {
    * The method is called ONLY if the operation is successfully completed.
    */
   public void afterInsertGrid(GridControl grid) {
-    panel.getParentGrid().reloadData();
+    panel.getParentGrid().reloadCurrentBlockOfData();
     panel.getParentDetail().reload();
     panel.getParentFrame().getHeaderFormPanel().setMode(Consts.READONLY);
     panel.getParentFrame().getHeaderFormPanel().executeReload();
@@ -208,7 +208,7 @@ public class SaleDocRowDiscountsController extends CompanyGridController {
    * The method is called ONLY if the operation is successfully completed.
    */
   public void afterDeleteGrid() {
-    panel.getParentGrid().reloadData();
+    panel.getParentGrid().reloadCurrentBlockOfData();
     panel.getParentDetail().reload();
     panel.getParentFrame().getHeaderFormPanel().setMode(Consts.READONLY);
     panel.getParentFrame().getHeaderFormPanel().executeReload();

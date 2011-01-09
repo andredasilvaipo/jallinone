@@ -163,7 +163,7 @@ public class PurchaseDocRowController extends CompanyFormController {
       panel.getGrid().reloadData();
       panel.getHeaderPanel().setMode(Consts.READONLY);
       panel.getHeaderPanel().executeReload();
-      panel.getOrders().reloadData();
+      panel.getOrders().reloadCurrentBlockOfData();
     }
     return res;
   }

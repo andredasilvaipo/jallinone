@@ -170,6 +170,14 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
   }
 
 
+	private LoadSaleDocRowBean loadSaleDocRowBean;
+
+	public void setLoadSaleDocRowBean(LoadSaleDocRowBean loadSaleDocRowBean) {
+		this.loadSaleDocRowBean = loadSaleDocRowBean;
+	}
+
+
+
   public CreateInvoiceFromOutDelivNotesBean() {}
 
 
@@ -200,6 +208,7 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
       bean.setConn(conn);
       loadSaleDocBean.setConn(conn);
       insBean.setConn(conn);
+			loadSaleDocRowBean.setConn(conn);
 
       DetailSaleDocVO docVO = invoiceVO.getDocVO();
       ArrayList delivNotes = invoiceVO.getSelectedDeliveryNotes();
@@ -337,7 +346,7 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
             gridRowVO.getVariantCodeItm15DOC02()
 
         );
-        res = bean.loadSaleDocRow(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,docRowPK,serverLanguageId,username);
+        res = loadSaleDocRowBean.loadSaleDocRow(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,docRowPK,serverLanguageId,username);
         if (res.isError()) {
           throw new Exception(res.getErrorMessage());
         }
@@ -371,7 +380,14 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
           // calculate row total...
           rowVO.setValueDOC02(rowVO.getTaxableIncomeDOC02().add(rowVO.getVatValueDOC02()));
 
-          res = bean.insertSaleItem( rowVO, serverLanguageId,username);
+          res = bean.insertSaleItem(
+						variant1Descriptions,
+						variant2Descriptions,
+						variant3Descriptions,
+						variant4Descriptions,
+						variant5Descriptions,
+				    rowVO, serverLanguageId,username
+				  );
           if (res.isError()) {
             throw new Exception(res.getErrorMessage());
           }
@@ -528,6 +544,7 @@ public class CreateInvoiceFromOutDelivNotesBean  implements CreateInvoiceFromOut
           bean.setConn(null);
           loadSaleDocBean.setConn(null);
           insBean.setConn(null);
+					loadSaleDocRowBean.setConn(conn);
         } catch (Exception ex) {}
 
     }

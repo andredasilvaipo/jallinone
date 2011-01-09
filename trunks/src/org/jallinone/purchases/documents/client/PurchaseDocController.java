@@ -186,7 +186,7 @@ public class PurchaseDocController extends CompanyFormController {
     Response res = ClientUtils.getData("deletePurchaseDocs",pks);
     if (!res.isError()) {
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
       }
       frame.getRowsPanel().getGrid().clearData();
     }

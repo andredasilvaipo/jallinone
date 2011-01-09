@@ -192,7 +192,6 @@ public class DeliveryNoteWarehousePanel extends JPanel {
     labelCountry.setText("country");
     labelProv.setText("prov");
     controlDescr.setAttributeName("warehouseDescriptionDOC08");
-    controlDescr.setRequired(true);
     this.add(labelZip,                  new GridBagConstraints(4, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     this.add(labelCity,                new GridBagConstraints(0, 2, 2, 1, 0.0, 0.0

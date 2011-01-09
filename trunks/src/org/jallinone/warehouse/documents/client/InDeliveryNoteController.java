@@ -129,7 +129,7 @@ public class InDeliveryNoteController extends CompanyFormController {
    */
   public void afterInsertData() {
     if (parentFrame!=null) {
-      parentFrame.getGrid().reloadData();
+      parentFrame.getGrid().reloadCurrentBlockOfData();
     }
 
     DetailDeliveryNoteVO vo = (DetailDeliveryNoteVO)frame.getHeaderFormPanel().getVOModel().getValueObject();
@@ -150,7 +150,7 @@ public class InDeliveryNoteController extends CompanyFormController {
     Response res = ClientUtils.getData("updateInDeliveryNote",new ValueObject[]{oldPersistentObject,persistentObject});
     if (!res.isError()) {
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
         DetailDeliveryNoteVO vo = (DetailDeliveryNoteVO)frame.getHeaderFormPanel().getVOModel().getValueObject();
         frame.getRowsPanel().setParentVO(vo);
       }
@@ -171,7 +171,7 @@ public class InDeliveryNoteController extends CompanyFormController {
     Response res = ClientUtils.getData("deleteDeliveryNotes",pks);
     if (!res.isError()) {
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
       }
       frame.getRowsPanel().getGrid().clearData();
     }

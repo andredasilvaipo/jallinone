@@ -148,7 +148,7 @@ public class PurchaseInvoiceDocRowsController extends CompanyGridController {
       panel.getHeaderPanel().setMode(Consts.READONLY);
       panel.getHeaderPanel().executeReload();
       if (panel.getInvoices()!=null)
-        panel.getInvoices().reloadData();
+        panel.getInvoices().reloadCurrentBlockOfData();
     }
     return res;
   }

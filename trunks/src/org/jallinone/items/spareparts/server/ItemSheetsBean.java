@@ -157,7 +157,7 @@ public class ItemSheetsBean implements ItemSheets {
 	public VOListResponse loadItemSheets(
 	    GridParams pars,String serverLanguageId,String username,
 			String parentCompanyCodeSys01ITM25,String parentSheetCodeItm25ITM25,
-			BigDecimal levelITM25
+			BigDecimal levITM25
 	) throws Throwable {
 		PreparedStatement pstmt = null;
 		Connection conn = null;
@@ -165,45 +165,45 @@ public class ItemSheetsBean implements ItemSheets {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
 
 			Map attribute2dbField = new HashMap();
-			attribute2dbField.put("companyCodeSys01ITM25","ITM25_SHEETS.COMPANY_CODE_SYS01");
-			attribute2dbField.put("sheetCodeITM25","ITM25_SHEETS.SHEET_CODE");
-			attribute2dbField.put("progressiveSys10ITM25","ITM25_SHEETS.PROGRESSIVE_SYS10");
+			attribute2dbField.put("companyCodeSys01ITM25","ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01");
+			attribute2dbField.put("sheetCodeITM25","ITM25_ITEM_SHEETS.SHEET_CODE");
+			attribute2dbField.put("progressiveSys10ITM25","ITM25_ITEM_SHEETS.PROGRESSIVE_SYS10");
 			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
-			attribute2dbField.put("imageNameITM25","ITM25_SHEETS.IMAGE_NAME");
-			attribute2dbField.put("levelITM25","ITM25_SHEETS.LEVEL");
+			attribute2dbField.put("imageNameITM25","ITM25_ITEM_SHEETS.IMAGE_NAME");
+			attribute2dbField.put("levITM25","ITM25_ITEM_SHEETS.LEV");
 
-			attribute2dbField.put("sProp0ITM25","ITM25_SHEETS.S_PROP0");
-			attribute2dbField.put("sProp1ITM25","ITM25_SHEETS.S_PROP1");
-			attribute2dbField.put("sProp2ITM25","ITM25_SHEETS.S_PROP2");
-			attribute2dbField.put("sProp3ITM25","ITM25_SHEETS.S_PROP3");
-			attribute2dbField.put("sProp4ITM25","ITM25_SHEETS.S_PROP4");
-			attribute2dbField.put("sProp5ITM25","ITM25_SHEETS.S_PROP5");
-			attribute2dbField.put("sProp6ITM25","ITM25_SHEETS.S_PROP6");
-			attribute2dbField.put("sProp7ITM25","ITM25_SHEETS.S_PROP7");
-			attribute2dbField.put("sProp8ITM25","ITM25_SHEETS.S_PROP8");
-			attribute2dbField.put("sProp9ITM25","ITM25_SHEETS.S_PROP9");
+			attribute2dbField.put("sProp0ITM25","ITM25_ITEM_SHEETS.S_PROP0");
+			attribute2dbField.put("sProp1ITM25","ITM25_ITEM_SHEETS.S_PROP1");
+			attribute2dbField.put("sProp2ITM25","ITM25_ITEM_SHEETS.S_PROP2");
+			attribute2dbField.put("sProp3ITM25","ITM25_ITEM_SHEETS.S_PROP3");
+			attribute2dbField.put("sProp4ITM25","ITM25_ITEM_SHEETS.S_PROP4");
+			attribute2dbField.put("sProp5ITM25","ITM25_ITEM_SHEETS.S_PROP5");
+			attribute2dbField.put("sProp6ITM25","ITM25_ITEM_SHEETS.S_PROP6");
+			attribute2dbField.put("sProp7ITM25","ITM25_ITEM_SHEETS.S_PROP7");
+			attribute2dbField.put("sProp8ITM25","ITM25_ITEM_SHEETS.S_PROP8");
+			attribute2dbField.put("sProp9ITM25","ITM25_ITEM_SHEETS.S_PROP9");
 
-			attribute2dbField.put("dProp0ITM25","ITM25_SHEETS.D_PROP0");
-			attribute2dbField.put("dProp1ITM25","ITM25_SHEETS.D_PROP1");
-			attribute2dbField.put("dProp2ITM25","ITM25_SHEETS.D_PROP2");
-			attribute2dbField.put("dProp3ITM25","ITM25_SHEETS.D_PROP3");
-			attribute2dbField.put("dProp4ITM25","ITM25_SHEETS.D_PROP4");
-			attribute2dbField.put("dProp5ITM25","ITM25_SHEETS.D_PROP5");
-			attribute2dbField.put("dProp6ITM25","ITM25_SHEETS.D_PROP6");
-			attribute2dbField.put("dProp7ITM25","ITM25_SHEETS.D_PROP7");
-			attribute2dbField.put("dProp8ITM25","ITM25_SHEETS.D_PROP8");
-			attribute2dbField.put("dProp9ITM25","ITM25_SHEETS.D_PROP9");
+			attribute2dbField.put("dProp0ITM25","ITM25_ITEM_SHEETS.D_PROP0");
+			attribute2dbField.put("dProp1ITM25","ITM25_ITEM_SHEETS.D_PROP1");
+			attribute2dbField.put("dProp2ITM25","ITM25_ITEM_SHEETS.D_PROP2");
+			attribute2dbField.put("dProp3ITM25","ITM25_ITEM_SHEETS.D_PROP3");
+			attribute2dbField.put("dProp4ITM25","ITM25_ITEM_SHEETS.D_PROP4");
+			attribute2dbField.put("dProp5ITM25","ITM25_ITEM_SHEETS.D_PROP5");
+			attribute2dbField.put("dProp6ITM25","ITM25_ITEM_SHEETS.D_PROP6");
+			attribute2dbField.put("dProp7ITM25","ITM25_ITEM_SHEETS.D_PROP7");
+			attribute2dbField.put("dProp8ITM25","ITM25_ITEM_SHEETS.D_PROP8");
+			attribute2dbField.put("dProp9ITM25","ITM25_ITEM_SHEETS.D_PROP9");
 
-			attribute2dbField.put("nProp0ITM25","ITM25_SHEETS.N_PROP0");
-			attribute2dbField.put("nProp1ITM25","ITM25_SHEETS.N_PROP1");
-			attribute2dbField.put("nProp2ITM25","ITM25_SHEETS.N_PROP2");
-			attribute2dbField.put("nProp3ITM25","ITM25_SHEETS.N_PROP3");
-			attribute2dbField.put("nProp4ITM25","ITM25_SHEETS.N_PROP4");
-			attribute2dbField.put("nProp5ITM25","ITM25_SHEETS.N_PROP5");
-			attribute2dbField.put("nProp6ITM25","ITM25_SHEETS.N_PROP6");
-			attribute2dbField.put("nProp7ITM25","ITM25_SHEETS.N_PROP7");
-			attribute2dbField.put("nProp8ITM25","ITM25_SHEETS.N_PROP8");
-			attribute2dbField.put("nProp9ITM25","ITM25_SHEETS.N_PROP9");
+			attribute2dbField.put("nProp0ITM25","ITM25_ITEM_SHEETS.N_PROP0");
+			attribute2dbField.put("nProp1ITM25","ITM25_ITEM_SHEETS.N_PROP1");
+			attribute2dbField.put("nProp2ITM25","ITM25_ITEM_SHEETS.N_PROP2");
+			attribute2dbField.put("nProp3ITM25","ITM25_ITEM_SHEETS.N_PROP3");
+			attribute2dbField.put("nProp4ITM25","ITM25_ITEM_SHEETS.N_PROP4");
+			attribute2dbField.put("nProp5ITM25","ITM25_ITEM_SHEETS.N_PROP5");
+			attribute2dbField.put("nProp6ITM25","ITM25_ITEM_SHEETS.N_PROP6");
+			attribute2dbField.put("nProp7ITM25","ITM25_ITEM_SHEETS.N_PROP7");
+			attribute2dbField.put("nProp8ITM25","ITM25_ITEM_SHEETS.N_PROP8");
+			attribute2dbField.put("nProp9ITM25","ITM25_ITEM_SHEETS.N_PROP9");
 
 			// possibile usages:
 			// list of children sheets, starting from a parent sheet (for each subsheet, retrieve also SubsheetVO subobject)
@@ -211,67 +211,67 @@ public class ItemSheetsBean implements ItemSheets {
 			// list of possible sheets having a specified level...
 
 			String select =
-					"select ITM25_SHEETS.COMPANY_CODE_SYS01,ITM25_SHEETS.SHEET_CODE,"+
-					"ITM25_SHEETS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
-					"ITM25_SHEETS.IMAGE_NAME,ITM25_SHEETS.LEVEL,"+
-					"ITM25_SHEETS.S_PROP0,ITM25_SHEETS.S_PROP1,ITM25_SHEETS.S_PROP2,ITM25_SHEETS.S_PROP3,ITM25_SHEETS.S_PROP4,"+
-					"ITM25_SHEETS.S_PROP5,ITM25_SHEETS.S_PROP6,ITM25_SHEETS.S_PROP7,ITM25_SHEETS.S_PROP8,ITM25_SHEETS.S_PROP9,"+
-					"ITM25_SHEETS.D_PROP0,ITM25_SHEETS.D_PROP1,ITM25_SHEETS.D_PROP2,ITM25_SHEETS.D_PROP3,ITM25_SHEETS.D_PROP4,"+
-					"ITM25_SHEETS.D_PROP5,ITM25_SHEETS.D_PROP6,ITM25_SHEETS.D_PROP7,ITM25_SHEETS.D_PROP8,ITM25_SHEETS.D_PROP9,"+
-					"ITM25_SHEETS.N_PROP0,ITM25_SHEETS.N_PROP1,ITM25_SHEETS.N_PROP2,ITM25_SHEETS.N_PROP3,ITM25_SHEETS.N_PROP4,"+
-					"ITM25_SHEETS.N_PROP5,ITM25_SHEETS.N_PROP6,ITM25_SHEETS.N_PROP7,ITM25_SHEETS.N_PROP8,ITM25_SHEETS.N_PROP9 ";
+					"select ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01,ITM25_ITEM_SHEETS.SHEET_CODE,"+
+					"ITM25_ITEM_SHEETS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
+					"ITM25_ITEM_SHEETS.IMAGE_NAME,ITM25_ITEM_SHEETS.LEV,"+
+					"ITM25_ITEM_SHEETS.S_PROP0,ITM25_ITEM_SHEETS.S_PROP1,ITM25_ITEM_SHEETS.S_PROP2,ITM25_ITEM_SHEETS.S_PROP3,ITM25_ITEM_SHEETS.S_PROP4,"+
+					"ITM25_ITEM_SHEETS.S_PROP5,ITM25_ITEM_SHEETS.S_PROP6,ITM25_ITEM_SHEETS.S_PROP7,ITM25_ITEM_SHEETS.S_PROP8,ITM25_ITEM_SHEETS.S_PROP9,"+
+					"ITM25_ITEM_SHEETS.D_PROP0,ITM25_ITEM_SHEETS.D_PROP1,ITM25_ITEM_SHEETS.D_PROP2,ITM25_ITEM_SHEETS.D_PROP3,ITM25_ITEM_SHEETS.D_PROP4,"+
+					"ITM25_ITEM_SHEETS.D_PROP5,ITM25_ITEM_SHEETS.D_PROP6,ITM25_ITEM_SHEETS.D_PROP7,ITM25_ITEM_SHEETS.D_PROP8,ITM25_ITEM_SHEETS.D_PROP9,"+
+					"ITM25_ITEM_SHEETS.N_PROP0,ITM25_ITEM_SHEETS.N_PROP1,ITM25_ITEM_SHEETS.N_PROP2,ITM25_ITEM_SHEETS.N_PROP3,ITM25_ITEM_SHEETS.N_PROP4,"+
+					"ITM25_ITEM_SHEETS.N_PROP5,ITM25_ITEM_SHEETS.N_PROP6,ITM25_ITEM_SHEETS.N_PROP7,ITM25_ITEM_SHEETS.N_PROP8,ITM25_ITEM_SHEETS.N_PROP9 ";
 			String from =
-					" from ITM25_SHEETS,SYS10_TRANSLATIONS ";
+					" from ITM25_ITEM_SHEETS,SYS10_TRANSLATIONS ";
 			String where =
 				  " where "+
-					"ITM25_SHEETS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+					"ITM25_ITEM_SHEETS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
 					"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
-					"ITM25_SHEETS.ENABLED='Y' ";
+					"ITM25_ITEM_SHEETS.ENABLED='Y' ";
 
 			ArrayList values = new ArrayList();
 			values.add(serverLanguageId);
 
-			if (parentCompanyCodeSys01ITM25!=null && parentSheetCodeItm25ITM25!=null && levelITM25==null) {
+			if (parentCompanyCodeSys01ITM25!=null && parentSheetCodeItm25ITM25!=null && levITM25==null) {
 				// list of children sheets, starting from a parent sheet
 				select +=
 					",ALIAS.POLYGON ";
 				from +=
-					",ITM30_SUBSHEETS ALIAS ";
+					",ITM30_SUB_SHEETS ALIAS ";
 				where +=
-					" and ITM25_SHEETS.COMPANY_CODE_SYS01=? "+
-					" and ALIAS.COMPANY_CODE_SYS01=ITM25_SHEETS.COMPANY_CODE_SYS01 "+
-					" and ALIAS.SHEET_CODE_ITM25=ITM25_SHEETS.SHEET_CODE "+
+					" and ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01=? "+
+					" and ALIAS.COMPANY_CODE_SYS01=ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01 "+
+					" and ALIAS.SHEET_CODE_ITM25=ITM25_ITEM_SHEETS.SHEET_CODE "+
 				  " and ALIAS.PARENT_SHEET_CODE_ITM25=? "+
-					" and NOT ALIAS.PARENT_SHEET_CODE_ITM25=ITM25_SHEETS.SHEET_CODE ";
+					" and NOT ALIAS.PARENT_SHEET_CODE_ITM25=ITM25_ITEM_SHEETS.SHEET_CODE ";
 
 				values.add(parentCompanyCodeSys01ITM25);
 			  values.add(parentSheetCodeItm25ITM25);
 
 				attribute2dbField.put("subsheet.polygonITM30","ALIAS.POLYGON");
 			}
-			else if (parentCompanyCodeSys01ITM25!=null && parentSheetCodeItm25ITM25!=null && levelITM25!=null) {
+			else if (parentCompanyCodeSys01ITM25!=null && parentSheetCodeItm25ITM25!=null && levITM25!=null) {
 				// list of possible sheets to add to a parent sheet, starting from a specific level (to filter) and a parent sheet to use to exclude children sheets
 				where +=
-					" and ITM25_SHEETS.COMPANY_CODE_SYS01=? "+
-					" and ITM25_SHEETS.LEVEL=? "+
-					" and ITM25_SHEETS.SHEET_CODE not in (select SHEET_CODE_ITM25 from ITM30_SUBSHEETS where "+
+					" and ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01=? "+
+					" and ITM25_ITEM_SHEETS.LEV=? "+
+					" and ITM25_ITEM_SHEETS.SHEET_CODE not in (select SHEET_CODE_ITM25 from ITM30_SUB_SHEETS where "+
 					"   COMPANY_CODE_SYS01=? and "+
 					"   PARENT_SHEET_CODE_ITM25=? "+
 					" ) ";
 
 				values.add(parentCompanyCodeSys01ITM25);
-				values.add(levelITM25);
+				values.add(levITM25);
 				values.add(parentCompanyCodeSys01ITM25);
 				values.add(parentSheetCodeItm25ITM25);
 			}
-			else if (parentCompanyCodeSys01ITM25!=null && parentSheetCodeItm25ITM25==null && levelITM25!=null) {
+			else if (parentCompanyCodeSys01ITM25!=null && parentSheetCodeItm25ITM25==null && levITM25!=null) {
 				// list of possible sheets having a specified level...
 				where +=
-					" and ITM25_SHEETS.COMPANY_CODE_SYS01=? "+
-					" and ITM25_SHEETS.LEVEL=? ";
+					" and ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01=? "+
+					" and ITM25_ITEM_SHEETS.LEV=? ";
 
 				values.add(parentCompanyCodeSys01ITM25);
-				values.add(levelITM25);
+				values.add(levITM25);
 			}
 
 
@@ -323,48 +323,48 @@ public class ItemSheetsBean implements ItemSheets {
 
 			String companyCodeSYS10 = (String)pars.getLookupValidationParameters().get(ApplicationConsts.COMPANY_CODE_SYS01);
 			String parentCode = (String)pars.getLookupValidationParameters().get(ApplicationConsts.ID);
-			BigDecimal levelITM25 = (BigDecimal)pars.getLookupValidationParameters().get(ApplicationConsts.LEVEL);
+			BigDecimal levITM25 = (BigDecimal)pars.getLookupValidationParameters().get(ApplicationConsts.LEVEL);
 
 			Map attribute2dbField = new HashMap();
-			attribute2dbField.put("companyCodeSys01ITM25","ITM25_SHEETS.COMPANY_CODE_SYS01");
-			attribute2dbField.put("sheetCodeITM25","ITM25_SHEETS.SHEET_CODE");
-			attribute2dbField.put("progressiveSys10ITM25","ITM25_SHEETS.PROGRESSIVE_SYS10");
+			attribute2dbField.put("companyCodeSys01ITM25","ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01");
+			attribute2dbField.put("sheetCodeITM25","ITM25_ITEM_SHEETS.SHEET_CODE");
+			attribute2dbField.put("progressiveSys10ITM25","ITM25_ITEM_SHEETS.PROGRESSIVE_SYS10");
 			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
-			attribute2dbField.put("imageNameITM25","ITM25_SHEETS.IMAGE_NAME");
-			attribute2dbField.put("levelITM25","ITM25_SHEETS.LEVEL");
+			attribute2dbField.put("imageNameITM25","ITM25_ITEM_SHEETS.IMAGE_NAME");
+			attribute2dbField.put("levITM25","ITM25_ITEM_SHEETS.LEV");
 
-			attribute2dbField.put("sProp0ITM25","ITM25_SHEETS.S_PROP0");
-			attribute2dbField.put("sProp1ITM25","ITM25_SHEETS.S_PROP1");
-			attribute2dbField.put("sProp2ITM25","ITM25_SHEETS.S_PROP2");
-			attribute2dbField.put("sProp3ITM25","ITM25_SHEETS.S_PROP3");
-			attribute2dbField.put("sProp4ITM25","ITM25_SHEETS.S_PROP4");
-			attribute2dbField.put("sProp5ITM25","ITM25_SHEETS.S_PROP5");
-			attribute2dbField.put("sProp6ITM25","ITM25_SHEETS.S_PROP6");
-			attribute2dbField.put("sProp7ITM25","ITM25_SHEETS.S_PROP7");
-			attribute2dbField.put("sProp8ITM25","ITM25_SHEETS.S_PROP8");
-			attribute2dbField.put("sProp9ITM25","ITM25_SHEETS.S_PROP9");
+			attribute2dbField.put("sProp0ITM25","ITM25_ITEM_SHEETS.S_PROP0");
+			attribute2dbField.put("sProp1ITM25","ITM25_ITEM_SHEETS.S_PROP1");
+			attribute2dbField.put("sProp2ITM25","ITM25_ITEM_SHEETS.S_PROP2");
+			attribute2dbField.put("sProp3ITM25","ITM25_ITEM_SHEETS.S_PROP3");
+			attribute2dbField.put("sProp4ITM25","ITM25_ITEM_SHEETS.S_PROP4");
+			attribute2dbField.put("sProp5ITM25","ITM25_ITEM_SHEETS.S_PROP5");
+			attribute2dbField.put("sProp6ITM25","ITM25_ITEM_SHEETS.S_PROP6");
+			attribute2dbField.put("sProp7ITM25","ITM25_ITEM_SHEETS.S_PROP7");
+			attribute2dbField.put("sProp8ITM25","ITM25_ITEM_SHEETS.S_PROP8");
+			attribute2dbField.put("sProp9ITM25","ITM25_ITEM_SHEETS.S_PROP9");
 
-			attribute2dbField.put("dProp0ITM25","ITM25_SHEETS.D_PROP0");
-			attribute2dbField.put("dProp1ITM25","ITM25_SHEETS.D_PROP1");
-			attribute2dbField.put("dProp2ITM25","ITM25_SHEETS.D_PROP2");
-			attribute2dbField.put("dProp3ITM25","ITM25_SHEETS.D_PROP3");
-			attribute2dbField.put("dProp4ITM25","ITM25_SHEETS.D_PROP4");
-			attribute2dbField.put("dProp5ITM25","ITM25_SHEETS.D_PROP5");
-			attribute2dbField.put("dProp6ITM25","ITM25_SHEETS.D_PROP6");
-			attribute2dbField.put("dProp7ITM25","ITM25_SHEETS.D_PROP7");
-			attribute2dbField.put("dProp8ITM25","ITM25_SHEETS.D_PROP8");
-			attribute2dbField.put("dProp9ITM25","ITM25_SHEETS.D_PROP9");
+			attribute2dbField.put("dProp0ITM25","ITM25_ITEM_SHEETS.D_PROP0");
+			attribute2dbField.put("dProp1ITM25","ITM25_ITEM_SHEETS.D_PROP1");
+			attribute2dbField.put("dProp2ITM25","ITM25_ITEM_SHEETS.D_PROP2");
+			attribute2dbField.put("dProp3ITM25","ITM25_ITEM_SHEETS.D_PROP3");
+			attribute2dbField.put("dProp4ITM25","ITM25_ITEM_SHEETS.D_PROP4");
+			attribute2dbField.put("dProp5ITM25","ITM25_ITEM_SHEETS.D_PROP5");
+			attribute2dbField.put("dProp6ITM25","ITM25_ITEM_SHEETS.D_PROP6");
+			attribute2dbField.put("dProp7ITM25","ITM25_ITEM_SHEETS.D_PROP7");
+			attribute2dbField.put("dProp8ITM25","ITM25_ITEM_SHEETS.D_PROP8");
+			attribute2dbField.put("dProp9ITM25","ITM25_ITEM_SHEETS.D_PROP9");
 
-			attribute2dbField.put("nProp0ITM25","ITM25_SHEETS.N_PROP0");
-			attribute2dbField.put("nProp1ITM25","ITM25_SHEETS.N_PROP1");
-			attribute2dbField.put("nProp2ITM25","ITM25_SHEETS.N_PROP2");
-			attribute2dbField.put("nProp3ITM25","ITM25_SHEETS.N_PROP3");
-			attribute2dbField.put("nProp4ITM25","ITM25_SHEETS.N_PROP4");
-			attribute2dbField.put("nProp5ITM25","ITM25_SHEETS.N_PROP5");
-			attribute2dbField.put("nProp6ITM25","ITM25_SHEETS.N_PROP6");
-			attribute2dbField.put("nProp7ITM25","ITM25_SHEETS.N_PROP7");
-			attribute2dbField.put("nProp8ITM25","ITM25_SHEETS.N_PROP8");
-			attribute2dbField.put("nProp9ITM25","ITM25_SHEETS.N_PROP9");
+			attribute2dbField.put("nProp0ITM25","ITM25_ITEM_SHEETS.N_PROP0");
+			attribute2dbField.put("nProp1ITM25","ITM25_ITEM_SHEETS.N_PROP1");
+			attribute2dbField.put("nProp2ITM25","ITM25_ITEM_SHEETS.N_PROP2");
+			attribute2dbField.put("nProp3ITM25","ITM25_ITEM_SHEETS.N_PROP3");
+			attribute2dbField.put("nProp4ITM25","ITM25_ITEM_SHEETS.N_PROP4");
+			attribute2dbField.put("nProp5ITM25","ITM25_ITEM_SHEETS.N_PROP5");
+			attribute2dbField.put("nProp6ITM25","ITM25_ITEM_SHEETS.N_PROP6");
+			attribute2dbField.put("nProp7ITM25","ITM25_ITEM_SHEETS.N_PROP7");
+			attribute2dbField.put("nProp8ITM25","ITM25_ITEM_SHEETS.N_PROP8");
+			attribute2dbField.put("nProp9ITM25","ITM25_ITEM_SHEETS.N_PROP9");
 
 			// possibile usages:
 			// list of sheets (one sheet...), using the validated sheet code
@@ -372,24 +372,24 @@ public class ItemSheetsBean implements ItemSheets {
 			// list of possible sheets to add to a parent sheet, starting from a specific level (to filter) and a parent sheet to use to exclude children sheets
 
 			String select =
-					"select ITM25_SHEETS.COMPANY_CODE_SYS01,ITM25_SHEETS.SHEET_CODE,"+
-					"ITM25_SHEETS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
-					"ITM25_SHEETS.IMAGE_NAME,ITM25_SHEETS.LEVEL,"+
-					"ITM25_SHEETS.S_PROP0,ITM25_SHEETS.S_PROP1,ITM25_SHEETS.S_PROP2,ITM25_SHEETS.S_PROP3,ITM25_SHEETS.S_PROP4,"+
-					"ITM25_SHEETS.S_PROP5,ITM25_SHEETS.S_PROP6,ITM25_SHEETS.S_PROP7,ITM25_SHEETS.S_PROP8,ITM25_SHEETS.S_PROP9,"+
-					"ITM25_SHEETS.D_PROP0,ITM25_SHEETS.D_PROP1,ITM25_SHEETS.D_PROP2,ITM25_SHEETS.D_PROP3,ITM25_SHEETS.D_PROP4,"+
-					"ITM25_SHEETS.D_PROP5,ITM25_SHEETS.D_PROP6,ITM25_SHEETS.D_PROP7,ITM25_SHEETS.D_PROP8,ITM25_SHEETS.D_PROP9,"+
-					"ITM25_SHEETS.N_PROP0,ITM25_SHEETS.N_PROP1,ITM25_SHEETS.N_PROP2,ITM25_SHEETS.N_PROP3,ITM25_SHEETS.N_PROP4,"+
-					"ITM25_SHEETS.N_PROP5,ITM25_SHEETS.N_PROP6,ITM25_SHEETS.N_PROP7,ITM25_SHEETS.N_PROP8,ITM25_SHEETS.N_PROP9 ";
+					"select ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01,ITM25_ITEM_SHEETS.SHEET_CODE,"+
+					"ITM25_ITEM_SHEETS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
+					"ITM25_ITEM_SHEETS.IMAGE_NAME,ITM25_ITEM_SHEETS.LEV,"+
+					"ITM25_ITEM_SHEETS.S_PROP0,ITM25_ITEM_SHEETS.S_PROP1,ITM25_ITEM_SHEETS.S_PROP2,ITM25_ITEM_SHEETS.S_PROP3,ITM25_ITEM_SHEETS.S_PROP4,"+
+					"ITM25_ITEM_SHEETS.S_PROP5,ITM25_ITEM_SHEETS.S_PROP6,ITM25_ITEM_SHEETS.S_PROP7,ITM25_ITEM_SHEETS.S_PROP8,ITM25_ITEM_SHEETS.S_PROP9,"+
+					"ITM25_ITEM_SHEETS.D_PROP0,ITM25_ITEM_SHEETS.D_PROP1,ITM25_ITEM_SHEETS.D_PROP2,ITM25_ITEM_SHEETS.D_PROP3,ITM25_ITEM_SHEETS.D_PROP4,"+
+					"ITM25_ITEM_SHEETS.D_PROP5,ITM25_ITEM_SHEETS.D_PROP6,ITM25_ITEM_SHEETS.D_PROP7,ITM25_ITEM_SHEETS.D_PROP8,ITM25_ITEM_SHEETS.D_PROP9,"+
+					"ITM25_ITEM_SHEETS.N_PROP0,ITM25_ITEM_SHEETS.N_PROP1,ITM25_ITEM_SHEETS.N_PROP2,ITM25_ITEM_SHEETS.N_PROP3,ITM25_ITEM_SHEETS.N_PROP4,"+
+					"ITM25_ITEM_SHEETS.N_PROP5,ITM25_ITEM_SHEETS.N_PROP6,ITM25_ITEM_SHEETS.N_PROP7,ITM25_ITEM_SHEETS.N_PROP8,ITM25_ITEM_SHEETS.N_PROP9 ";
 			String from =
-					" from ITM25_SHEETS,SYS10_TRANSLATIONS ";
+					" from ITM25_ITEM_SHEETS,SYS10_TRANSLATIONS ";
 			String where =
 					" where "+
-					"ITM25_SHEETS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+					"ITM25_ITEM_SHEETS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
 					"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
-					"ITM25_SHEETS.ENABLED='Y' and "+
-					"ITM25_SHEETS.COMPANY_CODE_SYS01=? and "+
-					"ITM25_SHEETS.SHEET_CODE=? ";
+					"ITM25_ITEM_SHEETS.ENABLED='Y' and "+
+					"ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01=? and "+
+					"ITM25_ITEM_SHEETS.SHEET_CODE=? ";
 
 			ArrayList values = new ArrayList();
 			values.add(serverLanguageId);
@@ -399,35 +399,35 @@ public class ItemSheetsBean implements ItemSheets {
 			if (parentCode==null) {
 				// list of sheets, using the validated sheet code
 				where +=
-					" and ITM25_SHEETS.LEVEL=? ";
+					" and ITM25_ITEM_SHEETS.LEV=? ";
 
 				values.add(new Long(1));
 			}
-			else if (parentCode!=null && levelITM25==null) {
+			else if (parentCode!=null && levITM25==null) {
 				// list of children sheets, starting from a parent sheet
 				select +=
 					",ALIAS.POLYGON ";
 				from +=
-					",ITM30_SUBSHEETS ALIAS ";
+					",ITM30_SUB_SHEETS ALIAS ";
 				where +=
-					" and ALIAS.PARENT_COMPANY_CODE_SYS01=ITM25_SHEETS.COMPANY_CODE_SYS01 "+
-  				" and ALIAS.SHEET_CODE_ITM25=ITM25_SHEETS.SHEET_CODE "+
+					" and ALIAS.PARENT_COMPANY_CODE_SYS01=ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01 "+
+  				" and ALIAS.SHEET_CODE_ITM25=ITM25_ITEM_SHEETS.SHEET_CODE "+
 					" and ALIAS.PARENT_SHEET_CODE_ITM25=? ";
 
 				values.add(parentCode);
 
 				attribute2dbField.put("subsheet.polygon","ALIAS.POLYGON");
 			}
-			else if (parentCode!=null && levelITM25!=null) {
+			else if (parentCode!=null && levITM25!=null) {
 				// list of possible sheets to add to a parent sheet, starting from a specific level (to filter) and a parent sheet to use to exclude children sheets
 				where +=
-					" and ITM25_SHEETS.LEVEL=? "+
-					" and ITM25_SHEETS.SHEET_CODE not in (select SHEET_CODE_ITM25 from ITM30_SUBSHEETS where "+
+					" and ITM25_ITEM_SHEETS.LEV=? "+
+					" and ITM25_ITEM_SHEETS.SHEET_CODE not in (select SHEET_CODE_ITM25 from ITM30_SUB_SHEETS where "+
 					"   COMPANY_CODE_SYS01=? and "+
 					"   PARENT_SHEET_CODE_ITM25=? "+
 					" ) ";
 
-				values.add(levelITM25);
+				values.add(levITM25);
 				values.add(companyCodeSYS10);
 				values.add(parentCode);
 			}
@@ -495,7 +495,7 @@ public class ItemSheetsBean implements ItemSheets {
 			attribute2dbField.put("sheetCodeITM25","SHEET_CODE");
 			attribute2dbField.put("progressiveSys10ITM25","PROGRESSIVE_SYS10");
 //			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
-			attribute2dbField.put("levelITM25","LEVEL");
+			attribute2dbField.put("levITM25","LEV");
 			attribute2dbField.put("enabledITM25","ENABLED");
 
 			attribute2dbField.put("sProp0ITM25","S_PROP0");
@@ -542,7 +542,7 @@ public class ItemSheetsBean implements ItemSheets {
 					appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
 				}
 
-				BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01ITM25(),"ITM25_SHEETS","IMG",conn);
+				BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01ITM25(),"ITM25_ITEM_SHEETS","IMG",conn);
 				String relativePath = FileUtils.getFilePath(appPath,"ITM25");
 				vo.setImageNameITM25(relativePath+"IMG"+imageProgressive);
 //				attribute2dbField.put("smallImageITM01",imageProgressive);
@@ -560,7 +560,7 @@ public class ItemSheetsBean implements ItemSheets {
 					conn,
 					new UserSessionParameters(username),
 					vo,
-					"ITM25_SHEETS",
+					"ITM25_ITEM_SHEETS",
 					attribute2dbField,
 					"Y",
 					"N",
@@ -568,8 +568,8 @@ public class ItemSheetsBean implements ItemSheets {
 					true
 			);
 
-		  if (!res.isError() && vo.getLevelITM25().intValue()==1) {
-				 pstmt = conn.prepareStatement("insert into ITM30_SUBSHEETS(COMPANY_CODE_SYS01,PARENT_SHEET_CODE_ITM25,SHEET_CODE_ITM25) VALUES(?,?,?)");
+		  if (!res.isError() && vo.getLevITM25().intValue()==1) {
+				 pstmt = conn.prepareStatement("insert into ITM30_SUB_SHEETS(COMPANY_CODE_SYS01,PARENT_SHEET_CODE_ITM25,SHEET_CODE_ITM25) VALUES(?,?,?)");
 				 pstmt.setString(1,vo.getCompanyCodeSys01ITM25());
 				 pstmt.setString(2,vo.getSheetCodeITM25());
 				 pstmt.setString(3,vo.getSheetCodeITM25());
@@ -633,7 +633,7 @@ public class ItemSheetsBean implements ItemSheets {
 			attribute2dbField.put("progressiveSys10ITM25","PROGRESSIVE_SYS10");
 //			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("imageNameITM25","IMAGE_NAME");
-			attribute2dbField.put("levelITM25","LEVEL");
+			attribute2dbField.put("levITM25","LEV");
 
 			attribute2dbField.put("sProp0ITM25","S_PROP0");
 			attribute2dbField.put("sProp1ITM25","S_PROP1");
@@ -713,7 +713,7 @@ public class ItemSheetsBean implements ItemSheets {
 
 					 if (oldVO.getImageITM25()==null) {
 						 String relativePath = FileUtils.getFilePath(appPath,"ITM25");
-						 BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(newVO.getCompanyCodeSys01ITM25(),"ITM25_SHEETS","IMG",conn);
+						 BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(newVO.getCompanyCodeSys01ITM25(),"ITM25_ITEM_SHEETS","IMG",conn);
 						 newVO.setImageNameITM25(relativePath+"IMG"+imageProgressive);
 						 new File(appPath+relativePath).mkdirs();
 					 }
@@ -735,7 +735,7 @@ public class ItemSheetsBean implements ItemSheets {
 						pkAttributes,
 						oldVO,
 						newVO,
-						"ITM25_SHEETS",
+						"ITM25_ITEM_SHEETS",
 						attribute2dbField,
 						"Y",
 						"N",
@@ -806,7 +806,7 @@ public class ItemSheetsBean implements ItemSheets {
 
 				// check if there exists a relation among this sheet and another one: if exists then interrupt delete operation...
 				rset = stmt.executeQuery(
-						"select * from ITM30_SUBSHEETS where "+
+						"select * from ITM30_SUB_SHEETS where "+
 						"COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ITM25()+"' and "+
 						"(SHEET_CODE_ITM25='"+vo.getSheetCodeITM25()+"' or PARENT_SHEET_CODE_ITM25='"+vo.getSheetCodeITM25()+"')"
 				);
@@ -826,7 +826,7 @@ public class ItemSheetsBean implements ItemSheets {
 
 				// delete spare parts linked to current sheet...
 				stmt.executeUpdate(
-						"delete from ITM27_SHEET_SPARE_PARTS where "+
+						"delete from ITM27_SHEETS_SPARE_PARTS where "+
 						"COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ITM25()+"' and "+
 						"SHEET_CODE_ITM25='"+vo.getSheetCodeITM25()+"'"
 				);
@@ -834,7 +834,7 @@ public class ItemSheetsBean implements ItemSheets {
        // retrieve root sheets to update...
 				ArrayList rootSheetsToUpdate = new ArrayList();
 				rset = stmt.executeQuery(
-						"select ROOT_SHEET_CODE_ITM25 from ITM24_LEAF_SHEETS where "+
+						"select ROOT_SHEET_CODE_ITM25 from ITM24_LEAFSHEETS where "+
 						"COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ITM25()+"' and "+
 						"SHEET_CODE_ITM25='"+vo.getSheetCodeITM25()+"'"
 				);
@@ -845,14 +845,14 @@ public class ItemSheetsBean implements ItemSheets {
 
 				// delete link with root sheets...
 				stmt.executeUpdate(
-							"DELETE from ITM24_LEAF_SHEETS where "+
+							"DELETE from ITM24_LEAFSHEETS where "+
 							"COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ITM25()+"' and "+
 							"SHEET_CODE_ITM25='"+vo.getSheetCodeITM25()+"'"
 				);
 
 				// logically delete the record in ITM25...
 				stmt.execute(
-						"update ITM25_SHEETS set ENABLED='N' where "+
+						"update ITM25_ITEM_SHEETS set ENABLED='N' where "+
 						"COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ITM25()+"' and "+
 						"SHEET_CODE='"+vo.getSheetCodeITM25()+"'"
 				);
@@ -916,7 +916,7 @@ public class ItemSheetsBean implements ItemSheets {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
 			ItemSheetVO vo = null;
      	HashSet leafSheetCodes = new HashSet();
-	    pstmt = conn.prepareStatement("insert into ITM30_SUBSHEETS(COMPANY_CODE_SYS01,PARENT_SHEET_CODE_ITM25,SHEET_CODE_ITM25) VALUES(?,?,?)");
+	    pstmt = conn.prepareStatement("insert into ITM30_SUB_SHEETS(COMPANY_CODE_SYS01,PARENT_SHEET_CODE_ITM25,SHEET_CODE_ITM25) VALUES(?,?,?)");
 			for(int i=0;i<list.size();i++) {
 				vo = (ItemSheetVO)list.get(i);
 
@@ -936,13 +936,13 @@ public class ItemSheetsBean implements ItemSheets {
 			if (rootSheetCodes.size()>0 && leafSheetCodes.size()>0) {
 
 				// for each root sheet:
-				// for each leaf: insert it in ITM24_LEAF_SHEETS...
+				// for each leaf: insert it in ITM24_LEAFSHEETS...
 				if (rootSheetCodes.size()>0) {
 					pstmt = conn.prepareStatement(
-						"insert into ITM24_LEAF_SHEETS(COMPANY_CODE_SYS01,ROOT_SHEET_CODE_ITM25,SHEET_CODE_ITM25) values(?,?,?)"
+						"insert into ITM24_LEAFSHEETS(COMPANY_CODE_SYS01,ROOT_SHEET_CODE_ITM25,SHEET_CODE_ITM25) values(?,?,?)"
 					);
 					pstmt2 = conn.prepareStatement(
-						"select SHEET_CODE_ITM25 from ITM24_LEAF_SHEETS where "+
+						"select SHEET_CODE_ITM25 from ITM24_LEAFSHEETS where "+
 						"COMPANY_CODE_SYS01=? and ROOT_SHEET_CODE_ITM25=? and SHEET_CODE_ITM25=?"
 					);
 
@@ -1021,7 +1021,7 @@ public class ItemSheetsBean implements ItemSheets {
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
 			pstmt = conn.prepareStatement(
-			  "update ITM30_SUBSHEETS set POLYGON=? where "+
+			  "update ITM30_SUB_SHEETS set POLYGON=? where "+
 				"COMPANY_CODE_SYS01=? and PARENT_SHEET_CODE_ITM25=? and SHEET_CODE_ITM25=?");
 			pstmt.setString(1,vo.getPolygonITM30());
 			pstmt.setString(2,vo.getCompanyCodeSys01ITM30());
@@ -1071,7 +1071,7 @@ public class ItemSheetsBean implements ItemSheets {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
 			ItemSheetVO vo = null;
 			 HashSet leafSheetCodes = new HashSet();
-			pstmt = conn.prepareStatement("delete from ITM30_SUBSHEETS where COMPANY_CODE_SYS01=? and PARENT_SHEET_CODE_ITM25=? and SHEET_CODE_ITM25=?");
+			pstmt = conn.prepareStatement("delete from ITM30_SUB_SHEETS where COMPANY_CODE_SYS01=? and PARENT_SHEET_CODE_ITM25=? and SHEET_CODE_ITM25=?");
 			for(int i=0;i<list.size();i++) {
 				vo = (ItemSheetVO)list.get(i);
 
@@ -1090,9 +1090,9 @@ public class ItemSheetsBean implements ItemSheets {
 
 			if (rootSheetCodes.size()>0 && leafSheetCodes.size()>0) {
 				// for each root sheet:
-				// for each leaf: delete it in ITM24_LEAF_SHEETS...
+				// for each leaf: delete it in ITM24_LEAFSHEETS...
 				pstmt = conn.prepareStatement(
-					"delete from ITM24_LEAF_SHEETS where COMPANY_CODE_SYS01=? and ROOT_SHEET_CODE_ITM25=? and SHEET_CODE_ITM25=?"
+					"delete from ITM24_LEAFSHEETS where COMPANY_CODE_SYS01=? and ROOT_SHEET_CODE_ITM25=? and SHEET_CODE_ITM25=?"
 				);
 
 				String rootSheetCode = null;
@@ -1157,15 +1157,15 @@ public class ItemSheetsBean implements ItemSheets {
 
 
 	/**
-	 * Remove from ITM28_ROOT_SHEET_SPARE_PARTS all spare parts linked to a specific root sheet and reinsert them,
-	 * according to ITM24_LEAF_SHEETS content.
-	 * Pre-condition: ITM24_LEAF_SHEETS must be already correctly filled.
+	 * Remove from ITM28_ROOT_S_SPARE_PARTS all spare parts linked to a specific root sheet and reinsert them,
+	 * according to ITM24_LEAFSHEETS content.
+	 * Pre-condition: ITM24_LEAFSHEETS must be already correctly filled.
 	 */
 	private void recalculateRootSheetSpareParts(Connection conn,String companyCodeSys01ITM25,String rootSheetCodeITM25) throws Exception {
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(
-			  "delete from ITM28_ROOT_SHEET_SPARE_PARTS where COMPANY_CODE_SYS01=? and ROOT_SHEET_CODE_ITM25=?"
+			  "delete from ITM28_ROOT_S_SPARE_PARTS where COMPANY_CODE_SYS01=? and ROOT_SHEET_CODE_ITM25=?"
 			);
  		  pstmt.setString(1,companyCodeSys01ITM25);
 		  pstmt.setString(2,rootSheetCodeITM25);
@@ -1173,10 +1173,10 @@ public class ItemSheetsBean implements ItemSheets {
 			pstmt.close();
 
 			pstmt = conn.prepareStatement(
-				"insert into ITM28_ROOT_SHEET_SPARE_PARTS(COMPANY_CODE_SYS01,ROOT_SHEET_CODE_ITM25,ITEM_CODE_ITM01) "+
-				"select ?,?,ITEM_CODE_ITM01 from ITM27_SHEET_SPARE_PARTS where "+
+				"insert into ITM28_ROOT_S_SPARE_PARTS(COMPANY_CODE_SYS01,ROOT_SHEET_CODE_ITM25,ITEM_CODE_ITM01) "+
+				"select ?,?,ITEM_CODE_ITM01 from ITM27_SHEETS_SPARE_PARTS where "+
 				"COMPANY_CODE_SYS01=? and SHEET_CODE_ITM25 in ("+
-				"  select SHEET_CODE_ITM25 from ITM24_LEAF_SHEETS where COMPANY_CODE_SYS01=? and ROOT_SHEET_CODE_ITM25=?"+
+				"  select SHEET_CODE_ITM25 from ITM24_LEAFSHEETS where COMPANY_CODE_SYS01=? and ROOT_SHEET_CODE_ITM25=?"+
 				")"
 			);
 			pstmt.setString(1,companyCodeSys01ITM25);
@@ -1206,7 +1206,7 @@ public class ItemSheetsBean implements ItemSheets {
 		try {
 			// retrieve level for leaf nodes...
 			pstmt = conn.prepareStatement(
-				"select max(LEVEL) from ITM29_SHEETS_LEVELS where COMPANY_CODE_SYS01=?"
+				"select max(LEV) from ITM29_SHEET_LEVELS where COMPANY_CODE_SYS01=?"
 			);
 			pstmt.setString(1,companyCodeSys01ITM25);
 			int level = 0;
@@ -1220,7 +1220,7 @@ public class ItemSheetsBean implements ItemSheets {
 
      // retrieve level for current node...
 			pstmt = conn.prepareStatement(
-				"select LEVEL,SHEET_CODE from ITM25_SHEETS where COMPANY_CODE_SYS01=? and SHEET_CODE=?"
+				"select LEV,SHEET_CODE from ITM25_ITEM_SHEETS where COMPANY_CODE_SYS01=? and SHEET_CODE=?"
 			);
 			pstmt.setString(1,companyCodeSys01ITM25);
 			pstmt.setString(2,sheetCodeITM25);
@@ -1235,12 +1235,12 @@ public class ItemSheetsBean implements ItemSheets {
 			pstmt.close();
 
 			pstmt = conn.prepareStatement(
-				"select ITM30_SUBSHEETS.SHEET_CODE_ITM25,ITM27_SHEET_SPARE_PARTS.ITEM_CODE_ITM01 from "+
-				"ITM30_SUBSHEETS "+
-				"left outer join ITM27_SHEET_SPARE_PARTS on "+
-				"ITM30_SUBSHEETS.COMPANY_CODE_SYS01=ITM27_SHEET_SPARE_PARTS.COMPANY_CODE_SYS01 and "+
-				"ITM30_SUBSHEETS.SHEET_CODE_ITM25=ITM27_SHEET_SPARE_PARTS.SHEET_CODE_ITM25 "+
-				"where ITM30_SUBSHEETS.COMPANY_CODE_SYS01=? and ITM30_SUBSHEETS.PARENT_SHEET_CODE_ITM25=? "
+				"select ITM30_SUB_SHEETS.SHEET_CODE_ITM25,ITM27_SHEETS_SPARE_PARTS.ITEM_CODE_ITM01 from "+
+				"ITM30_SUB_SHEETS "+
+				"left outer join ITM27_SHEETS_SPARE_PARTS on "+
+				"ITM30_SUB_SHEETS.COMPANY_CODE_SYS01=ITM27_SHEETS_SPARE_PARTS.COMPANY_CODE_SYS01 and "+
+				"ITM30_SUB_SHEETS.SHEET_CODE_ITM25=ITM27_SHEETS_SPARE_PARTS.SHEET_CODE_ITM25 "+
+				"where ITM30_SUB_SHEETS.COMPANY_CODE_SYS01=? and ITM30_SUB_SHEETS.PARENT_SHEET_CODE_ITM25=? "
 			);
 			pstmt.setString(1,companyCodeSys01ITM25);
 			pstmt.setString(2,sheetCodeITM25);
@@ -1287,9 +1287,9 @@ public class ItemSheetsBean implements ItemSheets {
 		ResultSet rset = null;
 		try {
 			pstmt = conn.prepareStatement(
-				"select ITM30_SUBSHEETS.PARENT_SHEET_CODE_ITM25 from ITM30_SUBSHEETS "+
-				"where ITM30_SUBSHEETS.COMPANY_CODE_SYS01=? and "+
-				"ITM30_SUBSHEETS.SHEET_CODE_ITM25=? "
+				"select ITM30_SUB_SHEETS.PARENT_SHEET_CODE_ITM25 from ITM30_SUB_SHEETS "+
+				"where ITM30_SUB_SHEETS.COMPANY_CODE_SYS01=? and "+
+				"ITM30_SUB_SHEETS.SHEET_CODE_ITM25=? "
 			);
 			pstmt.setString(1,companyCodeSys01ITM25);
 			pstmt.setString(2,sheetCodeITM25);
@@ -1333,7 +1333,7 @@ public class ItemSheetsBean implements ItemSheets {
 			ItemSheetLevelVO vo = (ItemSheetLevelVO)vos.get(0);
 
 			// check if there are spare parts already linked to existing sheets: in this case do not allow to insert other levels...
-			pstmt = conn.prepareStatement("select * from ITM27_SHEET_SPARE_PARTS where COMPANY_CODE_SYS01=?");
+			pstmt = conn.prepareStatement("select * from ITM27_SHEETS_SPARE_PARTS where COMPANY_CODE_SYS01=?");
 			pstmt.setString(1,vo.getCompanyCodeSys01ITM29());
 			rset = pstmt.executeQuery();
 			if (rset.next()) {
@@ -1344,7 +1344,7 @@ public class ItemSheetsBean implements ItemSheets {
 
 			Map attribute2dbField = new HashMap();
 			attribute2dbField.put("companyCodeSys01ITM29","COMPANY_CODE_SYS01");
-			attribute2dbField.put("levelITM29","LEVEL");
+			attribute2dbField.put("levITM29","LEV");
 			attribute2dbField.put("progressiveSys10ITM29","PROGRESSIVE_SYS10");
 //			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
 
@@ -1418,7 +1418,7 @@ public class ItemSheetsBean implements ItemSheets {
 						conn,
 						new UserSessionParameters(username),
 						vo,
-						"ITM29_SHEETS_LEVELS",
+						"ITM29_SHEET_LEVELS",
 						attribute2dbField,
 						"Y",
 						"N",
@@ -1478,7 +1478,7 @@ public class ItemSheetsBean implements ItemSheets {
 
 			Map attribute2dbField = new HashMap();
 			attribute2dbField.put("companyCodeSys01ITM29","COMPANY_CODE_SYS01");
-			attribute2dbField.put("levelITM29","LEVEL");
+			attribute2dbField.put("levITM29","LEV");
 			attribute2dbField.put("progressiveSys10ITM29","PROGRESSIVE_SYS10");
 //			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
 
@@ -1517,7 +1517,7 @@ public class ItemSheetsBean implements ItemSheets {
 
 			HashSet pkAttrs = new HashSet();
 			pkAttrs.add("companyCodeSys01ITM29");
-			pkAttrs.add("levelITM29");
+			pkAttrs.add("levITM29");
 
 			Response res = null;
 			ItemSheetLevelVO oldVO = null;
@@ -1578,7 +1578,7 @@ public class ItemSheetsBean implements ItemSheets {
 						pkAttrs,
 						oldVO,
 						newVO,
-						"ITM29_SHEETS_LEVELS",
+						"ITM29_SHEET_LEVELS",
 						attribute2dbField,
 						"Y",
 						"N",
@@ -1633,7 +1633,7 @@ public class ItemSheetsBean implements ItemSheets {
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
 
-			pstmt = conn.prepareStatement("delete from ITM29_SHEETS_LEVELS where COMPANY_CODE_SYS01=? AND LEVEL=?");
+			pstmt = conn.prepareStatement("delete from ITM29_SHEET_LEVELS where COMPANY_CODE_SYS01=? AND LEV=?");
 
 			ItemSheetLevelVO vo = null;
 			String value = null;
@@ -1655,17 +1655,17 @@ public class ItemSheetsBean implements ItemSheets {
 				}
 
 	      pstmt.setString(1,vo.getCompanyCodeSys01ITM29());
-				pstmt.setBigDecimal(2,vo.getLevelITM29());
+				pstmt.setBigDecimal(2,vo.getLevITM29());
 				pstmt.execute();
 
-	      if (maxLevel<vo.getLevelITM29().intValue())
-					maxLevel = vo.getLevelITM29().intValue();
+	      if (maxLevel<vo.getLevITM29().intValue())
+					maxLevel = vo.getLevITM29().intValue();
 
 			} // end for on vos...
 			pstmt.close();
 
 			// check if levels are not still used...
-			pstmt = conn.prepareStatement("select * from ITM25_SHEETS where COMPANY_CODE_SYS01=? where LEVEL>=?");
+			pstmt = conn.prepareStatement("select * from ITM25_ITEM_SHEETS where COMPANY_CODE_SYS01=? where LEV>=?");
 			pstmt.setString(1,vo.getCompanyCodeSys01ITM29());
 			pstmt.setInt(2,maxLevel);
 			rset = pstmt.executeQuery();
@@ -1730,59 +1730,59 @@ public class ItemSheetsBean implements ItemSheets {
 			companies = companies.substring(0,companies.length()-1);
 
 			String sql =
-					"select ITM29_SHEETS_LEVELS.COMPANY_CODE_SYS01,ITM29_SHEETS_LEVELS.LEVEL,ITM29_SHEETS_LEVELS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
-					"ITM29_SHEETS_LEVELS.S_PROP0_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.S_PROP1_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.S_PROP2_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.S_PROP3_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.S_PROP4_PROGRESSIVE_SYS10,"+
-					"ITM29_SHEETS_LEVELS.S_PROP5_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.S_PROP6_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.S_PROP7_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.S_PROP8_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.S_PROP9_PROGRESSIVE_SYS10,"+
-					"ITM29_SHEETS_LEVELS.D_PROP0_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.D_PROP1_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.D_PROP2_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.D_PROP3_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.D_PROP4_PROGRESSIVE_SYS10,"+
-					"ITM29_SHEETS_LEVELS.D_PROP5_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.D_PROP6_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.D_PROP7_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.D_PROP8_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.D_PROP9_PROGRESSIVE_SYS10,"+
-					"ITM29_SHEETS_LEVELS.N_PROP0_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.N_PROP1_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.N_PROP2_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.N_PROP3_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.N_PROP4_PROGRESSIVE_SYS10,"+
-					"ITM29_SHEETS_LEVELS.N_PROP5_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.N_PROP6_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.N_PROP7_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.N_PROP8_PROGRESSIVE_SYS10,ITM29_SHEETS_LEVELS.N_PROP9_PROGRESSIVE_SYS10,"+
+					"select ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01,ITM29_SHEET_LEVELS.LEV,ITM29_SHEET_LEVELS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
+					"ITM29_SHEET_LEVELS.S_PROP0_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.S_PROP1_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.S_PROP2_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.S_PROP3_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.S_PROP4_PROGRESSIVE_SYS10,"+
+					"ITM29_SHEET_LEVELS.S_PROP5_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.S_PROP6_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.S_PROP7_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.S_PROP8_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.S_PROP9_PROGRESSIVE_SYS10,"+
+					"ITM29_SHEET_LEVELS.D_PROP0_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.D_PROP1_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.D_PROP2_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.D_PROP3_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.D_PROP4_PROGRESSIVE_SYS10,"+
+					"ITM29_SHEET_LEVELS.D_PROP5_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.D_PROP6_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.D_PROP7_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.D_PROP8_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.D_PROP9_PROGRESSIVE_SYS10,"+
+					"ITM29_SHEET_LEVELS.N_PROP0_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.N_PROP1_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.N_PROP2_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.N_PROP3_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.N_PROP4_PROGRESSIVE_SYS10,"+
+					"ITM29_SHEET_LEVELS.N_PROP5_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.N_PROP6_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.N_PROP7_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.N_PROP8_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.N_PROP9_PROGRESSIVE_SYS10,"+
 					"ST0.DESCRIPTION,ST1.DESCRIPTION,ST2.DESCRIPTION,ST3.DESCRIPTION,ST4.DESCRIPTION,"+
 					"ST5.DESCRIPTION,ST6.DESCRIPTION,ST7.DESCRIPTION,ST8.DESCRIPTION,ST9.DESCRIPTION,"+
 					"DT0.DESCRIPTION,DT1.DESCRIPTION,DT2.DESCRIPTION,DT3.DESCRIPTION,DT4.DESCRIPTION,"+
 					"DT5.DESCRIPTION,DT6.DESCRIPTION,DT7.DESCRIPTION,DT8.DESCRIPTION,DT9.DESCRIPTION,"+
 					"NT0.DESCRIPTION,NT1.DESCRIPTION,NT2.DESCRIPTION,NT3.DESCRIPTION,NT4.DESCRIPTION,"+
 					"NT5.DESCRIPTION,NT6.DESCRIPTION,NT7.DESCRIPTION,NT8.DESCRIPTION,NT9.DESCRIPTION "+
-					"from SYS10_TRANSLATIONS,ITM29_SHEETS_LEVELS "+
+					"from SYS10_TRANSLATIONS,ITM29_SHEET_LEVELS "+
 
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST0 ON ITM29_SHEETS_LEVELS.S_PROP0_PROGRESSIVE_SYS10=ST0.PROGRESSIVE AND ST0.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST1 ON ITM29_SHEETS_LEVELS.S_PROP1_PROGRESSIVE_SYS10=ST1.PROGRESSIVE AND ST1.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST2 ON ITM29_SHEETS_LEVELS.S_PROP2_PROGRESSIVE_SYS10=ST2.PROGRESSIVE AND ST2.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST3 ON ITM29_SHEETS_LEVELS.S_PROP3_PROGRESSIVE_SYS10=ST3.PROGRESSIVE AND ST3.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST4 ON ITM29_SHEETS_LEVELS.S_PROP4_PROGRESSIVE_SYS10=ST4.PROGRESSIVE AND ST4.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST5 ON ITM29_SHEETS_LEVELS.S_PROP5_PROGRESSIVE_SYS10=ST5.PROGRESSIVE AND ST5.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST6 ON ITM29_SHEETS_LEVELS.S_PROP6_PROGRESSIVE_SYS10=ST6.PROGRESSIVE AND ST6.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST7 ON ITM29_SHEETS_LEVELS.S_PROP7_PROGRESSIVE_SYS10=ST7.PROGRESSIVE AND ST7.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST8 ON ITM29_SHEETS_LEVELS.S_PROP8_PROGRESSIVE_SYS10=ST8.PROGRESSIVE AND ST8.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST9 ON ITM29_SHEETS_LEVELS.S_PROP9_PROGRESSIVE_SYS10=ST9.PROGRESSIVE AND ST9.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST0 ON ITM29_SHEET_LEVELS.S_PROP0_PROGRESSIVE_SYS10=ST0.PROGRESSIVE AND ST0.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST1 ON ITM29_SHEET_LEVELS.S_PROP1_PROGRESSIVE_SYS10=ST1.PROGRESSIVE AND ST1.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST2 ON ITM29_SHEET_LEVELS.S_PROP2_PROGRESSIVE_SYS10=ST2.PROGRESSIVE AND ST2.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST3 ON ITM29_SHEET_LEVELS.S_PROP3_PROGRESSIVE_SYS10=ST3.PROGRESSIVE AND ST3.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST4 ON ITM29_SHEET_LEVELS.S_PROP4_PROGRESSIVE_SYS10=ST4.PROGRESSIVE AND ST4.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST5 ON ITM29_SHEET_LEVELS.S_PROP5_PROGRESSIVE_SYS10=ST5.PROGRESSIVE AND ST5.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST6 ON ITM29_SHEET_LEVELS.S_PROP6_PROGRESSIVE_SYS10=ST6.PROGRESSIVE AND ST6.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST7 ON ITM29_SHEET_LEVELS.S_PROP7_PROGRESSIVE_SYS10=ST7.PROGRESSIVE AND ST7.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST8 ON ITM29_SHEET_LEVELS.S_PROP8_PROGRESSIVE_SYS10=ST8.PROGRESSIVE AND ST8.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST9 ON ITM29_SHEET_LEVELS.S_PROP9_PROGRESSIVE_SYS10=ST9.PROGRESSIVE AND ST9.LANGUAGE_CODE=? "+
 
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT0 ON ITM29_SHEETS_LEVELS.D_PROP0_PROGRESSIVE_SYS10=DT0.PROGRESSIVE AND DT0.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT1 ON ITM29_SHEETS_LEVELS.D_PROP1_PROGRESSIVE_SYS10=DT1.PROGRESSIVE AND DT1.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT2 ON ITM29_SHEETS_LEVELS.D_PROP2_PROGRESSIVE_SYS10=DT2.PROGRESSIVE AND DT2.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT3 ON ITM29_SHEETS_LEVELS.D_PROP3_PROGRESSIVE_SYS10=DT3.PROGRESSIVE AND DT3.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT4 ON ITM29_SHEETS_LEVELS.D_PROP4_PROGRESSIVE_SYS10=DT4.PROGRESSIVE AND DT4.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT5 ON ITM29_SHEETS_LEVELS.D_PROP5_PROGRESSIVE_SYS10=DT5.PROGRESSIVE AND DT5.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT6 ON ITM29_SHEETS_LEVELS.D_PROP6_PROGRESSIVE_SYS10=DT6.PROGRESSIVE AND DT6.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT7 ON ITM29_SHEETS_LEVELS.D_PROP7_PROGRESSIVE_SYS10=DT7.PROGRESSIVE AND DT7.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT8 ON ITM29_SHEETS_LEVELS.D_PROP8_PROGRESSIVE_SYS10=DT8.PROGRESSIVE AND DT8.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT9 ON ITM29_SHEETS_LEVELS.D_PROP9_PROGRESSIVE_SYS10=DT9.PROGRESSIVE AND DT9.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT0 ON ITM29_SHEET_LEVELS.D_PROP0_PROGRESSIVE_SYS10=DT0.PROGRESSIVE AND DT0.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT1 ON ITM29_SHEET_LEVELS.D_PROP1_PROGRESSIVE_SYS10=DT1.PROGRESSIVE AND DT1.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT2 ON ITM29_SHEET_LEVELS.D_PROP2_PROGRESSIVE_SYS10=DT2.PROGRESSIVE AND DT2.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT3 ON ITM29_SHEET_LEVELS.D_PROP3_PROGRESSIVE_SYS10=DT3.PROGRESSIVE AND DT3.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT4 ON ITM29_SHEET_LEVELS.D_PROP4_PROGRESSIVE_SYS10=DT4.PROGRESSIVE AND DT4.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT5 ON ITM29_SHEET_LEVELS.D_PROP5_PROGRESSIVE_SYS10=DT5.PROGRESSIVE AND DT5.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT6 ON ITM29_SHEET_LEVELS.D_PROP6_PROGRESSIVE_SYS10=DT6.PROGRESSIVE AND DT6.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT7 ON ITM29_SHEET_LEVELS.D_PROP7_PROGRESSIVE_SYS10=DT7.PROGRESSIVE AND DT7.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT8 ON ITM29_SHEET_LEVELS.D_PROP8_PROGRESSIVE_SYS10=DT8.PROGRESSIVE AND DT8.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT9 ON ITM29_SHEET_LEVELS.D_PROP9_PROGRESSIVE_SYS10=DT9.PROGRESSIVE AND DT9.LANGUAGE_CODE=? "+
 
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT0 ON ITM29_SHEETS_LEVELS.N_PROP0_PROGRESSIVE_SYS10=NT0.PROGRESSIVE AND NT0.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT1 ON ITM29_SHEETS_LEVELS.N_PROP1_PROGRESSIVE_SYS10=NT1.PROGRESSIVE AND NT1.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT2 ON ITM29_SHEETS_LEVELS.N_PROP2_PROGRESSIVE_SYS10=NT2.PROGRESSIVE AND NT2.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT3 ON ITM29_SHEETS_LEVELS.N_PROP3_PROGRESSIVE_SYS10=NT3.PROGRESSIVE AND NT3.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT4 ON ITM29_SHEETS_LEVELS.N_PROP4_PROGRESSIVE_SYS10=NT4.PROGRESSIVE AND NT4.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT5 ON ITM29_SHEETS_LEVELS.N_PROP5_PROGRESSIVE_SYS10=NT5.PROGRESSIVE AND NT5.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT6 ON ITM29_SHEETS_LEVELS.N_PROP6_PROGRESSIVE_SYS10=NT6.PROGRESSIVE AND NT6.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT7 ON ITM29_SHEETS_LEVELS.N_PROP7_PROGRESSIVE_SYS10=NT7.PROGRESSIVE AND NT7.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT8 ON ITM29_SHEETS_LEVELS.N_PROP8_PROGRESSIVE_SYS10=NT8.PROGRESSIVE AND NT8.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT9 ON ITM29_SHEETS_LEVELS.N_PROP9_PROGRESSIVE_SYS10=NT9.PROGRESSIVE AND NT9.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT0 ON ITM29_SHEET_LEVELS.N_PROP0_PROGRESSIVE_SYS10=NT0.PROGRESSIVE AND NT0.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT1 ON ITM29_SHEET_LEVELS.N_PROP1_PROGRESSIVE_SYS10=NT1.PROGRESSIVE AND NT1.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT2 ON ITM29_SHEET_LEVELS.N_PROP2_PROGRESSIVE_SYS10=NT2.PROGRESSIVE AND NT2.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT3 ON ITM29_SHEET_LEVELS.N_PROP3_PROGRESSIVE_SYS10=NT3.PROGRESSIVE AND NT3.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT4 ON ITM29_SHEET_LEVELS.N_PROP4_PROGRESSIVE_SYS10=NT4.PROGRESSIVE AND NT4.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT5 ON ITM29_SHEET_LEVELS.N_PROP5_PROGRESSIVE_SYS10=NT5.PROGRESSIVE AND NT5.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT6 ON ITM29_SHEET_LEVELS.N_PROP6_PROGRESSIVE_SYS10=NT6.PROGRESSIVE AND NT6.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT7 ON ITM29_SHEET_LEVELS.N_PROP7_PROGRESSIVE_SYS10=NT7.PROGRESSIVE AND NT7.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT8 ON ITM29_SHEET_LEVELS.N_PROP8_PROGRESSIVE_SYS10=NT8.PROGRESSIVE AND NT8.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT9 ON ITM29_SHEET_LEVELS.N_PROP9_PROGRESSIVE_SYS10=NT9.PROGRESSIVE AND NT9.LANGUAGE_CODE=? "+
 
 					" where "+
-					"ITM29_SHEETS_LEVELS.COMPANY_CODE_SYS01 in ("+companies+") and "+
-					"ITM29_SHEETS_LEVELS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+					"ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01 in ("+companies+") and "+
+					"ITM29_SHEET_LEVELS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
 					"SYS10_TRANSLATIONS.LANGUAGE_CODE=? "+
-					"ORDER BY ITM29_SHEETS_LEVELS.LEVEL ";
+					"ORDER BY ITM29_SHEET_LEVELS.LEV ";
 
 
 			ArrayList values = new ArrayList();
@@ -1823,43 +1823,43 @@ public class ItemSheetsBean implements ItemSheets {
 
 
 			Map attribute2dbField = new HashMap();
-			attribute2dbField.put("companyCodeSys01ITM29","ITM29_SHEETS_LEVELS.COMPANY_CODE_SYS01");
-			attribute2dbField.put("levelITM29","ITM29_SHEETS_LEVELS.LEVEL");
-			attribute2dbField.put("progressiveSys10ITM29","ITM29_SHEETS_LEVELS.PROGRESSIVE_SYS10");
+			attribute2dbField.put("companyCodeSys01ITM29","ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01");
+			attribute2dbField.put("levITM29","ITM29_SHEET_LEVELS.LEV");
+			attribute2dbField.put("progressiveSys10ITM29","ITM29_SHEET_LEVELS.PROGRESSIVE_SYS10");
 			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
 
-			attribute2dbField.put("sProp0ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.S_PROP0_PROGRESSIVE_SYS10");
-			attribute2dbField.put("sProp1ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.S_PROP1_PROGRESSIVE_SYS10");
-			attribute2dbField.put("sProp2ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.S_PROP2_PROGRESSIVE_SYS10");
-			attribute2dbField.put("sProp3ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.S_PROP3_PROGRESSIVE_SYS10");
-			attribute2dbField.put("sProp4ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.S_PROP4_PROGRESSIVE_SYS10");
-			attribute2dbField.put("sProp5ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.S_PROP5_PROGRESSIVE_SYS10");
-			attribute2dbField.put("sProp6ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.S_PROP6_PROGRESSIVE_SYS10");
-			attribute2dbField.put("sProp7ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.S_PROP7_PROGRESSIVE_SYS10");
-			attribute2dbField.put("sProp8ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.S_PROP8_PROGRESSIVE_SYS10");
-			attribute2dbField.put("sProp9ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.S_PROP9_PROGRESSIVE_SYS10");
+			attribute2dbField.put("sProp0ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.S_PROP0_PROGRESSIVE_SYS10");
+			attribute2dbField.put("sProp1ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.S_PROP1_PROGRESSIVE_SYS10");
+			attribute2dbField.put("sProp2ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.S_PROP2_PROGRESSIVE_SYS10");
+			attribute2dbField.put("sProp3ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.S_PROP3_PROGRESSIVE_SYS10");
+			attribute2dbField.put("sProp4ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.S_PROP4_PROGRESSIVE_SYS10");
+			attribute2dbField.put("sProp5ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.S_PROP5_PROGRESSIVE_SYS10");
+			attribute2dbField.put("sProp6ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.S_PROP6_PROGRESSIVE_SYS10");
+			attribute2dbField.put("sProp7ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.S_PROP7_PROGRESSIVE_SYS10");
+			attribute2dbField.put("sProp8ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.S_PROP8_PROGRESSIVE_SYS10");
+			attribute2dbField.put("sProp9ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.S_PROP9_PROGRESSIVE_SYS10");
 
-			attribute2dbField.put("dProp0ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.D_PROP0_PROGRESSIVE_SYS10");
-			attribute2dbField.put("dProp1ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.D_PROP1_PROGRESSIVE_SYS10");
-			attribute2dbField.put("dProp2ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.D_PROP2_PROGRESSIVE_SYS10");
-			attribute2dbField.put("dProp3ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.D_PROP3_PROGRESSIVE_SYS10");
-			attribute2dbField.put("dProp4ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.D_PROP4_PROGRESSIVE_SYS10");
-			attribute2dbField.put("dProp5ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.D_PROP5_PROGRESSIVE_SYS10");
-			attribute2dbField.put("dProp6ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.D_PROP6_PROGRESSIVE_SYS10");
-			attribute2dbField.put("dProp7ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.D_PROP7_PROGRESSIVE_SYS10");
-			attribute2dbField.put("dProp8ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.D_PROP8_PROGRESSIVE_SYS10");
-			attribute2dbField.put("dProp9ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.D_PROP9_PROGRESSIVE_SYS10");
+			attribute2dbField.put("dProp0ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.D_PROP0_PROGRESSIVE_SYS10");
+			attribute2dbField.put("dProp1ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.D_PROP1_PROGRESSIVE_SYS10");
+			attribute2dbField.put("dProp2ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.D_PROP2_PROGRESSIVE_SYS10");
+			attribute2dbField.put("dProp3ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.D_PROP3_PROGRESSIVE_SYS10");
+			attribute2dbField.put("dProp4ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.D_PROP4_PROGRESSIVE_SYS10");
+			attribute2dbField.put("dProp5ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.D_PROP5_PROGRESSIVE_SYS10");
+			attribute2dbField.put("dProp6ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.D_PROP6_PROGRESSIVE_SYS10");
+			attribute2dbField.put("dProp7ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.D_PROP7_PROGRESSIVE_SYS10");
+			attribute2dbField.put("dProp8ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.D_PROP8_PROGRESSIVE_SYS10");
+			attribute2dbField.put("dProp9ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.D_PROP9_PROGRESSIVE_SYS10");
 
-			attribute2dbField.put("nProp0ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.N_PROP0_PROGRESSIVE_SYS10");
-			attribute2dbField.put("nProp1ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.N_PROP1_PROGRESSIVE_SYS10");
-			attribute2dbField.put("nProp2ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.N_PROP2_PROGRESSIVE_SYS10");
-			attribute2dbField.put("nProp3ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.N_PROP3_PROGRESSIVE_SYS10");
-			attribute2dbField.put("nProp4ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.N_PROP4_PROGRESSIVE_SYS10");
-			attribute2dbField.put("nProp5ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.N_PROP5_PROGRESSIVE_SYS10");
-			attribute2dbField.put("nProp6ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.N_PROP6_PROGRESSIVE_SYS10");
-			attribute2dbField.put("nProp7ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.N_PROP7_PROGRESSIVE_SYS10");
-			attribute2dbField.put("nProp8ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.N_PROP8_PROGRESSIVE_SYS10");
-			attribute2dbField.put("nProp9ProgressiveSys10ITM29","ITM29_SHEETS_LEVELS.N_PROP9_PROGRESSIVE_SYS10");
+			attribute2dbField.put("nProp0ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.N_PROP0_PROGRESSIVE_SYS10");
+			attribute2dbField.put("nProp1ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.N_PROP1_PROGRESSIVE_SYS10");
+			attribute2dbField.put("nProp2ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.N_PROP2_PROGRESSIVE_SYS10");
+			attribute2dbField.put("nProp3ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.N_PROP3_PROGRESSIVE_SYS10");
+			attribute2dbField.put("nProp4ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.N_PROP4_PROGRESSIVE_SYS10");
+			attribute2dbField.put("nProp5ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.N_PROP5_PROGRESSIVE_SYS10");
+			attribute2dbField.put("nProp6ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.N_PROP6_PROGRESSIVE_SYS10");
+			attribute2dbField.put("nProp7ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.N_PROP7_PROGRESSIVE_SYS10");
+			attribute2dbField.put("nProp8ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.N_PROP8_PROGRESSIVE_SYS10");
+			attribute2dbField.put("nProp9ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.N_PROP9_PROGRESSIVE_SYS10");
 
 			attribute2dbField.put("sProp0DescriptionSys10ITM29","ST0.DESCRIPTION");
 			attribute2dbField.put("sProp1DescriptionSys10ITM29","ST1.DESCRIPTION");
@@ -1950,13 +1950,13 @@ public class ItemSheetsBean implements ItemSheets {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
 
 			String sql =
-					"select ITM27_SHEET_SPARE_PARTS.COMPANY_CODE_SYS01,ITM27_SHEET_SPARE_PARTS.SHEET_CODE_ITM25,"+
-					"ITM27_SHEET_SPARE_PARTS.ITEM_CODE_ITM01,SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
-					" from ITM27_SHEET_SPARE_PARTS,ITM01_ITEMS,SYS10_TRANSLATIONS where "+
-					"ITM27_SHEET_SPARE_PARTS.COMPANY_CODE_SYS01=? and "+
-					"ITM27_SHEET_SPARE_PARTS.SHEET_CODE_ITM25=? and "+
-					"ITM27_SHEET_SPARE_PARTS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
-					"ITM27_SHEET_SPARE_PARTS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
+					"select ITM27_SHEETS_SPARE_PARTS.COMPANY_CODE_SYS01,ITM27_SHEETS_SPARE_PARTS.SHEET_CODE_ITM25,"+
+					"ITM27_SHEETS_SPARE_PARTS.ITEM_CODE_ITM01,SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
+					" from ITM27_SHEETS_SPARE_PARTS,ITM01_ITEMS,SYS10_TRANSLATIONS where "+
+					"ITM27_SHEETS_SPARE_PARTS.COMPANY_CODE_SYS01=? and "+
+					"ITM27_SHEETS_SPARE_PARTS.SHEET_CODE_ITM25=? and "+
+					"ITM27_SHEETS_SPARE_PARTS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
+					"ITM27_SHEETS_SPARE_PARTS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
 					"ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
 					"SYS10_TRANSLATIONS.LANGUAGE_CODE=? ";
 
@@ -1966,9 +1966,9 @@ public class ItemSheetsBean implements ItemSheets {
 			values.add(serverLanguageId);
 
 			Map attribute2dbField = new HashMap();
-			attribute2dbField.put("companyCodeSys01ITM27","ITM27_SHEET_SPARE_PARTS.COMPANY_CODE_SYS01");
-			attribute2dbField.put("sheetCodeItm25ITM27","ITM27_SHEET_SPARE_PARTS.SHEET_CODE_ITM25");
-			attribute2dbField.put("itemCodeItm01ITM27","ITM27_SHEET_SPARE_PARTS.ITEM_CODE_ITM01");
+			attribute2dbField.put("companyCodeSys01ITM27","ITM27_SHEETS_SPARE_PARTS.COMPANY_CODE_SYS01");
+			attribute2dbField.put("sheetCodeItm25ITM27","ITM27_SHEETS_SPARE_PARTS.SHEET_CODE_ITM25");
+			attribute2dbField.put("itemCodeItm01ITM27","ITM27_SHEETS_SPARE_PARTS.ITEM_CODE_ITM01");
 			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
 
@@ -2034,7 +2034,7 @@ public class ItemSheetsBean implements ItemSheets {
 							conn,
 							new UserSessionParameters(username),
 							vos,
-							"ITM27_SHEET_SPARE_PARTS",
+							"ITM27_SHEETS_SPARE_PARTS",
 							attribute2dbField,
 							"Y",
 							"N",
@@ -2047,7 +2047,7 @@ public class ItemSheetsBean implements ItemSheets {
 
 			// retrieve all root sheets having the specified sheet code as leaf...
 			pstmt = conn.prepareStatement(
-				"select ROOT_SHEET_CODE_ITM25 FROM ITM24_LEAF_SHEETS WHERE COMPANY_CODE_SYS01=? AND SHEET_CODE_ITM25=?"
+				"select ROOT_SHEET_CODE_ITM25 FROM ITM24_LEAFSHEETS WHERE COMPANY_CODE_SYS01=? AND SHEET_CODE_ITM25=?"
 			);
 			pstmt.setString(1,vo.getCompanyCodeSys01ITM27());
 			pstmt.setString(2,vo.getSheetCodeItm25ITM27());
@@ -2104,18 +2104,18 @@ public class ItemSheetsBean implements ItemSheets {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
 			SheetSparePartVO vo = null;
 
-			pstmt = conn.prepareStatement("delete from ITM27_SHEET_SPARE_PARTS where COMPANY_CODE_SYS01=? and ITEM_CODE_ITM01=? and SHEET_CODE_ITM25=?");
+			pstmt = conn.prepareStatement("delete from ITM27_SHEETS_SPARE_PARTS where COMPANY_CODE_SYS01=? and ITEM_CODE_ITM01=? and SHEET_CODE_ITM25=?");
 
 			pstmt2 = conn.prepareStatement(
-				"delete from ITM28_ROOT_SHEET_SPARE_PARTS where "+
+				"delete from ITM28_ROOT_S_SPARE_PARTS where "+
 				"COMPANY_CODE_SYS01=? and ITEM_CODE_ITM01=? and "+
 				"ROOT_SHEET_CODE_ITM25 in ("+
-				"  select ITM24_LEAF_SHEETS.ROOT_SHEET_CODE_ITM25 from ITM24_LEAF_SHEETS,ITM27_SHEET_SPARE_PARTS where "+
-				"  ITM24_LEAF_SHEETS.COMPANY_CODE_SYS01=? and "+
-				"  ITM24_LEAF_SHEETS.SHEET_CODE_ITM25=? and "+
-				"  ITM24_LEAF_SHEETS.COMPANY_CODE_SYS01=ITM27_SHEET_SPARE_PARTS.COMPANY_CODE_SYS01 and "+
-				"  ITM24_LEAF_SHEETS.SHEET_CODE_ITM25=ITM27_SHEET_SPARE_PARTS.SHEET_CODE_ITM25 and "+
-				"  ITM27_SHEET_SPARE_PARTS.ITEM_CODE_ITM01=? "+
+				"  select ITM24_LEAFSHEETS.ROOT_SHEET_CODE_ITM25 from ITM24_LEAFSHEETS,ITM27_SHEETS_SPARE_PARTS where "+
+				"  ITM24_LEAFSHEETS.COMPANY_CODE_SYS01=? and "+
+				"  ITM24_LEAFSHEETS.SHEET_CODE_ITM25=? and "+
+				"  ITM24_LEAFSHEETS.COMPANY_CODE_SYS01=ITM27_SHEETS_SPARE_PARTS.COMPANY_CODE_SYS01 and "+
+				"  ITM24_LEAFSHEETS.SHEET_CODE_ITM25=ITM27_SHEETS_SPARE_PARTS.SHEET_CODE_ITM25 and "+
+				"  ITM27_SHEETS_SPARE_PARTS.ITEM_CODE_ITM01=? "+
 				")"
 			);
 
@@ -2193,22 +2193,22 @@ public class ItemSheetsBean implements ItemSheets {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
 
 			String sql =
-					"select ITM26_SHEET_ATTACHED_DOCS.COMPANY_CODE_SYS01,ITM26_SHEET_ATTACHED_DOCS.PROGRESSIVE_DOC14,"+
-					"ITM26_SHEET_ATTACHED_DOCS.SHEET_CODE_ITM25,DOC14_DOCUMENTS.DESCRIPTION,ITM26_SHEET_ATTACHED_DOCS.PROGRESSIVE_HIE01, "+
+					"select ITM26_SHEETS_ATTACHED_DOCS.COMPANY_CODE_SYS01,ITM26_SHEETS_ATTACHED_DOCS.PROGRESSIVE_DOC14,"+
+					"ITM26_SHEETS_ATTACHED_DOCS.SHEET_CODE_ITM25,DOC14_DOCUMENTS.DESCRIPTION,ITM26_SHEETS_ATTACHED_DOCS.PROGRESSIVE_HIE01, "+
 					"HIE01_LEVELS.PROGRESSIVE_HIE02 "+
-					"from ITM26_SHEET_ATTACHED_DOCS,DOC14_DOCUMENTS,HIE01_LEVELS where "+
-					"ITM26_SHEET_ATTACHED_DOCS.COMPANY_CODE_SYS01=DOC14_DOCUMENTS.COMPANY_CODE_SYS01 and "+
-					"ITM26_SHEET_ATTACHED_DOCS.PROGRESSIVE_DOC14=DOC14_DOCUMENTS.PROGRESSIVE and "+
-					"HIE01_LEVELS.PROGRESSIVE=ITM26_SHEET_ATTACHED_DOCS.PROGRESSIVE_HIE01 and "+
-					"ITM26_SHEET_ATTACHED_DOCS.COMPANY_CODE_SYS01=? and "+
-					"ITM26_SHEET_ATTACHED_DOCS.SHEET_CODE_ITM25=?";
+					"from ITM26_SHEETS_ATTACHED_DOCS,DOC14_DOCUMENTS,HIE01_LEVELS where "+
+					"ITM26_SHEETS_ATTACHED_DOCS.COMPANY_CODE_SYS01=DOC14_DOCUMENTS.COMPANY_CODE_SYS01 and "+
+					"ITM26_SHEETS_ATTACHED_DOCS.PROGRESSIVE_DOC14=DOC14_DOCUMENTS.PROGRESSIVE and "+
+					"HIE01_LEVELS.PROGRESSIVE=ITM26_SHEETS_ATTACHED_DOCS.PROGRESSIVE_HIE01 and "+
+					"ITM26_SHEETS_ATTACHED_DOCS.COMPANY_CODE_SYS01=? and "+
+					"ITM26_SHEETS_ATTACHED_DOCS.SHEET_CODE_ITM25=?";
 
 			Map attribute2dbField = new HashMap();
-			attribute2dbField.put("companyCodeSys01ITM26","ITM26_SHEET_ATTACHED_DOCS.COMPANY_CODE_SYS01");
+			attribute2dbField.put("companyCodeSys01ITM26","ITM26_SHEETS_ATTACHED_DOCS.COMPANY_CODE_SYS01");
 			attribute2dbField.put("descriptionDOC14","DOC14_DOCUMENTS.DESCRIPTION");
-			attribute2dbField.put("sheetCodeItm25ITM26","ITM26_SHEET_ATTACHED_DOCS.SHEET_CODE_ITM25");
-			attribute2dbField.put("progressiveDoc14ITM26","ITM26_SHEET_ATTACHED_DOCS.PROGRESSIVE_DOC14");
-			attribute2dbField.put("progressiveHie01ITM26","ITM26_SHEET_ATTACHED_DOCS.PROGRESSIVE_HIE01");
+			attribute2dbField.put("sheetCodeItm25ITM26","ITM26_SHEETS_ATTACHED_DOCS.SHEET_CODE_ITM25");
+			attribute2dbField.put("progressiveDoc14ITM26","ITM26_SHEETS_ATTACHED_DOCS.PROGRESSIVE_DOC14");
+			attribute2dbField.put("progressiveHie01ITM26","ITM26_SHEETS_ATTACHED_DOCS.PROGRESSIVE_HIE01");
 			attribute2dbField.put("progressiveHie02HIE01","HIE01_LEVELS.PROGRESSIVE_HIE02");
 
 			String companyCode = (String)gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01);
@@ -2289,7 +2289,7 @@ public class ItemSheetsBean implements ItemSheets {
 						conn,
 						new UserSessionParameters(username),
 						vo,
-						"ITM26_SHEET_ATTACHED_DOCS",
+						"ITM26_SHEETS_ATTACHED_DOCS",
 						attribute2dbField,
 						"Y",
 						"N",
@@ -2339,7 +2339,7 @@ public class ItemSheetsBean implements ItemSheets {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
 
 			pstmt = conn.prepareStatement(
-				"delete from ITM26_SHEET_ATTACHED_DOCS where COMPANY_CODE_SYS01=? and SHEET_CODE_ITM25=? and PROGRESSIVE_DOC14=? and PROGRESSIVE_HIE01=?"
+				"delete from ITM26_SHEETS_ATTACHED_DOCS where COMPANY_CODE_SYS01=? and SHEET_CODE_ITM25=? and PROGRESSIVE_DOC14=? and PROGRESSIVE_HIE01=?"
 			);
 
 			SheetAttachedDocVO vo = null;
@@ -2400,15 +2400,15 @@ public class ItemSheetsBean implements ItemSheets {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
 
 			String sql =
-					"select ITM28_ROOT_SHEET_SPARE_PARTS.COMPANY_CODE_SYS01,ITM28_ROOT_SHEET_SPARE_PARTS.ROOT_SHEET_CODE_ITM25,"+
-					"ITM28_ROOT_SHEET_SPARE_PARTS.ITEM_CODE_ITM01,SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
-					" from ITM28_ROOT_SHEET_SPARE_PARTS,ITM01_ITEMS I,ITM01_ITEMS,SYS10_TRANSLATIONS where "+
+					"select ITM28_ROOT_S_SPARE_PARTS.COMPANY_CODE_SYS01,ITM28_ROOT_S_SPARE_PARTS.ROOT_SHEET_CODE_ITM25,"+
+					"ITM28_ROOT_S_SPARE_PARTS.ITEM_CODE_ITM01,SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
+					" from ITM28_ROOT_S_SPARE_PARTS,ITM01_ITEMS I,ITM01_ITEMS,SYS10_TRANSLATIONS where "+
 					"I.COMPANY_CODE_SYS01=? and "+
 					"I.ITEM_CODE=? and "+
-					"I.COMPANY_CODE_SYS01=ITM28_ROOT_SHEET_SPARE_PARTS.COMPANY_CODE_SYS01 and "+
-					"I.SHEET_CODE_ITM25=ITM28_ROOT_SHEET_SPARE_PARTS.ROOT_SHEET_CODE_ITM25 and "+
-					"ITM28_ROOT_SHEET_SPARE_PARTS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
-					"ITM28_ROOT_SHEET_SPARE_PARTS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
+					"I.COMPANY_CODE_SYS01=ITM28_ROOT_S_SPARE_PARTS.COMPANY_CODE_SYS01 and "+
+					"I.SHEET_CODE_ITM25=ITM28_ROOT_S_SPARE_PARTS.ROOT_SHEET_CODE_ITM25 and "+
+					"ITM28_ROOT_S_SPARE_PARTS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
+					"ITM28_ROOT_S_SPARE_PARTS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
 					"ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
 					"SYS10_TRANSLATIONS.LANGUAGE_CODE=? ";
 
@@ -2418,9 +2418,9 @@ public class ItemSheetsBean implements ItemSheets {
 			values.add(serverLanguageId);
 
 			Map attribute2dbField = new HashMap();
-			attribute2dbField.put("companyCodeSys01ITM28","ITM28_ROOT_SHEET_SPARE_PARTS.COMPANY_CODE_SYS01");
-			attribute2dbField.put("rootSheetCodeItm25ITM28","ITM28_ROOT_SHEET_SPARE_PARTS.ROOT_SHEET_CODE_ITM25");
-			attribute2dbField.put("itemCodeItm01ITM28","ITM28_ROOT_SHEET_SPARE_PARTS.ITEM_CODE_ITM01");
+			attribute2dbField.put("companyCodeSys01ITM28","ITM28_ROOT_S_SPARE_PARTS.COMPANY_CODE_SYS01");
+			attribute2dbField.put("rootSheetCodeItm25ITM28","ITM28_ROOT_S_SPARE_PARTS.ROOT_SHEET_CODE_ITM25");
+			attribute2dbField.put("itemCodeItm01ITM28","ITM28_ROOT_S_SPARE_PARTS.ITEM_CODE_ITM01");
 			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
 

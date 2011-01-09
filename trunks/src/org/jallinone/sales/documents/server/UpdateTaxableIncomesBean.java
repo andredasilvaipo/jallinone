@@ -111,9 +111,9 @@ public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
   }
 
 
-  private InsertSaleItemBean bean;
+  private LoadSaleDocRowBean bean;
 
-  public void setBean(InsertSaleItemBean bean) {
+  public void setBean(LoadSaleDocRowBean bean) {
 	  this.bean = bean;
   }
 

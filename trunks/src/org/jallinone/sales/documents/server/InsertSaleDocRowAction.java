@@ -25,6 +25,7 @@ import org.jallinone.events.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import org.jallinone.variants.java.VariantDescriptionsVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -68,11 +69,11 @@ public class InsertSaleDocRowAction implements Action {
 
 
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
-      DetailSaleDocRowVO vo = (DetailSaleDocRowVO)inputPar;
     try {
-
+			DetailSaleDocRowVO rowVO = (DetailSaleDocRowVO)inputPar;
+			VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(rowVO.getCompanyCodeSys01DOC02());
       InsertSaleItem bean = (InsertSaleItem)JAIOBeanFactory.getInstance().getBean(InsertSaleItem.class);
-      Response answer = bean.insertSaleItem(vo,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+      Response answer = bean.insertSaleItem(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),rowVO,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
     return answer;
     }

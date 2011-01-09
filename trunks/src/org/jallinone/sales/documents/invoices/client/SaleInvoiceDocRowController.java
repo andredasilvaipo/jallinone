@@ -198,7 +198,7 @@ public class SaleInvoiceDocRowController extends CompanyFormController {
       panel.getHeaderPanel().setMode(Consts.READONLY);
       panel.getHeaderPanel().executeReload();
       if (panel.getInvoices()!=null)
-        panel.getInvoices().reloadData();
+        panel.getInvoices().reloadCurrentBlockOfData();
 
       panel.getDiscountsPanel().setEnabled(false);
       panel.getDiscountsPanel().getGrid().clearData();

@@ -791,7 +791,7 @@ public class CreateInvoiceDialog extends JDialog {
         frame.getActPanel().getVOModel().setValueObject(vo.getScheduledActivityVO());
         frame.getActPanel().getForm().pull("activityStateSCH06");
         if (frame.getGridFrame()!=null)
-          frame.getGridFrame().getGrid().reloadData();
+          frame.getGridFrame().getGrid().reloadCurrentBlockOfData();
 
         new SaleInvoiceDocController(null,new SaleDocPK(
           vo.getCompanyCodeSys01SCH03(),

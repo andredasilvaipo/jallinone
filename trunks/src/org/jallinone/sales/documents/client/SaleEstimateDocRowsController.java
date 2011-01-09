@@ -150,6 +150,7 @@ public class SaleEstimateDocRowsController extends CompanyGridController {
       panel.getHeaderPanel().setMode(Consts.READONLY);
       panel.getHeaderPanel().executeReload();
       panel.getEstimates().reloadCurrentBlockOfData();
+			panel.getDiscountsPanel().getGrid().reloadCurrentBlockOfData();
     }
     return res;
   }

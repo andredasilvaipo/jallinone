@@ -164,7 +164,7 @@ public class PurchaseInvoiceDocFromDelivNotesController extends CompanyFormContr
    */
   public void afterInsertData() {
     if (parentFrame!=null) {
-      parentFrame.getGrid().reloadData();
+      parentFrame.getGrid().reloadCurrentBlockOfData();
     }
 
     DetailPurchaseDocVO vo = (DetailPurchaseDocVO)frame.getHeaderFormPanel().getVOModel().getValueObject();
@@ -194,7 +194,7 @@ public class PurchaseInvoiceDocFromDelivNotesController extends CompanyFormContr
     Response res = ClientUtils.getData("updatePurchaseDoc",new ValueObject[]{oldPersistentObject,persistentObject});
     if (!res.isError()) {
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
       }
     }
     return res;
@@ -213,7 +213,7 @@ public class PurchaseInvoiceDocFromDelivNotesController extends CompanyFormContr
     Response res = ClientUtils.getData("deletePurchaseDocs",pks);
     if (!res.isError()) {
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
       }
       frame.getRowsPanel().getGrid().clearData();
       frame.getDelivPanel().getGrid().clearData();

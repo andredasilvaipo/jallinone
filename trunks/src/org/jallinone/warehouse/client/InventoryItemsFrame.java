@@ -509,7 +509,7 @@ public class InventoryItemsFrame extends InternalFrame {
 					 getInventory().getProgressiveWAR06()
 			});
 			grid.reloadData();
-			parentFrame.getGrid().reloadData();
+			parentFrame.getGrid().reloadCurrentBlockOfData();
 			if (res.isError())
 				OptionPane.showMessageDialog(InventoryItemsFrame.this,res.getErrorMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 			else {
@@ -541,7 +541,7 @@ public class InventoryItemsFrame extends InternalFrame {
 						getInventory().getDescriptionWAR06()
 					});
 					grid.reloadData();
-					parentFrame.getGrid().reloadData();
+					parentFrame.getGrid().reloadCurrentBlockOfData();
 					if (res.isError())
 						OptionPane.showMessageDialog(InventoryItemsFrame.this,res.getErrorMessage(),"Error",JOptionPane.ERROR_MESSAGE);
 					else {

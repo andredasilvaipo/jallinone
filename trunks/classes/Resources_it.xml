@@ -1656,7 +1656,7 @@
   <object key="save region" value="Salva regione" />
   <object key="cannot delete levels: there are sheets having these levels" value="Cancellazione non consentita: ci sono tavole associate al livello corrente." />
   <object key="cannot insert levels: there are sheets binded to spare parts" value="Cancellazione non consentita: ci sono tavole con ricambi associati" />
-  <object key="levelITM29" value="Livello" />
+  <object key="levITM29" value="Livello" />
   <object key="spare parts sheets levels" value="Livelli tavole ricambi" />
   <object key="spare parts sheets for level" value="Tavole ricambi del livello" />
   <object key="imageITM05" value="Immagine" />
@@ -1669,7 +1669,7 @@
   <object key="show only spare parts" value="Mostra solo ricambi" />
   <object key="sale date" value="Data di vend." />
   <object key="item sold on" value="Articolo venduto il" />
-  
+
 <!-- application translations -->
 
   <currencySymbol>&#8364;</currencySymbol>

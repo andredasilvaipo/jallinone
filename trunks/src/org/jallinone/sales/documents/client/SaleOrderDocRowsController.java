@@ -150,6 +150,7 @@ public class SaleOrderDocRowsController extends CompanyGridController {
       panel.getHeaderPanel().setMode(Consts.READONLY);
       panel.getHeaderPanel().executeReload();
       panel.getOrders().reloadCurrentBlockOfData();
+			panel.getDiscountsPanel().getGrid().reloadCurrentBlockOfData();
     }
     return res;
   }

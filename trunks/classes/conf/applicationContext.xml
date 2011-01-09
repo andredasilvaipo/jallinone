@@ -424,7 +424,7 @@
      <property name="totals" ref="UpdateTaxableIncomesBean" />
      <property name="totalBean" ref="SaleDocTotalsBean" />
      <property name="docBean" ref="LoadSaleDocBean" />
-     <property name="rowBean" ref="InsertSaleItemBean" />
+     <property name="loadSaleDocRowBean" ref="LoadSaleDocRowBean" />
      <property name="itemDiscountBean" ref="SaleItemTotalDiscountBean" />
      <property name="discountBean" ref="DiscountBean" />
      <property name="bean" ref="InsertSaleDocRowDiscountsBean" />
@@ -449,7 +449,7 @@
      <property name="taxableIncomeAction" ref="UpdateTaxableIncomesBean" />
      <property name="vatRegisterAction" ref="AccountingMovementsBean" />
      <property name="parsBean" ref="ParamsBean" />
-     <property name="bean" ref="InsertSaleItemBean" />
+     <property name="loadSaleDocRowBean" ref="LoadSaleDocRowBean" />
    </bean>
    <bean id="ConfirmSaleDocBean" scope="prototype" class="org.jallinone.sales.documents.server.ConfirmSaleDocBean">
      <property name="dataSource" ref="JALLINONE" />
@@ -457,6 +457,7 @@
      <property name="rowsBean" ref="LoadSaleDocRowsBean" />
      <property name="insbean" ref="InsertSaleItemBean" />
      <property name="loadSaleDocBean" ref="LoadSaleDocBean" />
+     <property name="loadSaleDocRowBean" ref="LoadSaleDocRowBean" />
    </bean>
    <bean id="CreateInvoiceFromOutDelivNotesBean" scope="prototype" class="org.jallinone.sales.documents.server.CreateInvoiceFromOutDelivNotesBean">
      <property name="dataSource" ref="JALLINONE" />
@@ -471,6 +472,7 @@
      <property name="bean" ref="InsertSaleItemBean" />
      <property name="loadSaleDocBean" ref="LoadSaleDocBean" />
      <property name="insBean" ref="InsertSaleDocRowDiscountBean" />
+     <property name="loadSaleDocRowBean" ref="LoadSaleDocRowBean" />
    </bean>
    <bean id="CreateInvoiceFromSaleDocBean" scope="prototype" class="org.jallinone.sales.documents.server.CreateInvoiceFromSaleDocBean">
      <property name="dataSource" ref="JALLINONE" />
@@ -485,6 +487,7 @@
      <property name="bean" ref="InsertSaleItemBean" />
      <property name="loadSaleDocBean" ref="LoadSaleDocBean" />
      <property name="insBean" ref="InsertSaleDocRowDiscountBean" />
+     <property name="loadSaleDocRowBean" ref="LoadSaleDocRowBean" />
    </bean>
    <bean id="CreateSaleDocFromEstimateBean" scope="prototype" class="org.jallinone.sales.documents.server.CreateSaleDocFromEstimateBean">
      <property name="dataSource" ref="JALLINONE" />
@@ -499,16 +502,19 @@
      <property name="bean" ref="InsertSaleItemBean" />
      <property name="loadSaleDocBean" ref="LoadSaleDocBean" />
      <property name="insBean" ref="InsertSaleDocRowDiscountBean" />
+     <property name="loadSaleDocRowBean" ref="LoadSaleDocRowBean" />
    </bean>
 
    <bean id="InsertSaleItemBean" scope="prototype" class="org.jallinone.sales.documents.server.InsertSaleItemBean">
      <property name="dataSource" ref="JALLINONE" />
+     <property name="totals" ref="UpdateTaxableIncomesBean" />
    </bean>
    <bean id="SaleDocRowsBean" scope="prototype" class="org.jallinone.sales.documents.server.SaleDocRowsBean">
      <property name="dataSource" ref="JALLINONE" />
      <property name="totals" ref="UpdateTaxableIncomesBean" />
      <property name="serialNumBean" ref="InsertSaleSerialNumbersBean" />
      <property name="bean" ref="InsertSaleItemBean" />
+     <property name="loadSaleDocRowBean" ref="LoadSaleDocRowBean" />
    </bean>
 
    <bean id="LoadSaleDocBean" scope="prototype" class="org.jallinone.sales.documents.server.LoadSaleDocBean">
@@ -805,13 +811,16 @@
      <property name="docBean" ref="LoadSaleDocBean" />
      <property name="rowsBean" ref="LoadSaleDocRowsBean" />
      <property name="itemDiscountBean" ref="SaleItemTotalDiscountBean" />
-     <property name="bean" ref="InsertSaleItemBean" />
+     <property name="bean" ref="LoadSaleDocRowBean" />
+   </bean>
+   <bean id="LoadSaleDocRowBean" scope="prototype" class="org.jallinone.sales.documents.server.LoadSaleDocRowBean">
+     <property name="dataSource" ref="JALLINONE" />
    </bean>
    <bean id="InventoriesBean" scope="prototype" class="org.jallinone.warehouse.server.InventoriesBean">
      <property name="dataSource" ref="JALLINONE" />
      <property name="bean" ref="HierarchiesBean" />
    </bean>
-   <bean id="ItemSheetsBean" scope="prototype" class="org.jallinone.warehouse.server.ItemSheetsBean">
+   <bean id="ItemSheetsBean" scope="prototype" class="org.jallinone.items.spareparts.server.ItemSheetsBean">
      <property name="dataSource" ref="JALLINONE" />
    </bean>
 

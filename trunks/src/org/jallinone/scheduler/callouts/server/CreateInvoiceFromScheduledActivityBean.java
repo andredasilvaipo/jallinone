@@ -269,7 +269,14 @@ public class CreateInvoiceFromScheduledActivityBean  implements CreateInvoiceFro
         vatPerc = saleItemVO.getValueReg01DOC02().doubleValue()*(1d-saleItemVO.getDeductibleReg01DOC02().doubleValue()/100d);
         saleItemVO.setVatValueDOC02(new BigDecimal(saleItemVO.getTaxableIncomeDOC02().doubleValue()*vatPerc/100));
         saleItemVO.setValueDOC02(saleItemVO.getTaxableIncomeDOC02().add(saleItemVO.getVatValueDOC02()));
-        res = insItemRow.insertSaleItem(saleItemVO,serverLanguageId,username);
+        res = insItemRow.insertSaleItem(
+					variant1Descriptions,
+					variant2Descriptions,
+					variant3Descriptions,
+					variant4Descriptions,
+					variant5Descriptions,
+				  saleItemVO,serverLanguageId,username
+				);
         if (res.isError()) {
           throw new Exception(res.getErrorMessage());
         }

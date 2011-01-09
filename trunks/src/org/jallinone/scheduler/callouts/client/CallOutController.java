@@ -113,7 +113,7 @@ public class CallOutController extends CompanyFormController {
       CallOutVO vo = (CallOutVO)((VOResponse)res).getVo();
       pk = new CallOutPK(vo.getCompanyCodeSys01SCH10(),vo.getCallOutCodeSCH10());
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
       }
 
       frame.getTasksGrid().getOtherGridParams().put(
@@ -145,7 +145,7 @@ public class CallOutController extends CompanyFormController {
     Response res = ClientUtils.getData("updateCallOut",new ValueObject[]{oldPersistentObject,persistentObject});
     if (!res.isError()) {
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
       }
     }
     return res;
@@ -164,7 +164,7 @@ public class CallOutController extends CompanyFormController {
     Response res = ClientUtils.getData("deleteCallOuts",pks);
     if (!res.isError()) {
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
       }
       frame.getTasksGrid().clearData();
       frame.getMacsGrid().clearData();

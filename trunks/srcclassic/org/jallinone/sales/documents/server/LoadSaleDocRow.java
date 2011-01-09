@@ -27,9 +27,7 @@ import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
 
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import org.jallinone.commons.java.*;
-import javax.jws.WebService;
+
 import javax.sql.DataSource;
 
 /**
@@ -60,17 +58,16 @@ import javax.sql.DataSource;
  * @author Mauro Carniel
  * @version 1.0
  */
-@WebService
-public interface InsertSaleItem {
+public interface LoadSaleDocRow {
 
 
-	public VOResponse insertSaleItem(
-		  	  @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant1Descriptions,
-		      @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant2Descriptions,
-		      @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant3Descriptions,
-		      @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant4Descriptions,
-		      @XmlJavaTypeAdapter(HashMapAdapter.class) HashMap variant5Descriptions,
-			  DetailSaleDocRowVO vo,String serverLanguageId,String username) throws Throwable;
+	public VOResponse loadSaleDocRow(
+						 HashMap variant1Descriptions,
+						 HashMap variant2Descriptions,
+						 HashMap variant3Descriptions,
+						 HashMap variant4Descriptions,
+						 HashMap variant5Descriptions,
+						 SaleDocRowPK pk, String serverLanguageId, String username) throws Throwable;
 
-	
+
 }

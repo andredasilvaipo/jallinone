@@ -70,7 +70,7 @@ public class LoadItemSheetsAction implements Action {
 
 			String parentCompanyCodeSys01ITM25 = (String)pars.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01);
 			String parentSheetCodeItm25ITM25 = (String)pars.getOtherGridParams().get(ApplicationConsts.ID);
-			BigDecimal levelITM25 = (BigDecimal)pars.getOtherGridParams().get(ApplicationConsts.LEVEL);
+			BigDecimal levITM25 = (BigDecimal)pars.getOtherGridParams().get(ApplicationConsts.LEVEL);
 
 			ItemSheets bean = (ItemSheets)JAIOBeanFactory.getInstance().getBean(ItemSheets.class);
 			Response answer = bean.loadItemSheets(
@@ -79,7 +79,7 @@ public class LoadItemSheetsAction implements Action {
 				userSessionPars.getUsername(),
 				parentCompanyCodeSys01ITM25,
 				parentSheetCodeItm25ITM25,
-				levelITM25
+				levITM25
 			);
 
 			return answer;

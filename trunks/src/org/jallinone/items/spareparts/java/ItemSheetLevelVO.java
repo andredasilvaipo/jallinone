@@ -34,7 +34,7 @@ import org.openswing.swing.message.receive.java.*;
 public class ItemSheetLevelVO extends ValueObjectImpl {
 
 	private String companyCodeSys01ITM29;
-	private java.math.BigDecimal levelITM29;
+	private java.math.BigDecimal levITM29;
 	private String descriptionSYS10;
 	private java.math.BigDecimal progressiveSys10ITM29;
 
@@ -121,11 +121,11 @@ public class ItemSheetLevelVO extends ValueObjectImpl {
 	public void setDescriptionSYS10(String descriptionSYS10) {
 		this.descriptionSYS10 = descriptionSYS10;
 	}
-	public java.math.BigDecimal getLevelITM29() {
-		return levelITM29;
+	public java.math.BigDecimal getLevITM29() {
+		return levITM29;
 	}
-	public void setLevelITM29(java.math.BigDecimal levelITM29) {
-		this.levelITM29 = levelITM29;
+	public void setLevITM29(java.math.BigDecimal levITM29) {
+		this.levITM29 = levITM29;
 	}
 
 	public java.math.BigDecimal getProgressiveSys10ITM29() {

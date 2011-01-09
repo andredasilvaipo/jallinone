@@ -7,6 +7,19 @@ Improved call-outs management:
 - now it is possible to link an item to a call-out request and manage its spare parts as call-out resources.
 - added spare parts catalogue shortcut in call-out request window.
 Fixed problem on creating invoice from a call-out document having items without variants.
+Fixed problem on calculating totals in sale documents, when using items without variants.
+Fixed detail loading problem, after saving data in detail windows synchronized with their parent grids.
+Fixed some configuration problems with JAlInOne SOA version.
+Fixed problem with Oracle database and LEVEL field name in version 2.5.3. 
+For those who have already upgraded to 2.5.3 with Oracle database and have errors, execute manually the following SQL instructions:
+
+DROP TABLE ITM24_LEAF_SHEETS;
+UPDATE SYS11_APPLICATION_PARS SET VALUE='7' where PARAM_CODE='VERSION'; 
+COMMIT;
+
+and apply this version to correctly upgrade to 2.5.4
+
+
 
 
 

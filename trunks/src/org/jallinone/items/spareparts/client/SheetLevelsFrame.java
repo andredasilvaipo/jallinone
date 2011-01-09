@@ -194,7 +194,7 @@ public class SheetLevelsFrame extends InternalFrame {
     this.getContentPane().add(filterPanel, BorderLayout.NORTH);
 		this.getContentPane().add(gridLevels, BorderLayout.CENTER);
 
-		colLevel.setColumnName("levelITM29");
+		colLevel.setColumnName("levITM29");
 		colLevDescr.setColumnName("descriptionSYS10");
 
 		gridLevels.getColumnContainer().add(colLevel, null);

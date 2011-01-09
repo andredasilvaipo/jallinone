@@ -70,7 +70,7 @@ public class LoadSaleDocRowAction implements Action {
 				return new VOResponse();
 
       VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(pk.getCompanyCodeSys01DOC02());
-    	InsertSaleItem bean = (InsertSaleItem)JAIOBeanFactory.getInstance().getBean(InsertSaleItem.class);
+    	LoadSaleDocRow bean = (LoadSaleDocRow)JAIOBeanFactory.getInstance().getBean(LoadSaleDocRow.class);
       Response answer = bean.loadSaleDocRow(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),pk,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
       return answer;

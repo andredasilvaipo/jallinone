@@ -363,11 +363,11 @@ public class ItemSheetsGridPanel	extends JPanel {
 			public void beforeLookupAction(ValueObject gridVO) {
 				sheetDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01ITM25());
 				sheetDataLocator.getLookupFrameParams().put(ApplicationConsts.ID,parentVO.getSheetCodeITM25());
-				sheetDataLocator.getLookupFrameParams().put(ApplicationConsts.LEVEL,parentVO.getLevelITM25().add(new BigDecimal(1)));
+				sheetDataLocator.getLookupFrameParams().put(ApplicationConsts.LEVEL,parentVO.getLevITM25().add(new BigDecimal(1)));
 
 				sheetDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01ITM25());
 				sheetDataLocator.getLookupValidationParameters().put(ApplicationConsts.ID,parentVO.getSheetCodeITM25());
-				sheetDataLocator.getLookupValidationParameters().put(ApplicationConsts.LEVEL,parentVO.getLevelITM25().add(new BigDecimal(1)));
+				sheetDataLocator.getLookupValidationParameters().put(ApplicationConsts.LEVEL,parentVO.getLevITM25().add(new BigDecimal(1)));
 			}
 
 			public void forceValidate() {}
@@ -455,7 +455,7 @@ public class ItemSheetsGridPanel	extends JPanel {
 			ItemSheetLevelVO vo = null;
 			for(int i=0;i<vos.size();i++) {
 				vo = (ItemSheetLevelVO)vos.get(i);
-				levelsPerCompanyCode.put(vo.getCompanyCodeSys01ITM29()+"_"+vo.getLevelITM29(),vo);
+				levelsPerCompanyCode.put(vo.getCompanyCodeSys01ITM29()+"_"+vo.getLevITM29(),vo);
 			}
 		}
 	}
@@ -629,7 +629,7 @@ public class ItemSheetsGridPanel	extends JPanel {
 	private void reloadContent() {
 
 		// define additional columns visibilities...
-		ItemSheetLevelVO vo = (ItemSheetLevelVO)levelsPerCompanyCode.get(parentVO.getCompanyCodeSys01ITM25()+"_"+parentVO.getLevelITM25().add(new BigDecimal(1)));
+		ItemSheetLevelVO vo = (ItemSheetLevelVO)levelsPerCompanyCode.get(parentVO.getCompanyCodeSys01ITM25()+"_"+parentVO.getLevITM25().add(new BigDecimal(1)));
 		try {
 			if (vo!=null) {
 				Method m = null;
@@ -733,7 +733,7 @@ public class ItemSheetsGridPanel	extends JPanel {
 
 				ItemSheetsGridPanel.this.parentVO = (ItemSheetVO) sheetVOs.get(sheetVOs.size() - 1);
 
-//				ItemSheetLevelVO vo = (ItemSheetLevelVO)levelsPerCompanyCode.get(parentVO.getCompanyCodeSys01ITM25()+"_"+parentVO.getLevelITM25().add(new BigDecimal(1)));
+//				ItemSheetLevelVO vo = (ItemSheetLevelVO)levelsPerCompanyCode.get(parentVO.getCompanyCodeSys01ITM25()+"_"+parentVO.getLevITM25().add(new BigDecimal(1)));
 //				if (vo!=null)
 //					topPanel.setDividerLocation(0);
 //				else

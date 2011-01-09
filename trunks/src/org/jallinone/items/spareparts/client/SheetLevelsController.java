@@ -97,7 +97,7 @@ public class SheetLevelsController extends GridController {
 		String companyCode = (String)frame.getCompanyCodeSys01();
 		BigDecimal level = new BigDecimal(frame.getGridLevels().getVOListTableModel().getRowCount());
 		vo.setCompanyCodeSys01ITM29(companyCode);
-		vo.setLevelITM29(level);
+		vo.setLevITM29(level);
 	}
 
 

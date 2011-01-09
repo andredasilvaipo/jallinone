@@ -142,7 +142,7 @@ public class PurchaseInvoiceDocController extends CompanyFormController {
    */
   public void afterInsertData() {
     if (parentFrame!=null) {
-      parentFrame.getGrid().reloadData();
+      parentFrame.getGrid().reloadCurrentBlockOfData();
     }
 
     DetailPurchaseDocVO vo = (DetailPurchaseDocVO)frame.getHeaderFormPanel().getVOModel().getValueObject();
@@ -184,7 +184,7 @@ public class PurchaseInvoiceDocController extends CompanyFormController {
     Response res = ClientUtils.getData("deletePurchaseDocs",pks);
     if (!res.isError()) {
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
       }
       frame.getRowsPanel().getGrid().clearData();
     }

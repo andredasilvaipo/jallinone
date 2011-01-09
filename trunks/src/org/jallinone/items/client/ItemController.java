@@ -255,7 +255,7 @@ public class ItemController extends CompanyFormController {
     Response res = ClientUtils.getData("deleteItems",pks);
     if (!res.isError()) {
       if (parentFrame!=null) {
-        parentFrame.getGrid().reloadData();
+        parentFrame.getGrid().reloadCurrentBlockOfData();
       }
       frame.getDiscountsGrid().clearData();
       frame.getPricesGrid().clearData();
