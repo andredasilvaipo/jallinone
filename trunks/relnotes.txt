@@ -1,5 +1,14 @@
 
 
+Release Notes 2.5.5
+-------------------
+
+Added russian translations.
+Fixed bug on calculating sale item discounts.
+
+
+
+
 Release Notes 2.5.4
 -------------------
 

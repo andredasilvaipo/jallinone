@@ -50,7 +50,7 @@ import org.jallinone.events.server.*;
 public class SaleItemTotalDiscountBean implements SaleItemTotalDiscount {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -58,9 +58,9 @@ public class SaleItemTotalDiscountBean implements SaleItemTotalDiscount {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -70,7 +70,7 @@ public class SaleItemTotalDiscountBean implements SaleItemTotalDiscount {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -110,12 +110,12 @@ public class SaleItemTotalDiscountBean implements SaleItemTotalDiscount {
       pstmt = conn.prepareStatement(
         "select VALUE,PERC,MIN_QTY,MULTIPLE_QTY from DOC04_SELLING_ITEM_DISCOUNTS where "+
         "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and "+
-        "START_DATE<=? and END_DATE>=? order by DISCOUNT_CODE_SAL03 and "+
+        "START_DATE<=? and END_DATE>=? and "+
         "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
         "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
         "VARIANT_TYPE_ITM08=? and VARIANT_CODE_ITM13=? and "+
         "VARIANT_TYPE_ITM09=? and VARIANT_CODE_ITM14=? and "+
-        "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? "
+        "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? order by DISCOUNT_CODE_SAL03 "
       );
       pstmt.setString(1,vo.getCompanyCodeSys01DOC02());
       pstmt.setString(2,vo.getDocTypeDOC02());

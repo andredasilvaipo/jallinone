@@ -172,6 +172,7 @@
   <object key="italian" value="Italiano"/>
   <object key="german" value="German" />
   <object key="croatian" value="Croatian" />
+  <object key="russian" value="Russian" />
   <object key="male" value="Masculino"/>
   <object key="female" value="Feminino"/>
   <object key="officeNr" value="Gabinete Nr. "/>

@@ -196,7 +196,8 @@
   <object key="brazilian" value="Brazilian" />
   <object key="german" value="German" />
   <object key="croatian" value="Croatian" />
-
+  <object key="russian" value="Russian" />
+  
   <object key="male" value="Male" />
   <object key="female" value="Female" />
 

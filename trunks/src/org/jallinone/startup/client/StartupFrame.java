@@ -189,6 +189,7 @@ public class StartupFrame extends JFrame {
       clientLanguageCodeComboBox.addItem("Portuguese/Brazilian");
 			clientLanguageCodeComboBox.addItem("German");
 			clientLanguageCodeComboBox.addItem("Croatian");
+			clientLanguageCodeComboBox.addItem("Russian");
       clientLanguageCodeComboBox.setSelectedIndex(0);
 
       setVisible(true);
@@ -647,7 +648,7 @@ public class StartupFrame extends JFrame {
     }
     else if (pos==4) {
       setVisible(false);
-      
+
       Response res = ClientUtils.getData("getBeansFactoryName",new Object[0]);
       if (res.isError()) {
           JOptionPane.showMessageDialog(
@@ -790,8 +791,10 @@ public class StartupFrame extends JFrame {
       dbConnVO.setClientLanguageCode("PTBR");
 		else if (clientLanguageCodeComboBox.getSelectedIndex()==4)
 			dbConnVO.setClientLanguageCode("DE");
-		else
+		else if (clientLanguageCodeComboBox.getSelectedIndex()==5)
 			dbConnVO.setClientLanguageCode("HR");
+		else
+			dbConnVO.setClientLanguageCode("RU");
     dbConnVO.setAdminPassword(adminPasswdTF.getText().trim());
     Response response = ClientUtils.getData("createConfigFile",dbConnVO);
     if (response.isError()) {
