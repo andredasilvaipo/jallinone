@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="DelivReqDoc"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="842"
+		 columnWidth="535"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false"
+		 resourceBundle="DelivReqDoc">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="DOC_TYPE" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["O"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DOC_YEAR" isForPrompting="false" class="java.math.BigDecimal">
+		<defaultValueExpression ><![CDATA[new java.math.BigDecimal(2007)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DOC_NUMBER" isForPrompting="false" class="java.math.BigDecimal">
+		<defaultValueExpression ><![CDATA[new java.math.BigDecimal(261)]]></defaultValueExpression>
+	</parameter>
+	<parameter name="COMPANY_CODE" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["COMP"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LANGUAGE_CODE" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["EN"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATE_FORMAT" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["dd/MM/yyyy"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="VAR1_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR2_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR3_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR4_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR5_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<queryString><![CDATA[select DOC01_SELLING.DELIVERY_DATE,DOC01_SELLING.COMPANY_CODE_SYS01,DOC01_SELLING.SECTIONAL,DOC01_SELLING.DOC_TYPE,DOC01_SELLING.DOC_STATE,
+DOC01_SELLING.PRICELIST_CODE_SAL01,DOC01_SELLING.PRICELIST_DESCRIPTION,
+DOC01_SELLING.CURRENCY_CODE_REG03,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,
+DOC01_SELLING.DOC_YEAR,DOC01_SELLING.DOC_NUMBER,DOC01_SELLING.TAXABLE_INCOME,
+DOC01_SELLING.ALLOWANCE,DOC01_SELLING.DEPOSIT,DOC01_SELLING.TOTAL_VAT,DOC01_SELLING.TOTAL,
+DOC01_SELLING.DOC_DATE,SAL07_CUSTOMERS.CUSTOMER_CODE,DOC01_SELLING.PROGRESSIVE_REG04,
+DOC01_SELLING.COMPANY_CODE_SYS01_DOC01,DOC01_SELLING.DOC_TYPE_DOC01, 
+DOC01_SELLING.DOC_YEAR_DOC01,DOC01_SELLING.DOC_NUMBER_DOC01,DOC01_SELLING.PAYMENT_CODE_REG10,
+DOC01_SELLING.PAYMENT_DESCRIPTION, DOC01_SELLING.INSTALMENT_NUMBER,DOC01_SELLING.STEP,
+DOC01_SELLING.START_DAY,DOC01_SELLING.FIRST_INSTALMENT_DAYS, 
+DOC01_SELLING.PAYMENT_TYPE_DESCRIPTION,DOC01_SELLING.PROGRESSIVE_WKF01,
+DOC01_SELLING.PROGRESSIVE_WKF08, DOC01_SELLING.DESCRIPTION_WKF01,DOC01_SELLING.NOTE,
+DOC01_SELLING.ENABLED,DOC01_SELLING.DOC_REF_NUMBER, DOC01_SELLING.HEADING_NOTE,
+DOC01_SELLING.FOOTER_NOTE,DOC01_SELLING.DELIVERY_NOTE,DOC01_SELLING.DESTINATION_CODE_REG18,
+DOC01_SELLING.DESCRIPTION,DOC01_SELLING.DISCOUNT_VALUE,DOC01_SELLING.DISCOUNT_PERC,
+DOC01_SELLING.AGENT_CODE_SAL10,DOC01_SELLING.NAME_1,DOC01_SELLING.NAME_2,
+DOC01_SELLING.PERCENTAGE,REG03_CURRENCIES.CURRENCY_SYMBOL,REG03_CURRENCIES.DECIMAL_SYMBOL,
+REG03_CURRENCIES.THOUSAND_SYMBOL,REG03_CURRENCIES.DECIMALS,DOC01_SELLING.WAREHOUSE_CODE_WAR01,
+DOC01_SELLING.DESCRIPTION_WAR01,DOC01_SELLING.ADDRESS,DOC01_SELLING.CITY,
+DOC01_SELLING.PROVINCE,DOC01_SELLING.ZIP,DOC01_SELLING.COUNTRY,
+DOC01_SELLING.CUSTOMER_VAT_CODE_REG01,WAR01_WAREHOUSES.PROGRESSIVE_HIE02,
+DOC01_SELLING.DOC_SEQUENCE,DOC01_SELLING.DOC_SEQUENCE_DOC01  from 
+DOC01_SELLING,SAL01_PRICELISTS,SYS10_TRANSLATIONS,REG04_SUBJECTS,
+SAL07_CUSTOMERS,REG03_CURRENCIES,WAR01_WAREHOUSES where 
+DOC01_SELLING.PRICELIST_CODE_SAL01=SAL01_PRICELISTS.PRICELIST_CODE and 
+DOC01_SELLING.COMPANY_CODE_SYS01=SAL01_PRICELISTS.COMPANY_CODE_SYS01 and 
+SAL01_PRICELISTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and 
+SYS10_TRANSLATIONS.LANGUAGE_CODE=$P{LANGUAGE_CODE} and 
+DOC01_SELLING.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and 
+DOC01_SELLING.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and 
+DOC01_SELLING.PROGRESSIVE_REG04=SAL07_CUSTOMERS.PROGRESSIVE_REG04 and 
+DOC01_SELLING.COMPANY_CODE_SYS01=SAL07_CUSTOMERS.COMPANY_CODE_SYS01 and 
+DOC01_SELLING.COMPANY_CODE_SYS01=$P{COMPANY_CODE} and DOC01_SELLING.DOC_TYPE=$P{DOC_TYPE} and 
+DOC01_SELLING.DOC_YEAR=$P{DOC_YEAR} and DOC01_SELLING.DOC_NUMBER=$P{DOC_NUMBER} and 
+DOC01_SELLING.CURRENCY_CODE_REG03=REG03_CURRENCIES.CURRENCY_CODE and 
+DOC01_SELLING.COMPANY_CODE_SYS01=WAR01_WAREHOUSES.COMPANY_CODE_SYS01 and 
+DOC01_SELLING.WAREHOUSE_CODE_WAR01=WAR01_WAREHOUSES.WAREHOUSE_CODE]]></queryString>
+
+	<field name="DELIVERY_DATE" class="java.sql.Timestamp"/>
+	<field name="COMPANY_CODE_SYS01" class="java.lang.String"/>
+	<field name="SECTIONAL" class="java.lang.String"/>
+	<field name="DOC_TYPE" class="java.lang.String"/>
+	<field name="DOC_STATE" class="java.lang.String"/>
+	<field name="PRICELIST_CODE_SAL01" class="java.lang.String"/>
+	<field name="PRICELIST_DESCRIPTION" class="java.lang.String"/>
+	<field name="CURRENCY_CODE_REG03" class="java.lang.String"/>
+	<field name="NAME_1" class="java.lang.String"/>
+	<field name="NAME_2" class="java.lang.String"/>
+	<field name="DOC_YEAR" class="java.math.BigDecimal"/>
+	<field name="DOC_NUMBER" class="java.math.BigDecimal"/>
+	<field name="TAXABLE_INCOME" class="java.math.BigDecimal"/>
+	<field name="ALLOWANCE" class="java.math.BigDecimal"/>
+	<field name="DEPOSIT" class="java.math.BigDecimal"/>
+	<field name="TOTAL_VAT" class="java.math.BigDecimal"/>
+	<field name="TOTAL" class="java.math.BigDecimal"/>
+	<field name="DOC_DATE" class="java.sql.Timestamp"/>
+	<field name="CUSTOMER_CODE" class="java.lang.String"/>
+	<field name="PROGRESSIVE_REG04" class="java.math.BigDecimal"/>
+	<field name="COMPANY_CODE_SYS01_DOC01" class="java.lang.String"/>
+	<field name="DOC_TYPE_DOC01" class="java.lang.String"/>
+	<field name="DOC_YEAR_DOC01" class="java.math.BigDecimal"/>
+	<field name="DOC_NUMBER_DOC01" class="java.math.BigDecimal"/>
+	<field name="PAYMENT_CODE_REG10" class="java.lang.String"/>
+	<field name="PAYMENT_DESCRIPTION" class="java.lang.String"/>
+	<field name="INSTALMENT_NUMBER" class="java.math.BigDecimal"/>
+	<field name="STEP" class="java.math.BigDecimal"/>
+	<field name="START_DAY" class="java.lang.String"/>
+	<field name="FIRST_INSTALMENT_DAYS" class="java.math.BigDecimal"/>
+	<field name="PAYMENT_TYPE_DESCRIPTION" class="java.lang.String"/>
+	<field name="PROGRESSIVE_WKF01" class="java.math.BigDecimal"/>
+	<field name="PROGRESSIVE_WKF08" class="java.math.BigDecimal"/>
+	<field name="DESCRIPTION_WKF01" class="java.lang.String"/>
+	<field name="NOTE" class="java.lang.String"/>
+	<field name="ENABLED" class="java.lang.String"/>
+	<field name="DOC_REF_NUMBER" class="java.lang.String"/>
+	<field name="HEADING_NOTE" class="java.lang.String"/>
+	<field name="FOOTER_NOTE" class="java.lang.String"/>
+	<field name="DELIVERY_NOTE" class="java.lang.String"/>
+	<field name="DESTINATION_CODE_REG18" class="java.lang.String"/>
+	<field name="DESCRIPTION" class="java.lang.String"/>
+	<field name="DISCOUNT_VALUE" class="java.math.BigDecimal"/>
+	<field name="DISCOUNT_PERC" class="java.math.BigDecimal"/>
+	<field name="AGENT_CODE_SAL10" class="java.lang.String"/>
+	<field name="PERCENTAGE" class="java.math.BigDecimal"/>
+	<field name="CURRENCY_SYMBOL" class="java.lang.String"/>
+	<field name="DECIMAL_SYMBOL" class="java.lang.String"/>
+	<field name="THOUSAND_SYMBOL" class="java.lang.String"/>
+	<field name="DECIMALS" class="java.math.BigDecimal"/>
+	<field name="WAREHOUSE_CODE_WAR01" class="java.lang.String"/>
+	<field name="DESCRIPTION_WAR01" class="java.lang.String"/>
+	<field name="ADDRESS" class="java.lang.String"/>
+	<field name="CITY" class="java.lang.String"/>
+	<field name="PROVINCE" class="java.lang.String"/>
+	<field name="ZIP" class="java.lang.String"/>
+	<field name="COUNTRY" class="java.lang.String"/>
+	<field name="CUSTOMER_VAT_CODE_REG01" class="java.lang.String"/>
+	<field name="PROGRESSIVE_HIE02" class="java.math.BigDecimal"/>
+	<field name="DOC_SEQUENCE" class="java.math.BigDecimal"/>
+	<field name="DOC_SEQUENCE_DOC01" class="java.math.BigDecimal"/>
+
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="110"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="1"
+						y="0"
+						width="240"
+						height="108"
+						key="subreport-1"/>
+					<subreportParameter  name="COMPANY_CODE">
+						<subreportParameterExpression><![CDATA[$P{COMPANY_CODE}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="REPORT_RESOURCE_BUNDLE">
+						<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"DelivReqDoc_subreportMyCompany.jasper"]]></subreportExpression>
+				</subreport>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="276"
+						y="0"
+						width="258"
+						height="108"
+						key="subreport-2"/>
+					<subreportParameter  name="COMPANY_CODE">
+						<subreportParameterExpression><![CDATA[$F{COMPANY_CODE_SYS01}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="PROGRESSIVE_REG04">
+						<subreportParameterExpression><![CDATA[$F{PROGRESSIVE_REG04}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="REPORT_RESOURCE_BUNDLE">
+						<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"DelivReqDoc_subreportSubject.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="141"  isSplitAllowed="true" >
+				<frame>					<reportElement
+						mode="Transparent"
+						x="1"
+						y="4"
+						width="534"
+						height="137"
+						key="frame-1"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+				<line direction="TopDown">
+					<reportElement
+						x="134"
+						y="1"
+						width="0"
+						height="36"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="3"
+						y="4"
+						width="128"
+						height="12"
+						key="textField-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica" size="7" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{delivreq}+" "+$R{number}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="137"
+						y="4"
+						width="119"
+						height="12"
+						key="textField-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica" size="7" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{docdate}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="137"
+						y="18"
+						width="120"
+						height="14"
+						key="textField-3"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[new java.text.SimpleDateFormat(
+  $P{DATE_FORMAT}
+).format(
+$F{DOC_DATE}
+)]]></textFieldExpression>
+				</textField>
+				</frame>				<line direction="TopDown">
+					<reportElement
+						x="260"
+						y="4"
+						width="0"
+						height="37"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="396"
+						y="4"
+						width="0"
+						height="71"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="40"
+						width="534"
+						height="0"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="4"
+						y="21"
+						width="126"
+						height="15"
+						key="textField"
+						isRemoveLineWhenBlank="true"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" size="10" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{SECTIONAL}==null || $F{SECTIONAL}.equals("")?"":$F{SECTIONAL}.toString())+
+($F{DOC_SEQUENCE}==null || $F{DOC_SEQUENCE}.equals("")?"":$F{DOC_SEQUENCE}.toString())+
+"/"+$F{DOC_YEAR}.toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="264"
+						y="9"
+						width="119"
+						height="12"
+						key="textField-4"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica" size="7" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{delivdate}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="$P{DATE_FORMAT}" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="264"
+						y="23"
+						width="120"
+						height="14"
+						key="textField-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[new java.text.SimpleDateFormat(
+  $P{DATE_FORMAT}
+).format(
+$F{DELIVERY_DATE}
+)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="400"
+						y="8"
+						width="119"
+						height="12"
+						key="textField-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica" size="7" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{docref}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="$P{DATE_FORMAT}" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="400"
+						y="22"
+						width="131"
+						height="14"
+						key="textField-7"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DOC_REF_NUMBER}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="75"
+						width="534"
+						height="0"
+						key="line-5"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="400"
+						y="43"
+						width="119"
+						height="12"
+						key="textField-14"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica" size="7" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{warehouse}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="400"
+						y="57"
+						width="131"
+						height="14"
+						key="textField-15"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{WAREHOUSE_CODE_WAR01}+" - "+$F{DESCRIPTION_WAR01}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="4"
+						y="76"
+						width="528"
+						height="63"
+						key="textField-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{HEADING_NOTE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="4"
+						y="42"
+						width="119"
+						height="12"
+						key="textField-18"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica" size="7" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{destination}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="5"
+						y="57"
+						width="389"
+						height="14"
+						key="textField-19"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New" pdfFontName="Helvetica" isBold="false"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DESCRIPTION}+" "+$F{ADDRESS}+" "+$F{ZIP}+" "+$F{CITY}+" "+($F{PROVINCE}.equals("")?"":$F{PROVINCE})+" "+$F{COUNTRY}]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="19"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="1"
+						y="1"
+						width="532"
+						height="16"
+						key="subreport-4"
+						isPrintInFirstWholeBand="true"/>
+					<subreportParameter  name="COMPANY_CODE">
+						<subreportParameterExpression><![CDATA[$F{COMPANY_CODE_SYS01}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="DOC_TYPE">
+						<subreportParameterExpression><![CDATA[$F{DOC_TYPE}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="DOC_YEAR">
+						<subreportParameterExpression><![CDATA[$F{DOC_YEAR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="DOC_NUMBER">
+						<subreportParameterExpression><![CDATA[$F{DOC_NUMBER}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="LANGUAGE_CODE">
+						<subreportParameterExpression><![CDATA[$P{LANGUAGE_CODE}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="DECIMALS_REG03">
+						<subreportParameterExpression><![CDATA[$F{DECIMALS}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="REPORT_RESOURCE_BUNDLE">
+						<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="VAR1_DESCRS">
+						<subreportParameterExpression><![CDATA[$P{VAR1_DESCRS}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="DATE_FORMAT">
+						<subreportParameterExpression><![CDATA[$P{DATE_FORMAT}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="SUBREPORT_DIR">
+						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="VAR2_DESCRS">
+						<subreportParameterExpression><![CDATA[$P{VAR2_DESCRS}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="VAR3_DESCRS">
+						<subreportParameterExpression><![CDATA[$P{VAR3_DESCRS}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="VAR4_DESCRS">
+						<subreportParameterExpression><![CDATA[$P{VAR4_DESCRS}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="VAR5_DESCRS">
+						<subreportParameterExpression><![CDATA[$P{VAR5_DESCRS}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"DelivReqDoc_subreportItems.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="false" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="false" >
+			</band>
+		</pageFooter>
+		<lastPageFooter>
+			<band height="102"  isSplitAllowed="true" >
+				<frame>					<reportElement
+						x="1"
+						y="0"
+						width="534"
+						height="102"
+						key="frame-2"/>
+					<box topBorder="Thin" topBorderColor="#000000" leftBorder="Thin" leftBorderColor="#000000" rightBorder="Thin" rightBorderColor="#000000" bottomBorder="Thin" bottomBorderColor="#000000"/>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1"
+						y="2"
+						width="530"
+						height="65"
+						key="textField-21"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{FOOTER_NOTE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="70"
+						width="530"
+						height="31"
+						key="textField-23"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Courier New"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{NOTE}]]></textFieldExpression>
+				</textField>
+				</frame>				<line direction="TopDown">
+					<reportElement
+						x="1"
+						y="68"
+						width="534"
+						height="0"
+						key="line-8"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</lastPageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>
