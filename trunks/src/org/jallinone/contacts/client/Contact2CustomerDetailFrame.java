@@ -110,12 +110,33 @@ public class Contact2CustomerDetailFrame extends InternalFrame {
   NumericControl controlTrustAmount = new NumericControl();
   LabelControl labelTrustAmount = new LabelControl();
 
+  LabelControl labelCreditAccount = new LabelControl();
+  LabelControl labelItemAccount = new LabelControl();
+  LabelControl labelActivities = new LabelControl();
+  LabelControl labelCharges = new LabelControl();
+  CodLookupControl controlCreditsCode = new CodLookupControl();
+  TextControl controlCreditsDescr = new TextControl();
+  CodLookupControl controlItemsCode = new CodLookupControl();
+  TextControl controlItemsDescr = new TextControl();
+  CodLookupControl controlActCode = new CodLookupControl();
+  TextControl controlActDescr = new TextControl();
+  CodLookupControl controlChargesCode = new CodLookupControl();
+  TextControl controlChargesDescr = new TextControl();
+
+  LookupController creditController = new LookupController();
+  LookupServerDataLocator creditDataLocator = new LookupServerDataLocator();
+  LookupController itemsController = new LookupController();
+  LookupServerDataLocator itemsDataLocator = new LookupServerDataLocator();
+  LookupController chargesController = new LookupController();
+  LookupServerDataLocator chargesDataLocator = new LookupServerDataLocator();
+  LookupController actController = new LookupController();
+  LookupServerDataLocator actDataLocator = new LookupServerDataLocator();
 
   public Contact2CustomerDetailFrame(Contact2CustomerController controller) {
     try {
       jbInit();
-      setSize(750,350);
-      setMinimumSize(new Dimension(750, 350));
+      setSize(750,450);
+      setMinimumSize(new Dimension(750, 450));
 
       customerPanel.setFormController(controller);
       customerPanel.setSaveButton(saveButton);
@@ -250,6 +271,154 @@ public class Contact2CustomerDetailFrame extends InternalFrame {
     catch(Exception e) {
       e.printStackTrace();
     }
+
+      // credit account code lookup...
+      controlCreditsCode.setLookupController(creditController);
+      controlCreditsCode.setControllerMethodName("getAccounts");
+      creditController.setLookupDataLocator(creditDataLocator);
+      creditDataLocator.setGridMethodName("loadAccounts");
+      creditDataLocator.setValidationMethodName("validateAccountCode");
+      creditController.setFrameTitle("accounts");
+      creditController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
+      creditController.addLookup2ParentLink("accountCodeACC02", "creditAccountCodeAcc02SAL07");
+      creditController.addLookup2ParentLink("descriptionSYS10","creditAccountDescrSAL07");
+      creditController.setFramePreferedSize(new Dimension(400,400));
+      creditController.setAllColumnVisible(false);
+      creditController.setVisibleColumn("accountCodeACC02", true);
+      creditController.setVisibleColumn("descriptionSYS10", true);
+      creditController.setFilterableColumn("accountCodeACC02", true);
+      creditController.setFilterableColumn("descriptionSYS10", true);
+      creditController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      creditController.setSortableColumn("accountCodeACC02", true);
+      creditController.setSortableColumn("descriptionSYS10", true);
+      creditController.setPreferredWidthColumn("accountCodeACC02", 100);
+      creditController.setPreferredWidthColumn("descriptionSYS10", 290);
+      creditController.addLookupListener(new LookupListener() {
+
+        public void codeValidated(boolean validated) {}
+
+        public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) { }
+
+        public void beforeLookupAction(ValueObject parentVO) {
+          //creditDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanyCode.getValue());
+          //creditDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanyCode.getValue());
+        }
+
+        public void forceValidate() {}
+
+      });
+
+      // items account code lookup...
+      controlItemsCode.setLookupController(itemsController);
+      controlItemsCode.setControllerMethodName("getAccounts");
+      itemsController.setLookupDataLocator(itemsDataLocator);
+      itemsDataLocator.setGridMethodName("loadAccounts");
+      itemsDataLocator.setValidationMethodName("validateAccountCode");
+      itemsController.setFrameTitle("accounts");
+      itemsController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
+      itemsController.addLookup2ParentLink("accountCodeACC02", "itemsAccountCodeAcc02SAL07");
+      itemsController.addLookup2ParentLink("descriptionSYS10","itemsAccountDescrSAL07");
+      itemsController.setFramePreferedSize(new Dimension(400,400));
+      itemsController.setAllColumnVisible(false);
+      itemsController.setVisibleColumn("accountCodeACC02", true);
+      itemsController.setVisibleColumn("descriptionSYS10", true);
+      itemsController.setFilterableColumn("accountCodeACC02", true);
+      itemsController.setFilterableColumn("descriptionSYS10", true);
+      itemsController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      itemsController.setSortableColumn("accountCodeACC02", true);
+      itemsController.setSortableColumn("descriptionSYS10", true);
+      itemsController.setPreferredWidthColumn("accountCodeACC02", 100);
+      itemsController.setPreferredWidthColumn("descriptionSYS10", 290);
+      itemsController.addLookupListener(new LookupListener() {
+
+        public void codeValidated(boolean validated) {}
+
+        public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) { }
+
+        public void beforeLookupAction(ValueObject parentVO) {
+          //itemsDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanyCode.getValue());
+          //itemsDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanyCode.getValue());
+        }
+
+        public void forceValidate() {}
+
+      });
+
+
+      // activities account code lookup...
+      controlActCode.setLookupController(actController);
+      controlActCode.setControllerMethodName("getAccounts");
+      actController.setLookupDataLocator(actDataLocator);
+      actDataLocator.setGridMethodName("loadAccounts");
+      actDataLocator.setValidationMethodName("validateAccountCode");
+      actController.setFrameTitle("accounts");
+      actController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
+      actController.addLookup2ParentLink("accountCodeACC02", "activitiesAccountCodeAcc02SAL07");
+      actController.addLookup2ParentLink("descriptionSYS10","activitiesAccountDescrSAL07");
+      actController.setFramePreferedSize(new Dimension(400,400));
+      actController.setAllColumnVisible(false);
+      actController.setVisibleColumn("accountCodeACC02", true);
+      actController.setVisibleColumn("descriptionSYS10", true);
+      actController.setFilterableColumn("accountCodeACC02", true);
+      actController.setFilterableColumn("descriptionSYS10", true);
+      actController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      actController.setSortableColumn("accountCodeACC02", true);
+      actController.setSortableColumn("descriptionSYS10", true);
+      actController.setPreferredWidthColumn("accountCodeACC02", 100);
+      actController.setPreferredWidthColumn("descriptionSYS10", 290);
+      actController.addLookupListener(new LookupListener() {
+
+        public void codeValidated(boolean validated) {}
+
+        public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) { }
+
+        public void beforeLookupAction(ValueObject parentVO) {
+          //actDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanyCode.getValue());
+          //actDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanyCode.getValue());
+        }
+
+        public void forceValidate() {}
+
+      });
+
+
+      // charges account code lookup...
+      controlChargesCode.setLookupController(chargesController);
+      controlChargesCode.setControllerMethodName("getAccounts");
+      chargesController.setLookupDataLocator(chargesDataLocator);
+      chargesDataLocator.setGridMethodName("loadAccounts");
+      chargesDataLocator.setValidationMethodName("validateAccountCode");
+      chargesController.setFrameTitle("accounts");
+      chargesController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
+      chargesController.addLookup2ParentLink("accountCodeACC02", "chargesAccountCodeAcc02SAL07");
+      chargesController.addLookup2ParentLink("descriptionSYS10","chargesAccountDescrSAL07");
+      chargesController.setFramePreferedSize(new Dimension(400,400));
+      chargesController.setAllColumnVisible(false);
+      chargesController.setVisibleColumn("accountCodeACC02", true);
+      chargesController.setVisibleColumn("descriptionSYS10", true);
+      chargesController.setFilterableColumn("accountCodeACC02", true);
+      chargesController.setFilterableColumn("descriptionSYS10", true);
+      chargesController.setSortedColumn("accountCodeACC02", "ASC", 1);
+      chargesController.setSortableColumn("accountCodeACC02", true);
+      chargesController.setSortableColumn("descriptionSYS10", true);
+      chargesController.setPreferredWidthColumn("accountCodeACC02", 100);
+      chargesController.setPreferredWidthColumn("descriptionSYS10", 290);
+      chargesController.addLookupListener(new LookupListener() {
+
+        public void codeValidated(boolean validated) {}
+
+        public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) { }
+
+        public void beforeLookupAction(ValueObject parentVO) {
+          //chargesDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanyCode.getValue());
+          //chargesDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanyCode.getValue());
+        }
+
+        public void forceValidate() {}
+
+      });
+
+
   }
 
 
@@ -331,6 +500,41 @@ public class Contact2CustomerDetailFrame extends InternalFrame {
     saveButton.setEnabled(false);
     saveButton.setText("saveButton1");
 
+    labelCreditAccount.setText("credits account");
+    labelItemAccount.setText("selling items account");
+    labelActivities.setText("selling activities account");
+    labelCharges.setText("selling charges account");
+    controlCreditsCode.setAttributeName("creditAccountCodeAcc02SAL07");
+    controlCreditsDescr.setAttributeName("creditAccountDescrSAL07");
+    controlItemsCode.setAttributeName("itemsAccountCodeAcc02SAL07");
+    controlItemsDescr.setAttributeName("itemsAccountDescrSAL07");
+    controlActCode.setAttributeName("activitiesAccountCodeAcc02SAL07");
+    controlActDescr.setAttributeName("activitiesAccountDescrSAL07");
+    controlChargesCode.setAttributeName("chargesAccountCodeAcc02SAL07");
+    controlChargesDescr.setAttributeName("chargesAccountDescrSAL07");
+
+    controlCreditsCode.setLinkLabel(labelCreditAccount);
+    controlCreditsCode.setMaxCharacters(20);
+    controlCreditsCode.setRequired(true);
+    controlCreditsDescr.setRequired(false);
+    controlCreditsDescr.setEnabledOnInsert(false);
+    controlCreditsDescr.setEnabledOnEdit(false);
+    controlItemsCode.setLinkLabel(labelItemAccount);
+    controlItemsCode.setMaxCharacters(20);
+    controlItemsCode.setRequired(true);
+    controlItemsDescr.setEnabledOnInsert(false);
+    controlItemsDescr.setEnabledOnEdit(false);
+    controlActCode.setLinkLabel(labelActivities);
+    controlActCode.setMaxCharacters(20);
+    controlActCode.setRequired(true);
+    controlActDescr.setEnabledOnInsert(false);
+    controlActDescr.setEnabledOnEdit(false);
+    controlChargesCode.setLinkLabel(labelCharges);
+    controlChargesCode.setMaxCharacters(20);
+    controlChargesCode.setRequired(true);
+    controlChargesDescr.setEnabledOnInsert(false);
+    controlChargesDescr.setEnabledOnEdit(false);
+
     this.getContentPane().add(buttonsPanel, BorderLayout.NORTH);
     buttonsPanel.add(saveButton, null);
     this.getContentPane().add(customerPanel, BorderLayout.CENTER);
@@ -383,6 +587,30 @@ public class Contact2CustomerDetailFrame extends InternalFrame {
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     customerPanel.add(controlVatValue,     new GridBagConstraints(3, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 0), 0, 0));
+    customerPanel.add(labelCreditAccount,           new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    customerPanel.add(controlCreditsCode,               new GridBagConstraints(1, 8, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    customerPanel.add(controlCreditsDescr,            new GridBagConstraints(2, 8, 4, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    customerPanel.add(labelItemAccount,           new GridBagConstraints(0, 9, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    customerPanel.add(controlItemsCode,               new GridBagConstraints(1, 9, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    customerPanel.add(controlItemsDescr,            new GridBagConstraints(2, 9, 4, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    customerPanel.add(labelActivities,           new GridBagConstraints(0, 10, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    customerPanel.add(controlActCode,               new GridBagConstraints(1, 10, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    customerPanel.add(controlActDescr,            new GridBagConstraints(2, 10, 4, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    customerPanel.add(labelCharges,           new GridBagConstraints(0, 11, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    customerPanel.add(controlChargesCode,               new GridBagConstraints(1, 11, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    customerPanel.add(controlChargesDescr,            new GridBagConstraints(2, 11, 4, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
   }
 
 
@@ -408,6 +636,22 @@ public class Contact2CustomerDetailFrame extends InternalFrame {
   }
 
 
+  public CodLookupControl getControlCreditsCode() {
+    return controlCreditsCode;
+  }
 
 
+  public CodLookupControl getControlItemsCode() {
+    return controlItemsCode;
+  }
+
+
+  public CodLookupControl getControlActCode() {
+    return controlActCode;
+  }
+
+
+  public CodLookupControl getControlChargesCode() {
+    return controlChargesCode;
+  }
 }

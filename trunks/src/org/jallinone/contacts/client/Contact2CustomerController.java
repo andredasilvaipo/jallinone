@@ -1,5 +1,8 @@
 package org.jallinone.contacts.client;
 
+import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.openswing.swing.mdi.client.MDIFrame;
 import org.openswing.swing.util.java.Consts;
 import org.openswing.swing.form.client.FormController;
@@ -15,6 +18,7 @@ import org.openswing.swing.util.client.ClientSettings;
 import org.jallinone.subjects.java.Subject;
 import org.jallinone.system.java.ButtonCompanyAuthorizations;
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.jallinone.subjects.java.SubjectPK;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.subjects.java.OrganizationVO;
@@ -106,61 +110,72 @@ public class Contact2CustomerController extends CompanyFormController {
     Subject subjectVO = (Subject)newPersistentObject;
     if (subjectVO.getSubjectTypeREG04().equals(ApplicationConsts.SUBJECT_ORGANIZATION_CUSTOMER)) {
       OrganizationVO vo = (OrganizationVO)subjectVO;
-      OrganizationVO contactVO = (OrganizationVO)this.contactVO;
-      vo.setAddressREG04(contactVO.getAddressREG04());
-      vo.setCityREG04(contactVO.getCityREG04());
-      vo.setCompanyCodeSys01REG04(contactVO.getCompanyCodeSys01REG04());
-      vo.setCompanyCodeSys01Reg04REG04(contactVO.getCompanyCodeSys01Reg04REG04());
-      vo.setCountryREG04(contactVO.getCountryREG04());
-      vo.setEmailAddressREG04(contactVO.getEmailAddressREG04());
-      vo.setFaxNumberREG04(contactVO.getFaxNumberREG04());
-      vo.setLawfulSiteREG04(contactVO.getLawfulSiteREG04());
-      vo.setName_1REG04(contactVO.getName_1REG04());
-      vo.setName_2REG04(contactVO.getName_2REG04());
-      vo.setNoteREG04(contactVO.getNoteREG04());
-      vo.setPhoneNumberREG04(contactVO.getPhoneNumberREG04());
-      vo.setProgressiveREG04(contactVO.getProgressiveREG04());
-      vo.setProgressiveReg04REG04(contactVO.getProgressiveReg04REG04());
-      vo.setProvinceREG04(contactVO.getProvinceREG04());
-      vo.setTaxCodeREG04(contactVO.getTaxCodeREG04());
-      vo.setWebSiteREG04(contactVO.getWebSiteREG04());
-      vo.setZipREG04(contactVO.getZipREG04());
+      OrganizationVO contact1VO = (OrganizationVO)this.contactVO;
+      vo.setAddressREG04(contact1VO.getAddressREG04());
+      vo.setCityREG04(contact1VO.getCityREG04());
+      vo.setCompanyCodeSys01REG04(contact1VO.getCompanyCodeSys01REG04());
+      vo.setCompanyCodeSys01Reg04REG04(contact1VO.getCompanyCodeSys01Reg04REG04());
+      vo.setCountryREG04(contact1VO.getCountryREG04());
+      vo.setEmailAddressREG04(contact1VO.getEmailAddressREG04());
+      vo.setFaxNumberREG04(contact1VO.getFaxNumberREG04());
+      vo.setLawfulSiteREG04(contact1VO.getLawfulSiteREG04());
+      vo.setName_1REG04(contact1VO.getName_1REG04());
+      vo.setName_2REG04(contact1VO.getName_2REG04());
+      vo.setNoteREG04(contact1VO.getNoteREG04());
+      vo.setPhoneNumberREG04(contact1VO.getPhoneNumberREG04());
+      vo.setProgressiveREG04(contact1VO.getProgressiveREG04());
+      vo.setProgressiveReg04REG04(contact1VO.getProgressiveReg04REG04());
+      vo.setProvinceREG04(contact1VO.getProvinceREG04());
+      vo.setTaxCodeREG04(contact1VO.getTaxCodeREG04());
+      vo.setWebSiteREG04(contact1VO.getWebSiteREG04());
+      vo.setZipREG04(contact1VO.getZipREG04());
     }
     else {
       PeopleVO vo = (PeopleVO)subjectVO;
-      PeopleVO contactVO = (PeopleVO)this.contactVO;
-      vo.setAddressREG04(contactVO.getAddressREG04());
-      vo.setBirthdayREG04(contactVO.getBirthdayREG04());
-      vo.setBirthplaceREG04(contactVO.getBirthplaceREG04());
-      vo.setCityREG04(contactVO.getCityREG04());
-      vo.setCompanyCodeSys01REG04(contactVO.getCompanyCodeSys01REG04());
-      vo.setCompanyCodeSys01Reg04REG04(contactVO.getCompanyCodeSys01Reg04REG04());
-      vo.setCountryREG04(contactVO.getCountryREG04());
-      vo.setEmailAddressREG04(contactVO.getEmailAddressREG04());
-      vo.setFaxNumberREG04(contactVO.getFaxNumberREG04());
-      vo.setMaritalStatusREG04(contactVO.getMaritalStatusREG04());
-      vo.setMobileNumberREG04(contactVO.getMobileNumberREG04());
-      vo.setName_1REG04(contactVO.getName_1REG04());
-      vo.setName_2REG04(contactVO.getName_2REG04());
-      vo.setNationalityREG04(contactVO.getNationalityREG04());
-      vo.setNoteREG04(contactVO.getNoteREG04());
-      vo.setPhoneNumberREG04(contactVO.getPhoneNumberREG04());
-      vo.setProgressiveREG04(contactVO.getProgressiveREG04());
-      vo.setProgressiveReg04REG04(contactVO.getProgressiveReg04REG04());
-      vo.setProvinceREG04(contactVO.getProvinceREG04());
-      vo.setSexREG04(contactVO.getSexREG04());
-      vo.setTaxCodeREG04(contactVO.getTaxCodeREG04());
-      vo.setWebSiteREG04(contactVO.getWebSiteREG04());
-      vo.setZipREG04(contactVO.getZipREG04());
+      PeopleVO contact1VO = (PeopleVO)this.contactVO;
+      vo.setAddressREG04(contact1VO.getAddressREG04());
+      vo.setBirthdayREG04(contact1VO.getBirthdayREG04());
+      vo.setBirthplaceREG04(contact1VO.getBirthplaceREG04());
+      vo.setCityREG04(contact1VO.getCityREG04());
+      vo.setCompanyCodeSys01REG04(contact1VO.getCompanyCodeSys01REG04());
+      vo.setCompanyCodeSys01Reg04REG04(contact1VO.getCompanyCodeSys01Reg04REG04());
+      vo.setCountryREG04(contact1VO.getCountryREG04());
+      vo.setEmailAddressREG04(contact1VO.getEmailAddressREG04());
+      vo.setFaxNumberREG04(contact1VO.getFaxNumberREG04());
+      vo.setMaritalStatusREG04(contact1VO.getMaritalStatusREG04());
+      vo.setMobileNumberREG04(contact1VO.getMobileNumberREG04());
+      vo.setName_1REG04(contact1VO.getName_1REG04());
+      vo.setName_2REG04(contact1VO.getName_2REG04());
+      vo.setNationalityREG04(contact1VO.getNationalityREG04());
+      vo.setNoteREG04(contact1VO.getNoteREG04());
+      vo.setPhoneNumberREG04(contact1VO.getPhoneNumberREG04());
+      vo.setProgressiveREG04(contact1VO.getProgressiveREG04());
+      vo.setProgressiveReg04REG04(contact1VO.getProgressiveReg04REG04());
+      vo.setProvinceREG04(contact1VO.getProvinceREG04());
+      vo.setSexREG04(contact1VO.getSexREG04());
+      vo.setTaxCodeREG04(contact1VO.getTaxCodeREG04());
+      vo.setWebSiteREG04(contact1VO.getWebSiteREG04());
+      vo.setZipREG04(contact1VO.getZipREG04());
     }
 
     Response response = ClientUtils.getData("insertCustomer",subjectVO);
-    if (!response.isError()) {
-      contactsFrame.reloadData();
-      contactFrame.closeFrame();
+    if (response.isError()) {
+      throw new RuntimeException(response.getErrorMessage());
     }
     return response;
   }
+
+  @Override
+  public void afterInsertData() {
+    super.afterInsertData();
+    contactsFrame.reloadData();
+    try {
+      contactFrame.closeFrame();
+    } catch (PropertyVetoException ex) {
+      Logger.getLogger(Contact2CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+    }
+  }
+
 
 
   /**
@@ -169,11 +184,60 @@ public class Contact2CustomerController extends CompanyFormController {
    * @param persistentObject new value object
    */
   public void createPersistentObject(ValueObject PersistentObject) throws Exception {
-    ((Subject)PersistentObject).setCompanyCodeSys01REG04( contactVO.getCompanyCodeSys01REG04() );
-    if (contactVO.getSubjectTypeREG04().equals(ApplicationConsts.SUBJECT_ORGANIZATION_CONTACT))
-      ((Subject)PersistentObject).setSubjectTypeREG04(ApplicationConsts.SUBJECT_ORGANIZATION_CUSTOMER);
-    else
-      ((Subject)PersistentObject).setSubjectTypeREG04(ApplicationConsts.SUBJECT_PEOPLE_CUSTOMER);
+    ((Subject) PersistentObject).setCompanyCodeSys01REG04(contactVO.getCompanyCodeSys01REG04());
+    if (contactVO.getSubjectTypeREG04().equals(ApplicationConsts.SUBJECT_ORGANIZATION_CONTACT)) {
+      ((Subject) PersistentObject).setSubjectTypeREG04(ApplicationConsts.SUBJECT_ORGANIZATION_CUSTOMER);
+    } else {
+      ((Subject) PersistentObject).setSubjectTypeREG04(ApplicationConsts.SUBJECT_PEOPLE_CUSTOMER);
+    }
+
+    ClientApplet applet = ( (ApplicationClientFacade) MDIFrame.getClientFacade()).getMainClass();
+    String companyCode = null;
+    if (applet.getAuthorizations().isOneCompany()) {
+      ButtonCompanyAuthorizations bca = applet.getAuthorizations().getCompanyBa();
+      ArrayList companiesList = bca.getCompaniesList("SAL07");
+      companyCode = companiesList.get(0).toString();
+    }
+    // set default values...
+    HashMap map = new HashMap();
+    map.put(ApplicationConsts.COMPANY_CODE_SYS01,companyCode);
+    map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.CREDITS_ACCOUNT);
+    Response response = ClientUtils.getData("loadUserParam",map);
+    if (!response.isError()) {
+      String code = (String)((VOResponse)response).getVo();
+      detailFrame.getControlCreditsCode().setValue(code);
+      detailFrame.getControlCreditsCode().getLookupController().forceValidate();
+    }
+
+    map.clear();
+    map.put(ApplicationConsts.COMPANY_CODE_SYS01,companyCode);
+    map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.ITEMS_ACCOUNT);
+    response = ClientUtils.getData("loadUserParam",map);
+    if (!response.isError()) {
+      String code = (String)((VOResponse)response).getVo();
+      detailFrame.getControlItemsCode() .setValue(code);
+      detailFrame.getControlItemsCode().getLookupController().forceValidate();
+    }
+
+    map.clear();
+    map.put(ApplicationConsts.COMPANY_CODE_SYS01,companyCode);
+    map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.ACTIVITIES_ACCOUNT);
+    response = ClientUtils.getData("loadUserParam",map);
+    if (!response.isError()) {
+      String code = (String)((VOResponse)response).getVo();
+      detailFrame.getControlActCode() .setValue(code);
+      detailFrame.getControlActCode().getLookupController().forceValidate();
+    }
+
+    map.clear();
+    map.put(ApplicationConsts.COMPANY_CODE_SYS01,companyCode);
+    map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.CHARGES_ACCOUNT);
+    response = ClientUtils.getData("loadUserParam",map);
+    if (!response.isError()) {
+      String code = (String)((VOResponse)response).getVo();
+      detailFrame.getControlChargesCode().setValue(code);
+      detailFrame.getControlChargesCode().getLookupController().forceValidate();
+    }
 
   }
 
