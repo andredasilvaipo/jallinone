@@ -1,5 +1,14 @@
 
 
+Release Notes 2.5.6
+-------------------
+
+Fixed contact to customer form: now are available accounting data too (thanks to  Michele Milidoni).
+Improved sale document windows: now doc. ref. num. is correctly showed.
+
+
+
+
 Release Notes 2.5.5
 -------------------
 

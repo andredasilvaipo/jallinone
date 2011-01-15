@@ -237,7 +237,7 @@
   <object key="german" value="German" />
   <object key="croatian" value="Croatian" />
   <object key="russian" value="Russian" />
-  
+
   <object key="male" value="Male" />
   <object key="female" value="Female" />
 
@@ -1705,6 +1705,7 @@
   <object key="show only spare parts" value="Show only spare parts" />
   <object key="sale date" value="Sale date" />
   <object key="item sold on" value="Item sold on" />
+  <object key="total amount must not be zero" value="Total amount must not be zero!" />
 
   <currencySymbol>&#8364;</currencySymbol>
   <decimalSymbol>,</decimalSymbol>

@@ -1582,6 +1582,7 @@
   <object key="show only spare parts" value="Show only spare parts" />
   <object key="sale date" value="Sale date" />
   <object key="item sold on" value="Item sold on" />
+  <object key="total amount must not be zero" value="Total amount must not be zero!" />
 
   <currencySymbol>R$</currencySymbol>
   <decimalSymbol>,</decimalSymbol>

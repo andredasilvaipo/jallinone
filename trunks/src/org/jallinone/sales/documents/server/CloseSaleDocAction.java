@@ -134,13 +134,14 @@ public class CloseSaleDocAction implements Action {
 		  String t14 = resources.getResource("error while executing external application; return code:");
 
 		  String t15 = resources.getResource("the warehouse motive specified is not defined");
+			String t16 = resources.getResource("total amount must not be zero");
 
 		  ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("WAR01");
 
      VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(pk.getCompanyCodeSys01DOC01());
 
 		  CloseSaleDoc bean = (CloseSaleDoc)JAIOBeanFactory.getInstance().getBean(CloseSaleDoc.class);
-		  Response answer = bean.closeSaleDoc(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),pk,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList);
+		  Response answer = bean.closeSaleDoc(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),pk,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList);
 
 		  return answer;
 	  }

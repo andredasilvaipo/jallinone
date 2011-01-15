@@ -194,7 +194,7 @@
   <object key="german" value="Tedesco" />
   <object key="croatian" value="Croato" />
   <object key="russian" value="Russo" />
-  
+
   <object key="male" value="Maschio" />
   <object key="female" value="Femmina" />
 
@@ -1670,6 +1670,7 @@
   <object key="show only spare parts" value="Mostra solo ricambi" />
   <object key="sale date" value="Data di vend." />
   <object key="item sold on" value="Articolo venduto il" />
+  <object key="total amount must not be zero" value="L'importo non puo' essere nullo!" />
 
 <!-- application translations -->
 

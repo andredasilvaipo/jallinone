@@ -234,10 +234,10 @@ public class SaleIdHeadPanel extends JPanel {
           ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
     }
     else {
-      this.add(labelDocRefNr,  new GridBagConstraints(9, 0, 1, 1, 0.0, 0.0
-              ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-      this.add(controlDofRef,  new GridBagConstraints(10, 0, 1, 1, 1.0, 0.0
-              ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 10, 0));
+      this.add(labelDocRefNr,  new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+              ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+      this.add(controlDofRef,  new GridBagConstraints(1, 1, 2, 1, 0.0, 0.0
+              ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 0, 0));
     }
 
     this.add(controlDocYear,              new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0
@@ -252,7 +252,7 @@ public class SaleIdHeadPanel extends JPanel {
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 60, 0));
     this.add(labelDocState,     new GridBagConstraints(7, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlDocState,          new GridBagConstraints(8, 0, 1, 1, 0.0, 0.0
+    this.add(controlDocState,          new GridBagConstraints(8, 0, 1, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     if (showSectional)
       this.add(controlSectional,  new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0

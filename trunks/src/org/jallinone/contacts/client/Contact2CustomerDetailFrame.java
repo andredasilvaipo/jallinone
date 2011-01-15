@@ -573,20 +573,20 @@ public class Contact2CustomerDetailFrame extends InternalFrame {
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     customerPanel.add(controlAgentName_2,           new GridBagConstraints(3, 5, 2, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 0, 0));
-    customerPanel.add(labelTrustAmount,          new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
+    customerPanel.add(labelTrustAmount,           new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     customerPanel.add(controlTrustAmount,       new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    customerPanel.add(labelVatCode,       new GridBagConstraints(0, 7, 1, 3, 0.0, 1.0
+    customerPanel.add(labelVatCode,          new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    customerPanel.add(controlVatCode,      new GridBagConstraints(1, 7, 1, 3, 0.0, 0.0
+    customerPanel.add(controlVatCode,       new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    customerPanel.add(controlVatDescr,      new GridBagConstraints(2, 7, 1, 2, 1.0, 0.0
-            ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 0, 5), 0, 0));
+    customerPanel.add(controlVatDescr,       new GridBagConstraints(2, 7, 1, 1, 1.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     customerPanel.add(controlVatDeductible,      new GridBagConstraints(4, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     customerPanel.add(controlVatValue,     new GridBagConstraints(3, 7, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 0), 0, 0));
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 0), 0, 0));
     customerPanel.add(labelCreditAccount,           new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     customerPanel.add(controlCreditsCode,               new GridBagConstraints(1, 8, 1, 1, 0.0, 0.0
@@ -605,12 +605,12 @@ public class Contact2CustomerDetailFrame extends InternalFrame {
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     customerPanel.add(controlActDescr,            new GridBagConstraints(2, 10, 4, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    customerPanel.add(labelCharges,           new GridBagConstraints(0, 11, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    customerPanel.add(controlChargesCode,               new GridBagConstraints(1, 11, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    customerPanel.add(controlChargesDescr,            new GridBagConstraints(2, 11, 4, 1, 1.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    customerPanel.add(labelCharges,            new GridBagConstraints(0, 11, 1, 1, 0.0, 1.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    customerPanel.add(controlChargesCode,                new GridBagConstraints(1, 11, 1, 1, 0.0, 1.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    customerPanel.add(controlChargesDescr,             new GridBagConstraints(2, 11, 4, 1, 1.0, 1.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
   }
 
 

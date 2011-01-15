@@ -1,8 +1,6 @@
 package org.jallinone.contacts.client;
 
 import java.beans.PropertyVetoException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.openswing.swing.mdi.client.MDIFrame;
 import org.openswing.swing.util.java.Consts;
 import org.openswing.swing.form.client.FormController;
@@ -23,6 +21,7 @@ import org.jallinone.subjects.java.SubjectPK;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.subjects.java.OrganizationVO;
 import org.jallinone.subjects.java.PeopleVO;
+import org.openswing.swing.logger.client.Logger;
 
 
 /**
@@ -165,14 +164,14 @@ public class Contact2CustomerController extends CompanyFormController {
     return response;
   }
 
-  @Override
+
   public void afterInsertData() {
     super.afterInsertData();
     contactsFrame.reloadData();
     try {
       contactFrame.closeFrame();
     } catch (PropertyVetoException ex) {
-      Logger.getLogger(Contact2CustomerController.class.getName()).log(Level.SEVERE, null, ex);
+      Logger.error(this.getClass().getName(),"afterInsertData",ex.getMessage(),ex);
     }
   }
 
