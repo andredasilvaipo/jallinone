@@ -6,6 +6,7 @@ import org.openswing.swing.mdi.client.MDIFrame;
 import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.table.client.GridController;
 import org.openswing.swing.util.client.ClientUtils;
+import org.jallinone.expirations.java.ExpirationVO;
 
 
 /**
@@ -59,6 +60,42 @@ public class ExpirationsController extends GridController {
     return ClientUtils.getData("updateExpirations",new ArrayList[]{oldPersistentObjects,persistentObjects});
   }
 
+
+
+		/**
+		 * Callback method invoked each time a cell is edited: this method define if the new value is valid.
+		 * This method is invoked ONLY if:
+		 * - the edited value is not equals to the old value OR it has exmplicitely called setCellAt or setValueAt
+		 * - the cell is editable
+		 * Default behaviour: cell value is valid.
+		 * @param rowNumber selected row index
+		 * @param attributeName attribute name related to the column currently selected
+		 * @param oldValue old cell value (before cell editing)
+		 * @param newValue new cell value (just edited)
+		 * @return <code>true</code> if cell value is valid, <code>false</code> otherwise
+		 */
+		public boolean validateCell(int rowNumber,String attributeName,Object oldValue,Object newValue) {
+			ExpirationVO vo = (ExpirationVO)gridFrame.getGrid().getVOListTableModel().getObjectForRow(rowNumber);
+
+			if (attributeName.equals("payedDOC19") &&
+					Boolean.TRUE.equals(newValue) &&
+					vo.getPayedDateDOC19()==null)
+				vo.setPayedDateDOC19(new java.sql.Date(System.currentTimeMillis()));
+
+			if (attributeName.equals("payedDOC19") &&
+					Boolean.TRUE.equals(newValue) &&
+					vo.getPayedValueDOC19()==null)
+				vo.setPayedValueDOC19(vo.getValueDOC19());
+
+			if (attributeName.equals("payedDOC19") &&
+					Boolean.TRUE.equals(newValue) &&
+					vo.getRealPaymentTypeCodeReg11DOC19()==null) {
+				vo.setRealPaymentTypeCodeReg11DOC19(vo.getPaymentTypeCodeReg11DOC19());
+				vo.setRealPaymentDescriptionSYS10(vo.getPaymentDescriptionSYS10());
+			}
+
+			return true;
+		}
 
 
 }

@@ -247,8 +247,8 @@ public class SaleCustomerHeadPanel extends JPanel {
       payController.setAllColumnVisible(false);
       payController.setVisibleColumn("paymentCodeREG10", true);
       payController.setVisibleColumn("descriptionSYS10", true);
-      pricelistController.setPreferredWidthColumn("descriptionSYS10", 250);
-      pricelistController.setFramePreferedSize(new Dimension(350,500));
+      payController.setPreferredWidthColumn("descriptionSYS10", 250);
+      payController.setFramePreferedSize(new Dimension(350,500));
 
       jbInit();
 

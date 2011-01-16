@@ -51,6 +51,13 @@ public class ExpirationVO extends ValueObjectImpl {
   private java.math.BigDecimal decimalsREG03;
   private String currencySymbolREG03;
 
+	private java.sql.Date payedDateDOC19;
+	private java.math.BigDecimal payedValueDOC19;
+	private String realPaymentTypeCodeReg11DOC19;
+	private String realPaymentDescriptionSYS10;
+	private String paymentTypeCodeReg11DOC19;
+	private String paymentDescriptionSYS10;
+
 
   public ExpirationVO() {
   }
@@ -163,6 +170,43 @@ public class ExpirationVO extends ValueObjectImpl {
   }
   public void setDecimalsREG03(java.math.BigDecimal decimalsREG03) {
     this.decimalsREG03 = decimalsREG03;
+  }
+
+  public java.sql.Date getPayedDateDOC19() {
+    return payedDateDOC19;
+  }
+  public void setPayedDateDOC19(java.sql.Date payedDateDOC19) {
+    this.payedDateDOC19 = payedDateDOC19;
+  }
+  public void setPayedValueDOC19(java.math.BigDecimal payedValueDOC19) {
+    this.payedValueDOC19 = payedValueDOC19;
+  }
+  public void setPaymentDescriptionSYS10(String paymentDescriptionSYS10) {
+    this.paymentDescriptionSYS10 = paymentDescriptionSYS10;
+  }
+  public void setPaymentTypeCodeReg11DOC19(String paymentTypeCodeReg11DOC19) {
+    this.paymentTypeCodeReg11DOC19 = paymentTypeCodeReg11DOC19;
+  }
+  public java.math.BigDecimal getPayedValueDOC19() {
+    return payedValueDOC19;
+  }
+  public String getPaymentDescriptionSYS10() {
+    return paymentDescriptionSYS10;
+  }
+  public String getPaymentTypeCodeReg11DOC19() {
+    return paymentTypeCodeReg11DOC19;
+  }
+  public String getRealPaymentDescriptionSYS10() {
+    return realPaymentDescriptionSYS10;
+  }
+  public String getRealPaymentTypeCodeReg11DOC19() {
+    return realPaymentTypeCodeReg11DOC19;
+  }
+  public void setRealPaymentDescriptionSYS10(String realPaymentDescriptionSYS10) {
+    this.realPaymentDescriptionSYS10 = realPaymentDescriptionSYS10;
+  }
+  public void setRealPaymentTypeCodeReg11DOC19(String realPaymentTypeCodeReg11DOC19) {
+    this.realPaymentTypeCodeReg11DOC19 = realPaymentTypeCodeReg11DOC19;
   }
 
 }

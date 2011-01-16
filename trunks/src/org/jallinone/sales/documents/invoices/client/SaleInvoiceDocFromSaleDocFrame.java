@@ -32,6 +32,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JRViewer;
+import org.jallinone.registers.payments.java.PaymentVO;
+import org.openswing.swing.message.send.java.LookupValidationParams;
 
 
 /**
@@ -426,6 +428,54 @@ public class SaleInvoiceDocFromSaleDocFrame extends InternalFrame implements Inv
         headerFormPanel.executeReload();
         if (getInvoices()!=null)
           getInvoices().reloadCurrentBlockOfData();
+
+
+					// check if there is only one instalment and this instalment has 0 instalment days
+					DetailSaleDocVO vo = (DetailSaleDocVO)headerFormPanel.getVOModel().getValueObject();
+					res = ClientUtils.getData("validatePaymentCode",new LookupValidationParams(vo.getPaymentCodeReg10DOC01(),new HashMap()));
+					if (res.isError()) {
+						OptionPane.showMessageDialog(
+									ClientUtils.getParentFrame(this),
+									res.getErrorMessage(),
+									ClientSettings.getInstance().getResources().getResource("invoice closing"),
+									JOptionPane.ERROR_MESSAGE
+						);
+					}
+					else {
+						PaymentVO payVO = (PaymentVO)((VOListResponse)res).getRows().get(0);
+						if (payVO.getInstalmentNumberREG10().intValue()==1 &&
+								payVO.getStepREG10().intValue()==0 &&
+								payVO.getFirstInstalmentDaysREG10().intValue()==0 &&
+								payVO.getStartDayREG10().equals(ApplicationConsts.START_DAY_INVOICE_DATE)) {
+							// there is only one instalment and this instalment has 0 instalment days:
+							// prompt user for an immediate payment...
+							if (OptionPane.showConfirmDialog(
+										ClientUtils.getParentFrame(this),
+										"create payment immediately",
+										ClientSettings.getInstance().getResources().getResource("invoice closing"),
+										JOptionPane.YES_NO_OPTION,
+										JOptionPane.QUESTION_MESSAGE
+							)==JOptionPane.YES_OPTION) {
+								res = ClientUtils.getData("payImmediately",new Object[]{
+												vo.getCompanyCodeSys01DOC01(),
+												vo.getDocTypeDOC01(),
+												vo.getDocYearDOC01(),
+												vo.getDocNumberDOC01(),
+												vo.getDocSequenceDOC01()
+								});
+
+								if (res.isError())
+									OptionPane.showMessageDialog(
+												ClientUtils.getParentFrame(this),
+												res.getErrorMessage(),
+												ClientSettings.getInstance().getResources().getResource("invoice closing"),
+												JOptionPane.ERROR_MESSAGE
+									);
+
+							}
+						}
+					}
+
       }
       else JOptionPane.showMessageDialog(
               ClientUtils.getParentFrame(this),

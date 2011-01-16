@@ -259,6 +259,8 @@ public class SaleDeskDocController extends CompanyFormController {
     vo.setDocStateDOC01(ApplicationConsts.OPENED);
 
     Object companyCodeSys01 = frame.getSaleCustomerHeadPanel1().getControlCompaniesCombo().getValue();
+		if (companyCodeSys01==null && frame.getSaleCustomerHeadPanel1().getControlCompaniesCombo().getComboBox().getModel().getSize()==1)
+			companyCodeSys01 = frame.getSaleCustomerHeadPanel1().getControlCompaniesCombo().getComboBox().getModel().getElementAt(0).toString();
 
     // pre-set customer and warehouse codes if previously defined (stored in SYS19 table...)
     if (companyCodeSys01!=null) {

@@ -887,7 +887,7 @@
   <object key="close credit note?" value="Close credit note?" />
   <object key="debiting notes" value="Debit notes" />
   <object key="debiting note" value="Debit note" />
-  <object key="close debiting note?" value="Close debi note?" />
+  <object key="close debiting note?" value="Close debiting note?" />
   <object key="debiting note closing" value="Debit note closing" />
   <object key="noteNumber" value="Note Nr." />
 
@@ -896,7 +896,7 @@
   <object key="docYearDOC19" value="Year" />
   <object key="docSequenceDOC19" value="Nr." />
   <object key="companyCodeSys01DOC19" value="Company Id" />
-  <object key="valueDOC19" value="Value" />
+  <object key="valueDOC19" value="To pay" />
   <object key="expirationDateDOC19" value="Exp. Date" />
   <object key="docDateDOC19" value="Doc. Date" />
   <object key="customerSupplierCodeDOC19" value="Cust./Suppl.Code" />
@@ -1674,7 +1674,15 @@
   <object key="total amount must not be zero" value="Total amount must not be zero!" />
   <object key="is an ancestor of the current item" value="is an ancestor of the current item" />
   <object key="only an immediate payment is allowed" value="Only an immediate payment is allowed" />
-
+  <object key="payedDateDOC19" value="Payed date" />
+  <object key="payedValueDOC19" value="Payed" />
+  <object key="realPaymentTypeCodeReg11DOC19" value="Real Paym. Type" />
+  <object key="realPaymentDescriptionSYS10" value="Real Payment Type" />
+  <object key="create payment immediately" value="Create payment immediately?" />
+  <object key="" value="" />
+  <object key="" value="" />
+  <object key="" value="" />
+  <object key="" value="" />
   <object key="" value="" />
   <object key="" value="" />
   <object key="" value="" />

@@ -9,8 +9,12 @@ Changed purchase reports: now it is showed supplier item code instead of company
 Fixed problem when inserting components in BOM, when a child component is already an ancestor of the item.
 Fixed problem on inserting manual movements in warehouse, for items having no variants.
 Fixed viewing problem in due register window, with retail sales.
-Improved retail detail window: now it is possible to change payment condition, in case of an incorrect payment condition previously defined.
-
+Improved expirations window: 
+- now it is possible to define a payment date, payed value, payment type
+- will be generated an expiration also for invoices having immediate payment, with or without the payed flag already checked
+Improved retail detail window: 
+- now it is possible to change payment condition, in case of an incorrect payment condition previously defined.
+- preset default customer to retail sale window (if defined in user parameters).
 
 
 Release Notes 2.5.5

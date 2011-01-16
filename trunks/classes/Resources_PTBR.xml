@@ -1585,6 +1585,11 @@
   <object key="total amount must not be zero" value="Total amount must not be zero!" />
   <object key="is an ancestor of the current item" value="is an ancestor of the current item" />
   <object key="only an immediate payment is allowed" value="Only an immediate payment is allowed" />
+  <object key="payedDateDOC19" value="Payed date" />
+  <object key="payedValueDOC19" value="Payed" />
+  <object key="realPaymentTypeCodeReg11DOC19" value="Real Paym. Type" />
+  <object key="realPaymentDescriptionSYS10" value="Real Payment Type" />
+  <object key="create payment immediately" value="Create payment immediately?" />
 
   <currencySymbol>R$</currencySymbol>
   <decimalSymbol>,</decimalSymbol>

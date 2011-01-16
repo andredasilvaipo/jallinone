@@ -713,8 +713,8 @@ public class PurchaseInvoiceDocRowsGridPanel extends JPanel implements CurrencyC
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     detailPanel.add(labelDeliveryDate,         new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlDeliveryDate,            new GridBagConstraints(1, 5, 2, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 5, 5, 5), 30, 0));
+    detailPanel.add(controlDeliveryDate,               new GridBagConstraints(1, 5, 3, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 80, 0));
     detailPanel.add(variantsPanel,       new GridBagConstraints(0, 1, 9, 1, 1.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
     detailPanel.add(labelVat,     new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0

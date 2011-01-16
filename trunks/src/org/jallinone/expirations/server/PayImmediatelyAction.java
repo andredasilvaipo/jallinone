@@ -1,6 +1,8 @@
 package org.jallinone.expirations.server;
 
 import org.openswing.swing.server.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
 import java.io.*;
 import java.util.*;
 import org.openswing.swing.message.receive.java.*;
@@ -21,9 +23,11 @@ import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
 
 
+import org.jallinone.commons.server.JAIOBeanFactory;
+
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
- * * <p>Description: Bean used to update existing sale/purchase expirations.</p>
+ * <p>Description: Action class used to update existing sale/purchase expirations.</p>
  * <p>Copyright: Copyright (C) 2006 Mauro Carniel</p>
  *
  * <p> This file is part of JAllInOne ERP/CRM application.
@@ -49,21 +53,43 @@ import org.jallinone.events.server.*;
  * @author Mauro Carniel
  * @version 1.0
  */
+public class PayImmediatelyAction implements Action {
 
-public interface UpdateExpirations {
-
-
-
+	public PayImmediatelyAction() {
+	}
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
+	 * @return request name
 	 */
-	public ExpirationVO getExpiration();
+	public final String getRequestName() {
+		return "payImmediately";
+	}
 
 
-	public VOListResponse updateExpirations(String t1,String t2,ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
+	public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
+		try {
+			Object[] pars = (Object[])inputPar;
+			String companyCode = (String)pars[0];
+			String docType = (String)pars[1];
+			BigDecimal docYear = (BigDecimal)pars[2];
+			BigDecimal docNumber = (BigDecimal)pars[3];
+			BigDecimal docSequence = (BigDecimal)pars[4];
 
-	public VOResponse payImmediately(String companyCode,String docType,BigDecimal docYear,BigDecimal docNumber,BigDecimal docSequence,String t1,String t2,String serverLanguageId,String username) throws Throwable;
+			// retrieve internationalization settings (Resources object)...
+			ServerResourcesFactory factory = (ServerResourcesFactory)context.getAttribute(Controller.RESOURCES_FACTORY);
+			Resources resources = factory.getResources(userSessionPars.getLanguageId());
+			String t1 = resources.getResource("customer");
+			String t2 = resources.getResource("supplier");
 
+			UpdateExpirations bean = (UpdateExpirations)JAIOBeanFactory.getInstance().getBean(UpdateExpirations.class);
+			Response answer = bean.payImmediately(companyCode,docType,docYear,docNumber,docSequence,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+
+			return answer;
+		}
+		catch (Throwable ex) {
+			Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"executeCommand","Error while processing request",ex);
+			return new ErrorResponse(ex.getMessage());
+		}
+	}
 }
 

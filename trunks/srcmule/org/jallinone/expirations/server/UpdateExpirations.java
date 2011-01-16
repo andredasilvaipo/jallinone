@@ -63,5 +63,7 @@ public interface UpdateExpirations {
 
 	public VOListResponse updateExpirations(String t1,String t2,ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
 
+	public VOResponse payImmediately(String companyCode,String docType,BigDecimal docYear,BigDecimal docNumber,BigDecimal docSequence,String t1,String t2,String serverLanguageId,String username) throws Throwable;
+
 }
 

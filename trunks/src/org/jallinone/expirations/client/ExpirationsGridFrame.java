@@ -75,11 +75,13 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
   TextColumn colCompany = new TextColumn();
   TextColumn colDescr = new TextColumn();
   ExportButton exportButton = new ExportButton();
+	DateColumn colPayedDate = new DateColumn();
   DateColumn colExpDate = new DateColumn();
   DateColumn colDocDate = new DateColumn();
   ComboColumn colDocType = new ComboColumn();
   IntegerColumn colColNum = new IntegerColumn();
   IntegerColumn colDocYear = new IntegerColumn();
+	CurrencyColumn colPayedValue = new CurrencyColumn();
   CurrencyColumn colValue = new CurrencyColumn();
   CheckBoxColumn colPayed = new CheckBoxColumn();
   TextColumn colCustSupplCode = new TextColumn();
@@ -105,6 +107,11 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
   LookupServerDataLocator customerDataLocator = new LookupServerDataLocator();
   LookupController supplierController = new LookupController();
   LookupServerDataLocator supplierDataLocator = new LookupServerDataLocator();
+  TextColumn colRealPayTipeDesc = new TextColumn();
+  TextColumn colPayTypeDesc = new TextColumn();
+  CodLookupColumn colRealPayTipeCode = new CodLookupColumn();
+	LookupController payTypeController = new LookupController();
+	LookupServerDataLocator payTypeDataLocator = new LookupServerDataLocator();
 
 
   public ExpirationsGridFrame(GridController controller) {
@@ -286,12 +293,7 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
       grid.getOtherGridParams().put(ApplicationConsts.PAYED,"N");
 
       colValue.setDynamicSettings(this);
-
-
-
-
-
-
+			colPayedValue.setDynamicSettings(this);
 
 
 
@@ -309,6 +311,23 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
 			docTypeDomain.addDomainPair(ApplicationConsts.SALE_DESK_DOC_TYPE,"desk selling");
 		  colDocType.setDomain(docTypeDomain);
 
+
+			// payment lookup...
+			// payment lookup...
+			payTypeDataLocator.setGridMethodName("loadPaymentTypes");
+			payTypeDataLocator.setValidationMethodName("validatePaymentTypeCode");
+
+			colRealPayTipeCode.setLookupController(payTypeController);
+			colRealPayTipeCode.setControllerMethodName("getPaymentTypesList");
+			payTypeController.setLookupDataLocator(payTypeDataLocator);
+			payTypeController.setFrameTitle("payment types");
+			payTypeController.setLookupValueObjectClassName("org.jallinone.registers.payments.java.PaymentTypeVO");
+			payTypeController.addLookup2ParentLink("paymentTypeCodeREG11", "realPaymentTypeCodeReg11DOC19");
+			payTypeController.addLookup2ParentLink("descriptionSYS10","realPaymentDescriptionSYS10");
+			payTypeController.setAllColumnVisible(false);
+			payTypeController.setVisibleColumn("paymentTypeCodeREG11", true);
+			payTypeController.setVisibleColumn("descriptionSYS10", true);
+			new CustomizedColumns(new BigDecimal(222),payTypeController);
 
 
     }
@@ -343,6 +362,7 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
     colCompany.setColumnName("companyCodeSys01DOC19");
     colCompany.setColumnSortable(true);
     colCompany.setEditableOnInsert(true);
+    colCompany.setPreferredWidth(100);
     colCompany.setSortVersus(org.openswing.swing.util.java.Consts.ASC_SORTED);
     colCompany.setSortingOrder(1);
     colDescr.setColumnFilterable(false);
@@ -351,15 +371,26 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
     colDescr.setEditableOnEdit(false);
     colDescr.setHeaderColumnName("descriptionSYS10");
     colDescr.setPreferredWidth(250);
+
+
+		colPayedDate.setColumnFilterable(true);
+		colPayedDate.setColumnName("payedDateDOC19");
+		colPayedDate.setColumnSortable(true);
+		colPayedDate.setEditableOnEdit(true);
+		colPayedDate.setEditableOnInsert(false);
+    colPayedDate.setPreferredWidth(90);
+		colPayedDate.setColumnRequired(true);
+
     colExpDate.setColumnFilterable(true);
     colExpDate.setColumnName("expirationDateDOC19");
     colExpDate.setColumnSortable(true);
     colExpDate.setEditableOnEdit(true);
     colExpDate.setEditableOnInsert(false);
-//    colExpDate.setSortVersus(org.openswing.swing.util.java.Consts.DESC_SORTED);
+    colExpDate.setPreferredWidth(90);
     colExpDate.setSortVersus(org.openswing.swing.util.java.Consts.ASC_SORTED);
     colDocDate.setColumnName("docDateDOC19");
     colDocDate.setColumnSortable(true);
+    colDocDate.setPreferredWidth(90);
     colDocType.setColumnFilterable(true);
     colDocType.setColumnName("docTypeDOC19");
     colDocType.setColumnSortable(true);
@@ -376,8 +407,17 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
     colDocYear.setColumnName("docYearDOC19");
     colDocYear.setColumnSortable(true);
     colDocYear.setPreferredWidth(60);
+
+		colPayedValue.setColumnName("payedValueDOC19");
+		colPayedValue.setEditableOnEdit(true);
+    colPayedValue.setPreferredWidth(70);
+		colPayedValue.setColumnRequired(true);
+		colPayedValue.setColumnSortable(true);
+
     colValue.setColumnName("valueDOC19");
     colValue.setColumnSortable(true);
+    colValue.setPreferredWidth(70);
+    colValue.setRightMargin(2);
     colPayed.setColumnFilterable(true);
     colPayed.setShowDeSelectAllInPopupMenu(true);
     colPayed.setColumnName("payedDOC19");
@@ -416,6 +456,16 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
     controlSupplierName2.setEnabled(false);
     controlSupplierName2.setEnabledOnInsert(false);
     controlSupplierName2.setEnabledOnEdit(false);
+    colRealPayTipeCode.setColumnName("realPaymentTypeCodeReg11DOC19");
+    colRealPayTipeCode.setEditableOnEdit(true);
+    colRealPayTipeCode.setPreferredWidth(80);
+    colRealPayTipeDesc.setColumnName("realPaymentDescriptionSYS10");
+    colRealPayTipeDesc.setPreferredWidth(140);
+    colPayTypeDesc.setColumnName("paymentDescriptionSYS10");
+    colPayTypeDesc.setPreferredWidth(140);
+		colPayTypeDesc.setHeaderColumnName("paymentTypeDescription");
+		colPayTypeDesc.setColumnRequired(false);
+
     topPanel.add(filterPanel,BorderLayout.CENTER);
     filterPanel.add(labelDocType,      new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
@@ -437,8 +487,16 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
     this.getContentPane().add(grid, BorderLayout.CENTER);
     grid.getColumnContainer().add(colCompany, null);
     grid.getColumnContainer().add(colPayed, null);
+
+		grid.getColumnContainer().add(colPayedValue, null);
+		grid.getColumnContainer().add(colPayedDate, null);
+
     grid.getColumnContainer().add(colValue, null);
     grid.getColumnContainer().add(colExpDate, null);
+
+		grid.getColumnContainer().add(colRealPayTipeCode, null);
+		grid.getColumnContainer().add(colRealPayTipeDesc, null);
+
     grid.getColumnContainer().add(colDocDate, null);
     grid.getColumnContainer().add(colDescr, null);
     grid.getColumnContainer().add(colDocType, null);
@@ -447,6 +505,7 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
     grid.getColumnContainer().add(colCustSupplCode, null);
     grid.getColumnContainer().add(colName1, null);
     grid.getColumnContainer().add(colName2, null);
+    grid.getColumnContainer().add(colPayTypeDesc, null);
     filterPanel.add(controlStartDate,   new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     filterPanel.add(labelEndDate,    new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0
@@ -498,6 +557,9 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
       return vo.getCurrencySymbolREG03();
     else
     return "E";
+  }
+  public GridControl getGrid() {
+    return grid;
   }
 
 

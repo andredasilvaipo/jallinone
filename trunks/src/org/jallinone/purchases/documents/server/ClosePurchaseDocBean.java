@@ -471,62 +471,75 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 			 }
 			 rows = ((VOListResponse)res).getRows();
 
+/*
 			 // create expirations in DOC19 ONLY if:
 			 // - there are more than one instalment OR
 			 // - there is only one instalment and this instalment has more than 0 instalment days
 			 if (rows.size()>1 || (rows.size()==1 && ((PaymentInstalmentVO)rows.get(0)).getInstalmentDaysREG17().intValue()>0 )) {
-				 PaymentInstalmentVO inVO = null;
-				 pstmt = conn.prepareStatement(
-						 "insert into DOC19_EXPIRATIONS(COMPANY_CODE_SYS01,DOC_TYPE,DOC_YEAR,DOC_NUMBER,DOC_SEQUENCE,PROGRESSIVE,DOC_DATE,EXPIRATION_DATE,NAME_1,NAME_2,VALUE,PAYED,DESCRIPTION,CUSTOMER_SUPPLIER_CODE,PROGRESSIVE_REG04,CURRENCY_CODE_REG03) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
-				 );
-				 long startTime = docVO.getDocDateDOC06().getTime(); // invoice date...
-				 if (payVO.getStartDayREG10().equals(ApplicationConsts.START_DAY_END_MONTH)) {
-					 Calendar cal = Calendar.getInstance();
-					 if (cal.get(cal.MONTH)==10 || cal.get(cal.MONTH)==3 || cal.get(cal.MONTH)==5 || cal.get(cal.MONTH)==8)
-						 cal.set(cal.DAY_OF_MONTH,30);
-					 else if (cal.get(cal.MONTH)==1) {
-						 if (cal.get(cal.YEAR)%4==0)
-							 cal.set(cal.DAY_OF_MONTH,29);
-						 else
-							 cal.set(cal.DAY_OF_MONTH,28);
-					 } else
-						 cal.set(cal.DAY_OF_MONTH,31);
-					 startTime = cal.getTime().getTime();
-				 }
-				 BigDecimal amount = null;
-				 for(int i=0;i<rows.size();i++) {
-					 inVO = (PaymentInstalmentVO)rows.get(i);
-					 pstmt.setString(1,docVO.getCompanyCodeSys01DOC06());
-					 pstmt.setString(2,docVO.getDocTypeDOC06());
-					 pstmt.setBigDecimal(3,docVO.getDocYearDOC06());
-					 pstmt.setBigDecimal(4,docVO.getDocNumberDOC06());
-					 pstmt.setBigDecimal(5,docVO.getDocSequenceDOC06());
-					 pstmt.setBigDecimal(6,CompanyProgressiveUtils.getInternalProgressive(docVO.getCompanyCodeSys01DOC06(),"DOC19_EXPIRATIONS","PROGRESSIVE",conn));
-					 pstmt.setDate(7,docVO.getDocDateDOC06());
-					 pstmt.setDate(8,new java.sql.Date(startTime + inVO.getInstalmentDaysREG17().longValue()*86400*1000)); // expiration date
-					 pstmt.setString(9,docVO.getName_1REG04());
-					 pstmt.setString(10,docVO.getName_2REG04());
+*/
 
-					 if (docVO.getDocTypeDOC06().equals(ApplicationConsts.PURCHASE_DEBIT_NOTE_DOC_TYPE))
-						 amount = docVO.getTotalDOC06().multiply(inVO.getPercentageREG17()).divide(new BigDecimal(-100),BigDecimal.ROUND_HALF_UP).setScale(docVO.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP); // value
+      // create ALWAYS expirations in DOC19...
+			 PaymentInstalmentVO inVO = null;
+			 pstmt = conn.prepareStatement(
+					 "insert into DOC19_EXPIRATIONS(COMPANY_CODE_SYS01,DOC_TYPE,DOC_YEAR,DOC_NUMBER,DOC_SEQUENCE,PROGRESSIVE,"+
+					 "DOC_DATE,EXPIRATION_DATE,NAME_1,NAME_2,VALUE,DESCRIPTION,CUSTOMER_SUPPLIER_CODE,PROGRESSIVE_REG04,CURRENCY_CODE_REG03,"+
+					 "PAYMENT_TYPE_CODE_REG11,PAYED,REAL_PAYMENT_TYPE_CODE_REG11,PAYED_DATE,PAYED_VALUE) "+
+					 "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+			 );
+
+			 long startTime = docVO.getDocDateDOC06().getTime(); // invoice date...
+			 if (payVO.getStartDayREG10().equals(ApplicationConsts.START_DAY_END_MONTH)) {
+				 Calendar cal = Calendar.getInstance();
+				 if (cal.get(cal.MONTH)==10 || cal.get(cal.MONTH)==3 || cal.get(cal.MONTH)==5 || cal.get(cal.MONTH)==8)
+					 cal.set(cal.DAY_OF_MONTH,30);
+				 else if (cal.get(cal.MONTH)==1) {
+					 if (cal.get(cal.YEAR)%4==0)
+						 cal.set(cal.DAY_OF_MONTH,29);
 					 else
-						 amount = docVO.getTotalDOC06().multiply(inVO.getPercentageREG17()).divide(new BigDecimal(100),BigDecimal.ROUND_HALF_UP).setScale(docVO.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP); // value
-
-					 pstmt.setBigDecimal(11,CurrencyConversionUtils.convertCurrencyToCurrency(amount,conv));
-					 pstmt.setString(12,"N");
-
-					 if (docVO.getDocTypeDOC06().equals(ApplicationConsts.PURCHASE_DEBIT_NOTE_DOC_TYPE))
-						 pstmt.setString(13,t1+" "+docVO.getDocSequenceDOC06()+"/"+docVO.getDocYearDOC06()+" - "+t2+" "+t3+" "+(i+1)+" - "+inVO.getPaymentTypeDescriptionSYS10()); // description
-					 else
-						 pstmt.setString(13,t4+" "+docVO.getDocSequenceDOC06()+"/"+docVO.getDocYearDOC06()+" - "+t2+" "+t3+" "+(i+1)+" - "+inVO.getPaymentTypeDescriptionSYS10()); // description
-
-					 pstmt.setString(14,docVO.getSupplierCodePUR01());
-					 pstmt.setBigDecimal(15,docVO.getProgressiveReg04DOC06());
-					 pstmt.setString(16,companyCurrencyCode);
-					 pstmt.execute();
-				 }
-				 pstmt.close();
+						 cal.set(cal.DAY_OF_MONTH,28);
+				 } else
+					 cal.set(cal.DAY_OF_MONTH,31);
+				 startTime = cal.getTime().getTime();
 			 }
+			 BigDecimal amount = null;
+			 for(int i=0;i<rows.size();i++) {
+				 inVO = (PaymentInstalmentVO)rows.get(i);
+				 pstmt.setString(1,docVO.getCompanyCodeSys01DOC06());
+				 pstmt.setString(2,docVO.getDocTypeDOC06());
+				 pstmt.setBigDecimal(3,docVO.getDocYearDOC06());
+				 pstmt.setBigDecimal(4,docVO.getDocNumberDOC06());
+				 pstmt.setBigDecimal(5,docVO.getDocSequenceDOC06());
+				 pstmt.setBigDecimal(6,CompanyProgressiveUtils.getInternalProgressive(docVO.getCompanyCodeSys01DOC06(),"DOC19_EXPIRATIONS","PROGRESSIVE",conn));
+				 pstmt.setDate(7,docVO.getDocDateDOC06());
+				 pstmt.setDate(8,new java.sql.Date(startTime + inVO.getInstalmentDaysREG17().longValue()*86400*1000)); // expiration date
+				 pstmt.setString(9,docVO.getName_1REG04());
+				 pstmt.setString(10,docVO.getName_2REG04());
+
+				 if (docVO.getDocTypeDOC06().equals(ApplicationConsts.PURCHASE_DEBIT_NOTE_DOC_TYPE))
+					 amount = docVO.getTotalDOC06().multiply(inVO.getPercentageREG17()).divide(new BigDecimal(-100),BigDecimal.ROUND_HALF_UP).setScale(docVO.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP); // value
+				 else
+					 amount = docVO.getTotalDOC06().multiply(inVO.getPercentageREG17()).divide(new BigDecimal(100),BigDecimal.ROUND_HALF_UP).setScale(docVO.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP); // value
+
+				 pstmt.setBigDecimal(11,CurrencyConversionUtils.convertCurrencyToCurrency(amount,conv));
+
+				 if (docVO.getDocTypeDOC06().equals(ApplicationConsts.PURCHASE_DEBIT_NOTE_DOC_TYPE))
+					 pstmt.setString(12,t1+" "+docVO.getDocSequenceDOC06()+"/"+docVO.getDocYearDOC06()+" - "+t2+" "+t3+" "+(i+1)+" - "+inVO.getPaymentTypeDescriptionSYS10()); // description
+				 else
+					 pstmt.setString(12,t4+" "+docVO.getDocSequenceDOC06()+"/"+docVO.getDocYearDOC06()+" - "+t2+" "+t3+" "+(i+1)+" - "+inVO.getPaymentTypeDescriptionSYS10()); // description
+
+				 pstmt.setString(13,docVO.getSupplierCodePUR01());
+				 pstmt.setBigDecimal(14,docVO.getProgressiveReg04DOC06());
+				 pstmt.setString(15,companyCurrencyCode);
+				 pstmt.setString(16,payVO.getPaymentTypeCodeReg11REG10());
+				 pstmt.setString(17,"N");
+				 pstmt.setString(18,null);
+				 pstmt.setDate(19,null);
+				 pstmt.setBigDecimal(20,null);
+
+				 pstmt.execute();
+			 }
+			 pstmt.close();
+//			 }
 
 
 			 // change doc state to close...
@@ -711,7 +724,7 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 					 throw new Exception(res.getErrorMessage());
 				 }
 
-
+/*
 				 // create an item registration for proceeding, according to expiration settings (e.g. invoice with cash payment):
 				 // there must be only one instalment and this instalment has 0 instalment days
 				 if (rows.size()==1 && ((PaymentInstalmentVO)rows.get(0)).getInstalmentDaysREG17().intValue()==0) {
@@ -783,7 +796,7 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 						 throw new Exception(res.getErrorMessage());
 					 }
 				 }
-
+*/
 			 }
 
 			 return new VOResponse(new BigDecimal(docSequenceDOC06));

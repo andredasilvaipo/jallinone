@@ -885,7 +885,7 @@
   <object key="docYearDOC19" value="Anno" />
   <object key="docSequenceDOC19" value="Num." />
   <object key="companyCodeSys01DOC19" value="Cod.Organizz." />
-  <object key="valueDOC19" value="Valore" />
+  <object key="valueDOC19" value="Da pagare" />
   <object key="expirationDateDOC19" value="Data Scad." />
   <object key="docDateDOC19" value="Data Doc." />
   <object key="customerSupplierCodeDOC19" value="Cod.Cli/Forn." />
@@ -1673,6 +1673,11 @@
   <object key="total amount must not be zero" value="L'importo non puo' essere nullo!" />
   <object key="is an ancestor of the current item" value="&#232; un antenato dell'articolo corrente" />
   <object key="only an immediate payment is allowed" value="E' consentita solo una forma di pagamento immediato" />
+  <object key="payedDateDOC19" value="Data pagam." />
+  <object key="payedValueDOC19" value="Pagato" />
+  <object key="realPaymentTypeCodeReg11DOC19" value="T.Pag.Effett." />
+  <object key="realPaymentDescriptionSYS10" value="Tipo Pagamento Effettivo" />
+  <object key="create payment immediately" value="Eseguire subito il pagamento?" />
 
 <!-- application translations -->
 

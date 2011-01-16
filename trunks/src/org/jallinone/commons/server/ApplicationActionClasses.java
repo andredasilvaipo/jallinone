@@ -565,6 +565,7 @@ import org.openswing.swing.server.ActionsCollection;
 import org.openswing.swing.server.ConnectionManager;
 import org.openswing.swing.server.UserSessionParameters;
 import org.jallinone.items.spareparts.server.*;
+import org.jallinone.expirations.server.PayImmediatelyAction;
 
 
 /**
@@ -1291,6 +1292,8 @@ public class ApplicationActionClasses extends ActionsCollection {
 		a = new UpdateSubsheetAction(); put(a.getRequestName(),a);
 		a = new DeleteItemSheetLevelsAction(); put(a.getRequestName(),a);
 		a = new UpdateItemSheetLevelsAction(); put(a.getRequestName(),a);
+
+		a = new PayImmediatelyAction(); put(a.getRequestName(),a);
 
     put("changeLanguage",new Action() {
 
