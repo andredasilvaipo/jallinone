@@ -5,8 +5,8 @@ Release Notes 2.5.6
 
 Fixed contact to customer form: now are available accounting data too (thanks to  Michele Milidoni).
 Improved sale document windows: now doc. ref. num. is correctly showed.
-
-
+Changed purchase reports: now it is showed supplier item code instead of company's item code.
+Fixed problem when inserting components in BOM, when a child component is already an ancestor of the item.
 
 
 Release Notes 2.5.5

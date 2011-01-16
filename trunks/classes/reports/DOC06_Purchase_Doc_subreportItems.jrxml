@@ -306,7 +306,7 @@ DOC07_PURCHASE_ITEMS.DOC_YEAR=$P{DOC_YEAR} and DOC07_PURCHASE_ITEMS.DOC_NUMBER=$
 					<textElement>
 						<font fontName="Courier New" size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ITEM_CODE_ITM01}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{SUPPLIER_ITEM_CODE_PUR02}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -415,10 +415,7 @@ $F{DECIMALS_REG02}
      $P{VAR5_DESCRS}.get($F{VARIANT_TYPE_ITM10}+"_"+$F{VARIANT_CODE_ITM15})+" ":
 	 ($F{VARIANT_TYPE_ITM10}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM10})+($F{VARIANT_CODE_ITM15}.equals("*")?"":" "+$F{VARIANT_CODE_ITM15})
   )
-)
-
-
-]]></textFieldExpression>
+)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="-##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

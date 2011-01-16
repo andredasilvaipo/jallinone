@@ -81,7 +81,7 @@ public interface BillOfMaterials {
 
 	public VOListResponse insertAltComponents(ArrayList list,String serverLanguageId,String username) throws Throwable;
 
-	public VOListResponse insertComponents(ArrayList list,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse insertComponents(ArrayList list,String serverLanguageId,String username,String t1) throws Throwable;
 
 	public VOListResponse loadAltComponents(GridParams gridParams,String serverLanguageId,String username) throws Throwable;
 

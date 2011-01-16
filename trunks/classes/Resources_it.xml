@@ -1671,6 +1671,7 @@
   <object key="sale date" value="Data di vend." />
   <object key="item sold on" value="Articolo venduto il" />
   <object key="total amount must not be zero" value="L'importo non puo' essere nullo!" />
+  <object key="is an ancestor of the current item" value="&#232; un antenato dell'articolo corrente" />
 
 <!-- application translations -->
 

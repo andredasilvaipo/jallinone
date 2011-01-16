@@ -70,7 +70,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 
 
 
-	  private DataSource dataSource; 
+	  private DataSource dataSource;
 
 	  public void setDataSource(DataSource dataSource) {
 	    this.dataSource = dataSource;
@@ -78,9 +78,9 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 
 	  /** external connection */
 	  private Connection conn = null;
-	  
+
 	  /**
-	   * Set external connection. 
+	   * Set external connection.
 	   */
 	  public void setConn(Connection conn) {
 	    this.conn = conn;
@@ -103,14 +103,14 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 
 
 	  /**
-	   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	   */
 	  public ComponentVO getComponent() {
 		  throw new UnsupportedOperationException("");
 	  }
 
 	  /**
-	   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	   */
 	  public AltComponentVO getAltComponent() {
 		  throw new UnsupportedOperationException("");
@@ -155,7 +155,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 			attribute2dbField.put("minSellingQtyUmCodeReg02ITM01","ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02");
 
 			ItemPK pk = (ItemPK)gridParams.getOtherGridParams().get(ApplicationConsts.ITEM_PK);
-			
+
 			if (pk==null) {
 				// case: item frame in INSERT mode...
 				return new VOListResponse(new ArrayList(),false,0);
@@ -266,7 +266,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 					conn.rollback();
 			}
 			catch (Exception ex3) {
-			}  
+			}
 			throw new Exception(ex.getMessage());
 		}
 		finally {
@@ -320,7 +320,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 					conn.rollback();
 			}
 			catch (Exception ex3) {
-			}  
+			}
 			throw new Exception(ex.getMessage());
 		}
 		finally {
@@ -368,7 +368,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 					conn.rollback();
 			}
 			catch (Exception ex3) {
-			} 
+			}
 			throw new Exception(ex1.getMessage());
 		} finally {
 			try {
@@ -422,7 +422,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 					conn.rollback();
 			}
 			catch (Exception ex3) {
-			} 
+			}
 			throw new Exception(ex.getMessage());
 		}
 		finally {
@@ -663,7 +663,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 					conn.rollback();
 			}
 			catch (Exception ex3) {
-			} 
+			}
 			throw new Exception(ex.getMessage());
 		}
 		finally {
@@ -698,12 +698,12 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 	/**
 	 * Business logic to execute.
 	 */
-	public VOListResponse insertComponents(ArrayList list,String serverLanguageId,String username) throws Throwable {
+	public VOListResponse insertComponents(ArrayList list,String serverLanguageId,String username,String t1) throws Throwable {
 		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
-
-			ComponentVO vo = null;
 
 			Map attribute2dbField = new HashMap();
 			attribute2dbField.put("companyCodeSys01ITM03","COMPANY_CODE_SYS01");
@@ -717,9 +717,33 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 			attribute2dbField.put("qtyITM03","QTY");
 			attribute2dbField.put("enabledITM03","ENABLED");
 
+      pstmt = conn.prepareStatement(
+		     "SELECT PARENT_ITEM_CODE_ITM01 FROM ITM03_COMPONENTS WHERE COMPANY_CODE_SYS01=? AND ITEM_CODE_ITM01=? AND ENABLED='Y'"
+		  );
+
 			Response res = null;
+			ComponentVO vo = null;
+			String parentItemCode = null;
 			for(int i=0;i<list.size();i++) {
 				vo = (ComponentVO)list.get(i);
+
+	      // loops are not allowed: analyze all ancestors of the parent item code: if one of these is the
+				// item to insert, then fire an error...
+	      parentItemCode = vo.getParentItemCodeItm01ITM03();
+				do {
+					pstmt.setString(1,vo.getCompanyCodeSys01ITM03());
+					pstmt.setString(2,parentItemCode);
+					rset = pstmt.executeQuery();
+					if (rset.next())
+						parentItemCode = rset.getString(1);
+					else
+						parentItemCode = null;
+					rset.close();
+					if (parentItemCode!=null && parentItemCode.equals(vo.getItemCodeItm01ITM03()))
+						throw new Exception(vo.getItemCodeItm01ITM03()+" "+t1+" "+vo.getParentItemCodeItm01ITM03());
+				}
+				while(parentItemCode!=null);
+
 				vo.setEnabledITM03("Y");
 
 				// insert into ITM03...
@@ -750,19 +774,26 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 					conn.rollback();
 			}
 			catch (Exception ex3) {
-			} 
+			}
 			throw new Exception(ex.getMessage());
 		}
 		finally {
-          try {
-              if (this.conn==null && conn!=null) {
-                // close only local connection
-                conn.commit();
-                conn.close();
-            }
-
-          }
-          catch (Exception exx) {}
+			try {
+					rset.close();
+			}
+			catch (Exception exx) {}
+			try {
+					pstmt.close();
+			}
+			catch (Exception exx) {}
+      try {
+          if (this.conn==null && conn!=null) {
+            // close only local connection
+            conn.commit();
+            conn.close();
+        }
+      }
+      catch (Exception exx) {}
     }
 
 
@@ -905,7 +936,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 					conn.rollback();
 			}
 			catch (Exception ex3) {
-			} 
+			}
 			throw new Exception(ex1.getMessage());
 		} finally {
 			try {
@@ -924,7 +955,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 	            }
 
 	        }
-	        catch (Exception exx) {}			
+	        catch (Exception exx) {}
 		}
 	}
 

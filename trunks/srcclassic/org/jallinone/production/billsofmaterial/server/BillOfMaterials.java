@@ -62,12 +62,12 @@ import org.jallinone.system.progressives.server.*;
 public interface BillOfMaterials {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public ComponentVO getComponent();
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public AltComponentVO getAltComponent();
 
@@ -81,7 +81,7 @@ public interface BillOfMaterials {
 
 	public VOListResponse insertAltComponents(ArrayList list,String serverLanguageId,String username) throws Throwable;
 
-	public VOListResponse insertComponents(ArrayList list,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse insertComponents(ArrayList list,String serverLanguageId,String username,String t1) throws Throwable;
 
 	public VOListResponse loadAltComponents(GridParams gridParams,String serverLanguageId,String username) throws Throwable;
 

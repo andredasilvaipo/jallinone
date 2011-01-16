@@ -1583,6 +1583,7 @@
   <object key="sale date" value="Sale date" />
   <object key="item sold on" value="Item sold on" />
   <object key="total amount must not be zero" value="Total amount must not be zero!" />
+  <object key="is an ancestor of the current item" value="is an ancestor of the current item" />
 
   <currencySymbol>R$</currencySymbol>
   <decimalSymbol>,</decimalSymbol>

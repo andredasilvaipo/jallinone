@@ -14,6 +14,9 @@ import org.openswing.swing.message.receive.java.ErrorResponse;
 import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.server.Action;
 import org.openswing.swing.server.UserSessionParameters;
+import org.openswing.swing.internationalization.server.ServerResourcesFactory;
+import org.openswing.swing.internationalization.java.Resources;
+import org.openswing.swing.server.Controller;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -65,9 +68,13 @@ public class InsertComponentsAction implements Action {
 			ServletContext context) {
 		java.util.ArrayList list = (ArrayList)inputPar;
 		try {
+			// retrieve internationalization settings (Resources object)...
+			ServerResourcesFactory factory = (ServerResourcesFactory)context.getAttribute(Controller.RESOURCES_FACTORY);
+			Resources resources = factory.getResources(userSessionPars.getLanguageId());
+			String t1 = resources.getResource("is an ancestor of the current item");
 
 			BillOfMaterials bean = (BillOfMaterials)JAIOBeanFactory.getInstance().getBean(BillOfMaterials.class);
-			Response answer = bean.insertComponents(list,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+			Response answer = bean.insertComponents(list,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),t1);
 
 			return answer;
 		}
