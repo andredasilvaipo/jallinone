@@ -255,6 +255,7 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
 
       final Domain d = new Domain("INVOICE_DOC_TYPES");
       d.addDomainPair("","all invoices");
+			d.addDomainPair(ApplicationConsts.SALE_DESK_DOC_TYPE,"desk selling");
       d.addDomainPair(ApplicationConsts.SALE_GENERIC_INVOICE,"sale invoice");
       d.addDomainPair(ApplicationConsts.PURCHASE_GENERIC_INVOICE,"purchase invoice");
       controlDocType.setDomain(d);
@@ -285,6 +286,30 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
       grid.getOtherGridParams().put(ApplicationConsts.PAYED,"N");
 
       colValue.setDynamicSettings(this);
+
+
+
+
+
+
+
+
+
+			Domain docTypeDomain = new Domain("DOC_TYPE");
+			docTypeDomain.addDomainPair(ApplicationConsts.PURCHASE_INVOICE_DOC_TYPE,"purchase invoice");
+			docTypeDomain.addDomainPair(ApplicationConsts.PURCHASE_INVOICE_FROM_DN_DOC_TYPE,"purchase invoice from delivery notes");
+			docTypeDomain.addDomainPair(ApplicationConsts.PURCHASE_INVOICE_FROM_PD_DOC_TYPE,"purchase invoice from purchase document");
+			docTypeDomain.addDomainPair(ApplicationConsts.PURCHASE_DEBIT_NOTE_DOC_TYPE,"debiting note");
+			docTypeDomain.addDomainPair(ApplicationConsts.PURCHASE_GENERIC_INVOICE,"purchase generic document");
+			docTypeDomain.addDomainPair(ApplicationConsts.SALE_INVOICE_DOC_TYPE,"sale invoice");
+			docTypeDomain.addDomainPair(ApplicationConsts.SALE_INVOICE_FROM_DN_DOC_TYPE,"sale invoice from delivery notes");
+			docTypeDomain.addDomainPair(ApplicationConsts.SALE_INVOICE_FROM_SD_DOC_TYPE,"sale invoice from sale document");
+			docTypeDomain.addDomainPair(ApplicationConsts.SALE_CREDIT_NOTE_DOC_TYPE,"credit note");
+			docTypeDomain.addDomainPair(ApplicationConsts.SALE_GENERIC_INVOICE,"sale generic document");
+			docTypeDomain.addDomainPair(ApplicationConsts.SALE_DESK_DOC_TYPE,"desk selling");
+		  colDocType.setDomain(docTypeDomain);
+
+
 
     }
     catch(Exception e) {
@@ -335,12 +360,12 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
     colExpDate.setSortVersus(org.openswing.swing.util.java.Consts.ASC_SORTED);
     colDocDate.setColumnName("docDateDOC19");
     colDocDate.setColumnSortable(true);
-    colDocType.setDomainId("DOC_TYPE");
     colDocType.setColumnFilterable(true);
     colDocType.setColumnName("docTypeDOC19");
     colDocType.setColumnSortable(true);
     colDocType.setSortVersus(org.openswing.swing.util.java.Consts.ASC_SORTED);
     colDocType.setSortingOrder(1);
+		colDocType.setPreferredWidth(200);
     colColNum.setColumnFilterable(true);
     colColNum.setColumnName("docSequenceDOC19");
     colColNum.setColumnSortable(true);

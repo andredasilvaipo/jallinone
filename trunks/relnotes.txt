@@ -7,6 +7,10 @@ Fixed contact to customer form: now are available accounting data too (thanks to
 Improved sale document windows: now doc. ref. num. is correctly showed.
 Changed purchase reports: now it is showed supplier item code instead of company's item code.
 Fixed problem when inserting components in BOM, when a child component is already an ancestor of the item.
+Fixed problem on inserting manual movements in warehouse, for items having no variants.
+Fixed viewing problem in due register window, with retail sales.
+Improved retail detail window: now it is possible to change payment condition, in case of an incorrect payment condition previously defined.
+
 
 
 Release Notes 2.5.5

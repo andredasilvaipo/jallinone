@@ -1584,6 +1584,7 @@
   <object key="item sold on" value="Item sold on" />
   <object key="total amount must not be zero" value="Total amount must not be zero!" />
   <object key="is an ancestor of the current item" value="is an ancestor of the current item" />
+  <object key="only an immediate payment is allowed" value="Only an immediate payment is allowed" />
 
   <currencySymbol>R$</currencySymbol>
   <decimalSymbol>,</decimalSymbol>

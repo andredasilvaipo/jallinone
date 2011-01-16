@@ -116,6 +116,28 @@ public class AddMovementBean implements AddMovement {
 		    try {
 		      if (this.conn==null) conn = getConn(); else conn = this.conn;
 
+					if (vo.getVariantCodeItm11WAR02()==null)
+						vo.setVariantCodeItm11WAR02(ApplicationConsts.JOLLY);
+					if (vo.getVariantCodeItm12WAR02()==null)
+						vo.setVariantCodeItm12WAR02(ApplicationConsts.JOLLY);
+					if (vo.getVariantCodeItm13WAR02()==null)
+						vo.setVariantCodeItm13WAR02(ApplicationConsts.JOLLY);
+					if (vo.getVariantCodeItm14WAR02()==null)
+						vo.setVariantCodeItm14WAR02(ApplicationConsts.JOLLY);
+					if (vo.getVariantCodeItm15WAR02()==null)
+						vo.setVariantCodeItm15WAR02(ApplicationConsts.JOLLY);
+
+					if (vo.getVariantTypeItm06WAR02()==null)
+						vo.setVariantTypeItm06WAR02(ApplicationConsts.JOLLY);
+					if (vo.getVariantTypeItm07WAR02()==null)
+						vo.setVariantTypeItm07WAR02(ApplicationConsts.JOLLY);
+					if (vo.getVariantTypeItm08WAR02()==null)
+						vo.setVariantTypeItm08WAR02(ApplicationConsts.JOLLY);
+					if (vo.getVariantTypeItm09WAR02()==null)
+						vo.setVariantTypeItm09WAR02(ApplicationConsts.JOLLY);
+					if (vo.getVariantTypeItm10WAR02()==null)
+						vo.setVariantTypeItm10WAR02(ApplicationConsts.JOLLY);
+
 
 				  // check if there exists an inventory in progress referring the specified item...
 					sql =

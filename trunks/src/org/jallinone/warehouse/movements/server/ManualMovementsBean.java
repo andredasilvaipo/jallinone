@@ -71,7 +71,7 @@ import org.jallinone.system.progressives.server.*;
 public class ManualMovementsBean implements ManualMovements {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -79,9 +79,9 @@ public class ManualMovementsBean implements ManualMovements {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -95,7 +95,7 @@ public class ManualMovementsBean implements ManualMovements {
   }
 
   private AddMovementBean bean;
-  
+
   public void setBean(AddMovementBean bean) {
 	  this.bean = bean;
   }
@@ -115,6 +115,28 @@ public class ManualMovementsBean implements ManualMovements {
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       bean.setConn(conn);
+
+			if (vo.getVariantCodeItm11WAR02()==null)
+				vo.setVariantCodeItm11WAR02(ApplicationConsts.JOLLY);
+			if (vo.getVariantCodeItm12WAR02()==null)
+				vo.setVariantCodeItm12WAR02(ApplicationConsts.JOLLY);
+			if (vo.getVariantCodeItm13WAR02()==null)
+				vo.setVariantCodeItm13WAR02(ApplicationConsts.JOLLY);
+			if (vo.getVariantCodeItm14WAR02()==null)
+				vo.setVariantCodeItm14WAR02(ApplicationConsts.JOLLY);
+			if (vo.getVariantCodeItm15WAR02()==null)
+				vo.setVariantCodeItm15WAR02(ApplicationConsts.JOLLY);
+
+			if (vo.getVariantTypeItm06WAR02()==null)
+				vo.setVariantTypeItm06WAR02(ApplicationConsts.JOLLY);
+			if (vo.getVariantTypeItm07WAR02()==null)
+				vo.setVariantTypeItm07WAR02(ApplicationConsts.JOLLY);
+			if (vo.getVariantTypeItm08WAR02()==null)
+				vo.setVariantTypeItm08WAR02(ApplicationConsts.JOLLY);
+			if (vo.getVariantTypeItm09WAR02()==null)
+				vo.setVariantTypeItm09WAR02(ApplicationConsts.JOLLY);
+			if (vo.getVariantTypeItm10WAR02()==null)
+				vo.setVariantTypeItm10WAR02(ApplicationConsts.JOLLY);
 
       WarehouseMovementVO movVO = new WarehouseMovementVO(
           vo.getProgressiveHie01WAR02(),
@@ -193,7 +215,7 @@ public class ManualMovementsBean implements ManualMovements {
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       bean.setConn(conn);
-      
+
       VariantsMatrixColumnVO colVO = null;
       VariantsMatrixRowVO rowVO = null;
       MovementVO vo = null;
@@ -370,7 +392,7 @@ public class ManualMovementsBean implements ManualMovements {
               );
 
               res = bean.addWarehouseMovement(movVO,t1,serverLanguageId,username);
-              if (res.isError()) 
+              if (res.isError())
                 throw new Exception(res.getErrorMessage());
 
 
@@ -410,9 +432,9 @@ public class ManualMovementsBean implements ManualMovements {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
-  
+
   }
 
 
@@ -425,6 +447,6 @@ public class ManualMovementsBean implements ManualMovements {
 
 
 
-  
+
 }
 

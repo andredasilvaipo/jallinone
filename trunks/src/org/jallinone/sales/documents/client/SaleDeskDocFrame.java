@@ -198,7 +198,7 @@ public class SaleDeskDocFrame extends InternalFrame implements SaleDocument {
     attributeNameToDisable.add("customerCodeSAL07");
     attributeNameToDisable.add("pricelistCodeSal01DOC01");
     attributeNameToDisable.add("docDateDOC01");
-    attributeNameToDisable.add("paymentCodeReg10DOC01");
+//    attributeNameToDisable.add("paymentCodeReg10DOC01");
     attributeNameToDisable.add("warehouseCodeWar01DOC01");
     headerFormPanel.addInputControlAttributesNotEditableOnState(attributeNameToDisable,"docStateDOC01",ApplicationConsts.HEADER_BLOCKED);
 

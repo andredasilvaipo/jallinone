@@ -199,7 +199,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
       SaleDocPK pk,
       String t1,String t2,String t3,String t4,String t5,
       String t6,String t7,String t8,String t9,String t10,
-      String t11,String t12,String t13,String t14,String t15,String t16,
+      String t11,String t12,String t13,String t14,String t15,String t16,String t17,
       String serverLanguageId,String username,
       ArrayList companiesList
   ) throws Throwable {
@@ -244,10 +244,30 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
       ArrayList itemRows = rows;
 
 
+			// retrieve payment instalments...
+			res = payAction.validatePaymentCode(new LookupValidationParams(docVO.getPaymentCodeReg10DOC01(),new HashMap()),serverLanguageId,username,new ArrayList());
+			if (res.isError()) {
+				throw new Exception(res.getErrorMessage());
+			}
+			PaymentVO payVO = (PaymentVO)((VOListResponse)res).getRows().get(0);
+
+			gridParams = new GridParams();
+			gridParams.getOtherGridParams().put(ApplicationConsts.PAYMENT_CODE_REG10,docVO.getPaymentCodeReg10DOC01());
+			res = payAction.loadPaymentInstalments(gridParams,serverLanguageId,username);
+			if (res.isError()) {
+				throw new Exception(res.getErrorMessage());
+			}
+			ArrayList paymentInstallments = new ArrayList(((VOListResponse)res).getRows());
+
 
       if (pk.getDocTypeDOC01().equals(ApplicationConsts.SALE_DESK_DOC_TYPE)) {
-        // check if all items are available...
 
+				// there must be only one instalment and this instalment has 0 instalment days
+				if (paymentInstallments.size()>1 || ((PaymentInstalmentVO)paymentInstallments.get(0)).getInstalmentDaysREG17().intValue()>0) {
+					throw new Exception(t17);
+       }
+
+        // check if all items are available...
         GridSaleDocRowVO vo = null;
         DetailSaleDocRowVO detailVO = null;
         gridParams = new GridParams();
@@ -709,27 +729,10 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
 
 
 
-      // retrieve payment instalments...
-      res = payAction.validatePaymentCode(new LookupValidationParams(docVO.getPaymentCodeReg10DOC01(),new HashMap()),serverLanguageId,username,new ArrayList());
-      if (res.isError()) {
-        throw new Exception(res.getErrorMessage());
-      }
-      PaymentVO payVO = (PaymentVO)((VOListResponse)res).getRows().get(0);
-
-      gridParams = new GridParams();
-      gridParams.getOtherGridParams().put(ApplicationConsts.PAYMENT_CODE_REG10,docVO.getPaymentCodeReg10DOC01());
-      res = payAction.loadPaymentInstalments(gridParams,serverLanguageId,username);
-      if (res.isError()) {
-        throw new Exception(res.getErrorMessage());
-      }
-      rows = new ArrayList(((VOListResponse)res).getRows());
-
-
-
       // create expirations in DOC19 ONLY if:
       // - there are more than one instalment OR
       // - there is only one instalment and this instalment has more than 0 instalment days
-      if (rows.size()>1 || (rows.size()==1 && ((PaymentInstalmentVO)rows.get(0)).getInstalmentDaysREG17().intValue()>0 )) {
+      if (paymentInstallments.size()>1 || (paymentInstallments.size()==1 && ((PaymentInstalmentVO)paymentInstallments.get(0)).getInstalmentDaysREG17().intValue()>0 )) {
         PaymentInstalmentVO inVO = null;
         pstmt = conn.prepareStatement(
           "insert into DOC19_EXPIRATIONS(COMPANY_CODE_SYS01,DOC_TYPE,DOC_YEAR,DOC_NUMBER,DOC_SEQUENCE,PROGRESSIVE,DOC_DATE,EXPIRATION_DATE,NAME_1,NAME_2,VALUE,PAYED,DESCRIPTION,CUSTOMER_SUPPLIER_CODE,PROGRESSIVE_REG04,CURRENCY_CODE_REG03) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
@@ -749,8 +752,8 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
           startTime = cal.getTime().getTime();
         }
         BigDecimal amount = null;
-        for(int i=0;i<rows.size();i++) {
-          inVO = (PaymentInstalmentVO)rows.get(i);
+        for(int i=0;i<paymentInstallments.size();i++) {
+          inVO = (PaymentInstalmentVO)paymentInstallments.get(i);
           pstmt.setString(1,docVO.getCompanyCodeSys01DOC01());
           pstmt.setString(2,docVO.getDocTypeDOC01());
           pstmt.setBigDecimal(3,docVO.getDocYearDOC01());
@@ -769,7 +772,9 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
 
           pstmt.setBigDecimal(11,CurrencyConversionUtils.convertCurrencyToCurrency(amount,conv));
           pstmt.setString(12,"N");
-          if (docVO.getDocTypeDOC01().equals(ApplicationConsts.SALE_CREDIT_NOTE_DOC_TYPE))
+					if (docVO.getDocTypeDOC01().equals(ApplicationConsts.SALE_DESK_DOC_TYPE))
+						pstmt.setString(13,t3+" "+docVO.getDocSequenceDOC01()+"/"+docVO.getDocYearDOC01()+" - "+t8+" "+t9+" "+(i+1)+" - "+inVO.getPaymentTypeDescriptionSYS10()); // description
+          else if (docVO.getDocTypeDOC01().equals(ApplicationConsts.SALE_CREDIT_NOTE_DOC_TYPE))
             pstmt.setString(13,t7+" "+docVO.getDocSequenceDOC01()+"/"+docVO.getDocYearDOC01()+" - "+t8+" "+t9+" "+(i+1)+" - "+inVO.getPaymentTypeDescriptionSYS10()); // description
           else
             pstmt.setString(13,t10+" "+docVO.getDocSequenceDOC01()+"/"+docVO.getDocYearDOC01()+" - "+t8+" "+t9+" "+(i+1)+" - "+inVO.getPaymentTypeDescriptionSYS10()); // description
@@ -1012,7 +1017,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
 
         // create an item registration for proceeds, according to expiration settings (e.g. retail selling):
         // there must be only one instalment and this instalment has 0 instalment days
-        if (rows.size()==1 && ((PaymentInstalmentVO)rows.get(0)).getInstalmentDaysREG17().intValue()==0) {
+        if (paymentInstallments.size()==1 && ((PaymentInstalmentVO)paymentInstallments.get(0)).getInstalmentDaysREG17().intValue()==0) {
           HashMap map = new HashMap();
           map.put(ApplicationConsts.COMPANY_CODE_SYS01,docVO.getCompanyCodeSys01DOC01());
           map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.CASE_ACCOUNT);

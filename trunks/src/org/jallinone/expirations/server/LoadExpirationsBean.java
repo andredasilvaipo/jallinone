@@ -53,7 +53,7 @@ import javax.sql.DataSource;
 public class LoadExpirationsBean  implements LoadExpirations {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -61,9 +61,9 @@ public class LoadExpirationsBean  implements LoadExpirations {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -73,7 +73,7 @@ public class LoadExpirationsBean  implements LoadExpirations {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -92,7 +92,7 @@ public class LoadExpirationsBean  implements LoadExpirations {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ExpirationVO getExpiration() {
 	  throw new UnsupportedOperationException();
@@ -260,7 +260,7 @@ public class LoadExpirationsBean  implements LoadExpirations {
     	throw new Exception(ex.getMessage());
     }
     finally {
-    
+
       try {
         currAction.setConn(null);
       } catch (Exception ex) {}
@@ -272,7 +272,7 @@ public class LoadExpirationsBean  implements LoadExpirations {
         }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }
