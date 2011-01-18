@@ -57,6 +57,11 @@ public class ExpirationsController extends GridController {
    * @return an ErrorResponse value object in case of errors, VOListResponse if the operation is successfully completed
    */
   public Response updateRecords(int[] rowNumbers,ArrayList oldPersistentObjects,ArrayList persistentObjects) throws Exception {
+    for (ExpirationVO exp : (ArrayList<ExpirationVO>) persistentObjects) {
+      if (exp.getPayedValueDOC19().equals(exp.getValueDOC19())) {
+        exp.setPayedDOC19(Boolean.TRUE);
+      }
+    }
     return ClientUtils.getData("updateExpirations",new ArrayList[]{oldPersistentObjects,persistentObjects});
   }
 
