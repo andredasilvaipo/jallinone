@@ -10,7 +10,6 @@ import org.openswing.swing.table.java.ServerGridDataLocator;
 import org.openswing.swing.table.columns.client.*;
 import org.openswing.swing.util.client.ClientSettings;
 import org.openswing.swing.table.client.GridController;
-import org.jallinone.commons.client.CustomizedColumns;
 import java.math.BigDecimal;
 import org.openswing.swing.lookup.client.LookupController;
 import org.openswing.swing.lookup.client.LookupServerDataLocator;
@@ -20,6 +19,7 @@ import org.openswing.swing.message.receive.java.*;
 import org.openswing.swing.table.model.client.VOListTableModel;
 import org.jallinone.registers.payments.java.*;
 import org.openswing.swing.util.client.ClientUtils;
+import org.jallinone.commons.client.*;
 
 
 /**
@@ -105,6 +105,7 @@ public class PaymentsGridFrame extends InternalFrame {
   LookupController payTypeReg17Controller = new LookupController();
   LookupServerDataLocator payTypeReg17DataLocator = new LookupServerDataLocator();
   EditButton editButton = new EditButton();
+  CompaniesComboColumn colCompany = new CompaniesComboColumn();
 
 
   public PaymentsGridFrame(GridController controller) {
@@ -250,6 +251,7 @@ public class PaymentsGridFrame extends InternalFrame {
     colPayType.setColumnFilterable(true);
     colPayType.setColumnName("paymentTypeCodeReg11REG10");
     colPayType.setColumnSortable(true);
+    colPayType.setEditableOnEdit(true);
     colPayType.setEditableOnInsert(true);
     colPayType.setPreferredWidth(110);
     colPayType.setMaxCharacters(20);
@@ -287,6 +289,10 @@ public class PaymentsGridFrame extends InternalFrame {
     colPerc.setEditableOnEdit(true);
     colDays.setColumnName("instalmentDaysREG17");
     editButton.setText("editButton2");
+    colCompany.setColumnName("companyCodeSys01REG10");
+    colCompany.setEditableOnInsert(true);
+    colCompany.setHeaderColumnName("companyCode");
+    colCompany.setFunctionCode("REG10");
     buttonsPanel.add(insertButton, null);
     buttonsPanel.add(editButton, null);
     buttonsPanel.add(saveButton, null);
@@ -301,6 +307,7 @@ public class PaymentsGridFrame extends InternalFrame {
     split.add(instalmentsPanel,JSplitPane.BOTTOM);
     instalmentsPanel.add(instalmentsButtonsPanel, BorderLayout.NORTH);
     this.getContentPane().add(split, BorderLayout.CENTER);
+    grid.getColumnContainer().add(colCompany, null);
     grid.getColumnContainer().add(colPaymentType, null);
     grid.getColumnContainer().add(colDescr, null);
     grid.getColumnContainer().add(colInstNr, null);

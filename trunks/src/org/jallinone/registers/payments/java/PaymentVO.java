@@ -34,6 +34,7 @@ import org.jallinone.system.customizations.java.BaseValueObject;
 public class PaymentVO extends BaseValueObject {
 
 
+	private String companyCodeSys01REG10;
   private String paymentCodeREG10;
   private java.math.BigDecimal progressiveSys10REG10;
   private String enabledREG10;
@@ -44,6 +45,7 @@ public class PaymentVO extends BaseValueObject {
   private String startDayREG10;
   private java.math.BigDecimal firstInstalmentDaysREG10;
   private String paymentTypeDescriptionSYS10;
+	private String accountCodeAcc02REG11;
 
 
   public PaymentVO() {
@@ -109,6 +111,18 @@ public class PaymentVO extends BaseValueObject {
   }
   public void setPaymentTypeDescriptionSYS10(String paymentTypeDescriptionSYS10) {
     this.paymentTypeDescriptionSYS10 = paymentTypeDescriptionSYS10;
+  }
+  public String getCompanyCodeSys01REG10() {
+    return companyCodeSys01REG10;
+  }
+  public void setCompanyCodeSys01REG10(String companyCodeSys01REG10) {
+    this.companyCodeSys01REG10 = companyCodeSys01REG10;
+  }
+  public String getAccountCodeAcc02REG11() {
+    return accountCodeAcc02REG11;
+  }
+  public void setAccountCodeAcc02REG11(String accountCodeAcc02REG11) {
+    this.accountCodeAcc02REG11 = accountCodeAcc02REG11;
   }
 
 }

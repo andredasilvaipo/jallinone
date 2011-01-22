@@ -1,5 +1,21 @@
 
 
+Release Notes 2.5.7
+-------------------
+
+Change payments, payment types and payment installments windows: now codes are defined per company.
+Added account code to payment types window, in order to define an account for payments used in expirations window.
+Improved expirations window:
+- added account code column, in order to specify the account code to use for payment
+- account code is automatically filled, starting from the one specified at payment type level
+- added rounding account code, which is mandatory when the value payed is not equal to the value to pay; this is used to generate an accounting item for roundings
+- fixed problem when using customers/suppliers lookup
+Added to company parameters window two new controls: rounding account codes for costs/proceeds, to use in expirations window to preset the rounding code.
+Fixed problem in in/out delivery note window, when inserting single items having no variant.
+Fixed problem on inserting/updating descriptions having a ' symbol.
+
+
+
 Release Notes 2.5.6
 -------------------
 

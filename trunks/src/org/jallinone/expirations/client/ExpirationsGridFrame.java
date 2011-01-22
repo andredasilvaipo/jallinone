@@ -26,6 +26,7 @@ import org.openswing.swing.domains.java.Domain;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import org.openswing.swing.form.client.Form;
+import org.jallinone.registers.payments.java.PaymentTypeVO;
 
 
 /**
@@ -60,7 +61,7 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
 
   JPanel buttonsPanel = new JPanel();
   JPanel topPanel = new JPanel();
-  Form filterPanel = new Form();
+  JPanel filterPanel = new JPanel();
   FlowLayout flowLayout1 = new FlowLayout();
   BorderLayout borderLayout1 = new BorderLayout();
   ReloadButton reloadButton = new ReloadButton();
@@ -112,6 +113,16 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
   CodLookupColumn colRealPayTipeCode = new CodLookupColumn();
 	LookupController payTypeController = new LookupController();
 	LookupServerDataLocator payTypeDataLocator = new LookupServerDataLocator();
+  CodLookupColumn colAccountCode = new CodLookupColumn();
+  TextColumn colAccountDescr = new TextColumn();
+  CodLookupColumn colRoundingAccCode = new CodLookupColumn();
+  TextColumn colRoundingDescr = new TextColumn();
+
+	LookupController realAccController = new LookupController();
+	LookupServerDataLocator realAccDataLocator = new LookupServerDataLocator();
+
+	LookupController roundingAccController = new LookupController();
+	LookupServerDataLocator roundingAccDataLocator = new LookupServerDataLocator();
 
 
   public ExpirationsGridFrame(GridController controller) {
@@ -131,7 +142,7 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
       controlCodCustomer.setLookupController(customerController);
       controlCodCustomer.setControllerMethodName("getCustomersList");
       customerController.setLookupDataLocator(customerDataLocator);
-      customerController.setForm(filterPanel);
+//      customerController.setForm(filterPanel);
       customerController.setFrameTitle("customers");
       customerController.setLookupValueObjectClassName("org.jallinone.sales.customers.java.GridCustomerVO");
       customerController.setAllColumnVisible(false);
@@ -190,7 +201,7 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
       controlCodSupplier.setLookupController(supplierController);
       controlCodSupplier.setControllerMethodName("getSuppliersList");
       supplierController.setLookupDataLocator(supplierDataLocator);
-      supplierController.setForm(filterPanel);
+//      supplierController.setForm(filterPanel);
       supplierController.setFrameTitle("suppliers");
       supplierController.setLookupValueObjectClassName("org.jallinone.purchases.suppliers.java.GridSupplierVO");
       supplierController.setAllColumnVisible(false);
@@ -313,7 +324,6 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
 
 
 			// payment lookup...
-			// payment lookup...
 			payTypeDataLocator.setGridMethodName("loadPaymentTypes");
 			payTypeDataLocator.setValidationMethodName("validatePaymentTypeCode");
 
@@ -328,6 +338,72 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
 			payTypeController.setVisibleColumn("paymentTypeCodeREG11", true);
 			payTypeController.setVisibleColumn("descriptionSYS10", true);
 			new CustomizedColumns(new BigDecimal(222),payTypeController);
+			payTypeController.addLookupListener(new LookupListener() {
+
+				public void beforeLookupAction(ValueObject parentVO) {
+				}
+
+				public void codeChanged(ValueObject parentVO,
+																Collection parentChangedAttributes) {
+					PaymentTypeVO vo = (PaymentTypeVO)payTypeController.getLookupVO();
+					ExpirationVO expVO = (ExpirationVO)parentVO;
+					if (vo==null || vo.getAccountCodeAcc02REG11()==null) {
+						expVO.setRealAccountCodeAcc02DOC19(null);
+						expVO.setRealAcc02DescriptionSYS10(null);
+					}
+					else {
+						expVO.setRealAccountCodeAcc02DOC19(vo.getAccountCodeAcc02REG11());
+						expVO.setRealAcc02DescriptionSYS10(vo.getAcc02DescriptionSYS10());
+					}
+				}
+
+				public void codeValidated(boolean validated) {
+				}
+
+				public void forceValidate() {
+				}
+
+			});
+
+
+			// real account lookup...
+			realAccDataLocator.setGridMethodName("loadAccounts");
+			realAccDataLocator.setValidationMethodName("validateAccountCode");
+
+			colAccountCode.setLookupController(realAccController);
+			realAccController.setLookupDataLocator(realAccDataLocator);
+			realAccController.setFrameTitle("accounts");
+			realAccController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
+			realAccController.addLookup2ParentLink("accountCodeACC02", "realAccountCodeAcc02DOC19");
+			realAccController.addLookup2ParentLink("descriptionSYS10","realAcc02DescriptionSYS10");
+			realAccController.setAllColumnVisible(false);
+			realAccController.setVisibleColumn("accountCodeACC02", true);
+			realAccController.setVisibleColumn("descriptionSYS10", true);
+			realAccController.setPreferredWidthColumn("descriptionSYS10", 200);
+			realAccController.setFramePreferedSize(new Dimension(340,400));
+			realAccController.setSortedColumn("accountCodeACC02","ASC",1);
+			realAccController.setFilterableColumn("accountCodeACC02",true);
+			realAccController.setFilterableColumn("descriptionSYS10",true);
+
+
+			// rounding account lookup...
+			roundingAccDataLocator.setGridMethodName("loadAccounts");
+			roundingAccDataLocator.setValidationMethodName("validateAccountCode");
+
+			colRoundingAccCode.setLookupController(roundingAccController);
+			roundingAccController.setLookupDataLocator(roundingAccDataLocator);
+			roundingAccController.setFrameTitle("accounts");
+			roundingAccController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
+			roundingAccController.addLookup2ParentLink("accountCodeACC02", "roundingAccountCodeAcc02DOC19");
+			roundingAccController.addLookup2ParentLink("descriptionSYS10","roundingAcc02DescriptionSYS10");
+			roundingAccController.setAllColumnVisible(false);
+			roundingAccController.setVisibleColumn("accountCodeACC02", true);
+			roundingAccController.setVisibleColumn("descriptionSYS10", true);
+			roundingAccController.setPreferredWidthColumn("descriptionSYS10", 200);
+			roundingAccController.setFramePreferedSize(new Dimension(340,400));
+			roundingAccController.setSortedColumn("accountCodeACC02","ASC",1);
+			roundingAccController.setFilterableColumn("accountCodeACC02",true);
+			roundingAccController.setFilterableColumn("descriptionSYS10",true);
 
 
     }
@@ -362,7 +438,7 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
     colCompany.setColumnName("companyCodeSys01DOC19");
     colCompany.setColumnSortable(true);
     colCompany.setEditableOnInsert(true);
-    colCompany.setPreferredWidth(100);
+    colCompany.setPreferredWidth(90);
     colCompany.setSortVersus(org.openswing.swing.util.java.Consts.ASC_SORTED);
     colCompany.setSortingOrder(1);
     colDescr.setColumnFilterable(false);
@@ -396,7 +472,7 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
     colDocType.setColumnSortable(true);
     colDocType.setSortVersus(org.openswing.swing.util.java.Consts.ASC_SORTED);
     colDocType.setSortingOrder(1);
-		colDocType.setPreferredWidth(200);
+		colDocType.setPreferredWidth(180);
     colColNum.setColumnFilterable(true);
     colColNum.setColumnName("docSequenceDOC19");
     colColNum.setColumnSortable(true);
@@ -419,6 +495,7 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
     colValue.setPreferredWidth(70);
     colValue.setRightMargin(2);
     colPayed.setColumnFilterable(true);
+    colPayed.setColumnRequired(false);
     colPayed.setShowDeSelectAllInPopupMenu(true);
     colPayed.setColumnName("payedDOC19");
     colPayed.setColumnSortable(true);
@@ -458,7 +535,7 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
     controlSupplierName2.setEnabledOnEdit(false);
     colRealPayTipeCode.setColumnName("realPaymentTypeCodeReg11DOC19");
     colRealPayTipeCode.setEditableOnEdit(true);
-    colRealPayTipeCode.setPreferredWidth(80);
+    colRealPayTipeCode.setPreferredWidth(90);
     colRealPayTipeDesc.setColumnName("realPaymentDescriptionSYS10");
     colRealPayTipeDesc.setPreferredWidth(140);
     colPayTypeDesc.setColumnName("paymentDescriptionSYS10");
@@ -466,6 +543,25 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
 		colPayTypeDesc.setHeaderColumnName("paymentTypeDescription");
 		colPayTypeDesc.setColumnRequired(false);
 
+    colAccountCode.setColumnName("realAccountCodeAcc02DOC19");
+    colAccountCode.setEditableOnEdit(true);
+    colAccountCode.setEditableOnInsert(true);
+    colAccountCode.setHeaderColumnName("accountCodeACC02");
+    colAccountCode.setPreferredWidth(90);
+    colAccountDescr.setColumnName("realAcc02DescriptionSYS10");
+    colAccountDescr.setColumnRequired(false);
+    colAccountDescr.setHeaderColumnName("accountDescriptionACC06");
+    colAccountDescr.setPreferredWidth(150);
+    colRoundingAccCode.setColumnName("roundingAccountCodeAcc02DOC19");
+    colRoundingAccCode.setColumnRequired(false);
+    colRoundingAccCode.setEditableOnEdit(true);
+    colRoundingAccCode.setEditableOnInsert(true);
+    colRoundingAccCode.setHeaderColumnName("roundingAccountCode");
+    colRoundingAccCode.setPreferredWidth(110);
+    colRoundingDescr.setColumnName("roundingAcc02DescriptionSYS10");
+    colRoundingDescr.setColumnRequired(false);
+    colRoundingDescr.setHeaderColumnName("roundingDescription");
+    colRoundingDescr.setPreferredWidth(180);
     topPanel.add(filterPanel,BorderLayout.CENTER);
     filterPanel.add(labelDocType,      new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
@@ -496,6 +592,8 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
 
 		grid.getColumnContainer().add(colRealPayTipeCode, null);
 		grid.getColumnContainer().add(colRealPayTipeDesc, null);
+    grid.getColumnContainer().add(colAccountCode, null);
+    grid.getColumnContainer().add(colAccountDescr, null);
 
     grid.getColumnContainer().add(colDocDate, null);
     grid.getColumnContainer().add(colDescr, null);
@@ -526,6 +624,8 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     filterPanel.add(controlEndDate,  new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    grid.getColumnContainer().add(colRoundingAccCode, null);
+    grid.getColumnContainer().add(colRoundingDescr, null);
   }
 
 
@@ -560,6 +660,9 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
   }
   public GridControl getGrid() {
     return grid;
+  }
+  public CodLookupColumn getColRoundingAccCode() {
+    return colRoundingAccCode;
   }
 
 

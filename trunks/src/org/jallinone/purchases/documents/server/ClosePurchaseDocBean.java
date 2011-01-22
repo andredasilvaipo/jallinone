@@ -457,13 +457,16 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 
 
 			 // retrieve payment instalments...
-			 res = payAction.validatePaymentCode(new LookupValidationParams(docVO.getPaymentCodeReg10DOC06(),new HashMap()),serverLanguageId,username,new ArrayList());
+			 ArrayList companiesList = new ArrayList();
+			 companiesList.add(docVO.getCompanyCodeSys01DOC06());
+			 res = payAction.validatePaymentCode(new LookupValidationParams(docVO.getPaymentCodeReg10DOC06(),new HashMap()),serverLanguageId,username,new ArrayList(),companiesList);
 			 if (res.isError()) {
 				 throw new Exception(res.getErrorMessage());
 			 }
 			 PaymentVO payVO = (PaymentVO)((VOListResponse)res).getRows().get(0);
 
 			 gridParams = new GridParams();
+			 gridParams.getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,docVO.getCompanyCodeSys01DOC06());
 			 gridParams.getOtherGridParams().put(ApplicationConsts.PAYMENT_CODE_REG10,docVO.getPaymentCodeReg10DOC06());
 			 res = payAction.loadPaymentInstalments(gridParams,serverLanguageId,username);
 			 if (res.isError()) {
@@ -478,13 +481,23 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 			 if (rows.size()>1 || (rows.size()==1 && ((PaymentInstalmentVO)rows.get(0)).getInstalmentDaysREG17().intValue()>0 )) {
 */
 
+	    HashMap map = new HashMap();
+			map.put(ApplicationConsts.COMPANY_CODE_SYS01,docVO.getCompanyCodeSys01DOC06());
+			map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.ROUNDING_COSTS_CODE);
+			res = userParamAction.loadUserParam(map,serverLanguageId,username);
+			if (res.isError()) {
+				throw new Exception(res.getErrorMessage());
+			}
+			String roundingAccountCode = ((VOResponse)res).getVo().toString();
+
+
       // create ALWAYS expirations in DOC19...
 			 PaymentInstalmentVO inVO = null;
 			 pstmt = conn.prepareStatement(
 					 "insert into DOC19_EXPIRATIONS(COMPANY_CODE_SYS01,DOC_TYPE,DOC_YEAR,DOC_NUMBER,DOC_SEQUENCE,PROGRESSIVE,"+
 					 "DOC_DATE,EXPIRATION_DATE,NAME_1,NAME_2,VALUE,DESCRIPTION,CUSTOMER_SUPPLIER_CODE,PROGRESSIVE_REG04,CURRENCY_CODE_REG03,"+
-					 "PAYMENT_TYPE_CODE_REG11,PAYED,REAL_PAYMENT_TYPE_CODE_REG11,PAYED_DATE,PAYED_VALUE) "+
-					 "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+					 "PAYMENT_TYPE_CODE_REG11,PAYED,REAL_PAYMENT_TYPE_CODE_REG11,PAYED_DATE,PAYED_VALUE,REAL_ACCOUNT_CODE_ACC02,ROUNDING_ACCOUNT_CODE_ACC02) "+
+					 "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 			 );
 
 			 long startTime = docVO.getDocDateDOC06().getTime(); // invoice date...
@@ -535,6 +548,8 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 				 pstmt.setString(18,null);
 				 pstmt.setDate(19,null);
 				 pstmt.setBigDecimal(20,null);
+				 pstmt.setString(21,payVO.getAccountCodeAcc02REG11());
+				 pstmt.setString(22,roundingAccountCode);
 
 				 pstmt.execute();
 			 }

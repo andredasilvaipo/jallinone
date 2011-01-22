@@ -63,7 +63,7 @@ import javax.sql.DataSource;
 public class SuppliersBean  implements Suppliers {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -71,9 +71,9 @@ public class SuppliersBean  implements Suppliers {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -83,7 +83,7 @@ public class SuppliersBean  implements Suppliers {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -95,7 +95,7 @@ public class SuppliersBean  implements Suppliers {
 	  this.organizationBean = organizationBean;
   }
 
-  
+
   private AccountsBean accountAction;
 
   public void setAccountAction(AccountsBean accountAction) {
@@ -106,12 +106,12 @@ public class SuppliersBean  implements Suppliers {
   public SuppliersBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public GridSupplierVO getGridSupplier() {
-	  throw new UnsupportedOperationException();  
+	  throw new UnsupportedOperationException();
   }
 
 
@@ -160,12 +160,13 @@ public class SuppliersBean  implements Suppliers {
         "REG04_SUBJECTS.WEB_SITE,REG04_SUBJECTS.LAWFUL_SITE,REG04_SUBJECTS.NOTE,"+
         "PUR01_SUPPLIERS.PAYMENT_CODE_REG10,PUR01_SUPPLIERS.BANK_CODE_REG12,SYS10_TRANSLATIONS.DESCRIPTION,"+
         "PUR01_SUPPLIERS.DEBIT_ACCOUNT_CODE_ACC02,PUR01_SUPPLIERS.COSTS_ACCOUNT_CODE_ACC02 "+
-        " from REG04_SUBJECTS,PUR01_SUPPLIERS,SYS10_TRANSLATIONS,REG10_PAYMENTS where "+
+        " from REG04_SUBJECTS,PUR01_SUPPLIERS,SYS10_TRANSLATIONS,REG10_PAY_MODES where "+
         "PUR01_SUPPLIERS.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
         "PUR01_SUPPLIERS.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
         "REG04_SUBJECTS.COMPANY_CODE_SYS01=? and REG04_SUBJECTS.PROGRESSIVE=? and "+
-        "PUR01_SUPPLIERS.PAYMENT_CODE_REG10=REG10_PAYMENTS.PAYMENT_CODE and "+
-        "REG10_PAYMENTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+				"PUR01_SUPPLIERS.COMPANY_CODE_SYS01=REG10_PAY_MODES.COMPANY_CODE_SYS01 and "+
+        "PUR01_SUPPLIERS.PAYMENT_CODE_REG10=REG10_PAY_MODES.PAYMENT_CODE and "+
+        "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
         "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
         "PUR01_SUPPLIERS.ENABLED='Y' ";
 
@@ -246,7 +247,7 @@ public class SuppliersBean  implements Suppliers {
         }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
       try {
         accountAction.setConn(null);
       } catch (Exception ex) {}
@@ -288,12 +289,13 @@ public class SuppliersBean  implements Suppliers {
       String sql =
           "select REG04_SUBJECTS.COMPANY_CODE_SYS01,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,REG04_SUBJECTS.PROGRESSIVE,REG04_SUBJECTS.CITY,REG04_SUBJECTS.PROVINCE,REG04_SUBJECTS.COUNTRY,REG04_SUBJECTS.TAX_CODE,PUR01_SUPPLIERS.SUPPLIER_CODE,"+
           "PUR01_SUPPLIERS.PAYMENT_CODE_REG10,SYS10_TRANSLATIONS.DESCRIPTION,PUR01_SUPPLIERS.DEBIT_ACCOUNT_CODE_ACC02,REG04_SUBJECTS.NOTE "+
-          " from REG04_SUBJECTS,PUR01_SUPPLIERS,REG10_PAYMENTS,SYS10_TRANSLATIONS where "+
+          " from REG04_SUBJECTS,PUR01_SUPPLIERS,REG10_PAY_MODES,SYS10_TRANSLATIONS where "+
           "PUR01_SUPPLIERS.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "PUR01_SUPPLIERS.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
           "PUR01_SUPPLIERS.ENABLED='Y' and PUR01_SUPPLIERS.COMPANY_CODE_SYS01 in ("+companies+") and "+
-          "PUR01_SUPPLIERS.PAYMENT_CODE_REG10=REG10_PAYMENTS.PAYMENT_CODE and "+
-          "REG10_PAYMENTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+					"PUR01_SUPPLIERS.COMPANY_CODE_SYS01=REG10_PAY_MODES.COMPANY_CODE_SYS01 and "+
+          "PUR01_SUPPLIERS.PAYMENT_CODE_REG10=REG10_PAY_MODES.PAYMENT_CODE and "+
+          "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=?";
 
       Map attribute2dbField = new HashMap();
@@ -375,7 +377,7 @@ public class SuppliersBean  implements Suppliers {
    */
   public VOResponse updateSupplier(OrganizationVO oldVO,OrganizationVO newVO,String t1,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable {
     Statement stmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -444,8 +446,8 @@ public class SuppliersBean  implements Suppliers {
         }
 
       }
-      catch (Exception exx) {}  
-    
+      catch (Exception exx) {}
+
       try {
     	  organizationBean.setConn(null);
       } catch (Exception ex) {}
@@ -487,12 +489,13 @@ public class SuppliersBean  implements Suppliers {
       String sql =
           "select REG04_SUBJECTS.COMPANY_CODE_SYS01,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,REG04_SUBJECTS.PROGRESSIVE,REG04_SUBJECTS.CITY,REG04_SUBJECTS.PROVINCE,REG04_SUBJECTS.COUNTRY,REG04_SUBJECTS.TAX_CODE,PUR01_SUPPLIERS.SUPPLIER_CODE,"+
           "PUR01_SUPPLIERS.PAYMENT_CODE_REG10,SYS10_TRANSLATIONS.DESCRIPTION,PUR01_SUPPLIERS.DEBIT_ACCOUNT_CODE_ACC02,REG04_SUBJECTS.NOTE "+
-          " from REG04_SUBJECTS,PUR01_SUPPLIERS,REG10_PAYMENTS,SYS10_TRANSLATIONS where "+
+          " from REG04_SUBJECTS,PUR01_SUPPLIERS,REG10_PAY_MODES,SYS10_TRANSLATIONS where "+
           "PUR01_SUPPLIERS.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "PUR01_SUPPLIERS.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
           "PUR01_SUPPLIERS.ENABLED='Y' and PUR01_SUPPLIERS.COMPANY_CODE_SYS01 in ("+companies+") and "+
-          "PUR01_SUPPLIERS.PAYMENT_CODE_REG10=REG10_PAYMENTS.PAYMENT_CODE and "+
-          "REG10_PAYMENTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+					"PUR01_SUPPLIERS.COMPANY_CODE_SYS01=REG10_PAY_MODES.COMPANY_CODE_SYS01 and "+
+          "PUR01_SUPPLIERS.PAYMENT_CODE_REG10=REG10_PAY_MODES.PAYMENT_CODE and "+
+          "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and PUR01_SUPPLIERS.SUPPLIER_CODE=?";
 
       Map attribute2dbField = new HashMap();
@@ -576,13 +579,13 @@ public class SuppliersBean  implements Suppliers {
    */
   public VOResponse insertSupplier(DetailSupplierVO vo,String t1,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable {
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       organizationBean.setConn(conn);
       String companyCode = companiesList.get(0).toString();
-      
+
       if (vo.getCompanyCodeSys01REG04()==null)
         vo.setCompanyCodeSys01REG04(companyCode);
       vo.setSubjectTypeREG04(ApplicationConsts.SUBJECT_SUPPLIER);
@@ -663,7 +666,7 @@ public class SuppliersBean  implements Suppliers {
         }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
       try {
     	  organizationBean.setConn(null);
       } catch (Exception ex) {}
@@ -679,7 +682,7 @@ public class SuppliersBean  implements Suppliers {
   public VOResponse deleteSuppliers(ArrayList list,String serverLanguageId,String username) throws Throwable {
     Statement stmt = null;
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -732,7 +735,7 @@ public class SuppliersBean  implements Suppliers {
       }
       catch (Exception ex2) {
       }
-    
+
       try {
           if (this.conn==null && conn!=null) {
             // close only local connection
@@ -741,7 +744,7 @@ public class SuppliersBean  implements Suppliers {
         }
 
       }
-      catch (Exception exx) {}  
+      catch (Exception exx) {}
     }
 
   }

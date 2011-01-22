@@ -69,9 +69,10 @@ public class LoadPaymentTypesAction implements Action {
 		try {
 			CustomizedWindows cust = ((JAIOUserSessionParameters)userSessionPars).getCustomizedWindows();
 			ArrayList customizedFields = cust.getCustomizedFields(new BigDecimal(222));
+			ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("REG11");
 
 			Payments bean = (Payments)JAIOBeanFactory.getInstance().getBean(Payments.class);
-			Response answer = bean.loadPaymentTypes(gridParams,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),customizedFields);
+			Response answer = bean.loadPaymentTypes(gridParams,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),customizedFields,companiesList);
 
 			return answer;
 		}

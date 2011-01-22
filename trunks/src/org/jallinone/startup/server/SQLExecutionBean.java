@@ -89,10 +89,10 @@ public class SQLExecutionBean {
       int index = -1;
       StringBuffer unicode = new StringBuffer();
       boolean useDefaultValue =
-          conn.getMetaData().getDriverName().equals("oracle.jdbc.driver.OracleDriver") ||
-          conn.getMetaData().getDriverName().equals("com.microsoft.jdbc.sqlserver.SQLServerDriver") ||
-					conn.getMetaData().getDriverName().equals("com.microsoft.sqlserver.jdbc.SQLServerDriver") ||
-          conn.getMetaData().getDriverName().equals("com.mysql.jdbc.Driver");
+          vo.getDriverName().equals("oracle.jdbc.driver.OracleDriver") ||
+          vo.getDriverName().equals("com.microsoft.jdbc.sqlserver.SQLServerDriver") ||
+					vo.getDriverName().equals("com.microsoft.sqlserver.jdbc.SQLServerDriver") ||
+          vo.getDriverName().equals("com.mysql.jdbc.Driver");
       while ( (line = br.readLine()) != null) {
         sql.append(' ').append(line);
         if (line.endsWith(";")) {
@@ -267,6 +267,64 @@ public class SQLExecutionBean {
         		  unicode.delete(0, unicode.length());
         	  }
           }
+
+
+					if (sql.toString().toUpperCase().indexOf("DROP TABLE")!=-1) {
+						// remove fks before dropping table!
+						String table = sql.toString().toUpperCase().replace('\n',' ').replace('\r',' ').trim();
+						table = table.substring(10).trim();
+						if (table.endsWith(";"))
+							table = table.substring(0,table.length()-1);
+						ResultSet rset = conn.getMetaData().getExportedKeys(null,vo.getUsername().toUpperCase(),table);
+						String fkName = null;
+						String tName = null;
+						Statement stmt2 = conn.createStatement();
+						boolean fksFound = false;
+						while(rset.next()) {
+							fksFound = true;
+							tName = rset.getString(7);
+							fkName = rset.getString(12);
+
+							if (vo.getDriverName().equals("com.mysql.jdbc.Driver"))
+								stmt2.execute("ALTER TABLE "+tName+" DROP FOREIGN KEY "+fkName);
+							else
+								stmt2.execute("ALTER TABLE "+tName+" DROP CONSTRAINT "+fkName);
+						}
+						try {
+							rset.close();
+						}
+						catch (Exception ex6) {}
+
+						if (!fksFound &&
+								!vo.getDriverName().equals("oracle.jdbc.driver.OracleDriver") &&
+								!vo.getDriverName().equals("com.microsoft.jdbc.sqlserver.SQLServerDriver") &&
+								!vo.getDriverName().equals("com.microsoft.sqlserver.jdbc.SQLServerDriver") &&
+								!vo.getDriverName().equals("com.mysql.jdbc.Driver")) {
+							// case postgres...
+							rset = conn.getMetaData().getExportedKeys(null,null,null);
+							while(rset.next()) {
+								if (rset.getString(3).toUpperCase().equals(table)) {
+									tName = rset.getString(7);
+									fkName = rset.getString(12);
+
+									if (vo.getDriverName().equals("com.mysql.jdbc.Driver"))
+										stmt2.execute("ALTER TABLE "+tName+" DROP FOREIGN KEY "+fkName);
+									else
+										stmt2.execute("ALTER TABLE "+tName+" DROP CONSTRAINT "+fkName);
+								}
+							}
+							try {
+								rset.close();
+							}
+							catch (Exception ex6) {}
+						}
+
+						try {
+							stmt2.close();
+						}
+						catch (Exception ex6) {}
+
+          } // end if
 
           if (sql.toString().trim().length()>0) {
             pstmt = conn.prepareStatement(sql.toString().substring(0,sql.length() - 1));

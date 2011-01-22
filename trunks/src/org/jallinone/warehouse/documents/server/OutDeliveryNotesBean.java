@@ -242,7 +242,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
       pstmt.setBigDecimal(7,vo.getDocYearDOC10());
       pstmt.setBigDecimal(8,vo.getDocNumberDOC10());
       pstmt.setString(9,vo.getDocTypeDoc01DOC10());
-      pstmt.setString(10,vo.getDocTypeDoc01DOC10());
+      pstmt.setBigDecimal(10,vo.getDocYearDoc01DOC10());
       pstmt.setBigDecimal(11,vo.getDocNumberDoc01DOC10());
       ResultSet rset = pstmt.executeQuery();
       if (rset.next()) {

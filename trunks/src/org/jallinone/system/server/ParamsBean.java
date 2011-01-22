@@ -382,6 +382,49 @@ public class ParamsBean  implements Params {
       rset.close();
 
 
+			// retrieve rounding costs account...
+			pstmt.close();
+			pstmt = conn.prepareStatement(
+					"select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+					"SYS19_USER_PARAMS.COMPANY_CODE_SYS01=? and SYS19_USER_PARAMS.USERNAME_SYS03=? and SYS19_USER_PARAMS.PARAM_CODE=? and "+
+					"SYS19_USER_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
+					"SYS19_USER_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
+					"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+					"SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+			);
+			pstmt.setString(1,companyCode);
+			pstmt.setString(2,username);
+			pstmt.setString(3,ApplicationConsts.ROUNDING_COSTS_CODE);
+			pstmt.setString(4,serverLanguageId);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				vo.setRoundingCostsAccountCodeAcc02DOC19(rset.getString(1));
+				vo.setRoundingCostsDescrDOC19(rset.getString(2));
+			}
+			rset.close();
+
+			// retrieve rounding proceeds account...
+			pstmt.close();
+			pstmt = conn.prepareStatement(
+					"select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+					"SYS19_USER_PARAMS.COMPANY_CODE_SYS01=? and SYS19_USER_PARAMS.USERNAME_SYS03=? and SYS19_USER_PARAMS.PARAM_CODE=? and "+
+					"SYS19_USER_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
+					"SYS19_USER_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
+					"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+					"SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+			);
+			pstmt.setString(1,companyCode);
+			pstmt.setString(2,username);
+			pstmt.setString(3,ApplicationConsts.ROUNDING_PROCEEDS_CODE);
+			pstmt.setString(4,serverLanguageId);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				vo.setRoundingProceedsAccountCodeAcc02DOC19(rset.getString(1));
+				vo.setRoundingProceedsDescrDOC19(rset.getString(2));
+			}
+			rset.close();
+
+
       return new VOResponse(vo);
     } catch (Exception ex) {
       Logger.error(username,this.getClass().getName(),"executeCommand","Error while loading user parameters",ex);
@@ -938,6 +981,38 @@ public class ParamsBean  implements Params {
       }
 
 
+			// update rounding costs account...
+			pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+			pstmt.setString(1,vo.getRoundingCostsAccountCodeAcc02DOC19());
+			pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
+			pstmt.setString(3,ApplicationConsts.ROUNDING_COSTS_CODE);
+			rows = pstmt.executeUpdate();
+			pstmt.close();
+			if (rows==0) {
+				// record not yet exists: it will be inserted...
+				pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+				pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
+				pstmt.setString(2,ApplicationConsts.ROUNDING_COSTS_CODE);
+				pstmt.setString(3,vo.getRoundingCostsAccountCodeAcc02DOC19());
+				pstmt.executeUpdate();
+			}
+
+			// update rounding proceeds account...
+			pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+			pstmt.setString(1,vo.getRoundingProceedsAccountCodeAcc02DOC19());
+			pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
+			pstmt.setString(3,ApplicationConsts.ROUNDING_PROCEEDS_CODE);
+			rows = pstmt.executeUpdate();
+			pstmt.close();
+			if (rows==0) {
+				// record not yet exists: it will be inserted...
+				pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+				pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
+				pstmt.setString(2,ApplicationConsts.ROUNDING_PROCEEDS_CODE);
+				pstmt.setString(3,vo.getRoundingProceedsAccountCodeAcc02DOC19());
+				pstmt.executeUpdate();
+			}
+
       return new VOResponse(vo);
     } catch (Exception ex) {
       Logger.error(username,this.getClass().getName(),"executeCommand","Error while storing company parameters",ex);
@@ -1198,7 +1273,41 @@ public class ParamsBean  implements Params {
         pstmt.executeUpdate();
       }
 
+			// update rounding costs account...
+			pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+			pstmt.setString(1,vo.getRoundingCostsAccountCodeAcc02DOC19());
+			pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
+			pstmt.setString(3,username);
+			pstmt.setString(4,ApplicationConsts.ROUNDING_COSTS_CODE);
+			rows = pstmt.executeUpdate();
+			pstmt.close();
+			if (rows==0) {
+				// record not yet exists: it will be inserted...
+				pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
+				pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
+				pstmt.setString(2,username);
+				pstmt.setString(3,ApplicationConsts.ROUNDING_COSTS_CODE);
+				pstmt.setString(4,vo.getRoundingCostsAccountCodeAcc02DOC19());
+				pstmt.executeUpdate();
+			}
 
+			// update rounding proceeds account...
+			pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+			pstmt.setString(1,vo.getRoundingProceedsAccountCodeAcc02DOC19());
+			pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
+			pstmt.setString(3,username);
+			pstmt.setString(4,ApplicationConsts.ROUNDING_PROCEEDS_CODE);
+			rows = pstmt.executeUpdate();
+			pstmt.close();
+			if (rows==0) {
+				// record not yet exists: it will be inserted...
+				pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
+				pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
+				pstmt.setString(2,username);
+				pstmt.setString(3,ApplicationConsts.ROUNDING_PROCEEDS_CODE);
+				pstmt.setString(4,vo.getRoundingProceedsAccountCodeAcc02DOC19());
+				pstmt.executeUpdate();
+			}
 
       return new VOResponse(vo);
     } catch (Exception ex) {
@@ -1589,6 +1698,47 @@ public class ParamsBean  implements Params {
         vo.setInitialValueSYS21(new BigDecimal(rset.getString(1)));
       }
       rset.close();
+
+
+			// retrieve rounding costs account...
+			pstmt.close();
+			pstmt = conn.prepareStatement(
+					"select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+					"SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
+					"SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
+					"SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
+					"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+					"SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+			);
+			pstmt.setString(1,companyCode);
+			pstmt.setString(2,ApplicationConsts.ROUNDING_COSTS_CODE);
+			pstmt.setString(3,serverLanguageId);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				vo.setRoundingCostsAccountCodeAcc02DOC19(rset.getString(1));
+				vo.setRoundingCostsDescrDOC19(rset.getString(2));
+			}
+			rset.close();
+
+			// retrieve rounding proceeds account...
+			pstmt.close();
+			pstmt = conn.prepareStatement(
+					"select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+					"SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
+					"SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
+					"SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
+					"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+					"SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+			);
+			pstmt.setString(1,companyCode);
+			pstmt.setString(2,ApplicationConsts.ROUNDING_PROCEEDS_CODE);
+			pstmt.setString(3,serverLanguageId);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				vo.setRoundingProceedsAccountCodeAcc02DOC19(rset.getString(1));
+				vo.setRoundingProceedsDescrDOC19(rset.getString(2));
+			}
+			rset.close();
 
 
       return new VOResponse(vo);

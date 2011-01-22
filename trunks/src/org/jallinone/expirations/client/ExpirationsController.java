@@ -7,6 +7,10 @@ import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.table.client.GridController;
 import org.openswing.swing.util.client.ClientUtils;
 import org.jallinone.expirations.java.ExpirationVO;
+import org.openswing.swing.message.receive.java.ErrorResponse;
+import java.util.HashMap;
+import org.jallinone.commons.java.ApplicationConsts;
+import org.openswing.swing.message.receive.java.VOResponse;
 
 
 /**
@@ -57,11 +61,26 @@ public class ExpirationsController extends GridController {
    * @return an ErrorResponse value object in case of errors, VOListResponse if the operation is successfully completed
    */
   public Response updateRecords(int[] rowNumbers,ArrayList oldPersistentObjects,ArrayList persistentObjects) throws Exception {
-    for (ExpirationVO exp : (ArrayList<ExpirationVO>) persistentObjects) {
-      if (exp.getPayedValueDOC19().equals(exp.getValueDOC19())) {
-        exp.setPayedDOC19(Boolean.TRUE);
-      }
-    }
+		ExpirationVO vo = null;
+		for(int i=0;i<persistentObjects.size();i++) {
+			vo = (ExpirationVO)persistentObjects.get(i);
+
+			if (vo.getPayedValueDOC19()!=null &&
+					vo.getPayedValueDOC19().equals(vo.getValueDOC19()) &&
+					!Boolean.TRUE.equals(vo.getPayedDOC19())) {
+					vo.setPayedDOC19(Boolean.TRUE);
+			}
+
+			if (Boolean.TRUE.equals(vo.getPayedDOC19()) &&
+			    (vo.getValueDOC19()==null && vo.getPayedValueDOC19()!=null ||
+				   vo.getValueDOC19()!=null && vo.getPayedValueDOC19()==null ||
+       		 vo.getValueDOC19()!=null && !vo.getValueDOC19().equals(vo.getPayedValueDOC19())) &&
+					(vo.getRoundingAccountCodeAcc02DOC19()==null || vo.getRoundingAccountCodeAcc02DOC19().equals(""))
+			) {
+				 return new ErrorResponse("you need to specify a rounding account code");
+			}
+
+		}
     return ClientUtils.getData("updateExpirations",new ArrayList[]{oldPersistentObjects,persistentObjects});
   }
 
@@ -97,6 +116,32 @@ public class ExpirationsController extends GridController {
 					vo.getRealPaymentTypeCodeReg11DOC19()==null) {
 				vo.setRealPaymentTypeCodeReg11DOC19(vo.getPaymentTypeCodeReg11DOC19());
 				vo.setRealPaymentDescriptionSYS10(vo.getPaymentDescriptionSYS10());
+			}
+
+			if (attributeName.equals("payedValueDOC19") &&
+					newValue!=null &&
+					!newValue.equals(vo.getValueDOC19()) &&
+					vo.getRoundingAccountCodeAcc02DOC19()==null) {
+
+				// retrieve default rounding account code...
+				HashMap map = new HashMap();
+				map.put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC19());
+				if (vo.getDocTypeDOC19().equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
+						vo.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_DOC_TYPE) ||
+						vo.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_FROM_DN_DOC_TYPE) ||
+						vo.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_FROM_SD_DOC_TYPE) ||
+						vo.getDocTypeDOC19().equals(ApplicationConsts.SALE_CREDIT_NOTE_DOC_TYPE) ||
+						vo.getDocTypeDOC19().equals(ApplicationConsts.SALE_GENERIC_INVOICE))
+					map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.ROUNDING_PROCEEDS_CODE);
+				else
+					map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.ROUNDING_COSTS_CODE);
+
+				Response res = ClientUtils.getData("loadUserParam",map);
+				if (!res.isError()) {
+					String accCode = (String)((VOResponse)res).getVo();
+					vo.setRoundingAccountCodeAcc02DOC19(accCode);
+					gridFrame.getColRoundingAccCode().forceValidate();
+				}
 			}
 
 			return true;

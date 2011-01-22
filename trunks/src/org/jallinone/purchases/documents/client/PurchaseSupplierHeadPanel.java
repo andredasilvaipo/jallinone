@@ -215,6 +215,21 @@ public class PurchaseSupplierHeadPanel extends JPanel {
       payController.setVisibleColumn("descriptionSYS10", true);
       payController.setPreferredWidthColumn("descriptionSYS10", 250);
       payController.setFramePreferedSize(new Dimension(350,500));
+			payController.addLookupListener(new LookupListener() {
+
+				public void beforeLookupAction(org.openswing.swing.message.receive.java.ValueObject parentVO) {
+					DetailPurchaseDocVO vo = (DetailPurchaseDocVO)form.getVOModel().getValueObject();
+					payDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC06());
+					payDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC06());
+				}
+
+				public void codeChanged(org.openswing.swing.message.receive.java.ValueObject parentVO,Collection parentChangedAttributes) {	}
+
+				public void codeValidated(boolean validated) { }
+
+				public void forceValidate() { }
+
+			});
 
     }
     catch(Exception e) {

@@ -118,7 +118,8 @@ public class PaymentsController extends GridController {
    */
   public void doubleClick(int rowNumber,ValueObject persistentObject) {
     PaymentVO vo = (PaymentVO)persistentObject;
-    gridFrame.getInstalmentsGrid().getOtherGridParams().put(ApplicationConsts.PAYMENT_CODE_REG10,vo.getPaymentCodeREG10());
+    gridFrame.getInstalmentsGrid().getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01REG10());
+		gridFrame.getInstalmentsGrid().getOtherGridParams().put(ApplicationConsts.PAYMENT_CODE_REG10,vo.getPaymentCodeREG10());
     gridFrame.getInstalmentsGrid().reloadData();
   }
 

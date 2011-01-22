@@ -61,7 +61,7 @@ import javax.sql.DataSource;
 public class CustomersBean  implements Customers {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -69,9 +69,9 @@ public class CustomersBean  implements Customers {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -81,7 +81,7 @@ public class CustomersBean  implements Customers {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -96,7 +96,7 @@ public class CustomersBean  implements Customers {
   public void setOrganizationBean(OrganizationBean organizationBean) {
 	  this.organizationBean = organizationBean;
   }
-  
+
   private AccountsBean accountAction;
 
   public void setAccountAction(AccountsBean accountAction) {
@@ -107,14 +107,14 @@ public class CustomersBean  implements Customers {
   public CustomersBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public GridCustomerVO getGridCustomer() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
@@ -177,12 +177,13 @@ public class CustomersBean  implements Customers {
           "SAL07_CUSTOMERS.PAYMENT_CODE_REG10,SAL07_CUSTOMERS.PRICELIST_CODE_SAL01,SAL07_CUSTOMERS.BANK_CODE_REG12,SYS10_TRANSLATIONS.DESCRIPTION,"+
           "SAL07_CUSTOMERS.AGENT_PROGRESSIVE_REG04,SAL07_CUSTOMERS.TRUST_AMOUNT,SAL07_CUSTOMERS.VAT_CODE_REG01,"+
           "SAL07_CUSTOMERS.CREDIT_ACCOUNT_CODE_ACC02,SAL07_CUSTOMERS.ITEMS_ACCOUNT_CODE_ACC02,SAL07_CUSTOMERS.ACTIVITIES_ACCOUNT_CODE_ACC02,SAL07_CUSTOMERS.CHARGES_ACCOUNT_CODE_ACC02 "+
-          " from REG04_SUBJECTS,SAL07_CUSTOMERS,SYS10_TRANSLATIONS,REG10_PAYMENTS where "+
+          " from REG04_SUBJECTS,SAL07_CUSTOMERS,SYS10_TRANSLATIONS,REG10_PAY_MODES where "+
           "SAL07_CUSTOMERS.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "SAL07_CUSTOMERS.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
           "REG04_SUBJECTS.COMPANY_CODE_SYS01=? and REG04_SUBJECTS.PROGRESSIVE=? and "+
-          "SAL07_CUSTOMERS.PAYMENT_CODE_REG10=REG10_PAYMENTS.PAYMENT_CODE and "+
-          "REG10_PAYMENTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+					"SAL07_CUSTOMERS.COMPANY_CODE_SYS01=REG10_PAY_MODES.COMPANY_CODE_SYS01 and "+
+          "SAL07_CUSTOMERS.PAYMENT_CODE_REG10=REG10_PAY_MODES.PAYMENT_CODE and "+
+          "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SAL07_CUSTOMERS.ENABLED='Y' ";
       }
@@ -195,12 +196,13 @@ public class CustomersBean  implements Customers {
           "SAL07_CUSTOMERS.PAYMENT_CODE_REG10,SAL07_CUSTOMERS.PRICELIST_CODE_SAL01,SAL07_CUSTOMERS.BANK_CODE_REG12,SYS10_TRANSLATIONS.DESCRIPTION,"+
           "SAL07_CUSTOMERS.AGENT_PROGRESSIVE_REG04,SAL07_CUSTOMERS.TRUST_AMOUNT,SAL07_CUSTOMERS.VAT_CODE_REG01,"+
           "SAL07_CUSTOMERS.CREDIT_ACCOUNT_CODE_ACC02,SAL07_CUSTOMERS.ITEMS_ACCOUNT_CODE_ACC02,SAL07_CUSTOMERS.ACTIVITIES_ACCOUNT_CODE_ACC02,SAL07_CUSTOMERS.CHARGES_ACCOUNT_CODE_ACC02 "+
-          " from REG04_SUBJECTS,SAL07_CUSTOMERS,SYS10_TRANSLATIONS,REG10_PAYMENTS where "+
+          " from REG04_SUBJECTS,SAL07_CUSTOMERS,SYS10_TRANSLATIONS,REG10_PAY_MODES where "+
           "SAL07_CUSTOMERS.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "SAL07_CUSTOMERS.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
           "REG04_SUBJECTS.COMPANY_CODE_SYS01=? and REG04_SUBJECTS.PROGRESSIVE=? and "+
-          "SAL07_CUSTOMERS.PAYMENT_CODE_REG10=REG10_PAYMENTS.PAYMENT_CODE and "+
-          "REG10_PAYMENTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+					"SAL07_CUSTOMERS.COMPANY_CODE_SYS01=REG10_PAY_MODES.COMPANY_CODE_SYS01 and "+
+          "SAL07_CUSTOMERS.PAYMENT_CODE_REG10=REG10_PAY_MODES.PAYMENT_CODE and "+
+          "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SAL07_CUSTOMERS.ENABLED='Y' ";
       }
@@ -408,7 +410,7 @@ public class CustomersBean  implements Customers {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
         accountAction.setConn(null);
       } catch (Exception ex) {}
@@ -442,7 +444,7 @@ public class CustomersBean  implements Customers {
           "select REG04_SUBJECTS.COMPANY_CODE_SYS01,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,REG04_SUBJECTS.PROGRESSIVE,REG04_SUBJECTS.CITY,REG04_SUBJECTS.PROVINCE,REG04_SUBJECTS.COUNTRY,REG04_SUBJECTS.TAX_CODE,SAL07_CUSTOMERS.CUSTOMER_CODE,REG04_SUBJECTS.SUBJECT_TYPE,"+
           "SAL07_CUSTOMERS.PAYMENT_CODE_REG10,SYS10_TRANSLATIONS.DESCRIPTION,SAL07_CUSTOMERS.VAT_CODE_REG01,SAL07_CUSTOMERS.CREDIT_ACCOUNT_CODE_ACC02,REG04_SUBJECTS.NOTE,"+
           "REG01_VATS.VALUE,REG01_VATS.DEDUCTIBLE,REG01_VATS.DESCRIPTION "+
-          " from REG04_SUBJECTS,SYS10_TRANSLATIONS,REG10_PAYMENTS,SAL07_CUSTOMERS "+
+          " from REG04_SUBJECTS,SYS10_TRANSLATIONS,REG10_PAY_MODES,SAL07_CUSTOMERS "+
           "LEFT OUTER JOIN "+
           "(select REG01_VATS.VAT_CODE,REG01_VATS.VALUE,REG01_VATS.DEDUCTIBLE,SYS10_TRANSLATIONS.DESCRIPTION "+
           " from REG01_VATS,SYS10_TRANSLATIONS where "+
@@ -451,8 +453,9 @@ public class CustomersBean  implements Customers {
           "where "+
           "SAL07_CUSTOMERS.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "SAL07_CUSTOMERS.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
-          "SAL07_CUSTOMERS.PAYMENT_CODE_REG10=REG10_PAYMENTS.PAYMENT_CODE and "+
-          "REG10_PAYMENTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+					"SAL07_CUSTOMERS.COMPANY_CODE_SYS01=REG10_PAY_MODES.COMPANY_CODE_SYS01 and "+
+          "SAL07_CUSTOMERS.PAYMENT_CODE_REG10=REG10_PAY_MODES.PAYMENT_CODE and "+
+          "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SAL07_CUSTOMERS.ENABLED='Y' and SAL07_CUSTOMERS.COMPANY_CODE_SYS01 in ("+companies+") ";
 
@@ -618,7 +621,7 @@ public class CustomersBean  implements Customers {
    */
   public VOResponse updatePeople(PeopleVO oldVO,PeopleVO newVO,String t1,String t2,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable {
     Statement stmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -739,7 +742,7 @@ public class CustomersBean  implements Customers {
     	  "select REG04_SUBJECTS.COMPANY_CODE_SYS01,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,REG04_SUBJECTS.PROGRESSIVE,REG04_SUBJECTS.CITY,REG04_SUBJECTS.PROVINCE,REG04_SUBJECTS.COUNTRY,REG04_SUBJECTS.TAX_CODE,SAL07_CUSTOMERS.CUSTOMER_CODE,REG04_SUBJECTS.SUBJECT_TYPE,"+
     	  "SAL07_CUSTOMERS.PAYMENT_CODE_REG10,SYS10_TRANSLATIONS.DESCRIPTION,SAL07_CUSTOMERS.VAT_CODE_REG01,SAL07_CUSTOMERS.CREDIT_ACCOUNT_CODE_ACC02,"+
           "REG04_SUBJECTS.NOTE,REG01_VATS.VALUE,REG01_VATS.DEDUCTIBLE,REG01_VATS.DESCRIPTION "+
-          " from REG04_SUBJECTS,SYS10_TRANSLATIONS,REG10_PAYMENTS,SAL07_CUSTOMERS "+
+          " from REG04_SUBJECTS,SYS10_TRANSLATIONS,REG10_PAY_MODES,SAL07_CUSTOMERS "+
           "LEFT OUTER JOIN "+
           "(select REG01_VATS.VAT_CODE,REG01_VATS.VALUE,REG01_VATS.DEDUCTIBLE,SYS10_TRANSLATIONS.DESCRIPTION "+
           " from REG01_VATS,SYS10_TRANSLATIONS where "+
@@ -748,8 +751,9 @@ public class CustomersBean  implements Customers {
           "where "+
           "SAL07_CUSTOMERS.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "SAL07_CUSTOMERS.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
-          "SAL07_CUSTOMERS.PAYMENT_CODE_REG10=REG10_PAYMENTS.PAYMENT_CODE and "+
-          "REG10_PAYMENTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+					"SAL07_CUSTOMERS.COMPANY_CODE_SYS01=REG10_PAY_MODES.COMPANY_CODE_SYS01 and "+
+          "SAL07_CUSTOMERS.PAYMENT_CODE_REG10=REG10_PAY_MODES.PAYMENT_CODE and "+
+          "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and SAL07_CUSTOMERS.COMPANY_CODE_SYS01 in ("+companies+") and "+
           "SAL07_CUSTOMERS.ENABLED='Y' and SAL07_CUSTOMERS.CUSTOMER_CODE=? ";
 
@@ -828,7 +832,7 @@ public class CustomersBean  implements Customers {
    */
   public VOResponse insertOrganization(OrganizationCustomerVO vo,String t1,String t2,String serverLanguageId,String username,ArrayList companiesList, ArrayList customizedFields) throws Throwable {
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -918,7 +922,7 @@ public class CustomersBean  implements Customers {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
           peopleBean.setConn(null);
           organizationBean.setConn(null);
@@ -927,13 +931,13 @@ public class CustomersBean  implements Customers {
   }
 
 
-  
+
   /**
    * Business logic to execute.
    */
   public VOResponse insertPeople(PeopleCustomerVO vo,String t1,String t2,String serverLanguageId,String username,ArrayList companiesList, ArrayList customizedFields) throws Throwable {
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -1025,7 +1029,7 @@ public class CustomersBean  implements Customers {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
           peopleBean.setConn(null);
           organizationBean.setConn(null);
@@ -1067,7 +1071,7 @@ public class CustomersBean  implements Customers {
             "PROGRESSIVE_REG04='"+vo.getProgressiveREG04()+"'"
         );
       }
-      
+
       return new VOResponse(new Boolean(true));
     }
     catch (Throwable ex) {
@@ -1101,7 +1105,7 @@ public class CustomersBean  implements Customers {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
     }
 
   }

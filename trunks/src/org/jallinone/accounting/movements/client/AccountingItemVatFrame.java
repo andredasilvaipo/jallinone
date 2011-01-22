@@ -347,7 +347,10 @@ public class AccountingItemVatFrame extends InternalFrame {
 
         public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {}
 
-        public void beforeLookupAction(ValueObject parentVO) {}
+        public void beforeLookupAction(ValueObject parentVO) {
+					paymentDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompaniesCombo.getValue());
+					paymentDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompaniesCombo.getValue());
+				}
 
         public void forceValidate() {}
 

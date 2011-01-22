@@ -137,7 +137,7 @@ public class CompanyProgressiveUtils {
         progressive = new BigDecimal(progressive.intValue()+incrementValue.intValue());
       }
       else {
-        // record not found: it will be inserted, beginning from 1...
+        // record not found: it will be inserted, beginning from "initialValue"...
         stmt.execute(
             "insert into SYS20_COMPANY_PROGRESSIVES(COMPANY_CODE_SYS01,TABLE_NAME,COLUMN_NAME,VALUE) values("+
             "'"+companyCode+"','"+tableName+"','"+columnName+"',"+initialValue+")"

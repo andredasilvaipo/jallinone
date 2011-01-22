@@ -213,10 +213,21 @@ public class SupplierDetailFrame extends InternalFrame {
       payController.setVisibleColumn("descriptionSYS10", true);
       payController.setPreferredWidthColumn("descriptionSYS10",200);
       new CustomizedColumns(new BigDecimal(212),payController);
+			payController.addLookupListener(new LookupListener() {
 
+				public void beforeLookupAction(org.openswing.swing.message.receive.java.ValueObject parentVO) {
+					DetailSupplierVO vo = (DetailSupplierVO)parentVO;
+					payDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01REG04());
+					payDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01REG04());
+				}
 
+				public void codeChanged(org.openswing.swing.message.receive.java.ValueObject parentVO,Collection parentChangedAttributes) {	}
 
+				public void codeValidated(boolean validated) { }
 
+				public void forceValidate() { }
+
+			});
 
 
       // items lookup...

@@ -57,17 +57,19 @@ public class TranslationUtils {
    */
   public static final BigDecimal insertTranslations(String description,String companyCodeSys01,Connection conn) throws Exception {
     BigDecimal progressive = CompanyProgressiveUtils.getInternalProgressive(companyCodeSys01,"SYS10_TRANSLATIONS","PROGRESSIVE",conn);
-    Statement stmt = null;
+    PreparedStatement pstmt = null;
     try {
-      stmt = conn.createStatement();
-      stmt.execute(
-        "insert into SYS10_TRANSLATIONS(PROGRESSIVE,LANGUAGE_CODE,DESCRIPTION,COMPANY_CODE_SYS01) "+
-        "select "+progressive+",LANGUAGE_CODE,'"+description+"','"+companyCodeSys01+"' FROM SYS09_LANGUAGES where ENABLED='Y'"
-      );
+			pstmt = conn.prepareStatement(
+				"insert into SYS10_TRANSLATIONS(PROGRESSIVE,LANGUAGE_CODE,DESCRIPTION,COMPANY_CODE_SYS01) "+
+				"select "+progressive+",LANGUAGE_CODE,?,? FROM SYS09_LANGUAGES where ENABLED='Y'"
+			);
+		  pstmt.setString(1,description);
+			pstmt.setString(2,companyCodeSys01);
+			pstmt.execute();
     }
     finally {
       try {
-        stmt.close();
+        pstmt.close();
       }
       catch (Exception ex) {
       }
@@ -85,22 +87,24 @@ public class TranslationUtils {
    * @param conn database connection
    */
   public static final void updateTranslation(String oldDescription,String description,BigDecimal progressive,String languageCode,Connection conn) throws Exception {
-    Statement stmt = null;
+		PreparedStatement pstmt = null;
     try {
-      stmt = conn.createStatement();
-      String sql =
-        "update SYS10_TRANSLATIONS set DESCRIPTION='"+description+"' where "+
-        "PROGRESSIVE="+progressive+" and LANGUAGE_CODE='"+languageCode+"' and DESCRIPTION='"+oldDescription+"'";
-
-      int updatedRows = stmt.executeUpdate(sql);
-      if (updatedRows==0) {
-        Logger.error("NONAME","org.jallinone.system.translations.server.TranslationUtils","updateTranslation",sql+"\n\nUpdate not allowed: description already updated by another process",null);
+			String sql =
+				"update SYS10_TRANSLATIONS set DESCRIPTION=? where "+
+		  	"PROGRESSIVE="+progressive+" and LANGUAGE_CODE=? and DESCRIPTION=? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,description);
+			pstmt.setString(2,languageCode);
+			pstmt.setString(3,oldDescription);
+			int updatedRows = pstmt.executeUpdate();
+			if (updatedRows==0) {
+			Logger.error("NONAME","org.jallinone.system.translations.server.TranslationUtils","updateTranslation",sql+"\n\nUpdate not allowed: description already updated by another process",null);
         throw new Exception("Update not allowed: description already updated by another process");
       }
     }
     finally {
       try {
-        stmt.close();
+        pstmt.close();
       }
       catch (Exception ex) {
       }
@@ -114,14 +118,16 @@ public class TranslationUtils {
    * @param conn database connection
    */
   public static final void deleteTranslations(BigDecimal progressive,Connection conn) throws Exception {
-    Statement stmt = null;
+		PreparedStatement pstmt = null;
     try {
-      stmt = conn.createStatement();
-      stmt.execute("delete from SYS10_TRANSLATIONS where PROGRESSIVE="+progressive);
+      pstmt = conn.prepareStatement(
+        "delete from SYS10_TRANSLATIONS where PROGRESSIVE="+progressive
+			);
+			pstmt.execute();
     }
     finally {
       try {
-        stmt.close();
+        pstmt.close();
       }
       catch (Exception ex) {
       }

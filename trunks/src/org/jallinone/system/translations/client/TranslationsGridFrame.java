@@ -178,8 +178,8 @@ public class TranslationsGridFrame extends InternalFrame {
 
     d.addDomainPair(new TopicVO(langs,"REG01_VATS","PROGRESSIVE_SYS10",false,true),"vat descriptions");
     d.addDomainPair(new TopicVO(langs,"REG07_TASKS","PROGRESSIVE_SYS10",true,true),"task descriptions");
-    d.addDomainPair(new TopicVO(langs,"REG10_PAYMENTS","PROGRESSIVE_SYS10",false,true),"payment descriptions");
-    d.addDomainPair(new TopicVO(langs,"REG11_PAYMENT_TYPES","PROGRESSIVE_SYS10",false,true),"payment type descriptions");
+    d.addDomainPair(new TopicVO(langs,"REG10_PAY_MODES","PROGRESSIVE_SYS10",false,true),"payment descriptions");
+    d.addDomainPair(new TopicVO(langs,"REG11_PAY_TYPES","PROGRESSIVE_SYS10",false,true),"payment type descriptions");
     d.addDomainPair(new TopicVO(langs,"REG19_AGENT_TYPES","PROGRESSIVE_SYS10",false,true),"agent types");
     d.addDomainPair(new TopicVO(langs,"REG20_TRANSPORT_MOTIVES","PROGRESSIVE_SYS10",false,true),"transport motives");
     d.addDomainPair(new TopicVO(langs,"SAL01_PRICELISTS","PROGRESSIVE_SYS10",true,false),"pricelist descriptions");

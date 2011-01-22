@@ -1590,6 +1590,11 @@
   <object key="realPaymentTypeCodeReg11DOC19" value="Real Paym. Type" />
   <object key="realPaymentDescriptionSYS10" value="Real Payment Type" />
   <object key="create payment immediately" value="Create payment immediately?" />
+  <object key="you need to specify a rounding account code" value="You need to specify a rounding account code" />
+  <object key="roundingAccountCode" value="Rounding Acc. Code" />
+  <object key="roundingDescription" value="Rounding account" />
+  <object key="rounding costs account code" value="Rounding costs account code" />
+  <object key="rounding proceeds account code" value="Rounding proceeds account code" />
 
   <currencySymbol>R$</currencySymbol>
   <decimalSymbol>,</decimalSymbol>

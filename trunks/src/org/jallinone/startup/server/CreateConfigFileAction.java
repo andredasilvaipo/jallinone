@@ -73,13 +73,13 @@ public class CreateConfigFileAction implements Action {
       return createConfigFile(vo,"ADMIN");
     }
     catch (Throwable ex) {
-      Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"executeCommand","Error while processing request",ex);
+      Logger.error(null,this.getClass().getName(),"executeCommand","Error while processing request",ex);
       return new ErrorResponse(ex.getMessage());
     }
   }
-  
-  
-  
+
+
+
   /**
    * Business logic to execute.
    */
@@ -102,7 +102,7 @@ public class CreateConfigFileAction implements Action {
 		  );
 	  }
 	  catch (Exception ex) {
-		  throw new Exception(ex.getMessage()); 
+		  throw new Exception(ex.getMessage());
 	  }
 	  if (ConnectionManager.isConnectionSourceCreated()) {
 		  // create the database structures...
@@ -182,7 +182,7 @@ public class CreateConfigFileAction implements Action {
 			  }
 			  catch (Exception ex3) {
 			  }
-			  
+
 		  }
 
 		  return new VOResponse("Database configuration file successfully saved.");
@@ -218,14 +218,14 @@ public class CreateConfigFileAction implements Action {
       }
       catch (IOException ex1) {
       }
-      
+
       // update also "conf/applicationContext.xml" file...
       String xmlFile = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"conf/applicationContext.xml";
       BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(xmlFile))));
       StringBuffer sb = new StringBuffer();
       String line = null;
       while((line=br.readLine())!=null) {
-    	  
+
     	  if (line.indexOf("<property name=\"driverName\"")!=-1)
     	  	line = replaceValue(line,driverClass);
     	  else if (line.indexOf("<property name=\"url\"")!=-1)
@@ -234,11 +234,11 @@ public class CreateConfigFileAction implements Action {
   	  		line = replaceValue(line,user);
     	  else if (line.indexOf("<property name=\"password\"")!=-1)
   	  		line = replaceValue(line,password);
-    	  
+
     	  sb.append(line).append("\n");
       }
       br.close();
-      
+
       /*
 		   <bean id="JALLINONE" class="org.enhydra.jdbc.standard.StandardDataSource" destroy-method="shutdown" >
 		     <property name="driverName" value="com.mysql.jdbc.Driver"/>
@@ -247,13 +247,13 @@ public class CreateConfigFileAction implements Action {
 		     <property name="password" value="j"/>
 		   </bean>
        */
-      
+
       PrintWriter pw = new PrintWriter(new FileOutputStream(xmlFile));
       String[] lines = sb.toString().split("\n");
       for(int i=0;i<lines.length;i++)
     	  pw.println(lines[i]);
       pw.close();
-      
+
       return true;
     }
     catch (Throwable ex) {
@@ -268,7 +268,7 @@ public class CreateConfigFileAction implements Action {
     }
   }
 
-  
+
   private String replaceValue(String line,String value) {
 	  int i1 = line.indexOf("value=\"");
 	  if (i1==-1)
@@ -276,10 +276,10 @@ public class CreateConfigFileAction implements Action {
 	  i1 += 7;
 	  int i2 = line.indexOf("\"",i1);
 	  if (i2==-1)
-		  return line;	  
+		  return line;
 	  return line.substring(0,i1)+value+line.substring(i2);
   }
-  
+
 
   /**
    * Remove "pooler.ini" file.
@@ -316,9 +316,9 @@ public class CreateConfigFileAction implements Action {
 
 
 
-  
-  
-  
-  
+
+
+
+
 }
 

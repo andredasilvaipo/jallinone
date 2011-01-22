@@ -162,6 +162,17 @@ public class CompanyParametersFrame extends InternalFrame {
   LabelControl labelInitialVal = new LabelControl();
   NumericControl controlInitialVal = new NumericControl();
 
+	LabelControl labelRoundingCostsCode = new LabelControl();
+	LabelControl labelRoundingProAccCode = new LabelControl();
+	CodLookupControl controlRoundingC = new CodLookupControl();
+	CodLookupControl controlRoundingP = new CodLookupControl();
+	TextControl controlRoundingCdescr = new TextControl();
+	TextControl controlRoundingPdescr = new TextControl();
+	LookupController accCController = new LookupController();
+	LookupServerDataLocator accCDataLocator = new LookupServerDataLocator();
+	LookupController accPController = new LookupController();
+	LookupServerDataLocator accPDataLocator = new LookupServerDataLocator();
+
 
   public CompanyParametersFrame(CompanyParametersController controller) {
     try {
@@ -596,10 +607,80 @@ public class CompanyParametersFrame extends InternalFrame {
      });
 
 
+		 // rounding costs account lookup...
+		 accCDataLocator.setGridMethodName("loadAccounts");
+		 accCDataLocator.setValidationMethodName("validateAccountCode");
+
+		 controlRoundingC.setLookupController(accCController);
+		 controlRoundingC.setControllerMethodName("getAccounts");
+		 accCController.setLookupDataLocator(accCDataLocator);
+		 accCController.setFrameTitle("accounts");
+		 accCController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
+		 accCController.addLookup2ParentLink("accountCodeACC02", "roundingCostsAccountCodeAcc02DOC19");
+		 accCController.addLookup2ParentLink("descriptionSYS10","roundingCostsDescrDOC19");
+		 accCController.setAllColumnVisible(false);
+		 accCController.setVisibleColumn("accountCodeACC02", true);
+		 accCController.setVisibleColumn("descriptionSYS10", true);
+		 accCController.setPreferredWidthColumn("descriptionSYS10", 200);
+		 accCController.setFramePreferedSize(new Dimension(340,400));
+		 accCController.setSortedColumn("accountCodeACC02","ASC",1);
+		 accCController.setFilterableColumn("accountCodeACC02",true);
+		 accCController.setFilterableColumn("descriptionSYS10",true);
+		 accCController.addLookupListener(new LookupListener() {
+
+				public void codeValidated(boolean validated) {}
+
+				public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) { }
+
+				public void beforeLookupAction(ValueObject parentVO) {
+					accCDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanies.getValue());
+					accCDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanies.getValue());
+				}
+
+				public void forceValidate() {}
+
+			});
+
+
+		 // rounding proceeds account lookup...
+		 accPDataLocator.setGridMethodName("loadAccounts");
+		 accPDataLocator.setValidationMethodName("validateAccountCode");
+
+		 controlRoundingP.setLookupController(accPController);
+		 controlRoundingP.setControllerMethodName("getAccounts");
+		 accPController.setLookupDataLocator(accPDataLocator);
+		 accPController.setFrameTitle("accounts");
+		 accPController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
+		 accPController.addLookup2ParentLink("accountCodeACC02", "roundingProceedsAccountCodeAcc02DOC19");
+		 accPController.addLookup2ParentLink("descriptionSYS10","roundingProceedsDescrDOC19");
+		 accPController.setAllColumnVisible(false);
+		 accPController.setVisibleColumn("accountCodeACC02", true);
+		 accPController.setVisibleColumn("descriptionSYS10", true);
+		 accPController.setPreferredWidthColumn("descriptionSYS10", 200);
+		 accPController.setFramePreferedSize(new Dimension(340,400));
+		 accPController.setSortedColumn("accountCodeACC02","ASC",1);
+		 accPController.setFilterableColumn("accountCodeACC02",true);
+		 accPController.setFilterableColumn("descriptionSYS10",true);
+		 accPController.addLookupListener(new LookupListener() {
+
+				 public void codeValidated(boolean validated) {}
+
+				 public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) { }
+
+				 public void beforeLookupAction(ValueObject parentVO) {
+					 accPDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanies.getValue());
+					 accPDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanies.getValue());
+				 }
+
+				 public void forceValidate() {}
+
+			});
+
+
       init();
 
-      setSize(650,500);
-      setMinimumSize(new Dimension(650,500));
+      setSize(650,520);
+      setMinimumSize(new Dimension(650,520));
     }
     catch(Exception e) {
       e.printStackTrace();
@@ -639,6 +720,25 @@ public class CompanyParametersFrame extends InternalFrame {
 
 
   private void jbInit() throws Exception {
+		labelRoundingCostsCode.setText("rounding costs account code");
+		labelRoundingProAccCode.setText("rounding proceeds account code");
+		controlRoundingC.setAttributeName("roundingCostsAccountCodeAcc02DOC19");
+    controlRoundingC.setLinkLabel(labelRoundingCostsCode);
+    controlRoundingC.setMaxCharacters(20);
+    controlRoundingC.setRequired(true);
+		controlRoundingP.setAttributeName("roundingProceedsAccountCodeAcc02DOC19");
+    controlRoundingP.setLinkLabel(labelRoundingProAccCode);
+    controlRoundingP.setMaxCharacters(20);
+    controlRoundingP.setRequired(true);
+		controlRoundingCdescr.setAttributeName("roundingCostsDescrDOC19");
+    controlRoundingCdescr.setEnabled(false);
+		controlRoundingCdescr.setEnabledOnInsert(false);
+		controlRoundingCdescr.setEnabledOnEdit(false);
+		controlRoundingPdescr.setAttributeName("roundingProceedsDescrDOC19");
+    controlRoundingPdescr.setEnabled(false);
+		controlRoundingPdescr.setEnabledOnInsert(false);
+		controlRoundingPdescr.setEnabledOnEdit(false);
+
     panel1.setLayout(gridBagLayout5);
     panel2.setLayout(gridBagLayout6);
     labelAfternoonStartHour.setText("afternoonStartHourSCH02");
@@ -890,29 +990,47 @@ public class CompanyParametersFrame extends InternalFrame {
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     panel2.add(controlOpeningDescr,               new GridBagConstraints(2, 3, 2, 5, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 0, 5), 0, 0));
-    panel2.add(labelAfternoonStartHour,                 new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
-    panel2.add(controlAfternoonStartHour,               new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlAfternoonEndHour,             new GridBagConstraints(3, 5, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(labelMorningStartHour,           new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+
+
+
+		panel2.add(controlRoundingP,       new GridBagConstraints(1, 5, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlMorningEndHour,         new GridBagConstraints(3, 4, 1, 1, 0.0, 0.0
+		panel2.add(controlRoundingCdescr,     new GridBagConstraints(2, 4, 2, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+		panel2.add(controlRoundingPdescr,        new GridBagConstraints(2, 5, 2, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+		panel2.add(labelRoundingCostsCode,     new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+							,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		panel2.add(labelRoundingProAccCode,       new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		panel2.add(controlRoundingC,     new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
+							,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+
+
+
+    panel2.add(labelAfternoonStartHour,                 new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
+    panel2.add(controlAfternoonStartHour,               new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlMorningStartHour,      new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
+    panel2.add(controlAfternoonEndHour,             new GridBagConstraints(3, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(labelMorningEndHour,       new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0
+    panel2.add(labelMorningStartHour,           new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    panel2.add(controlMorningEndHour,         new GridBagConstraints(3, 6, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    panel2.add(controlMorningStartHour,      new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    panel2.add(labelMorningEndHour,       new GridBagConstraints(2, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 9, 5), 0, 0));
-    panel2.add(labelAfternoonEndHour,     new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0
+    panel2.add(labelAfternoonEndHour,     new GridBagConstraints(2, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlSaleSectional,     new GridBagConstraints(1, 6, 2, 1, 0.0, 0.0
+    panel2.add(controlSaleSectional,     new GridBagConstraints(1, 8, 2, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(labelSaleSectional,   new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
+    panel2.add(labelSaleSectional,   new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(labelInitialVal,   new GridBagConstraints(0, 7, 1, 1, 0.0, 1.0
+    panel2.add(labelInitialVal,   new GridBagConstraints(0, 9, 1, 1, 0.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlInitialVal,  new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0
+    panel2.add(controlInitialVal,  new GridBagConstraints(1, 9, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
     controlCreditsCode.setAttributeName("creditAccountCodeAcc02SAL07");

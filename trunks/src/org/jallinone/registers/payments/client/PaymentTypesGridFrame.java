@@ -10,8 +10,10 @@ import org.openswing.swing.table.java.ServerGridDataLocator;
 import org.openswing.swing.table.columns.client.*;
 import org.openswing.swing.util.client.ClientSettings;
 import org.openswing.swing.table.client.GridController;
-import org.jallinone.commons.client.CustomizedColumns;
 import java.math.BigDecimal;
+import org.jallinone.commons.client.*;
+import org.openswing.swing.lookup.client.LookupController;
+import org.openswing.swing.lookup.client.LookupServerDataLocator;
 
 
 /**
@@ -60,6 +62,11 @@ public class PaymentTypesGridFrame extends InternalFrame {
   TextColumn colPaymentType = new TextColumn();
   TextColumn colDescr = new TextColumn();
   ExportButton exportButton = new ExportButton();
+  CompaniesComboColumn colCompany = new CompaniesComboColumn();
+  CodLookupColumn colAccCode = new CodLookupColumn();
+  TextColumn colAccDescr = new TextColumn();
+	LookupController accController = new LookupController();
+	LookupServerDataLocator accDataLocator = new LookupServerDataLocator();
 
 
   public PaymentTypesGridFrame(GridController controller) {
@@ -68,11 +75,29 @@ public class PaymentTypesGridFrame extends InternalFrame {
     gridDataLocator.setServerMethodName("loadPaymentTypes");
     try {
       jbInit();
-      setSize(460,300);
-      setMinimumSize(new Dimension(460,300));
+      setSize(750,300);
+      setMinimumSize(new Dimension(750,300));
 
       CustomizedColumns cust = new CustomizedColumns(new BigDecimal(222),grid);
 
+			// account lookup...
+			accDataLocator.setGridMethodName("loadAccounts");
+			accDataLocator.setValidationMethodName("validateAccountCode");
+
+			colAccCode.setLookupController(accController);
+			accController.setLookupDataLocator(accDataLocator);
+			accController.setFrameTitle("accounts");
+			accController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
+			accController.addLookup2ParentLink("accountCodeACC02", "accountCodeAcc02REG11");
+			accController.addLookup2ParentLink("descriptionSYS10","acc02DescriptionSYS10");
+			accController.setAllColumnVisible(false);
+			accController.setVisibleColumn("accountCodeACC02", true);
+			accController.setVisibleColumn("descriptionSYS10", true);
+			accController.setPreferredWidthColumn("descriptionSYS10", 200);
+			accController.setFramePreferedSize(new Dimension(340,400));
+			accController.setSortedColumn("accountCodeACC02","ASC",1);
+			accController.setFilterableColumn("accountCodeACC02",true);
+			accController.setFilterableColumn("descriptionSYS10",true);
     }
     catch(Exception e) {
       e.printStackTrace();
@@ -109,7 +134,7 @@ public class PaymentTypesGridFrame extends InternalFrame {
     colPaymentType.setColumnName("paymentTypeCodeREG11");
     colPaymentType.setColumnSortable(true);
     colPaymentType.setEditableOnInsert(true);
-    colPaymentType.setPreferredWidth(140);
+    colPaymentType.setPreferredWidth(130);
     colPaymentType.setSortVersus(org.openswing.swing.util.java.Consts.ASC_SORTED);
     colPaymentType.setSortingOrder(1);
     colDescr.setColumnFilterable(false);
@@ -118,7 +143,20 @@ public class PaymentTypesGridFrame extends InternalFrame {
     colDescr.setEditableOnEdit(true);
     colDescr.setEditableOnInsert(true);
     colDescr.setHeaderColumnName("paymentTypeDescription");
-    colDescr.setPreferredWidth(290);
+    colDescr.setPreferredWidth(230);
+    colCompany.setColumnName("companyCodeSys01REG11");
+    colCompany.setEditableOnInsert(true);
+    colCompany.setHeaderColumnName("companyCode");
+    colCompany.setPreferredWidth(90);
+    colCompany.setFunctionCode("REG11");
+    colAccCode.setColumnName("accountCodeAcc02REG11");
+    colAccCode.setEditableOnEdit(true);
+    colAccCode.setEditableOnInsert(true);
+    colAccCode.setHeaderColumnName("accountCodeACC02");
+    colAccCode.setPreferredWidth(80);
+    colAccDescr.setColumnName("acc02DescriptionSYS10");
+    colAccDescr.setHeaderColumnName("accountDescriptionACC06");
+    colAccDescr.setPreferredWidth(180);
     this.getContentPane().add(buttonsPanel, BorderLayout.NORTH);
     buttonsPanel.add(insertButton, null);
     buttonsPanel.add(editButton, null);
@@ -128,8 +166,11 @@ public class PaymentTypesGridFrame extends InternalFrame {
     buttonsPanel.add(exportButton, null);
     buttonsPanel.add(navigatorBar, null);
     this.getContentPane().add(grid, BorderLayout.CENTER);
+    grid.getColumnContainer().add(colCompany, null);
     grid.getColumnContainer().add(colPaymentType, null);
     grid.getColumnContainer().add(colDescr, null);
+    grid.getColumnContainer().add(colAccCode, null);
+    grid.getColumnContainer().add(colAccDescr, null);
   }
 
 }

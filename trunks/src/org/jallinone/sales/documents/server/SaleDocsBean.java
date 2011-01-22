@@ -153,8 +153,10 @@ public class SaleDocsBean  implements SaleDocs {
       bean.setConn(conn);
 
       // retrieve payment info...
+			ArrayList companiesList = new ArrayList();
+			companiesList.add(newVO.getCompanyCodeSys01DOC01());
       LookupValidationParams pars = new LookupValidationParams(newVO.getPaymentCodeReg10DOC01(),new HashMap());
-      Response payResponse = payBean.validatePaymentCode(pars,serverLanguageId,username,new ArrayList());
+      Response payResponse = payBean.validatePaymentCode(pars,serverLanguageId,username,new ArrayList(),companiesList);
       if (payResponse.isError())
         throw new Exception(payResponse.getErrorMessage());
       PaymentVO payVO = (PaymentVO)((VOListResponse)payResponse).getRows().get(0);
@@ -626,8 +628,10 @@ public class SaleDocsBean  implements SaleDocs {
         vo.setCompanyCodeSys01DOC01(companyCode);
 
       // retrieve payment info...
+			ArrayList companiesList = new ArrayList();
+			companiesList.add(vo.getCompanyCodeSys01DOC01());
       LookupValidationParams pars = new LookupValidationParams(vo.getPaymentCodeReg10DOC01(),new HashMap());
-      Response payResponse = payBean.validatePaymentCode(pars,serverLanguageId,username,new ArrayList());
+      Response payResponse = payBean.validatePaymentCode(pars,serverLanguageId,username,new ArrayList(),companiesList);
       if (payResponse.isError())
         throw new Exception(payResponse.getErrorMessage());
 

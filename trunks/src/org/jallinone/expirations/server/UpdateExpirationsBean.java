@@ -155,6 +155,9 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 			attribute2dbField.put("realPaymentTypeCodeReg11DOC19","REAL_PAYMENT_TYPE_CODE_REG11");
 			attribute2dbField.put("paymentTypeCodeReg11DOC19","PAYMENT_TYPE_CODE_REG11");
 
+			attribute2dbField.put("roundingAccountCodeAcc02DOC19","ROUNDING_ACCOUNT_CODE_ACC02");
+			attribute2dbField.put("realAccountCodeAcc02DOC19","REAL_ACCOUNT_CODE_ACC02");
+
       JournalHeaderVO jhVO = null;
       HashMap map = new HashMap();
       String bankAccountCode = null;
@@ -248,6 +251,7 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 
             accountCodeTypeACC06 = ApplicationConsts.ACCOUNT_TYPE_SUPPLIER;
           }
+
           jhVO.setItemDateACC05(newVO.getPayedDateDOC19());
 					Calendar cal = Calendar.getInstance();
 					cal.setTime(newVO.getPayedDateDOC19());
@@ -258,7 +262,7 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
           jrVO.setAccountCodeAcc02ACC06(creditDebitAccountCode);
           jrVO.setAccountCodeACC06(newVO.getCustomerSupplierCodeDOC19());
           jrVO.setAccountCodeTypeACC06(accountCodeTypeACC06);
-          jrVO.setCreditAmountACC06(newVO.getPayedValueDOC19());
+          jrVO.setCreditAmountACC06(newVO.getValueDOC19());
           jrVO.setDescriptionACC06("");
           jrVO.setItemYearAcc05ACC06(jhVO.getItemYearACC05());
           jrVO.setProgressiveAcc05ACC06(jhVO.getProgressiveACC05());
@@ -266,8 +270,8 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 
           jrVO = new JournalRowVO();
           jrVO.setCompanyCodeSys01ACC06(jhVO.getCompanyCodeSys01ACC05());
-          jrVO.setAccountCodeAcc02ACC06(bankAccountCode);
-          jrVO.setAccountCodeACC06(bankAccountCode);
+          jrVO.setAccountCodeAcc02ACC06( newVO.getRealAccountCodeAcc02DOC19()==null?bankAccountCode:newVO.getRealAccountCodeAcc02DOC19() );
+          jrVO.setAccountCodeACC06( newVO.getRealAccountCodeAcc02DOC19()==null?bankAccountCode:newVO.getRealAccountCodeAcc02DOC19() );
           jrVO.setAccountCodeTypeACC06(ApplicationConsts.ACCOUNT_TYPE_ACCOUNT);
           jrVO.setDebitAmountACC06(newVO.getPayedValueDOC19());
           jrVO.setDescriptionACC06("");
@@ -276,10 +280,27 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
           jhVO.addJournalRow(jrVO);
 
 
+					// check if there is a rounding on payment...
+					if (newVO.getPayedValueDOC19()!=null && !newVO.getPayedValueDOC19().equals(newVO.getValueDOC19())) {
+
+						// another accounting movement must be performed, related to rounding...
+						jrVO = new JournalRowVO();
+						jrVO.setCompanyCodeSys01ACC06(jhVO.getCompanyCodeSys01ACC05());
+						jrVO.setAccountCodeAcc02ACC06( newVO.getRoundingAccountCodeAcc02DOC19() );
+						jrVO.setAccountCodeACC06( newVO.getRoundingAccountCodeAcc02DOC19() );
+						jrVO.setAccountCodeTypeACC06(ApplicationConsts.ACCOUNT_TYPE_ACCOUNT);
+						jrVO.setDebitAmountACC06(newVO.getValueDOC19().subtract(newVO.getPayedValueDOC19()));
+						jrVO.setDescriptionACC06("");
+						jrVO.setItemYearAcc05ACC06(jhVO.getItemYearACC05());
+						jrVO.setProgressiveAcc05ACC06(jhVO.getProgressiveACC05());
+						jhVO.addJournalRow(jrVO);
+					}
+
           res = insJornalItemAction.insertJournalItem(jhVO,serverLanguageId,username);
           if (res.isError()) {
             throw new Exception(res.getErrorMessage());
           }
+
 
         }
 
@@ -345,7 +366,7 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 			pstmt.close();
 
 			pstmt = conn.prepareStatement(
-				"SELECT DESCRIPTION,NAME_1,NAME_2,PROGRESSIVE_REG04,VALUE,CUSTOMER_SUPPLIER_CODE "+
+				"SELECT DESCRIPTION,NAME_1,NAME_2,PROGRESSIVE_REG04,VALUE,CUSTOMER_SUPPLIER_CODE,ACCOUNT_CODE_ACC02 "+
 				"FROM DOC19_EXPIRATIONS WHERE "+
 				"COMPANY_CODE_SYS01=? AND DOC_TYPE=? AND DOC_YEAR=? AND DOC_NUMBER=?"
 			);
@@ -361,19 +382,21 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 			BigDecimal progressiveReg04DOC19 = rset.getBigDecimal(4);
 			BigDecimal valueDOC19 = rset.getBigDecimal(5);
 			String customerSupplierCodeDOC19 = rset.getString(6);
+			String accountCode = rset.getString(7);
 			rset.close();
 			pstmt.close();
 
 
-			HashMap map = new HashMap();
-			map.put(ApplicationConsts.COMPANY_CODE_SYS01,companyCode);
-			map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.BANK_ACCOUNT);
-			Response res = userParamAction.loadUserParam(map,serverLanguageId,username);
-			if (res.isError()) {
-				throw new Exception(res.getErrorMessage());
+			if (accountCode==null) {
+				HashMap map = new HashMap();
+				map.put(ApplicationConsts.COMPANY_CODE_SYS01,companyCode);
+				map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.BANK_ACCOUNT);
+				Response res = userParamAction.loadUserParam(map,serverLanguageId,username);
+				if (res.isError()) {
+					throw new Exception(res.getErrorMessage());
+				}
+				accountCode = ((VOResponse)res).getVo().toString();
 			}
-			String bankAccountCode = ((VOResponse)res).getVo().toString();
-
 
 			// generate an accounting item, since the row has been payed...
 			JournalHeaderVO jhVO = new JournalHeaderVO();
@@ -449,8 +472,8 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 
 			jrVO = new JournalRowVO();
 			jrVO.setCompanyCodeSys01ACC06(jhVO.getCompanyCodeSys01ACC05());
-			jrVO.setAccountCodeAcc02ACC06(bankAccountCode);
-			jrVO.setAccountCodeACC06(bankAccountCode);
+			jrVO.setAccountCodeAcc02ACC06(accountCode);
+			jrVO.setAccountCodeACC06(accountCode);
 			jrVO.setAccountCodeTypeACC06(ApplicationConsts.ACCOUNT_TYPE_ACCOUNT);
 			jrVO.setDebitAmountACC06(valueDOC19);
 			jrVO.setDescriptionACC06("");
@@ -459,7 +482,7 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 			jhVO.addJournalRow(jrVO);
 
 
-			res = insJornalItemAction.insertJournalItem(jhVO,serverLanguageId,username);
+			Response res = insJornalItemAction.insertJournalItem(jhVO,serverLanguageId,username);
 			if (res.isError()) {
 				throw new Exception(res.getErrorMessage());
 			}

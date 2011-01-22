@@ -70,9 +70,10 @@ public class ValidatePaymentTypeCodeAction implements Action {
 		try {
 			CustomizedWindows cust = ((JAIOUserSessionParameters)userSessionPars).getCustomizedWindows();
 			ArrayList customizedFields = cust.getCustomizedFields(new BigDecimal(222));
+			ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("REG11");
 
 			Payments bean = (Payments)JAIOBeanFactory.getInstance().getBean(Payments.class);
-			Response answer = bean.validatePaymentTypeCode(validationPars,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),customizedFields);
+			Response answer = bean.validatePaymentTypeCode(validationPars,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),customizedFields,companiesList);
 
 			return answer;
 		}

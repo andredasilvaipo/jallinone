@@ -57,6 +57,10 @@ public class UserParametersVO extends ValueObjectImpl {
   private String vatEndorseAccountDescrDOC19;
   private String bankAccountCodeAcc02DOC19;
   private String vatEndorseAccountCodeAcc02DOC19;
+	private String roundingCostsAccountCodeAcc02DOC19;
+	private String roundingCostsDescrDOC19;
+	private String roundingProceedsAccountCodeAcc02DOC19;
+	private String roundingProceedsDescrDOC19;
 
 
   public UserParametersVO() {
@@ -212,6 +216,30 @@ public class UserParametersVO extends ValueObjectImpl {
   }
   public void setWarehouseDescriptionSYS10(String warehouseDescriptionSYS10) {
     this.warehouseDescriptionSYS10 = warehouseDescriptionSYS10;
+  }
+  public String getRoundingCostsAccountCodeAcc02DOC19() {
+    return roundingCostsAccountCodeAcc02DOC19;
+  }
+  public String getRoundingProceedsAccountCodeAcc02DOC19() {
+    return roundingProceedsAccountCodeAcc02DOC19;
+  }
+  public void setRoundingCostsAccountCodeAcc02DOC19(String roundingCostsAccountCodeAcc02DOC19) {
+    this.roundingCostsAccountCodeAcc02DOC19 = roundingCostsAccountCodeAcc02DOC19;
+  }
+  public void setRoundingProceedsAccountCodeAcc02DOC19(String roundingProceedsAccountCodeAcc02DOC19) {
+    this.roundingProceedsAccountCodeAcc02DOC19 = roundingProceedsAccountCodeAcc02DOC19;
+  }
+  public String getRoundingProceedsDescrDOC19() {
+    return roundingProceedsDescrDOC19;
+  }
+  public String getRoundingCostsDescrDOC19() {
+    return roundingCostsDescrDOC19;
+  }
+  public void setRoundingCostsDescrDOC19(String roundingCostsDescrDOC19) {
+    this.roundingCostsDescrDOC19 = roundingCostsDescrDOC19;
+  }
+  public void setRoundingProceedsDescrDOC19(String roundingProceedsDescrDOC19) {
+    this.roundingProceedsDescrDOC19 = roundingProceedsDescrDOC19;
   }
 
 }

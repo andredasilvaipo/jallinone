@@ -33,7 +33,7 @@ import java.math.BigDecimal;
  */
 public class ApplicationConsts {
 
-  public static final int DB_VERSION = 10;
+  public static final int DB_VERSION = 11;
 
   public static final String DO_NOT_ADD_ENABLED = "DO_NOT_ADD_ENABLED";
 
@@ -379,6 +379,9 @@ public class ApplicationConsts {
 	public static final String SHOW_ONLY_MOVABLE_ITEMS = "SHOW_ONLY_MOVABLE_ITEMS";
 
 	public static final String SHOW_ONLY_PURCHASED_ITEMS = "SHOW_ONLY_PURCHASED_ITEMS";
+
+	public static final String ROUNDING_COSTS_CODE = "ROUNDING_C_CODE";
+	public static final String ROUNDING_PROCEEDS_CODE = "ROUNDING_P_CODE";
 
 
 }

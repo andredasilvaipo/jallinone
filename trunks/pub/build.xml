@@ -763,7 +763,7 @@
         <include name="*.ini"/>
         <include name="*.jnlp"/>
         <exclude name="pooler.*"/>
-        <exclude name="conf/*.xml"/>
+        <include name="conf/*.xml"/>
       </fileset>
     </copy>
     <copy todir="${tmp}/src" >

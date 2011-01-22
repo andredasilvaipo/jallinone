@@ -1678,6 +1678,11 @@
   <object key="realPaymentTypeCodeReg11DOC19" value="T.Pag.Effett." />
   <object key="realPaymentDescriptionSYS10" value="Tipo Pagamento Effettivo" />
   <object key="create payment immediately" value="Eseguire subito il pagamento?" />
+  <object key="you need to specify a rounding account code" value="E' necessario specificare anche un conto per gli arrotondamenti" />
+  <object key="roundingAccountCode" value="Cod. Conto Arrotond." />
+  <object key="roundingDescription" value="Conto arrotondamenti" />
+  <object key="rounding costs account code" value="Conto costi abbuoni passivi" />
+  <object key="rounding proceeds account code" value="Conto ricavi abbuoni attivi" />
 
 <!-- application translations -->
 

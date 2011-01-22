@@ -128,8 +128,10 @@ public class InsertPurchaseDocBean implements InsertPurchaseDoc {
         vo.setCompanyCodeSys01DOC06(companyCode);
 
       // retrieve payment info...
+			ArrayList companiesList = new ArrayList();
+			companiesList.add(vo.getCompanyCodeSys01DOC06());
       LookupValidationParams pars = new LookupValidationParams(vo.getPaymentCodeReg10DOC06(),new HashMap());
-      Response payResponse = payBean.validatePaymentCode(pars,serverLanguageId,username,new ArrayList());
+      Response payResponse = payBean.validatePaymentCode(pars,serverLanguageId,username,new ArrayList(),companiesList);
       if (payResponse.isError())
         return new VOResponse(payResponse.getErrorMessage());
       PaymentVO payVO = (PaymentVO)((VOListResponse)payResponse).getRows().get(0);

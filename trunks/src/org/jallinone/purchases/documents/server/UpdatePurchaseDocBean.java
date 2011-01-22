@@ -58,7 +58,7 @@ import javax.sql.DataSource;
 public class UpdatePurchaseDocBean  implements UpdatePurchaseDoc {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -66,9 +66,9 @@ public class UpdatePurchaseDocBean  implements UpdatePurchaseDoc {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -78,7 +78,7 @@ public class UpdatePurchaseDocBean  implements UpdatePurchaseDoc {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -123,8 +123,10 @@ public class UpdatePurchaseDocBean  implements UpdatePurchaseDoc {
 
 
       // retrieve payment info...
+			ArrayList companiesList = new ArrayList();
+			companiesList.add(newVO.getCompanyCodeSys01DOC06());
       LookupValidationParams pars = new LookupValidationParams(newVO.getPaymentCodeReg10DOC06(),new HashMap());
-      Response payResponse = payBean.validatePaymentCode(pars,serverLanguageId,username,new ArrayList());
+      Response payResponse = payBean.validatePaymentCode(pars,serverLanguageId,username,new ArrayList(),companiesList);
       if (payResponse.isError())
         return new VOResponse(payResponse.getErrorMessage());
       PaymentVO payVO = (PaymentVO)((VOListResponse)payResponse).getRows().get(0);
@@ -246,7 +248,7 @@ public class UpdatePurchaseDocBean  implements UpdatePurchaseDoc {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
         payBean.setConn(null);
         currBean.setConn(null);

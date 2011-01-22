@@ -1255,7 +1255,7 @@ public class InDeliveryNotesBean  implements InDeliveryNotes {
       pstmt.setBigDecimal(7,vo.getDocYearDOC09());
       pstmt.setBigDecimal(8,vo.getDocNumberDOC09());
       pstmt.setString(9,vo.getDocTypeDoc06DOC09());
-      pstmt.setString(10,vo.getDocTypeDoc06DOC09());
+      pstmt.setBigDecimal(10,vo.getDocYearDoc06DOC09());
       pstmt.setBigDecimal(11,vo.getDocNumberDoc06DOC09());
       ResultSet rset = pstmt.executeQuery();
       if (rset.next()) {

@@ -51,19 +51,19 @@ public interface Payments {
 
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public PaymentVO getPayment();
 
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public PaymentInstalmentVO getPaymentInstalment();
 
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public PaymentTypeVO getPaymentType();
 
@@ -78,9 +78,9 @@ public interface Payments {
 
 	public VOListResponse loadPaymentInstalments(GridParams gridParams,String serverLanguageId,String username) throws Throwable;
 
-	public VOListResponse loadPayments(GridParams gridParams,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
+	public VOListResponse loadPayments(GridParams gridParams,String serverLanguageId,String username,ArrayList customizedFields,ArrayList companiesList) throws Throwable;
 
-	public VOListResponse loadPaymentTypes(GridParams gridParams,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
+	public VOListResponse loadPaymentTypes(GridParams gridParams,String serverLanguageId,String username,ArrayList customizedFields,ArrayList companiesList) throws Throwable;
 
 	public VOListResponse updatePaymentInstalments(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
 
@@ -88,9 +88,9 @@ public interface Payments {
 
 	public VOListResponse updatePaymentTypes(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
 
-	public VOListResponse validatePaymentCode(LookupValidationParams validationPars,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
+	public VOListResponse validatePaymentCode(LookupValidationParams validationPars,String serverLanguageId,String username,ArrayList customizedFields,ArrayList companiesList) throws Throwable;
 
-	public VOListResponse validatePaymentTypeCode(LookupValidationParams validationPars,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
+	public VOListResponse validatePaymentTypeCode(LookupValidationParams validationPars,String serverLanguageId,String username,ArrayList customizedFields,ArrayList companiesList) throws Throwable;
 
 
 }

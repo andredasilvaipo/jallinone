@@ -133,9 +133,9 @@ public class GetQueryInfoUtil  {
           vo.setColumnType(meta.getColumnTypeName(i+1)+"("+vo.getColumnSize().intValue()+")");
         }
 
-				tName = meta.getTableName(i+1);
+    		tName = meta.getTableName(i+1);
         tables.put(tName,new ArrayList());
-        vo.setColumnName(tName==null || tName.equals("")?"":(tName+".")+meta.getColumnName(i+1));
+        vo.setColumnName((tName==null || tName.equals("")?"":(tName+"."))+meta.getColumnName(i+1));
         select += vo.getColumnName()+",";
 //        else
 //          vo.setColumnName(colNames.get(i).toString());
@@ -174,10 +174,10 @@ public class GetQueryInfoUtil  {
 
         tableName = en.nextElement().toString();
         pks = (ArrayList)tables.get(tableName);
-        rset = conn.getMetaData().getPrimaryKeys(null,null,tableName);
+        rset = conn.getMetaData().getPrimaryKeys(null,null,tableName.equals("")?tableVO.getMainTables().get(0).toString():tableName);
         stmt = rset.getStatement();
         while(rset.next()) {
-          pks.add(tableName+"."+rset.getString(4));
+          pks.add((tableName.equals("")?"":(tableName+"."))+rset.getString(4));
         }
         tableVO.addPrimaryKeys(tableName,pks);
       }

@@ -545,6 +545,9 @@ public class PosFrame extends JFrame {
 			}
 
 			public void beforeLookupAction(ValueObject parentVO) {
+				GridCustomerVO vo = (GridCustomerVO)customerController.getLookupVO();
+				customerDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01REG04());
+				customerDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01REG04());
 				customerDataLocator.getLookupFrameParams().put(ApplicationConsts.SUBJECT_TYPE,ApplicationConsts.SUBJECT_PEOPLE_CUSTOMER);
 			}
 

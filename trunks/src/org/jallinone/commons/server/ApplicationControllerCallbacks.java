@@ -70,7 +70,7 @@ public class ApplicationControllerCallbacks extends ControllerCallbacks {
 	  catch (Throwable t) {
 		  t.printStackTrace();
 	  }
-	  
+
 	  // check for additional sql scripts...
 	  if (ConnectionManager.isConnectionSourceCreated()) {
 		  Connection conn = null;
@@ -83,7 +83,8 @@ public class ApplicationControllerCallbacks extends ControllerCallbacks {
 		  }
 		  catch (Throwable t) {
 			  try {
-				  conn.rollback();
+					if (conn!=null)
+						conn.rollback();
 			  } catch (SQLException e) {
 				  e.printStackTrace();
 			  }

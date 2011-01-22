@@ -223,7 +223,6 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
       parsBean.setConn(conn); // use same transaction...
 			loadSaleDocRowBean.setConn(conn);
 
-
       // retrieve document header...
       DetailSaleDocVO docVO = docAction.loadSaleDoc(pk,serverLanguageId,username,new ArrayList());
 
@@ -245,13 +244,16 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
 
 
 			// retrieve payment instalments...
-			res = payAction.validatePaymentCode(new LookupValidationParams(docVO.getPaymentCodeReg10DOC01(),new HashMap()),serverLanguageId,username,new ArrayList());
+			ArrayList compList = new ArrayList();
+			compList.add(docVO.getCompanyCodeSys01DOC01());
+			res = payAction.validatePaymentCode(new LookupValidationParams(docVO.getPaymentCodeReg10DOC01(),new HashMap()),serverLanguageId,username,new ArrayList(),compList);
 			if (res.isError()) {
 				throw new Exception(res.getErrorMessage());
 			}
 			PaymentVO payVO = (PaymentVO)((VOListResponse)res).getRows().get(0);
 
 			gridParams = new GridParams();
+			gridParams.getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,docVO.getCompanyCodeSys01DOC01());
 			gridParams.getOtherGridParams().put(ApplicationConsts.PAYMENT_CODE_REG10,docVO.getPaymentCodeReg10DOC01());
 			res = payAction.loadPaymentInstalments(gridParams,serverLanguageId,username);
 			if (res.isError()) {
@@ -735,13 +737,23 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
       if (paymentInstallments.size()>1 || (paymentInstallments.size()==1 && ((PaymentInstalmentVO)paymentInstallments.get(0)).getInstalmentDaysREG17().intValue()>0 )) {
 */
 
+
+			HashMap map = new HashMap();
+			map.put(ApplicationConsts.COMPANY_CODE_SYS01,docVO.getCompanyCodeSys01DOC01());
+			map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.ROUNDING_PROCEEDS_CODE);
+			res = parsBean.loadUserParam(map,serverLanguageId,username);
+			if (res.isError()) {
+				throw new Exception(res.getErrorMessage());
+			}
+			String roundingAccountCode = ((VOResponse)res).getVo().toString();
+
       // create ALWAYS expirations in DOC19...
       PaymentInstalmentVO inVO = null;
       pstmt = conn.prepareStatement(
         "insert into DOC19_EXPIRATIONS(COMPANY_CODE_SYS01,DOC_TYPE,DOC_YEAR,DOC_NUMBER,DOC_SEQUENCE,PROGRESSIVE,"+
 				 "DOC_DATE,EXPIRATION_DATE,NAME_1,NAME_2,VALUE,DESCRIPTION,CUSTOMER_SUPPLIER_CODE,PROGRESSIVE_REG04,"+
-				 "CURRENCY_CODE_REG03,PAYMENT_TYPE_CODE_REG11,PAYED,REAL_PAYMENT_TYPE_CODE_REG11,PAYED_DATE,PAYED_VALUE) "+
-				 "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+				 "CURRENCY_CODE_REG03,PAYMENT_TYPE_CODE_REG11,PAYED,REAL_PAYMENT_TYPE_CODE_REG11,PAYED_DATE,PAYED_VALUE,REAL_ACCOUNT_CODE_ACC02,ROUNDING_ACCOUNT_CODE_ACC02) "+
+				 "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
       );
       long startTime = docVO.getDocDateDOC01().getTime(); // invoice date...
       if (payVO.getStartDayREG10().equals(ApplicationConsts.START_DAY_END_MONTH)) {
@@ -794,12 +806,16 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
 					pstmt.setString(18,payVO.getPaymentTypeCodeReg11REG10());
 					pstmt.setDate(19,new java.sql.Date(startTime + inVO.getInstalmentDaysREG17().longValue()*86400*1000));
 					pstmt.setBigDecimal(20,CurrencyConversionUtils.convertCurrencyToCurrency(amount,conv));
+					pstmt.setString(21,payVO.getAccountCodeAcc02REG11());
+					pstmt.setString(22,roundingAccountCode);
         }
 				else {
 					pstmt.setString(17,"N");
 					pstmt.setString(18,null);
 					pstmt.setDate(19,null);
 					pstmt.setBigDecimal(20,null);
+					pstmt.setString(21,payVO.getAccountCodeAcc02REG11());
+					pstmt.setString(22,roundingAccountCode);
 				}
 
         pstmt.execute();
@@ -1042,7 +1058,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
 
        	if (pk.getDocTypeDOC01().equals(ApplicationConsts.SALE_DESK_DOC_TYPE)) {
 
-          HashMap map = new HashMap();
+          map = new HashMap();
           map.put(ApplicationConsts.COMPANY_CODE_SYS01,docVO.getCompanyCodeSys01DOC01());
           map.put(ApplicationConsts.PARAM_CODE,ApplicationConsts.CASE_ACCOUNT);
           res = parsBean.loadUserParam(map,serverLanguageId,username);
@@ -1161,7 +1177,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
         taxableIncomeAction.setConn(null);
         vatRegisterAction.setConn(null);
         parsBean.setConn(null);
-				loadSaleDocRowBean.setConn(conn);
+				loadSaleDocRowBean.setConn(null);
       } catch (Exception ex) {}
     }
   }

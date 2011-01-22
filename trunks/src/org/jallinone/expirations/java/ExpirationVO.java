@@ -58,6 +58,12 @@ public class ExpirationVO extends ValueObjectImpl {
 	private String paymentTypeCodeReg11DOC19;
 	private String paymentDescriptionSYS10;
 
+	private String roundingAccountCodeAcc02DOC19;
+	private String roundingAcc02DescriptionSYS10;
+
+	private String realAccountCodeAcc02DOC19;
+	private String realAcc02DescriptionSYS10;
+
 
   public ExpirationVO() {
   }
@@ -207,6 +213,30 @@ public class ExpirationVO extends ValueObjectImpl {
   }
   public void setRealPaymentTypeCodeReg11DOC19(String realPaymentTypeCodeReg11DOC19) {
     this.realPaymentTypeCodeReg11DOC19 = realPaymentTypeCodeReg11DOC19;
+  }
+  public String getRealAcc02DescriptionSYS10() {
+    return realAcc02DescriptionSYS10;
+  }
+  public String getRealAccountCodeAcc02DOC19() {
+    return realAccountCodeAcc02DOC19;
+  }
+  public String getRoundingAcc02DescriptionSYS10() {
+    return roundingAcc02DescriptionSYS10;
+  }
+  public String getRoundingAccountCodeAcc02DOC19() {
+    return roundingAccountCodeAcc02DOC19;
+  }
+  public void setRoundingAccountCodeAcc02DOC19(String roundingAccountCodeAcc02DOC19) {
+    this.roundingAccountCodeAcc02DOC19 = roundingAccountCodeAcc02DOC19;
+  }
+  public void setRoundingAcc02DescriptionSYS10(String roundingAcc02DescriptionSYS10) {
+    this.roundingAcc02DescriptionSYS10 = roundingAcc02DescriptionSYS10;
+  }
+  public void setRealAccountCodeAcc02DOC19(String realAccountCodeAcc02DOC19) {
+    this.realAccountCodeAcc02DOC19 = realAccountCodeAcc02DOC19;
+  }
+  public void setRealAcc02DescriptionSYS10(String realAcc02DescriptionSYS10) {
+    this.realAcc02DescriptionSYS10 = realAcc02DescriptionSYS10;
   }
 
 }

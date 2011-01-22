@@ -58,8 +58,8 @@ public class TableVO extends ValueObjectImpl {
 
 
   public TableVO() {}
-  
-  
+
+
   public TableVO(String sql,ArrayList mainTables,boolean convertColumnHeaders) {
     this.sql = sql;
     this.mainTables = mainTables;
@@ -110,9 +110,13 @@ public class TableVO extends ValueObjectImpl {
 
 
   public boolean isPrimaryKey(String columnName) {
-    if (columnName.indexOf(".")==-1)
-      return false;
-    ArrayList pks = getPrimaryKeys(columnName.substring(0,columnName.indexOf(".")));
+    if (columnName.indexOf(".")==-1) {
+			ArrayList pks = getPrimaryKeys("");
+			if (pks==null)
+				return false;
+			return pks.contains(columnName);
+    }
+		ArrayList pks = getPrimaryKeys(columnName.substring(0,columnName.indexOf(".")));
     if (pks==null)
       return false;
     return pks.contains(columnName);
@@ -127,7 +131,7 @@ public class TableVO extends ValueObjectImpl {
     this.foreingKeys = foreingKeys;
   }
 
-  
+
 
   public void setColumns(ArrayList columns) {
 	  this.columns = columns;
