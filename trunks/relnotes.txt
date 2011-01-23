@@ -1,9 +1,17 @@
 
 
+Release Notes 2.5.7.1
+---------------------
+
+Added russian translations of JAllInOne Mobile.
+Fixed problem on upgrading database.
+
+
+
 Release Notes 2.5.7
 -------------------
 
-Change payments, payment types and payment installments windows: now codes are defined per company.
+Changed payments, payment types and payment installments windows: now codes are defined per company.
 Added account code to payment types window, in order to define an account for payments used in expirations window.
 Improved expirations window:
 - added account code column, in order to specify the account code to use for payment

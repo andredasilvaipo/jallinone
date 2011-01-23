@@ -88,11 +88,11 @@ public class SQLExecutionBean {
       String defaultValue = null;
       int index = -1;
       StringBuffer unicode = new StringBuffer();
-      boolean useDefaultValue =
-          vo.getDriverName().equals("oracle.jdbc.driver.OracleDriver") ||
-          vo.getDriverName().equals("com.microsoft.jdbc.sqlserver.SQLServerDriver") ||
-					vo.getDriverName().equals("com.microsoft.sqlserver.jdbc.SQLServerDriver") ||
-          vo.getDriverName().equals("com.mysql.jdbc.Driver");
+      boolean useDefaultValue = false;
+//          vo.getDriverName().equals("oracle.jdbc.driver.OracleDriver") ||
+//          vo.getDriverName().equals("com.microsoft.jdbc.sqlserver.SQLServerDriver") ||
+//					vo.getDriverName().equals("com.microsoft.sqlserver.jdbc.SQLServerDriver") ||
+//          vo.getDriverName().equals("com.mysql.jdbc.Driver");
       while ( (line = br.readLine()) != null) {
         sql.append(' ').append(line);
         if (line.endsWith(";")) {
@@ -382,6 +382,8 @@ public class SQLExecutionBean {
         }
         pstmt.close();
       }
+
+	     conn.commit();
 
     }
     catch (Throwable ex) {
