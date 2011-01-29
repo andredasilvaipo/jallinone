@@ -23,10 +23,11 @@ import org.jallinone.sales.customers.java.GridCustomerVO;
 import org.jallinone.purchases.suppliers.java.GridSupplierVO;
 import java.util.Date;
 import org.openswing.swing.domains.java.Domain;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 import org.openswing.swing.form.client.Form;
 import org.jallinone.registers.payments.java.PaymentTypeVO;
+import java.awt.event.*;
+import org.openswing.swing.util.client.ClientUtils;
+import org.openswing.swing.util.java.Consts;
 
 
 /**
@@ -123,6 +124,9 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
 
 	LookupController roundingAccController = new LookupController();
 	LookupServerDataLocator roundingAccDataLocator = new LookupServerDataLocator();
+  CurrencyColumn colAlreadyPayed = new CurrencyColumn();
+  JPanel payPanel = new JPanel();
+  GenericButton buttonPayments = new GenericButton(new ImageIcon(ClientUtils.getImage("coins.gif")));
 
 
   public ExpirationsGridFrame(GridController controller) {
@@ -305,6 +309,7 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
 
       colValue.setDynamicSettings(this);
 			colPayedValue.setDynamicSettings(this);
+			colAlreadyPayed.setDynamicSettings(this);
 
 
 
@@ -419,6 +424,11 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
 
 
   private void jbInit() throws Exception {
+	  buttonPayments.setButtonBehavior(Consts.BUTTON_IMAGE_AND_TEXT);
+		buttonPayments.setHorizontalTextPosition(SwingConstants.LEADING);
+		buttonPayments.setText("payments");
+
+
     grid.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     saveButton.setExecuteAsThread(true);
     grid.setValueObjectClassName("org.jallinone.expirations.java.ExpirationVO");
@@ -562,6 +572,10 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
     colRoundingDescr.setColumnRequired(false);
     colRoundingDescr.setHeaderColumnName("roundingDescription");
     colRoundingDescr.setPreferredWidth(180);
+    colAlreadyPayed.setColumnName("alreadyPayedDOC19");
+    colAlreadyPayed.setHeaderColumnName("already payed");
+    colAlreadyPayed.setPreferredWidth(90);
+    buttonPayments.addActionListener(new ExpirationsGridFrame_buttonPayments_actionAdapter(this));
     topPanel.add(filterPanel,BorderLayout.CENTER);
     filterPanel.add(labelDocType,      new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
@@ -586,6 +600,7 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
 
 		grid.getColumnContainer().add(colPayedValue, null);
 		grid.getColumnContainer().add(colPayedDate, null);
+    grid.getColumnContainer().add(colAlreadyPayed, null);
 
     grid.getColumnContainer().add(colValue, null);
     grid.getColumnContainer().add(colExpDate, null);
@@ -626,6 +641,8 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     grid.getColumnContainer().add(colRoundingAccCode, null);
     grid.getColumnContainer().add(colRoundingDescr, null);
+    this.getContentPane().add(payPanel,  BorderLayout.SOUTH);
+    payPanel.add(buttonPayments, null);
   }
 
 
@@ -666,4 +683,34 @@ public class ExpirationsGridFrame extends InternalFrame implements CurrencyColum
   }
 
 
+  void buttonPayments_actionPerformed(ActionEvent e) {
+		new PaymentsGridFrame(
+			this,
+			grid,
+			(String)grid.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01),
+			(BigDecimal)grid.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_REG04),
+			controlStartDate.getDate(),
+			controlEndDate.getDate(),
+			(String)controlCodCustomer.getValue(),
+			(String)controlCodSupplier.getValue()
+		);
+  }
+
+
+  public GenericButton getButtonPayments() {
+    return buttonPayments;
+  }
+
+
+}
+
+class ExpirationsGridFrame_buttonPayments_actionAdapter implements java.awt.event.ActionListener {
+  ExpirationsGridFrame adaptee;
+
+  ExpirationsGridFrame_buttonPayments_actionAdapter(ExpirationsGridFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.buttonPayments_actionPerformed(e);
+  }
 }

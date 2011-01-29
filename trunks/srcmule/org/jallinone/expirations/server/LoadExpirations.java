@@ -57,7 +57,13 @@ public interface LoadExpirations {
 	 */
 	public ExpirationVO getExpiration();
 
+
 	public VOListResponse loadExpirations(GridParams gridPars,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable;
 
+	public VOListResponse loadPayments(GridParams gridPars,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable;
+
+	public VOListResponse loadPaymentDistributions(String companyCode,BigDecimal progressiveDOC27,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
+
+	
 }
 

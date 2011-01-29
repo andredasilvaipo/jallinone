@@ -1,5 +1,18 @@
 
 
+Release Notes 2.5.8
+-------------------
+
+Include 2.3.6 version of OpenSwing.
+Added payments sub-window to expiration window.
+Fixed delivery notes report generation with Oracle database.
+Fixed problem with inventory report.
+Fixed problem with expirations creation in case of immediate payments.
+Fixed problem on validating warehouse motive in manual movements.
+
+
+
+
 Release Notes 2.5.7.1
 ---------------------
 

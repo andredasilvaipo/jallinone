@@ -64,6 +64,8 @@ public class ExpirationVO extends ValueObjectImpl {
 	private String realAccountCodeAcc02DOC19;
 	private String realAcc02DescriptionSYS10;
 
+	private java.math.BigDecimal alreadyPayedDOC19;
+
 
   public ExpirationVO() {
   }
@@ -237,6 +239,12 @@ public class ExpirationVO extends ValueObjectImpl {
   }
   public void setRealAcc02DescriptionSYS10(String realAcc02DescriptionSYS10) {
     this.realAcc02DescriptionSYS10 = realAcc02DescriptionSYS10;
+  }
+  public java.math.BigDecimal getAlreadyPayedDOC19() {
+    return alreadyPayedDOC19;
+  }
+  public void setAlreadyPayedDOC19(java.math.BigDecimal alreadyPayedDOC19) {
+    this.alreadyPayedDOC19 = alreadyPayedDOC19;
   }
 
 }

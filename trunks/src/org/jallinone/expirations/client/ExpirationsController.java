@@ -11,6 +11,8 @@ import org.openswing.swing.message.receive.java.ErrorResponse;
 import java.util.HashMap;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.openswing.swing.message.receive.java.VOResponse;
+import org.openswing.swing.client.GridControl;
+import org.openswing.swing.util.java.Consts;
 
 
 /**
@@ -85,6 +87,22 @@ public class ExpirationsController extends GridController {
   }
 
 
+		/**
+		 * @param grid grid
+		 * @param row selected row index
+		 * @param attributeName attribute name that identifies the selected grid column
+		 * @return <code>true</code> if the selected cell is editable, <code>false</code> otherwise
+		 */
+		public boolean isCellEditable(GridControl grid,int row,String attributeName) {
+			ExpirationVO vo = (ExpirationVO)grid.getVOListTableModel().getObjectForRow(row);
+
+			if (attributeName.equals("alreadyPayedDOC19") &&
+					vo.getAlreadyPayedDOC19()!=null && vo.getAlreadyPayedDOC19().doubleValue()!=0)
+				return false;
+			return grid.isFieldEditable(row,attributeName);
+		}
+
+
 
 		/**
 		 * Callback method invoked each time a cell is edited: this method define if the new value is valid.
@@ -145,6 +163,17 @@ public class ExpirationsController extends GridController {
 			}
 
 			return true;
+		}
+
+
+
+
+		/**
+		 * Callback method invoked each time the grid mode is changed.
+		 * @param currentMode current grid mode
+		 */
+		public void modeChanged(int currentMode) {
+			gridFrame.getButtonPayments().setEnabled(currentMode==Consts.READONLY);
 		}
 
 

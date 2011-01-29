@@ -197,7 +197,7 @@
   <object key="german" value="Немецкий" />
   <object key="russian" value="Русский" />
   <object key="croatian" value="Хорватский" />
-  
+
   <object key="male" value="Мужской" />
   <object key="female" value="Женский" />
 
@@ -1686,6 +1686,14 @@
   <object key="" value="" />
   <object key="" value="" />
   <object key="" value="" />
+
+  <object key="already payed" value="Already payed" />
+  <object key="payment date" value="Payment date" />
+  <object key="account description" value="Account description" />
+  <object key="exp" value="Exp." />
+  <object key="you need to specify at least one expiration" value="You need to specify at least one expiration" />
+  <object key="expirations must have a payment value" value="Expirations must have a payment value" />
+  <object key="payments specified for expirations are not equal to the total payment value" value="Payments specified for expirations are not equal to the total payment value" />
 
   <currencySymbol>р</currencySymbol>
   <decimalSymbol>,</decimalSymbol>

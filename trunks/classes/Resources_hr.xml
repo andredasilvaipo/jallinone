@@ -1645,6 +1645,14 @@
   <object key="rounding costs account code" value="Rounding costs account code" />
   <object key="rounding proceeds account code" value="Rounding proceeds account code" />
 
+  <object key="already payed" value="Already payed" />
+  <object key="payment date" value="Payment date" />
+  <object key="account description" value="Account description" />
+  <object key="exp" value="Exp." />
+  <object key="you need to specify at least one expiration" value="You need to specify at least one expiration" />
+  <object key="expirations must have a payment value" value="Expirations must have a payment value" />
+  <object key="payments specified for expirations are not equal to the total payment value" value="Payments specified for expirations are not equal to the total payment value" />
+
   <currencySymbol>Kn</currencySymbol>
   <decimalSymbol>,</decimalSymbol>
   <groupingSymbol>.</groupingSymbol>

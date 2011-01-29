@@ -69,7 +69,7 @@ DOC08_DELIVERY_NOTES.TRANSPORT_MOTIVE_CODE_REG20,SYS10_TRANSLATIONS_B.DESCRIPTIO
 DOC08_DELIVERY_NOTES.PROGRESSIVE_REG04,PUR01_SUPPLIERS.SUPPLIER_CODE,REG04_SUBJECTS.NAME_1,
 WAR01_WAREHOUSES.PROGRESSIVE_HIE02, DOC08_DELIVERY_NOTES.DOC_SEQUENCE  from 
 DOC08_DELIVERY_NOTES,WAR01_WAREHOUSES,REG09_CARRIERS,SYS10_TRANSLATIONS,PUR01_SUPPLIERS,REG04_SUBJECTS,
-REG20_TRANSPORT_MOTIVES,SYS10_TRANSLATIONS AS SYS10_TRANSLATIONS_B where 
+REG20_TRANSPORT_MOTIVES,SYS10_TRANSLATIONS SYS10_TRANSLATIONS_B where 
 DOC08_DELIVERY_NOTES.COMPANY_CODE_SYS01=WAR01_WAREHOUSES.COMPANY_CODE_SYS01 and 
 DOC08_DELIVERY_NOTES.WAREHOUSE_CODE_WAR01=WAR01_WAREHOUSES.WAREHOUSE_CODE and 
 DOC08_DELIVERY_NOTES.CARRIER_CODE_REG09=REG09_CARRIERS.CARRIER_CODE and 
@@ -311,7 +311,7 @@ $R{opened}]]></textFieldExpression>
 					<textElement>
 						<font fontName="Courier New" pdfFontName="Helvetica" isBold="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DOC_REF}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DOC_REF}==null?"":$F{DOC_REF}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -337,8 +337,12 @@ $R{opened}]]></textFieldExpression>
 					<textElement>
 						<font fontName="Courier New" pdfFontName="Helvetica" isBold="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{WAREHOUSE_CODE_WAR01}+" "+$F{DESCRIPTION}+
-" "+$F{ADDRESS}+" "+$F{ZIP}+" "+$F{CITY}+" "+($F{PROVINCE}.equals("")?"":$F{PROVINCE})+" "+$F{COUNTRY}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{WAREHOUSE_CODE_WAR01}+" "+$F{DESCRIPTION}+" "+
+($F{ADDRESS}==null?"":($F{ADDRESS}+" "))+
+($F{ZIP}==null?"":($F{ZIP}+" "))+
+($F{CITY}==null?"":($F{CITY}+" "))+
+($F{PROVINCE}==null || $F{PROVINCE}.equals("")?"":$F{PROVINCE})+" "+
+($F{COUNTRY}==null?"":$F{COUNTRY})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

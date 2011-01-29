@@ -33,7 +33,7 @@ import java.math.BigDecimal;
  */
 public class ApplicationConsts {
 
-  public static final int DB_VERSION = 11;
+  public static final int DB_VERSION = 12;
 
   public static final String DO_NOT_ADD_ENABLED = "DO_NOT_ADD_ENABLED";
 

@@ -206,6 +206,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
 
     PreparedStatement pstmt = null;
     PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
     ResultSet rset = null;
 
     Connection conn = null;
@@ -752,8 +753,8 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
       pstmt = conn.prepareStatement(
         "insert into DOC19_EXPIRATIONS(COMPANY_CODE_SYS01,DOC_TYPE,DOC_YEAR,DOC_NUMBER,DOC_SEQUENCE,PROGRESSIVE,"+
 				 "DOC_DATE,EXPIRATION_DATE,NAME_1,NAME_2,VALUE,DESCRIPTION,CUSTOMER_SUPPLIER_CODE,PROGRESSIVE_REG04,"+
-				 "CURRENCY_CODE_REG03,PAYMENT_TYPE_CODE_REG11,PAYED,REAL_PAYMENT_TYPE_CODE_REG11,PAYED_DATE,PAYED_VALUE,REAL_ACCOUNT_CODE_ACC02,ROUNDING_ACCOUNT_CODE_ACC02) "+
-				 "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+				 "CURRENCY_CODE_REG03,PAYMENT_TYPE_CODE_REG11,PAYED,REAL_PAYMENT_TYPE_CODE_REG11,PAYED_DATE,PAYED_VALUE,REAL_ACCOUNT_CODE_ACC02,ROUNDING_ACCOUNT_CODE_ACC02,ALREADY_PAYED) "+
+				 "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
       );
       long startTime = docVO.getDocDateDOC01().getTime(); // invoice date...
       if (payVO.getStartDayREG10().equals(ApplicationConsts.START_DAY_END_MONTH)) {
@@ -770,14 +771,28 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
         startTime = cal.getTime().getTime();
       }
       BigDecimal amount = null;
+			BigDecimal progressiveDOC19 = null;
+
+			pstmt3 = conn.prepareStatement(
+				"INSERT INTO DOC27_PAYMENTS(COMPANY_CODE_SYS01,PROGRESSIVE,PAYMENT_DATE,PAYMENT_VALUE,CUSTOMER_SUPPLIER_CODE,"+
+				"ACCOUNT_CODE_ACC02,PAYMENT_TYPE_CODE_REG11,CURRENCY_CODE_REG03,PROGRESSIVE_REG04) "+
+				"VALUES (?,?,?,?,?,?,?,?,?)"
+			);
+			pstmt2 = conn.prepareStatement(
+				"INSERT INTO DOC28_PAYMENT_DISTRIBUTION(COMPANY_CODE_SYS01,PROGRESSIVE_DOC27,PROGRESSIVE_DOC19,"+
+				"PAYMENT_VALUE,PAYED) VALUES (?,?,?,?,?)"
+			);
+
       for(int i=0;i<paymentInstallments.size();i++) {
+				progressiveDOC19 = CompanyProgressiveUtils.getInternalProgressive(docVO.getCompanyCodeSys01DOC01(),"DOC19_EXPIRATIONS","PROGRESSIVE",conn);
+
         inVO = (PaymentInstalmentVO)paymentInstallments.get(i);
         pstmt.setString(1,docVO.getCompanyCodeSys01DOC01());
         pstmt.setString(2,docVO.getDocTypeDOC01());
         pstmt.setBigDecimal(3,docVO.getDocYearDOC01());
         pstmt.setBigDecimal(4,docVO.getDocNumberDOC01());
         pstmt.setBigDecimal(5,docVO.getDocSequenceDOC01());
-        pstmt.setBigDecimal(6,CompanyProgressiveUtils.getInternalProgressive(docVO.getCompanyCodeSys01DOC01(),"DOC19_EXPIRATIONS","PROGRESSIVE",conn));
+        pstmt.setBigDecimal(6,progressiveDOC19);
         pstmt.setDate(7,docVO.getDocDateDOC01());
         pstmt.setDate(8,new java.sql.Date(startTime + inVO.getInstalmentDaysREG17().longValue()*86400*1000)); // expiration date
         pstmt.setString(9,docVO.getName_1REG04());
@@ -808,6 +823,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
 					pstmt.setBigDecimal(20,CurrencyConversionUtils.convertCurrencyToCurrency(amount,conv));
 					pstmt.setString(21,payVO.getAccountCodeAcc02REG11());
 					pstmt.setString(22,roundingAccountCode);
+					pstmt.setBigDecimal(23,CurrencyConversionUtils.convertCurrencyToCurrency(amount,conv));
         }
 				else {
 					pstmt.setString(17,"N");
@@ -816,9 +832,44 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
 					pstmt.setBigDecimal(20,null);
 					pstmt.setString(21,payVO.getAccountCodeAcc02REG11());
 					pstmt.setString(22,roundingAccountCode);
+					pstmt.setBigDecimal(23,new BigDecimal(0));
 				}
 
         pstmt.execute();
+
+	      if (pk.getDocTypeDOC01().equals(ApplicationConsts.SALE_DESK_DOC_TYPE)) {
+
+					// insert record in DOC27...
+					BigDecimal progressiveDOC27 = CompanyProgressiveUtils.getInternalProgressive(
+						 docVO.getCompanyCodeSys01DOC01(),
+						 "DOC27_PAYMENTS",
+						 "PROGRESSIVE",
+						 conn
+					);
+					pstmt3.setString(1,docVO.getCompanyCodeSys01DOC01());
+					pstmt3.setBigDecimal(2,progressiveDOC27);
+					pstmt3.setDate(3,docVO.getDocDateDOC01());
+					pstmt3.setBigDecimal(4,docVO.getTotalDOC01());
+					pstmt3.setString(5,docVO.getCustomerCodeSAL07());
+					pstmt3.setString(6,payVO.getAccountCodeAcc02REG11());
+					pstmt3.setString(7,docVO.getPaymentCodeReg10DOC01());
+					pstmt3.setString(8,docVO.getCurrencyCodeReg03DOC01());
+					pstmt3.setBigDecimal(9,docVO.getProgressiveReg04DOC01());
+					pstmt3.execute();
+
+					// insert record in DOC28...
+					pstmt2.setString(1,docVO.getCompanyCodeSys01DOC01());
+					pstmt2.setBigDecimal(2,progressiveDOC27);
+					pstmt2.setBigDecimal(3,progressiveDOC19);
+					pstmt2.setBigDecimal(4,docVO.getTotalDOC01());
+					pstmt2.setString(5,"Y");
+					pstmt2.execute();
+
+				} // end if on sale desk
+
+
+
+
       }
       pstmt.close();
 //      }
@@ -1156,6 +1207,16 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
       }
       catch (Exception ex2) {
       }
+			try {
+				pstmt2.close();
+			}
+			catch (Exception ex2) {
+			}
+			try {
+				pstmt3.close();
+			}
+			catch (Exception ex2) {
+			}
 
       try {
     	  if (this.conn==null && conn!=null) {

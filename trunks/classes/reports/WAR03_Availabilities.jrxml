@@ -69,7 +69,7 @@ WAR03_ITEMS_AVAILABILITY.PROGRESSIVE_HIE01=A.PROGRESSIVE and
 REG02_MEASURE_UNITS.UM_CODE=ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02 and
 A.LANGUAGE_CODE=$P{LANGUAGE_CODE} and
 B.LANGUAGE_CODE=$P{LANGUAGE_CODE} and
-(AVAILABLE_QTY>0 or DAMAGED_QTY>0) and
+(not AVAILABLE_QTY=0 or not DAMAGED_QTY=0) and
 WAR03_ITEMS_AVAILABILITY.COMPANY_CODE_SYS01=$P{COMPANY_CODE}
 $P!{WAREHOUSE_CODE}
 order by WAREHOUSE_CODE,LOC_DESC,ITEM_CODE) AUX]]></queryString>
@@ -355,7 +355,7 @@ order by WAREHOUSE_CODE,LOC_DESC,ITEM_CODE) AUX]]></queryString>
 						width="72"
 						height="15"
 						key="textField">
-							<printWhenExpression><![CDATA[new Boolean($F{AVAILABLE_QTY}!=null && $F{AVAILABLE_QTY}.doubleValue()>0)]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean($F{AVAILABLE_QTY}!=null && $F{AVAILABLE_QTY}.doubleValue()!=0)]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
@@ -373,7 +373,7 @@ $F{DECIMALS}
 						width="72"
 						height="15"
 						key="textField">
-							<printWhenExpression><![CDATA[new Boolean($F{DAMAGED_QTY}!=null && $F{DAMAGED_QTY}.doubleValue()>0)]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean($F{DAMAGED_QTY}!=null && $F{DAMAGED_QTY}.doubleValue()!=0)]]></printWhenExpression>
 						</reportElement>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement>
@@ -430,9 +430,7 @@ $F{DECIMALS}
      $P{VAR5_DESCRS}.get($F{VARIANT_TYPE_ITM10}+"_"+$F{VARIANT_CODE_ITM15})+" ":
 	 ($F{VARIANT_TYPE_ITM10}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM10})+($F{VARIANT_CODE_ITM15}.equals("*")?"":" "+$F{VARIANT_CODE_ITM15})
   )
-)
-
-]]></textFieldExpression>
+)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

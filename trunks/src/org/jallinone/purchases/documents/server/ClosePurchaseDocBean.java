@@ -496,8 +496,8 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 			 pstmt = conn.prepareStatement(
 					 "insert into DOC19_EXPIRATIONS(COMPANY_CODE_SYS01,DOC_TYPE,DOC_YEAR,DOC_NUMBER,DOC_SEQUENCE,PROGRESSIVE,"+
 					 "DOC_DATE,EXPIRATION_DATE,NAME_1,NAME_2,VALUE,DESCRIPTION,CUSTOMER_SUPPLIER_CODE,PROGRESSIVE_REG04,CURRENCY_CODE_REG03,"+
-					 "PAYMENT_TYPE_CODE_REG11,PAYED,REAL_PAYMENT_TYPE_CODE_REG11,PAYED_DATE,PAYED_VALUE,REAL_ACCOUNT_CODE_ACC02,ROUNDING_ACCOUNT_CODE_ACC02) "+
-					 "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+					 "PAYMENT_TYPE_CODE_REG11,PAYED,REAL_PAYMENT_TYPE_CODE_REG11,PAYED_DATE,PAYED_VALUE,REAL_ACCOUNT_CODE_ACC02,ROUNDING_ACCOUNT_CODE_ACC02,ALREADY_PAYED) "+
+					 "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 			 );
 
 			 long startTime = docVO.getDocDateDOC06().getTime(); // invoice date...
@@ -550,6 +550,7 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 				 pstmt.setBigDecimal(20,null);
 				 pstmt.setString(21,payVO.getAccountCodeAcc02REG11());
 				 pstmt.setString(22,roundingAccountCode);
+				 pstmt.setBigDecimal(23,new BigDecimal(0));
 
 				 pstmt.execute();
 			 }

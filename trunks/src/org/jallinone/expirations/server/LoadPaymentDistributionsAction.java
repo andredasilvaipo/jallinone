@@ -1,6 +1,9 @@
 package org.jallinone.expirations.server;
 
+
 import org.openswing.swing.server.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
 import java.io.*;
 import java.util.*;
 
@@ -8,10 +11,11 @@ import org.openswing.swing.message.receive.java.*;
 import java.sql.*;
 import org.openswing.swing.logger.server.*;
 import org.jallinone.expirations.java.*;
+import org.jallinone.system.java.CustomizedWindows;
 import org.jallinone.system.server.*;
-import org.jallinone.accounting.accountingmotives.java.AccountingMotiveVO;
 import org.jallinone.commons.server.*;
 import java.math.*;
+
 import org.openswing.swing.message.send.java.*;
 import org.jallinone.commons.java.*;
 import org.jallinone.registers.currency.server.*;
@@ -20,10 +24,11 @@ import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
 
 
+import org.jallinone.commons.server.JAIOBeanFactory;
+
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
- * * <p>Description: Bean used to expirations from DOC19 table,
- * filtered by sale or purchase type document, or by customer/supplier code, or by interval of dates.</p>
+ * <p>Description: Action class used to load the list of payment's distributions.</p>
  * <p>Copyright: Copyright (C) 2006 Mauro Carniel</p>
  *
  * <p> This file is part of JAllInOne ERP/CRM application.
@@ -49,20 +54,39 @@ import org.jallinone.events.server.*;
  * @author Mauro Carniel
  * @version 1.0
  */
+public class LoadPaymentDistributionsAction implements Action {
 
-public interface LoadExpirations {
+	public LoadPaymentDistributionsAction() {
+	}
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
+	 * @return request name
 	 */
-	public ExpirationVO getExpiration();
-
-	public VOListResponse loadExpirations(GridParams gridPars,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable;
-
-	public VOListResponse loadPayments(GridParams gridPars,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable;
-
-	public VOListResponse loadPaymentDistributions(String companyCode,BigDecimal progressiveDOC27,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
+	public final String getRequestName() {
+		return "loadPaymentDistributions";
+	}
 
 
+	public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
+
+		try {
+			Object[] pars = (Object[])inputPar;
+			String companyCode = (String)pars[0];
+			BigDecimal progressiveDOC27 = (BigDecimal)pars[1];
+
+			CustomizedWindows cust = ((JAIOUserSessionParameters)userSessionPars).getCustomizedWindows();
+			ArrayList customizedFields = cust.getCustomizedFields(new BigDecimal(182)); // currency
+
+			LoadExpirations bean = (LoadExpirations)JAIOBeanFactory.getInstance().getBean(LoadExpirations.class);
+			ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("DOC19");
+			Response answer = bean.loadPaymentDistributions(companyCode,progressiveDOC27,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),customizedFields);
+
+			return answer;
+		}
+		catch (Throwable ex) {
+			Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"executeCommand","Error while processing request",ex);
+			return new ErrorResponse(ex.getMessage());
+		}
+	}
 }
 

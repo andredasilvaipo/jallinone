@@ -393,10 +393,7 @@ $F{DECIMALS}
      $P{VAR5_DESCRS}.get($F{VARIANT_TYPE_ITM10}+"_"+$F{VARIANT_CODE_ITM15})+" ":
 	 ($F{VARIANT_TYPE_ITM10}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM10})+($F{VARIANT_CODE_ITM15}.equals("*")?"":" "+$F{VARIANT_CODE_ITM15})
   )
-)
-
-
-]]></textFieldExpression>
+)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

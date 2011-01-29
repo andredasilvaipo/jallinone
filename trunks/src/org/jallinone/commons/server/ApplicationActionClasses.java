@@ -70,8 +70,7 @@ import org.jallinone.employees.server.LoadEmployeesAction;
 import org.jallinone.employees.server.UpdateEmployeeAction;
 import org.jallinone.employees.server.UpdateEmployeeCalendarsAction;
 import org.jallinone.employees.server.ValidateEmployeeCodeAction;
-import org.jallinone.expirations.server.LoadExpirationsAction;
-import org.jallinone.expirations.server.UpdateExpirationsAction;
+import org.jallinone.expirations.server.*;
 import org.jallinone.hierarchies.server.DeleteLevelAction;
 import org.jallinone.hierarchies.server.InsertLevelAction;
 import org.jallinone.hierarchies.server.LoadHierarchyAction;
@@ -1294,6 +1293,10 @@ public class ApplicationActionClasses extends ActionsCollection {
 		a = new UpdateItemSheetLevelsAction(); put(a.getRequestName(),a);
 
 		a = new PayImmediatelyAction(); put(a.getRequestName(),a);
+
+		a = new LoadExpirationPaymentsAction(); put(a.getRequestName(),a);
+		a = new LoadPaymentDistributionsAction(); put(a.getRequestName(),a);
+		a = new InsertPaymentAction(); put(a.getRequestName(),a);
 
     put("changeLanguage",new Action() {
 

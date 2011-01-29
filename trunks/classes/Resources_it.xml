@@ -1684,6 +1684,14 @@
   <object key="rounding costs account code" value="Conto costi abbuoni passivi" />
   <object key="rounding proceeds account code" value="Conto ricavi abbuoni attivi" />
 
+  <object key="already payed" value="Gi&#224; pagato" />
+  <object key="payment date" value="Data pagamento" />
+  <object key="account description" value="Descrizone conto" />
+  <object key="exp" value="Scad." />
+  <object key="you need to specify at least one expiration" value="E' necessario specificare almeno una scadenza" />
+  <object key="expirations must have a payment value" value="Ogni scadenza deve riportare un valore di pagamento" />
+  <object key="payments specified for expirations are not equal to the total payment value" value="L'ammontare dei pagamenti per le scadenze specificate non coincide con il valore del pagamento" />
+
 <!-- application translations -->
 
   <currencySymbol>&#8364;</currencySymbol>
