@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="WAR03_Availabilities"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="842"
+		 columnWidth="535"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false"
+		 resourceBundle="WAR03_Availabilities">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="COMPANY_CODE" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["COMP"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LANGUAGE_CODE" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["EN"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="WAREHOUSE_CODE" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="VAR1_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR2_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR3_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR4_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<parameter name="VAR5_DESCRS" isForPrompting="false" class="java.util.HashMap"/>
+	<queryString><![CDATA[select ITEM_CODE_ITM01,AVAILABLE_QTY,DAMAGED_QTY,
+LOC_DESC,WAREHOUSE_CODE_WAR01,ITEM_DESC,DESCRIPTION,MIN_SELLING_QTY_UM_CODE_REG02,DECIMALS,
+VARIANT_TYPE_ITM06,VARIANT_CODE_ITM11,
+VARIANT_TYPE_ITM07,VARIANT_CODE_ITM12,
+VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13,
+VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14,
+VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15 
+from (
+select WAR03_ITEMS_AVAILABILITY.ITEM_CODE_ITM01,AVAILABLE_QTY,DAMAGED_QTY,
+A.DESCRIPTION AS LOC_DESC,WAR03_ITEMS_AVAILABILITY.WAREHOUSE_CODE_WAR01,
+B.DESCRIPTION AS ITEM_DESC,WAR01_WAREHOUSES.DESCRIPTION,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,
+REG02_MEASURE_UNITS.DECIMALS,
+WAR03_ITEMS_AVAILABILITY.VARIANT_TYPE_ITM06,WAR03_ITEMS_AVAILABILITY.VARIANT_CODE_ITM11,
+WAR03_ITEMS_AVAILABILITY.VARIANT_TYPE_ITM07,WAR03_ITEMS_AVAILABILITY.VARIANT_CODE_ITM12,
+WAR03_ITEMS_AVAILABILITY.VARIANT_TYPE_ITM08,WAR03_ITEMS_AVAILABILITY.VARIANT_CODE_ITM13,
+WAR03_ITEMS_AVAILABILITY.VARIANT_TYPE_ITM09,WAR03_ITEMS_AVAILABILITY.VARIANT_CODE_ITM14,
+WAR03_ITEMS_AVAILABILITY.VARIANT_TYPE_ITM10,WAR03_ITEMS_AVAILABILITY.VARIANT_CODE_ITM15 
+from WAR03_ITEMS_AVAILABILITY,SYS10_TRANSLATIONS A,SYS10_TRANSLATIONS B,ITM01_ITEMS,WAR01_WAREHOUSES,REG02_MEASURE_UNITS
+where 
+WAR03_ITEMS_AVAILABILITY.WAREHOUSE_CODE_WAR01=WAR01_WAREHOUSES.WAREHOUSE_CODE and
+WAR03_ITEMS_AVAILABILITY.COMPANY_CODE_SYS01=WAR01_WAREHOUSES.COMPANY_CODE_SYS01 and
+WAR03_ITEMS_AVAILABILITY.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and
+WAR03_ITEMS_AVAILABILITY.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and
+ITM01_ITEMS.PROGRESSIVE_SYS10=B.PROGRESSIVE and
+WAR03_ITEMS_AVAILABILITY.PROGRESSIVE_HIE01=A.PROGRESSIVE and
+REG02_MEASURE_UNITS.UM_CODE=ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02 and
+A.LANGUAGE_CODE=$P{LANGUAGE_CODE} and
+B.LANGUAGE_CODE=$P{LANGUAGE_CODE} and
+(not AVAILABLE_QTY=0 or not DAMAGED_QTY=0) and
+WAR03_ITEMS_AVAILABILITY.COMPANY_CODE_SYS01=$P{COMPANY_CODE}
+$P!{WAREHOUSE_CODE}
+order by WAREHOUSE_CODE,LOC_DESC,ITEM_CODE) AUX]]></queryString>
+
+	<field name="ITEM_CODE_ITM01" class="java.lang.String"/>
+	<field name="AVAILABLE_QTY" class="java.math.BigDecimal"/>
+	<field name="DAMAGED_QTY" class="java.math.BigDecimal"/>
+	<field name="LOC_DESC" class="java.lang.String"/>
+	<field name="WAREHOUSE_CODE_WAR01" class="java.lang.String"/>
+	<field name="ITEM_DESC" class="java.lang.String"/>
+	<field name="DESCRIPTION" class="java.lang.String"/>
+	<field name="MIN_SELLING_QTY_UM_CODE_REG02" class="java.lang.String"/>
+	<field name="DECIMALS" class="java.math.BigDecimal"/>
+	<field name="VARIANT_TYPE_ITM06" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM11" class="java.lang.String"/>
+	<field name="VARIANT_TYPE_ITM07" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM12" class="java.lang.String"/>
+	<field name="VARIANT_TYPE_ITM08" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM13" class="java.lang.String"/>
+	<field name="VARIANT_TYPE_ITM09" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM14" class="java.lang.String"/>
+	<field name="VARIANT_TYPE_ITM10" class="java.lang.String"/>
+	<field name="VARIANT_CODE_ITM15" class="java.lang.String"/>
+
+
+		<group  name="WAREHOUSE_CODE_WAR01" >
+			<groupExpression><![CDATA[$F{WAREHOUSE_CODE_WAR01}]]></groupExpression>
+			<groupHeader>
+			<band height="25"  isSplitAllowed="true" >
+				<rectangle>
+					<reportElement
+						x="0"
+						y="0"
+						width="533"
+						height="25"
+						backcolor="#CCCCCC"
+						key="rectangle-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="3"
+						width="77"
+						height="20"
+						key="textField-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{warcode}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="80"
+						y="3"
+						width="453"
+						height="20"
+						key="textField-2"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{WAREHOUSE_CODE_WAR01}+" - "+$F{DESCRIPTION}]]></textFieldExpression>
+				</textField>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="10"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="LOC_DESC" >
+			<groupExpression><![CDATA[$F{LOC_DESC}]]></groupExpression>
+			<groupHeader>
+			<band height="42"  isSplitAllowed="true" >
+				<rectangle>
+					<reportElement
+						x="0"
+						y="23"
+						width="533"
+						height="19"
+						backcolor="#E6E4E4"
+						key="rectangle-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="4"
+						width="77"
+						height="20"
+						key="textField-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{loc}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="79"
+						y="5"
+						width="455"
+						height="19"
+						key="textField-6"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{LOC_DESC}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="24"
+						width="532"
+						height="0"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch" pen="1Point"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="3"
+						y="25"
+						width="89"
+						height="14"
+						key="textField-8"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{itemcode}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="96"
+						y="25"
+						width="271"
+						height="14"
+						key="textField-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{description}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="393"
+						y="25"
+						width="69"
+						height="14"
+						key="textField-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{availqty}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="462"
+						y="25"
+						width="69"
+						height="14"
+						key="textField-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{damqty}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="0"
+						height="42"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="532"
+						y="0"
+						width="0"
+						height="42"
+						key="line-5"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="41"
+						width="532"
+						height="0"
+						key="line-6"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="10"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="125"  isSplitAllowed="true" >
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="0"
+						y="0"
+						width="278"
+						height="108"
+						key="subreport-1"/>
+					<subreportParameter  name="COMPANY_CODE">
+						<subreportParameterExpression><![CDATA[$P{COMPANY_CODE}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="REPORT_RESOURCE_BUNDLE">
+						<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR}+"DOC01_Selling_Doc_subreportMyCompany.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="19"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="0"
+						width="534"
+						height="16"
+						key="textField-7"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center">
+						<font pdfFontName="Helvetica-Bold" size="12" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{availabilities}]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="6"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="18"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="17"
+						width="533"
+						height="0"
+						forecolor="#808080"
+						key="line"
+						positionType="FixRelativeToBottom"/>
+					<graphicElement stretchType="NoStretch" pen="Thin"/>
+				</line>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="1"
+						width="93"
+						height="15"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Times-Roman" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ITEM_CODE_ITM01}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="391"
+						y="1"
+						width="72"
+						height="15"
+						key="textField">
+							<printWhenExpression><![CDATA[new Boolean($F{AVAILABLE_QTY}!=null && $F{AVAILABLE_QTY}.doubleValue()!=0)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Times-Roman" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
+$F{AVAILABLE_QTY},
+$F{DECIMALS}
+)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="463"
+						y="1"
+						width="72"
+						height="15"
+						key="textField">
+							<printWhenExpression><![CDATA[new Boolean($F{DAMAGED_QTY}!=null && $F{DAMAGED_QTY}.doubleValue()!=0)]]></printWhenExpression>
+						</reportElement>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Times-Roman" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
+$F{DAMAGED_QTY},
+$F{DECIMALS}
+)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="94"
+						y="1"
+						width="273"
+						height="15"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" leftPadding="2" rightBorder="None" rightBorderColor="#000000" rightPadding="2" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Times-Roman" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ITEM_DESC}+" "+
+($F{VARIANT_CODE_ITM11}.equals("*")?
+  "":
+  ($P{VAR1_DESCRS}.get($F{VARIANT_TYPE_ITM06}+"_"+$F{VARIANT_CODE_ITM11})!=null?
+     $P{VAR1_DESCRS}.get($F{VARIANT_TYPE_ITM06}+"_"+$F{VARIANT_CODE_ITM11})+" ":
+	 ($F{VARIANT_TYPE_ITM06}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM06})+($F{VARIANT_CODE_ITM11}.equals("*")?"":" "+$F{VARIANT_CODE_ITM11})
+  )
+)+
+($F{VARIANT_CODE_ITM12}.equals("*")?
+  "":
+  ($P{VAR2_DESCRS}.get($F{VARIANT_TYPE_ITM07}+"_"+$F{VARIANT_CODE_ITM12})!=null?
+     $P{VAR2_DESCRS}.get($F{VARIANT_TYPE_ITM07}+"_"+$F{VARIANT_CODE_ITM12})+" ":
+	 ($F{VARIANT_TYPE_ITM07}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM07})+($F{VARIANT_CODE_ITM12}.equals("*")?"":" "+$F{VARIANT_CODE_ITM12})
+  )
+)+
+($F{VARIANT_CODE_ITM13}.equals("*")?
+  "":
+  ($P{VAR3_DESCRS}.get($F{VARIANT_TYPE_ITM08}+"_"+$F{VARIANT_CODE_ITM13})!=null?
+     $P{VAR3_DESCRS}.get($F{VARIANT_TYPE_ITM08}+"_"+$F{VARIANT_CODE_ITM13})+" ":
+	 ($F{VARIANT_TYPE_ITM08}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM08})+($F{VARIANT_CODE_ITM13}.equals("*")?"":" "+$F{VARIANT_CODE_ITM13})
+  )
+)+
+($F{VARIANT_CODE_ITM14}.equals("*")?
+  "":
+  ($P{VAR4_DESCRS}.get($F{VARIANT_TYPE_ITM09}+"_"+$F{VARIANT_CODE_ITM14})!=null?
+     $P{VAR4_DESCRS}.get($F{VARIANT_TYPE_ITM09}+"_"+$F{VARIANT_CODE_ITM14})+" ":
+	 ($F{VARIANT_TYPE_ITM09}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM09})+($F{VARIANT_CODE_ITM14}.equals("*")?"":" "+$F{VARIANT_CODE_ITM14})
+  )
+)+
+($F{VARIANT_CODE_ITM15}.equals("*")?
+  "":
+  ($P{VAR5_DESCRS}.get($F{VARIANT_TYPE_ITM10}+"_"+$F{VARIANT_CODE_ITM15})!=null?
+     $P{VAR5_DESCRS}.get($F{VARIANT_TYPE_ITM10}+"_"+$F{VARIANT_CODE_ITM15})+" ":
+	 ($F{VARIANT_TYPE_ITM10}.equals("*")?"":" "+$F{VARIANT_TYPE_ITM10})+($F{VARIANT_CODE_ITM15}.equals("*")?"":" "+$F{VARIANT_CODE_ITM15})
+  )
+)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="366"
+						y="1"
+						width="24"
+						height="14"
+						key="textField-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{MIN_SELLING_QTY_UM_CODE_REG02}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="0"
+						width="0"
+						height="18"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="532"
+						y="0"
+						width="0"
+						height="18"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="27"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="325"
+						y="4"
+						width="170"
+						height="19"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="Helvetica" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{page}+" " + $V{PAGE_NUMBER} + " "+$R{of}+" "]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Report" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="499"
+						y="4"
+						width="36"
+						height="19"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Helvetica" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="CP1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="1"
+						width="535"
+						height="0"
+						forecolor="#000000"
+						key="line"/>
+					<graphicElement stretchType="NoStretch" pen="2Point"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1"
+						y="6"
+						width="209"
+						height="19"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font fontName="Times-Roman" size="10"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>
