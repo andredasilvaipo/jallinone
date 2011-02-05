@@ -210,9 +210,19 @@ public class LoadExpirationsBean  implements LoadExpirations {
 				values.add( gridPars.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_REG04) );
 			}
 
-			if (gridPars.getOtherGridParams().get(ApplicationConsts.CURRENCY_CODE_REG03)!=null) {
-				sql += " and DOC19_EXPIRATIONS.CURRENCY_CODE_REG03=?";
+			if (gridPars.getOtherGridParams().get(ApplicationConsts.CURRENCY_CODE_REG03)!=null &&
+					gridPars.getOtherGridParams().get(ApplicationConsts.DATE_FILTER)!=null) {
+				sql +=
+					" and (DOC19_EXPIRATIONS.CURRENCY_CODE_REG03=? or "+
+					" exists(select * from REG06_CURRENCY_CONVS WHERE "+
+					" REG06_CURRENCY_CONVS.CURRENCY_CODE_REG03=? AND "+
+					" REG06_CURRENCY_CONVS.CURRENCY_CODE2_REG03=DOC19_EXPIRATIONS.CURRENCY_CODE_REG03 AND "+
+					" REG06_CURRENCY_CONVS.VALUE IS NOT NULL AND "+
+					" REG06_CURRENCY_CONVS.START_DATE<=? ) "+
+					" ) ";
 				values.add( gridPars.getOtherGridParams().get(ApplicationConsts.CURRENCY_CODE_REG03) );
+				values.add( gridPars.getOtherGridParams().get(ApplicationConsts.CURRENCY_CODE_REG03) );
+				values.add( gridPars.getOtherGridParams().get(ApplicationConsts.DATE_FILTER) );
 			}
 
       if (gridPars.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_REG04)!=null) {
@@ -525,13 +535,15 @@ public class LoadExpirationsBean  implements LoadExpirations {
 			    "SELECT DOC28_PAYMENT_DISTRIBUTION.COMPANY_CODE_SYS01,DOC28_PAYMENT_DISTRIBUTION.PROGRESSIVE_DOC27,"+
 					"DOC28_PAYMENT_DISTRIBUTION.PROGRESSIVE_DOC19,DOC19_EXPIRATIONS.DESCRIPTION,DOC28_PAYMENT_DISTRIBUTION.PAYMENT_VALUE, "+
 					"DOC28_PAYMENT_DISTRIBUTION.PAYED,DOC19_EXPIRATIONS.DOC_TYPE,DOC19_EXPIRATIONS.ALREADY_PAYED,DOC19_EXPIRATIONS.VALUE, "+
-					"DOC19_EXPIRATIONS.ROUNDING_ACCOUNT_CODE_ACC02 "+
-					"FROM DOC28_PAYMENT_DISTRIBUTION,DOC19_EXPIRATIONS "+
+					"DOC19_EXPIRATIONS.ROUNDING_ACCOUNT_CODE_ACC02,REG03_CURRENCIES.DECIMALS,REG03_CURRENCIES.CURRENCY_SYMBOL, "+
+					"REG03_CURRENCIES.CURRENCY_CODE "+
+					"FROM DOC28_PAYMENT_DISTRIBUTION,DOC19_EXPIRATIONS,REG03_CURRENCIES "+
 					"WHERE "+
 					"DOC28_PAYMENT_DISTRIBUTION.COMPANY_CODE_SYS01=? AND "+
 					"DOC28_PAYMENT_DISTRIBUTION.PROGRESSIVE_DOC27=? AND "+
 				  "DOC28_PAYMENT_DISTRIBUTION.COMPANY_CODE_SYS01=DOC19_EXPIRATIONS.COMPANY_CODE_SYS01 AND "+
-					"DOC28_PAYMENT_DISTRIBUTION.PROGRESSIVE_DOC19=DOC19_EXPIRATIONS.PROGRESSIVE "+
+					"DOC28_PAYMENT_DISTRIBUTION.PROGRESSIVE_DOC19=DOC19_EXPIRATIONS.PROGRESSIVE AND "+
+					"DOC19_EXPIRATIONS.CURRENCY_CODE_REG03=REG03_CURRENCIES.CURRENCY_CODE "+
 					"ORDER BY DOC19_EXPIRATIONS.DESCRIPTION";
 
 			Map attribute2dbField = new HashMap();
@@ -546,6 +558,10 @@ public class LoadExpirationsBean  implements LoadExpirations {
 			attribute2dbField.put("alreadyPayedDOC19","DOC19_EXPIRATIONS.ALREADY_PAYED");
 			attribute2dbField.put("valueDOC19","DOC19_EXPIRATIONS.VALUE");
 			attribute2dbField.put("roundingAccountCodeAcc02DOC19","DOC19_EXPIRATIONS.ROUNDING_ACCOUNT_CODE_ACC02");
+			attribute2dbField.put("currencyCodeREG03","REG03_CURRENCIES.CURRENCY_CODE");
+			attribute2dbField.put("decimalsREG03","REG03_CURRENCIES.DECIMALS");
+			attribute2dbField.put("currencySymbolREG03","REG03_CURRENCIES.CURRENCY_SYMBOL");
+
 			ArrayList values = new ArrayList();
 			values.add(companyCode);
 			values.add(progressiveDOC27);

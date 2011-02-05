@@ -13,6 +13,13 @@ import org.openswing.swing.table.client.GridController;
 import org.jallinone.commons.client.CustomizedColumns;
 import java.math.BigDecimal;
 import javax.swing.border.*;
+import org.openswing.swing.lookup.client.LookupController;
+import org.openswing.swing.lookup.client.LookupServerDataLocator;
+import org.openswing.swing.lookup.client.LookupListener;
+import org.openswing.swing.message.receive.java.ValueObject;
+import java.util.Collection;
+import org.jallinone.registers.currency.java.CurrencyVO;
+import org.jallinone.commons.java.ApplicationConsts;
 
 
 /**
@@ -70,7 +77,7 @@ public class CurrenciesGridFrame extends InternalFrame {
   FlowLayout flowLayout2 = new FlowLayout();
   GridControl convGridControl = new GridControl();
   TextColumn colCurrCode = new TextColumn();
-  TextColumn colCurrCode2 = new TextColumn();
+  CodLookupColumn colCurrCode2 = new CodLookupColumn();
   DecimalColumn decimalColumn1 = new DecimalColumn();
   EditButton editButton1 = new EditButton();
   SaveButton saveButton1 = new SaveButton();
@@ -79,6 +86,11 @@ public class CurrenciesGridFrame extends InternalFrame {
   /** conv grid data locator */
   private ServerGridDataLocator convGridDataLocator = new ServerGridDataLocator();
   IntegerColumn colDec = new IntegerColumn();
+  InsertButton insertButton1 = new InsertButton();
+  DeleteButton deleteButton1 = new DeleteButton();
+  DateColumn colStartDate = new DateColumn();
+	LookupController currController = new LookupController();
+	LookupServerDataLocator currDataLocator = new LookupServerDataLocator();
 
 
 
@@ -88,6 +100,7 @@ public class CurrenciesGridFrame extends InternalFrame {
     gridDataLocator.setServerMethodName("loadCurrencies");
     try {
       jbInit();
+			init();
       setSize(600,550);
       setMinimumSize(new Dimension(600,550));
 
@@ -102,6 +115,40 @@ public class CurrenciesGridFrame extends InternalFrame {
       e.printStackTrace();
     }
   }
+
+
+  private void init() {
+		// currency lookup...
+		currDataLocator.setGridMethodName("loadCurrencies");
+		currDataLocator.setValidationMethodName("validateCurrencyCode");
+		colCurrCode2.setLookupController(currController);
+		colCurrCode2.setControllerMethodName("getCurrencies");
+		currController.setLookupDataLocator(currDataLocator);
+		currController.setFrameTitle("currencies");
+		currController.setLookupValueObjectClassName("org.jallinone.registers.currency.java.CurrencyVO");
+		currController.addLookup2ParentLink("currencyCodeREG03", "currencyCode2Reg03REG06");
+		currController.setAllColumnVisible(false);
+		currController.setVisibleColumn("currencyCodeREG03", true);
+		currController.setVisibleColumn("currencySymbolREG03", true);
+		currController.addLookupListener(new LookupListener() {
+
+			public void beforeLookupAction(ValueObject parentVO) {
+				String currCode = (String)getConvGridControl().getOtherGridParams().get(ApplicationConsts.CURRENCY_CODE_REG03);
+				currDataLocator.getLookupFrameParams().put(ApplicationConsts.CURRENCY_CODE_REG03,currCode);
+				currDataLocator.getLookupValidationParameters().put(ApplicationConsts.CURRENCY_CODE_REG03,currCode);
+			}
+
+			public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {
+			}
+
+			public void codeValidated(boolean validated) {
+			}
+
+			public void forceValidate() {
+			}
+
+		});
+	}
 
 
   public final void reloadData() {
@@ -162,18 +209,28 @@ public class CurrenciesGridFrame extends InternalFrame {
     convButtonsPanel.setLayout(flowLayout2);
     flowLayout2.setAlignment(FlowLayout.LEFT);
     convGridControl.setAutoLoadData(false);
+    convGridControl.setDeleteButton(deleteButton1);
     convGridControl.setEditButton(editButton1);
     convGridControl.setFunctionId("REG03");
+    convGridControl.setMaxNumberOfRowsOnInsert(100);
+    convGridControl.setInsertButton(insertButton1);
     convGridControl.setPreferredSize(new Dimension(340, 200));
     convGridControl.setReloadButton(reloadButton1);
     convGridControl.setSaveButton(saveButton1);
     decimalColumn1.setDecimals(5);
+    decimalColumn1.setColumnRequired(true);
     decimalColumn1.setColumnName("valueREG06");
-    decimalColumn1.setColumnRequired(false);
     decimalColumn1.setEditableOnEdit(true);
+    decimalColumn1.setEditableOnInsert(true);
     decimalColumn1.setPreferredWidth(120);
     colCurrCode.setColumnName("currencyCodeReg03REG06");
+    colCurrCode.setEditableOnInsert(false);
     colCurrCode2.setColumnName("currencyCode2Reg03REG06");
+    colCurrCode2.setColumnFilterable(true);
+    colCurrCode2.setColumnSortable(true);
+    colCurrCode2.setEditableOnInsert(true);
+    colCurrCode2.setSortVersus(org.openswing.swing.util.java.Consts.ASC_SORTED);
+    colCurrCode2.setSortingOrder(1);
     colDec.setColumnDuplicable(true);
     colDec.setColumnFilterable(true);
     colDec.setColumnName("decimalsREG03");
@@ -182,6 +239,14 @@ public class CurrenciesGridFrame extends InternalFrame {
     colDec.setEditableOnInsert(true);
     colDec.setHeaderColumnName("decimalsREG03");
     colDec.setPreferredWidth(90);
+    colStartDate.setColumnName("startDateREG06");
+    colStartDate.setColumnFilterable(true);
+    colStartDate.setColumnSortable(true);
+    colStartDate.setEditableOnEdit(true);
+    colStartDate.setEditableOnInsert(true);
+    colStartDate.setHeaderColumnName("startDate");
+    colStartDate.setSortVersus(org.openswing.swing.util.java.Consts.DESC_SORTED);
+    colStartDate.setSortingOrder(2);
     this.getContentPane().add(buttonsPanel, BorderLayout.NORTH);
     buttonsPanel.add(insertButton, null);
     buttonsPanel.add(editButton, null);
@@ -198,12 +263,15 @@ public class CurrenciesGridFrame extends InternalFrame {
     grid.getColumnContainer().add(colDec, null);
     this.getContentPane().add(convPanel,  BorderLayout.SOUTH);
     convPanel.add(convButtonsPanel, BorderLayout.NORTH);
+    convButtonsPanel.add(insertButton1, null);
     convButtonsPanel.add(editButton1, null);
     convButtonsPanel.add(saveButton1, null);
     convButtonsPanel.add(reloadButton1, null);
+    convButtonsPanel.add(deleteButton1, null);
     convPanel.add(convGridControl,  BorderLayout.CENTER);
     convGridControl.getColumnContainer().add(colCurrCode, null);
     convGridControl.getColumnContainer().add(colCurrCode2, null);
+    convGridControl.getColumnContainer().add(colStartDate, null);
     convGridControl.getColumnContainer().add(decimalColumn1, null);
   }
   public GridControl getGrid() {

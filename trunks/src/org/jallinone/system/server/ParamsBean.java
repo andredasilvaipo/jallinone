@@ -544,6 +544,20 @@ public class ParamsBean  implements Params {
         pstmt.executeUpdate();
       }
 
+			// update report repository path...
+			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+			pstmt.setString(1,getReportsPath(applicationPars));
+			pstmt.setString(2,ApplicationConsts.REPORT_PATH);
+			rows = pstmt.executeUpdate();
+			pstmt.close();
+			if (rows==0) {
+				// record not yet exists: it will be inserted...
+				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+				pstmt.setString(1,ApplicationConsts.REPORT_PATH);
+				pstmt.setString(2,getReportsPath(applicationPars));
+				pstmt.executeUpdate();
+			}
+
       // update increment value for progressives...
       pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
       pstmt.setString(1,getIncrementValue(applicationPars).toString());
@@ -1861,6 +1875,14 @@ public class ParamsBean  implements Params {
   public final String getDocumentPath(HashMap applicationPars) {
     return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.DOC_PATH);
   }
+
+
+	/**
+	 * @erturn reports repository path
+	 */
+	public final String getReportsPath(HashMap applicationPars) {
+		return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.REPORT_PATH);
+	}
 
 
 	/**

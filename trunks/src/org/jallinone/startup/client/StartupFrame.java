@@ -12,6 +12,8 @@ import org.openswing.swing.util.client.ClientSettings;
 import java.math.BigDecimal;
 import org.openswing.swing.client.*;
 import org.openswing.swing.message.receive.java.VOResponse;
+import java.util.Locale;
+import java.util.Properties;
 
 
 /**
@@ -659,21 +661,51 @@ public class StartupFrame extends JFrame {
               );
               return;
       }
-	  String beanFactoryName = ((VOResponse)res).getVo().toString();
-	  if ("org.jallinone.commons.server.MuleBeansFactory".equals(beanFactoryName)) {
-          JOptionPane.showMessageDialog(
-                  this,
-                  "Before using JAllInOne with SOA you have to restart the web application!",
-                  "Attention",
-                  JOptionPane.INFORMATION_MESSAGE
-              );
-              return;
-      }
-	  else {
-	      // view the login window before viewing MDI frame...
-	      LoginDialog d = new LoginDialog(null,false,clientApplet);
-	      dispose();
-	  }
+			String beanFactoryName = ((VOResponse)res).getVo().toString();
+			if ("org.jallinone.commons.server.MuleBeansFactory".equals(beanFactoryName)) {
+						JOptionPane.showMessageDialog(
+										this,
+										"Before using JAllInOne with SOA you have to restart the web application!",
+										"Attention",
+										JOptionPane.INFORMATION_MESSAGE
+								);
+								return;
+				}
+			else {
+					// view the login window before viewing MDI frame...
+
+					Properties supportedLanguageIds = new Properties();
+					supportedLanguageIds.setProperty("EN","english");
+					supportedLanguageIds.setProperty("IT","italian");
+					supportedLanguageIds.setProperty("ES","spanish");
+					supportedLanguageIds.setProperty("PTBR","brazilian");
+					supportedLanguageIds.setProperty("DE","german");
+					supportedLanguageIds.setProperty("HR","croatian");
+					supportedLanguageIds.setProperty("RU","russian");
+					String currentLanguageIdentifier = "EN";
+					Locale locale = Locale.getDefault();
+					if (supportedLanguageIds.containsKey(locale.getLanguage().toUpperCase()))
+						currentLanguageIdentifier = locale.getLanguage().toUpperCase();
+
+					LoginDialog loginDialog = new LoginDialog(
+						null,
+						false,
+						clientApplet,
+						"Logon",
+						"Login",
+						'L',
+						"Exit",
+						'E',
+						"Store account",
+						"JALLINONE",
+						null,
+						supportedLanguageIds,
+						currentLanguageIdentifier
+					);
+
+//					LoginDialog d = new LoginDialog(null,false,clientApplet);
+					dispose();
+			}
     }
   }
 

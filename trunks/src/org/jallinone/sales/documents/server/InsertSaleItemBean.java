@@ -186,6 +186,9 @@ public class InsertSaleItemBean implements InsertSaleItem {
 	      attribute2dbField.put("variantTypeItm10DOC02","VARIANT_TYPE_ITM10");
 	      attribute2dbField.put("variantCodeItm15DOC02","VARIANT_CODE_ITM15");
 
+				attribute2dbField.put("pricelistCodeSal01DOC02","PRICELIST_CODE_SAL01");
+				attribute2dbField.put("pricelistDescriptionDOC02","PRICELIST_DESCRIPTION");
+
 	      vo.setRowNumberDOC02( CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01DOC02(),"DOC02_SELLING_ITEMS","ROW_NUMBER",conn) );
 
 	      // insert into DOC02...

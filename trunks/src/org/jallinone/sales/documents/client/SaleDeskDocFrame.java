@@ -110,8 +110,8 @@ public class SaleDeskDocFrame extends InternalFrame implements SaleDocument {
     this.controller = controller;
     try {
       jbInit();
-      setSize(750,630);
-      setMinimumSize(new Dimension(750,630));
+      setSize(750,650);
+      setMinimumSize(new Dimension(750,650));
       setTitle(ClientSettings.getInstance().getResources().getResource("desk selling"));
 
       CustomizedControls customizedControls = new CustomizedControls(tabbedPane,headerFormPanel,ApplicationConsts.ID_SALE_DESK);

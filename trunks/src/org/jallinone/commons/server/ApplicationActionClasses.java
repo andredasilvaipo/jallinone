@@ -206,8 +206,7 @@ import org.jallinone.registers.carrier.server.InsertCarriersAction;
 import org.jallinone.registers.carrier.server.LoadCarriersAction;
 import org.jallinone.registers.carrier.server.UpdateCarriersAction;
 import org.jallinone.registers.carrier.server.ValidateCarrierCodeAction;
-import org.jallinone.registers.currency.server.DeleteCurrenciesAction;
-import org.jallinone.registers.currency.server.InsertCurrencyAction;
+import org.jallinone.registers.currency.server.*;
 import org.jallinone.registers.currency.server.LoadCompanyCurrencyAction;
 import org.jallinone.registers.currency.server.LoadCurrenciesAction;
 import org.jallinone.registers.currency.server.LoadCurrencyConvsAction;
@@ -691,6 +690,8 @@ public class ApplicationActionClasses extends ActionsCollection {
     a = new UpdateCurrenciesAction(); put(a.getRequestName(),a);
     a = new DeleteCurrenciesAction(); put(a.getRequestName(),a);
     a = new ValidateCurrencyCodeAction(); put(a.getRequestName(),a);
+    a = new DeleteCurrencyConvsAction(); put(a.getRequestName(),a);
+    a = new InsertCurrencyConvsAction(); put(a.getRequestName(),a);
     a = new LoadCurrencyConvsAction(); put(a.getRequestName(),a);
     a = new UpdateCurrencyConvsAction(); put(a.getRequestName(),a);
     a = new LoadCompanyCurrencyAction(); put(a.getRequestName(),a);

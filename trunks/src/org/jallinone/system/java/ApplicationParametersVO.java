@@ -227,8 +227,8 @@ public class ApplicationParametersVO extends ValueObjectImpl {
    * Set document repository path.
    * @param documentPath document repository path
    */
-  public final void setDocumentPath(String imagePath) {
-    applicationPars.put(ApplicationConsts.DOC_PATH,imagePath);
+  public final void setDocumentPath(String docPath) {
+    applicationPars.put(ApplicationConsts.DOC_PATH,docPath);
   }
 
 
@@ -238,6 +238,23 @@ public class ApplicationParametersVO extends ValueObjectImpl {
   public final String getDocumentPath() {
     return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.DOC_PATH);
   }
+
+
+	/**
+	 * Set report repository path.
+	 * @param reportPath report repository path
+	 */
+	public final void setReportPath(String reportPath) {
+		applicationPars.put(ApplicationConsts.REPORT_PATH,reportPath);
+	}
+
+
+	/**
+	 * @return report repository path
+	 */
+	public final String getReportPath() {
+		return applicationPars==null?null:(String)applicationPars.get(ApplicationConsts.REPORT_PATH);
+	}
 
 
 	/**

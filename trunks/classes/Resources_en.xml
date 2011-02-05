@@ -1435,8 +1435,9 @@
   <object key="enter" value="Enter" />
   <object key="cancel" value="Canc." />
   <object key="company selection" value="Company selection" />
-  <object key="you need to specifify the default customer for retail sale" value="You need to specifify the default customer for retail sale" />
-  <object key="you need to specifify the default warehouse for retail sale" value="You need to specifify the default warehouse for retail sale" />
+  <object key="you need to specifify the default customer for retail sale" value="You need to specify the default customer for retail sale" />
+  <object key="you need to specify a pricelist for the default customer" value="You need to specify a pricelist for the default customer" />
+  <object key="you need to specifify the default warehouse for retail sale" value="You need to specify the default warehouse for retail sale" />
   <object key="ESC back" value="ESC Back" />
   <object key="ESC back tooltip" value="Undo current operation" />
   <object key="1 remove" value="1 Remove" />
@@ -1692,6 +1693,7 @@
   <object key="you need to specify at least one expiration" value="You need to specify at least one expiration" />
   <object key="expirations must have a payment value" value="Expirations must have a payment value" />
   <object key="payments specified for expirations are not equal to the total payment value" value="Payments specified for expirations are not equal to the total payment value" />
+  <object key="reports repository path" value="Reports repository path" />
   <object key="" value="" />
   <object key="" value="" />
   <object key="" value="" />

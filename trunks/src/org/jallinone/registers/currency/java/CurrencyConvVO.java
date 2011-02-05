@@ -36,6 +36,7 @@ public class CurrencyConvVO extends ValueObjectImpl {
   private String currencyCodeReg03REG06;
   private String currencyCode2Reg03REG06;
   private java.math.BigDecimal valueREG06;
+	private java.sql.Date startDateREG06;
 
 
   public CurrencyConvVO() {
@@ -59,6 +60,12 @@ public class CurrencyConvVO extends ValueObjectImpl {
   }
   public void setValueREG06(java.math.BigDecimal valueREG06) {
     this.valueREG06 = valueREG06;
+  }
+  public java.sql.Date getStartDateREG06() {
+    return startDateREG06;
+  }
+  public void setStartDateREG06(java.sql.Date startDateREG06) {
+    this.startDateREG06 = startDateREG06;
   }
 
 }

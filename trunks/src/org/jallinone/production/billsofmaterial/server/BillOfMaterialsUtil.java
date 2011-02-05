@@ -233,7 +233,7 @@ public class BillOfMaterialsUtil   {
 			}
 			catch (Exception ex) {
 			}
-	
+
 		}
 	}
 
@@ -263,7 +263,7 @@ public class BillOfMaterialsUtil   {
 					price = rset.getBigDecimal(1);
 					num = rset.getBigDecimal(2);
 					currencyCode = rset.getString(3);
-					price = CurrencyConversionUtils.convertCurrencyToCurrency(price,currencyCode,currVO.getCurrencyCodeREG03(),conn);
+					price = CurrencyConversionUtils.convertCurrencyToCurrency(new java.sql.Date(System.currentTimeMillis()),price,currencyCode,currVO.getCurrencyCodeREG03(),conn);
 					if (price!=null && num!=null) {
 						totPrice = totPrice.add(price);
 						totNum = totNum.add(num);
@@ -334,7 +334,7 @@ public class BillOfMaterialsUtil   {
 			}
 			catch (Exception ex1) {
 			}
-	
+
 		}
 	}
 

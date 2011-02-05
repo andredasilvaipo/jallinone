@@ -77,10 +77,9 @@ public class GetFolderContentAction implements Action {
 		  final String fileFormat = (String)objs[0];
 		  File file = (File)objs[1];
 
-		  if (file.isFile()) {
-			  GetFileContent fileBean = (GetFileContent)JAIOBeanFactory.getInstance().getBean(GetFolderContent.class);
+		  if (file!=null && file.isFile()) {
+			  GetFileContent fileBean = (GetFileContent)JAIOBeanFactory.getInstance().getBean(GetFileContent.class);
 			  return new VOResponse(fileBean.getFileContent(fileFormat,file,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername()));
-
 		  }
 		  else {
 			  GetFolderContent folderBean = (GetFolderContent)JAIOBeanFactory.getInstance().getBean(GetFolderContent.class);

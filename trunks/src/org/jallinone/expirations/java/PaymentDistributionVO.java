@@ -42,7 +42,11 @@ public class PaymentDistributionVO extends ValueObjectImpl  {
 		private java.math.BigDecimal valueDOC19;
 		private java.math.BigDecimal alreadyPayedDOC19;
 		private String roundingAccountCodeAcc02DOC19;
-  private String descriptionDOC19;
+    private String descriptionDOC19;
+
+		private String currencyCodeREG03;
+		private java.math.BigDecimal decimalsREG03;
+		private String currencySymbolREG03;
 
 
 		public PaymentDistributionVO() {
@@ -108,6 +112,24 @@ public class PaymentDistributionVO extends ValueObjectImpl  {
   }
   public void setRoundingAccountCodeAcc02DOC19(String roundingAccountCodeAcc02DOC19) {
     this.roundingAccountCodeAcc02DOC19 = roundingAccountCodeAcc02DOC19;
+  }
+  public String getCurrencySymbolREG03() {
+    return currencySymbolREG03;
+  }
+  public java.math.BigDecimal getDecimalsREG03() {
+    return decimalsREG03;
+  }
+  public void setCurrencySymbolREG03(String currencySymbolREG03) {
+    this.currencySymbolREG03 = currencySymbolREG03;
+  }
+  public void setDecimalsREG03(java.math.BigDecimal decimalsREG03) {
+    this.decimalsREG03 = decimalsREG03;
+  }
+  public String getCurrencyCodeREG03() {
+    return currencyCodeREG03;
+  }
+  public void setCurrencyCodeREG03(String currencyCodeREG03) {
+    this.currencyCodeREG03 = currencyCodeREG03;
   }
 
 

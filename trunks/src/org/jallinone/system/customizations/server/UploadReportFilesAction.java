@@ -66,8 +66,16 @@ public class UploadReportFilesAction implements Action {
    */
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
     try {
+			String path = this.getClass().getResource("/").getPath().replaceAll("%20"," ");
+			String reportsPath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.REPORT_PATH);
+			if (new File(reportsPath).isAbsolute())
+				path = reportsPath;
+			else
+				path += reportsPath;
+			path = path.replace('\\','/');
+			if (!path.endsWith("/"))
+				path += "/";
 
-      String path = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"reports/";
       Hashtable bytes = (Hashtable)inputPar;
       Enumeration en = bytes.keys();
       String fileName = null;

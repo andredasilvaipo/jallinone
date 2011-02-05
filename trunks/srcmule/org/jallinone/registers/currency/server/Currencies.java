@@ -69,7 +69,9 @@ public interface Currencies {
 
 	public VOListResponse validateCurrencyCode(LookupValidationParams validationPars,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
 
+ 	public VOListResponse insertCurrencyConvs(ArrayList vos,String serverLanguageId,String username) throws Throwable;
 
+  public VOResponse deleteCurrencyConvs(ArrayList list,String serverLanguageId,String username) throws Throwable;
 
 }
 

@@ -100,8 +100,8 @@ public class SaleOrderDocFrame extends InternalFrame implements SaleDocument {
     this.controller = controller;
     try {
       jbInit();
-      setSize(750,680);
-      setMinimumSize(new Dimension(750,680));
+      setSize(750,700);
+      setMinimumSize(new Dimension(750,700));
       setTitle(ClientSettings.getInstance().getResources().getResource("sale order"));
 
       CustomizedControls customizedControls = new CustomizedControls(tabbedPane,headerFormPanel,ApplicationConsts.ID_SALE_ORDER);

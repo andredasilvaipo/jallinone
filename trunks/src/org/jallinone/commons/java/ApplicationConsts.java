@@ -33,7 +33,7 @@ import java.math.BigDecimal;
  */
 public class ApplicationConsts {
 
-  public static final int DB_VERSION = 12;
+  public static final int DB_VERSION = 13;
 
   public static final String DO_NOT_ADD_ENABLED = "DO_NOT_ADD_ENABLED";
 
@@ -46,6 +46,7 @@ public class ApplicationConsts {
   public static final String CODE = "CODE";
   public static final String WHERE_VALUES = "WHERE_VALUES";
 
+  public static final String REPORT_PATH = "REPORT_PATH";
   public static final String DOC_PATH = "DOC_PATH";
   public static final String IMAGE_PATH = "IMAGE_PATH";
   public static final String INCREMENT_VALUE = "INCREMENT_VALUE";

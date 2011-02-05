@@ -56,8 +56,8 @@ public class CurrencyConversionUtils {
    * @throws java.lang.Exception if no conversion factor is defined between the two currencies
    * Note: connection is not released
    */
-  public static final BigDecimal convertCurrencyToCurrency(BigDecimal value,String fromCurrencyCode,String toCurrencyCode,Connection conn) throws Exception {
-    return convertCurrencyToCurrency(value,getConversionFactor(fromCurrencyCode,toCurrencyCode,conn));
+  public static final BigDecimal convertCurrencyToCurrency(java.sql.Date date,BigDecimal value,String fromCurrencyCode,String toCurrencyCode,Connection conn) throws Exception {
+    return convertCurrencyToCurrency(value,getConversionFactor(date,fromCurrencyCode,toCurrencyCode,conn));
   }
 
 
@@ -69,22 +69,27 @@ public class CurrencyConversionUtils {
    * @throws java.lang.Exception if no conversion factor is defined between the two currencies
    * Note: connection is not released
    */
-  public static final BigDecimal getConversionFactor(String fromCurrencyCode,String toCurrencyCode,Connection conn) throws Exception {
+  public static final BigDecimal getConversionFactor(java.sql.Date date,String fromCurrencyCode,String toCurrencyCode,Connection conn) throws Exception {
     if (fromCurrencyCode.equals(toCurrencyCode))
       return new BigDecimal(1);
 
-    Statement stmt = null;
+    PreparedStatement pstmt = null;
     String errorMsg = null;
     boolean error = false;
     BigDecimal conv = null;
     try {
       String sql =
-          "select REG06_CURRENCY_CONV.VALUE from REG06_CURRENCY_CONV where "+
-          "REG06_CURRENCY_CONV.CURRENCY_CODE_REG03='"+fromCurrencyCode+"' and "+
-          "REG06_CURRENCY_CONV.CURRENCY_CODE2_REG03='"+toCurrencyCode+"'";
+					"select REG06_CURRENCY_CONVS.VALUE from REG06_CURRENCY_CONVS where "+
+					"REG06_CURRENCY_CONVS.CURRENCY_CODE_REG03=? and "+
+					"REG06_CURRENCY_CONVS.CURRENCY_CODE2_REG03=? and "+
+					"REG06_CURRENCY_CONVS.START_DATE<=? "+
+					"ORDER BY REG06_CURRENCY_CONVS.START_DATE DESC";
 
-      stmt = conn.createStatement();
-      ResultSet rset = stmt.executeQuery(sql);
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,fromCurrencyCode);
+			pstmt.setString(2,toCurrencyCode);
+			pstmt.setDate(3,date);
+      ResultSet rset = pstmt.executeQuery();
       if(rset.next()) {
         conv = rset.getBigDecimal(1);
       }
@@ -106,7 +111,7 @@ public class CurrencyConversionUtils {
     }
     finally {
       try {
-        stmt.close();
+        pstmt.close();
       }
       catch (Exception ex2) {
       }
@@ -126,8 +131,8 @@ public class CurrencyConversionUtils {
    * @throws java.lang.Exception if no conversion factor is defined between the two currencies
    * Note: connection is not released
    */
-  public static final BigDecimal getCompanyConversionFactor(String fromCurrencyCode,String companyCode,Connection conn) throws Exception {
-    return getConversionFactor(fromCurrencyCode,getCompanyCurrencyCode(companyCode,conn),conn);
+  public static final BigDecimal getCompanyConversionFactor(java.sql.Date date,String fromCurrencyCode,String companyCode,Connection conn) throws Exception {
+    return getConversionFactor(date,fromCurrencyCode,getCompanyCurrencyCode(companyCode,conn),conn);
   }
 
 

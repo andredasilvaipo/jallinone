@@ -209,7 +209,9 @@ public class PosFrame extends JFrame {
 		ClientUtils.centerFrame(this);
 		try {
 			jbInit();
-			init(companyCodeSys01,customerCode,warehouseCode);
+			if (!init(companyCodeSys01,customerCode,warehouseCode))
+				return;
+
 			setVisible(true);
 
 			SwingUtilities.invokeLater(new Runnable() {
@@ -228,7 +230,7 @@ public class PosFrame extends JFrame {
 	}
 
 
-	private void init(String companyCodeSys01,String customerCode,String warehouseCode) {
+	private boolean init(String companyCodeSys01,String customerCode,String warehouseCode) {
 		controlComp.setValue(companyCodeSys01);
 		ApplicationClientFacade facade = (ApplicationClientFacade)MDIFrame.getInstance().getClientFacade();
 		controlUser.setValue(facade.getMainClass().getUsername());
@@ -284,11 +286,19 @@ public class PosFrame extends JFrame {
 				gridCustomerVO.getProgressiveREG04(),
 				ApplicationConsts.SUBJECT_PEOPLE_CUSTOMER
 		));
-		if (!res.isError())
+		if (!res.isError()) {
 			customerVO = (PeopleCustomerVO)((VOResponse)res).getVo();
-		else
+			if (customerVO.getCurrencyCodeReg03SAL01()==null ||
+					customerVO.getPricelistCodeSal01SAL07()==null) {
+				OptionPane.showMessageDialog(MDIFrame.getInstance(),"you need to specify a pricelist for the default customer","Attention",JOptionPane.OK_OPTION);
+				return false;
+			}
+		}
+		else {
 			customerVO = null;
-
+			OptionPane.showMessageDialog(MDIFrame.getInstance(),"you need to specifify the default customer for retail sale","Attention",JOptionPane.OK_OPTION);
+			return false;
+		}
 
 		// load currency info...
 		pars = new LookupValidationParams(customerVO.getCurrencyCodeReg03SAL01(),new HashMap());
@@ -733,7 +743,7 @@ public class PosFrame extends JFrame {
 			}
 		});
 
-
+		return true;
 	} // end init method
 
 
@@ -1652,6 +1662,9 @@ public class PosFrame extends JFrame {
 		DetailSaleDocRowVO vo = null;
 		for(int i=0;i<grid.getVOListTableModel().getRowCount();i++) {
 			vo = (DetailSaleDocRowVO)grid.getVOListTableModel().getObjectForRow(i);
+			vo.setPricelistCodeSal01DOC02(detailSaleDocVO.getPricelistCodeSal01DOC01());
+			vo.setPricelistDescriptionDOC02(detailSaleDocVO.getPricelistDescriptionDOC01());
+
 			subtotal = subtotal.add(vo.getValueDOC02());
 
 			detailSaleDocVO.setTaxableIncomeDOC01(detailSaleDocVO.getTaxableIncomeDOC01().add(vo.getTaxableIncomeDOC02()));

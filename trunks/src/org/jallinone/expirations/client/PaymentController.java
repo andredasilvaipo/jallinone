@@ -73,6 +73,7 @@ public class PaymentController extends FormController {
 
 			frame.getControlValue().setCurrencySymbol(vo.getCurrencySymbolREG03());
 			frame.getControlValue().setDecimals(vo.getDecimalsREG03().intValue());
+			frame.getControlValue().setValue(vo.getPaymentValueDOC27());
 
 			frame.getGrid().reloadData();
 		}

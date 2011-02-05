@@ -229,6 +229,8 @@ public class SaleEstimateDocRowController extends CompanyFormController {
     vo.setDocNumberDOC02(parentVO.getDocNumberDOC01());
     vo.setDeliveryDateDOC02(new java.sql.Date(System.currentTimeMillis()));
     vo.setCurrencyCodeReg03DOC01(panel.getParentVO().getCurrencyCodeReg03DOC01());
+		vo.setPricelistCodeSal01DOC02(parentVO.getPricelistCodeSal01DOC01());
+		vo.setPricelistDescriptionDOC02(parentVO.getPricelistDescriptionDOC01());
 		vo.setVariantCodeItm11DOC02("*");
 		vo.setVariantCodeItm12DOC02("*");
 		vo.setVariantCodeItm13DOC02("*");

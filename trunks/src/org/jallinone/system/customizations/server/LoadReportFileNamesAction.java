@@ -67,7 +67,16 @@ public class LoadReportFileNamesAction implements Action {
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
     try {
       ArrayList list = new ArrayList();
-      String path = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+"reports/";
+			String path = this.getClass().getResource("/").getPath().replaceAll("%20"," ");
+			String reportsPath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.REPORT_PATH);
+			if (new File(reportsPath).isAbsolute())
+				path = reportsPath;
+			else
+				path += reportsPath;
+			path = path.replace('\\','/');
+			if (!path.endsWith("/"))
+				path += "/";
+
       File[] files = new File(path).listFiles(new FileFilter() {
         public boolean accept(File pathname) {
           return pathname.getName().endsWith(".jasper");

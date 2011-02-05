@@ -28,6 +28,7 @@ import org.openswing.swing.server.UserSessionParameters;
 import org.jallinone.expirations.java.PaymentDistributionVO;
 import org.jallinone.expirations.java.PaymentVO;
 import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
+import org.jallinone.registers.currency.server.CurrencyConversionUtils;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -702,6 +703,7 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 			JournalHeaderVO jhVO = null;
 			String creditDebitAccountCode = null;
 			String accountCodeTypeACC06 = null;
+			BigDecimal paymentValue = null;
 			for(int i=0;i<payDistrs.size();i++) {
 				dVO = (PaymentDistributionVO)payDistrs.get(i);
 				dVO.setProgressiveDoc27DOC28(vo.getProgressiveDOC27());
@@ -721,9 +723,20 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 					throw new Exception(res.getErrorMessage());
 				}
 
+        paymentValue = dVO.getPaymentValueDOC28();
+				if (!dVO.getCurrencyCodeREG03().equals(vo.getCurrencyCodeReg03DOC27())) {
+					paymentValue = CurrencyConversionUtils.convertCurrencyToCurrency(
+				    vo.getPaymentDateDOC27(),
+						dVO.getPaymentValueDOC28(),
+						vo.getCurrencyCodeReg03DOC27(),
+						dVO.getCurrencyCodeREG03(),
+						conn
+					);
+				}
+
 				pstmt2.setString(1,dVO.getPayedDOC28().booleanValue()?"Y":"N");
-				pstmt2.setBigDecimal(2,dVO.getAlreadyPayedDOC19().add(dVO.getPaymentValueDOC28()));
-				pstmt2.setBigDecimal(3,dVO.getAlreadyPayedDOC19().add(dVO.getPaymentValueDOC28()));
+				pstmt2.setBigDecimal(2,dVO.getAlreadyPayedDOC19().add(paymentValue));
+				pstmt2.setBigDecimal(3,dVO.getAlreadyPayedDOC19().add(paymentValue));
 				pstmt2.setString(4,vo.getPaymentTypeCodeReg11DOC27());
 				pstmt2.setString(5,vo.getAccountCodeAcc02DOC27());
 				pstmt2.setString(6,dVO.getRoundingAccountCodeAcc02DOC19());
@@ -804,7 +817,7 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 					jrVO.setCreditAmountACC06( dVO.getValueDOC19().subtract(dVO.getAlreadyPayedDOC19()) );
 				}
 				else {
-					jrVO.setCreditAmountACC06(dVO.getPaymentValueDOC28());
+					jrVO.setCreditAmountACC06(paymentValue);
 				}
 				jrVO.setDescriptionACC06("");
 				jrVO.setItemYearAcc05ACC06(jhVO.getItemYearACC05());
@@ -816,7 +829,7 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 				jrVO.setAccountCodeAcc02ACC06( vo.getAccountCodeAcc02DOC27() );
 				jrVO.setAccountCodeACC06( vo.getAccountCodeAcc02DOC27() );
 				jrVO.setAccountCodeTypeACC06(ApplicationConsts.ACCOUNT_TYPE_ACCOUNT);
-				jrVO.setDebitAmountACC06(dVO.getPaymentValueDOC28());
+				jrVO.setDebitAmountACC06(paymentValue);
 				jrVO.setDescriptionACC06("");
 				jrVO.setItemYearAcc05ACC06(jhVO.getItemYearACC05());
 				jrVO.setProgressiveAcc05ACC06(jhVO.getProgressiveACC05());
@@ -825,7 +838,7 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 
 				// check if there is a rounding on payment...
 				if (dVO.getPayedDOC28().booleanValue() &&
-					 !dVO.getAlreadyPayedDOC19().add(dVO.getPaymentValueDOC28()).equals(dVO.getValueDOC19())) {
+					 !dVO.getAlreadyPayedDOC19().add(paymentValue).equals(dVO.getValueDOC19())) {
 
 					// another accounting movement must be performed, related to rounding...
 					jrVO = new JournalRowVO();
@@ -833,7 +846,7 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 					jrVO.setAccountCodeAcc02ACC06( dVO.getRoundingAccountCodeAcc02DOC19() );
 					jrVO.setAccountCodeACC06( dVO.getRoundingAccountCodeAcc02DOC19() );
 					jrVO.setAccountCodeTypeACC06(ApplicationConsts.ACCOUNT_TYPE_ACCOUNT);
-					jrVO.setDebitAmountACC06(dVO.getValueDOC19().subtract(dVO.getAlreadyPayedDOC19().add(dVO.getPaymentValueDOC28())));
+					jrVO.setDebitAmountACC06(dVO.getValueDOC19().subtract(dVO.getAlreadyPayedDOC19().add(paymentValue)));
 					jrVO.setDescriptionACC06("");
 					jrVO.setItemYearAcc05ACC06(jhVO.getItemYearACC05());
 					jrVO.setProgressiveAcc05ACC06(jhVO.getProgressiveACC05());

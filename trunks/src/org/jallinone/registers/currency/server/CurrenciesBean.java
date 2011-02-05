@@ -53,7 +53,7 @@ import javax.sql.DataSource;
 public class CurrenciesBean  implements Currencies {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -61,9 +61,9 @@ public class CurrenciesBean  implements Currencies {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -81,16 +81,16 @@ public class CurrenciesBean  implements Currencies {
 
   public CurrenciesBean() {
   }
-  
-  
+
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public CurrencyConvVO getCurrencyConv() {
-	  throw new UnsupportedOperationException();	 	  
+	  throw new UnsupportedOperationException();
   }
-  
-  
+
+
   /**
    * Business logic to execute.
    */
@@ -171,6 +171,9 @@ public class CurrenciesBean  implements Currencies {
           "select REG03_CURRENCIES.CURRENCY_CODE,REG03_CURRENCIES.CURRENCY_SYMBOL,REG03_CURRENCIES.DECIMAL_SYMBOL,REG03_CURRENCIES.THOUSAND_SYMBOL,REG03_CURRENCIES.DECIMALS,REG03_CURRENCIES.ENABLED from REG03_CURRENCIES where "+
           "REG03_CURRENCIES.ENABLED='Y'";
 
+			if (gridParams.getOtherGridParams().get(ApplicationConsts.CURRENCY_CODE_REG03)!=null)
+				sql += " and NOT REG03_CURRENCIES.CURRENCY_CODE='"+gridParams.getOtherGridParams().get(ApplicationConsts.CURRENCY_CODE_REG03)+"'";
+
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("currencyCodeREG03","REG03_CURRENCIES.CURRENCY_CODE");
       attribute2dbField.put("currencySymbolREG03","REG03_CURRENCIES.CURRENCY_SYMBOL");
@@ -227,27 +230,41 @@ public class CurrenciesBean  implements Currencies {
    * Business logic to execute.
    */
   public VOListResponse loadCurrencyConvs(GridParams pars,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
-    
+    PreparedStatement pstmt = null;
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       String currCode = (String)pars.getOtherGridParams().get(ApplicationConsts.CURRENCY_CODE_REG03);
 
-
       String sql =
-          "select REG06_CURRENCY_CONV.CURRENCY_CODE_REG03,REG06_CURRENCY_CONV.CURRENCY_CODE2_REG03,REG06_CURRENCY_CONV.VALUE from REG06_CURRENCY_CONV where "+
-          "REG06_CURRENCY_CONV.CURRENCY_CODE_REG03='"+currCode+"'";
+					"select REG06_CURRENCY_CONVS.CURRENCY_CODE_REG03,REG06_CURRENCY_CONVS.CURRENCY_CODE2_REG03,"+
+					"REG06_CURRENCY_CONVS.VALUE,REG06_CURRENCY_CONVS.START_DATE "+
+					"from REG06_CURRENCY_CONVS where "+
+					"REG06_CURRENCY_CONVS.CURRENCY_CODE_REG03=? ";
+			ArrayList params = new ArrayList();
+			params.add(currCode);
 
+			if (pars.getOtherGridParams().get(ApplicationConsts.DATE_FILTER)!=null) {
+				sql +=
+					" and REG06_CURRENCY_CONVS.START_DATE<=? "+
+					" order by REG06_CURRENCY_CONVS.START_DATE DESC ";
+				params.add( new java.sql.Date(((java.util.Date)pars.getOtherGridParams().get(ApplicationConsts.DATE_FILTER)).getTime()) );
+
+				pars = new GridParams(); // remove other filtering ordering conditions...
+			}
       CurrencyConvVO vo = null;
       ArrayList list = new ArrayList();
-      stmt = conn.createStatement();
-      ResultSet rset = stmt.executeQuery(sql);
+      pstmt = conn.prepareStatement(sql);
+			for(int i=0;i<params.size();i++)
+				pstmt.setObject(i+1,params.get(i));
+      ResultSet rset = pstmt.executeQuery();
       while(rset.next()) {
         vo = new CurrencyConvVO();
         vo.setCurrencyCodeReg03REG06(rset.getString(1));
         vo.setCurrencyCode2Reg03REG06(rset.getString(2));
         vo.setValueREG06(rset.getBigDecimal(3));
+				vo.setStartDateREG06(rset.getDate(4));
         list.add(vo);
       }
       rset.close();
@@ -261,7 +278,7 @@ public class CurrenciesBean  implements Currencies {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {
@@ -290,9 +307,13 @@ public class CurrenciesBean  implements Currencies {
 
 
       String sql =
-          "select REG03_CURRENCIES.CURRENCY_CODE,REG03_CURRENCIES.CURRENCY_SYMBOL,REG03_CURRENCIES.DECIMAL_SYMBOL,REG03_CURRENCIES.THOUSAND_SYMBOL,REG03_CURRENCIES.DECIMALS,REG03_CURRENCIES.ENABLED from REG03_CURRENCIES where "+
-          "REG03_CURRENCIES.ENABLED='Y' and "+
-          "REG03_CURRENCIES.CURRENCY_CODE='"+validationPars.getCode()+"'";
+					"select REG03_CURRENCIES.CURRENCY_CODE,REG03_CURRENCIES.CURRENCY_SYMBOL,REG03_CURRENCIES.DECIMAL_SYMBOL,REG03_CURRENCIES.THOUSAND_SYMBOL,REG03_CURRENCIES.DECIMALS,REG03_CURRENCIES.ENABLED "+
+					"from REG03_CURRENCIES where "+
+					"REG03_CURRENCIES.ENABLED='Y' and "+
+					"REG03_CURRENCIES.CURRENCY_CODE='"+validationPars.getCode()+"'";
+
+				if (validationPars.getLookupValidationParameters().get(ApplicationConsts.CURRENCY_CODE_REG03)!=null)
+					sql += " and NOT REG03_CURRENCIES.CURRENCY_CODE='"+validationPars.getLookupValidationParameters().get(ApplicationConsts.CURRENCY_CODE_REG03)+"'";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("currencyCodeREG03","REG03_CURRENCIES.CURRENCY_CODE");
@@ -351,8 +372,7 @@ public class CurrenciesBean  implements Currencies {
    * Business logic to execute.
    */
   public VOListResponse insertCurrency(CurrencyVO vo,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable {
-    Statement stmt = null;
-    
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -379,18 +399,24 @@ public class CurrenciesBean  implements Currencies {
           true,
           customizedFields
       );
-
+/*
       // insert records in REG06...
-      stmt = conn.createStatement();
-      stmt.execute(
-          "insert into REG06_CURRENCY_CONV(CURRENCY_CODE_REG03,CURRENCY_CODE2_REG03) "+
-          "select '"+vo.getCurrencyCodeREG03()+"',CURRENCY_CODE from REG03_CURRENCIES where CURRENCY_CODE <> '"+vo.getCurrencyCodeREG03()+"' and ENABLED='Y'"
+      pstmt = conn.prepareStatement(
+          "insert into REG06_CURRENCY_CONVS(CURRENCY_CODE_REG03,CURRENCY_CODE2_REG03,START_DATE) "+
+          "select '"+vo.getCurrencyCodeREG03()+"',CURRENCY_CODE,? from REG03_CURRENCIES where CURRENCY_CODE <> '"+vo.getCurrencyCodeREG03()+"' and ENABLED='Y'"
       );
-      stmt.execute(
-          "insert into REG06_CURRENCY_CONV(CURRENCY_CODE2_REG03,CURRENCY_CODE_REG03) "+
-          "select '"+vo.getCurrencyCodeREG03()+"',CURRENCY_CODE from REG03_CURRENCIES where CURRENCY_CODE <> '"+vo.getCurrencyCodeREG03()+"' and ENABLED='Y'"
-      );
+			pstmt.setDate(1,new java.sql.Date(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
 
+      pstmt = conn.prepareStatement(
+          "insert into REG06_CURRENCY_CONVS(CURRENCY_CODE2_REG03,CURRENCY_CODE_REG03,START_DATE) "+
+          "select '"+vo.getCurrencyCodeREG03()+"',CURRENCY_CODE,? from REG03_CURRENCIES where CURRENCY_CODE <> '"+vo.getCurrencyCodeREG03()+"' and ENABLED='Y'"
+      );
+			pstmt.setDate(1,new java.sql.Date(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
+*/
       ArrayList list = new ArrayList();
       list.add(vo);
 
@@ -410,7 +436,7 @@ public class CurrenciesBean  implements Currencies {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {
@@ -423,16 +449,97 @@ public class CurrenciesBean  implements Currencies {
         }
         catch (Exception exx) {}
     }
-
-
   }
+
+
+		/**
+		 * Business logic to execute.
+		 */
+		public VOListResponse insertCurrencyConvs(ArrayList vos,String serverLanguageId,String username) throws Throwable {
+			Connection conn = null;
+			try {
+				if (this.conn==null) conn = getConn(); else conn = this.conn;
+
+				Map attribute2dbField = new HashMap();
+				attribute2dbField.put("currencyCodeReg03REG06","CURRENCY_CODE_REG03");
+				attribute2dbField.put("currencyCode2Reg03REG06","CURRENCY_CODE2_REG03");
+				attribute2dbField.put("startDateREG06","START_DATE");
+				attribute2dbField.put("valueREG06","VALUE");
+
+				// insert into REG03...
+				Response res = QueryUtil.insertTable(
+						conn,
+						new UserSessionParameters(username),
+						vos,
+						"REG06_CURRENCY_CONVS",
+						attribute2dbField,
+						"Y",
+						"N",
+						null,
+						true
+				);
+				if (res.isError())
+					throw new Exception(res.getErrorMessage());
+
+
+	      ArrayList inverseVOs = new ArrayList();
+				CurrencyConvVO vo = null;
+				String currCode = null;
+	      for(int i=0;i<vos.size();i++) {
+					vo = (CurrencyConvVO)((CurrencyConvVO)vos.get(i)).clone();
+					currCode = vo.getCurrencyCode2Reg03REG06();
+					vo.setCurrencyCode2Reg03REG06(vo.getCurrencyCodeReg03REG06());
+					vo.setCurrencyCodeReg03REG06(currCode);
+					vo.setValueREG06(new BigDecimal(1).divide( vo.getValueREG06(),5,BigDecimal.ROUND_HALF_UP ));
+					inverseVOs.add(vo);
+				}
+				Response res2 = QueryUtil.insertTable(
+						conn,
+						new UserSessionParameters(username),
+						inverseVOs,
+						"REG06_CURRENCY_CONVS",
+						attribute2dbField,
+						"Y",
+						"N",
+						null,
+						true
+				);
+				if (res2.isError())
+					throw new Exception(res2.getErrorMessage());
+
+				return new VOListResponse(vos,false,vos.size());
+			}
+			catch (Throwable ex) {
+				Logger.error(username, this.getClass().getName(),
+										 "executeCommand", "Error while inserting new currency conversions", ex);
+				try {
+					if (this.conn==null && conn!=null)
+						// rollback only local connection
+						conn.rollback();
+				}
+				catch (Exception ex3) {
+				}
+				throw new Exception(ex.getMessage());
+			}
+			finally {
+					try {
+							if (this.conn==null && conn!=null) {
+									// close only local connection
+									conn.commit();
+									conn.close();
+							}
+					}
+					catch (Exception exx) {}
+			}
+		}
+
 
 
   /**
    * Business logic to execute.
    */
   public VOListResponse updateCurrencies(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable {
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -509,19 +616,16 @@ public class CurrenciesBean  implements Currencies {
    * Business logic to execute.
    */
   public VOListResponse updateCurrencyConvs(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
-
       CurrencyConvVO oldVO = null;
       CurrencyConvVO newVO = null;
       Response res = null;
-
-      String sql = null;
       BigDecimal conv = null;
       BigDecimal invConv = null;
+
       for(int i=0;i<oldVOs.size();i++) {
         oldVO = (CurrencyConvVO)oldVOs.get(i);
         newVO = (CurrencyConvVO)newVOs.get(i);
@@ -532,31 +636,37 @@ public class CurrenciesBean  implements Currencies {
           invConv = new BigDecimal(1d/newVO.getValueREG06().doubleValue()).setScale(5,BigDecimal.ROUND_HALF_UP);
         }
 
-        sql =
-            "update REG06_CURRENCY_CONV set VALUE="+
-            (newVO.getValueREG06()==null?"null":conv.toString())+" where "+
-            "CURRENCY_CODE_REG03='"+newVO.getCurrencyCodeReg03REG06()+"' and "+
-            "CURRENCY_CODE2_REG03='"+newVO.getCurrencyCode2Reg03REG06()+"' and "+
-            "VALUE"+(oldVO.getValueREG06()==null?" is null":"="+oldVO.getValueREG06());
+				pstmt = conn.prepareStatement(
+						"update REG06_CURRENCY_CONVS set VALUE="+
+						(newVO.getValueREG06()==null?"null":conv.toString())+
+						" where "+
+						"CURRENCY_CODE_REG03='"+newVO.getCurrencyCodeReg03REG06()+"' and "+
+						"CURRENCY_CODE2_REG03='"+newVO.getCurrencyCode2Reg03REG06()+"' and "+
+						"START_DATE=? and "+
+						"VALUE"+(oldVO.getValueREG06()==null?" is null":"="+oldVO.getValueREG06())
+				);
+				pstmt.setDate(1,newVO.getStartDateREG06());
+				pstmt.execute();
+				pstmt.close();
 
-
-        stmt.execute(sql);
-
-        sql =
-            "update REG06_CURRENCY_CONV set VALUE="+
-            (newVO.getValueREG06()==null?"null":invConv.toString())+" where "+
-            "CURRENCY_CODE_REG03='"+newVO.getCurrencyCode2Reg03REG06()+"' and "+
-            "CURRENCY_CODE2_REG03='"+newVO.getCurrencyCodeReg03REG06()+"'";
-
-
-        stmt.execute(sql);
+	      pstmt = conn.prepareStatement(
+					"update REG06_CURRENCY_CONVS set VALUE="+
+					(newVO.getValueREG06()==null?"null":invConv.toString())+
+					" where "+
+					"CURRENCY_CODE_REG03='"+newVO.getCurrencyCode2Reg03REG06()+"' and "+
+					"CURRENCY_CODE2_REG03='"+newVO.getCurrencyCodeReg03REG06()+"' and "+
+				  "START_DATE=? "
+				);
+				pstmt.setDate(1,newVO.getStartDateREG06());
+				pstmt.execute();
+				pstmt.close();
 
       }
 
       return new VOListResponse(newVOs,false,newVOs.size());
     }
     catch (Throwable ex) {
-      Logger.error(username,this.getClass().getName(),"executeCommand","Error while updating existing measure conversions",ex);
+      Logger.error(username,this.getClass().getName(),"executeCommand","Error while updating existing currency conversions",ex);
       try {
     	  if (this.conn==null && conn!=null)
     		  // rollback only local connection
@@ -568,11 +678,11 @@ public class CurrenciesBean  implements Currencies {
     }
     finally {
       try {
-        stmt.close();
+        pstmt.close();
       }
-      catch (SQLException ex2) {
+      catch (Exception ex2) {
       }
-    
+
       try {
           if (this.conn==null && conn!=null) {
                 // close only local connection
@@ -593,7 +703,7 @@ public class CurrenciesBean  implements Currencies {
    */
   public VOResponse deleteCurrencies(ArrayList list,String serverLanguageId,String username) throws Throwable {
     Statement stmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -610,7 +720,7 @@ public class CurrenciesBean  implements Currencies {
 
         // delete records from REG06...
         stmt.execute(
-            "delete from REG06_CURRENCY_CONV where CURRENCY_CODE_REG03 = '"+vo.getCurrencyCodeREG03()+"' or CURRENCY_CODE2_REG03 = '"+vo.getCurrencyCodeREG03()+"'"
+            "delete from REG06_CURRENCY_CONVS where CURRENCY_CODE_REG03 = '"+vo.getCurrencyCodeREG03()+"' or CURRENCY_CODE2_REG03 = '"+vo.getCurrencyCodeREG03()+"'"
         );
       }
 
@@ -638,13 +748,63 @@ public class CurrenciesBean  implements Currencies {
                 conn.commit();
                 conn.close();
             }
-
         }
         catch (Exception exx) {}
     }
-
-
   }
+
+
+		/**
+		 * Business logic to execute.
+		 */
+		public VOResponse deleteCurrencyConvs(ArrayList list,String serverLanguageId,String username) throws Throwable {
+			PreparedStatement pstmt = null;
+			Connection conn = null;
+			try {
+				if (this.conn==null) conn = getConn(); else conn = this.conn;
+				CurrencyConvVO vo = null;
+
+				pstmt = conn.prepareStatement(
+						"delete from REG06_CURRENCY_CONVS where CURRENCY_CODE_REG03 = ? and CURRENCY_CODE2_REG03 = ? and START_DATE=?"
+				);
+
+				for(int i=0;i<list.size();i++) {
+					// delete records from REG06...
+					vo = (CurrencyConvVO)list.get(i);
+					pstmt.setString(1,vo.getCurrencyCodeReg03REG06());
+					pstmt.setString(2,vo.getCurrencyCode2Reg03REG06());
+					pstmt.setDate(3,vo.getStartDateREG06());
+					pstmt.execute();
+				}
+
+				return new VOResponse(new Boolean(true));
+			}
+			catch (Throwable ex) {
+				Logger.error(username,this.getClass().getName(),"executeCommand","Error while deleting existing currency conversions",ex);
+				try {
+					if (this.conn==null && conn!=null)
+						// rollback only local connection
+						conn.rollback();
+				}
+				catch (Exception ex3) {
+				}
+				throw new Exception(ex.getMessage());
+			}
+			finally {
+					try {
+							pstmt.close();
+					}
+					catch (Exception exx) {}
+					try {
+							if (this.conn==null && conn!=null) {
+									// close only local connection
+									conn.commit();
+									conn.close();
+							}
+					}
+					catch (Exception exx) {}
+			}
+		}
 
 
 

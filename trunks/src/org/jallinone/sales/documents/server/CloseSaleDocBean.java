@@ -232,7 +232,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
 
       // retrieve company currency code and currency conversion factor...
       String companyCurrencyCode = CurrencyConversionUtils.getCompanyCurrencyCode(docVO.getCompanyCodeSys01DOC01(),conn);
-      BigDecimal conv = CurrencyConversionUtils.getConversionFactor(docVO.getCurrencyCodeReg03DOC01(),companyCurrencyCode,conn);
+      BigDecimal conv = CurrencyConversionUtils.getConversionFactor(docVO.getDocDateDOC01(),docVO.getCurrencyCodeReg03DOC01(),companyCurrencyCode,conn);
 
       // retrieve document item rows...
       GridParams gridParams = new GridParams();
@@ -759,6 +759,7 @@ public class CloseSaleDocBean  implements CloseSaleDoc {
       long startTime = docVO.getDocDateDOC01().getTime(); // invoice date...
       if (payVO.getStartDayREG10().equals(ApplicationConsts.START_DAY_END_MONTH)) {
         Calendar cal = Calendar.getInstance();
+				cal.setTimeInMillis(startTime);
         if (cal.get(cal.MONTH)==10 || cal.get(cal.MONTH)==3 || cal.get(cal.MONTH)==5 || cal.get(cal.MONTH)==8)
           cal.set(cal.DAY_OF_MONTH,30);
         else if (cal.get(cal.MONTH)==1) {

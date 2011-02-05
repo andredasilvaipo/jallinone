@@ -17,6 +17,7 @@ import org.jallinone.expirations.java.PaymentVO;
 import org.jallinone.expirations.java.PaymentDistributionVO;
 import org.openswing.swing.message.receive.java.ValueObject;
 import java.math.BigDecimal;
+import org.jallinone.registers.currency.java.CurrencyConvVO;
 
 
 /**
@@ -84,15 +85,31 @@ public class PaymentDistributionsController extends GridController {
 	 */
 	public boolean validateCell(int rowNumber,String attributeName,Object oldValue,Object newValue) {
 		PaymentDistributionVO vo = (PaymentDistributionVO)frame.getGrid().getVOListTableModel().getObjectForRow(rowNumber);
+		PaymentVO payVO = (PaymentVO)frame.getPayForm().getVOModel().getValueObject();
+		BigDecimal res = new BigDecimal(0);
+	  if (vo!=null && vo.getValueDOC19()!=null && vo.getAlreadyPayedDOC19()!=null)
+			res = vo.getValueDOC19().subtract(vo.getAlreadyPayedDOC19());
+
+
 		if (attributeName.equals("payedDOC28") &&
 				Boolean.TRUE.equals(newValue) &&
 				vo.getPaymentValueDOC28()==null
 		) {
-				vo.setPaymentValueDOC28(vo.getValueDOC19().subtract(vo.getAlreadyPayedDOC19()));
+			if (vo.getCurrencyCodeREG03().equals(payVO.getCurrencyCodeReg03DOC27()))
+				vo.setPaymentValueDOC28( res );
+			else {
+				CurrencyConvVO convVO = null;
+				for(int i=0;i<frame.getCurrConvs().size();i++) {
+					convVO = (CurrencyConvVO)frame.getCurrConvs().get(i);
+					if (convVO.getCurrencyCode2Reg03REG06().equals(vo.getCurrencyCodeREG03())) {
+						vo.setPaymentValueDOC28( res.divide(convVO.getValueREG06(),vo.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP) );
+						break;
+					}
+				}
+			}
     }
 		else if (attributeName.equals("paymentValueDOC28")) {
 			// check for total amount...
-			PaymentVO payVO = (PaymentVO)frame.getPayForm().getVOModel().getValueObject();
 			BigDecimal total = new BigDecimal(0);
 			if (newValue!=null)
 				total = total.add((BigDecimal)newValue);
@@ -106,9 +123,21 @@ public class PaymentDistributionsController extends GridController {
 				return false;
 
 	    vo = (PaymentDistributionVO)frame.getGrid().getVOListTableModel().getObjectForRow(rowNumber);
-	    if (newValue!=null && ((BigDecimal)newValue).equals(vo.getValueDOC19().subtract(vo.getAlreadyPayedDOC19())))
-				vo.setPayedDOC28(Boolean.TRUE);
-
+	    if (newValue!=null) {
+				BigDecimal conv = (BigDecimal)newValue;
+				if (!vo.getCurrencyCodeREG03().equals(payVO.getCurrencyCodeReg03DOC27())) {
+					CurrencyConvVO convVO = null;
+					for(int i=0;i<frame.getCurrConvs().size();i++) {
+						convVO = (CurrencyConvVO)frame.getCurrConvs().get(i);
+						if (convVO.getCurrencyCode2Reg03REG06().equals(vo.getCurrencyCodeREG03())) {
+							conv = conv.multiply(convVO.getValueREG06());
+							break;
+						}
+					}
+				}
+			  if (conv.equals(vo.getValueDOC19().subtract(vo.getAlreadyPayedDOC19())))
+					vo.setPayedDOC28(Boolean.TRUE);
+	    }
 		}
 		return true;
 	}

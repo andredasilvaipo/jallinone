@@ -368,6 +368,12 @@ public class CreateSaleDocFromEstimateBean  implements CreateSaleDocFromEstimate
         throw new Exception(res.getErrorMessage());
       }
 
+      pk = new SaleDocPK(
+		    docVO.getCompanyCodeSys01DOC01(),
+				docVO.getDocTypeDOC01(),
+				docVO.getDocYearDOC01(),
+				docVO.getDocNumberDOC01()
+			);
       return loadSaleDocBean.loadSaleDoc(pk,serverLanguageId,username,new ArrayList());
     }
     catch (Throwable ex) {

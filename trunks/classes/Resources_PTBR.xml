@@ -1328,7 +1328,7 @@
   <object key="ESC back" value="ESC Back" />
   <object key="variantTypeDesc" value="Sub variant description" />
   <object key="spanish" value="Spanish" />
-  <object key="you need to specifify the default warehouse for retail sale" value="You need to specifify the default warehouse for retail sale" />
+  <object key="you need to specifify the default warehouse for retail sale" value="You need to specify the default warehouse for retail sale" />
   <object key="customers that have bought these items also bought" value="Customers that have bought these items also bought" />
   <object key="" value="" />
   <object key="variantsPanel" value="Variants and sub variants" />
@@ -1354,7 +1354,7 @@
   <object key="sale closing" value="Sale closing" />
   <object key="codeOrder" value="Order" />
   <object key="1 remove" value="1 Remove" />
-  <object key="you need to specifify the default customer for retail sale" value="You need to specifify the default customer for retail sale" />
+  <object key="you need to specifify the default customer for retail sale" value="You need to specify the default customer for retail sale" />
   <object key="5 start tooltip" value="Start new retail sale" />
   <object key="5 start" value="5 Start sale" />
   <object key="2 qty tooltip" value="Set item quantity" />
@@ -1603,6 +1603,8 @@
   <object key="you need to specify at least one expiration" value="You need to specify at least one expiration" />
   <object key="expirations must have a payment value" value="Expirations must have a payment value" />
   <object key="payments specified for expirations are not equal to the total payment value" value="Payments specified for expirations are not equal to the total payment value" />
+  <object key="you need to specify a pricelist for the default customer" value="You need to specify a pricelist for the default customer" />
+  <object key="reports repository path" value="Reports repository path" />
 
   <currencySymbol>R$</currencySymbol>
   <decimalSymbol>,</decimalSymbol>

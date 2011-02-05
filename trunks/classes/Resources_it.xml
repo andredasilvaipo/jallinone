@@ -1691,6 +1691,8 @@
   <object key="you need to specify at least one expiration" value="E' necessario specificare almeno una scadenza" />
   <object key="expirations must have a payment value" value="Ogni scadenza deve riportare un valore di pagamento" />
   <object key="payments specified for expirations are not equal to the total payment value" value="L'ammontare dei pagamenti per le scadenze specificate non coincide con il valore del pagamento" />
+  <object key="you need to specify a pricelist for the default customer" value="E' necessario specificare un cliente avente un listino associato" />
+  <object key="reports repository path" value="Path repository reports" />
 
 <!-- application translations -->
 

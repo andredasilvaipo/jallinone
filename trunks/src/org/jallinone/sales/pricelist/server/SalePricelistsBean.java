@@ -58,7 +58,7 @@ import javax.sql.DataSource;
 public class SalePricelistsBean  implements SalePricelists {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -66,9 +66,9 @@ public class SalePricelistsBean  implements SalePricelists {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -78,7 +78,7 @@ public class SalePricelistsBean  implements SalePricelists {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -90,10 +90,10 @@ public class SalePricelistsBean  implements SalePricelists {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public PricelistVO getPricelist() {
-	  throw new UnsupportedOperationException();	  
+	  throw new UnsupportedOperationException();
   }
 
 
@@ -164,7 +164,7 @@ public class SalePricelistsBean  implements SalePricelists {
   public VOResponse importAllItems(PricelistChanges vo,String serverLanguageId,String username) throws Throwable {
     PreparedStatement pstmt = null;
     PreparedStatement pstmt2 = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -227,7 +227,7 @@ public class SalePricelistsBean  implements SalePricelists {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
     }
 
   }
@@ -353,6 +353,14 @@ public class SalePricelistsBean  implements SalePricelists {
           "SAL01_PRICELISTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and SAL01_PRICELISTS.COMPANY_CODE_SYS01 in ("+companies+")";
 
+			ArrayList values = new ArrayList();
+			values.add(serverLanguageId);
+
+			if (gridParams.getOtherGridParams().get(ApplicationConsts.CURRENCY_CODE_REG03)!=null) {
+				sql += " AND SAL01_PRICELISTS.CURRENCY_CODE_REG03=? ";
+				values.add( gridParams.getOtherGridParams().get(ApplicationConsts.CURRENCY_CODE_REG03) );
+			}
+
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SAL01","SAL01_PRICELISTS.COMPANY_CODE_SYS01");
       attribute2dbField.put("pricelistCodeSAL01","SAL01_PRICELISTS.PRICELIST_CODE");
@@ -360,8 +368,6 @@ public class SalePricelistsBean  implements SalePricelists {
       attribute2dbField.put("progressiveSys10SAL01","SAL01_PRICELISTS.PROGRESSIVE_SYS10");
       attribute2dbField.put("currencyCodeReg03SAL01","SAL01_PRICELISTS.CURRENCY_CODE_REG03");
 
-      ArrayList values = new ArrayList();
-      values.add(serverLanguageId);
 
       // read from SAL01 table...
       Response answer = CustomizeQueryUtil.getQuery(
@@ -495,17 +501,23 @@ public class SalePricelistsBean  implements SalePricelists {
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SAL01_PRICELISTS.PRICELIST_CODE=? and SAL01_PRICELISTS.COMPANY_CODE_SYS01=?";
 
+
+			ArrayList values = new ArrayList();
+			values.add(serverLanguageId);
+			values.add(validationPars.getCode());
+			values.add( (String)validationPars.getLookupValidationParameters().get(ApplicationConsts.COMPANY_CODE_SYS01) );
+
+			if (validationPars.getLookupValidationParameters().get(ApplicationConsts.CURRENCY_CODE_REG03)!=null) {
+				sql += " AND SAL01_PRICELISTS.CURRENCY_CODE_REG03=? ";
+				values.add( validationPars.getLookupValidationParameters().get(ApplicationConsts.CURRENCY_CODE_REG03) );
+			}
+
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SAL01","SAL01_PRICELISTS.COMPANY_CODE_SYS01");
       attribute2dbField.put("pricelistCodeSAL01","SAL01_PRICELISTS.PRICELIST_CODE");
       attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveSys10SAL01","SAL01_PRICELISTS.PROGRESSIVE_SYS10");
       attribute2dbField.put("currencyCodeReg03SAL01","SAL01_PRICELISTS.CURRENCY_CODE_REG03");
-
-      ArrayList values = new ArrayList();
-      values.add(serverLanguageId);
-      values.add(validationPars.getCode());
-      values.add( (String)validationPars.getLookupValidationParameters().get(ApplicationConsts.COMPANY_CODE_SYS01) );
 
       // read from SAL01 table...
       Response answer = CustomizeQueryUtil.getQuery(

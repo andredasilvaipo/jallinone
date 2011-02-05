@@ -48,7 +48,7 @@ import org.jallinone.events.server.*;
 public interface Currencies {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public CurrencyConvVO getCurrencyConv();
 
@@ -69,6 +69,9 @@ public interface Currencies {
 
 	public VOListResponse validateCurrencyCode(LookupValidationParams validationPars,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
 
+  public VOResponse deleteCurrencyConvs(ArrayList list,String serverLanguageId,String username) throws Throwable;
+
+ 	public VOListResponse insertCurrencyConvs(ArrayList vos,String serverLanguageId,String username) throws Throwable;
 
 
 }

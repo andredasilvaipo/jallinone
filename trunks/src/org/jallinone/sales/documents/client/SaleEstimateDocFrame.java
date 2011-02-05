@@ -28,6 +28,7 @@ import org.jallinone.sales.documents.activities.client.SaleDocActivitiesPanel;
 import java.util.HashMap;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JRViewer;
+import java.beans.*;
 
 
 /**
@@ -100,8 +101,8 @@ public class SaleEstimateDocFrame extends InternalFrame implements SaleDocument 
     this.controller = controller;
     try {
       jbInit();
-      setSize(750,650);
-      setMinimumSize(new Dimension(750,650));
+      setSize(750,700);
+      setMinimumSize(new Dimension(750,700));
       setTitle(ClientSettings.getInstance().getResources().getResource("sale estimate"));
 
 
@@ -394,6 +395,11 @@ public class SaleEstimateDocFrame extends InternalFrame implements SaleDocument 
               vo.getDocNumberDOC01()
           ));
 
+				try {
+					this.closeFrame();
+				}
+				catch (PropertyVetoException ex) {
+				}
       }
       else JOptionPane.showMessageDialog(
               ClientUtils.getParentFrame(this),

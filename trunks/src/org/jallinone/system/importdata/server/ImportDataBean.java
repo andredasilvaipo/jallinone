@@ -67,7 +67,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class ImportDataBean implements ImportData {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -75,9 +75,9 @@ public class ImportDataBean implements ImportData {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -87,7 +87,7 @@ public class ImportDataBean implements ImportData {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -122,7 +122,7 @@ public class ImportDataBean implements ImportData {
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       bean.setConn(conn);
-      
+
       long time = System.currentTimeMillis();
 
       ImportDescriptorVO impVO = (ImportDescriptorVO)Class.forName(processVO.getClassNameSYS23()).newInstance();
@@ -857,7 +857,7 @@ public class ImportDataBean implements ImportData {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
   }
 

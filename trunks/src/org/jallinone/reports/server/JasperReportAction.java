@@ -35,6 +35,7 @@ import org.openswing.swing.server.Controller;
 import org.openswing.swing.server.UserSessionParameters;
 import org.openswing.swing.util.java.Consts;
 import org.jallinone.variants.java.VariantDescriptionsVO;
+import java.util.Iterator;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -131,6 +132,15 @@ public class JasperReportAction implements Action {
       functionCode = (String)params.get(ApplicationConsts.FUNCTION_CODE_SYS06);
       String exportFormat = (String)params.get(ApplicationConsts.EXPORT_FORMAT);
       Map exportParams = (Map)params.get(ApplicationConsts.EXPORT_PARAMS);
+//			Iterator it = exportParams.keySet().iterator();
+//			String key = null;
+//			Object obj = null;
+//			while(it.hasNext()) {
+//				key = it.next().toString();
+//				obj = exportParams.get(key);
+//				if (obj instanceof java.util.Date)
+//				  exportParams.put(key,new java.sql.Timestamp(((java.util.Date)obj).getTime()));
+//			}
 
       pstmt = conn.prepareStatement("select REPORT_NAME from SYS15_REPORT_CUSTOMIZATIONS where COMPANY_CODE_SYS01=? and FUNCTION_CODE_SYS06=?");
       pstmt.setString(1,companyCode);
@@ -145,8 +155,17 @@ public class JasperReportAction implements Action {
         new ErrorResponse(t1);
       }
 
-      String path = this.getClass().getResource("/").getPath().replaceAll("%20"," ");
-      String reportName = path+"reports/"+baseName.substring(0,baseName.lastIndexOf("."));
+			String path = this.getClass().getResource("/").getPath().replaceAll("%20"," ");
+			String reportsPath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.REPORT_PATH);
+			if (new File(reportsPath).isAbsolute())
+				path = reportsPath;
+			else
+				path += reportsPath;
+			path = path.replace('\\','/');
+			if (!path.endsWith("/"))
+				path += "/";
+
+      String reportName = path+baseName.substring(0,baseName.lastIndexOf("."));
 
       File file = new File(reportName+".jasper");
 

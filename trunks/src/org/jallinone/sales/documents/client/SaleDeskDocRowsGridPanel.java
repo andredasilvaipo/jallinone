@@ -121,6 +121,12 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
   LabelControl labelTotalDisc = new LabelControl();
   CurrencyControl controlVatValue = new CurrencyControl();
 
+	LookupController pricelistController = new LookupController();
+	LookupServerDataLocator pricelistDataLocator = new LookupServerDataLocator();
+	CodLookupControl controlPricelistCode = new CodLookupControl();
+	TextControl controlPricelistDescr = new TextControl();
+	LabelControl labelPricelist = new LabelControl();
+
   /** header v.o. */
   private DetailSaleDocVO parentVO = null;
 
@@ -160,7 +166,7 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
   LabelControl labelDiscPerc = new LabelControl();
   NumericControl controlDiscPerc = new NumericControl();
 
-  private int splitDiv = 260;
+  private int splitDiv = 240;
 
   /** list of CustomValueObject objects, related to prices associated to item's variants, if any */
   private java.util.List pricesMatrix = null;
@@ -525,6 +531,50 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
    * set buttons disabilitation...
    */
   private void init() {
+
+		// pricelist lookup...
+		pricelistDataLocator.setGridMethodName("loadPricelists");
+		pricelistDataLocator.setValidationMethodName("validatePricelistCode");
+
+		controlPricelistCode.setLookupController(pricelistController);
+		controlPricelistCode.setControllerMethodName("getSalePricesList");
+		pricelistController.setLookupDataLocator(pricelistDataLocator);
+		pricelistController.setFrameTitle("pricelists");
+		pricelistController.setLookupValueObjectClassName("org.jallinone.sales.pricelist.java.PricelistVO");
+		pricelistController.addLookup2ParentLink("pricelistCodeSAL01","pricelistCodeSal01DOC02");
+		pricelistController.addLookup2ParentLink("descriptionSYS10", "pricelistDescriptionDOC02");
+		pricelistController.setAllColumnVisible(false);
+		pricelistController.setVisibleColumn("pricelistCodeSAL01", true);
+		pricelistController.setVisibleColumn("descriptionSYS10", true);
+		pricelistController.setPreferredWidthColumn("descriptionSYS10", 250);
+		pricelistController.setFramePreferedSize(new Dimension(420,500));
+		pricelistController.addLookupListener(new LookupListener() {
+
+			public void codeValidated(boolean validated) {}
+
+			public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {
+				try {
+					controlItemCode.validateCode(null);
+				}
+				catch (Exception ex) {
+				}
+				controlItemCode.setEnabled(controlPricelistCode.getValue()!=null);
+			}
+
+			public void beforeLookupAction(ValueObject parentVO) {
+				// retrieve function identifier...
+				pricelistDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01, SaleDeskDocRowsGridPanel.this.parentVO.getCompanyCodeSys01DOC01());
+				pricelistDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,SaleDeskDocRowsGridPanel.this.parentVO.getCompanyCodeSys01DOC01());
+				pricelistDataLocator.getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_REG04,SaleDeskDocRowsGridPanel.this.parentVO.getProgressiveReg04DOC01());
+				pricelistDataLocator.getLookupValidationParameters().put(ApplicationConsts.PROGRESSIVE_REG04,SaleDeskDocRowsGridPanel.this.parentVO.getProgressiveReg04DOC01());
+				pricelistDataLocator.getLookupFrameParams().put(ApplicationConsts.CURRENCY_CODE_REG03,SaleDeskDocRowsGridPanel.this.parentVO.getCurrencyCodeReg03DOC01());
+				pricelistDataLocator.getLookupValidationParameters().put(ApplicationConsts.CURRENCY_CODE_REG03,SaleDeskDocRowsGridPanel.this.parentVO.getCurrencyCodeReg03DOC01());
+			}
+
+			public void forceValidate() {}
+
+		});
+
     Response res = ClientUtils.getData("loadItemTypes",new GridParams());
     final Domain d = new Domain("ITEM_TYPES");
     if (!res.isError()) {
@@ -872,72 +922,92 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     itemTabbedPane.setTitleAt(1,ClientSettings.getInstance().getResources().getResource("booked items and availability"));
     itemTabbedPane.setTitleAt(2,ClientSettings.getInstance().getResources().getResource("future item availability"));
 
-    detailPanel.add(labelItemCode,                                 new GridBagConstraints(0, 1, 2, 1, 0.0, 0.0
+    detailPanel.add(labelItemCode,                                  new GridBagConstraints(0, 2, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 0, 0));
-    detailPanel.add(controlItemCode,                                                  new GridBagConstraints(3, 1, 2, 1, 0.0, 0.0
+    detailPanel.add(controlItemCode,                                                   new GridBagConstraints(3, 2, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 30, 0));
-    detailPanel.add(labelQty,                                  new GridBagConstraints(0, 4, 2, 1, 0.0, 0.0
+    detailPanel.add(labelQty,                                   new GridBagConstraints(0, 5, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlQty,                                   new GridBagConstraints(2, 4, 2, 1, 0.0, 0.0
+    detailPanel.add(controlQty,                                    new GridBagConstraints(2, 5, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 20, 0));
-    detailPanel.add(labelVat,                                new GridBagConstraints(0, 3, 2, 1, 0.0, 0.0
+    detailPanel.add(labelVat,                                 new GridBagConstraints(0, 4, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlVatCode,                                    new GridBagConstraints(2, 3, 2, 1, 0.0, 0.0
+    detailPanel.add(controlVatCode,                                     new GridBagConstraints(2, 4, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(controlVatDescr,                                  new GridBagConstraints(4, 3, 2, 1, 0.0, 0.0
+    detailPanel.add(controlVatDescr,                                   new GridBagConstraints(4, 4, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 5, 5), 70, 0));
-    detailPanel.add(labelValueReg01,                                new GridBagConstraints(6, 3, 1, 1, 0.0, 0.0
+    detailPanel.add(labelValueReg01,                                 new GridBagConstraints(6, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlValueReg01,                                   new GridBagConstraints(7, 3, 1, 1, 0.0, 0.0
+    detailPanel.add(controlValueReg01,                                    new GridBagConstraints(7, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(labelDeductibleReg01,                                new GridBagConstraints(8, 3, 1, 1, 0.0, 0.0
+    detailPanel.add(labelDeductibleReg01,                                 new GridBagConstraints(8, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlDeductibleReg01,                                 new GridBagConstraints(9, 3, 1, 1, 0.0, 0.0
+    detailPanel.add(controlDeductibleReg01,                                  new GridBagConstraints(9, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(controlItemDescr,                                  new GridBagConstraints(5, 1, 5, 1, 1.0, 0.0
+    detailPanel.add(controlItemDescr,                                   new GridBagConstraints(5, 2, 5, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 5), 0, 0));
-    detailPanel.add(controlUmCode,                                 new GridBagConstraints(4, 4, 2, 1, 0.0, 0.0
+    detailPanel.add(controlUmCode,                                  new GridBagConstraints(4, 5, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 5, 5), 70, 0));
-    detailPanel.add(labelPriceUnit,                             new GridBagConstraints(6, 4, 1, 2, 0.0, 0.0
+    detailPanel.add(labelPriceUnit,                              new GridBagConstraints(6, 5, 1, 2, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlPriceUnit,                              new GridBagConstraints(7, 4, 1, 2, 0.0, 0.0
+    detailPanel.add(controlPriceUnit,                               new GridBagConstraints(7, 5, 1, 2, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(labelVatValue,                             new GridBagConstraints(8, 4, 1, 2, 0.0, 0.0
+    detailPanel.add(labelVatValue,                              new GridBagConstraints(8, 5, 1, 2, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlTotalDisc,                                new GridBagConstraints(7, 7, 1, 1, 0.0, 0.0
+    detailPanel.add(controlTotalDisc,                                 new GridBagConstraints(7, 8, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 10, 5), 20, 0));
-    detailPanel.add(labelTotalDisc,                               new GridBagConstraints(6, 7, 1, 1, 0.0, 0.0
+    detailPanel.add(labelTotalDisc,                                new GridBagConstraints(6, 8, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 10, 5), 0, 0));
-    detailPanel.add(controlVatValue,                              new GridBagConstraints(9, 4, 1, 2, 0.0, 0.0
+    detailPanel.add(controlVatValue,                               new GridBagConstraints(9, 5, 1, 2, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(labelTotal,                               new GridBagConstraints(8, 7, 1, 1, 0.0, 0.0
+    detailPanel.add(labelTotal,                                new GridBagConstraints(8, 8, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 10, 5), 0, 0));
-    detailPanel.add(controlTotal,                                new GridBagConstraints(9, 7, 1, 1, 0.0, 0.0
+    detailPanel.add(controlTotal,                                 new GridBagConstraints(9, 8, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 10, 5), 20, 0));
-    detailPanel.add(controlItemType,                                new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0
+    detailPanel.add(controlItemType,                                 new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(voidPanel,                        new GridBagConstraints(0, 8, 2, 1, 0.0, 1.0
+    detailPanel.add(voidPanel,                         new GridBagConstraints(0, 9, 2, 1, 0.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-    detailPanel.add(controlDiscPerc,     new GridBagConstraints(9, 6, 1, 1, 0.0, 0.0
+    detailPanel.add(controlDiscPerc,      new GridBagConstraints(9, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(labelDiscPerc,   new GridBagConstraints(8, 6, 1, 1, 0.0, 0.0
+    detailPanel.add(labelDiscPerc,    new GridBagConstraints(8, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlDiscValue,    new GridBagConstraints(7, 6, 1, 1, 0.0, 0.0
+    detailPanel.add(controlDiscValue,     new GridBagConstraints(7, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(labelDiscValue,   new GridBagConstraints(6, 6, 1, 1, 0.0, 0.0
+    detailPanel.add(labelDiscValue,    new GridBagConstraints(6, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(variantsPanel,    new GridBagConstraints(0, 2, 10, 1, 1.0, 1.0
+    detailPanel.add(variantsPanel,     new GridBagConstraints(0, 3, 10, 1, 1.0, 1.0
             ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(labelBarcode,    new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE, new Insets(10, 5, 5, 5), 0, 0));
-    detailPanel.add(controlBarCode,       new GridBagConstraints(2, 0, 3, 1, 0.0, 0.0
-            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(10, 5, 0, 0), 0, 0));
-    detailPanel.add(labelSN,    new GridBagConstraints(5, 0, 2, 1, 0.0, 0.0
-            ,GridBagConstraints.SOUTHEAST, GridBagConstraints.NONE, new Insets(10, 5, 5, 5), 0, 0));
-    detailPanel.add(controlSN,    new GridBagConstraints(7, 0, 3, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(10, 0, 0, 5), 0, 0));
+    detailPanel.add(labelBarcode,       new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    detailPanel.add(controlBarCode,           new GridBagConstraints(2, 1, 3, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 0), 0, 0));
+    detailPanel.add(labelSN,      new GridBagConstraints(5, 1, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.SOUTHEAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    detailPanel.add(controlSN,       new GridBagConstraints(7, 1, 3, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 0), 0, 0));
 
-    splitPane.setDividerLocation(250);
+		detailPanel.add(variantsPanel,       new GridBagConstraints(0, 2, 9, 1, 1.0, 1.0
+						,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+		detailPanel.add(labelPricelist,   new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+						,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		detailPanel.add(controlPricelistDescr,     new GridBagConstraints(5, 0, 5, 1, 0.0, 0.0
+						,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+		detailPanel.add(controlPricelistCode,     new GridBagConstraints(2, 0, 3, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 0), 0, 0));
+
+		labelPricelist.setText("pricelistCodeSAL01");
+		controlPricelistCode.setColumns(10);
+		controlPricelistCode.setEnabledOnEdit(false);
+		controlPricelistCode.setMaxCharacters(20);
+		controlPricelistCode.setRequired(true);
+		controlPricelistDescr.setEnabledOnInsert(false);
+		controlPricelistDescr.setEnabledOnEdit(false);
+		controlPricelistCode.setAttributeName("pricelistCodeSal01DOC02");
+		controlPricelistCode.setLinkLabel(labelPricelist);
+		controlPricelistDescr.setAttributeName("pricelistDescriptionDOC02");
+
+    splitPane.setDividerLocation(230);
 
   }
 
@@ -990,12 +1060,16 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
     controlDiscValue.setGroupingSymbol(parentVO.getThousandSymbolREG03().charAt(0));
     controlDiscValue.setDecimals(parentVO.getDecimalsREG03().intValue());
 
-    itemDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC01());
-    itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_REG04,parentVO.getProgressiveReg04DOC01());
-    itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PRICELIST,parentVO.getPricelistCodeSal01DOC01());
-    itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC01());
-    itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.PROGRESSIVE_REG04,parentVO.getProgressiveReg04DOC01());
-    itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.PRICELIST,parentVO.getPricelistCodeSal01DOC01());
+		controlPricelistCode.setValue(parentVO.getPricelistCodeSal01DOC01());
+
+		itemDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC01());
+		itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_REG04,parentVO.getProgressiveReg04DOC01());
+//    itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PRICELIST,parentVO.getPricelistCodeSal01DOC01());
+		itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PRICELIST,controlPricelistCode.getValue());
+		itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC01());
+		itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.PROGRESSIVE_REG04,parentVO.getProgressiveReg04DOC01());
+//    itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.PRICELIST,parentVO.getPricelistCodeSal01DOC01());
+		itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.PRICELIST,controlPricelistCode.getValue());
 
     bookedItemsPanel.getGrid().getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC01());
     bookedItemsPanel.getGrid().getOtherGridParams().put(ApplicationConsts.WAREHOUSE_CODE,parentVO.getWarehouseCodeWar01DOC01());

@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import org.jallinone.registers.currency.java.CurrencyVO;
 import javax.swing.border.*;
 import org.jallinone.expirations.java.PaymentDistributionVO;
+import org.openswing.swing.message.send.java.GridParams;
+import org.jallinone.registers.currency.java.CurrencyConvVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -145,6 +147,7 @@ public class PaymentsGridFrame extends InternalFrame  {
   CodLookupColumn colSelExp = new CodLookupColumn();
   PayGridCurrencySettings payGridCurrencySettings = new PayGridCurrencySettings();
   PaymentCurrencySettings payCurrencySettings = new PaymentCurrencySettings();
+	ExpCurrencySettings expCurrencySettings = new ExpCurrencySettings();
   LookupController bankController = new LookupController();
   LookupServerDataLocator bankDataLocator = new LookupServerDataLocator();
 	LookupController expController = new LookupController();
@@ -152,6 +155,7 @@ public class PaymentsGridFrame extends InternalFrame  {
   CodLookupControl controlCurrency = new CodLookupControl();
   TitledBorder titledBorder1;
   TitledBorder titledBorder2;
+  private java.util.List currConvs = new ArrayList();
 
 
 	public PaymentsGridFrame(
@@ -268,6 +272,9 @@ public class PaymentsGridFrame extends InternalFrame  {
 			expController.addLookup2ParentLink("valueDOC19","valueDOC19");
 			expController.addLookup2ParentLink("alreadyPayedDOC19","alreadyPayedDOC19");
 			expController.addLookup2ParentLink("roundingAccountCodeAcc02DOC19","roundingAccountCodeAcc02DOC19");
+			expController.addLookup2ParentLink("currencyCodeReg03DOC19","currencyCodeREG03");
+			expController.addLookup2ParentLink("decimalsREG03","decimalsREG03");
+			expController.addLookup2ParentLink("currencySymbolREG03","currencySymbolREG03");
 
 			expController.setAllColumnVisible(false);
 			expController.setVisibleColumn("descriptionDOC19", true);
@@ -294,7 +301,19 @@ public class PaymentsGridFrame extends InternalFrame  {
 					ExpirationVO vo = (ExpirationVO)expController.getLookupVO();
 					PaymentDistributionVO pVO = (PaymentDistributionVO)grid.getVOListTableModel().getObjectForRow(grid.getSelectedRow());
 					if (vo!=null && vo.getProgressiveDOC19()!=null) {
-						pVO.setPaymentValueDOC28(vo.getValueDOC19().subtract(vo.getAlreadyPayedDOC19()));
+						BigDecimal res = vo.getValueDOC19().subtract(vo.getAlreadyPayedDOC19());
+						CurrencyConvVO convVO = null;
+						if (vo.getCurrencyCodeReg03DOC19().equals(controlCurrency.getValue()))
+							pVO.setPaymentValueDOC28( res );
+						else {
+							for(int i=0;i<currConvs.size();i++) {
+								convVO = (CurrencyConvVO)currConvs.get(i);
+								if (convVO.getCurrencyCode2Reg03REG06().equals(vo.getCurrencyCodeReg03DOC19())) {
+									pVO.setPaymentValueDOC28( res.divide(convVO.getValueREG06(),vo.getDecimalsREG03().intValue(),BigDecimal.ROUND_HALF_UP) );
+									break;
+								}
+							}
+            }
 					}
 					else {
 						pVO.setPaymentValueDOC28(null);
@@ -311,7 +330,8 @@ public class PaymentsGridFrame extends InternalFrame  {
 					expDataLocator.getLookupValidationParameters().put(ApplicationConsts.PAYED,"N");
 					expDataLocator.getLookupFrameParams().put(ApplicationConsts.CURRENCY_CODE_REG03,vo.getCurrencyCodeReg03DOC27());
 					expDataLocator.getLookupValidationParameters().put(ApplicationConsts.CURRENCY_CODE_REG03,vo.getCurrencyCodeReg03DOC27());
-
+					expDataLocator.getLookupFrameParams().put(ApplicationConsts.DATE_FILTER,vo.getPaymentDateDOC27());
+					expDataLocator.getLookupValidationParameters().put(ApplicationConsts.DATE_FILTER,vo.getPaymentDateDOC27());
 				}
 
 				public void forceValidate() {}
@@ -501,11 +521,11 @@ public class PaymentsGridFrame extends InternalFrame  {
 			});
 
 
-	    colPayedValue.setDynamicSettings(payGridCurrencySettings);
+	    colValueDOC27.setDynamicSettings(payGridCurrencySettings);
 
-			colValue.setDynamicSettings(payCurrencySettings);
+			colValue.setDynamicSettings(expCurrencySettings);
 			colPayedValue.setDynamicSettings(payCurrencySettings);
-			colAlreadyPayed.setDynamicSettings(payCurrencySettings);
+			colAlreadyPayed.setDynamicSettings(expCurrencySettings);
 
 			// payment lookup...
 			payTypeDataLocator.setGridMethodName("loadPaymentTypes");
@@ -591,13 +611,15 @@ public class PaymentsGridFrame extends InternalFrame  {
 				}
 
 				public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {
+					currConvs.clear();
 					CurrencyVO cVO = (CurrencyVO)currController.getLookupVO();
 					if (cVO!=null && cVO.getCurrencyCodeREG03()!=null) {
 						controlValue.setCurrencySymbol(cVO.getCurrencySymbolREG03());
 						controlValue.setDecimals(cVO.getDecimalsREG03().intValue());
 						controlValue.setDecimalSymbol(cVO.getDecimalSymbolREG03().charAt(0));
-						grid.getTable().insert();
-						//grid.setMode(Consts.INSERT);
+
+          	maybeAllowInsertInGrid();
+
 					}
 					else {
 						grid.clearData();
@@ -615,6 +637,30 @@ public class PaymentsGridFrame extends InternalFrame  {
 
 
   }
+
+
+	private void maybeAllowInsertInGrid() {
+		if (payForm.getMode()==Consts.INSERT &&
+				grid.getVOListTableModel().getRowCount()==0 &&
+				controlCurrency.getValue()!=null &&
+				controlPayDate.getValue()!=null) {
+
+			// retrieve all currency convs for the specified currency code and payment date...
+			GridParams gridPars = new GridParams();
+			gridPars.getOtherGridParams().put(ApplicationConsts.CURRENCY_CODE_REG03,controlCurrency.getValue());
+			gridPars.getOtherGridParams().put(ApplicationConsts.DATE_FILTER,controlPayDate.getValue());
+			Response res = ClientUtils.getData("loadCurrencyConvs",gridPars);
+			if (res.isError()) {
+				return;
+			}
+			currConvs = ((VOListResponse)res).getRows();
+
+			grid.setMode(Consts.READONLY);
+			grid.getTable().insert();
+			//grid.setMode(Consts.INSERT);
+
+		}
+	}
 
 
 	private void jbInit() throws Exception {
@@ -783,9 +829,22 @@ public class PaymentsGridFrame extends InternalFrame  {
     controlValue.setAttributeName("paymentValueDOC27");
     controlValue.setLinkLabel(labelValue);
     controlValue.setRequired(true);
+    controlValue.addFocusListener(new PaymentsGridFrame_controlValue_focusAdapter(this));
     controlPayDate.setAttributeName("paymentDateDOC27");
     controlPayDate.setLinkLabel(labelPayDate);
     controlPayDate.setRequired(true);
+		controlPayDate.addDateChangedListener(new DateChangedListener() {
+
+			public void dateChanged(Date oldDate, Date newDate) {
+				if (newDate==null) {
+					grid.clearData();
+					grid.setMode(Consts.READONLY);
+				}
+				else
+						maybeAllowInsertInGrid();
+			}
+
+		});
     colSelExp.setColumnName("progressiveDoc19DOC28");
     colSelExp.setHideCodeBox(true);
     colSelExp.setEditableOnInsert(true);
@@ -920,6 +979,42 @@ public class PaymentsGridFrame extends InternalFrame  {
 	}
 
 
+	class ExpCurrencySettings implements CurrencyColumnSettings {
+
+		public double getMaxValue(int row) {
+			return Double.MAX_VALUE;
+		}
+
+		public double getMinValue(int row) {
+			return 0.0;
+		}
+
+
+		public boolean isGrouping(int row) {
+			return true;
+		}
+
+
+		public int getDecimals(int row) {
+			PaymentDistributionVO vo = (PaymentDistributionVO)grid.getVOListTableModel().getObjectForRow(row);
+			if (vo!=null && vo.getDecimalsREG03()!=null)
+				return vo.getDecimalsREG03().intValue();
+			else
+				return 0;
+		}
+
+
+		public String getCurrencySymbol(int row) {
+			PaymentDistributionVO vo = (PaymentDistributionVO)grid.getVOListTableModel().getObjectForRow(row);
+			if (vo!=null && vo.getCurrencySymbolREG03()!=null)
+				return vo.getCurrencySymbolREG03();
+			else
+			return "E";
+		}
+
+	}
+
+
 
 	class PayGridCurrencySettings implements CurrencyColumnSettings {
 
@@ -992,6 +1087,13 @@ public class PaymentsGridFrame extends InternalFrame  {
   public GridControl getParentGrid() {
     return parentGrid;
   }
+  public java.util.List getCurrConvs() {
+    return currConvs;
+  }
+
+  void controlValue_focusLost(FocusEvent e) {
+		maybeAllowInsertInGrid();
+  }
 
 
 
@@ -1027,5 +1129,16 @@ class PaymentsGridFrame_controlAccCode_actionAdapter implements java.awt.event.A
   }
   public void actionPerformed(ActionEvent e) {
     adaptee.controlAccCode_actionPerformed(e);
+  }
+}
+
+class PaymentsGridFrame_controlValue_focusAdapter extends java.awt.event.FocusAdapter {
+  PaymentsGridFrame adaptee;
+
+  PaymentsGridFrame_controlValue_focusAdapter(PaymentsGridFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void focusLost(FocusEvent e) {
+    adaptee.controlValue_focusLost(e);
   }
 }
