@@ -34,7 +34,7 @@
 		<defaultValueExpression ><![CDATA["dd-MM-yyyy"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="DECIMALS" isForPrompting="false" class="java.math.BigDecimal">
-		<defaultValueExpression ><![CDATA[new java.math.BigDecimal(2)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new java.math.BigDecimal("2")]]></defaultValueExpression>
 	</parameter>
 	<parameter name="START_DATE" isForPrompting="false" class="java.util.Date">
 		<defaultValueExpression ><![CDATA[new java.util.Date(System.currentTimeMillis()-864000000)]]></defaultValueExpression>
@@ -68,7 +68,7 @@ ACC01_LEDGER.PROGRESSIVE_SYS10=SYS10_ACC01.PROGRESSIVE and
 SYS10_ACC01.LANGUAGE_CODE=$P{LANGUAGE_CODE} and
 ACC01_LEDGER.ACCOUNT_TYPE=$P{ACCOUNT_TYPE} 
 GROUP BY ACC06_JOURNAL_ROWS.COMPANY_CODE_SYS01,ACC06_JOURNAL_ROWS.ACCOUNT_CODE_ACC02,
-SYS10_TRANSLATIONS.DESCRIPTION,ACC02_ACCOUNTS.LEDGER_CODE_ACC01,DESCR_LEDGER
+SYS10_TRANSLATIONS.DESCRIPTION,ACC02_ACCOUNTS.LEDGER_CODE_ACC01,SYS10_ACC01.DESCRIPTION
 ORDER BY ACC06_JOURNAL_ROWS.ACCOUNT_CODE_ACC02
 ) AUX
 WHERE
@@ -84,19 +84,19 @@ NOT DEBIT_AMOUNT=0 OR NOT CREDIT_AMOUNT=0]]></queryString>
 
 	<variable name="DEBIT_VALUE" class="java.math.BigDecimal" resetType="Group" resetGroup="LEDGER_CODE_ACC01" calculation="Sum">
 		<variableExpression><![CDATA[$F{DEBIT_AMOUNT}]]></variableExpression>
-		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0")]]></initialValueExpression>
 	</variable>
 	<variable name="CREDIT_VALUE" class="java.math.BigDecimal" resetType="Group" resetGroup="LEDGER_CODE_ACC01" calculation="Sum">
 		<variableExpression><![CDATA[$F{CREDIT_AMOUNT}]]></variableExpression>
 	</variable>
 	<variable name="TOTAL_CREDIT" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[($F{CREDIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{CREDIT_AMOUNT}).subtract(
-$F{DEBIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{DEBIT_AMOUNT}
+		<variableExpression><![CDATA[($F{CREDIT_AMOUNT}==null?new java.math.BigDecimal("0"):$F{CREDIT_AMOUNT}).subtract(
+$F{DEBIT_AMOUNT}==null?new java.math.BigDecimal("0"):$F{DEBIT_AMOUNT}
 )]]></variableExpression>
 	</variable>
 	<variable name="TOTAL_DEBIT" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[($F{DEBIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{DEBIT_AMOUNT}).subtract(
-$F{CREDIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{CREDIT_AMOUNT}
+		<variableExpression><![CDATA[($F{DEBIT_AMOUNT}==null?new java.math.BigDecimal("0"):$F{DEBIT_AMOUNT}).subtract(
+$F{CREDIT_AMOUNT}==null?new java.math.BigDecimal("0"):$F{CREDIT_AMOUNT}
 )]]></variableExpression>
 	</variable>
 	<variable name="TOTAL" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
@@ -161,7 +161,7 @@ $V{CREDIT_VALUE}.doubleValue()-$V{DEBIT_VALUE}.doubleValue()<0
 						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
-$V{DEBIT_VALUE}.subtract($V{CREDIT_VALUE}==null?new java.math.BigDecimal(0):$V{CREDIT_VALUE}),
+$V{DEBIT_VALUE}.subtract($V{CREDIT_VALUE}==null?new java.math.BigDecimal("0"):$V{CREDIT_VALUE}),
 $P{DECIMALS}
 )]]></textFieldExpression>
 				</textField>
@@ -194,7 +194,7 @@ $V{CREDIT_VALUE}.doubleValue()-$V{DEBIT_VALUE}.doubleValue()>0
 						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
-$V{CREDIT_VALUE}.subtract($V{DEBIT_VALUE}==null?new java.math.BigDecimal(0):$V{DEBIT_VALUE}),
+$V{CREDIT_VALUE}.subtract($V{DEBIT_VALUE}==null?new java.math.BigDecimal("0"):$V{DEBIT_VALUE}),
 $P{DECIMALS}
 )]]></textFieldExpression>
 				</textField>
@@ -426,7 +426,7 @@ $F{CREDIT_AMOUNT}.doubleValue()-$F{DEBIT_AMOUNT}.doubleValue()<0
 						<font fontName="Courier New" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
-$F{DEBIT_AMOUNT}.subtract($F{CREDIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{CREDIT_AMOUNT}),
+$F{DEBIT_AMOUNT}.subtract($F{CREDIT_AMOUNT}==null?new java.math.BigDecimal("0"):$F{CREDIT_AMOUNT}),
 $P{DECIMALS}
 )]]></textFieldExpression>
 				</textField>
@@ -449,7 +449,7 @@ $F{CREDIT_AMOUNT}.doubleValue()-$F{DEBIT_AMOUNT}.doubleValue()>0
 						<font fontName="Courier New" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
-$F{CREDIT_AMOUNT}.subtract($F{DEBIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{DEBIT_AMOUNT}),
+$F{CREDIT_AMOUNT}.subtract($F{DEBIT_AMOUNT}==null?new java.math.BigDecimal("0"):$F{DEBIT_AMOUNT}),
 $P{DECIMALS}
 )]]></textFieldExpression>
 				</textField>
@@ -496,7 +496,7 @@ $P{DECIMALS}
 						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
-$V{TOTAL_DEBIT}==null || $V{TOTAL_DEBIT}.doubleValue()<0?new BigDecimal(0):$V{TOTAL_DEBIT},
+$V{TOTAL_DEBIT}==null || $V{TOTAL_DEBIT}.doubleValue()<0?new BigDecimal("0"):$V{TOTAL_DEBIT},
 $P{DECIMALS}
 )]]></textFieldExpression>
 				</textField>
@@ -514,7 +514,7 @@ $P{DECIMALS}
 						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
-$V{TOTAL_CREDIT}==null || $V{TOTAL_CREDIT}.doubleValue()<0?new BigDecimal(0):$V{TOTAL_CREDIT},
+$V{TOTAL_CREDIT}==null || $V{TOTAL_CREDIT}.doubleValue()<0?new BigDecimal("0"):$V{TOTAL_CREDIT},
 $P{DECIMALS}
 )]]></textFieldExpression>
 				</textField>

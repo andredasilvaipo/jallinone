@@ -38,6 +38,8 @@ public class PricelistVO extends BaseValueObject {
   private java.math.BigDecimal progressiveSys10SAL01;
   private String currencyCodeReg03SAL01;
   private String oldPricelistCodeSal01SAL02;
+	private java.math.BigDecimal decimalsREG03;
+	private String currencySymbolREG03;
 
 
   public PricelistVO() {
@@ -77,6 +79,18 @@ public class PricelistVO extends BaseValueObject {
   }
   public void setOldPricelistCodeSal01SAL02(String oldPricelistCodeSal01SAL02) {
     this.oldPricelistCodeSal01SAL02 = oldPricelistCodeSal01SAL02;
+  }
+  public String getCurrencySymbolREG03() {
+    return currencySymbolREG03;
+  }
+  public java.math.BigDecimal getDecimalsREG03() {
+    return decimalsREG03;
+  }
+  public void setCurrencySymbolREG03(String currencySymbolREG03) {
+    this.currencySymbolREG03 = currencySymbolREG03;
+  }
+  public void setDecimalsREG03(java.math.BigDecimal decimalsREG03) {
+    this.decimalsREG03 = decimalsREG03;
   }
 
 }

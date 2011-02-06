@@ -36,6 +36,7 @@ import org.jallinone.variants.client.ProductVariantsController;
 import org.openswing.swing.lookup.client.*;
 import org.jallinone.variants.client.ProductVariantsPanelController;
 import org.openswing.swing.customvo.java.CustomValueObject;
+import javax.swing.text.MaskFormatter;
 
 
 /**
@@ -246,6 +247,7 @@ public class SaleOrderDocRowsGridPanel extends JPanel implements CurrencyColumnS
       itemController.setPreferredWidthColumn("itemDescriptionSYS10", 200);
       itemController.setPreferredWidthColumn("minSellingQtyITM01", 60);
       itemController.setPreferredWidthColumn("minSellingQtyUmCodeReg02ITM01", 50);
+			itemController.setColumnDynamicSettings("valueSAL02",this);
       itemController.setFramePreferedSize(new Dimension(750,500));
       itemController.addLookupListener(new LookupListener() {
 
@@ -1031,6 +1033,9 @@ public class SaleOrderDocRowsGridPanel extends JPanel implements CurrencyColumnS
   public ProductVariantsPanel getVariantsPanel() {
     return variantsPanel;
   }
+
+
+
 
 
 

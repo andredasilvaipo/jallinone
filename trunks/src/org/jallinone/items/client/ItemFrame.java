@@ -657,9 +657,9 @@ public class ItemFrame extends InternalFrame {
         tab.revalidate();
         tab.repaint();
       } else {
-        tab.remove(getItemVariantsPanel());
-        tab.remove(getVariantBarcodesPanel());
-        tab.remove(getVariantMinStockPanel());
+//        tab.remove(getItemVariantsPanel());
+//        tab.remove(getVariantBarcodesPanel());
+//        tab.remove(getVariantMinStockPanel());
         tab.revalidate();
       }
 
@@ -1069,6 +1069,7 @@ public class ItemFrame extends InternalFrame {
     labelMinStock.setText("min stock");
     controlMinStock.setAttributeName("minStockITM23");
     controlMinStock.setDecimals(5);
+    controlBarcode.setCanCopy(false);
     controlBarcode.setMaxCharacters(1000);
     this.getContentPane().add(buttonsPanel, BorderLayout.NORTH);
     this.getContentPane().add(tab, BorderLayout.CENTER);

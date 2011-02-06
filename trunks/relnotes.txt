@@ -1,5 +1,18 @@
 
 
+Release Notes 2.6
+-----------------
+
+Improved sale manual invoice and credit note: now it is possible to include items related to more than one pricelist.
+Improved sale/purchase pricelists window: now prices are formatted according to currency settings.
+Fixed prices viewing issue in sale/purchase documents, when selecting item from lookup window and price is lower than 1.
+Fixed problem when opening item detail for items having checked the flag "no warehouse movements".
+Fixed problem when duplicating an item using copy button in item detail window.
+Fixed some reports: journal of final entry, costs/proceeds report, debits/credits report, trial balance, purchase reports.
+Include 2.3.7 version of OpenSwing.
+
+
+
 Release Notes 2.5.9
 -------------------
 
@@ -11,7 +24,6 @@ Improved sale estimate frame: now sale contract/order child window is automatica
 Improved login dialog when upgrading database: now it is possible to choose the language.
 Added "reports repository path" to application parameters window, in order to customize where reports must be stored.
 Added check to POS frame, in order to show a warning message if no pricelist has been defined for the default customer.
-
 
 
 

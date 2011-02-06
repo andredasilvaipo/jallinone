@@ -153,7 +153,14 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
   /** used to enable delete of item rows and item discounts */
   private boolean enabledDelete;
 
-  private int splitDiv = 180;
+	LookupController pricelistController = new LookupController();
+	LookupServerDataLocator pricelistDataLocator = new LookupServerDataLocator();
+	CodLookupControl controlPricelistCode = new CodLookupControl();
+	TextControl controlPricelistDescr = new TextControl();
+	LabelControl labelPricelist = new LabelControl();
+
+  private int splitDiv = 160;
+
 
   /** list of CustomValueObject objects, related to prices associated to item's variants, if any */
   private java.util.List pricesMatrix = null;
@@ -243,6 +250,7 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
       itemController.setPreferredWidthColumn("itemDescriptionSYS10", 200);
       itemController.setPreferredWidthColumn("minSellingQtyITM01", 60);
       itemController.setPreferredWidthColumn("minSellingQtyUmCodeReg02ITM01", 50);
+			itemController.setColumnDynamicSettings("valueSAL02",this);
       itemController.setFramePreferedSize(new Dimension(750,500));
       itemController.addLookupListener(new LookupListener() {
 
@@ -306,6 +314,50 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
    * set buttons disabilitation...
    */
   private void init() {
+
+		// pricelist lookup...
+		pricelistDataLocator.setGridMethodName("loadPricelists");
+		pricelistDataLocator.setValidationMethodName("validatePricelistCode");
+
+		controlPricelistCode.setLookupController(pricelistController);
+		controlPricelistCode.setControllerMethodName("getSalePricesList");
+		pricelistController.setLookupDataLocator(pricelistDataLocator);
+		pricelistController.setFrameTitle("pricelists");
+		pricelistController.setLookupValueObjectClassName("org.jallinone.sales.pricelist.java.PricelistVO");
+		pricelistController.addLookup2ParentLink("pricelistCodeSAL01","pricelistCodeSal01DOC02");
+		pricelistController.addLookup2ParentLink("descriptionSYS10", "pricelistDescriptionDOC02");
+		pricelistController.setAllColumnVisible(false);
+		pricelistController.setVisibleColumn("pricelistCodeSAL01", true);
+		pricelistController.setVisibleColumn("descriptionSYS10", true);
+		pricelistController.setPreferredWidthColumn("descriptionSYS10", 250);
+		pricelistController.setFramePreferedSize(new Dimension(420,500));
+		pricelistController.addLookupListener(new LookupListener() {
+
+			public void codeValidated(boolean validated) {}
+
+			public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {
+				try {
+					controlItemCode.validateCode(null);
+				}
+				catch (Exception ex) {
+				}
+				controlItemCode.setEnabled(controlPricelistCode.getValue()!=null);
+			}
+
+			public void beforeLookupAction(ValueObject parentVO) {
+				// retrieve function identifier...
+				pricelistDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01, SaleInvoiceDocRowsGridPanel.this.parentVO.getCompanyCodeSys01DOC01());
+				pricelistDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,SaleInvoiceDocRowsGridPanel.this.parentVO.getCompanyCodeSys01DOC01());
+				pricelistDataLocator.getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_REG04,SaleInvoiceDocRowsGridPanel.this.parentVO.getProgressiveReg04DOC01());
+				pricelistDataLocator.getLookupValidationParameters().put(ApplicationConsts.PROGRESSIVE_REG04,SaleInvoiceDocRowsGridPanel.this.parentVO.getProgressiveReg04DOC01());
+				pricelistDataLocator.getLookupFrameParams().put(ApplicationConsts.CURRENCY_CODE_REG03,SaleInvoiceDocRowsGridPanel.this.parentVO.getCurrencyCodeReg03DOC01());
+				pricelistDataLocator.getLookupValidationParameters().put(ApplicationConsts.CURRENCY_CODE_REG03,SaleInvoiceDocRowsGridPanel.this.parentVO.getCurrencyCodeReg03DOC01());
+			}
+
+			public void forceValidate() {}
+
+		});
+
     Response res = ClientUtils.getData("loadItemTypes",new GridParams());
     final Domain d = new Domain("ITEM_TYPES");
     if (!res.isError()) {
@@ -643,62 +695,81 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
     itemTabbedPane.setTitleAt(1,ClientSettings.getInstance().getResources().getResource("booked items and availability"));
     itemTabbedPane.setTitleAt(2,ClientSettings.getInstance().getResources().getResource("future item availability"));
 
-    detailPanel.add(labelItemCode,         new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+    detailPanel.add(labelItemCode,           new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(controlItemCode,                       new GridBagConstraints(2, 0, 2, 1, 1.0, 0.0
+    detailPanel.add(controlItemCode,                         new GridBagConstraints(2, 1, 2, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 0), 20, 0));
-    detailPanel.add(labelInvoiceQty,          new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+    detailPanel.add(labelInvoiceQty,           new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlQty,            new GridBagConstraints(1, 3, 2, 1, 0.0, 0.0
+    detailPanel.add(controlQty,             new GridBagConstraints(1, 4, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(labelVat,         new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+    detailPanel.add(labelVat,          new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlVatCode,             new GridBagConstraints(1, 2, 2, 1, 0.0, 0.0
+    detailPanel.add(controlVatCode,              new GridBagConstraints(1, 3, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(controlVatDescr,          new GridBagConstraints(3, 2, 2, 1, 0.0, 0.0
+    detailPanel.add(controlVatDescr,           new GridBagConstraints(3, 3, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 5, 5), 70, 0));
-    detailPanel.add(labelValueReg01,         new GridBagConstraints(5, 2, 1, 1, 0.0, 0.0
+    detailPanel.add(labelValueReg01,          new GridBagConstraints(5, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlValueReg01,            new GridBagConstraints(6, 2, 1, 1, 0.0, 0.0
+    detailPanel.add(controlValueReg01,             new GridBagConstraints(6, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(labelDeductibleReg01,         new GridBagConstraints(7, 2, 1, 1, 0.0, 0.0
+    detailPanel.add(labelDeductibleReg01,          new GridBagConstraints(7, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlDeductibleReg01,          new GridBagConstraints(8, 2, 1, 1, 0.0, 0.0
+    detailPanel.add(controlDeductibleReg01,           new GridBagConstraints(8, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(controlItemDescr,       new GridBagConstraints(4, 0, 5, 1, 1.0, 0.0
+    detailPanel.add(controlItemDescr,         new GridBagConstraints(4, 1, 5, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(controlUmCode,         new GridBagConstraints(3, 3, 2, 1, 0.0, 0.0
+    detailPanel.add(controlUmCode,          new GridBagConstraints(3, 4, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 5, 5), 70, 0));
-    detailPanel.add(labelPriceUnit,      new GridBagConstraints(5, 3, 1, 1, 0.0, 0.0
+    detailPanel.add(labelPriceUnit,       new GridBagConstraints(5, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlPriceUnit,       new GridBagConstraints(6, 3, 1, 1, 0.0, 0.0
+    detailPanel.add(controlPriceUnit,        new GridBagConstraints(6, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(labelVatValue,      new GridBagConstraints(7, 3, 1, 1, 0.0, 0.0
+    detailPanel.add(labelVatValue,       new GridBagConstraints(7, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlTotalDisc,       new GridBagConstraints(6, 4, 1, 1, 0.0, 0.0
+    detailPanel.add(controlTotalDisc,        new GridBagConstraints(6, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(labelTotalDisc,      new GridBagConstraints(5, 4, 1, 1, 0.0, 0.0
+    detailPanel.add(labelTotalDisc,       new GridBagConstraints(5, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlVatValue,       new GridBagConstraints(8, 3, 1, 1, 0.0, 0.0
+    detailPanel.add(controlVatValue,        new GridBagConstraints(8, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(labelTotal,      new GridBagConstraints(7, 4, 1, 1, 0.0, 0.0
+    detailPanel.add(labelTotal,       new GridBagConstraints(7, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlTotal,       new GridBagConstraints(8, 4, 1, 1, 0.0, 0.0
+    detailPanel.add(controlTotal,        new GridBagConstraints(8, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 20, 0));
-    detailPanel.add(controlItemType,        new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+    detailPanel.add(controlItemType,          new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    detailPanel.add(labelDeliveryDate,      new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+    detailPanel.add(labelDeliveryDate,       new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
-    detailPanel.add(controlDeliveryDate,        new GridBagConstraints(1, 4, 2, 1, 0.0, 0.0
-        ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 5, 5, 5), 40, 0));
+    detailPanel.add(controlDeliveryDate,         new GridBagConstraints(1, 5, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 5, 5, 5), 40, 0));
 
-    detailPanel.add(variantsPanel,      new GridBagConstraints(0, 1, 9, 1, 1.0, 1.0
+    detailPanel.add(variantsPanel,       new GridBagConstraints(0, 2, 9, 1, 1.0, 1.0
             ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+
+		detailPanel.add(labelPricelist,   new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+						,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		detailPanel.add(controlPricelistDescr,     new GridBagConstraints(5, 0, 5, 1, 0.0, 0.0
+						,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+		detailPanel.add(controlPricelistCode,    new GridBagConstraints(2, 0, 2, 1, 0.0, 0.0
+						,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 0, 5, 0), 0, 0));
+
+		labelPricelist.setText("pricelistCodeSAL01");
+		controlPricelistCode.setColumns(10);
+		controlPricelistCode.setEnabledOnEdit(false);
+		controlPricelistCode.setMaxCharacters(20);
+		controlPricelistCode.setRequired(true);
+		controlPricelistDescr.setEnabledOnInsert(false);
+		controlPricelistDescr.setEnabledOnEdit(false);
+		controlPricelistCode.setAttributeName("pricelistCodeSal01DOC02");
+		controlPricelistCode.setLinkLabel(labelPricelist);
+		controlPricelistDescr.setAttributeName("pricelistDescriptionDOC02");
+
 
     discountsPanel.setMinimumSize(new Dimension(500, 180));
     discountsPanel.setPreferredSize(new Dimension(700, 180));
 
-    splitPane.setDividerLocation(180);
+    splitPane.setDividerLocation(160);
 
   }
 
@@ -747,12 +818,23 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
     controlVatValue.setGroupingSymbol(parentVO.getThousandSymbolREG03().charAt(0));
     controlVatValue.setDecimals(parentVO.getDecimalsREG03().intValue());
 
-    itemDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC01());
-    itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_REG04,parentVO.getProgressiveReg04DOC01());
-    itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PRICELIST,parentVO.getPricelistCodeSal01DOC01());
-    itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC01());
-    itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.PROGRESSIVE_REG04,parentVO.getProgressiveReg04DOC01());
-    itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.PRICELIST,parentVO.getPricelistCodeSal01DOC01());
+		controlPricelistCode.setValue(parentVO.getPricelistCodeSal01DOC01());
+
+		itemDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC01());
+		itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_REG04,parentVO.getProgressiveReg04DOC01());
+//    itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PRICELIST,parentVO.getPricelistCodeSal01DOC01());
+		itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PRICELIST,controlPricelistCode.getValue());
+		itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC01());
+		itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.PROGRESSIVE_REG04,parentVO.getProgressiveReg04DOC01());
+//    itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.PRICELIST,parentVO.getPricelistCodeSal01DOC01());
+		itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.PRICELIST,controlPricelistCode.getValue());
+
+//    itemDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC01());
+//    itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_REG04,parentVO.getProgressiveReg04DOC01());
+//    itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PRICELIST,parentVO.getPricelistCodeSal01DOC01());
+//    itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC01());
+//    itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.PROGRESSIVE_REG04,parentVO.getProgressiveReg04DOC01());
+//    itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.PRICELIST,parentVO.getPricelistCodeSal01DOC01());
 
     bookedItemsPanel.getGrid().getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,parentVO.getCompanyCodeSys01DOC01());
     bookedItemsPanel.getGrid().getOtherGridParams().put(ApplicationConsts.WAREHOUSE_CODE,parentVO.getWarehouseCodeWar01DOC01());

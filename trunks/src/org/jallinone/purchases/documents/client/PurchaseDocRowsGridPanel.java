@@ -234,6 +234,7 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
       itemController.setPreferredWidthColumn("descriptionSYS10", 200);
       itemController.setPreferredWidthColumn("minPurchaseQtyPUR02", 60);
       itemController.setPreferredWidthColumn("multipleQtyPUR02", 70);
+			itemController.setColumnDynamicSettings("valuePUR04",this);
       itemController.setFramePreferedSize(new Dimension(750,500));
       itemController.addLookupListener(new LookupListener() {
 

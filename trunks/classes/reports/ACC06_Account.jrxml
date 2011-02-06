@@ -95,7 +95,7 @@ ORDER BY ACC06_JOURNAL_ROWS.ACCOUNT_CODE_ACC02,ACC06_JOURNAL_ROWS.PROGRESSIVE
 
 	<variable name="DEBIT_VALUE" class="java.math.BigDecimal" resetType="Group" resetGroup="ACCOUNT_CODE_ACC02" calculation="Sum">
 		<variableExpression><![CDATA[$F{DEBIT_AMOUNT}]]></variableExpression>
-		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0")]]></initialValueExpression>
 	</variable>
 	<variable name="CREDIT_VALUE" class="java.math.BigDecimal" resetType="Group" resetGroup="ACCOUNT_CODE_ACC02" calculation="Sum">
 		<variableExpression><![CDATA[$F{CREDIT_AMOUNT}]]></variableExpression>
@@ -327,7 +327,7 @@ $R{proceeds}]]></textFieldExpression>
 						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
-$V{DEBIT_VALUE}==null?new BigDecimal(0):$V{DEBIT_VALUE},
+$V{DEBIT_VALUE}==null?new BigDecimal("0"):$V{DEBIT_VALUE},
 $P{DECIMALS}
 )]]></textFieldExpression>
 				</textField>
@@ -345,7 +345,7 @@ $P{DECIMALS}
 						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
-$V{CREDIT_VALUE}==null?new BigDecimal(0):$V{CREDIT_VALUE},
+$V{CREDIT_VALUE}==null?new BigDecimal("0"):$V{CREDIT_VALUE},
 $P{DECIMALS}
 )]]></textFieldExpression>
 				</textField>
@@ -363,7 +363,7 @@ $P{DECIMALS}
 						<font fontName="Courier New" pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
-($V{DEBIT_VALUE}==null?new BigDecimal(0):$V{DEBIT_VALUE}).subtract($V{CREDIT_VALUE}==null?new BigDecimal(0):$V{CREDIT_VALUE}),
+($V{DEBIT_VALUE}==null?new BigDecimal("0"):$V{DEBIT_VALUE}).subtract($V{CREDIT_VALUE}==null?new BigDecimal("0"):$V{CREDIT_VALUE}),
 $P{DECIMALS}
 )]]></textFieldExpression>
 				</textField>

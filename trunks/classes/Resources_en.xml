@@ -674,8 +674,8 @@
   <object key="warehouse positions" value="Warehouse Bins" />
   <object key="the warehouse motive specified is not defined" value="The warehouse motive specified is not defined" />
   <object key="load items from purchase order" value="Load items from buying order" />
-  <object key="purchase order rows" value="Buying order rows" />
-  <object key="import purchase order rows" value="Import Buying Order Rows" />
+  <object key="purchase order rows" value="Buying order lines" />
+  <object key="import purchase order rows" value="Import Buying Order lines" />
   <object key="purchaseOrder" value="Buying Order" />
   <object key="confirmed purchase orders" value="Confirmed buying orders" />
   <object key="unload items from delivery request" value="Unload items from delivery request" />
@@ -699,8 +699,8 @@
   <object key="saleOutQtyDOC02" value="Sale Out Qty." />
   <object key="itemCodeItm01DOC10" value="Item Code" />
   <object key="confirmed sale documents" value="Confirmed sale documents" />
-  <object key="sale document rows" value="Sale document rows" />
-  <object key="import delivery request rows" value="Import delivery request rows" />
+  <object key="sale document rows" value="Sale document lines" />
+  <object key="import delivery request rows" value="Import delivery request lines" />
 
   <object key="locationDescriptionSYS10" value="Item bin" />
   <object key="itemCodeItm01WAR03" value="Item Code" />
@@ -1494,7 +1494,7 @@
   <object key="delivery request" value="Delivery request" />
   <object key="delivery requests" value="Delivery requests" />
   <object key="deliveryDateDOC01" value="Delivery Date" />
-  <object key="delivery request rows" value="Delivery request rows" />
+  <object key="delivery request rows" value="Delivery request lines" />
   <object key="delivreqnr" value="Deliv.Req.Nr." />
   <object key="until date" value="Until date" />
 

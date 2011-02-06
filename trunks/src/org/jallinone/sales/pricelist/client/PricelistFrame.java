@@ -105,7 +105,7 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
   ComboColumn colItemType = new ComboColumn();
   CodLookupColumn codtemCode = new CodLookupColumn();
   TextColumn colItemDescr = new TextColumn();
-  DecimalColumn colValue = new DecimalColumn();
+  CurrencyColumn colValue = new CurrencyColumn();
   DateColumn colStartDate = new DateColumn();
   DateColumn colEndDate = new DateColumn();
 
@@ -125,6 +125,8 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
   CopyButton copyButton2 = new CopyButton();
   GenericButton advancedButton = new GenericButton(new ImageIcon(ClientUtils.getImage("work2.gif")));
   GenericButton impAllButton = new GenericButton(new ImageIcon(ClientUtils.getImage("doc3.gif")));
+	private ItemPricesGridCurrencySettings currSettings = new ItemPricesGridCurrencySettings();
+
 
   private int splitDiv = 550;
 
@@ -174,6 +176,8 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
       currencyController.setFrameTitle("currencies");
       currencyController.setLookupValueObjectClassName("org.jallinone.registers.currency.java.CurrencyVO");
       currencyController.addLookup2ParentLink("currencyCodeREG03", "currencyCodeReg03SAL01");
+			currencyController.addLookup2ParentLink("decimalsREG03", "decimalsREG03");
+			currencyController.addLookup2ParentLink("currencySymbolREG03", "currencySymbolREG03");
       currencyController.setAllColumnVisible(false);
       currencyController.setVisibleColumn("currencyCodeREG03", true);
       currencyController.setVisibleColumn("currencySymbolREG03", true);
@@ -279,6 +283,8 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
 
 
   private void jbInit() throws Exception {
+	  colValue.setDynamicSettings(currSettings);
+
     grid.setMaxNumberOfRowsOnInsert(50);
     pricesGrid.setMaxNumberOfRowsOnInsert(50);
     pricesGrid.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -527,6 +533,44 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
       });
     }
   }
+
+
+
+		class ItemPricesGridCurrencySettings implements CurrencyColumnSettings {
+
+			public double getMaxValue(int row) {
+				return Double.MAX_VALUE;
+			}
+
+			public double getMinValue(int row) {
+				return 0.0;
+			}
+
+
+			public boolean isGrouping(int row) {
+				return true;
+			}
+
+
+			public int getDecimals(int row) {
+				PricelistVO vo = (PricelistVO)grid.getVOListTableModel().getObjectForRow(grid.getSelectedRow());
+				if (vo!=null && vo.getDecimalsREG03()!=null)
+					return vo.getDecimalsREG03().intValue();
+				else
+					return 0;
+			}
+
+
+			public String getCurrencySymbol(int row) {
+				PricelistVO vo = (PricelistVO)grid.getVOListTableModel().getObjectForRow(grid.getSelectedRow());
+				if (vo!=null && vo.getCurrencySymbolREG03()!=null)
+					return vo.getCurrencySymbolREG03();
+				else
+				return "E";
+			}
+
+		}
+
 
 
 }

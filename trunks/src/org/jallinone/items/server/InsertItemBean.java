@@ -132,7 +132,7 @@ public class InsertItemBean  implements InsertItem {
         rset.close();
         stmt.close();
         if (barCodeFound) {
-          return new VOResponse(t1);
+          throw new Exception(t1);
         }
       }
 

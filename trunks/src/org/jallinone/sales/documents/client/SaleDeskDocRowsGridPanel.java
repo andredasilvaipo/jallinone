@@ -259,6 +259,7 @@ public class SaleDeskDocRowsGridPanel extends JPanel implements CurrencyColumnSe
       itemController.setPreferredWidthColumn("itemDescriptionSYS10", 200);
       itemController.setPreferredWidthColumn("minSellingQtyITM01", 60);
       itemController.setPreferredWidthColumn("minSellingQtyUmCodeReg02ITM01", 50);
+			itemController.setColumnDynamicSettings("valueSAL02",this);
       itemController.setFramePreferedSize(new Dimension(750,500));
       itemController.addLookupListener(new LookupListener() {
 

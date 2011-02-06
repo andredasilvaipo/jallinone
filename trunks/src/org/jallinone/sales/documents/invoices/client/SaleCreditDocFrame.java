@@ -103,8 +103,8 @@ public class SaleCreditDocFrame extends InternalFrame implements InvoiceDocument
     this.controller = controller;
     try {
       jbInit();
-      setSize(750,630);
-      setMinimumSize(new Dimension(750,630));
+      setSize(750,650);
+      setMinimumSize(new Dimension(750,650));
       setTitle(ClientSettings.getInstance().getResources().getResource("credit note"));
 
 //      CustomizedControls customizedControls = new CustomizedControls(tabbedPane,headerFormPanel,ApplicationConsts.ID_SALE_ESTIMATE);

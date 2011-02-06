@@ -64,19 +64,19 @@ ACC06_JOURNAL_ROWS.ACCOUNT_CODE_ACC02=$P{ACCOUNT_CODE}
 
 	<variable name="DEBIT_VALUE" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{DEBIT_AMOUNT}]]></variableExpression>
-		<initialValueExpression><![CDATA[new java.math.BigDecimal(0)]]></initialValueExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0")]]></initialValueExpression>
 	</variable>
 	<variable name="CREDIT_VALUE" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{CREDIT_AMOUNT}]]></variableExpression>
 	</variable>
 	<variable name="TOTAL_CREDIT" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[($F{CREDIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{CREDIT_AMOUNT}).subtract(
-$F{DEBIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{DEBIT_AMOUNT}
+		<variableExpression><![CDATA[($F{CREDIT_AMOUNT}==null?new java.math.BigDecimal("0"):$F{CREDIT_AMOUNT}).subtract(
+$F{DEBIT_AMOUNT}==null?new java.math.BigDecimal("0"):$F{DEBIT_AMOUNT}
 )]]></variableExpression>
 	</variable>
 	<variable name="TOTAL_DEBIT" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
-		<variableExpression><![CDATA[($F{DEBIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{DEBIT_AMOUNT}).subtract(
-$F{CREDIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{CREDIT_AMOUNT}
+		<variableExpression><![CDATA[($F{DEBIT_AMOUNT}==null?new java.math.BigDecimal("0"):$F{DEBIT_AMOUNT}).subtract(
+$F{CREDIT_AMOUNT}==null?new java.math.BigDecimal("0"):$F{CREDIT_AMOUNT}
 )]]></variableExpression>
 	</variable>
 	<variable name="TOTAL" class="java.math.BigDecimal" resetType="Report" calculation="Nothing">
@@ -116,7 +116,7 @@ $F{CREDIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{CREDIT_AMOUNT}
 						<font fontName="Courier New" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
-$F{CREDIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{CREDIT_AMOUNT},
+$F{CREDIT_AMOUNT}==null?new java.math.BigDecimal("0"):$F{CREDIT_AMOUNT},
 $P{DECIMALS}
 )]]></textFieldExpression>
 				</textField>
@@ -134,7 +134,7 @@ $P{DECIMALS}
 						<font fontName="Courier New" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
-$F{CREDIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{CREDIT_AMOUNT},
+$F{CREDIT_AMOUNT}==null?new java.math.BigDecimal("0"):$F{CREDIT_AMOUNT},
 $P{DECIMALS}
 )]]></textFieldExpression>
 				</textField>
@@ -162,7 +162,7 @@ $P{DECIMALS}
 						<font fontName="Courier New" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[org.jallinone.reports.utils.server.ReportUtils.formatNumber(
-$F{DEBIT_AMOUNT}==null?new java.math.BigDecimal(0):$F{DEBIT_AMOUNT},
+$F{DEBIT_AMOUNT}==null?new java.math.BigDecimal("0"):$F{DEBIT_AMOUNT},
 $P{DECIMALS}
 )]]></textFieldExpression>
 				</textField>

@@ -246,6 +246,7 @@ public class PurchaseInvoiceDocRowsGridPanel extends JPanel implements CurrencyC
       itemController.setVisibleColumn("valuePUR04", true);
       itemController.setVisibleColumn("startDatePUR04", true);
       itemController.setVisibleColumn("endDatePUR04", true);
+			itemController.setColumnDynamicSettings("valuePUR04",this);
       itemController.setPreferredWidthColumn("descriptionSYS10", 200);
       itemController.setPreferredWidthColumn("minPurchaseQtyPUR02", 60);
       itemController.setPreferredWidthColumn("umCodeReg02PUR02", 50);

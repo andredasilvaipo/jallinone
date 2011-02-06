@@ -21,6 +21,7 @@ import org.openswing.swing.message.receive.java.VOResponse;
 import org.openswing.swing.message.receive.java.Response;
 import java.util.Calendar;
 import java.util.Date;
+import java.math.BigDecimal;
 
 
 /**
@@ -156,10 +157,16 @@ public class JournalFilterFrame extends InternalFrame {
     params.put("COMPANY_CODE_SYS01",controlCompaniesCombo.getValue());
     params.put("START_DATE",controlFromDate.getValue());
     params.put("END_DATE",controlToDate.getValue());
-    if (controlFromItemNr.getValue()!=null)
-      params.put("FROM_PROGRESSIVE"," and ACC05_JOURNAL_HEADER.PROGRESSIVE>="+controlFromItemNr.getValue());
-    else
-      params.remove("FROM_PROGRESSIVE");
+//    if (controlFromItemNr.getValue()!=null)
+//      params.put("FROM_PROGRESSIVE"," and ACC05_JOURNAL_HEADER.PROGRESSIVE>="+controlFromItemNr.getValue());
+//    else
+//      params.remove("FROM_PROGRESSIVE");
+
+		if (controlFromItemNr.getValue()!=null)
+			params.put("FROM_PROGRESSIVE",controlFromItemNr.getValue());
+		else
+			params.put("FROM_PROGRESSIVE",new BigDecimal(0));
+
 
     HashMap map = new HashMap();
     map.put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompaniesCombo.getValue());
