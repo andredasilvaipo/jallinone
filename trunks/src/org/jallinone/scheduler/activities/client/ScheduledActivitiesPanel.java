@@ -328,6 +328,7 @@ public class ScheduledActivitiesPanel extends JPanel {
 
   private void jbInit() throws Exception {
     cardPanel2.setLayout(cardLayout2);
+    controlManagerCode.setMaxCharacters(20);
     cardPanel2.add(filterOrgButton,ApplicationConsts.SUBJECT_ORGANIZATION);
     cardPanel2.add(filterPeopleButton,ApplicationConsts.SUBJECT_PEOPLE);
 

@@ -14,7 +14,7 @@ import org.jallinone.system.server.*;
 import org.jallinone.documents.java.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 
 
 /**
@@ -51,7 +51,7 @@ public interface Documents {
 	/**
 	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
-	public GridDocumentVO getGridDocument(HierarchyLevelVO pk);
+	public GridDocumentVO getGridDocument(CompanyHierarchyLevelVO pk);
 
 	/**
 	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type

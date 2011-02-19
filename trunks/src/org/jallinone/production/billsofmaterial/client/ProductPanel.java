@@ -231,7 +231,7 @@ public class ProductPanel extends JPanel {
       colItemCodeController.setFrameTitle("components");
 
       colItemCodeController.setCodeSelectionWindow(colItemCodeController.TREE_GRID_FRAME);
-      colTreeLevelDataLocator.setServerMethodName("loadHierarchy");
+      colTreeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
       colItemCodeDataLocator.setTreeDataLocator(colTreeLevelDataLocator);
       colItemCodeDataLocator.setNodeNameAttribute("descriptionSYS10");
 
@@ -297,7 +297,7 @@ public class ProductPanel extends JPanel {
       colItemCode2Controller.setFrameTitle("components");
 
       colItemCode2Controller.setCodeSelectionWindow(colItemCodeController.TREE_GRID_FRAME);
-      colTreeLevel2DataLocator.setServerMethodName("loadHierarchy");
+      colTreeLevel2DataLocator.setServerMethodName("loadCompanyHierarchy");
       colItemCode2DataLocator.setTreeDataLocator(colTreeLevel2DataLocator);
       colItemCode2DataLocator.setNodeNameAttribute("descriptionSYS10");
 
@@ -500,6 +500,7 @@ public class ProductPanel extends JPanel {
       public void itemStateChanged(ItemEvent e) {
         if (e.getStateChange() == e.SELECTED) {
           ComponentVO vo = (ComponentVO)componentsGrid.getVOListTableModel().getObjectForRow(componentsGrid.getSelectedRow());
+					colTreeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01, vo.getCompanyCodeSys01ITM03());
           colTreeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02, vo.getProgressiveHIE02());
           colTreeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02, vo.getProgressiveHIE02());
           colItemCodeDataLocator.getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHIE02());

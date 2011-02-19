@@ -95,11 +95,15 @@ public class DeleteItemsBean  implements DeleteItems {
         pk = (ItemPK)list.get(i);
 
         // logically delete the record in ITM01...
-        stmt.execute(
-            "update ITM01_ITEMS set ENABLED='N' where "+
+        pstmt = conn.prepareStatement(
+            "update ITM01_ITEMS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
             "COMPANY_CODE_SYS01='"+pk.getCompanyCodeSys01ITM01()+"' and "+
             "ITEM_CODE='"+pk.getItemCodeITM01()+"'"
         );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
 
         // phisically delete the components records in ITM03...
         stmt.execute(
@@ -107,7 +111,6 @@ public class DeleteItemsBean  implements DeleteItems {
             "COMPANY_CODE_SYS01='"+pk.getCompanyCodeSys01ITM01()+"' and "+
             "ITEM_CODE_ITM01='"+pk.getItemCodeITM01()+"'"
         );
-
 
       }
 

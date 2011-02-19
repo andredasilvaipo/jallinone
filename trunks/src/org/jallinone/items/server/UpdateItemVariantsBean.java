@@ -56,7 +56,7 @@ import javax.sql.DataSource;
 public class UpdateItemVariantsBean implements UpdateItemVariants {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -64,9 +64,9 @@ public class UpdateItemVariantsBean implements UpdateItemVariants {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -76,7 +76,7 @@ public class UpdateItemVariantsBean implements UpdateItemVariants {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -99,7 +99,7 @@ public class UpdateItemVariantsBean implements UpdateItemVariants {
     this.itemBean = itemBean;
   }
 
-  
+
   private HashMap productVariants = new HashMap();
   private HashMap variantTypes = new HashMap();
   private HashMap variantTypeJoins = new HashMap();
@@ -134,12 +134,12 @@ public class UpdateItemVariantsBean implements UpdateItemVariants {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ItemVariantVO getItemVariant() {
-	  throw new UnsupportedOperationException(); 
+	  throw new UnsupportedOperationException();
   }
-  
+
 
 
   /**
@@ -170,12 +170,12 @@ public class UpdateItemVariantsBean implements UpdateItemVariants {
         String productVariant = (String)productVariants.get(tableName);
 
         pstmtIns = conn.prepareStatement(
-            "insert into " + productVariant + "(COMPANY_CODE_SYS01,ITEM_CODE_ITM01,"+variantTypeJoin+","+variantCodeJoin+",VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED) "+
-            "values(?,?,?,?,?,?,?)"
+            "insert into " + productVariant + "(COMPANY_CODE_SYS01,ITEM_CODE_ITM01,"+variantTypeJoin+","+variantCodeJoin+",VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED,CREATE_USER,CREATE_DATE) "+
+            "values(?,?,?,?,?,?,?,?,?)"
         );
 
         pstmtUpd = conn.prepareStatement(
-            "update " + productVariant + " set ENABLED=? " +
+            "update " + productVariant + " set ENABLED=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?   " +
             "where COMPANY_CODE_SYS01=? and " +
             "ITEM_CODE_ITM01=? and " +
             variantTypeJoin + "=? and " +
@@ -190,10 +190,12 @@ public class UpdateItemVariantsBean implements UpdateItemVariants {
           if (!Boolean.TRUE.equals(oldVO.getSelected()) && Boolean.TRUE.equals(newVO.getSelected())) {
 
             pstmtUpd.setString(1,"Y");
-            pstmtUpd.setString(2,newVO.getCompanyCodeSys01());
-            pstmtUpd.setString(3,newVO.getItemCodeItm01());
-            pstmtUpd.setString(4,newVO.getVariantType());
-            pstmtUpd.setString(5,newVO.getVariantCode());
+						pstmtUpd.setString(2,username);
+						pstmtUpd.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+            pstmtUpd.setString(4,newVO.getCompanyCodeSys01());
+            pstmtUpd.setString(5,newVO.getItemCodeItm01());
+            pstmtUpd.setString(6,newVO.getVariantType());
+            pstmtUpd.setString(7,newVO.getVariantCode());
             int res = pstmtUpd.executeUpdate();
             if (res==0) {
               pstmtIns.setString(1,newVO.getCompanyCodeSys01());
@@ -203,6 +205,8 @@ public class UpdateItemVariantsBean implements UpdateItemVariants {
               pstmtIns.setBigDecimal(5,newVO.getVariantProgressiveSys10());
               pstmtIns.setBigDecimal(6,newVO.getVariantTypeProgressiveSys10());
               pstmtIns.setString(7,"Y");
+							pstmtIns.setString(8,username);
+							pstmtIns.setTimestamp(9,new java.sql.Timestamp(System.currentTimeMillis()));
               pstmtIns.executeUpdate();
             }
 
@@ -210,10 +214,12 @@ public class UpdateItemVariantsBean implements UpdateItemVariants {
           else if (Boolean.TRUE.equals(oldVO.getSelected()) && !Boolean.TRUE.equals(newVO.getSelected())) {
 
             pstmtUpd.setString(1,"N");
-            pstmtUpd.setString(2,newVO.getCompanyCodeSys01());
-            pstmtUpd.setString(3,newVO.getItemCodeItm01());
-            pstmtUpd.setString(4,newVO.getVariantType());
-            pstmtUpd.setString(5,newVO.getVariantCode());
+						pstmtUpd.setString(2,username);
+						pstmtUpd.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+            pstmtUpd.setString(4,newVO.getCompanyCodeSys01());
+            pstmtUpd.setString(5,newVO.getItemCodeItm01());
+            pstmtUpd.setString(6,newVO.getVariantType());
+            pstmtUpd.setString(7,newVO.getVariantCode());
             pstmtUpd.executeUpdate();
 
           }
@@ -263,7 +269,7 @@ public class UpdateItemVariantsBean implements UpdateItemVariants {
         	  }
           }
 
-  
+
         }
       }
 
@@ -301,7 +307,7 @@ public class UpdateItemVariantsBean implements UpdateItemVariants {
 
       }
       catch (Exception exx) {}
-      
+
       try {
         bean.setConn(null);
         matrixBean.setConn(null);

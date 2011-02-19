@@ -25,6 +25,7 @@ import java.math.*;
 
 
 import javax.sql.DataSource;
+import java.text.SimpleDateFormat;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -195,12 +196,13 @@ public class ParamsBean  implements Params {
       // retrieve credit account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=? and SYS19_USER_PARAMS.USERNAME_SYS03=? and SYS19_USER_PARAMS.PARAM_CODE=? and "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS19_USER_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,username);
@@ -216,12 +218,13 @@ public class ParamsBean  implements Params {
       // retrieve items account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=? and SYS19_USER_PARAMS.USERNAME_SYS03=? and SYS19_USER_PARAMS.PARAM_CODE=? and "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS19_USER_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,username);
@@ -237,12 +240,13 @@ public class ParamsBean  implements Params {
       // retrieve activities account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=? and SYS19_USER_PARAMS.USERNAME_SYS03=? and SYS19_USER_PARAMS.PARAM_CODE=? and "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS19_USER_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,username);
@@ -258,12 +262,13 @@ public class ParamsBean  implements Params {
       // retrieve charges account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=? and SYS19_USER_PARAMS.USERNAME_SYS03=? and SYS19_USER_PARAMS.PARAM_CODE=? and "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS19_USER_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,username);
@@ -279,12 +284,13 @@ public class ParamsBean  implements Params {
       // retrieve debits account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=? and SYS19_USER_PARAMS.USERNAME_SYS03=? and SYS19_USER_PARAMS.PARAM_CODE=? and "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS19_USER_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,username);
@@ -300,12 +306,13 @@ public class ParamsBean  implements Params {
       // retrieve costs account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=? and SYS19_USER_PARAMS.USERNAME_SYS03=? and SYS19_USER_PARAMS.PARAM_CODE=? and "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS19_USER_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,username);
@@ -321,12 +328,13 @@ public class ParamsBean  implements Params {
       // retrieve case account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=? and SYS19_USER_PARAMS.USERNAME_SYS03=? and SYS19_USER_PARAMS.PARAM_CODE=? and "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS19_USER_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,username);
@@ -342,12 +350,13 @@ public class ParamsBean  implements Params {
       // retrieve bank account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=? and SYS19_USER_PARAMS.USERNAME_SYS03=? and SYS19_USER_PARAMS.PARAM_CODE=? and "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS19_USER_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,username);
@@ -363,12 +372,13 @@ public class ParamsBean  implements Params {
       // retrieve vat endorse account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=? and SYS19_USER_PARAMS.USERNAME_SYS03=? and SYS19_USER_PARAMS.PARAM_CODE=? and "+
           "SYS19_USER_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS19_USER_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,username);
@@ -385,12 +395,13 @@ public class ParamsBean  implements Params {
 			// retrieve rounding costs account...
 			pstmt.close();
 			pstmt = conn.prepareStatement(
-					"select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+					"select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
 					"SYS19_USER_PARAMS.COMPANY_CODE_SYS01=? and SYS19_USER_PARAMS.USERNAME_SYS03=? and SYS19_USER_PARAMS.PARAM_CODE=? and "+
 					"SYS19_USER_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
 					"SYS19_USER_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-					"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-					"SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+					"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+					"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
 			);
 			pstmt.setString(1,companyCode);
 			pstmt.setString(2,username);
@@ -406,12 +417,13 @@ public class ParamsBean  implements Params {
 			// retrieve rounding proceeds account...
 			pstmt.close();
 			pstmt = conn.prepareStatement(
-					"select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+					"select VALUE,DESCRIPTION from SYS19_USER_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
 					"SYS19_USER_PARAMS.COMPANY_CODE_SYS01=? and SYS19_USER_PARAMS.USERNAME_SYS03=? and SYS19_USER_PARAMS.PARAM_CODE=? and "+
 					"SYS19_USER_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
 					"SYS19_USER_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-					"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-					"SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+					"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+					"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
 			);
 			pstmt.setString(1,companyCode);
 			pstmt.setString(2,username);
@@ -458,20 +470,24 @@ public class ParamsBean  implements Params {
       String paramCode = (String)params.get(ApplicationConsts.PARAM_CODE);
       String value = (String)params.get(ApplicationConsts.PARAM_VALUE);
 
-      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
       pstmt.setString(1,value);
-      pstmt.setString(2,companyCode);
-      pstmt.setString(3,username);
-      pstmt.setString(4,paramCode);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,companyCode);
+      pstmt.setString(5,username);
+      pstmt.setString(6,paramCode);
       int rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?)");
         pstmt.setString(1,companyCode);
         pstmt.setString(2,username);
         pstmt.setString(3,paramCode);
         pstmt.setString(4,value);
+				pstmt.setString(5,username);
+				pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
@@ -517,72 +533,92 @@ public class ParamsBean  implements Params {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       // update receipts management program path...
-      pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where PARAM_CODE=?");
       pstmt.setString(1,getImagePath(applicationPars));
-      pstmt.setString(2,ApplicationConsts.IMAGE_PATH);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,ApplicationConsts.IMAGE_PATH);
       int rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+        pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?)");
         pstmt.setString(1,ApplicationConsts.IMAGE_PATH);
         pstmt.setString(2,getImagePath(applicationPars));
+				pstmt.setString(3,username);
+				pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update documents repository path...
-      pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where PARAM_CODE=?");
       pstmt.setString(1,getDocumentPath(applicationPars));
-      pstmt.setString(2,ApplicationConsts.DOC_PATH);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,ApplicationConsts.DOC_PATH);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+        pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?)");
         pstmt.setString(1,ApplicationConsts.DOC_PATH);
         pstmt.setString(2,getDocumentPath(applicationPars));
+				pstmt.setString(3,username);
+				pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
 			// update report repository path...
-			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where PARAM_CODE=?");
 			pstmt.setString(1,getReportsPath(applicationPars));
-			pstmt.setString(2,ApplicationConsts.REPORT_PATH);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4,ApplicationConsts.REPORT_PATH);
 			rows = pstmt.executeUpdate();
 			pstmt.close();
 			if (rows==0) {
 				// record not yet exists: it will be inserted...
-				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?)");
 				pstmt.setString(1,ApplicationConsts.REPORT_PATH);
 				pstmt.setString(2,getReportsPath(applicationPars));
+				pstmt.setString(3,username);
+				pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
 				pstmt.executeUpdate();
 			}
 
       // update increment value for progressives...
-      pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where PARAM_CODE=?");
       pstmt.setString(1,getIncrementValue(applicationPars).toString());
-      pstmt.setString(2,ApplicationConsts.INCREMENT_VALUE);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,ApplicationConsts.INCREMENT_VALUE);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+        pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?)");
         pstmt.setString(1,ApplicationConsts.INCREMENT_VALUE);
         pstmt.setString(2,getIncrementValue(applicationPars).toString());
+				pstmt.setString(3,username);
+				pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
 			// update flag for sale doc nums value for progressives...
-			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where PARAM_CODE=?");
 			pstmt.setString(1,getManualDocNumInSaleDocs(applicationPars));
-			pstmt.setString(2,ApplicationConsts.DOC_NUM_IN_SALE_DOCS);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4,ApplicationConsts.DOC_NUM_IN_SALE_DOCS);
 			rows = pstmt.executeUpdate();
 			pstmt.close();
 			if (rows==0) {
 				// record not yet exists: it will be inserted...
-				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?)");
 				pstmt.setString(1,ApplicationConsts.DOC_NUM_IN_SALE_DOCS);
 				pstmt.setString(2,getManualDocNumInSaleDocs(applicationPars));
+				pstmt.setString(3,username);
+				pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
 				pstmt.executeUpdate();
 			}
 
@@ -590,58 +626,74 @@ public class ParamsBean  implements Params {
 
 
 			// update "inv.neg.corr. for good items" value for progressives...
-			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where PARAM_CODE=?");
 			pstmt.setString(1,getInvNegCorrForGoodItemsValue(applicationPars).toString());
-			pstmt.setString(2,ApplicationConsts.NEG_INVCORR_GOOD_ITM);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4,ApplicationConsts.NEG_INVCORR_GOOD_ITM);
 			rows = pstmt.executeUpdate();
 			pstmt.close();
 			if (rows==0) {
 				// record not yet exists: it will be inserted...
-				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?)");
 				pstmt.setString(1,ApplicationConsts.NEG_INVCORR_GOOD_ITM);
 				pstmt.setString(2,getInvNegCorrForGoodItemsValue(applicationPars).toString());
+				pstmt.setString(3,username);
+				pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
 				pstmt.executeUpdate();
 			}
 
 			// update "inv.pos.corr. for good items"  value for progressives...
-			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where PARAM_CODE=?");
 			pstmt.setString(1,getInvPosCorrForGoodItemsValue(applicationPars).toString());
-			pstmt.setString(2,ApplicationConsts.POS_INVCORR_GOOD_ITM);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4,ApplicationConsts.POS_INVCORR_GOOD_ITM);
 			rows = pstmt.executeUpdate();
 			pstmt.close();
 			if (rows==0) {
 				// record not yet exists: it will be inserted...
-				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?)");
 				pstmt.setString(1,ApplicationConsts.POS_INVCORR_GOOD_ITM);
 				pstmt.setString(2,getInvPosCorrForGoodItemsValue(applicationPars).toString());
+				pstmt.setString(3,username);
+				pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
 				pstmt.executeUpdate();
 			}
 
 			// update "inv.pos.corr. for damaged items"  value for progressives...
-			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where PARAM_CODE=?");
 			pstmt.setString(1,getInvPosCorrForDamagedItemsValue(applicationPars).toString());
-			pstmt.setString(2,ApplicationConsts.POS_INVCORR_DAMG_ITM);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4,ApplicationConsts.POS_INVCORR_DAMG_ITM);
 			rows = pstmt.executeUpdate();
 			pstmt.close();
 			if (rows==0) {
 				// record not yet exists: it will be inserted...
-				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?)");
 				pstmt.setString(1,ApplicationConsts.POS_INVCORR_DAMG_ITM);
 				pstmt.setString(2,getInvPosCorrForDamagedItemsValue(applicationPars).toString());
+				pstmt.setString(3,username);
+				pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
 				pstmt.executeUpdate();
 			}
 
 			// update "inv.neg.corr. for damaged items"  value for progressives...
-			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=? where PARAM_CODE=?");
+			pstmt = conn.prepareStatement("update SYS11_APPLICATION_PARS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where PARAM_CODE=?");
 			pstmt.setString(1,getInvNegCorrForDamagedItemsValue(applicationPars));
-			pstmt.setString(2,ApplicationConsts.NEG_INVCORR_DAMG_ITM);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4,ApplicationConsts.NEG_INVCORR_DAMG_ITM);
 			rows = pstmt.executeUpdate();
 			pstmt.close();
 			if (rows==0) {
 				// record not yet exists: it will be inserted...
-				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE) values(?,?)");
+				pstmt = conn.prepareStatement("insert into SYS11_APPLICATION_PARS(PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?)");
 				pstmt.setString(1,ApplicationConsts.NEG_INVCORR_DAMG_ITM);
 				pstmt.setString(2,getInvNegCorrForDamagedItemsValue(applicationPars));
+				pstmt.setString(3,username);
+				pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
 				pstmt.executeUpdate();
 			}
 
@@ -690,288 +742,360 @@ public class ParamsBean  implements Params {
 
 
       // update credit account...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getCreditAccountCodeAcc02SAL07());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.CREDITS_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.CREDITS_ACCOUNT);
       int rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.CREDITS_ACCOUNT);
         pstmt.setString(3,vo.getCreditAccountCodeAcc02SAL07());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update item account...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getItemsAccountCodeAcc02SAL07());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.ITEMS_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.ITEMS_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.ITEMS_ACCOUNT);
         pstmt.setString(3,vo.getItemsAccountCodeAcc02SAL07());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update charges account...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getChargesAccountCodeAcc02SAL07());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.CHARGES_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.CHARGES_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.CHARGES_ACCOUNT);
         pstmt.setString(3,vo.getChargesAccountCodeAcc02SAL07());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update activities account...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getActivitiesAccountCodeAcc02SAL07());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.ACTIVITIES_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.ACTIVITIES_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.ACTIVITIES_ACCOUNT);
         pstmt.setString(3,vo.getActivitiesAccountCodeAcc02SAL07());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update debit account...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getDebitAccountCodeAcc02PUR01());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.DEBITS_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.DEBITS_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.DEBITS_ACCOUNT);
         pstmt.setString(3,vo.getDebitAccountCodeAcc02PUR01());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update costs account...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getCostsAccountCodeAcc02PUR01());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.COSTS_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.COSTS_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.COSTS_ACCOUNT);
         pstmt.setString(3,vo.getCostsAccountCodeAcc02PUR01());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update case account...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getCaseAccountCodeAcc02DOC21());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.CASE_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.CASE_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.CASE_ACCOUNT);
         pstmt.setString(3,vo.getCaseAccountCodeAcc02DOC21());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update bank account...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getBankAccountCodeAcc02DOC21());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.BANK_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.BANK_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.BANK_ACCOUNT);
         pstmt.setString(3,vo.getBankAccountCodeAcc02DOC21());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update vat endorse account...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getVatEndorseAccountCodeAcc02DOC21());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.VAT_ENDORSE_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.VAT_ENDORSE_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.VAT_ENDORSE_ACCOUNT);
         pstmt.setString(3,vo.getVatEndorseAccountCodeAcc02DOC21());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update loss/profit econ. endorse account...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getLossProfitEAccountCodeAcc02DOC21());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.LOSSPROFIT_E_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.LOSSPROFIT_E_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.LOSSPROFIT_E_ACCOUNT);
         pstmt.setString(3,vo.getLossProfitEAccountCodeAcc02DOC21());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update loss/profit patrim. endorse account...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getLossProfitPAccountCodeAcc02DOC21());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.LOSSPROFIT_P_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.LOSSPROFIT_P_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.LOSSPROFIT_P_ACCOUNT);
         pstmt.setString(3,vo.getLossProfitPAccountCodeAcc02DOC21());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update closing account...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getClosingAccountCodeAcc02DOC21());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.CLOSING_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.CLOSING_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.CLOSING_ACCOUNT);
         pstmt.setString(3,vo.getClosingAccountCodeAcc02DOC21());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update opening account...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getOpeningAccountCodeAcc02DOC21());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.OPENING_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.OPENING_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.OPENING_ACCOUNT);
         pstmt.setString(3,vo.getOpeningAccountCodeAcc02DOC21());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
 
       // update morning start hour...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
-      pstmt.setTimestamp(1,vo.getMorningStartHourSCH02());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.MORNING_START_HOUR);
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt.setString(1,sdf.format(vo.getMorningStartHourSCH02()));
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.MORNING_START_HOUR);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.MORNING_START_HOUR);
-        pstmt.setTimestamp(3,vo.getMorningStartHourSCH02());
+        pstmt.setString(3,sdf.format(vo.getMorningStartHourSCH02()));
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update morning end hour...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
-      pstmt.setTimestamp(1,vo.getMorningEndHourSCH02());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.MORNING_END_HOUR);
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt.setString(1,sdf.format(vo.getMorningEndHourSCH02()));
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.MORNING_END_HOUR);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.MORNING_END_HOUR);
-        pstmt.setTimestamp(3,vo.getMorningEndHourSCH02());
+        pstmt.setString(3,sdf.format(vo.getMorningEndHourSCH02()));
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update afternoon start hour...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
-      pstmt.setTimestamp(1,vo.getAfternoonStartHourSCH02());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.AFTERNOON_START_HOUR);
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt.setString(1,sdf.format(vo.getAfternoonStartHourSCH02()));
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.AFTERNOON_START_HOUR);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.AFTERNOON_START_HOUR);
-        pstmt.setTimestamp(3,vo.getAfternoonStartHourSCH02());
+        pstmt.setString(3,sdf.format(vo.getAfternoonStartHourSCH02()));
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update afternoon end hour...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
-      pstmt.setTimestamp(1,vo.getAfternoonEndHourSCH02());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.AFTERNOON_END_HOUR);
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt.setString(1,sdf.format(vo.getAfternoonEndHourSCH02()));
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.AFTERNOON_END_HOUR);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.AFTERNOON_END_HOUR);
-        pstmt.setTimestamp(3,vo.getAfternoonEndHourSCH02());
+        pstmt.setString(3,sdf.format(vo.getAfternoonEndHourSCH02()));
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update sale sectional...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getSaleSectionalDOC01());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.SALE_SECTIONAL);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.SALE_SECTIONAL);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.SALE_SECTIONAL);
         pstmt.setString(3,vo.getSaleSectionalDOC01());
@@ -979,15 +1103,17 @@ public class ParamsBean  implements Params {
       }
 
       // update initial value for progressives...
-      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getInitialValueSYS21().toString());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-      pstmt.setString(3,ApplicationConsts.INITIAL_VALUE);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+      pstmt.setString(5,ApplicationConsts.INITIAL_VALUE);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.INITIAL_VALUE);
         pstmt.setString(3,vo.getInitialValueSYS21().toString());
@@ -996,15 +1122,17 @@ public class ParamsBean  implements Params {
 
 
 			// update rounding costs account...
-			pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+			pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
 			pstmt.setString(1,vo.getRoundingCostsAccountCodeAcc02DOC19());
-			pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-			pstmt.setString(3,ApplicationConsts.ROUNDING_COSTS_CODE);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+			pstmt.setString(5,ApplicationConsts.ROUNDING_COSTS_CODE);
 			rows = pstmt.executeUpdate();
 			pstmt.close();
 			if (rows==0) {
 				// record not yet exists: it will be inserted...
-				pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+				pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
 				pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
 				pstmt.setString(2,ApplicationConsts.ROUNDING_COSTS_CODE);
 				pstmt.setString(3,vo.getRoundingCostsAccountCodeAcc02DOC19());
@@ -1012,18 +1140,22 @@ public class ParamsBean  implements Params {
 			}
 
 			// update rounding proceeds account...
-			pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+			pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
 			pstmt.setString(1,vo.getRoundingProceedsAccountCodeAcc02DOC19());
-			pstmt.setString(2,vo.getCompanyCodeSys01SYS21());
-			pstmt.setString(3,ApplicationConsts.ROUNDING_PROCEEDS_CODE);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+			pstmt.setString(5,ApplicationConsts.ROUNDING_PROCEEDS_CODE);
 			rows = pstmt.executeUpdate();
 			pstmt.close();
 			if (rows==0) {
 				// record not yet exists: it will be inserted...
-				pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) values(?,?,?)");
+				pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
 				pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
 				pstmt.setString(2,ApplicationConsts.ROUNDING_PROCEEDS_CODE);
 				pstmt.setString(3,vo.getRoundingProceedsAccountCodeAcc02DOC19());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
 				pstmt.executeUpdate();
 			}
 
@@ -1071,257 +1203,305 @@ public class ParamsBean  implements Params {
 
 
       // update customer code...
-      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getCustomerCodeSAL07());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
-      pstmt.setString(3,username);
-      pstmt.setString(4,ApplicationConsts.CUSTOMER_CODE);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS19());
+      pstmt.setString(5,username);
+      pstmt.setString(6,ApplicationConsts.CUSTOMER_CODE);
       int rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
         pstmt.setString(2,username);
         pstmt.setString(3,ApplicationConsts.CUSTOMER_CODE);
         pstmt.setString(4,vo.getCustomerCodeSAL07());
+				pstmt.setString(5,username);
+				pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update warehouse code...
-      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getWarehouseCodeWAR01());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
-      pstmt.setString(3,username);
-      pstmt.setString(4,ApplicationConsts.WAREHOUSE_CODE);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS19());
+      pstmt.setString(5,username);
+      pstmt.setString(6,ApplicationConsts.WAREHOUSE_CODE);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
         pstmt.setString(2,username);
         pstmt.setString(3,ApplicationConsts.WAREHOUSE_CODE);
         pstmt.setString(4,vo.getWarehouseCodeWAR01());
+				pstmt.setString(5,username);
+				pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update receipts management program path...
-      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getReceiptPath());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
-      pstmt.setString(3,username);
-      pstmt.setString(4,ApplicationConsts.RECEIPT_PATH);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS19());
+      pstmt.setString(5,username);
+      pstmt.setString(6,ApplicationConsts.RECEIPT_PATH);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
         pstmt.setString(2,username);
         pstmt.setString(3,ApplicationConsts.RECEIPT_PATH);
         pstmt.setString(4,vo.getReceiptPath());
+				pstmt.setString(5,username);
+				pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
 
       // update credit account...
-      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getCreditAccountCodeAcc02SAL07());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
-      pstmt.setString(3,username);
-      pstmt.setString(4,ApplicationConsts.CREDITS_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS19());
+      pstmt.setString(5,username);
+      pstmt.setString(6,ApplicationConsts.CREDITS_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
         pstmt.setString(2,username);
         pstmt.setString(3,ApplicationConsts.CREDITS_ACCOUNT);
         pstmt.setString(4,vo.getCreditAccountCodeAcc02SAL07());
+				pstmt.setString(5,username);
+				pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update item account...
-      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getItemsAccountCodeAcc02SAL07());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
-      pstmt.setString(3,username);
-      pstmt.setString(4,ApplicationConsts.ITEMS_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS19());
+      pstmt.setString(5,username);
+      pstmt.setString(6,ApplicationConsts.ITEMS_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
         pstmt.setString(2,username);
         pstmt.setString(3,ApplicationConsts.ITEMS_ACCOUNT);
         pstmt.setString(4,vo.getItemsAccountCodeAcc02SAL07());
+				pstmt.setString(5,username);
+				pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update charges account...
-      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getChargesAccountCodeAcc02SAL07());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
-      pstmt.setString(3,username);
-      pstmt.setString(4,ApplicationConsts.CHARGES_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS19());
+      pstmt.setString(5,username);
+      pstmt.setString(6,ApplicationConsts.CHARGES_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
         pstmt.setString(2,username);
         pstmt.setString(3,ApplicationConsts.CHARGES_ACCOUNT);
         pstmt.setString(4,vo.getChargesAccountCodeAcc02SAL07());
+				pstmt.setString(5,username);
+				pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update activities account...
-      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getActivitiesAccountCodeAcc02SAL07());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
-      pstmt.setString(3,username);
-      pstmt.setString(4,ApplicationConsts.ACTIVITIES_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS19());
+      pstmt.setString(5,username);
+      pstmt.setString(6,ApplicationConsts.ACTIVITIES_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
         pstmt.setString(2,username);
         pstmt.setString(3,ApplicationConsts.ACTIVITIES_ACCOUNT);
         pstmt.setString(4,vo.getActivitiesAccountCodeAcc02SAL07());
+				pstmt.setString(5,username);
+				pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update debit account...
-      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getDebitAccountCodeAcc02PUR01());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
-      pstmt.setString(3,username);
-      pstmt.setString(4,ApplicationConsts.DEBITS_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS19());
+      pstmt.setString(5,username);
+      pstmt.setString(6,ApplicationConsts.DEBITS_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
         pstmt.setString(2,username);
         pstmt.setString(3,ApplicationConsts.DEBITS_ACCOUNT);
         pstmt.setString(4,vo.getDebitAccountCodeAcc02PUR01());
+				pstmt.setString(5,username);
+				pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update costs account...
-      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getCostsAccountCodeAcc02PUR01());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
-      pstmt.setString(3,username);
-      pstmt.setString(4,ApplicationConsts.COSTS_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS19());
+      pstmt.setString(5,username);
+      pstmt.setString(6,ApplicationConsts.COSTS_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
         pstmt.setString(2,username);
         pstmt.setString(3,ApplicationConsts.COSTS_ACCOUNT);
         pstmt.setString(4,vo.getCostsAccountCodeAcc02PUR01());
+				pstmt.setString(5,username);
+				pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update case account...
-      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getCaseAccountCodeAcc02DOC19());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
-      pstmt.setString(3,username);
-      pstmt.setString(4,ApplicationConsts.CASE_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS19());
+      pstmt.setString(5,username);
+      pstmt.setString(6,ApplicationConsts.CASE_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
         pstmt.setString(2,username);
         pstmt.setString(3,ApplicationConsts.CASE_ACCOUNT);
         pstmt.setString(4,vo.getCaseAccountCodeAcc02DOC19());
+				pstmt.setString(5,username);
+				pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update bank account...
-      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getBankAccountCodeAcc02DOC19());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
-      pstmt.setString(3,username);
-      pstmt.setString(4,ApplicationConsts.BANK_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS19());
+      pstmt.setString(5,username);
+      pstmt.setString(6,ApplicationConsts.BANK_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
         pstmt.setString(2,username);
         pstmt.setString(3,ApplicationConsts.BANK_ACCOUNT);
         pstmt.setString(4,vo.getBankAccountCodeAcc02DOC19());
+				pstmt.setString(5,username);
+				pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
       // update vat endorse account...
-      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+      pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
       pstmt.setString(1,vo.getVatEndorseAccountCodeAcc02DOC19());
-      pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
-      pstmt.setString(3,username);
-      pstmt.setString(4,ApplicationConsts.VAT_ENDORSE_ACCOUNT);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SYS19());
+      pstmt.setString(5,username);
+      pstmt.setString(6,ApplicationConsts.VAT_ENDORSE_ACCOUNT);
       rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
         // record not yet exists: it will be inserted...
-        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
+        pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?)");
         pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
         pstmt.setString(2,username);
         pstmt.setString(3,ApplicationConsts.VAT_ENDORSE_ACCOUNT);
         pstmt.setString(4,vo.getVatEndorseAccountCodeAcc02DOC19());
+				pstmt.setString(5,username);
+				pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
-			// update rounding costs account...
-			pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
-			pstmt.setString(1,vo.getRoundingCostsAccountCodeAcc02DOC19());
-			pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
-			pstmt.setString(3,username);
-			pstmt.setString(4,ApplicationConsts.ROUNDING_COSTS_CODE);
-			rows = pstmt.executeUpdate();
-			pstmt.close();
-			if (rows==0) {
-				// record not yet exists: it will be inserted...
-				pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
-				pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
-				pstmt.setString(2,username);
-				pstmt.setString(3,ApplicationConsts.ROUNDING_COSTS_CODE);
-				pstmt.setString(4,vo.getRoundingCostsAccountCodeAcc02DOC19());
-				pstmt.executeUpdate();
-			}
+//			// update rounding costs account...
+//			pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+//			pstmt.setString(1,vo.getRoundingCostsAccountCodeAcc02DOC19());
+//			pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
+//			pstmt.setString(3,username);
+//			pstmt.setString(4,ApplicationConsts.ROUNDING_COSTS_CODE);
+//			rows = pstmt.executeUpdate();
+//			pstmt.close();
+//			if (rows==0) {
+//				// record not yet exists: it will be inserted...
+//				pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?)");
+//				pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
+//				pstmt.setString(2,username);
+//				pstmt.setString(3,ApplicationConsts.ROUNDING_COSTS_CODE);
+//				pstmt.setString(4,vo.getRoundingCostsAccountCodeAcc02DOC19());
+//				pstmt.executeUpdate();
+//			}
 
-			// update rounding proceeds account...
-			pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=? where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
-			pstmt.setString(1,vo.getRoundingProceedsAccountCodeAcc02DOC19());
-			pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
-			pstmt.setString(3,username);
-			pstmt.setString(4,ApplicationConsts.ROUNDING_PROCEEDS_CODE);
-			rows = pstmt.executeUpdate();
-			pstmt.close();
-			if (rows==0) {
-				// record not yet exists: it will be inserted...
-				pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) values(?,?,?,?)");
-				pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
-				pstmt.setString(2,username);
-				pstmt.setString(3,ApplicationConsts.ROUNDING_PROCEEDS_CODE);
-				pstmt.setString(4,vo.getRoundingProceedsAccountCodeAcc02DOC19());
-				pstmt.executeUpdate();
-			}
+//			// update rounding proceeds account...
+//			pstmt = conn.prepareStatement("update SYS19_USER_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and USERNAME_SYS03=? and PARAM_CODE=?");
+//			pstmt.setString(1,vo.getRoundingProceedsAccountCodeAcc02DOC19());
+//			pstmt.setString(2,vo.getCompanyCodeSys01SYS19());
+//			pstmt.setString(3,username);
+//			pstmt.setString(4,ApplicationConsts.ROUNDING_PROCEEDS_CODE);
+//			rows = pstmt.executeUpdate();
+//			pstmt.close();
+//			if (rows==0) {
+//				// record not yet exists: it will be inserted...
+//				pstmt = conn.prepareStatement("insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?)");
+//				pstmt.setString(1,vo.getCompanyCodeSys01SYS19());
+//				pstmt.setString(2,username);
+//				pstmt.setString(3,ApplicationConsts.ROUNDING_PROCEEDS_CODE);
+//				pstmt.setString(4,vo.getRoundingProceedsAccountCodeAcc02DOC19());
+//				pstmt.executeUpdate();
+//			}
 
       return new VOResponse(vo);
     } catch (Exception ex) {
@@ -1374,12 +1554,13 @@ public class ParamsBean  implements Params {
 
       // retrieve credit account...
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,ApplicationConsts.CREDITS_ACCOUNT);
@@ -1394,12 +1575,13 @@ public class ParamsBean  implements Params {
       // retrieve items account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,ApplicationConsts.ITEMS_ACCOUNT);
@@ -1414,12 +1596,13 @@ public class ParamsBean  implements Params {
       // retrieve activities account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,ApplicationConsts.ACTIVITIES_ACCOUNT);
@@ -1434,12 +1617,13 @@ public class ParamsBean  implements Params {
       // retrieve charges account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,ApplicationConsts.CHARGES_ACCOUNT);
@@ -1454,12 +1638,13 @@ public class ParamsBean  implements Params {
       // retrieve debits account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,ApplicationConsts.DEBITS_ACCOUNT);
@@ -1474,12 +1659,13 @@ public class ParamsBean  implements Params {
       // retrieve costs account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,ApplicationConsts.COSTS_ACCOUNT);
@@ -1494,12 +1680,13 @@ public class ParamsBean  implements Params {
       // retrieve case account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,ApplicationConsts.CASE_ACCOUNT);
@@ -1514,12 +1701,13 @@ public class ParamsBean  implements Params {
       // retrieve bank account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,ApplicationConsts.BANK_ACCOUNT);
@@ -1534,12 +1722,13 @@ public class ParamsBean  implements Params {
       // retrieve vat endorse account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,ApplicationConsts.VAT_ENDORSE_ACCOUNT);
@@ -1554,12 +1743,13 @@ public class ParamsBean  implements Params {
       // retrieve loss/profit econ. endorse account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,ApplicationConsts.LOSSPROFIT_E_ACCOUNT);
@@ -1574,12 +1764,13 @@ public class ParamsBean  implements Params {
       // retrieve loss/profit patrim. endorse account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,ApplicationConsts.LOSSPROFIT_P_ACCOUNT);
@@ -1594,12 +1785,13 @@ public class ParamsBean  implements Params {
       // retrieve closing account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,ApplicationConsts.CLOSING_ACCOUNT);
@@ -1614,12 +1806,13 @@ public class ParamsBean  implements Params {
       // retrieve opening account...
       pstmt.close();
       pstmt = conn.prepareStatement(
-          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+          "select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
           "SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
           "SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
       );
       pstmt.setString(1,companyCode);
       pstmt.setString(2,ApplicationConsts.OPENING_ACCOUNT);
@@ -1631,7 +1824,7 @@ public class ParamsBean  implements Params {
       }
       rset.close();
 
-
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
 
       // retrieve morning start hour...
@@ -1643,7 +1836,7 @@ public class ParamsBean  implements Params {
       pstmt.setString(2,ApplicationConsts.MORNING_START_HOUR);
       rset = pstmt.executeQuery();
       while(rset.next()) {
-        vo.setMorningStartHourSCH02(rset.getTimestamp(1));
+        vo.setMorningStartHourSCH02(rset.getString(1)==null?null:new java.sql.Timestamp(sdf.parse(rset.getString(1)).getTime()));
       }
       rset.close();
 
@@ -1656,7 +1849,7 @@ public class ParamsBean  implements Params {
       pstmt.setString(2,ApplicationConsts.MORNING_END_HOUR);
       rset = pstmt.executeQuery();
       while(rset.next()) {
-        vo.setMorningEndHourSCH02(rset.getTimestamp(1));
+        vo.setMorningEndHourSCH02(rset.getString(1)==null?null:new java.sql.Timestamp(sdf.parse(rset.getString(1)).getTime()));
       }
       rset.close();
 
@@ -1669,7 +1862,7 @@ public class ParamsBean  implements Params {
       pstmt.setString(2,ApplicationConsts.AFTERNOON_START_HOUR);
       rset = pstmt.executeQuery();
       while(rset.next()) {
-        vo.setAfternoonStartHourSCH02(rset.getTimestamp(1));
+        vo.setAfternoonStartHourSCH02(rset.getString(1)==null?null:new java.sql.Timestamp(sdf.parse(rset.getString(1)).getTime()));
       }
       rset.close();
 
@@ -1682,7 +1875,7 @@ public class ParamsBean  implements Params {
       pstmt.setString(2,ApplicationConsts.AFTERNOON_END_HOUR);
       rset = pstmt.executeQuery();
       while(rset.next()) {
-        vo.setAfternoonEndHourSCH02(rset.getTimestamp(1));
+        vo.setAfternoonEndHourSCH02(rset.getString(1)==null?null:new java.sql.Timestamp(sdf.parse(rset.getString(1)).getTime()));
       }
       rset.close();
 
@@ -1717,12 +1910,13 @@ public class ParamsBean  implements Params {
 			// retrieve rounding costs account...
 			pstmt.close();
 			pstmt = conn.prepareStatement(
-					"select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+					"select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
 					"SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
 					"SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
 					"SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-					"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-					"SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+					"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+					"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
 			);
 			pstmt.setString(1,companyCode);
 			pstmt.setString(2,ApplicationConsts.ROUNDING_COSTS_CODE);
@@ -1737,12 +1931,13 @@ public class ParamsBean  implements Params {
 			// retrieve rounding proceeds account...
 			pstmt.close();
 			pstmt = conn.prepareStatement(
-					"select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS where "+
+					"select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
 					"SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? and "+
 					"SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
 					"SYS21_COMPANY_PARAMS.VALUE=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
-					"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-					"SYS10_TRANSLATIONS.LANGUAGE_CODE=?"
+					"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+					"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+					"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?"
 			);
 			pstmt.setString(1,companyCode);
 			pstmt.setString(2,ApplicationConsts.ROUNDING_PROCEEDS_CODE);
@@ -1819,7 +2014,7 @@ public class ParamsBean  implements Params {
       }
       rset.close();
 
-      if (!paramFound) {
+      if (!paramFound || value==null) {
         // retrieve parameter at company level...
         pstmt.close();
         pstmt = conn.prepareStatement("select VALUE from SYS21_COMPANY_PARAMS where COMPANY_CODE_SYS01=? and PARAM_CODE=?");

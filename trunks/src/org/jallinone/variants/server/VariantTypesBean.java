@@ -13,7 +13,7 @@ import java.sql.*;
 
 import org.openswing.swing.logger.server.*;
 import org.jallinone.system.server.*;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.events.server.*;
@@ -54,7 +54,7 @@ import javax.sql.DataSource;
 public class VariantTypesBean  implements VariantTypes {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -62,9 +62,9 @@ public class VariantTypesBean  implements VariantTypes {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -74,7 +74,7 @@ public class VariantTypesBean  implements VariantTypes {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -115,7 +115,7 @@ public class VariantTypesBean  implements VariantTypes {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public VariantTypeVO getVariantType() {
 	  throw new UnsupportedOperationException();
@@ -129,24 +129,25 @@ public class VariantTypesBean  implements VariantTypes {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-  
+
       String companyCodeSys01 = (String)gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01);
       String tableName = (String)gridParams.getOtherGridParams().get(ApplicationConsts.TABLE_NAME);
       tableName = (String)variantTypes.get(tableName);
 
       String sql =
-          "select "+tableName+".COMPANY_CODE_SYS01,"+tableName+".VARIANT_TYPE,"+tableName+".PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+tableName+".ENABLED "+
-          "from "+tableName+",SYS10_TRANSLATIONS "+
+          "select "+tableName+".COMPANY_CODE_SYS01,"+tableName+".VARIANT_TYPE,"+tableName+".PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+tableName+".ENABLED "+
+          "from "+tableName+",SYS10_COMPANY_TRANSLATIONS "+
           "where "+tableName+".COMPANY_CODE_SYS01=? and "+
-          tableName+".PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					tableName+".COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          tableName+".PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           tableName+".ENABLED='Y' and not "+tableName+".VARIANT_TYPE='*'";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01",tableName+".COMPANY_CODE_SYS01");
       attribute2dbField.put("variantType",tableName+".VARIANT_TYPE");
       attribute2dbField.put("progressiveSys10",tableName+".PROGRESSIVE_SYS10");
-      attribute2dbField.put("descriptionSys10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSys10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("enabled",tableName+".ENABLED");
 
       ArrayList values = new ArrayList();
@@ -184,7 +185,7 @@ public class VariantTypesBean  implements VariantTypes {
             }
 
         }
-        catch (Exception exx) {}    	
+        catch (Exception exx) {}
     }
 
   }
@@ -198,7 +199,7 @@ public class VariantTypesBean  implements VariantTypes {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      
+
       tableName = (String)variantTypes.get(tableName);
 
       VariantTypeVO oldVO = null;
@@ -210,7 +211,7 @@ public class VariantTypesBean  implements VariantTypes {
         newVO = (VariantTypeVO)newVOs.get(i);
 
         // update SYS10 table...
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSys10(),newVO.getDescriptionSys10(),newVO.getProgressiveSys10(),serverLanguageId,conn);
+        CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01(),oldVO.getDescriptionSys10(),newVO.getDescriptionSys10(),newVO.getProgressiveSys10(),serverLanguageId,username,conn);
 
         HashSet pkAttrs = new HashSet();
         pkAttrs.add("companyCodeSys01");
@@ -222,7 +223,7 @@ public class VariantTypesBean  implements VariantTypes {
         attribute2dbField.put("progressiveSys10","PROGRESSIVE_SYS10");
         attribute2dbField.put("enabled","ENABLED");
 
-        res = new QueryUtil().updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
@@ -236,7 +237,7 @@ public class VariantTypesBean  implements VariantTypes {
             true
         );
         if (res.isError()) {
-          throw new Exception(res.getErrorMessage()); 
+          throw new Exception(res.getErrorMessage());
         }
       }
 
@@ -263,9 +264,9 @@ public class VariantTypesBean  implements VariantTypes {
             }
 
         }
-        catch (Exception exx) {}    	
+        catch (Exception exx) {}
     }
-  
+
 
   }
 
@@ -298,11 +299,11 @@ public class VariantTypesBean  implements VariantTypes {
           vo.setCompanyCodeSys01(companyCodeSys01);
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSys10(),vo.getCompanyCodeSys01(),conn);
+        progressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSys10(),vo.getCompanyCodeSys01(),username,conn);
         vo.setProgressiveSys10(progressiveSYS10);
 
         // insert into ITMxxx...
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,
@@ -314,7 +315,7 @@ public class VariantTypesBean  implements VariantTypes {
             true
         );
         if (res.isError()) {
-        	throw new Exception(res.getErrorMessage()); 
+        	throw new Exception(res.getErrorMessage());
         }
       }
 
@@ -343,7 +344,7 @@ public class VariantTypesBean  implements VariantTypes {
             }
 
         }
-        catch (Exception exx) {}    	
+        catch (Exception exx) {}
     }
 
 
@@ -356,23 +357,23 @@ public class VariantTypesBean  implements VariantTypes {
    * Business logic to execute.
    */
   public VOResponse deleteVariantTypes(String tableName,java.util.ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
-    
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
-
       tableName = (String)variantTypes.get(tableName);
-
       VariantTypeVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in ITMxxx...
         vo = (VariantTypeVO)list.get(i);
-        stmt.execute(
-          "update "+tableName+" set ENABLED='N' "+
+				pstmt = conn.prepareStatement(
+          "update "+tableName+" set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  "+
           "where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01()+"' and VARIANT_TYPE='"+vo.getVariantType()+"'"
         );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
       return new VOResponse(new Boolean(true));
@@ -387,11 +388,11 @@ public class VariantTypesBean  implements VariantTypes {
     	catch (Exception ex3) {
     	}
 
-      throw new Exception(ex.getMessage()); 
+      throw new Exception(ex.getMessage());
     }
     finally {
       try {
-        stmt.close();
+        pstmt.close();
       }
       catch (Exception ex2) {
       }
@@ -403,7 +404,7 @@ public class VariantTypesBean  implements VariantTypes {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }

@@ -10,7 +10,7 @@ import org.openswing.swing.message.send.java.LookupValidationParams;
 
 import java.sql.*;
 import org.openswing.swing.logger.server.*;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.jallinone.items.java.*;
 import org.jallinone.system.server.*;
 import java.math.*;
@@ -52,9 +52,9 @@ public interface SupplierItems {
 
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
-	public SupplierItemVO getSupplierItem(HierarchyLevelVO pk);
+	public SupplierItemVO getSupplierItem(CompanyHierarchyLevelVO pk);
 
 
 	/**

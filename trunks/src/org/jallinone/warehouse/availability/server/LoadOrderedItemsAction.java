@@ -68,6 +68,8 @@ public class LoadOrderedItemsAction implements Action {
                       companyCode = pk.getCompanyCodeSys01ITM01();
                   }
                   VariantDescriptionsVO vo = (VariantDescriptionsVO)((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().get(companyCode);
+									if (vo==null)
+										vo = new VariantDescriptionsVO();
                   ItemAvailabilities bean = (ItemAvailabilities)JAIOBeanFactory.getInstance().getBean(ItemAvailabilities.class);
                   Response answer = bean.loadOrderedItems(vo.getVariant1Descriptions(),vo.getVariant2Descriptions(),vo.getVariant3Descriptions(),vo.getVariant4Descriptions(),vo.getVariant5Descriptions(),gridPars,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 

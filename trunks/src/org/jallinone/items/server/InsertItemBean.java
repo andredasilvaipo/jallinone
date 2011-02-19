@@ -144,12 +144,12 @@ public class InsertItemBean  implements InsertItem {
 				vo.setNoWarehouseMovITM01(Boolean.FALSE);
 
       // generate progressive for item description...
-      BigDecimal progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ITM01(),conn);
+      BigDecimal progressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ITM01(),username,conn);
       vo.setProgressiveSys10ITM01(progressiveSYS10);
 
       if (vo.getAddDescriptionSYS10()!=null) {
         // generate progressive for item additional description...
-        BigDecimal addProgressiveSYS10 = TranslationUtils.insertTranslations(vo.getAddDescriptionSYS10(),vo.getCompanyCodeSys01ITM01(),conn);
+        BigDecimal addProgressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getAddDescriptionSYS10(),vo.getCompanyCodeSys01ITM01(),username,conn);
         vo.setAddProgressiveSys10ITM01(addProgressiveSYS10);
       }
 
@@ -256,39 +256,59 @@ public class InsertItemBean  implements InsertItem {
       // insert product variants...
       stmt = conn.createStatement();
       if (!Boolean.TRUE.equals(vo.getUseVariant1ITM01())) {
-        stmt.execute(
+        pstmt = conn.prepareStatement(
             "insert into ITM16_PRODUCT_VARIANTS_1(COMPANY_CODE_SYS01,ITEM_CODE_ITM01,VARIANT_TYPE_ITM06,VARIANT_CODE_ITM11," +
-            "VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED) VALUES("+
-            "'"+vo.getCompanyCodeSys01ITM01()+"','"+vo.getItemCodeITM01()+"','*','*',3412,3362,'Y')"
-            );
+            "VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED,CREATE_USER,CREATE_DATE) VALUES("+
+            "'"+vo.getCompanyCodeSys01ITM01()+"','"+vo.getItemCodeITM01()+"','*','*',3412,3362,'Y',?,?)"
+        );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
       if (!Boolean.TRUE.equals(vo.getUseVariant2ITM01())) {
-        stmt.execute(
+				pstmt = conn.prepareStatement(
             "insert into ITM17_PRODUCT_VARIANTS_2(COMPANY_CODE_SYS01,ITEM_CODE_ITM01,VARIANT_TYPE_ITM07,VARIANT_CODE_ITM12," +
-            "VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED) VALUES("+
-            "'"+vo.getCompanyCodeSys01ITM01()+"','"+vo.getItemCodeITM01()+"','*','*',3422,3372,'Y')"
-            );
+            "VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED,CREATE_USER,CREATE_DATE) VALUES("+
+            "'"+vo.getCompanyCodeSys01ITM01()+"','"+vo.getItemCodeITM01()+"','*','*',3422,3372,'Y',?,?)"
+        );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
       if (!Boolean.TRUE.equals(vo.getUseVariant3ITM01())) {
-        stmt.execute(
+				pstmt = conn.prepareStatement(
             "insert into ITM18_PRODUCT_VARIANTS_3(COMPANY_CODE_SYS01,ITEM_CODE_ITM01,VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13," +
-            "VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED) VALUES("+
-            "'"+vo.getCompanyCodeSys01ITM01()+"','"+vo.getItemCodeITM01()+"','*','*',3432,3382,'Y')"
-            );
+            "VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED,CREATE_USER,CREATE_DATE) VALUES("+
+            "'"+vo.getCompanyCodeSys01ITM01()+"','"+vo.getItemCodeITM01()+"','*','*',3432,3382,'Y',?,?)"
+        );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
       if (!Boolean.TRUE.equals(vo.getUseVariant4ITM01())) {
-        stmt.execute(
+				pstmt = conn.prepareStatement(
             "insert into ITM19_PRODUCT_VARIANTS_4(COMPANY_CODE_SYS01,ITEM_CODE_ITM01,VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14," +
-            "VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED) VALUES("+
-            "'"+vo.getCompanyCodeSys01ITM01()+"','"+vo.getItemCodeITM01()+"','*','*',3442,3392,'Y')"
-            );
+            "VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED,CREATE_USER,CREATE_DATE) VALUES("+
+            "'"+vo.getCompanyCodeSys01ITM01()+"','"+vo.getItemCodeITM01()+"','*','*',3442,3392,'Y',?,?)"
+        );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
       if (!Boolean.TRUE.equals(vo.getUseVariant5ITM01())) {
-        stmt.execute(
+				pstmt = conn.prepareStatement(
             "insert into ITM20_PRODUCT_VARIANTS_5(COMPANY_CODE_SYS01,ITEM_CODE_ITM01,VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15," +
-            "VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED) VALUES("+
-            "'"+vo.getCompanyCodeSys01ITM01()+"','"+vo.getItemCodeITM01()+"','*','*',3452,3402,'Y')"
-            );
+            "VARIANT_PROGRESSIVE_SYS10,TYPE_VARIANT_PROGRESSIVE_SYS10,ENABLED,CREATE_USER,CREATE_DATE) VALUES("+
+            "'"+vo.getCompanyCodeSys01ITM01()+"','"+vo.getItemCodeITM01()+"','*','*',3452,3402,'Y',?,?)"
+        );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
 
@@ -304,8 +324,8 @@ public class InsertItemBean  implements InsertItem {
             "COMPANY_CODE_SYS01,ITEM_CODE_ITM01,  "+
             "VARIANT_TYPE_ITM06,VARIANT_TYPE_ITM07,VARIANT_TYPE_ITM08,VARIANT_TYPE_ITM09,VARIANT_TYPE_ITM10,"+
             "VARIANT_CODE_ITM11,VARIANT_CODE_ITM12,VARIANT_CODE_ITM13,VARIANT_CODE_ITM14,VARIANT_CODE_ITM15,"+
-            "MIN_STOCK) "+
-            "values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            "MIN_STOCK,CREATE_USER,CREATE_DATE) "+
+            "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1,vo.getCompanyCodeSys01());
@@ -322,6 +342,9 @@ public class InsertItemBean  implements InsertItem {
         pstmt.setString(12,ApplicationConsts.JOLLY);
 
         pstmt.setBigDecimal(13,vo.getMinStockITM23());
+				pstmt.setString(14,username);
+				pstmt.setTimestamp(15,new java.sql.Timestamp(System.currentTimeMillis()));
+
         pstmt.execute();
         pstmt.close();
       }

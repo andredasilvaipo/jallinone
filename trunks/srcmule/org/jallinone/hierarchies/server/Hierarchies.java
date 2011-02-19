@@ -51,7 +51,7 @@ public interface Hierarchies {
 
   public VOResponse deleteLevel(HierarchyLevelVO vo,String serverLanguageId,String username) throws Throwable;
   
-  public VOResponse insertLevel(HierarchyLevelVO vo,String serverLanguageId,String username,String defCompanyCodeSys01SYS03) throws Throwable;
+  public VOResponse insertLevel(HierarchyLevelVO vo,String serverLanguageId,String username) throws Throwable;
   
   public VOResponse getRootLevel(BigDecimal progressiveHIE02,String serverLanguageId,String username) throws Throwable;
   

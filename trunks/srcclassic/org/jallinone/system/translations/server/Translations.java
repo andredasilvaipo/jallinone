@@ -56,11 +56,11 @@ public interface Translations {
 
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public CustomValueObject getCustomValueObject();
 
-	public VOListResponse updateTranslations(TopicVO topic,ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse updateTranslations(String companyCodeSys01,TopicVO topic,ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
 
 	public VOListResponse loadTranslations(GridParams gridParams,String serverLanguageId,String username) throws Throwable;
 

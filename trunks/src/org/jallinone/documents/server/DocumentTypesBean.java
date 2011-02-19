@@ -13,7 +13,7 @@ import org.jallinone.commons.server.CustomizeQueryUtil;
 import org.jallinone.documents.java.DocumentTypeVO;
 import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 import org.jallinone.system.server.JAIOUserSessionParameters;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.openswing.swing.logger.server.Logger;
 import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.message.receive.java.VOListResponse;
@@ -21,6 +21,7 @@ import org.openswing.swing.message.receive.java.VOResponse;
 import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.server.QueryUtil;
 import org.openswing.swing.server.UserSessionParameters;
+import java.sql.PreparedStatement;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -53,7 +54,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class DocumentTypesBean  implements DocumentTypes {
 
 
-	private DataSource dataSource; 
+	private DataSource dataSource;
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -63,7 +64,7 @@ public class DocumentTypesBean  implements DocumentTypes {
 	private Connection conn = null;
 
 	/**
-	 * Set external connection. 
+	 * Set external connection.
 	 */
 	public void setConn(Connection conn) {
 		this.conn = conn;
@@ -102,11 +103,13 @@ public class DocumentTypesBean  implements DocumentTypes {
 
 			String sql =
 				"select DOC16_DOC_HIERARCHY.COMPANY_CODE_SYS01,DOC16_DOC_HIERARCHY.PROGRESSIVE_HIE02,DOC16_DOC_HIERARCHY.PROGRESSIVE_SYS10,"+
-				"DOC16_DOC_HIERARCHY.ENABLED,SYS10_TRANSLATIONS.DESCRIPTION,HIE02_HIERARCHIES.PROGRESSIVE_HIE01 "+
-				"from DOC16_DOC_HIERARCHY,SYS10_TRANSLATIONS,HIE02_HIERARCHIES where "+
-				"DOC16_DOC_HIERARCHY.PROGRESSIVE_HIE02=HIE02_HIERARCHIES.PROGRESSIVE and "+
-				"HIE02_HIERARCHIES.PROGRESSIVE_HIE01=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-				"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+				"DOC16_DOC_HIERARCHY.ENABLED,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01 "+
+				"from DOC16_DOC_HIERARCHY,SYS10_COMPANY_TRANSLATIONS,HIE02_COMPANY_HIERARCHIES where "+
+				"DOC16_DOC_HIERARCHY.COMPANY_CODE_SYS01=HIE02_COMPANY_HIERARCHIES.COMPANY_CODE_SYS01 and "+
+				"DOC16_DOC_HIERARCHY.PROGRESSIVE_HIE02=HIE02_COMPANY_HIERARCHIES.PROGRESSIVE and "+
+				"HIE02_COMPANY_HIERARCHIES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+				"HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+				"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
 				"DOC16_DOC_HIERARCHY.COMPANY_CODE_SYS01 in ("+companies+") and "+
 				"DOC16_DOC_HIERARCHY.ENABLED='Y'";
 
@@ -114,8 +117,8 @@ public class DocumentTypesBean  implements DocumentTypes {
 			attribute2dbField.put("companyCodeSys01DOC16","DOC16_DOC_HIERARCHY.COMPANY_CODE_SYS01");
 			attribute2dbField.put("progressiveHie02DOC16","DOC16_DOC_HIERARCHY.PROGRESSIVE_HIE02");
 			attribute2dbField.put("enabledDOC16","DOC16_DOC_HIERARCHY.ENABLED");
-			attribute2dbField.put("progressiveHie01HIE02","HIE02_HIERARCHIES.PROGRESSIVE_HIE01");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("progressiveHie01HIE02","HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("progressiveSys10DOC16","DOC16_DOC_HIERARCHY.PROGRESSIVE_SYS10");
 
 			ArrayList values = new ArrayList();
@@ -178,11 +181,13 @@ public class DocumentTypesBean  implements DocumentTypes {
 				newVO = (DocumentTypeVO)newVOs.get(i);
 
 				// update root description...
-				TranslationUtils.updateTranslation(
+				CompanyTranslationUtils.updateTranslation(
+				    newVO.getCompanyCodeSys01DOC16(),
 						oldVO.getDescriptionSYS10(),
 						newVO.getDescriptionSYS10(),
 						newVO.getProgressiveSys10DOC16(),
 						serverLanguageId,
+						username,
 						conn
 				);
 			}
@@ -222,6 +227,7 @@ public class DocumentTypesBean  implements DocumentTypes {
 	 * Business logic to execute.
 	 */
 	public VOResponse insertDocumentType(DocumentTypeVO vo,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable {
+		PreparedStatement pstmt = null;
 		Statement stmt = null;
 		Connection conn = null;
 		try {
@@ -235,10 +241,33 @@ public class DocumentTypesBean  implements DocumentTypes {
 			// generate PROGRESSIVE_HIE02 value...
 			stmt = conn.createStatement();
 			BigDecimal progressiveHIE02 = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01DOC16(),"HIE02_HIERARCHIES","PROGRESSIVE",conn);
-			BigDecimal progressiveHIE01 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01DOC16(),conn);
-			stmt.execute("INSERT INTO HIE02_HIERARCHIES(PROGRESSIVE,COMPANY_CODE_SYS01,ENABLED) VALUES("+progressiveHIE02+",'"+vo.getCompanyCodeSys01DOC16()+"','Y')");
-			stmt.execute("INSERT INTO HIE01_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE02,LEV,ENABLED) VALUES("+progressiveHIE01+","+progressiveHIE02+",0,'Y')");
-			stmt.execute("UPDATE HIE02_HIERARCHIES SET PROGRESSIVE_HIE01="+progressiveHIE01+" WHERE PROGRESSIVE="+progressiveHIE02);
+			BigDecimal progressiveHIE01 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01DOC16(),username,conn);
+
+			pstmt = conn.prepareStatement(
+			  "INSERT INTO HIE02_COMPANY_HIERARCHIES(PROGRESSIVE,COMPANY_CODE_SYS01,ENABLED,CREATE_USER,CREATE_DATE) VALUES("+progressiveHIE02+",'"+vo.getCompanyCodeSys01DOC16()+"','Y',?,?)"
+			);
+		  pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
+
+		  pstmt = conn.prepareStatement(
+			  "INSERT INTO HIE01_COMPANY_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE02,LEV,ENABLED,COMPANY_CODE_SYS01,CREATE_USER,CREATE_DATE) VALUES("+progressiveHIE01+","+progressiveHIE02+",0,'Y','"+vo.getCompanyCodeSys01DOC16()+"',?,?)"
+			);
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
+
+			pstmt = conn.prepareStatement(
+			 "UPDATE HIE02_COMPANY_HIERARCHIES SET PROGRESSIVE_HIE01="+progressiveHIE01+",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? "+
+			 "WHERE COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01DOC16()+"' and PROGRESSIVE="+progressiveHIE02
+			);
+		  pstmt.setString(1,username);
+		  pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
+
 			vo.setProgressiveHie02DOC16(progressiveHIE02);
 			vo.setProgressiveSys10DOC16(progressiveHIE01);
 
@@ -281,8 +310,12 @@ public class DocumentTypesBean  implements DocumentTypes {
 		finally {
           try {
               stmt.close();
-        }
+          }
           catch (Exception exx) {}
+					try {
+							pstmt.close();
+					}
+					catch (Exception exx) {}
           try {
               if (this.conn==null && conn!=null) {
                 // close only local connection
@@ -305,17 +338,22 @@ public class DocumentTypesBean  implements DocumentTypes {
 	 * Business logic to execute.
 	 */
 	public VOResponse deleteDocumentType(ArrayList list,String serverLanguageId,String username) throws Throwable {
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		Connection conn = null;
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
-			stmt = conn.createStatement();
 
 			DocumentTypeVO vo = null;
 			for(int i=0;i<list.size();i++) {
 				// logically delete the record in DOC16...
 				vo = (DocumentTypeVO)list.get(i);
-				stmt.execute("update DOC16_DOC_HIERARCHY set ENABLED='N' where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01DOC16()+"' and PROGRESSIVE_HIE02="+vo.getProgressiveHie02DOC16());
+				pstmt = conn.prepareStatement(
+				  "update DOC16_DOC_HIERARCHY set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01DOC16()+"' and PROGRESSIVE_HIE02="+vo.getProgressiveHie02DOC16()
+				);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
 			}
 
 			return new VOResponse(new Boolean(true));
@@ -333,7 +371,7 @@ public class DocumentTypesBean  implements DocumentTypes {
 		}
 		finally {
           try {
-              stmt.close();
+              pstmt.close();
         }
           catch (Exception exx) {}
           try {

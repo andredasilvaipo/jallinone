@@ -89,10 +89,13 @@ public class ManufacturesController extends GridController {
    * @return an ErrorResponse value object in case of errors, VOListResponse if the operation is successfully completed
    */
   public Response updateRecords(int[] rowNumbers,ArrayList oldPersistentObjects,ArrayList persistentObjects) throws Exception {
-    return ClientUtils.getData("updateManufacture",new ManufactureVO[]{
+    Response res = ClientUtils.getData("updateManufacture",new ManufactureVO[]{
       (ManufactureVO)oldPersistentObjects.get(0),
       (ManufactureVO)persistentObjects.get(0)
     });
+		if (res.isError())
+			return res;
+		return new VOListResponse(persistentObjects,false,persistentObjects.size());
   }
 
 

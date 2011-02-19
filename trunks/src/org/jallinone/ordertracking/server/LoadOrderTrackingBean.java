@@ -52,7 +52,7 @@ import javax.sql.DataSource;
 public class LoadOrderTrackingBean  implements LoadOrderTracking {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -60,9 +60,9 @@ public class LoadOrderTrackingBean  implements LoadOrderTracking {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -72,7 +72,7 @@ public class LoadOrderTrackingBean  implements LoadOrderTracking {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -82,9 +82,9 @@ public class LoadOrderTrackingBean  implements LoadOrderTracking {
   public LoadOrderTrackingBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public DocumentTrackingVO getDocumentTracking() {
 	  throw new UnsupportedOperationException();
@@ -92,7 +92,7 @@ public class LoadOrderTrackingBean  implements LoadOrderTracking {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public OrderTrackingFilterVO getOrderTracking() {
 	  throw new UnsupportedOperationException();
@@ -291,6 +291,14 @@ public class LoadOrderTrackingBean  implements LoadOrderTracking {
 
         values.add(vo.getDocType());
 
+				if (vo.getFromDate()!=null) {
+					sql += " AND "+tableName+".DOC_DATE>=?";
+					values.add(vo.getFromDate());
+				}
+				if (vo.getToDate()!=null) {
+					sql += " AND "+tableName+".DOC_DATE<?";
+					values.add(new java.sql.Date(vo.getToDate().getTime()+86400000L));
+				}
         if (vo.getDocDate()!=null) {
           sql += " AND "+tableName+".DOC_DATE=?";
           values.add(vo.getDocDate());
@@ -352,7 +360,7 @@ public class LoadOrderTrackingBean  implements LoadOrderTracking {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }

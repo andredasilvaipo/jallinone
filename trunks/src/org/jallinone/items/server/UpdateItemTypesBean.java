@@ -51,7 +51,7 @@ import javax.sql.DataSource;
 public class UpdateItemTypesBean  implements UpdateItemTypes {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -59,9 +59,9 @@ public class UpdateItemTypesBean  implements UpdateItemTypes {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -71,7 +71,7 @@ public class UpdateItemTypesBean  implements UpdateItemTypes {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -83,18 +83,18 @@ public class UpdateItemTypesBean  implements UpdateItemTypes {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ItemTypeVO getItemType() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
    */
   public VOListResponse updateItemTypes(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username,boolean customize,ArrayList customizedFields) throws Throwable {
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -112,11 +112,13 @@ public class UpdateItemTypesBean  implements UpdateItemTypes {
         newVO = (ItemTypeVO)newVOs.get(i);
 
         // update root description...
-        TranslationUtils.updateTranslation(
+        CompanyTranslationUtils.updateTranslation(
+		        newVO.getCompanyCodeSys01ITM02(),
             oldVO.getDescriptionSYS10(),
             newVO.getDescriptionSYS10(),
             newVO.getProgressiveHie01HIE02(),
             serverLanguageId,
+					  username,
             conn
         );
 

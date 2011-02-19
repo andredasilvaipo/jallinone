@@ -55,7 +55,7 @@ import javax.sql.DataSource;
 public class ScheduledActivitiesBean implements ScheduledActivities {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -63,9 +63,9 @@ public class ScheduledActivitiesBean implements ScheduledActivities {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -75,7 +75,7 @@ public class ScheduledActivitiesBean implements ScheduledActivities {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -87,12 +87,12 @@ public class ScheduledActivitiesBean implements ScheduledActivities {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public GridScheduledActivityVO getGridScheduledActivity() {
-	  throw new UnsupportedOperationException();	  
+	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
@@ -610,6 +610,7 @@ public class ScheduledActivitiesBean implements ScheduledActivities {
    */
   public VOResponse deleteActivities(ArrayList pks,String serverLanguageId,String username) throws Throwable {
     Statement stmt = null;
+		PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -648,11 +649,15 @@ public class ScheduledActivitiesBean implements ScheduledActivities {
         );
 
         // update record in SCH03 if it is linked to the record in SCH06...
-        stmt.execute(
-            "update SCH03_CALL_OUT_REQUESTS set PROGRESSIVE_SCH06=null where "+
+        pstmt = conn.prepareStatement(
+            "update SCH03_CALL_OUT_REQUESTS set PROGRESSIVE_SCH06=null,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
             "COMPANY_CODE_SYS01='"+pk.getCompanyCodeSys01SCH06()+"' and "+
             "PROGRESSIVE_SCH06="+pk.getProgressiveSCH06()
         );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
 
         // phisically delete the record in SCH06...
         stmt.execute(
@@ -681,6 +686,10 @@ public class ScheduledActivitiesBean implements ScheduledActivities {
             stmt.close();
         }
         catch (Exception exx) {}
+				try {
+						pstmt.close();
+				}
+				catch (Exception exx) {}
         try {
             if (this.conn==null && conn!=null) {
                 // close only local connection
@@ -798,12 +807,14 @@ public class ScheduledActivitiesBean implements ScheduledActivities {
       vo.setActivityStateSCH06(ApplicationConsts.CLOSED);
 
       pstmt = conn.prepareStatement(
-        "update SCH06_SCHEDULED_ACTIVITIES set ACTIVITY_STATE=? where COMPANY_CODE_SYS01=? and PROGRESSIVE=? and ACTIVITY_STATE=?"
+        "update SCH06_SCHEDULED_ACTIVITIES set ACTIVITY_STATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PROGRESSIVE=? and ACTIVITY_STATE=?"
       );
       pstmt.setString(1,ApplicationConsts.CLOSED);
-      pstmt.setString(2,vo.getCompanyCodeSys01SCH06());
-      pstmt.setBigDecimal(3,vo.getProgressiveSCH06());
-      pstmt.setString(4,ApplicationConsts.OPENED);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SCH06());
+      pstmt.setBigDecimal(5,vo.getProgressiveSCH06());
+      pstmt.setString(6,ApplicationConsts.OPENED);
       int rows = pstmt.executeUpdate();
       pstmt.close();
       if (rows==0) {
@@ -811,11 +822,13 @@ public class ScheduledActivitiesBean implements ScheduledActivities {
       }
 
       pstmt = conn.prepareStatement(
-        "update SCH03_CALL_OUT_REQUESTS set CALL_OUT_STATE=? where COMPANY_CODE_SYS01=? and PROGRESSIVE_SCH06=? "
+        "update SCH03_CALL_OUT_REQUESTS set CALL_OUT_STATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PROGRESSIVE_SCH06=? "
       );
       pstmt.setString(1,ApplicationConsts.CLOSED);
-      pstmt.setString(2,vo.getCompanyCodeSys01SCH06());
-      pstmt.setBigDecimal(3,vo.getProgressiveSCH06());
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01SCH06());
+      pstmt.setBigDecimal(5,vo.getProgressiveSCH06());
       pstmt.executeUpdate();
 
       return new VOResponse(vo);

@@ -64,7 +64,7 @@ import javax.sql.DataSource;
 public class SupplierPricesBean  implements SupplierPrices {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -72,9 +72,9 @@ public class SupplierPricesBean  implements SupplierPrices {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -84,7 +84,7 @@ public class SupplierPricesBean  implements SupplierPrices {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -108,21 +108,21 @@ public class SupplierPricesBean  implements SupplierPrices {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public SupplierVariantsPriceVO getSupplierVariantsPrice() {
 	  throw new UnsupportedOperationException();
   }
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public SupplierPriceVO getSupplierPrice(SupplierPricelistVO pk) {
 	  throw new UnsupportedOperationException();
   }
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public CustomValueObject getCustomValueObject() {
 	  throw new UnsupportedOperationException();
@@ -152,10 +152,11 @@ public class SupplierPricesBean  implements SupplierPrices {
           "select PUR04_SUPPLIER_PRICES.COMPANY_CODE_SYS01,PUR04_SUPPLIER_PRICES.PRICELIST_CODE_PUR03,PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04,PUR04_SUPPLIER_PRICES.ITEM_CODE_ITM01,PUR04_SUPPLIER_PRICES.VALUE,PUR04_SUPPLIER_PRICES.START_DATE,PUR04_SUPPLIER_PRICES.END_DATE,A.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,"+
           "REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,PUR01_SUPPLIERS.SUPPLIER_CODE,B.DESCRIPTION, "+
           "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 "+
-          " from PUR04_SUPPLIER_PRICES,SYS10_TRANSLATIONS A,SYS10_TRANSLATIONS B,ITM01_ITEMS,REG04_SUBJECTS,PUR01_SUPPLIERS,PUR03_SUPPLIER_PRICELISTS where "+
+          " from PUR04_SUPPLIER_PRICES,SYS10_COMPANY_TRANSLATIONS A,SYS10_COMPANY_TRANSLATIONS B,ITM01_ITEMS,REG04_SUBJECTS,PUR01_SUPPLIERS,PUR03_SUPPLIER_PRICELISTS where "+
           "PUR04_SUPPLIER_PRICES.COMPANY_CODE_SYS01=PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01 and "+
           "PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04=PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_REG04 and "+
           "PUR04_SUPPLIER_PRICES.PRICELIST_CODE_PUR03=PUR03_SUPPLIER_PRICELISTS.PRICELIST_CODE and "+
+					"PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01=B.COMPANY_CODE_SYS01 and "+
           "PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10=B.PROGRESSIVE and "+
           "B.LANGUAGE_CODE=? and "+
           "PUR04_SUPPLIER_PRICES.COMPANY_CODE_SYS01=PUR01_SUPPLIERS.COMPANY_CODE_SYS01 and "+
@@ -164,6 +165,7 @@ public class SupplierPricesBean  implements SupplierPrices {
           "PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
           "PUR04_SUPPLIER_PRICES.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
           "PUR04_SUPPLIER_PRICES.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
+					"ITM01_ITEMS.COMPANY_CODE_SYS01=A.COMPANY_CODE_SYS01 and "+
           "ITM01_ITEMS.PROGRESSIVE_SYS10=A.PROGRESSIVE and "+
           "A.LANGUAGE_CODE=? and PUR04_SUPPLIER_PRICES.COMPANY_CODE_SYS01=? and ITM01_ITEMS.ENABLED='Y' ";
 
@@ -260,7 +262,7 @@ public class SupplierPricesBean  implements SupplierPrices {
 
   }
 
-  
+
 
 
   /**
@@ -470,7 +472,7 @@ public class SupplierPricesBean  implements SupplierPrices {
         attribute2dbField.put("startDatePUR04","START_DATE");
         attribute2dbField.put("endDatePUR04","END_DATE");
 
-        res = new QueryUtil().updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
@@ -524,7 +526,7 @@ public class SupplierPricesBean  implements SupplierPrices {
    */
   public VOResponse updateSupplierVariantsPrices(VariantsPrice variantsPrice,String serverLanguageId,String username) throws Throwable {
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -578,7 +580,7 @@ public class SupplierPricesBean  implements SupplierPrices {
 			} catch (Exception e) {
 				continue;
 			}
-        	
+
             vo = new SupplierVariantsPriceVO();
             vo.setCompanyCodeSys01PUR05(variantsPrice.getMatrixVO().getItemPK().getCompanyCodeSys01ITM01());
             vo.setProgressivePUR05(CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01PUR05(),"PUR05_SUPPLIER_VARIANTS_PRICES","PROGRESSIVE",conn));
@@ -590,7 +592,7 @@ public class SupplierPricesBean  implements SupplierPrices {
             vo.setEndDatePUR05(variantsPrice.getEndDate());
             VariantsMatrixUtils.setVariantTypesAndCodes(vo,"PUR05",variantsPrice.getMatrixVO(),rowVO,null);
 
-            res = QueryUtil.insertTable(
+            res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
                 conn,
                 new UserSessionParameters(username),
                 vo,
@@ -616,7 +618,7 @@ public class SupplierPricesBean  implements SupplierPrices {
 	        		price = (BigDecimal)variantsPrice.getCells()[i][k];
 	          } catch (Exception e) {
 	        		continue;
-	          }            	
+	          }
               vo = new SupplierVariantsPriceVO();
               vo.setCompanyCodeSys01PUR05(variantsPrice.getMatrixVO().getItemPK().getCompanyCodeSys01ITM01());
               vo.setProgressivePUR05(CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01PUR05(),"PUR05_SUPPLIER_VARIANTS_PRICES","PROGRESSIVE",conn));
@@ -628,7 +630,7 @@ public class SupplierPricesBean  implements SupplierPrices {
               vo.setEndDatePUR05(variantsPrice.getEndDate());
               VariantsMatrixUtils.setVariantTypesAndCodes(vo,"PUR05",variantsPrice.getMatrixVO(),rowVO,colVO);
 
-              res = QueryUtil.insertTable(
+              res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
                   conn,
                   new UserSessionParameters(username),
                   vo,
@@ -675,8 +677,8 @@ public class SupplierPricesBean  implements SupplierPrices {
         }
 
       }
-      catch (Exception exx) {}        
-      
+      catch (Exception exx) {}
+
     }
   }
 
@@ -705,7 +707,7 @@ public class SupplierPricesBean  implements SupplierPrices {
         "select ITEM_CODE_ITM01 from PUR02_SUPPLIER_ITEMS where ENABLED='Y' and COMPANY_CODE_SYS01=? and PROGRESSIVE_REG04=?"
       );
       pstmt2 = conn.prepareStatement(
-        "insert into PUR04_SUPPLIER_PRICES(COMPANY_CODE_SYS01,PRICELIST_CODE_PUR03,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE,PROGRESSIVE_REG04) values(?,?,?,?,?,?,?)"
+        "insert into PUR04_SUPPLIER_PRICES(COMPANY_CODE_SYS01,PRICELIST_CODE_PUR03,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE,PROGRESSIVE_REG04,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?,?,?)"
       );
 
       pstmt.setString(1,vo.getCompanyCodeSys01PUR04());
@@ -719,6 +721,8 @@ public class SupplierPricesBean  implements SupplierPrices {
         pstmt2.setDate(5,vo.getStartDate());
         pstmt2.setDate(6,vo.getEndDate());
         pstmt2.setBigDecimal(7,vo.getProgressiveReg04PUR04());
+				pstmt2.setString(8,username);
+				pstmt2.setTimestamp(9,new java.sql.Timestamp(System.currentTimeMillis()));
         try {
           pstmt2.executeUpdate();
         }
@@ -753,7 +757,7 @@ public class SupplierPricesBean  implements SupplierPrices {
       }
       catch (Exception ex2) {
       }
-    
+
       try {
           if (this.conn==null && conn!=null) {
             // close only local connection
@@ -762,7 +766,7 @@ public class SupplierPricesBean  implements SupplierPrices {
         }
 
       }
-      catch (Exception exx) {}  
+      catch (Exception exx) {}
     }
 
   }
@@ -814,7 +818,7 @@ public class SupplierPricesBean  implements SupplierPrices {
           // item not found: it will be added...
         	ItemPK pk = new ItemPK(vo.getCompanyCodeSys01PUR04(),vo.getItemCodeItm01PUR04());
         	BigDecimal prog = loadItem.getProgressiveHie02ITM01(pk, username);
-        	
+
           res = new VOResponse(loadItem.loadItem(pk,prog,serverLanguageId,username,imagePath,new ArrayList()));
           if (res.isError()) {
             throw new Exception(res.getErrorMessage());
@@ -838,7 +842,7 @@ public class SupplierPricesBean  implements SupplierPrices {
         }
         rset.close();
 
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,
@@ -891,7 +895,7 @@ public class SupplierPricesBean  implements SupplierPrices {
         }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
       try {
         insItem.setConn(null);
         loadItem.setConn(null);
@@ -909,7 +913,7 @@ public class SupplierPricesBean  implements SupplierPrices {
    */
   public VOResponse deleteSupplierPrices(ArrayList list,String serverLanguageId,String username) throws Throwable {
     Statement stmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;

@@ -35,7 +35,7 @@ import org.jallinone.items.java.ItemPK;
 import org.openswing.swing.mdi.client.InternalFrame;
 import org.jallinone.hierarchies.client.HierarTreePanel;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.jallinone.hierarchies.client.HierarTreeListener;
 
 
@@ -83,6 +83,7 @@ public class ItemAvailabilityFrame extends InternalFrame {
   LookupController warController = new LookupController();
 
   JSplitPane split = new JSplitPane();
+  private java.util.List list = null;
 
   HierarTreePanel hierarTreePanel = new HierarTreePanel() {
 
@@ -92,8 +93,9 @@ public class ItemAvailabilityFrame extends InternalFrame {
      */
     public void leftClick(DefaultMutableTreeNode node) {
       if (hierarTreePanel.getSelectedNode()!=null) {
-        HierarchyLevelVO levelVO = (HierarchyLevelVO)hierarTreePanel.getSelectedNode().getUserObject();
-        availPanel.getGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE01,levelVO.getProgressiveHIE01());
+        CompanyHierarchyLevelVO levelVO = (CompanyHierarchyLevelVO)hierarTreePanel.getSelectedNode().getUserObject();
+				availPanel.getGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE01,levelVO.getProgressiveHIE01());
+        availPanel.getGrid().getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,levelVO.getCompanySys01HIE01());
         availPanel.getGrid().reloadData();
       }
     }
@@ -165,7 +167,7 @@ public class ItemAvailabilityFrame extends InternalFrame {
             availPanel.getGrid().getOtherGridParams().put(ApplicationConsts.WAREHOUSE_CODE,vo.getWarehouseCodeWAR01());
             availPanel.getGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02WAR01());
             if (hierarTreePanel.getSelectedNode()!=null) {
-              HierarchyLevelVO levelVO = (HierarchyLevelVO)hierarTreePanel.getSelectedNode().getUserObject();
+              CompanyHierarchyLevelVO levelVO = (CompanyHierarchyLevelVO)hierarTreePanel.getSelectedNode().getUserObject();
               availPanel.getGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE01,levelVO.getProgressiveHIE01());
             }
 

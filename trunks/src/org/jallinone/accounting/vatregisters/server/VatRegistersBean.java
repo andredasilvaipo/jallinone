@@ -23,7 +23,7 @@ import org.jallinone.accounting.vatregisters.java.VatRegisterVO;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.commons.server.CustomizeQueryUtil;
 import org.jallinone.system.server.ParamsBean;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.openswing.swing.logger.server.Logger;
 import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.message.receive.java.VOListResponse;
@@ -63,7 +63,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class VatRegistersBean implements VatRegisters {
 
 
-	private DataSource dataSource; 
+	private DataSource dataSource;
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -73,7 +73,7 @@ public class VatRegistersBean implements VatRegisters {
   private Connection conn = null;
 
 	/**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
 		this.conn = conn;
@@ -83,7 +83,7 @@ public class VatRegistersBean implements VatRegisters {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-		
+
 		Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
 	}
 
@@ -104,12 +104,12 @@ public class VatRegistersBean implements VatRegisters {
 
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public VatRegisterVO getVatRegister() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 
 	public VatRegistersBean() {
 	}
@@ -138,22 +138,24 @@ public class VatRegistersBean implements VatRegisters {
 
 
 			String sql =
-				"select ACC04_VAT_REGISTERS.REGISTER_CODE,ACC04_VAT_REGISTERS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,ACC04_VAT_REGISTERS.ENABLED, "+
+				"select ACC04_VAT_REGISTERS.REGISTER_CODE,ACC04_VAT_REGISTERS.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ACC04_VAT_REGISTERS.ENABLED, "+
 				"SYS10_B.DESCRIPTION,ACC04_VAT_REGISTERS.ACCOUNT_CODE_ACC02,ACC04_VAT_REGISTERS.REGISTER_TYPE,ACC04_VAT_REGISTERS.READ_ONLY "+
-				"from ACC04_VAT_REGISTERS,SYS10_TRANSLATIONS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS SYS10_B where "+
+				"from ACC04_VAT_REGISTERS,SYS10_COMPANY_TRANSLATIONS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS SYS10_B where "+
 				"ACC04_VAT_REGISTERS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
 				"ACC04_VAT_REGISTERS.ACCOUNT_CODE_ACC02=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
+				"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_B.COMPANY_CODE_SYS01 and "+
 				"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_B.PROGRESSIVE and "+
 				"SYS10_B.LANGUAGE_CODE=? and "+
-				"ACC04_VAT_REGISTERS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-				"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+				"ACC04_VAT_REGISTERS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+				"ACC04_VAT_REGISTERS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+				"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
 				"ACC04_VAT_REGISTERS.ENABLED='Y' and "+
 				"ACC04_VAT_REGISTERS.REGISTER_CODE='"+validationPars.getCode()+"' and "+
 				"ACC04_VAT_REGISTERS.COMPANY_CODE_SYS01 in ("+companies+")";
 
 			Map attribute2dbField = new HashMap();
 			attribute2dbField.put("registerCodeACC04","ACC04_VAT_REGISTERS.REGISTER_CODE");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("progressiveSys10ACC04","ACC04_VAT_REGISTERS.PROGRESSIVE_SYS10");
 			attribute2dbField.put("enabledACC04","ACC04_VAT_REGISTERS.ENABLED");
 			attribute2dbField.put("accountDescriptionACC04","SYS10_B.DESCRIPTION");
@@ -229,21 +231,23 @@ public class VatRegistersBean implements VatRegisters {
 
 			String sql =
 				"select ACC04_VAT_REGISTERS.COMPANY_CODE_SYS01,ACC04_VAT_REGISTERS.REGISTER_CODE,"+
-				"ACC04_VAT_REGISTERS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,ACC04_VAT_REGISTERS.ENABLED, "+
+				"ACC04_VAT_REGISTERS.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ACC04_VAT_REGISTERS.ENABLED, "+
 				"SYS10_B.DESCRIPTION,ACC04_VAT_REGISTERS.ACCOUNT_CODE_ACC02,ACC04_VAT_REGISTERS.REGISTER_TYPE,ACC04_VAT_REGISTERS.READ_ONLY "+
-				"from ACC04_VAT_REGISTERS,SYS10_TRANSLATIONS,ACC02_ACCOUNTS,SYS10_TRANSLATIONS SYS10_B where "+
+				"from ACC04_VAT_REGISTERS,SYS10_COMPANY_TRANSLATIONS,ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS SYS10_B where "+
 				"ACC04_VAT_REGISTERS.COMPANY_CODE_SYS01=ACC02_ACCOUNTS.COMPANY_CODE_SYS01 and "+
 				"ACC04_VAT_REGISTERS.ACCOUNT_CODE_ACC02=ACC02_ACCOUNTS.ACCOUNT_CODE and "+
+				"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_B.COMPANY_CODE_SYS01 and "+
 				"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_B.PROGRESSIVE and "+
 				"SYS10_B.LANGUAGE_CODE=? and "+
-				"ACC04_VAT_REGISTERS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-				"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+				"ACC04_VAT_REGISTERS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+				"ACC04_VAT_REGISTERS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+				"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
 				"ACC04_VAT_REGISTERS.ENABLED='Y' and ACC04_VAT_REGISTERS.COMPANY_CODE_SYS01 in ("+companies+")";
 
 			Map attribute2dbField = new HashMap();
 			attribute2dbField.put("companyCodeSys01ACC04","ACC04_VAT_REGISTERS.COMPANY_CODE_SYS01");
 			attribute2dbField.put("registerCodeACC04","ACC04_VAT_REGISTERS.REGISTER_CODE");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("progressiveSys10ACC04","ACC04_VAT_REGISTERS.PROGRESSIVE_SYS10");
 			attribute2dbField.put("enabledACC04","ACC04_VAT_REGISTERS.ENABLED");
 			attribute2dbField.put("accountDescriptionACC04","SYS10_B.DESCRIPTION");
@@ -326,7 +330,7 @@ public class VatRegistersBean implements VatRegisters {
 				vo.setEnabledACC04("Y");
 
 				// insert record in SYS10...
-				progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ACC04(),conn);
+				progressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ACC04(),username,conn);
 				vo.setProgressiveSys10ACC04(progressiveSYS10);
 
 				// insert into ACC04...
@@ -395,7 +399,7 @@ public class VatRegistersBean implements VatRegisters {
 				newVO = (VatRegisterVO)newVOs.get(i);
 
 				// update SYS10 table...
-				TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10ACC04(),serverLanguageId,conn);
+				CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01ACC04(),oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10ACC04(),serverLanguageId,username,conn);
 
 				HashSet pkAttrs = new HashSet();
 				pkAttrs.add("companyCodeSys01ACC04");
@@ -464,18 +468,21 @@ public class VatRegistersBean implements VatRegisters {
 	 * Business logic to execute.
 	 */
 	public VOResponse deleteVatRegisters(ArrayList list,String serverLanguageId,String username) throws Throwable {
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		Connection conn = null;
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
-			stmt = conn.createStatement();
 
 			VatRegisterVO vo = null;
 			for(int i=0;i<list.size();i++) {
 				// logically delete the record in ACC04...
 				vo = (VatRegisterVO)list.get(i);
-				stmt.execute("update ACC04_VAT_REGISTERS set ENABLED='N' where "+
-						"COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ACC04()+"' and REGISTER_CODE='"+vo.getRegisterCodeACC04()+"'");
+				pstmt = conn.prepareStatement(
+				  "update ACC04_VAT_REGISTERS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
+					"COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ACC04()+"' and REGISTER_CODE='"+vo.getRegisterCodeACC04()+"'"
+				);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
 			}
 
 			return new VOResponse(new Boolean(true));
@@ -493,7 +500,7 @@ public class VatRegistersBean implements VatRegisters {
 		}
 		finally {
           try {
-              stmt.close();
+              pstmt.close();
         }
           catch (Exception exx) {}
           try {
@@ -518,7 +525,7 @@ public class VatRegistersBean implements VatRegisters {
 	  public VOResponse vatEndorse(HashMap map,String t1,String t2,String t3,String serverLanguageId,String username) throws Throwable {
 	    PreparedStatement pstmt = null;
 	    PreparedStatement pstmt2 = null;
-	    
+
 	    Connection conn = null;
 	    try {
 	      if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -582,7 +589,7 @@ public class VatRegistersBean implements VatRegisters {
 	      JournalRowVO jrVO = null;
 	      String accountCode = null;
 
-	      sql = "update ACC04_VAT_REGISTERS set LAST_RECORD_NUMBER=?,LAST_VAT_DATE=? where COMPANY_CODE_SYS01=? and REGISTER_CODE=? and (LAST_RECORD_NUMBER=? || LAST_RECORD_NUMBER is null)";
+	      sql = "update ACC04_VAT_REGISTERS set LAST_RECORD_NUMBER=?,LAST_VAT_DATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and REGISTER_CODE=? and (LAST_RECORD_NUMBER=? || LAST_RECORD_NUMBER is null)";
 	      pstmt2 = conn.prepareStatement(sql);
 
 	      while(en.hasMoreElements()) {
@@ -649,9 +656,11 @@ public class VatRegistersBean implements VatRegisters {
 	          // update last record number in the current vat register...
 	          pstmt2.setBigDecimal(1,newLastRN);
 	          pstmt2.setDate(2,new java.sql.Date(toDate.getTime()));
-	          pstmt2.setString(3,companyCode);
-	          pstmt2.setString(4,regCode);
-	          pstmt2.setBigDecimal(5,lastRN);
+						pstmt2.setString(3,username);
+						pstmt2.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
+	          pstmt2.setString(5,companyCode);
+	          pstmt2.setString(6,regCode);
+	          pstmt2.setBigDecimal(7,lastRN);
 	          int upd = pstmt2.executeUpdate();
 	          if (upd==0) {
 	            return new VOResponse("Updating not performed: the record was previously updated.");
@@ -685,7 +694,7 @@ public class VatRegistersBean implements VatRegisters {
 	      }
 	      catch (Exception ex2) {
 	      }
-	    
+
           try {
               if (this.conn==null && conn!=null) {
                 // close only local connection

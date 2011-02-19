@@ -220,16 +220,18 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
       // calculate row total...
       rowVO.setValueDOC02(rowVO.getTaxableIncomeDOC02().add(rowVO.getVatValueDOC02()));
 
-      pstmt = conn.prepareStatement("update DOC02_SELLING_ITEMS set TAXABLE_INCOME=?,VAT_VALUE=?,VALUE=?,TOTAL_DISCOUNT=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=?");
+      pstmt = conn.prepareStatement("update DOC02_SELLING_ITEMS set TAXABLE_INCOME=?,VAT_VALUE=?,VALUE=?,TOTAL_DISCOUNT=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=?");
       pstmt.setBigDecimal(1,rowVO.getTaxableIncomeDOC02());
       pstmt.setBigDecimal(2,rowVO.getVatValueDOC02());
       pstmt.setBigDecimal(3,rowVO.getValueDOC02());
       pstmt.setBigDecimal(4,rowVO.getTotalDiscountDOC02());
-      pstmt.setString(5,pk.getCompanyCodeSys01DOC02());
-      pstmt.setString(6,pk.getDocTypeDOC02());
-      pstmt.setBigDecimal(7,pk.getDocYearDOC02());
-      pstmt.setBigDecimal(8,pk.getDocNumberDOC02());
-      pstmt.setString(9,pk.getItemCodeItm01DOC02());
+			pstmt.setString(5,username);
+			pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(7,pk.getCompanyCodeSys01DOC02());
+      pstmt.setString(8,pk.getDocTypeDOC02());
+      pstmt.setBigDecimal(9,pk.getDocYearDOC02());
+      pstmt.setBigDecimal(10,pk.getDocNumberDOC02());
+      pstmt.setString(11,pk.getItemCodeItm01DOC02());
       pstmt.execute();
       conn.commit();
 
@@ -238,14 +240,16 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
       if (totalResponse.isError())
     	  throw new Exception(totalResponse.getErrorMessage());
 
-      pstmt = conn.prepareStatement("update DOC01_SELLING set TAXABLE_INCOME=?,TOTAL_VAT=?,TOTAL=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
+      pstmt = conn.prepareStatement("update DOC01_SELLING set TAXABLE_INCOME=?,TOTAL_VAT=?,TOTAL=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
       pstmt.setBigDecimal(1,vo.getTaxableIncomeDOC01());
       pstmt.setBigDecimal(2,vo.getTotalVatDOC01());
       pstmt.setBigDecimal(3,vo.getTotalDOC01());
-      pstmt.setString(4,pk.getCompanyCodeSys01DOC02());
-      pstmt.setString(5,pk.getDocTypeDOC02());
-      pstmt.setBigDecimal(6,pk.getDocYearDOC02());
-      pstmt.setBigDecimal(7,pk.getDocNumberDOC02());
+			pstmt.setString(4,username);
+			pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(6,pk.getCompanyCodeSys01DOC02());
+      pstmt.setString(7,pk.getDocTypeDOC02());
+      pstmt.setBigDecimal(8,pk.getDocYearDOC02());
+      pstmt.setBigDecimal(9,pk.getDocNumberDOC02());
       pstmt.execute();
 
       conn.commit();
@@ -680,7 +684,7 @@ public class SaleDocRowDiscountsBean  implements SaleDocRowDiscounts {
         attribute2dbField.put("variantTypeItm10DOC04","VARIANT_TYPE_ITM10");
         attribute2dbField.put("variantCodeItm15DOC04","VARIANT_CODE_ITM15");
 
-        res = new QueryUtil().updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,

@@ -111,6 +111,7 @@ import org.openswing.swing.util.client.ClientSettings;
 import org.jallinone.warehouse.client.InventoryListFrame;
 import org.jallinone.sales.reports.client.SalesReportFrame;
 import org.jallinone.items.spareparts.client.*;
+import org.jallinone.reports.client.PrintInvoicesFrame;
 
 
 /**
@@ -1022,6 +1023,11 @@ public class ApplicationClientFacade implements ClientFacade {
 	 */
 	public void getSparePartsCatFrame() {
 		new SparePartsCatalogueFrame(true);
+	}
+
+
+	public void printInvoices() {
+		new PrintInvoicesFrame();
 	}
 
 

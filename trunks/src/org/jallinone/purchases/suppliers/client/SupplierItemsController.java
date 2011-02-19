@@ -20,7 +20,7 @@ import org.jallinone.purchases.suppliers.java.GridSupplierVO;
 import org.jallinone.purchases.items.java.SupplierItemVO;
 import org.jallinone.purchases.items.java.SupplierItemPK;
 import org.openswing.swing.form.client.Form;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.purchases.suppliers.java.DetailSupplierVO;
@@ -111,7 +111,7 @@ public class SupplierItemsController extends CompanyGridController {
   public Response insertRecords(int[] rowNumbers, ArrayList newValueObjects) throws Exception {
     SupplierItemVO vo = null;
     DefaultMutableTreeNode selNode = frame.getTreePanel().getSelectedNode();
-    HierarchyLevelVO levelVO = (HierarchyLevelVO)selNode.getUserObject();
+    CompanyHierarchyLevelVO levelVO = (CompanyHierarchyLevelVO)selNode.getUserObject();
     DetailSupplierVO supplierVO = (DetailSupplierVO)frame.getCurrentForm().getVOModel().getValueObject();
 
     for(int i=0;i<newValueObjects.size();i++) {

@@ -49,7 +49,7 @@ import javax.sql.DataSource;
 public class LoadCustomizedReportsBean  implements LoadCustomizedReports {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -57,9 +57,9 @@ public class LoadCustomizedReportsBean  implements LoadCustomizedReports {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -69,18 +69,18 @@ public class LoadCustomizedReportsBean  implements LoadCustomizedReports {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ReportVO getReport() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
 
   public LoadCustomizedReportsBean() {

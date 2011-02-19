@@ -51,7 +51,7 @@ import javax.sql.DataSource;
 public class LoadItemsSoldToOtherCustomersBean  implements LoadItemsSoldToOtherCustomers {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -59,9 +59,9 @@ public class LoadItemsSoldToOtherCustomersBean  implements LoadItemsSoldToOtherC
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -71,18 +71,18 @@ public class LoadItemsSoldToOtherCustomersBean  implements LoadItemsSoldToOtherC
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ItemSoldToOtherCustomersVO getItemSoldToOtherCustomers() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
 
   public LoadItemsSoldToOtherCustomersBean() {
@@ -105,14 +105,15 @@ public class LoadItemsSoldToOtherCustomersBean  implements LoadItemsSoldToOtherC
       items = items.substring(0,items.length()-1);
 
       String sql =
-          "SELECT COUNT(SYS10_TRANSLATIONS.DESCRIPTION) AS CUSTOMERS_NR,SYS10_TRANSLATIONS.DESCRIPTION FROM DOC02_SELLING_ITEMS,ITM01_ITEMS,SYS10_TRANSLATIONS "+
+          "SELECT COUNT(SYS10_COMPANY_TRANSLATIONS.DESCRIPTION) AS CUSTOMERS_NR,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION FROM DOC02_SELLING_ITEMS,ITM01_ITEMS,SYS10_COMPANY_TRANSLATIONS "+
           "WHERE "+
           "DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01=? AND "+
           "DOC02_SELLING_ITEMS.DOC_TYPE=? AND "+
           "DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 AND "+
           "DOC02_SELLING_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE AND "+
-          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE AND "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? AND "+
+					"ITM01_ITEMS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 AND "+
+          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE AND "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? AND "+
           "DOC02_SELLING_ITEMS.DOC_NUMBER IN ( "+
           "SELECT D.DOC_NUMBER FROM DOC02_SELLING_ITEMS D WHERE "+
           "D.COMPANY_CODE_SYS01=? AND "+
@@ -120,11 +121,11 @@ public class LoadItemsSoldToOtherCustomersBean  implements LoadItemsSoldToOtherC
           "D.ITEM_CODE_ITM01 IN ("+items+") "+
           ") "+
           "AND NOT DOC02_SELLING_ITEMS.ITEM_CODE_ITM01 IN ("+items+") "+
-          "GROUP BY SYS10_TRANSLATIONS.DESCRIPTION "+
-          "ORDER BY COUNT(SYS10_TRANSLATIONS.DESCRIPTION) DESC ";
+          "GROUP BY SYS10_COMPANY_TRANSLATIONS.DESCRIPTION "+
+          "ORDER BY COUNT(SYS10_COMPANY_TRANSLATIONS.DESCRIPTION) DESC ";
 
       Map attribute2dbField = new HashMap();
-      attribute2dbField.put("itemDescriptionSY10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("itemDescriptionSY10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("customersNr","CUSTOMERS_NR");
 
       ArrayList values = new ArrayList();

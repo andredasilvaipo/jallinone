@@ -54,7 +54,7 @@ import javax.sql.DataSource;
 public class ConfirmPurchaseOrderBean  implements ConfirmPurchaseOrder {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -62,9 +62,9 @@ public class ConfirmPurchaseOrderBean  implements ConfirmPurchaseOrder {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -74,7 +74,7 @@ public class ConfirmPurchaseOrderBean  implements ConfirmPurchaseOrder {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -108,13 +108,15 @@ public class ConfirmPurchaseOrderBean  implements ConfirmPurchaseOrder {
         docSequenceDOC06 = rset.getInt(1)+1;
       rset.close();
 
-      pstmt = conn.prepareStatement("update DOC06_PURCHASE set DOC_STATE=?,DOC_SEQUENCE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
+      pstmt = conn.prepareStatement("update DOC06_PURCHASE set DOC_STATE=?,DOC_SEQUENCE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
       pstmt.setString(1,ApplicationConsts.CONFIRMED);
       pstmt.setInt(2,docSequenceDOC06);
-      pstmt.setString(3,pk.getCompanyCodeSys01DOC06());
-      pstmt.setString(4,pk.getDocTypeDOC06());
-      pstmt.setBigDecimal(5,pk.getDocYearDOC06());
-      pstmt.setBigDecimal(6,pk.getDocNumberDOC06());
+			pstmt.setString(3,username);
+			pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(5,pk.getCompanyCodeSys01DOC06());
+      pstmt.setString(6,pk.getDocTypeDOC06());
+      pstmt.setBigDecimal(7,pk.getDocYearDOC06());
+      pstmt.setBigDecimal(8,pk.getDocNumberDOC06());
       pstmt.execute();
 
       return new VOResponse(new BigDecimal(docSequenceDOC06));

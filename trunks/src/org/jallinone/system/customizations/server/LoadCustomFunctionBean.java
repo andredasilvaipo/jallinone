@@ -47,7 +47,7 @@ import javax.sql.DataSource;
 public class LoadCustomFunctionBean  implements LoadCustomFunction {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -55,9 +55,9 @@ public class LoadCustomFunctionBean  implements LoadCustomFunction {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -67,7 +67,7 @@ public class LoadCustomFunctionBean  implements LoadCustomFunction {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -92,14 +92,14 @@ public class LoadCustomFunctionBean  implements LoadCustomFunction {
           "select SYS16_CUSTOM_FUNCTIONS.FUNCTION_CODE_SYS06,SYS06_FUNCTIONS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
           "SYS16_CUSTOM_FUNCTIONS.SQL1,SYS16_CUSTOM_FUNCTIONS.SQL2,SYS16_CUSTOM_FUNCTIONS.SQL3,SYS16_CUSTOM_FUNCTIONS.SQL4,"+
           "SYS16_CUSTOM_FUNCTIONS.SQL5,SYS16_CUSTOM_FUNCTIONS.NOTE,SYS16_CUSTOM_FUNCTIONS.AUTO_LOAD_DATA,SYS16_CUSTOM_FUNCTIONS.MAIN_TABLES,"+
-          "SYS06_FUNCTIONS.USE_COMPANY_CODE,SYS18_FUNCTION_LINKS.PROGRESSIVE_HIE01,SYS10_B.DESCRIPTION "+
-          "from SYS16_CUSTOM_FUNCTIONS,SYS06_FUNCTIONS,SYS10_TRANSLATIONS,SYS18_FUNCTION_LINKS,SYS10_TRANSLATIONS SYS10_B where "+
+          "SYS06_FUNCTIONS.USE_COMPANY_CODE,SYS18_FUNCTIONS_LINKS.PROGRESSIVE_HIE01,SYS10_B.DESCRIPTION "+
+          "from SYS16_CUSTOM_FUNCTIONS,SYS06_FUNCTIONS,SYS10_TRANSLATIONS,SYS18_FUNCTIONS_LINKS,SYS10_TRANSLATIONS SYS10_B where "+
           "SYS06_FUNCTIONS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SYS16_CUSTOM_FUNCTIONS.FUNCTION_CODE_SYS06=SYS06_FUNCTIONS.FUNCTION_CODE and "+
           "SYS16_CUSTOM_FUNCTIONS.FUNCTION_CODE_SYS06=? and "+
-          "SYS18_FUNCTION_LINKS.FUNCTION_CODE_SYS06=SYS16_CUSTOM_FUNCTIONS.FUNCTION_CODE_SYS06 and "+
-          "SYS18_FUNCTION_LINKS.PROGRESSIVE_HIE01=SYS10_B.PROGRESSIVE and "+
+          "SYS18_FUNCTIONS_LINKS.FUNCTION_CODE_SYS06=SYS16_CUSTOM_FUNCTIONS.FUNCTION_CODE_SYS06 and "+
+          "SYS18_FUNCTIONS_LINKS.PROGRESSIVE_HIE03=SYS10_B.PROGRESSIVE and "+
           "SYS10_B.LANGUAGE_CODE=? ";
 
       Map attribute2dbField = new HashMap();
@@ -116,7 +116,7 @@ public class LoadCustomFunctionBean  implements LoadCustomFunction {
       attribute2dbField.put("mainTablesSYS16","SYS16_CUSTOM_FUNCTIONS.MAIN_TABLES");
       attribute2dbField.put("useCompanyCodeSYS06","SYS06_FUNCTIONS.USE_COMPANY_CODE");
       attribute2dbField.put("levelDescriptionSYS10","SYS10_B.DESCRIPTION");
-      attribute2dbField.put("progressiveHie01SYS18","SYS18_FUNCTION_LINKS.PROGRESSIVE_HIE01");
+      attribute2dbField.put("progressiveHie03SYS18","SYS18_FUNCTIONS_LINKS.PROGRESSIVE_HIE03");
 
       ArrayList values = new ArrayList();
       values.add(serverLanguageId);

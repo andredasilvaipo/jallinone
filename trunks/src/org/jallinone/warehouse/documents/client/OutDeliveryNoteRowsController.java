@@ -10,7 +10,7 @@ import org.openswing.swing.util.client.ClientUtils;
 import org.openswing.swing.tree.client.TreeController;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.jallinone.warehouse.documents.java.*;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.openswing.swing.mdi.client.MDIFrame;
 import org.openswing.swing.client.GridControl;
 import org.jallinone.commons.java.ApplicationConsts;
@@ -100,9 +100,9 @@ public class OutDeliveryNoteRowsController extends CompanyGridController {
 		vo.setVariantTypeItm10DOC10("*");
 		vo.setLocationDescriptionSYS10("");
 
-    Response res = ClientUtils.getData("getRootLevel",panel.getParentVO().getProgressiveHie02WAR01());
+    Response res = ClientUtils.getData("getCompanyRootLevel",new Object[]{panel.getParentVO().getCompanyCodeSys01DOC08(),panel.getParentVO().getProgressiveHie02WAR01()});
     if (!res.isError()) {
-      HierarchyLevelVO posVO = (HierarchyLevelVO)((VOResponse)res).getVo();
+      CompanyHierarchyLevelVO posVO = (CompanyHierarchyLevelVO)((VOResponse)res).getVo();
       vo.setProgressiveHie01DOC10(posVO.getProgressiveHIE01());
       vo.setLocationDescriptionSYS10(posVO.getDescriptionSYS10());
     }

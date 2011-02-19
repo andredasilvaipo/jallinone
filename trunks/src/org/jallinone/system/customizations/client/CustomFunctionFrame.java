@@ -143,7 +143,7 @@ public class CustomFunctionFrame extends InternalFrame {
       posDataLocator.setNodeNameAttribute("descriptionSYS10");
       posController.setAllowTreeLeafSelectionOnly(false);
       posController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.HierarchyLevelVO");
-      posController.addLookup2ParentLink("progressiveHIE01", "progressiveHie01SYS18");
+      posController.addLookup2ParentLink("progressiveHIE01", "progressiveHie03SYS18");
       posController.addLookup2ParentLink("descriptionSYS10","levelDescriptionSYS10");
       posController.setFramePreferedSize(new Dimension(400,400));
       posController.addLookupListener(new LookupListener() {
@@ -260,7 +260,7 @@ public class CustomFunctionFrame extends InternalFrame {
     showQuery.addActionListener(new CustomFunctionFrame_showQuery_actionAdapter(this));
     labelLevel.setLabel("treePosition");
     controlLevel.setAllowOnlyNumbers(true);
-    controlLevel.setAttributeName("progressiveHie01SYS18");
+    controlLevel.setAttributeName("progressiveHie03SYS18");
     controlLevel.setCodBoxVisible(false);
     controlLevel.setLinkLabel(labelLevel);
     controlLevel.setMaxCharacters(20);

@@ -13,7 +13,7 @@ import org.openswing.swing.message.receive.java.*;
 import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.util.client.ClientUtils;
 import org.openswing.swing.domains.java.*;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -109,8 +109,9 @@ public class DocFilterPanel extends JPanel {
       GridParams gridParams = new GridParams();
       DefaultMutableTreeNode node = frame.getHierarTreePanel().getSelectedNode();
       if (node!=null) {
-        HierarchyLevelVO vo = (HierarchyLevelVO)node.getUserObject();
-        HierarchyLevelVO root = (HierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
+        CompanyHierarchyLevelVO vo = (CompanyHierarchyLevelVO)node.getUserObject();
+        CompanyHierarchyLevelVO root = (CompanyHierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
+				gridParams.getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanySys01HIE01());
         gridParams.getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE01,vo.getProgressiveHIE01());
         gridParams.getOtherGridParams().put(ApplicationConsts.ROOT_PROGRESSIVE_HIE01,root.getProgressiveHIE01());
       }

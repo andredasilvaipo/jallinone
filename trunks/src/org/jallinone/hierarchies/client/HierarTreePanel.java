@@ -6,7 +6,7 @@ import org.openswing.swing.tree.client.TreeServerDataLocator;
 import org.openswing.swing.util.client.*;
 import org.openswing.swing.tree.client.TreeController;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
@@ -83,7 +83,7 @@ public class HierarTreePanel extends TreePanel implements TreeController {
 
 
   public HierarTreePanel() {
-    treeDataLocator.setServerMethodName("loadHierarchy");
+    treeDataLocator.setServerMethodName("loadCompanyHierarchy");
     treeDataLocator.setNodeNameAttribute("descriptionSYS10");
 
     super.setTreeDataLocator(treeDataLocator);
@@ -131,12 +131,12 @@ public class HierarTreePanel extends TreePanel implements TreeController {
                 );
                 if (value!=null) {
                   try {
-                    HierarchyLevelVO newVO = (HierarchyLevelVO)((HierarchyLevelVO)selNode.getUserObject()).clone();
+                    CompanyHierarchyLevelVO newVO = (CompanyHierarchyLevelVO)((CompanyHierarchyLevelVO)selNode.getUserObject()).clone();
                     newVO.setProgressiveHie01HIE01(newVO.getProgressiveHIE01());
                     newVO.setLevelHIE01(newVO.getLevelHIE01().add(new BigDecimal(1)));
                     newVO.setDescriptionSYS10(value);
                     DefaultMutableTreeNode newNode = new OpenSwingTreeNode(newVO);
-                    Response response = ClientUtils.getData("insertLevel",newVO);
+                    Response response = ClientUtils.getData("companyInsertLevel",newVO);
                     if (!response.isError()) {
                       newNode.setUserObject(((VOResponse)response).getVo());
                       selNode.add(newNode);
@@ -177,7 +177,7 @@ public class HierarTreePanel extends TreePanel implements TreeController {
             public void actionPerformed(ActionEvent e) {
               DefaultMutableTreeNode selNode = getSelectedNode();
               if (selNode != null) {
-                HierarchyLevelVO newVO = (HierarchyLevelVO)selNode.getUserObject();
+                CompanyHierarchyLevelVO newVO = (CompanyHierarchyLevelVO)selNode.getUserObject();
                 String value = JOptionPane.showInputDialog(
                   ClientUtils.getParentFrame(HierarTreePanel.this),
                   ClientSettings.getInstance().getResources().getResource("level description: "),
@@ -185,9 +185,9 @@ public class HierarTreePanel extends TreePanel implements TreeController {
                 );
                 if (value!=null) {
                   try {
-                    HierarchyLevelVO oldVO = (HierarchyLevelVO)((HierarchyLevelVO)selNode.getUserObject()).clone();
+                    CompanyHierarchyLevelVO oldVO = (CompanyHierarchyLevelVO)((CompanyHierarchyLevelVO)selNode.getUserObject()).clone();
                     newVO.setDescriptionSYS10(value);
-                    Response response = ClientUtils.getData("updateLevel",new HierarchyLevelVO[] {oldVO,newVO});
+                    Response response = ClientUtils.getData("updateCompanyLevel",new CompanyHierarchyLevelVO[] {oldVO,newVO});
                     if (!response.isError()) {
                       selNode.setUserObject(newVO);
                       repaintTree();
@@ -234,7 +234,7 @@ public class HierarTreePanel extends TreePanel implements TreeController {
                   JOptionPane.YES_NO_OPTION,
                   JOptionPane.QUESTION_MESSAGE
                 )==JOptionPane.YES_OPTION) {
-                  Response response = ClientUtils.getData("deleteLevel",selNode.getUserObject());
+                  Response response = ClientUtils.getData("companyDeleteLevel",selNode.getUserObject());
                   if (!response.isError()) {
                     ((DefaultMutableTreeNode)selNode.getParent()).remove(selNode);
                     repaintTree();
@@ -331,6 +331,7 @@ public class HierarTreePanel extends TreePanel implements TreeController {
    */
   public final void setCompanyCode(String companyCode) {
     this.companyCode = companyCode;
+		treeDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01,companyCode);
   }
 
 

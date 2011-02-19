@@ -142,19 +142,18 @@ public class LanguagesBean  implements Languages {
   public VOListResponse insertLanguages(ArrayList list,String serverLanguageId,String username) throws Throwable {
     Statement stmt = null;
     PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
 		StringBuffer sql = new StringBuffer("");
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-
-
-
       LanguageVO vo = null;
       BufferedReader br = null;
       ResultSet rset = null;
 
       pstmt = conn.prepareStatement(
-          "insert into SYS09_LANGUAGES(LANGUAGE_CODE,DESCRIPTION,CLIENT_LANGUAGE_CODE,CREATE_DATE,ENABLED) VALUES(?,?,?,?,'Y')"
+          "insert into SYS09_LANGUAGES(LANGUAGE_CODE,DESCRIPTION,CLIENT_LANGUAGE_CODE,CREATE_DATE,ENABLED,CREATE_USER) VALUES(?,?,?,?,'Y',?)"
       );
 
    		 int index = -1;
@@ -167,14 +166,28 @@ public class LanguagesBean  implements Languages {
         pstmt.setString(2,vo.getDescriptionSYS09());
         pstmt.setString(3,vo.getClientLanguageCodeSYS09());
         pstmt.setDate(4,new java.sql.Date(System.currentTimeMillis()));
+				pstmt.setString(5,username);
         pstmt.execute();
 
         // insert translations in SYS10...
-        stmt = conn.createStatement();
         sql.delete(0,sql.length());
 
         String fileName = null;
         String aux = "";
+
+				pstmt = conn.prepareStatement("select LANGUAGE_CODE from SYS09_LANGUAGES where ENABLED='Y' order by CREATE_DATE ASC");
+				pstmt2 = conn.prepareStatement(
+					"insert into SYS10_COMPANY_TRANSLATIONS(COMPANY_CODE_SYS01,PROGRESSIVE,DESCRIPTION,LANGUAGE_CODE,CREATE_USER,CREATE_DATE) " +
+					"select A.COMPANY_CODE_SYS01,A.PROGRESSIVE,A.DESCRIPTION,?,?,? "+
+					"from SYS10_COMPANY_TRANSLATIONS A where A.LANGUAGE_CODE=? and "+
+					"not A.PROGRESSIVE in " +
+					"(select B.PROGRESSIVE from SYS10_COMPANY_TRANSLATIONS B where B.COMPANY_CODE_SYS01=A.COMPANY_CODE_SYS01 and B.LANGUAGE_CODE=?)"
+				);
+				pstmt3 = conn.prepareStatement(
+					 "insert into SYS10_TRANSLATIONS(PROGRESSIVE,DESCRIPTION,LANGUAGE_CODE,CREATE_USER,CREATE_DATE) " +
+					 "select PROGRESSIVE,DESCRIPTION,?,?,? from SYS10_TRANSLATIONS where LANGUAGE_CODE=? and not PROGRESSIVE in " +
+					 "(select PROGRESSIVE from SYS10_TRANSLATIONS where LANGUAGE_CODE=?)"
+				);
 
         for(int k=1;k<=ApplicationConsts.DB_VERSION;k++) {
           if (k>1)
@@ -231,18 +244,27 @@ public class LanguagesBean  implements Languages {
 
 
         // insert all other translations...
-        rset = stmt.executeQuery("select LANGUAGE_CODE from SYS09_LANGUAGES where ENABLED='Y' order by CREATE_DATE ASC");
+        rset = pstmt.executeQuery();
         String oldLangCode = null;
         if (rset.next())
           oldLangCode = rset.getString(1);
         rset.close();
-        if (oldLangCode!=null)
-          stmt.execute(
-            "insert into SYS10_TRANSLATIONS(PROGRESSIVE,DESCRIPTION,LANGUAGE_CODE) " +
-            "select PROGRESSIVE,DESCRIPTION,'" + vo.getLanguageCodeSYS09() +
-            "' from SYS10_TRANSLATIONS where LANGUAGE_CODE='"+oldLangCode+"' and not PROGRESSIVE in "+
-            "(select PROGRESSIVE from SYS10_TRANSLATIONS where LANGUAGE_CODE='"+vo.getLanguageCodeSYS09()+"')"
-          );
+        if (oldLangCode!=null) {
+					pstmt2.setString(1,vo.getLanguageCodeSYS09());
+					pstmt2.setString(2,username);
+					pstmt2.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+					pstmt2.setString(4,oldLangCode);
+					pstmt2.setString(5,vo.getLanguageCodeSYS09());
+					pstmt2.execute();
+
+					pstmt3.setString(1,vo.getLanguageCodeSYS09());
+					pstmt3.setString(2,username);
+					pstmt3.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+					pstmt3.setString(4,oldLangCode);
+					pstmt3.setString(5,vo.getLanguageCodeSYS09());
+					pstmt3.execute();
+
+				}
       }
 
 
@@ -262,16 +284,34 @@ public class LanguagesBean  implements Languages {
       throw new Exception(ex.getMessage());
     }
     finally {
+			try {
+			 stmt.close();
+			}
+			catch (Exception ex2) {
+			}
       try {
-        stmt.close();
+       pstmt.close();
       }
       catch (Exception ex2) {
       }
       try {
-        pstmt.close();
+        pstmt2.close();
       }
       catch (Exception ex2) {
       }
+			try {
+			 pstmt3.close();
+			}
+			catch (Exception ex2) {
+			}
+			try {
+					if (this.conn==null && conn!=null) {
+							// close only local connection
+							conn.close();
+					}
+
+			}
+			catch (Exception exx) {}
     }
 
   }
@@ -302,22 +342,15 @@ public class LanguagesBean  implements Languages {
    * Business logic to execute.
    */
   public VOListResponse validateLanguageCode(LookupValidationParams validationPars,String serverLanguageId,String username) throws Throwable {
-
-
     Statement stmt = null;
-
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-
-
-
-
-
-
       stmt = conn.createStatement();
       ResultSet rset = stmt.executeQuery(
-          "select LANGUAGE_CODE,DESCRIPTION,CLIENT_LANGUAGE_CODE from SYS09_LANGUAGES where ENABLED='Y' and LANGUAGE_CODE='"+validationPars.getCode()+"'"
+				"select LANGUAGE_CODE,DESCRIPTION,CLIENT_LANGUAGE_CODE "+
+				"from SYS09_LANGUAGES "+
+				"where ENABLED='Y' and LANGUAGE_CODE='"+validationPars.getCode()+"'"
       );
       LanguageVO vo = null;
       ArrayList list = new ArrayList();
@@ -351,12 +384,7 @@ public class LanguagesBean  implements Languages {
         }
         catch (Exception exx) {}
     }
-
-
   }
-
-
-
 
 
 
@@ -384,7 +412,7 @@ public class LanguagesBean  implements Languages {
         attr2dbFields.put("languageCodeSYS09","LANGUAGE_CODE");
         attr2dbFields.put("descriptionSYS09","DESCRIPTION");
 
-        res = new QueryUtil().updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
@@ -438,17 +466,18 @@ public class LanguagesBean  implements Languages {
    * Business logic to execute.
    */
   public VOResponse deleteLanguage(LanguageVO vo,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
     PreparedStatement pstmt = null;
-
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
-
 
       // logically delete the record in SYS09...
-      stmt.execute("update SYS09_LANGUAGES set ENABLED='N' where LANGUAGE_CODE='"+vo.getLanguageCodeSYS09()+"'");
+      pstmt = conn.prepareStatement(
+		     "update SYS09_LANGUAGES set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where LANGUAGE_CODE='"+vo.getLanguageCodeSYS09()+"'"
+			);
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
 
       return new VOResponse(new Boolean(true));
     }
@@ -466,7 +495,7 @@ public class LanguagesBean  implements Languages {
     }
     finally {
       try {
-        stmt.close();
+        pstmt.close();
       }
       catch (Exception ex2) {
       }

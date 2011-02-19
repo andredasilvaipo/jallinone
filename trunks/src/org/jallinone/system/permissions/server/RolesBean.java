@@ -14,7 +14,7 @@ import org.openswing.swing.logger.server.*;
 import org.jallinone.system.server.*;
 import org.jallinone.system.translations.server.TranslationUtils;
 import org.jallinone.system.permissions.java.*;
-import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
+import org.jallinone.system.progressives.server.ProgressiveUtils;
 import org.openswing.swing.internationalization.server.*;
 import org.openswing.swing.internationalization.java.*;
 import org.jallinone.commons.java.ApplicationConsts;
@@ -55,7 +55,7 @@ import javax.sql.DataSource;
 public class RolesBean  implements Roles {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -63,9 +63,9 @@ public class RolesBean  implements Roles {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -75,7 +75,7 @@ public class RolesBean  implements Roles {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -87,34 +87,34 @@ public class RolesBean  implements Roles {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public UserRoleVO getUserRole() {
 	  throw new UnsupportedOperationException();
   }
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public GridPermissionsPerRoleVO getGridPermissionsPerRole() {
 	  throw new UnsupportedOperationException();
   }
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public RoleFunctionCompanyVO getRoleFunctionCompany() {
 	  throw new UnsupportedOperationException();
   }
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public RoleFunctionVO getRoleFunction() {
 	  throw new UnsupportedOperationException();
   }
 
-  
+
   /**
    * Business logic to execute.
    */
@@ -271,7 +271,9 @@ public class RolesBean  implements Roles {
       pstmt.setBigDecimal(2,progressiveSYS04);
       pstmt.execute();
       pstmt.close();
-      pstmt = conn.prepareStatement("insert into SYS27_GRID_PERMISSIONS(COLS_POS,EDIT_COLS_IN_INS,EDIT_COLS_IN_EDIT,REQUIRED_COLS,COLS_VIS,FUNCTION_CODE_SYS06,PROGRESSIVE_SYS04) values(?,?,?,?,?,?,?)");
+      pstmt = conn.prepareStatement(
+		    "insert into SYS27_GRID_PERMISSIONS(COLS_POS,EDIT_COLS_IN_INS,EDIT_COLS_IN_EDIT,REQUIRED_COLS,COLS_VIS,"+
+				"FUNCTION_CODE_SYS06,PROGRESSIVE_SYS04,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?,?,?)");
       GridPermissionsPerRoleVO vo = null;
       String colsPos = "";
       String editColsInIns = "";
@@ -299,8 +301,10 @@ public class RolesBean  implements Roles {
       pstmt.setString(5,colsVis);
       pstmt.setString(6,functionCodeSYS06);
       pstmt.setBigDecimal(7,progressiveSYS04);
+			pstmt.setString(8,username);
+			pstmt.setTimestamp(9,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.execute();
-      
+
       return new VOListResponse(vos,false,vos.size());
     }
     catch (Throwable ex) {
@@ -358,8 +362,8 @@ public class RolesBean  implements Roles {
           // no record in SYS02 yet...
           if (newVO.getCanView().booleanValue()) {
             pstmt = conn.prepareStatement(
-              "insert into SYS02_COMPANIES_ACCESS(PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL,COMPANY_CODE_SYS01) "+
-              "values(?,?,?,?,?,?)"
+              "insert into SYS02_COMPANIES_ACCESS(PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL,COMPANY_CODE_SYS01,CREATE_USER,CREATE_DATE) "+
+              "values(?,?,?,?,?,?,?,?)"
             );
             pstmt.setBigDecimal(1,newVO.getProgressiveSys04SYS02());
             pstmt.setString(2,newVO.getFunctionCodeSys06SYS02());
@@ -367,6 +371,8 @@ public class RolesBean  implements Roles {
             pstmt.setString(4,newVO.getCanUpdSYS02().booleanValue()?"Y":"N");
             pstmt.setString(5,newVO.getCanDelSYS02().booleanValue()?"Y":"N");
             pstmt.setString(6,newVO.getCompanyCodeSys01SYS02());
+						pstmt.setString(7,username);
+						pstmt.setTimestamp(8,new java.sql.Timestamp(System.currentTimeMillis()));
             pstmt.execute();
           }
         }
@@ -375,15 +381,17 @@ public class RolesBean  implements Roles {
           if (newVO.getCanView().booleanValue()) {
             // record in SYS02 will be updated...
             pstmt = conn.prepareStatement(
-              "update SYS02_COMPANIES_ACCESS set CAN_INS=?,CAN_UPD=?,CAN_DEL=? where "+
+              "update SYS02_COMPANIES_ACCESS set CAN_INS=?,CAN_UPD=?,CAN_DEL=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
               "PROGRESSIVE_SYS04=? and FUNCTION_CODE_SYS06=? and COMPANY_CODE_SYS01=? "
             );
             pstmt.setString(1,newVO.getCanInsSYS02().booleanValue()?"Y":"N");
             pstmt.setString(2,newVO.getCanUpdSYS02().booleanValue()?"Y":"N");
             pstmt.setString(3,newVO.getCanDelSYS02().booleanValue()?"Y":"N");
-            pstmt.setBigDecimal(4,newVO.getProgressiveSys04SYS02());
-            pstmt.setString(5,newVO.getFunctionCodeSys06SYS02());
-            pstmt.setString(6,newVO.getCompanyCodeSys01SYS02());
+						pstmt.setString(4,username);
+						pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
+            pstmt.setBigDecimal(6,newVO.getProgressiveSys04SYS02());
+            pstmt.setString(7,newVO.getFunctionCodeSys06SYS02());
+            pstmt.setString(8,newVO.getCompanyCodeSys01SYS02());
             pstmt.execute();
           }
           else {
@@ -456,27 +464,31 @@ public class RolesBean  implements Roles {
           // no record in SYS07 yet...
           if (newVO.getCanView().booleanValue()) {
             pstmt = conn.prepareStatement(
-              "insert into SYS07_ROLE_FUNCTIONS(PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL) values(?,?,?,?,?)"
+              "insert into SYS07_ROLE_FUNCTIONS(PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?)"
             );
             pstmt.setBigDecimal(1,newVO.getProgressiveSys04SYS07());
             pstmt.setString(2,newVO.getFunctionCodeSys06SYS07());
             pstmt.setString(3,newVO.getCanInsSYS07().booleanValue()?"Y":"N");
             pstmt.setString(4,newVO.getCanUpdSYS07().booleanValue()?"Y":"N");
             pstmt.setString(5,newVO.getCanDelSYS07().booleanValue()?"Y":"N");
+						pstmt.setString(6,username);
+						pstmt.setTimestamp(7,new java.sql.Timestamp(System.currentTimeMillis()));
             pstmt.execute();
 
             if (newVO.getUseCompanyCodeSYS06().booleanValue()) {
               // insert also records in SYS02...
               pstmt.close();
               pstmt = conn.prepareStatement(
-                "insert into SYS02_COMPANIES_ACCESS(PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL,COMPANY_CODE_SYS01) "+
-                "select ?,?,?,?,?,COMPANY_CODE from SYS01_COMPANIES where ENABLED='Y'"
+                "insert into SYS02_COMPANIES_ACCESS(PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL,COMPANY_CODE_SYS01,CREATE_USER,CREATE_DATE) "+
+                "select ?,?,?,?,?,COMPANY_CODE,?,? from SYS01_COMPANIES where ENABLED='Y'"
               );
               pstmt.setBigDecimal(1,newVO.getProgressiveSys04SYS07());
               pstmt.setString(2,newVO.getFunctionCodeSys06SYS07());
               pstmt.setString(3,newVO.getCanInsSYS07().booleanValue()?"Y":"N");
               pstmt.setString(4,newVO.getCanUpdSYS07().booleanValue()?"Y":"N");
               pstmt.setString(5,newVO.getCanDelSYS07().booleanValue()?"Y":"N");
+							pstmt.setString(6,username);
+							pstmt.setTimestamp(7,new java.sql.Timestamp(System.currentTimeMillis()));
               pstmt.execute();
             }
 
@@ -487,28 +499,32 @@ public class RolesBean  implements Roles {
           if (newVO.getCanView().booleanValue()) {
             // record in SYS07 will be updated...
             pstmt = conn.prepareStatement(
-              "update SYS07_ROLE_FUNCTIONS set CAN_INS=?,CAN_UPD=?,CAN_DEL=? where PROGRESSIVE_SYS04=? and FUNCTION_CODE_SYS06=?"
+              "update SYS07_ROLE_FUNCTIONS set CAN_INS=?,CAN_UPD=?,CAN_DEL=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where PROGRESSIVE_SYS04=? and FUNCTION_CODE_SYS06=?"
             );
             pstmt.setString(1,newVO.getCanInsSYS07().booleanValue()?"Y":"N");
             pstmt.setString(2,newVO.getCanUpdSYS07().booleanValue()?"Y":"N");
             pstmt.setString(3,newVO.getCanDelSYS07().booleanValue()?"Y":"N");
-            pstmt.setBigDecimal(4,newVO.getProgressiveSys04SYS07());
-            pstmt.setString(5,newVO.getFunctionCodeSys06SYS07());
+						pstmt.setString(4,username);
+						pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
+            pstmt.setBigDecimal(6,newVO.getProgressiveSys04SYS07());
+            pstmt.setString(7,newVO.getFunctionCodeSys06SYS07());
             pstmt.execute();
 
             if (newVO.getUseCompanyCodeSYS06().booleanValue()) {
               // update records in SYS02 too...
               pstmt.close();
               pstmt = conn.prepareStatement(
-                "update SYS02_COMPANIES_ACCESS set CAN_INS=?,CAN_UPD=?,CAN_DEL=? where "+
+                "update SYS02_COMPANIES_ACCESS set CAN_INS=?,CAN_UPD=?,CAN_DEL=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
                 "PROGRESSIVE_SYS04=? and FUNCTION_CODE_SYS06=? and COMPANY_CODE_SYS01 in "+
                 "(select COMPANY_CODE from SYS01_COMPANIES where ENABLED='Y')"
               );
               pstmt.setString(1,newVO.getCanInsSYS07().booleanValue()?"Y":"N");
               pstmt.setString(2,newVO.getCanUpdSYS07().booleanValue()?"Y":"N");
               pstmt.setString(3,newVO.getCanDelSYS07().booleanValue()?"Y":"N");
-              pstmt.setBigDecimal(4,newVO.getProgressiveSys04SYS07());
-              pstmt.setString(5,newVO.getFunctionCodeSys06SYS07());
+							pstmt.setString(4,username);
+							pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
+              pstmt.setBigDecimal(6,newVO.getProgressiveSys04SYS07());
+              pstmt.setString(7,newVO.getFunctionCodeSys06SYS07());
               pstmt.execute();
             }
 
@@ -588,7 +604,7 @@ public class RolesBean  implements Roles {
         oldVO = (RoleVO)oldVOs.get(i);
         newVO = (RoleVO)newVOs.get(i);
 
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10SYS04(),serverLanguageId,conn);
+        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10SYS04(),serverLanguageId,username,conn);
       }
 
       return new VOListResponse(newVOs,false,newVOs.size());
@@ -644,10 +660,12 @@ public class RolesBean  implements Roles {
           // no record in SYS14 yet...
           if (newVO.getSelected().booleanValue()) {
             pstmt = conn.prepareStatement(
-              "insert into SYS14_USER_ROLES(PROGRESSIVE_SYS04,USERNAME_SYS03) values(?,?)"
+              "insert into SYS14_USER_ROLES(PROGRESSIVE_SYS04,USERNAME_SYS03,CREATE_USER,CREATE_DATE) values(?,?,?,?)"
             );
             pstmt.setBigDecimal(1,newVO.getProgressiveSys04SYS14());
             pstmt.setString(2,newVO.getUsernameSys03SYS14());
+						pstmt.setString(3,username);
+						pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
             pstmt.execute();
           }
         }
@@ -724,62 +742,72 @@ public class RolesBean  implements Roles {
         oldProgressiveSYS04 = vo.getProgressiveSYS04();
 
         // generate new progressive for SYS04...
-        progressiveSYS04 = CompanyProgressiveUtils.getInternalProgressive(defCompanyCodeSys01SYS03,"SYS04_ROLES","PROGRESSIVE",conn);
+        progressiveSYS04 = ProgressiveUtils.getInternalProgressive("SYS04_ROLES","PROGRESSIVE",conn);
         vo.setProgressiveSYS04(progressiveSYS04);
 
         // insert record in SYS10...
-        progressiveSys10SYS04 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),defCompanyCodeSys01SYS03,conn);
+        progressiveSys10SYS04 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),username,conn);
         vo.setProgressiveSys10SYS04(progressiveSys10SYS04);
 
         // insert record in SYS04...
         pstmt = conn.prepareStatement(
-            "insert into SYS04_ROLES(PROGRESSIVE,PROGRESSIVE_SYS10,ENABLED) VALUES(?,?,'Y')"
+            "insert into SYS04_ROLES(PROGRESSIVE,PROGRESSIVE_SYS10,ENABLED,CREATE_USER,CREATE_DATE) VALUES(?,?,'Y',?,?)"
         );
         pstmt.setBigDecimal(1,vo.getProgressiveSYS04());
         pstmt.setBigDecimal(2,vo.getProgressiveSys10SYS04());
+				pstmt.setString(3,username);
+				pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.execute();
         pstmt.close();
 
         // link the new role to the current user...
         pstmt = conn.prepareStatement(
-            "insert into SYS14_USER_ROLES(USERNAME_SYS03,PROGRESSIVE_SYS04) VALUES(?,?)"
+            "insert into SYS14_USER_ROLES(USERNAME_SYS03,PROGRESSIVE_SYS04,CREATE_USER,CREATE_DATE) VALUES(?,?,?,?)"
         );
         pstmt.setString(1,username);
         pstmt.setBigDecimal(2,progressiveSYS04);
+				pstmt.setString(3,username);
+				pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.execute();
 
         if (!username.toUpperCase().equals("ADMIN")) {
           pstmt.close();
           // link the new role to the ADMIN user...
           pstmt = conn.prepareStatement(
-              "insert into SYS14_USER_ROLES(USERNAME_SYS03,PROGRESSIVE_SYS04) VALUES('ADMIN',?)"
+              "insert into SYS14_USER_ROLES(USERNAME_SYS03,PROGRESSIVE_SYS04,CREATE_USER,CREATE_DATE) VALUES('ADMIN',?,?,?)"
           );
           pstmt.setBigDecimal(1,progressiveSYS04);
+					pstmt.setString(2,username);
+					pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
           pstmt.execute();
         }
 
         if (oldProgressiveSYS04!=null) {
-          // duplicate all old progressive settings...
-          pstmt.close();
-          pstmt = conn.prepareStatement(
-              "insert into SYS07_ROLE_FUNCTIONS(PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL) "+
-              "select ?,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL from SYS07_ROLE_FUNCTIONS where "+
-              "PROGRESSIVE_SYS04=?"
-          );
-          pstmt.setBigDecimal(1,progressiveSYS04);
-          pstmt.setBigDecimal(2,oldProgressiveSYS04);
-          pstmt.execute();
-          pstmt.close();
+					// duplicate all old progressive settings...
+					pstmt.close();
+					pstmt = conn.prepareStatement(
+							"insert into SYS07_ROLE_FUNCTIONS(PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL,CREATE_USER,CREATE_DATE) "+
+							"select ?,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL,?,? from SYS07_ROLE_FUNCTIONS where "+
+							"PROGRESSIVE_SYS04=?"
+					);
+					pstmt.setBigDecimal(1,progressiveSYS04);
+					pstmt.setString(2,username);
+					pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+					pstmt.setBigDecimal(4,oldProgressiveSYS04);
+					pstmt.execute();
+					pstmt.close();
 
           pstmt = conn.prepareStatement(
-              "insert into SYS02_COMPANIES_ACCESS(PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL,COMPANY_CODE_SYS01) "+
-              "select ?,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL,COMPANY_CODE_SYS01 from SYS02_COMPANIES_ACCESS where "+
+              "insert into SYS02_COMPANIES_ACCESS(PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL,COMPANY_CODE_SYS01,CREATE_USER,CREATE_DATE) "+
+              "select ?,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL,COMPANY_CODE_SYS01,?,? from SYS02_COMPANIES_ACCESS where "+
               "PROGRESSIVE_SYS04=?"
           );
-          pstmt.setBigDecimal(1,progressiveSYS04);
-          pstmt.setBigDecimal(2,oldProgressiveSYS04);
-          pstmt.execute();
-          pstmt.close();
+					pstmt.setBigDecimal(1,progressiveSYS04);
+					pstmt.setString(2,username);
+					pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+					pstmt.setBigDecimal(4,oldProgressiveSYS04);
+					pstmt.execute();
+					pstmt.close();
 
         }
       }
@@ -814,7 +842,7 @@ public class RolesBean  implements Roles {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }
@@ -831,7 +859,7 @@ public class RolesBean  implements Roles {
     int i = -1;
     while((i=b.indexOf(oldPattern))!=-1) {
       b.replace(i,i+oldPattern.length(),newPattern);
-    
+
       try {
       } catch (Exception ex) {}
     }
@@ -846,7 +874,7 @@ public class RolesBean  implements Roles {
   public VOListResponse loadGridPermissionsPerRole(Properties p,GridParams gridParams,String langId,String username) throws Throwable {
     PreparedStatement pstmt = null;
     ResultSet rset = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -951,7 +979,7 @@ public class RolesBean  implements Roles {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
   }
 
@@ -1034,7 +1062,7 @@ public class RolesBean  implements Roles {
 
   }
 
-  
+
 
 
 
@@ -1048,15 +1076,15 @@ public class RolesBean  implements Roles {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       BigDecimal progressiveSYS04 = (BigDecimal)params.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_SYS04);
-      BigDecimal progressiveHIE01 = (BigDecimal)params.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_HIE01);
+      BigDecimal progressiveHIE03 = (BigDecimal)params.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_HIE03);
 
       // retrieve all subnodes of the specified node...
       pstmt = conn.prepareStatement(
-          "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV from HIE01_LEVELS "+
-          "where ENABLED='Y' and PROGRESSIVE_HIE02=2 and PROGRESSIVE>=? "+
-          "order by LEV,PROGRESSIVE_HIE01,PROGRESSIVE"
+          "select HIE03_LEVELS.PROGRESSIVE,HIE03_LEVELS.PROGRESSIVE_HIE03,HIE03_LEVELS.LEV from HIE03_LEVELS "+
+          "where ENABLED='Y' and PROGRESSIVE_HIE04=2 and PROGRESSIVE>=? "+
+          "order by LEV,PROGRESSIVE_HIE03,PROGRESSIVE"
       );
-      pstmt.setBigDecimal(1,progressiveHIE01);
+      pstmt.setBigDecimal(1,progressiveHIE03);
       ResultSet rset = pstmt.executeQuery();
 
       HashSet currentLevelNodes = new HashSet();
@@ -1070,7 +1098,7 @@ public class RolesBean  implements Roles {
           currentLevelNodes = newLevelNodes;
           newLevelNodes = new HashSet();
         }
-        if (rset.getBigDecimal(1).equals(progressiveHIE01)) {
+        if (rset.getBigDecimal(1).equals(progressiveHIE03)) {
           newLevelNodes.add(rset.getBigDecimal(1));
           nodes += rset.getBigDecimal(1)+",";
         }
@@ -1097,12 +1125,13 @@ public class RolesBean  implements Roles {
       ArrayList list = new ArrayList();
       HashSet functions = new HashSet();
       pstmt = conn.prepareStatement(
-          "select SYS06_FUNCTIONS.FUNCTION_CODE,SYS10_TRANSLATIONS.DESCRIPTION,SYS07_ROLE_FUNCTIONS.CAN_INS,SYS07_ROLE_FUNCTIONS.CAN_UPD,SYS07_ROLE_FUNCTIONS.CAN_DEL,SYS06_FUNCTIONS.USE_COMPANY_CODE,SYS07_ROLE_FUNCTIONS.PROGRESSIVE_SYS04 "+
-          "from SYS06_FUNCTIONS,SYS07_ROLE_FUNCTIONS,SYS10_TRANSLATIONS,SYS18_FUNCTION_LINKS where "+
+          "select SYS06_FUNCTIONS.FUNCTION_CODE,SYS10_TRANSLATIONS.DESCRIPTION,SYS07_ROLE_FUNCTIONS.CAN_INS,"+
+					"SYS07_ROLE_FUNCTIONS.CAN_UPD,SYS07_ROLE_FUNCTIONS.CAN_DEL,SYS06_FUNCTIONS.USE_COMPANY_CODE,SYS07_ROLE_FUNCTIONS.PROGRESSIVE_SYS04 "+
+          "from SYS06_FUNCTIONS,SYS07_ROLE_FUNCTIONS,SYS10_TRANSLATIONS,SYS18_FUNCTIONS_LINKS where "+
           "SYS07_ROLE_FUNCTIONS.PROGRESSIVE_SYS04 in ("+roles+") and "+
           "SYS07_ROLE_FUNCTIONS.FUNCTION_CODE_SYS06=SYS06_FUNCTIONS.FUNCTION_CODE and "+
-          "SYS06_FUNCTIONS.FUNCTION_CODE=SYS18_FUNCTION_LINKS.FUNCTION_CODE_SYS06 and "+
-          "SYS18_FUNCTION_LINKS.PROGRESSIVE_HIE01 in ("+nodes+") and "+
+          "SYS06_FUNCTIONS.FUNCTION_CODE=SYS18_FUNCTIONS_LINKS.FUNCTION_CODE_SYS06 and "+
+          "SYS18_FUNCTIONS_LINKS.PROGRESSIVE_HIE03 in ("+nodes+") and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE='"+langId+"' and "+
           "SYS10_TRANSLATIONS.PROGRESSIVE=SYS06_FUNCTIONS.PROGRESSIVE_SYS10"
       );
@@ -1202,15 +1231,16 @@ public class RolesBean  implements Roles {
         stmt.execute("delete from SYS07_ROLE_FUNCTIONS where PROGRESSIVE_SYS04="+vo.getProgressiveSYS04());
 
         // logically delete the record in SYS09...
-        stmt.execute("update SYS04_ROLES set ENABLED='N' where PROGRESSIVE="+vo.getProgressiveSYS04());
+        pstmt = conn.prepareStatement(
+		      "update SYS04_ROLES set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? where PROGRESSIVE="+vo.getProgressiveSYS04()
+				);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
-      Response answer = new VOResponse(new Boolean(true));
-
-
-
-
-      if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (VOResponse)answer;
+      return new VOResponse(new Boolean(true));
     }
     catch (Throwable ex) {
       Logger.error(username,this.getClass().getName(),"executeCommand","Error while deleting an existing role",ex);
@@ -1222,7 +1252,7 @@ public class RolesBean  implements Roles {
     	catch (Exception ex3) {
     	}
 
-      throw new Exception(ex.getMessage()); 
+      throw new Exception(ex.getMessage());
     }
     finally {
       try {

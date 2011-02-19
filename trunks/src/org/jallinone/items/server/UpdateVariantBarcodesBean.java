@@ -57,7 +57,7 @@ import org.jallinone.items.java.*;
 public class UpdateVariantBarcodesBean implements UpdateVariantBarcodes {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -65,9 +65,9 @@ public class UpdateVariantBarcodesBean implements UpdateVariantBarcodes {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -77,7 +77,7 @@ public class UpdateVariantBarcodesBean implements UpdateVariantBarcodes {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -87,8 +87,8 @@ public class UpdateVariantBarcodesBean implements UpdateVariantBarcodes {
   public UpdateVariantBarcodesBean() {
   }
 
-   
-  
+
+
   /**
    * Business logic to execute.
    */
@@ -101,11 +101,11 @@ public class UpdateVariantBarcodesBean implements UpdateVariantBarcodes {
     PreparedStatement pstmt = null;
     PreparedStatement pstmt2 = null;
     ResultSet rset2 = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
- 
+
       String sql =
           "delete from ITM22_VARIANT_BARCODES where "+
           "COMPANY_CODE_SYS01=? AND "+
@@ -121,7 +121,7 @@ public class UpdateVariantBarcodesBean implements UpdateVariantBarcodes {
           "COMPANY_CODE_SYS01,ITEM_CODE_ITM01,"+
           "VARIANT_TYPE_ITM06,VARIANT_TYPE_ITM07,VARIANT_TYPE_ITM08,VARIANT_TYPE_ITM09,VARIANT_TYPE_ITM10,"+
           "VARIANT_CODE_ITM11,VARIANT_CODE_ITM12,VARIANT_CODE_ITM13,VARIANT_CODE_ITM14,VARIANT_CODE_ITM15,"+
-          "BAR_CODE) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+          "BAR_CODE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       pstmt = conn.prepareStatement(sql);
 
       pstmt2 = conn.prepareStatement("select * from ITM22_VARIANT_BARCODES where COMPANY_CODE_SYS01=? and BAR_CODE=?");
@@ -182,6 +182,9 @@ public class UpdateVariantBarcodesBean implements UpdateVariantBarcodes {
 
           pstmt.setString(13,(String)row[0]);
 
+					pstmt.setString(14,username);
+					pstmt.setTimestamp(15,new java.sql.Timestamp(System.currentTimeMillis()));
+
           pstmt.execute();
 
         }
@@ -227,6 +230,8 @@ public class UpdateVariantBarcodesBean implements UpdateVariantBarcodes {
             pstmt.setString(12,vo.getVariantCodeItm15ITM22());
 
             pstmt.setString(13,(String)row[j]);
+						pstmt.setString(14,username);
+						pstmt.setTimestamp(15,new java.sql.Timestamp(System.currentTimeMillis()));
 
             pstmt.execute();
 

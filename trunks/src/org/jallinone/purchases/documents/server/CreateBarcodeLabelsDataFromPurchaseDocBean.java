@@ -120,7 +120,7 @@ public class CreateBarcodeLabelsDataFromPurchaseDocBean  implements CreateBarcod
 
       BigDecimal reportId = CompanyProgressiveUtils.getInternalProgressive(pk.getCompanyCodeSys01DOC06(),"TMP02_BARCODES","REPORT_ID",conn);
       pstmt = conn.prepareStatement(
-        "insert into TMP02_BARCODES(REPORT_ID,PROGRESSIVE,BAR_CODE,BARCODE_TYPE,DESCRIPTION) values(?,?,?,?,?)"
+        "insert into TMP02_BARCODES(REPORT_ID,PROGRESSIVE,BAR_CODE,BARCODE_TYPE,DESCRIPTION,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?)"
       );
       pstmt2 = conn.prepareStatement(
         "select BAR_CODE from ITM22_VARIANT_BARCODES where "+
@@ -175,6 +175,8 @@ public class CreateBarcodeLabelsDataFromPurchaseDocBean  implements CreateBarcod
             pstmt.setString(3,pad(barcode,barcodeType));
             pstmt.setString(4,barcodeType);
             pstmt.setString(5,rowVO.getDescriptionSYS10());
+						pstmt.setString(6,username);
+						pstmt.setTimestamp(7,new java.sql.Timestamp(System.currentTimeMillis()));
             pstmt.execute();
             progressive++;
           }

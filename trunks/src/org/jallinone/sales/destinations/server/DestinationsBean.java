@@ -53,7 +53,7 @@ import javax.sql.DataSource;
 public class DestinationsBean  implements Destinations {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -61,9 +61,9 @@ public class DestinationsBean  implements Destinations {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -73,7 +73,7 @@ public class DestinationsBean  implements Destinations {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -83,14 +83,14 @@ public class DestinationsBean  implements Destinations {
   public DestinationsBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public DestinationVO getDestination(SubjectPK pk) {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
@@ -195,7 +195,7 @@ public class DestinationsBean  implements Destinations {
         attribute2dbField.put("destinationCodeREG18","DESTINATION_CODE");
         attribute2dbField.put("descriptionREG18","DESCRIPTION");
 
-        res = new QueryUtil().updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
@@ -339,7 +339,7 @@ public class DestinationsBean  implements Destinations {
         vo = (DestinationVO)list.get(i);
 
         // insert into REG18...
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,

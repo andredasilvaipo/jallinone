@@ -137,14 +137,16 @@ public class DeliveryNotesBean  implements DeliveryNotes {
 
 
       // update delivery note state and note...
-      pstmt = conn.prepareStatement("update DOC08_DELIVERY_NOTES set DOC_STATE=?,DOC_SEQUENCE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and DOC_STATE=?");
+      pstmt = conn.prepareStatement("update DOC08_DELIVERY_NOTES set DOC_STATE=?,DOC_SEQUENCE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and DOC_STATE=?");
       pstmt.setString(1,ApplicationConsts.CLOSED);
       pstmt.setInt(2,docSequenceDOC08);
-      pstmt.setString(3,vo.getCompanyCodeSys01DOC08());
-      pstmt.setString(4,vo.getDocTypeDOC08());
-      pstmt.setBigDecimal(5,vo.getDocYearDOC08());
-      pstmt.setBigDecimal(6,vo.getDocNumberDOC08());
-      pstmt.setString(7,ApplicationConsts.HEADER_BLOCKED);
+			pstmt.setString(3,username);
+			pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(5,vo.getCompanyCodeSys01DOC08());
+      pstmt.setString(6,vo.getDocTypeDOC08());
+      pstmt.setBigDecimal(7,vo.getDocYearDOC08());
+      pstmt.setBigDecimal(8,vo.getDocNumberDOC08());
+      pstmt.setString(9,ApplicationConsts.HEADER_BLOCKED);
       if (pstmt.executeUpdate()==1) {
         // call in/out quantities updating routine...
         Response res = null;
@@ -220,17 +222,19 @@ public class DeliveryNotesBean  implements DeliveryNotes {
       DeliveryNotePK pk = null;
 
       pstmt = conn.prepareStatement(
-          "update DOC08_DELIVERY_NOTES set ENABLED='N' where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?"
+          "update DOC08_DELIVERY_NOTES set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?"
       );
 
       for(int i=0;i<list.size();i++) {
         pk = (DeliveryNotePK)list.get(i);
 
         // logically delete the record in DOC08...
-        pstmt.setString(1,pk.getCompanyCodeSys01DOC08());
-        pstmt.setString(2,pk.getDocTypeDOC08());
-        pstmt.setBigDecimal(3,pk.getDocYearDOC08());
-        pstmt.setBigDecimal(4,pk.getDocNumberDOC08());
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.setString(3,pk.getCompanyCodeSys01DOC08());
+        pstmt.setString(4,pk.getDocTypeDOC08());
+        pstmt.setBigDecimal(5,pk.getDocYearDOC08());
+        pstmt.setBigDecimal(6,pk.getDocNumberDOC08());
         pstmt.execute();
       }
 

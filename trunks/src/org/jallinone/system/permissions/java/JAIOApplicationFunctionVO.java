@@ -50,19 +50,19 @@ public class JAIOApplicationFunctionVO extends ValueObjectImpl {
   private String description;
 
   /** folder identifier on which the function is linked */
-  private BigDecimal progressiveHie01SYS18;
+  private BigDecimal progressiveHie03SYS18;
 
   /** function position inside the folder */
   private BigDecimal posOrderSYS18;
 
   /** folder identifier */
-  private BigDecimal progressiveHIE01;
+  private BigDecimal progressiveHIE03;
 
   /** progressive in SYS10 related to function description */
   private BigDecimal progressiveSys10SYS06;
 
   /** parent folder identifier */
-  private BigDecimal progressiveHie01HIE01;
+  private BigDecimal progressiveHie03HIE03;
 
 
   public JAIOApplicationFunctionVO() {}
@@ -76,12 +76,12 @@ public class JAIOApplicationFunctionVO extends ValueObjectImpl {
    * @param nodeName description (already translated) to view in the tree node/menu item
    * @param iconName image name
    */
-  public JAIOApplicationFunctionVO(String nodeName,String iconName,BigDecimal progressiveHIE01,BigDecimal progressiveHie01HIE01) {
+  public JAIOApplicationFunctionVO(String nodeName,String iconName,BigDecimal progressiveHIE03,BigDecimal progressiveHie03HIE03) {
     this.description = nodeName;
     this.iconName = iconName;
     isFolder = true;
-    this.progressiveHIE01 = progressiveHIE01;
-    this.progressiveHie01HIE01 = progressiveHie01HIE01;
+    this.progressiveHIE03 = progressiveHIE03;
+    this.progressiveHie03HIE03 = progressiveHie03HIE03;
   }
 
 
@@ -93,13 +93,13 @@ public class JAIOApplicationFunctionVO extends ValueObjectImpl {
    * @param methodName method name in ClientFacade to execute
    */
   public JAIOApplicationFunctionVO(String nodeName,String functionId,String iconName,String methodName,
-                                 BigDecimal progressiveHie01SYS18,BigDecimal posOrderSYS18,BigDecimal progressiveSys10SYS06) {
+                                 BigDecimal progressiveHie03SYS18,BigDecimal posOrderSYS18,BigDecimal progressiveSys10SYS06) {
     this.description = nodeName;
     this.functionId = functionId;
     this.iconName = iconName;
     this.methodName = methodName;
     isFolder = false;
-    this.progressiveHie01SYS18 = progressiveHie01SYS18;
+    this.progressiveHie03SYS18 = progressiveHie03SYS18;
     this.posOrderSYS18 = posOrderSYS18;
     this.progressiveSys10SYS06 = progressiveSys10SYS06;
   }
@@ -108,8 +108,8 @@ public class JAIOApplicationFunctionVO extends ValueObjectImpl {
   /**
    * @return folder identifier on which the function is linked
    */
-  public final BigDecimal getProgressiveHie01SYS18() {
-    return progressiveHie01SYS18;
+  public final BigDecimal getProgressiveHie03SYS18() {
+    return progressiveHie03SYS18;
   }
 
 
@@ -124,16 +124,16 @@ public class JAIOApplicationFunctionVO extends ValueObjectImpl {
   /**
    * @return folder identifier
    */
-  public final BigDecimal getProgressiveHIE01() {
-    return progressiveHIE01;
+  public final BigDecimal getProgressiveHIE03() {
+    return progressiveHIE03;
   }
 
 
   /**
    * @return parent folder identifier
    */
-  public final BigDecimal getProgressiveHie01HIE01() {
-    return progressiveHie01HIE01;
+  public final BigDecimal getProgressiveHie03HIE03() {
+    return progressiveHie03HIE03;
   }
 
 
@@ -161,14 +161,14 @@ public class JAIOApplicationFunctionVO extends ValueObjectImpl {
   public void setDescription(String description) {
     this.description = description;
   }
-  public void setProgressiveHIE01(BigDecimal progressiveHIE01) {
-    this.progressiveHIE01 = progressiveHIE01;
+  public void setProgressiveHIE03(BigDecimal progressiveHIE03) {
+    this.progressiveHIE03 = progressiveHIE03;
   }
-  public void setProgressiveHie01HIE01(BigDecimal progressiveHie01HIE01) {
-    this.progressiveHie01HIE01 = progressiveHie01HIE01;
+  public void setProgressiveHie03HIE03(BigDecimal progressiveHie03HIE03) {
+    this.progressiveHie03HIE03 = progressiveHie03HIE03;
   }
-  public void setProgressiveHie01SYS18(BigDecimal progressiveHie01SYS18) {
-    this.progressiveHie01SYS18 = progressiveHie01SYS18;
+  public void setProgressiveHie03SYS18(BigDecimal progressiveHie03SYS18) {
+    this.progressiveHie03SYS18 = progressiveHie03SYS18;
   }
   public void setProgressiveSys10SYS06(BigDecimal progressiveSys10SYS06) {
     this.progressiveSys10SYS06 = progressiveSys10SYS06;

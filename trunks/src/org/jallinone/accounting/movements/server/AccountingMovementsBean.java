@@ -66,7 +66,7 @@ import javax.sql.DataSource;
 public class AccountingMovementsBean  implements AccountingMovements {
 
 
-	private DataSource dataSource; 
+	private DataSource dataSource;
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -76,7 +76,7 @@ public class AccountingMovementsBean  implements AccountingMovements {
 	private Connection conn = null;
 
 	/**
-	 * Set external connection. 
+	 * Set external connection.
 	 */
 	public void setConn(Connection conn) {
 		this.conn = conn;
@@ -90,14 +90,14 @@ public class AccountingMovementsBean  implements AccountingMovements {
 		Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
 	}
 
-	
+
 	private InsertJournalItemBean bean;
-	
+
 	public void setBean(InsertJournalItemBean bean) {
 		this.bean = bean;
 	}
-	
-	
+
+
 
 
 	public AccountingMovementsBean() {
@@ -167,7 +167,7 @@ public class AccountingMovementsBean  implements AccountingMovements {
 			String accountCode = null;
 			String accountCodeAcc02 = null;
 			String accountCodeType = null;
-			
+
 			while(rset.next()) {
 				settlement1 = rset.getBigDecimal(1);
 				if (settlement1==null)
@@ -299,12 +299,12 @@ public class AccountingMovementsBean  implements AccountingMovements {
 			}
 			catch (Exception ex2) {
 			}
-			
+
 			try {
 				bean.setConn(null);
 			} catch (Exception e) {
 			}
-			
+
 			try {
 				if (this.conn==null && conn!=null) {
                 // close only local connection
@@ -328,7 +328,7 @@ public class AccountingMovementsBean  implements AccountingMovements {
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
 			bean.setConn(conn);
-			
+
 			// fetch data from client request...
 			String companyCode = (String)map.get(ApplicationConsts.COMPANY_CODE_SYS01);
 			java.sql.Date endDate = new java.sql.Date(((java.util.Date)map.get(ApplicationConsts.DATE_FILTER)).getTime());
@@ -384,7 +384,7 @@ public class AccountingMovementsBean  implements AccountingMovements {
 			BigDecimal settlement = null;
 			String accountCode = null;
 			boolean rowsFound = false;
-			
+
 			while(rset.next()) {
 				settlement1 = rset.getBigDecimal(1);
 				if (settlement1==null)
@@ -582,12 +582,12 @@ public class AccountingMovementsBean  implements AccountingMovements {
 			}
 			catch (Exception ex2) {
 			}
-			
+
 			try {
 				bean.setConn(null);
 			} catch (Exception e) {
 			}
-			
+
 			try {
 				if (this.conn==null && conn!=null) {
                 // close only local connection
@@ -612,7 +612,7 @@ public class AccountingMovementsBean  implements AccountingMovements {
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
 			bean.setConn(conn);
-			
+
 			// fetch data from client request...
 			String companyCode = (String)map.get(ApplicationConsts.COMPANY_CODE_SYS01);
 			java.sql.Date endDate = new java.sql.Date(((java.util.Date)map.get(ApplicationConsts.DATE_FILTER)).getTime());
@@ -668,7 +668,7 @@ public class AccountingMovementsBean  implements AccountingMovements {
 			String accountCode = null;
 			String accountCodeAcc02 = null;
 			String accountCodeType = null;
-			
+
 			while(rset.next()) {
 				settlement1 = rset.getBigDecimal(1);
 				if (settlement1==null)
@@ -801,12 +801,12 @@ public class AccountingMovementsBean  implements AccountingMovements {
 			}
 			catch (Exception ex2) {
 			}
-			
+
 			try {
 				bean.setConn(null);
 			} catch (Exception e) {
 			}
-			
+
 			try {
 				if (this.conn==null && conn!=null) {
                 // close only local connection
@@ -863,7 +863,7 @@ public class AccountingMovementsBean  implements AccountingMovements {
 						"PROGRESSIVE",
 						conn
 				));
-				res = QueryUtil.insertTable(
+				res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 						conn,
 						new UserSessionParameters(username),
 						rowVO,

@@ -8,7 +8,7 @@ import org.openswing.swing.util.client.ClientUtils;
 import org.jallinone.subjects.java.SubjectHierarchyVO;
 import org.openswing.swing.tree.client.TreeController;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.jallinone.subjects.java.SubjectVO;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.commons.client.ClientApplet;
@@ -60,6 +60,7 @@ public class SubjectHierarchiesController extends CompanyGridController implemen
   /** window id */
   private BigDecimal idGrid = null;
 
+  private java.util.List list = null;
 
 
   public SubjectHierarchiesController(String subjectTypeREG08,String functionId,String title,BigDecimal idGrid,boolean loadCurrentLevel) {
@@ -171,8 +172,8 @@ public class SubjectHierarchiesController extends CompanyGridController implemen
    * @param node selected node
    */
   public void leftClick(DefaultMutableTreeNode node) {
-    HierarchyLevelVO vo = (HierarchyLevelVO)node.getUserObject();
-    HierarchyLevelVO root = (HierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
+    CompanyHierarchyLevelVO vo = (CompanyHierarchyLevelVO)node.getUserObject();
+    CompanyHierarchyLevelVO root = (CompanyHierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
     String subjectType = (String)frame.getTreePanel().getTreeDataLocator().getTreeNodeParams().get(ApplicationConsts.SUBJECT_TYPE);
 
     frame.getSubjectsGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02HIE01());

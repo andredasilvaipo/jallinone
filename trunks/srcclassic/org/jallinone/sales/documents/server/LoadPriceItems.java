@@ -50,9 +50,9 @@ import org.jallinone.events.server.*;
 public interface LoadPriceItems {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
-	public PriceItemVO getPriceItem(HierarchyLevelVO pk);
+	public PriceItemVO getPriceItem(CompanyHierarchyLevelVO pk);
 
 	public VOListResponse loadPriceItems(GridParams pars,String serverLanguageId,String username) throws Throwable;
 

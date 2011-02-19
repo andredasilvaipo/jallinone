@@ -55,7 +55,7 @@ import javax.sql.DataSource;
 public class UpdateMinStocksBean  implements UpdateMinStocks {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -63,9 +63,9 @@ public class UpdateMinStocksBean  implements UpdateMinStocks {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -75,7 +75,7 @@ public class UpdateMinStocksBean  implements UpdateMinStocks {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -87,12 +87,12 @@ public class UpdateMinStocksBean  implements UpdateMinStocks {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ABCVO getABC() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
@@ -101,7 +101,7 @@ public class UpdateMinStocksBean  implements UpdateMinStocks {
     PreparedStatement inspstmt = null;
     PreparedStatement updpstmt = null;
     PreparedStatement delpstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -109,7 +109,7 @@ public class UpdateMinStocksBean  implements UpdateMinStocks {
 
       String updSql =
           "update ITM23_VARIANT_MIN_STOCKS "+
-          "set MIN_STOCK=? where COMPANY_CODE_SYS01=? and ITEM_CODE_ITM01=? and "+
+          "set MIN_STOCK=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and ITEM_CODE_ITM01=? and "+
           "VARIANT_TYPE_ITM06=? and VARIANT_TYPE_ITM07=? and VARIANT_TYPE_ITM08=? and VARIANT_TYPE_ITM09=? and "+
           "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM11=? and VARIANT_CODE_ITM12=? and VARIANT_CODE_ITM13=? and "+
           "VARIANT_CODE_ITM14=? and VARIANT_CODE_ITM15=? ";
@@ -119,8 +119,8 @@ public class UpdateMinStocksBean  implements UpdateMinStocks {
           "insert into ITM23_VARIANT_MIN_STOCKS("+
           "MIN_STOCK,COMPANY_CODE_SYS01,ITEM_CODE_ITM01,"+
           "VARIANT_TYPE_ITM06,VARIANT_TYPE_ITM07,VARIANT_TYPE_ITM08,VARIANT_TYPE_ITM09,VARIANT_TYPE_ITM10,"+
-          "VARIANT_CODE_ITM11,VARIANT_CODE_ITM12,VARIANT_CODE_ITM13,VARIANT_CODE_ITM14,VARIANT_CODE_ITM15"+
-          ") values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+          "VARIANT_CODE_ITM11,VARIANT_CODE_ITM12,VARIANT_CODE_ITM13,VARIANT_CODE_ITM14,VARIANT_CODE_ITM15,CREATE_USER,CREATE_DATE"+
+          ") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       inspstmt = conn.prepareStatement(insSql);
 
       String delSql =
@@ -153,18 +153,20 @@ public class UpdateMinStocksBean  implements UpdateMinStocks {
         else {
           // a record must be updated if exists, or inserted if no still exists...
           updpstmt.setBigDecimal(1,vo.getMinStockITM23());
-          updpstmt.setString(2,vo.getCompanyCodeSys01());
-          updpstmt.setString(3,vo.getItemCode());
-          updpstmt.setString(4,vo.getVariantTypeITM06());
-          updpstmt.setString(5,vo.getVariantTypeITM07());
-          updpstmt.setString(6,vo.getVariantTypeITM08());
-          updpstmt.setString(7,vo.getVariantTypeITM09());
-          updpstmt.setString(8,vo.getVariantTypeITM10());
-          updpstmt.setString(9, vo.getVariantCodeITM11());
-          updpstmt.setString(10,vo.getVariantCodeITM12());
-          updpstmt.setString(11,vo.getVariantCodeITM13());
-          updpstmt.setString(12,vo.getVariantCodeITM14());
-          updpstmt.setString(13,vo.getVariantCodeITM15());
+					updpstmt.setString(2,username);
+					updpstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+          updpstmt.setString(4,vo.getCompanyCodeSys01());
+          updpstmt.setString(5,vo.getItemCode());
+          updpstmt.setString(6,vo.getVariantTypeITM06());
+          updpstmt.setString(7,vo.getVariantTypeITM07());
+          updpstmt.setString(8,vo.getVariantTypeITM08());
+          updpstmt.setString(9,vo.getVariantTypeITM09());
+          updpstmt.setString(10,vo.getVariantTypeITM10());
+          updpstmt.setString(11, vo.getVariantCodeITM11());
+          updpstmt.setString(12,vo.getVariantCodeITM12());
+          updpstmt.setString(13,vo.getVariantCodeITM13());
+          updpstmt.setString(14,vo.getVariantCodeITM14());
+          updpstmt.setString(15,vo.getVariantCodeITM15());
           if (updpstmt.executeUpdate()==0) {
             // an insert must be performed...
             inspstmt.setBigDecimal(1,vo.getMinStockITM23());
@@ -180,6 +182,8 @@ public class UpdateMinStocksBean  implements UpdateMinStocks {
             inspstmt.setString(11,vo.getVariantCodeITM13());
             inspstmt.setString(12,vo.getVariantCodeITM14());
             inspstmt.setString(13,vo.getVariantCodeITM15());
+						inspstmt.setString(14,username);
+						inspstmt.setTimestamp(15,new java.sql.Timestamp(System.currentTimeMillis()));
             inspstmt.execute();
           }
         }

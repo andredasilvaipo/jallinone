@@ -1652,8 +1652,8 @@
   <object key="you need to specify at least one expiration" value="You need to specify at least one expiration" />
   <object key="expirations must have a payment value" value="Expirations must have a payment value" />
   <object key="payments specified for expirations are not equal to the total payment value" value="Payments specified for expirations are not equal to the total payment value" />
-  <object key="you need to specify a pricelist for the default customer" value="You need to specify a pricelist for the default customer" />
   <object key="reports repository path" value="Reports repository path" />
+  <object key="print invoices" value="Print invoices" />
 
   <currencySymbol>Kn</currencySymbol>
   <decimalSymbol>,</decimalSymbol>

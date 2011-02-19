@@ -217,7 +217,7 @@ public class PurchaseInvoiceDocRowsGridPanel extends JPanel implements CurrencyC
       itemController.setFrameTitle("items");
 
       itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
-      treeLevelDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
       itemDataLocator.setTreeDataLocator(treeLevelDataLocator);
       itemDataLocator.setNodeNameAttribute("descriptionSYS10");
 
@@ -340,7 +340,8 @@ public class PurchaseInvoiceDocRowsGridPanel extends JPanel implements CurrencyC
 
           int selIndex = ((JComboBox)e.getSource()).getSelectedIndex();
           Object selValue = d.getDomainPairList()[selIndex].getCode();
-          treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,selValue);
+          treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC07());
+					treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,selValue);
         }
       }
     });
@@ -716,7 +717,7 @@ public class PurchaseInvoiceDocRowsGridPanel extends JPanel implements CurrencyC
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));
     detailPanel.add(controlDeliveryDate,               new GridBagConstraints(1, 5, 3, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 80, 0));
-    detailPanel.add(variantsPanel,       new GridBagConstraints(0, 1, 9, 1, 1.0, 0.0
+    detailPanel.add(variantsPanel,        new GridBagConstraints(0, 1, 9, 1, 1.0, 1.0
             ,GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
     detailPanel.add(labelVat,     new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 5, 5, 5), 0, 0));

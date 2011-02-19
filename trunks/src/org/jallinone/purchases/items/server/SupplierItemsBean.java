@@ -12,7 +12,7 @@ import org.openswing.swing.message.send.java.LookupValidationParams;
 import java.sql.*;
 
 import org.openswing.swing.logger.server.*;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.jallinone.items.java.*;
 import org.jallinone.registers.measure.server.MeasuresBean;
 import org.jallinone.system.server.*;
@@ -101,7 +101,7 @@ public class SupplierItemsBean  implements SupplierItems {
   /**
    * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
-  public SupplierItemVO getSupplierItem(HierarchyLevelVO pk) {
+  public SupplierItemVO getSupplierItem(CompanyHierarchyLevelVO pk) {
 	  throw new UnsupportedOperationException();
   }
 
@@ -201,7 +201,7 @@ public class SupplierItemsBean  implements SupplierItems {
       BigDecimal progressiveREG04 = (BigDecimal)pars.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_REG04);
       String companyCodeSYS01 = (String)pars.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01);
 
-      HierarchyLevelVO vo = (HierarchyLevelVO)pars.getOtherGridParams().get(ApplicationConsts.TREE_FILTER);
+      CompanyHierarchyLevelVO vo = (CompanyHierarchyLevelVO)pars.getOtherGridParams().get(ApplicationConsts.TREE_FILTER);
       if (vo!=null) {
         progressiveHIE01 = vo.getProgressiveHIE01();
         progressiveHIE02 = vo.getProgressiveHie02HIE01();
@@ -210,15 +210,16 @@ public class SupplierItemsBean  implements SupplierItems {
       String sql =
           "select PUR02_SUPPLIER_ITEMS.COMPANY_CODE_SYS01,PUR02_SUPPLIER_ITEMS.ITEM_CODE_ITM01,PUR02_SUPPLIER_ITEMS.SUPPLIER_ITEM_CODE,PUR02_SUPPLIER_ITEMS.PROGRESSIVE_REG04,"+
           "PUR02_SUPPLIER_ITEMS.PROGRESSIVE_HIE02,PUR02_SUPPLIER_ITEMS.PROGRESSIVE_HIE01,PUR02_SUPPLIER_ITEMS.MIN_PURCHASE_QTY,PUR02_SUPPLIER_ITEMS.MULTIPLE_QTY,"+
-          "PUR02_SUPPLIER_ITEMS.UM_CODE_REG02,PUR02_SUPPLIER_ITEMS.ENABLED,SYS10_TRANSLATIONS.DESCRIPTION,REG02_ALIAS1.DECIMALS,"+
+          "PUR02_SUPPLIER_ITEMS.UM_CODE_REG02,PUR02_SUPPLIER_ITEMS.ENABLED,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,REG02_ALIAS1.DECIMALS,"+
           "ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,REG02_ALIAS2.DECIMALS,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED "+
-          " from PUR02_SUPPLIER_ITEMS,SYS10_TRANSLATIONS,ITM01_ITEMS,REG02_MEASURE_UNITS REG02_ALIAS1,REG02_MEASURE_UNITS REG02_ALIAS2 where "+
+          " from PUR02_SUPPLIER_ITEMS,SYS10_COMPANY_TRANSLATIONS,ITM01_ITEMS,REG02_MEASURE_UNITS REG02_ALIAS1,REG02_MEASURE_UNITS REG02_ALIAS2 where "+
           "PUR02_SUPPLIER_ITEMS.PROGRESSIVE_HIE02=? and "+
           "PUR02_SUPPLIER_ITEMS.UM_CODE_REG02=REG02_ALIAS1.UM_CODE and "+
           "PUR02_SUPPLIER_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
           "PUR02_SUPPLIER_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
-          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"ITM01_ITEMS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "PUR02_SUPPLIER_ITEMS.COMPANY_CODE_SYS01 = ? and "+
           "PUR02_SUPPLIER_ITEMS.PROGRESSIVE_REG04=? and "+
           "PUR02_SUPPLIER_ITEMS.ENABLED='Y' and "+
@@ -237,8 +238,8 @@ public class SupplierItemsBean  implements SupplierItems {
       if (rootProgressiveHIE01==null || !rootProgressiveHIE01.equals(progressiveHIE01)) {
         // retrieve all subnodes of the specified node...
         pstmt = conn.prepareStatement(
-            "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV from HIE01_LEVELS "+
-            "where ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE>=? "+
+            "select HIE01_COMPANY_LEVELS.PROGRESSIVE,HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE01,HIE01_COMPANY_LEVELS.LEV from HIE01_COMPANY_LEVELS "+
+            "where COMPANY_CODE_SYS01='"+companyCodeSYS01+"' and ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE>=? "+
             "order by LEV,PROGRESSIVE_HIE01,PROGRESSIVE"
         );
         pstmt.setBigDecimal(1,progressiveHIE02);
@@ -283,7 +284,7 @@ public class SupplierItemsBean  implements SupplierItems {
       attribute2dbField.put("multipleQtyPUR02","PUR02_SUPPLIER_ITEMS.MULTIPLE_QTY");
       attribute2dbField.put("umCodeReg02PUR02","PUR02_SUPPLIER_ITEMS.UM_CODE_REG02");
       attribute2dbField.put("enabledPUR02","PUR02_SUPPLIER_ITEMS.ENABLED");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("decimalsREG02","REG02_ALIAS1.DECIMALS");
       attribute2dbField.put("minSellingQtyUmCodeReg02ITM01","ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02");
       attribute2dbField.put("minSellingQtyDecimalsReg02ITM01","REG02_ALIAS2.DECIMALS");
@@ -389,7 +390,7 @@ public class SupplierItemsBean  implements SupplierItems {
       );
       pstmt2 = conn.prepareStatement(
         "insert into PUR02_SUPPLIER_ITEMS(COMPANY_CODE_SYS01,ITEM_CODE_ITM01,SUPPLIER_ITEM_CODE,PROGRESSIVE_REG04,"+
-        "PROGRESSIVE_HIE02,PROGRESSIVE_HIE01,MIN_PURCHASE_QTY,MULTIPLE_QTY,UM_CODE_REG02,ENABLED) values(?,?,?,?,?,?,?,?,?,?)"
+        "PROGRESSIVE_HIE02,PROGRESSIVE_HIE01,MIN_PURCHASE_QTY,MULTIPLE_QTY,UM_CODE_REG02,ENABLED,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?,?,?,?,?,?)"
       );
 
       pstmt.setString(1,vo.getCompanyCodeSys01PUR02());
@@ -406,6 +407,8 @@ public class SupplierItemsBean  implements SupplierItems {
         pstmt2.setInt(8,1);
         pstmt2.setString(9,rset.getString(3));
         pstmt2.setString(10,"Y");
+				pstmt2.setString(11,username);
+				pstmt2.setTimestamp(12,new java.sql.Timestamp(System.currentTimeMillis()));
         try {
           pstmt2.executeUpdate();
         }
@@ -460,27 +463,27 @@ public class SupplierItemsBean  implements SupplierItems {
    * Business logic to execute.
    */
   public VOResponse deleteSupplierItems(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       SupplierItemPK pk = null;
 
-      stmt = conn.createStatement();
-
       for(int i=0;i<list.size();i++) {
         pk = (SupplierItemPK)list.get(i);
 
         // logically delete the record in PUR02...
-        stmt.execute(
-            "update PUR02_SUPPLIER_ITEMS set ENABLED='N' where "+
+        pstmt = conn.prepareStatement(
+            "update PUR02_SUPPLIER_ITEMS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
             "COMPANY_CODE_SYS01='"+pk.getCompanyCodeSys01PUR02()+"' and "+
             "ITEM_CODE_ITM01='"+pk.getItemCodeItm01PUR02()+"' and "+
             "PROGRESSIVE_REG04="+pk.getProgressiveReg04PUR02()
         );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
-
 
       return  new VOResponse(new Boolean(true));
     }
@@ -497,7 +500,7 @@ public class SupplierItemsBean  implements SupplierItems {
     }
     finally {
       try {
-        stmt.close();
+        pstmt.close();
       }
       catch (Exception ex2) {
       }
@@ -628,14 +631,15 @@ public class SupplierItemsBean  implements SupplierItems {
       String sql =
           "select PUR02_SUPPLIER_ITEMS.COMPANY_CODE_SYS01,PUR02_SUPPLIER_ITEMS.ITEM_CODE_ITM01,PUR02_SUPPLIER_ITEMS.SUPPLIER_ITEM_CODE,PUR02_SUPPLIER_ITEMS.PROGRESSIVE_REG04,"+
           "PUR02_SUPPLIER_ITEMS.PROGRESSIVE_HIE02,PUR02_SUPPLIER_ITEMS.PROGRESSIVE_HIE01,PUR02_SUPPLIER_ITEMS.MIN_PURCHASE_QTY,PUR02_SUPPLIER_ITEMS.MULTIPLE_QTY,"+
-          "PUR02_SUPPLIER_ITEMS.UM_CODE_REG02,PUR02_SUPPLIER_ITEMS.ENABLED,SYS10_TRANSLATIONS.DESCRIPTION,REG02_ALIAS1.DECIMALS,"+
+          "PUR02_SUPPLIER_ITEMS.UM_CODE_REG02,PUR02_SUPPLIER_ITEMS.ENABLED,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,REG02_ALIAS1.DECIMALS,"+
           "ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,REG02_ALIAS2.DECIMALS,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED "+
-          " from PUR02_SUPPLIER_ITEMS,SYS10_TRANSLATIONS,ITM01_ITEMS,REG02_MEASURE_UNITS REG02_ALIAS1,REG02_MEASURE_UNITS REG02_ALIAS2 where "+
+          " from PUR02_SUPPLIER_ITEMS,SYS10_COMPANY_TRANSLATIONS,ITM01_ITEMS,REG02_MEASURE_UNITS REG02_ALIAS1,REG02_MEASURE_UNITS REG02_ALIAS2 where "+
           "PUR02_SUPPLIER_ITEMS.UM_CODE_REG02=REG02_ALIAS1.UM_CODE and "+
           "PUR02_SUPPLIER_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
           "PUR02_SUPPLIER_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
-          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"ITM01_ITEMS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "PUR02_SUPPLIER_ITEMS.COMPANY_CODE_SYS01 = ? and "+
           "PUR02_SUPPLIER_ITEMS.PROGRESSIVE_REG04=? and "+
           "PUR02_SUPPLIER_ITEMS.ENABLED='Y' and "+
@@ -664,7 +668,7 @@ public class SupplierItemsBean  implements SupplierItems {
       attribute2dbField.put("multipleQtyPUR02","PUR02_SUPPLIER_ITEMS.MULTIPLE_QTY");
       attribute2dbField.put("umCodeReg02PUR02","PUR02_SUPPLIER_ITEMS.UM_CODE_REG02");
       attribute2dbField.put("enabledPUR02","PUR02_SUPPLIER_ITEMS.ENABLED");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("decimalsREG02","REG02_ALIAS1.DECIMALS");
       attribute2dbField.put("minSellingQtyUmCodeReg02ITM01","ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02");
       attribute2dbField.put("minSellingQtyDecimalsReg02ITM01","REG02_ALIAS2.DECIMALS");

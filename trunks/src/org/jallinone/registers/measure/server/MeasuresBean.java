@@ -55,7 +55,7 @@ import javax.sql.DataSource;
 public class MeasuresBean implements Measures {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -63,9 +63,9 @@ public class MeasuresBean implements Measures {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -75,7 +75,7 @@ public class MeasuresBean implements Measures {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -89,11 +89,11 @@ public class MeasuresBean implements Measures {
   public MeasureVO getMeasure() {
 	  throw new UnsupportedOperationException();
   }
-  
+
   public MeasureConvVO getMeasureConv() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Convert the specified quantity from the specified m.u. to the final m.u.
@@ -104,7 +104,7 @@ public class MeasuresBean implements Measures {
       return null;
     if (fromUMCode.equals(toUMCode))
       return qty;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -124,7 +124,7 @@ public class MeasuresBean implements Measures {
 
         }
         catch (Exception exx) {}
-    	
+
     }
   }
 
@@ -137,7 +137,7 @@ public class MeasuresBean implements Measures {
     Statement stmt = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      
+
       if (fromUMCode.equals(toUMCode))
         return new BigDecimal(1);
 
@@ -304,7 +304,7 @@ public class MeasuresBean implements Measures {
 
   }
 
-  
+
 
   /**
    * Business logic to execute.
@@ -373,7 +373,8 @@ public class MeasuresBean implements Measures {
    * Business logic to execute.
    */
   public VOListResponse insertMeasures(ArrayList list,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable {
-    Statement stmt = null;
+		PreparedStatement pstmt = null;
+    PreparedStatement pstmt2 = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -386,7 +387,16 @@ public class MeasuresBean implements Measures {
       attribute2dbField.put("enabledREG02","ENABLED");
 
       Response res = null;
-      stmt = conn.createStatement();
+			pstmt = conn.prepareStatement(
+				"insert into REG05_MEASURE_CONV(UM_CODE,UM_CODE_REG02,CREATE_USER,CREATE_DATE) "+
+				"select ?,UM_CODE,?,? from REG02_MEASURE_UNITS where UM_CODE <> ? and ENABLED='Y'"
+		  );
+		  pstmt2 = conn.prepareStatement(
+					 "insert into REG05_MEASURE_CONV(UM_CODE_REG02,UM_CODE,CREATE_USER,CREATE_DATE) "+
+					 "select ?,UM_CODE,?,? from REG02_MEASURE_UNITS where UM_CODE <> ? and ENABLED='Y'"
+		  );
+
+
       for(int i=0;i<list.size();i++) {
         vo = (MeasureVO)list.get(i);
         vo.setEnabledREG02("Y");
@@ -409,15 +419,21 @@ public class MeasuresBean implements Measures {
         }
 
         // insert records in REG05...
-        stmt.execute(
-            "insert into REG05_MEASURE_CONV(UM_CODE,UM_CODE_REG02) "+
-            "select '"+vo.getUmCodeREG02()+"',UM_CODE from REG02_MEASURE_UNITS where UM_CODE <> '"+vo.getUmCodeREG02()+"' and ENABLED='Y'"
-        );
-        stmt.execute(
-            "insert into REG05_MEASURE_CONV(UM_CODE_REG02,UM_CODE) "+
-            "select '"+vo.getUmCodeREG02()+"',UM_CODE from REG02_MEASURE_UNITS where UM_CODE <> '"+vo.getUmCodeREG02()+"' and ENABLED='Y'"
-        );
+				pstmt.setString(1,vo.getUmCodeREG02());
+				pstmt.setString(2,username);
+				pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.setString(4,vo.getUmCodeREG02());
+				pstmt.execute();
+
+				pstmt2.setString(1,vo.getUmCodeREG02());
+				pstmt2.setString(2,username);
+				pstmt2.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt2.setString(4,vo.getUmCodeREG02());
+				pstmt2.execute();
+
+
       }
+
 
 
       return new VOListResponse(list,false,list.size());
@@ -436,9 +452,13 @@ public class MeasuresBean implements Measures {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
+				try {
+						pstmt2.close();
+				}
+				catch (Exception exx) {}
         try {
             if (this.conn==null && conn!=null) {
                 // close only local connection
@@ -533,12 +553,10 @@ public class MeasuresBean implements Measures {
    * Business logic to execute.
    */
   public VOListResponse updateMeasureConvs(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
-
       MeasureConvVO oldVO = null;
       MeasureConvVO newVO = null;
       Response res = null;
@@ -550,13 +568,16 @@ public class MeasuresBean implements Measures {
 
         sql =
             "update REG05_MEASURE_CONV set VALUE="+
-            (newVO.getValueREG05()==null?"null":newVO.getValueREG05().toString())+" where "+
+            (newVO.getValueREG05()==null?"null":newVO.getValueREG05().toString())+",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? where "+
             "UM_CODE='"+newVO.getUmCodeREG05()+"' and "+
             "UM_CODE_REG02='"+newVO.getUmCodeReg02REG05()+"' and "+
             "VALUE"+(oldVO.getValueREG05()==null?" is null":"="+oldVO.getValueREG05());
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
 
-
-        stmt.execute(sql);
         String convStr = "null";
         if (newVO.getValueREG05()!=null) {
             BigDecimal conv = new BigDecimal(1).divide(newVO.getValueREG05(),5,BigDecimal.ROUND_HALF_UP);
@@ -564,12 +585,14 @@ public class MeasuresBean implements Measures {
         }
         sql =
             "update REG05_MEASURE_CONV set VALUE="+
-            convStr+" where "+
+            convStr+",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
             "UM_CODE='"+newVO.getUmCodeReg02REG05()+"' and "+
             "UM_CODE_REG02='"+newVO.getUmCodeREG05()+"'";
-
-
-        stmt.execute(sql);
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
 
       }
 
@@ -590,7 +613,7 @@ public class MeasuresBean implements Measures {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {
@@ -614,22 +637,28 @@ public class MeasuresBean implements Measures {
    * Business logic to execute.
    */
   public VOResponse deleteMeasures(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
-
       MeasureVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in REG02...
         vo = (MeasureVO)list.get(i);
-        stmt.execute("update REG02_MEASURE_UNITS set ENABLED='N' where UM_CODE='"+vo.getUmCodeREG02()+"'");
+				pstmt = conn.prepareStatement(
+          "update REG02_MEASURE_UNITS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where UM_CODE='"+vo.getUmCodeREG02()+"'"
+				);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
 
         // delete records from REG05...
-        stmt.execute(
+        pstmt = conn.prepareStatement(
             "delete from REG05_MEASURE_CONV where UM_CODE = '"+vo.getUmCodeREG02()+"' or UM_CODE_REG02 = '"+vo.getUmCodeREG02()+"'"
         );
+				pstmt.execute();
+				pstmt.close();
       }
 
       return new VOResponse(new Boolean(true));
@@ -647,7 +676,7 @@ public class MeasuresBean implements Measures {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {

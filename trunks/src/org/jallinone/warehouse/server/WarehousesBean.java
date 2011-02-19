@@ -12,7 +12,7 @@ import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.commons.server.CustomizeQueryUtil;
 import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 import org.jallinone.system.server.JAIOUserSessionParameters;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.jallinone.warehouse.java.StoredSerialNumberVO;
 import org.jallinone.warehouse.java.WarehousePK;
 import org.jallinone.warehouse.java.WarehouseVO;
@@ -93,6 +93,7 @@ public class WarehousesBean  implements Warehouses {
    */
   public VOResponse insertWarehouse(WarehouseVO vo,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable {
     Statement stmt = null;
+		PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -105,10 +106,31 @@ public class WarehousesBean  implements Warehouses {
       // generate PROGRESSIVE_HIE02 value...
       stmt = conn.createStatement();
       BigDecimal progressiveHIE02 = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01WAR01(),"HIE02_HIERARCHIES","PROGRESSIVE",conn);
-      BigDecimal progressiveHIE01 = TranslationUtils.insertTranslations("",vo.getCompanyCodeSys01WAR01(),conn); // the root has no description as default...
-      stmt.execute("INSERT INTO HIE02_HIERARCHIES(PROGRESSIVE,COMPANY_CODE_SYS01,ENABLED) VALUES("+progressiveHIE02+",'"+vo.getCompanyCodeSys01WAR01()+"','Y')");
-      stmt.execute("INSERT INTO HIE01_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE02,LEV,ENABLED) VALUES("+progressiveHIE01+","+progressiveHIE02+",0,'Y')");
-      stmt.execute("UPDATE HIE02_HIERARCHIES SET PROGRESSIVE_HIE01="+progressiveHIE01+" WHERE PROGRESSIVE="+progressiveHIE02);
+      BigDecimal progressiveHIE01 = CompanyTranslationUtils.insertTranslations("",vo.getCompanyCodeSys01WAR01(),username,conn); // the root has no description as default...
+      pstmt = conn.prepareStatement(
+		     "INSERT INTO HIE02_COMPANY_HIERARCHIES(PROGRESSIVE,COMPANY_CODE_SYS01,ENABLED,CREATE_USER,CREATE_DATE) VALUES("+progressiveHIE02+",'"+vo.getCompanyCodeSys01WAR01()+"','Y',?,?)"
+			);
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
+      pstmt = conn.prepareStatement(
+		     "INSERT INTO HIE01_COMPANY_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE02,LEV,ENABLED,COMPANY_CODE_SYS01,CREATE_USER,CREATE_DATE) VALUES("+progressiveHIE01+","+progressiveHIE02+",0,'Y','"+vo.getCompanyCodeSys01WAR01()+"',?,?)"
+			);
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
+
+      pstmt = conn.prepareStatement(
+		     "UPDATE HIE02_COMPANY_HIERARCHIES SET PROGRESSIVE_HIE01="+progressiveHIE01+",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? "+
+				 "WHERE COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01WAR01()+"' and PROGRESSIVE="+progressiveHIE02
+			);
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
+
       vo.setProgressiveHie02WAR01(progressiveHIE02);
 
       Map attribute2dbField = new HashMap();
@@ -159,6 +181,10 @@ public class WarehousesBean  implements Warehouses {
             stmt.close();
         }
         catch (Exception exx) {}
+				try {
+						pstmt.close();
+				}
+				catch (Exception exx) {}
         try {
             if (this.conn==null && conn!=null) {
                 // close only local connection
@@ -273,7 +299,7 @@ public class WarehousesBean  implements Warehouses {
       attribute2dbField.put("warehouseCodeWAR01","WAR01_WAREHOUSES.WAREHOUSE_CODE");
       attribute2dbField.put("descriptionWAR01","WAR01_WAREHOUSES.DESCRIPTION");
       attribute2dbField.put("progressiveHie02WAR01","WAR01_WAREHOUSES.PROGRESSIVE_HIE02");
-      attribute2dbField.put("progressiveHie01HIE02","HIE02_HIERARCHIES.PROGRESSIVE_HIE01");
+      attribute2dbField.put("progressiveHie01HIE02","HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01");
       attribute2dbField.put("addressWAR01","WAR01_WAREHOUSES.ADDRESS");
       attribute2dbField.put("zipWAR01","WAR01_WAREHOUSES.ZIP");
       attribute2dbField.put("cityWAR01","WAR01_WAREHOUSES.CITY");
@@ -290,13 +316,14 @@ public class WarehousesBean  implements Warehouses {
           "select WAR01_WAREHOUSES.COMPANY_CODE_SYS01,WAR01_WAREHOUSES.WAREHOUSE_CODE,WAR01_WAREHOUSES.DESCRIPTION,"+
           "WAR01_WAREHOUSES.PROGRESSIVE_HIE02,WAR01_WAREHOUSES.ADDRESS,WAR01_WAREHOUSES.ZIP,WAR01_WAREHOUSES.CITY,"+
           "WAR01_WAREHOUSES.PROVINCE,WAR01_WAREHOUSES.COUNTRY,WAR01_WAREHOUSES.PROGRESSIVE_SYS04,REG04_SUBJECTS.NAME_1,"+
-          "HIE02_HIERARCHIES.PROGRESSIVE_HIE01 from "+
-          "WAR01_WAREHOUSES,REG04_SUBJECTS,HIE02_HIERARCHIES where "+
+          "HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01 from "+
+          "WAR01_WAREHOUSES,REG04_SUBJECTS,HIE02_COMPANY_HIERARCHIES where "+
           "WAR01_WAREHOUSES.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "REG04_SUBJECTS.SUBJECT_TYPE='M' and "+
           "WAR01_WAREHOUSES.COMPANY_CODE_SYS01=? and "+
           "WAR01_WAREHOUSES.WAREHOUSE_CODE=? and "+
-          "WAR01_WAREHOUSES.PROGRESSIVE_HIE02=HIE02_HIERARCHIES.PROGRESSIVE";
+					"WAR01_WAREHOUSES.COMPANY_CODE_SYS01=HIE02_COMPANY_HIERARCHIES.COMPANY_CODE_SYS01 and "+
+          "WAR01_WAREHOUSES.PROGRESSIVE_HIE02=HIE02_COMPANY_HIERARCHIES.PROGRESSIVE";
 
       ArrayList values = new ArrayList();
       values.add(pk.getCompanyCodeSys01WAR01());
@@ -381,20 +408,21 @@ public class WarehousesBean  implements Warehouses {
           "select WAR01_WAREHOUSES.COMPANY_CODE_SYS01,WAR01_WAREHOUSES.WAREHOUSE_CODE,WAR01_WAREHOUSES.DESCRIPTION,"+
           "WAR01_WAREHOUSES.PROGRESSIVE_HIE02,WAR01_WAREHOUSES.ADDRESS,WAR01_WAREHOUSES.ZIP,WAR01_WAREHOUSES.CITY,"+
           "WAR01_WAREHOUSES.PROVINCE,WAR01_WAREHOUSES.COUNTRY,WAR01_WAREHOUSES.PROGRESSIVE_SYS04,REG04_SUBJECTS.NAME_1,"+
-          "HIE02_HIERARCHIES.PROGRESSIVE_HIE01 from "+
-          "WAR01_WAREHOUSES,REG04_SUBJECTS,HIE02_HIERARCHIES where "+
+          "HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01 from "+
+          "WAR01_WAREHOUSES,REG04_SUBJECTS,HIE02_COMPANY_HIERARCHIES where "+
           "WAR01_WAREHOUSES.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "REG04_SUBJECTS.SUBJECT_TYPE='M' and "+
           "WAR01_WAREHOUSES.COMPANY_CODE_SYS01 in ("+companies+") and "+
           "WAR01_WAREHOUSES.ENABLED='Y' and "+
-          "WAR01_WAREHOUSES.PROGRESSIVE_HIE02=HIE02_HIERARCHIES.PROGRESSIVE";
+					"WAR01_WAREHOUSES.COMPANY_CODE_SYS01=HIE02_COMPANY_HIERARCHIES.COMPANY_CODE_SYS01 and "+
+          "WAR01_WAREHOUSES.PROGRESSIVE_HIE02=HIE02_COMPANY_HIERARCHIES.PROGRESSIVE";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01WAR01","WAR01_WAREHOUSES.COMPANY_CODE_SYS01");
       attribute2dbField.put("warehouseCodeWAR01","WAR01_WAREHOUSES.WAREHOUSE_CODE");
       attribute2dbField.put("descriptionWAR01","WAR01_WAREHOUSES.DESCRIPTION");
       attribute2dbField.put("progressiveHie02WAR01","WAR01_WAREHOUSES.PROGRESSIVE_HIE02");
-      attribute2dbField.put("progressiveHie01HIE02","HIE02_HIERARCHIES.PROGRESSIVE_HIE01");
+      attribute2dbField.put("progressiveHie01HIE02","HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01");
       attribute2dbField.put("addressWAR01","WAR01_WAREHOUSES.ADDRESS");
       attribute2dbField.put("zipWAR01","WAR01_WAREHOUSES.ZIP");
       attribute2dbField.put("cityWAR01","WAR01_WAREHOUSES.CITY");
@@ -635,21 +663,22 @@ public class WarehousesBean  implements Warehouses {
           "select WAR01_WAREHOUSES.COMPANY_CODE_SYS01,WAR01_WAREHOUSES.WAREHOUSE_CODE,WAR01_WAREHOUSES.DESCRIPTION,"+
           "WAR01_WAREHOUSES.PROGRESSIVE_HIE02,WAR01_WAREHOUSES.ADDRESS,WAR01_WAREHOUSES.ZIP,WAR01_WAREHOUSES.CITY,"+
           "WAR01_WAREHOUSES.PROVINCE,WAR01_WAREHOUSES.COUNTRY,WAR01_WAREHOUSES.PROGRESSIVE_SYS04,REG04_SUBJECTS.NAME_1,"+
-          "HIE02_HIERARCHIES.PROGRESSIVE_HIE01 from "+
-          "WAR01_WAREHOUSES,REG04_SUBJECTS,HIE02_HIERARCHIES where "+
+          "HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01 from "+
+          "WAR01_WAREHOUSES,REG04_SUBJECTS,HIE02_COMPANY_HIERARCHIES where "+
           "WAR01_WAREHOUSES.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "REG04_SUBJECTS.SUBJECT_TYPE='M' and "+
           "WAR01_WAREHOUSES.COMPANY_CODE_SYS01 in ("+companies+") and "+
           "WAR01_WAREHOUSES.ENABLED='Y' and "+
           "WAR01_WAREHOUSES.WAREHOUSE_CODE=? and "+
-          "WAR01_WAREHOUSES.PROGRESSIVE_HIE02=HIE02_HIERARCHIES.PROGRESSIVE";
+					"WAR01_WAREHOUSES.COMPANY_CODE_SYS01=HIE02_COMPANY_HIERARCHIES.COMPANY_CODE_SYS01 and "+
+          "WAR01_WAREHOUSES.PROGRESSIVE_HIE02=HIE02_COMPANY_HIERARCHIES.PROGRESSIVE";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01WAR01","WAR01_WAREHOUSES.COMPANY_CODE_SYS01");
       attribute2dbField.put("warehouseCodeWAR01","WAR01_WAREHOUSES.WAREHOUSE_CODE");
       attribute2dbField.put("descriptionWAR01","WAR01_WAREHOUSES.DESCRIPTION");
       attribute2dbField.put("progressiveHie02WAR01","WAR01_WAREHOUSES.PROGRESSIVE_HIE02");
-      attribute2dbField.put("progressiveHie01HIE02","HIE02_HIERARCHIES.PROGRESSIVE_HIE01");
+      attribute2dbField.put("progressiveHie01HIE02","HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01");
       attribute2dbField.put("addressWAR01","WAR01_WAREHOUSES.ADDRESS");
       attribute2dbField.put("zipWAR01","WAR01_WAREHOUSES.ZIP");
       attribute2dbField.put("cityWAR01","WAR01_WAREHOUSES.CITY");
@@ -703,19 +732,21 @@ public class WarehousesBean  implements Warehouses {
    * Business logic to execute.
    */
   public VOResponse deleteWarehouse(WarehousePK pk,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
 
       // logically delete the record in WAR01...
-      stmt.execute(
-          "update WAR01_WAREHOUSES set ENABLED='N' where "+
+      pstmt = conn.prepareStatement(
+          "update WAR01_WAREHOUSES set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
           "COMPANY_CODE_SYS01='"+pk.getCompanyCodeSys01WAR01()+"' and "+
           "WAREHOUSE_CODE='"+pk.getWarehouseCodeWAR01()+"'"
       );
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
 
       return new VOResponse(new Boolean(true));
     }
@@ -733,7 +764,7 @@ public class WarehousesBean  implements Warehouses {
     }
     finally {
       try {
-        stmt.close();
+        pstmt.close();
       }
       catch (Exception ex2) {
       }

@@ -52,7 +52,7 @@ import javax.sql.DataSource;
 public class CreatePurchaseOrdersBean  implements CreatePurchaseOrders {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -60,9 +60,9 @@ public class CreatePurchaseOrdersBean  implements CreatePurchaseOrders {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -72,7 +72,7 @@ public class CreatePurchaseOrdersBean  implements CreatePurchaseOrders {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -176,7 +176,7 @@ public class CreatePurchaseOrdersBean  implements CreatePurchaseOrders {
             }
 
         }
-        catch (Exception exx) {}    	
+        catch (Exception exx) {}
     }
 
   }
@@ -272,11 +272,11 @@ public class CreatePurchaseOrdersBean  implements CreatePurchaseOrders {
         throw new Exception(res.getErrorMessage());
 
 
-    
-      try {
-        bean.setConn(null);
-        rowbean.setConn(null);
-      } catch (Exception ex) {}
+
+//      try {
+//        bean.setConn(null);
+//        rowbean.setConn(null);
+//      } catch (Exception ex) {}
     }
 
     return vo.getDocNumberDOC06();

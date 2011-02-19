@@ -54,7 +54,7 @@ import javax.sql.DataSource;
 public class UsersBean  implements Users {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -62,9 +62,9 @@ public class UsersBean  implements Users {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -74,7 +74,7 @@ public class UsersBean  implements Users {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -196,7 +196,7 @@ public class UsersBean  implements Users {
         oldVO = (UserVO)oldVOs.get(i);
         newVO = (UserVO)newVOs.get(i);
 
-        QueryUtil.updateTable(
+        org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
@@ -259,7 +259,7 @@ public class UsersBean  implements Users {
       // insert record in SYS03...
       pstmt = conn.prepareStatement(
           "insert into SYS03_USERS(USERNAME,PASSWD,PASSWD_EXPIRATION,LANGUAGE_CODE_SYS09,FIRST_NAME,LAST_NAME,"+
-          "COMPANY_CODE_SYS01,PROGRESSIVE_REG04,USERNAME_CREATE,CREATE_DATE,DEF_COMPANY_CODE_SYS01) values(?,?,?,?,?,?,?,?,?,?,?)"
+          "COMPANY_CODE_SYS01,PROGRESSIVE_REG04,USERNAME_CREATE,CREATE_DATE,DEF_COMPANY_CODE_SYS01,CREATE_USER) values(?,?,?,?,?,?,?,?,?,?,?,?)"
       );
       pstmt.setString(1,vo.getUsernameSYS03());
       pstmt.setString(2,vo.getPasswdSYS03());
@@ -270,8 +270,9 @@ public class UsersBean  implements Users {
       pstmt.setString(7,vo.getCompanyCodeSys01SYS03());
       pstmt.setBigDecimal(8,vo.getProgressiveReg04SYS03());
       pstmt.setString(9,vo.getUsernameCreateSYS03());
-      pstmt.setDate(10,vo.getCreateDateSYS03());
-      pstmt.setString(11,vo.getDefCompanyCodeSys01SYS03());
+      pstmt.setString(10,vo.getDefCompanyCodeSys01SYS03());
+			pstmt.setString(11,username);
+			pstmt.setTimestamp(12,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.execute();
       pstmt.close();
 
@@ -279,12 +280,14 @@ public class UsersBean  implements Users {
         // duplicate all old roles associations...
         pstmt.close();
         pstmt = conn.prepareStatement(
-            "insert into SYS14_USER_ROLES(PROGRESSIVE_SYS04,USERNAME_SYS03) "+
-            "select PROGRESSIVE_SYS04,? from SYS14_USER_ROLES where "+
+            "insert into SYS14_USER_ROLES(PROGRESSIVE_SYS04,USERNAME_SYS03,CREATE_USER,CREATE_DATE) "+
+            "select PROGRESSIVE_SYS04,?,?,? from SYS14_USER_ROLES where "+
             "USERNAME_SYS03=?"
         );
         pstmt.setString(1,vo.getUsernameSYS03());
-        pstmt.setString(2,vo.getOldUsernameSYS03());
+				pstmt.setString(2,username);
+				pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+        pstmt.setString(4,vo.getOldUsernameSYS03());
         pstmt.execute();
         pstmt.close();
       }
@@ -295,8 +298,8 @@ public class UsersBean  implements Users {
       if (!res.isError()) {
 
         pstmt = conn.prepareStatement(
-            "insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) "+
-            "select COMPANY_CODE_SYS01,?,PARAM_CODE,VALUE from SYS21_COMPANY_PARAMS where COMPANY_CODE_SYS01=?"
+            "insert into SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) "+
+            "select COMPANY_CODE_SYS01,?,PARAM_CODE,VALUE,?,? from SYS21_COMPANY_PARAMS where COMPANY_CODE_SYS01=?"
         );
 
         java.util.List list = ((VOListResponse)res).getRows();
@@ -304,7 +307,9 @@ public class UsersBean  implements Users {
         for(int i=0;i<list.size();i++) {
           companyVO = (CompanyVO)list.get(i);
           pstmt.setString(1,vo.getUsernameSYS03());
-          pstmt.setString(2,companyVO.getCompanyCodeSYS01());
+					pstmt.setString(2,username);
+					pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+          pstmt.setString(4,companyVO.getCompanyCodeSYS01());
           pstmt.execute();
 
 
@@ -400,7 +405,7 @@ public class UsersBean  implements Users {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }
@@ -417,7 +422,7 @@ public class UsersBean  implements Users {
     int i = -1;
     while((i=b.indexOf(oldPattern))!=-1) {
       b.replace(i,i+oldPattern.length(),newPattern);
-    
+
       try {
         loadCompaniesAction.setConn(null);
       } catch (Exception ex) {}
@@ -463,7 +468,7 @@ public class UsersBean  implements Users {
     	catch (Exception ex3) {
     	}
 
-      throw new Exception(ex.getMessage()); 
+      throw new Exception(ex.getMessage());
     }
     finally {
       try {
@@ -479,7 +484,7 @@ public class UsersBean  implements Users {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }

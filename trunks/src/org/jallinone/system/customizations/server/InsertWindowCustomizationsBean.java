@@ -49,7 +49,7 @@ import javax.sql.DataSource;
 public class InsertWindowCustomizationsBean  implements InsertWindowCustomizations {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -57,9 +57,9 @@ public class InsertWindowCustomizationsBean  implements InsertWindowCustomizatio
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -80,18 +80,19 @@ public class InsertWindowCustomizationsBean  implements InsertWindowCustomizatio
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public WindowCustomizationVO getWindowCustomization() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
    */
   public VOListResponse insertWindowCustomizations(ArrayList list,String t1,String t2,String serverLanguageId,String username,String defCompanyCodeSys01SYS03) throws Throwable {
     Statement stmt = null;
+		PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -104,6 +105,11 @@ public class InsertWindowCustomizationsBean  implements InsertWindowCustomizatio
       String attrName = null;
       HashSet attrNamesAlreadyUsed = new HashSet();
       BigDecimal progressiveSys10 = null;
+
+			pstmt = conn.prepareStatement(
+					"insert into SYS12_WINDOW_CUSTOMIZATIONS(PROGRESSIVE_SYS13,COLUMN_NAME,COLUMN_TYPE,COLUMN_SIZE,COLUMN_DEC,PROGRESSIVE_SYS10,ATTRIBUTE_NAME,CREATE_USER,CREATE_DATE) values("+
+					"?,?,?,?,?,?,?,?,?)"
+			);
 
       for(int j=0;j<list.size();j++) {
         vo = (WindowCustomizationVO)list.get(j);
@@ -153,13 +159,19 @@ public class InsertWindowCustomizationsBean  implements InsertWindowCustomizatio
         }
 
         // insert record in SYS10...
-        progressiveSys10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),defCompanyCodeSys01SYS03,conn);
+        progressiveSys10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),username,conn);
 
         // insert record in SYS12...
-        stmt.execute(
-            "insert into SYS12_WINDOW_CUSTOMIZATIONS(PROGRESSIVE_SYS13,COLUMN_NAME,COLUMN_TYPE,COLUMN_SIZE,COLUMN_DEC,PROGRESSIVE_SYS10,ATTRIBUTE_NAME) values("+
-            vo.getProgressiveSys13SYS12()+",'"+vo.getColumnNameSYS12()+"','"+vo.getColumnTypeSYS12()+"',"+vo.getColumnSizeSYS12()+","+vo.getColumnDecSYS12()+","+progressiveSys10+",'"+vo.getAttributeNameSYS12()+"')"
-        );
+        pstmt.setBigDecimal(1,vo.getProgressiveSys13SYS12());
+				pstmt.setString(2,vo.getColumnNameSYS12());
+				pstmt.setString(3,vo.getColumnTypeSYS12());
+				pstmt.setBigDecimal(4,vo.getColumnSizeSYS12());
+				pstmt.setBigDecimal(5,vo.getColumnDecSYS12());
+				pstmt.setBigDecimal(6,progressiveSys10);
+				pstmt.setString(7,vo.getAttributeNameSYS12());
+				pstmt.setString(8,username);
+				pstmt.setTimestamp(9,new java.sql.Timestamp(System.currentTimeMillis()));
+        pstmt.execute();
 
         if (!columnAlreadyExist) {
           // add the column to the table...
@@ -179,7 +191,8 @@ public class InsertWindowCustomizationsBean  implements InsertWindowCustomizatio
           }
           stmt.execute(sql);
         }
-      }
+
+      } // enf or
 
 
       return new VOListResponse(list,false,list.size());
@@ -201,6 +214,10 @@ public class InsertWindowCustomizationsBean  implements InsertWindowCustomizatio
             stmt.close();
         }
         catch (Exception exx) {}
+				try {
+						pstmt.close();
+				}
+				catch (Exception exx) {}
         try {
             if (this.conn==null && conn!=null) {
                 // close only local connection

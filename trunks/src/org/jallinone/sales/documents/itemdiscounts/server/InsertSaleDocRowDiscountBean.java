@@ -66,7 +66,7 @@ import javax.sql.DataSource;
 public class InsertSaleDocRowDiscountBean implements InsertSaleDocRowDiscount {
 
 
-	  private DataSource dataSource; 
+	  private DataSource dataSource;
 
 	  public void setDataSource(DataSource dataSource) {
 	    this.dataSource = dataSource;
@@ -74,9 +74,9 @@ public class InsertSaleDocRowDiscountBean implements InsertSaleDocRowDiscount {
 
 	  /** external connection */
 	  private Connection conn = null;
-	  
+
 	  /**
-	   * Set external connection. 
+	   * Set external connection.
 	   */
 	  public void setConn(Connection conn) {
 	    this.conn = conn;
@@ -88,11 +88,11 @@ public class InsertSaleDocRowDiscountBean implements InsertSaleDocRowDiscount {
 	  public Connection getConn() throws Exception {
 	    Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
 	  }
-	
-	  
-	  
 
-	  
+
+
+
+
 
 	  /**
 	   * Insert a new item row discount.
@@ -102,7 +102,7 @@ public class InsertSaleDocRowDiscountBean implements InsertSaleDocRowDiscount {
 		      SaleItemDiscountVO vo,String serverLanguageId,String username) throws Throwable {
 		Connection conn = null;
 	    try {
-	      if (this.conn==null) conn = getConn(); else conn = this.conn; 
+	      if (this.conn==null) conn = getConn(); else conn = this.conn;
 
 	      Map attribute2dbField = new HashMap();
 	      attribute2dbField.put("companyCodeSys01DOC04","COMPANY_CODE_SYS01");
@@ -136,7 +136,7 @@ public class InsertSaleDocRowDiscountBean implements InsertSaleDocRowDiscount {
 
 	      Response res = null;
 	      // insert into DOC04...
-	      res = QueryUtil.insertTable(
+	      res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 	          conn,
 	          new UserSessionParameters(username),
 	          vo,
@@ -174,7 +174,7 @@ public class InsertSaleDocRowDiscountBean implements InsertSaleDocRowDiscount {
 	            }
 
 	        }
-	        catch (Exception exx) {}    	
+	        catch (Exception exx) {}
 	    }
 
 

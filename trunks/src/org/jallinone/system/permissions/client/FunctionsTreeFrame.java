@@ -178,7 +178,7 @@ public class FunctionsTreeFrame extends InternalFrame {
             // source node is a function...
             if (((JAIOApplicationFunctionVO)node.getUserObject()).isFolder()) {
               // destination node is a folder...
-              vo.setProgressiveHie01SYS18(((JAIOApplicationFunctionVO)node.getUserObject()).getProgressiveHIE01());
+              vo.setProgressiveHie03SYS18(((JAIOApplicationFunctionVO)node.getUserObject()).getProgressiveHIE03());
               if (((JAIOApplicationFunctionVO)((DefaultMutableTreeNode)node.getLastChild()).getUserObject()).getPosOrderSYS18()!=null)
                 vo.setPosOrderSYS18(
                   ((JAIOApplicationFunctionVO)((DefaultMutableTreeNode)node.getLastChild()).getUserObject()).getPosOrderSYS18().add(new BigDecimal(1))
@@ -188,7 +188,7 @@ public class FunctionsTreeFrame extends InternalFrame {
             }
             else {
               // destination node is a leaf...
-              vo.setProgressiveHie01SYS18(((JAIOApplicationFunctionVO)node.getUserObject()).getProgressiveHie01SYS18());
+              vo.setProgressiveHie03SYS18(((JAIOApplicationFunctionVO)node.getUserObject()).getProgressiveHie03SYS18());
               vo.setPosOrderSYS18(new BigDecimal((
                 ((JAIOApplicationFunctionVO)((DefaultMutableTreeNode)node).getUserObject()).getPosOrderSYS18().doubleValue()+
                 ((JAIOApplicationFunctionVO)((DefaultMutableTreeNode)node.getNextSibling()).getUserObject()).getPosOrderSYS18().doubleValue()

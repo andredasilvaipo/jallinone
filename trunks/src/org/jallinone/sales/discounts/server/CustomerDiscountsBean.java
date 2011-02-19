@@ -56,7 +56,7 @@ import javax.sql.DataSource;
 public class CustomerDiscountsBean  implements CustomerDiscounts {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -64,9 +64,9 @@ public class CustomerDiscountsBean  implements CustomerDiscounts {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -76,39 +76,39 @@ public class CustomerDiscountsBean  implements CustomerDiscounts {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
   private DiscountBean discountBean;
-  
+
   public void setDiscountBean(DiscountBean discountBean) {
 	  this.discountBean = discountBean;
   }
 
 
-  
-  
+
+
   public CustomerDiscountsBean() {
   }
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public DiscountVO getDiscount() {
 	  throw new UnsupportedOperationException();
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public CustomerDiscountVO getCustomerDiscount( CustomerPK pk) {
 	  throw new UnsupportedOperationException();
-	  
+
   }
-  
+
 
 
   /**
@@ -179,9 +179,9 @@ public class CustomerDiscountsBean  implements CustomerDiscounts {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
-    	  discountBean.setConn(null);  	  
+    	  discountBean.setConn(null);
       } catch (Exception ex) {}
     }
 
@@ -239,7 +239,7 @@ public class CustomerDiscountsBean  implements CustomerDiscounts {
     		}
 
     	}
-    	catch (Exception exx) {}    	
+    	catch (Exception exx) {}
     	try {
     		discountBean.setConn(null);
     	} catch (Exception ex) {}
@@ -254,7 +254,7 @@ public class CustomerDiscountsBean  implements CustomerDiscounts {
    * Business logic to execute.
    */
   public VOListResponse insertCustomerDiscounts(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -267,11 +267,14 @@ public class CustomerDiscountsBean  implements CustomerDiscounts {
         vo.setDiscountTypeSAL03(ApplicationConsts.DISCOUNT_CUSTOMER);
         discountBean.insertDiscount(vo);
 
-        stmt = conn.createStatement();
-        stmt.execute(
-            "insert into SAL08_CUSTOMER_DISCOUNTS(COMPANY_CODE_SYS01,PROGRESSIVE_REG04,DISCOUNT_CODE_SAL03) "+
-            "values('"+vo.getCompanyCodeSys01SAL03()+"',"+vo.getProgressiveReg04SAL08()+",'"+vo.getDiscountCodeSAL03()+"')"
+        pstmt = conn.prepareStatement(
+            "insert into SAL08_CUSTOMER_DISCOUNTS(COMPANY_CODE_SYS01,PROGRESSIVE_REG04,DISCOUNT_CODE_SAL03,CREATE_USER,CREATE_DATE) "+
+            "values('"+vo.getCompanyCodeSys01SAL03()+"',"+vo.getProgressiveReg04SAL08()+",'"+vo.getDiscountCodeSAL03()+"',?,?)"
         );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
       return new VOListResponse(list,false,list.size());
@@ -290,7 +293,7 @@ public class CustomerDiscountsBean  implements CustomerDiscounts {
     }
     finally {
       try {
-        stmt.close();
+        pstmt.close();
       }
       catch (Exception ex2) {
       }
@@ -302,7 +305,7 @@ public class CustomerDiscountsBean  implements CustomerDiscounts {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
     	  discountBean.setConn(null);
       } catch (Exception ex) {}
@@ -364,9 +367,9 @@ public class CustomerDiscountsBean  implements CustomerDiscounts {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
-    	  discountBean.setConn(null);    	  
+    	  discountBean.setConn(null);
       } catch (Exception ex) {}
     }
 

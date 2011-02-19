@@ -186,7 +186,7 @@ public class PrintBarcodeLabelsFrame extends InternalFrame {
     itemController.setFrameTitle("items");
 
     itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
-    treeLevelDataLocator.setServerMethodName("loadHierarchy");
+    treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
     itemDataLocator.setTreeDataLocator(treeLevelDataLocator);
     itemDataLocator.setNodeNameAttribute("descriptionSYS10");
 
@@ -442,6 +442,7 @@ public class PrintBarcodeLabelsFrame extends InternalFrame {
           vo.setVariantCodeItm13(ApplicationConsts.JOLLY);
           vo.setVariantCodeItm14(ApplicationConsts.JOLLY);
           vo.setVariantCodeItm15(ApplicationConsts.JOLLY);
+					vo.setQty( (BigDecimal)controlQty.getValue() );
           rows.add(vo);
           grid.reloadData();
         }

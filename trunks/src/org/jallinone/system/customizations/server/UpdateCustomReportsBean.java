@@ -46,7 +46,7 @@ import javax.sql.DataSource;
 public class UpdateCustomReportsBean  implements UpdateCustomReports {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -54,9 +54,9 @@ public class UpdateCustomReportsBean  implements UpdateCustomReports {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -66,7 +66,7 @@ public class UpdateCustomReportsBean  implements UpdateCustomReports {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -78,7 +78,7 @@ public class UpdateCustomReportsBean  implements UpdateCustomReports {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ReportVO getReport() {
 	  throw new UnsupportedOperationException();
@@ -94,7 +94,7 @@ public class UpdateCustomReportsBean  implements UpdateCustomReports {
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
-      pstmt = conn.prepareStatement("update SYS15_REPORT_CUSTOMIZATIONS set REPORT_NAME=? where COMPANY_CODE_SYS01=? and FUNCTION_CODE_SYS06=? and REPORT_NAME=?");
+      pstmt = conn.prepareStatement("update SYS15_REPORT_CUSTOMIZATIONS set REPORT_NAME=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? where COMPANY_CODE_SYS01=? and FUNCTION_CODE_SYS06=? and REPORT_NAME=?");
 
       ReportVO oldVO = null;
       ReportVO newVO = null;
@@ -103,9 +103,11 @@ public class UpdateCustomReportsBean  implements UpdateCustomReports {
         oldVO = (ReportVO)oldRows.get(i);
         newVO = (ReportVO)newRows.get(i);
         pstmt.setString(1,newVO.getReportNameSYS15());
-        pstmt.setString(2,newVO.getCompanyCodeSys01SYS15());
-        pstmt.setString(3,newVO.getFunctionCodeSys06SYS15());
-        pstmt.setString(4,oldVO.getReportNameSYS15());
+				pstmt.setString(2,username);
+				pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+        pstmt.setString(4,newVO.getCompanyCodeSys01SYS15());
+        pstmt.setString(5,newVO.getFunctionCodeSys06SYS15());
+        pstmt.setString(6,oldVO.getReportNameSYS15());
         row = pstmt.executeUpdate();
         if (row==0) {
           return new VOListResponse("Updating not performed: the record was previously updated.");

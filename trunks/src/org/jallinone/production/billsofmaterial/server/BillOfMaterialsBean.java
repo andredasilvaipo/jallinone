@@ -129,13 +129,14 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 				"select ITM03_COMPONENTS.COMPANY_CODE_SYS01,ITM03_COMPONENTS.ITEM_CODE_ITM01,ITM03_COMPONENTS.PARENT_ITEM_CODE_ITM01,ITM03_COMPONENTS.ENABLED,"+
 				"ITM03_COMPONENTS.SEQUENCE,ITM03_COMPONENTS.START_DATE,ITM03_COMPONENTS.END_DATE,"+
 				"ITM03_COMPONENTS.VERSION,ITM03_COMPONENTS.REVISION,ITM03_COMPONENTS.QTY,"+
-				"SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02 "+
-				"from ITM01_ITEMS,SYS10_TRANSLATIONS,ITM03_COMPONENTS "+
+				"SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02 "+
+				"from ITM01_ITEMS,SYS10_COMPANY_TRANSLATIONS,ITM03_COMPONENTS "+
 				"where "+
 				"ITM03_COMPONENTS.COMPANY_CODE_SYS01 = ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
 				"ITM03_COMPONENTS.ITEM_CODE_ITM01 = ITM01_ITEMS.ITEM_CODE and "+
-				"ITM01_ITEMS.PROGRESSIVE_SYS10 = SYS10_TRANSLATIONS.PROGRESSIVE and "+
-				"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and ITM03_COMPONENTS.ENABLED='Y' and "+
+				"ITM01_ITEMS.COMPANY_CODE_SYS01 = SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and " +
+				"ITM01_ITEMS.PROGRESSIVE_SYS10 = SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+				"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and ITM03_COMPONENTS.ENABLED='Y' and "+
 				"ITM03_COMPONENTS.COMPANY_CODE_SYS01=? and "+
 				"ITM03_COMPONENTS.PARENT_ITEM_CODE_ITM01=?";
 
@@ -150,7 +151,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 			attribute2dbField.put("versionITM03","ITM03_COMPONENTS.VERSION");
 			attribute2dbField.put("revisionITM03","ITM03_COMPONENTS.REVISION");
 			attribute2dbField.put("qtyITM03","ITM03_COMPONENTS.QTY");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("enabledITM03","ITM03_COMPONENTS.ENABLED");
 			attribute2dbField.put("minSellingQtyUmCodeReg02ITM01","ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02");
 
@@ -238,7 +239,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 				oldVO = (ComponentVO)oldVOs.get(i);
 				newVO = (ComponentVO)newVOs.get(i);
 
-				res = new QueryUtil().updateTable(
+				res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
 						conn,
 						new UserSessionParameters(username),
 						pkAttrs,
@@ -513,7 +514,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 						currVO.setCurrentItemCodeItm01ITM04(vo.getCurrentItemCodeItm01ITM04());
 						currVO.setItemCodeItm01ITM04(vo.getCurrentItemCodeItm01ITM04());
 						currVO.setProgressiveITM04(progressiveITM04);
-						res = QueryUtil.insertTable(
+						res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 								conn,
 								new UserSessionParameters(username),
 								currVO,
@@ -541,7 +542,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 				currVO.setCurrentItemCodeItm01ITM04(vo.getCurrentItemCodeItm01ITM04());
 				currVO.setItemCodeItm01ITM04(vo.getCurrentItemCodeItm01ITM04());
 				currVO.setProgressiveITM04(progressiveITM04);
-				res = QueryUtil.insertTable(
+				res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 						conn,
 						new UserSessionParameters(username),
 						currVO,
@@ -588,7 +589,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 				currVO.setCurrentItemCodeItm01ITM04(vo.getCurrentItemCodeItm01ITM04());
 				currVO.setItemCodeItm01ITM04(vo.getCurrentItemCodeItm01ITM04());
 				currVO.setProgressiveITM04(progressiveITM04);
-				res = QueryUtil.insertTable(
+				res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 						conn,
 						new UserSessionParameters(username),
 						currVO,
@@ -610,7 +611,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 					currVO.setCurrentItemCodeItm01ITM04(vo.getCurrentItemCodeItm01ITM04());
 					currVO.setItemCodeItm01ITM04(it.next().toString());
 					currVO.setProgressiveITM04(progressiveITM04);
-					res = QueryUtil.insertTable(
+					res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 							conn,
 							new UserSessionParameters(username),
 							currVO,
@@ -635,7 +636,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 				vo.setProgressiveITM04(progressiveITM04);
 				if (progressives.size()!=1 || !itms.contains(vo.getItemCodeItm01ITM04())) {
 					// insert into ITM04...
-					res = QueryUtil.insertTable(
+					res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 							conn,
 							new UserSessionParameters(username),
 							vo,
@@ -747,7 +748,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 				vo.setEnabledITM03("Y");
 
 				// insert into ITM03...
-				res = QueryUtil.insertTable(
+				res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 						conn,
 						new UserSessionParameters(username),
 						vo,
@@ -813,13 +814,14 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 
 			String sql =
 				"select ITM04_ALTERNATIVE_ITEMS.COMPANY_CODE_SYS01,ITM04_ALTERNATIVE_ITEMS.ITEM_CODE_ITM01,"+
-				"SYS10_TRANSLATIONS.DESCRIPTION,ITM04_ALTERNATIVE_ITEMS.PROGRESSIVE,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02 "+
-				"from ITM01_ITEMS,SYS10_TRANSLATIONS,ITM04_ALTERNATIVE_ITEMS "+
+				"SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ITM04_ALTERNATIVE_ITEMS.PROGRESSIVE,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02 "+
+				"from ITM01_ITEMS,SYS10_COMPANY_TRANSLATIONS,ITM04_ALTERNATIVE_ITEMS "+
 				"where "+
 				"ITM04_ALTERNATIVE_ITEMS.COMPANY_CODE_SYS01 = ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
 				"ITM04_ALTERNATIVE_ITEMS.ITEM_CODE_ITM01 = ITM01_ITEMS.ITEM_CODE and "+
-				"ITM01_ITEMS.PROGRESSIVE_SYS10 = SYS10_TRANSLATIONS.PROGRESSIVE and "+
-				"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+				"ITM01_ITEMS.COMPANY_CODE_SYS01 = SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and " +
+				"ITM01_ITEMS.PROGRESSIVE_SYS10 = SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+				"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
 				"ITM04_ALTERNATIVE_ITEMS.COMPANY_CODE_SYS01=? and "+
 				"not ITM04_ALTERNATIVE_ITEMS.ITEM_CODE_ITM01=? and "+
 				"ITM04_ALTERNATIVE_ITEMS.PROGRESSIVE in ("+
@@ -829,7 +831,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 			attribute2dbField.put("companyCodeSys01ITM04","ITM04_ALTERNATIVE_ITEMS.COMPANY_CODE_SYS01");
 			attribute2dbField.put("itemCodeItm01ITM04","ITM04_ALTERNATIVE_ITEMS.ITEM_CODE_ITM01");
 			attribute2dbField.put("progressiveITM04","ITM04_ALTERNATIVE_ITEMS.PROGRESSIVE");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("minSellingQtyUmCodeReg02ITM01","ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02");
 
 			ItemPK pk = (ItemPK)gridParams.getOtherGridParams().get(ApplicationConsts.ITEM_PK);
@@ -923,9 +925,9 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 			DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
 
 			pstmt = conn.prepareStatement(
-					"insert into TMP01_BILL_OF_MATERIALS(REPORT_ID,PROGRESSIVE,COMPANY_CODE,PAD,ITEM_CODE,DESCRIPTION,LEV,QTY,UM,PRICE,TOTAL_PRICE,COST,TOTAL_COST) values(?,?,?,?,?,?,?,?,?,?,?,?,?)"
+					"insert into TMP01_BILL_OF_MATERIALS(REPORT_ID,PROGRESSIVE,COMPANY_CODE,PAD,ITEM_CODE,DESCRIPTION,LEV,QTY,UM,PRICE,TOTAL_PRICE,COST,TOTAL_COST,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 			);
-			expandNode(0,"",0,null,format,qtyFormat,reportId,pstmt,root);
+			expandNode(0,"",0,null,format,qtyFormat,reportId,pstmt,root,username);
 
 			return new VOResponse(reportId);
 		} catch (Exception ex1) {
@@ -963,7 +965,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 	/**
 	 * Expand the current node and fill in TMP01 table.
 	 */
-	private int expandNode(int level,String lastPad,int progressive,DefaultMutableTreeNode parentNode,DecimalFormat format,DecimalFormat qtyFormat,BigDecimal reportId,PreparedStatement pstmt,DefaultMutableTreeNode node) throws Exception {
+	private int expandNode(int level,String lastPad,int progressive,DefaultMutableTreeNode parentNode,DecimalFormat format,DecimalFormat qtyFormat,BigDecimal reportId,PreparedStatement pstmt,DefaultMutableTreeNode node,String username) throws Exception {
 		MaterialVO vo = (MaterialVO)node.getUserObject();
 		String pad = "";
 
@@ -990,6 +992,8 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 			pstmt.setString(11,null);
 			pstmt.setString(12,null);
 			pstmt.setString(13,null);
+			pstmt.setString(14,username);
+			pstmt.setTimestamp(15,new java.sql.Timestamp(System.currentTimeMillis()));
 			pstmt.execute();
 
 			progressive++;
@@ -1053,7 +1057,7 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 		//    progressive++;
 
 		for(int j=0;j<node.getChildCount();j++) {
-			progressive = expandNode(level+1,lastPad+(node.getNextLeaf()!=null?"| ":""),progressive,node,format,qtyFormat,reportId,pstmt,(DefaultMutableTreeNode)node.getChildAt(j));
+			progressive = expandNode(level+1,lastPad+(node.getNextLeaf()!=null?"| ":""),progressive,node,format,qtyFormat,reportId,pstmt,(DefaultMutableTreeNode)node.getChildAt(j),username);
 		}
 		return progressive;
 	}

@@ -13,7 +13,7 @@ import java.sql.*;
 
 import org.openswing.swing.logger.server.*;
 import org.jallinone.system.server.*;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.jallinone.purchases.pricelist.java.*;
 import org.openswing.swing.server.*;
 import org.jallinone.commons.java.ApplicationConsts;
@@ -58,7 +58,7 @@ import javax.sql.DataSource;
 public class SupplierPricelistsBean  implements SupplierPricelists {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -66,9 +66,9 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -78,7 +78,7 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -90,7 +90,7 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public SupplierPricelistVO getSupplierPricelist() {
 	  throw new UnsupportedOperationException();
@@ -121,10 +121,12 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
       String sql =
           "select PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01,PUR03_SUPPLIER_PRICELISTS.PRICELIST_CODE,"+
           "PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_REG04,PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10,"+
-          "SYS10_TRANSLATIONS.DESCRIPTION,PUR03_SUPPLIER_PRICELISTS.CURRENCY_CODE_REG03,REG04_SUBJECTS.NAME_1 "+
-          "from PUR03_SUPPLIER_PRICELISTS,SYS10_TRANSLATIONS,REG04_SUBJECTS "+
-          "where PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01 in ("+companies+") and "+
+          "SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,PUR03_SUPPLIER_PRICELISTS.CURRENCY_CODE_REG03,REG04_SUBJECTS.NAME_1 "+
+          "from PUR03_SUPPLIER_PRICELISTS,SYS10_COMPANY_TRANSLATIONS,REG04_SUBJECTS "+
+          "where "+
+					"PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+					"PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01 in ("+companies+") and "+
           "REG04_SUBJECTS.COMPANY_CODE_SYS01=PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01 AND "+
           "REG04_SUBJECTS.PROGRESSIVE=PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_REG04 ";
       if (progressiveREG04!=null)
@@ -134,7 +136,7 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
       attribute2dbField.put("companyCodeSys01PUR03","PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01");
       attribute2dbField.put("pricelistCodePUR03","PUR03_SUPPLIER_PRICELISTS.PRICELIST_CODE");
       attribute2dbField.put("progressiveReg04PUR03","PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_REG04");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveSys10PUR03","PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10");
       attribute2dbField.put("currencyCodeReg03PUR03","PUR03_SUPPLIER_PRICELISTS.CURRENCY_CODE_REG03");
       attribute2dbField.put("name_1REG04","REG04_SUBJECTS.NAME_1");
@@ -209,7 +211,7 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
         newVO = (SupplierPricelistVO)newVOs.get(i);
 
         // update SYS10 table...
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10PUR03(),serverLanguageId,conn);
+        CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01PUR03(),oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10PUR03(),serverLanguageId,username,conn);
 
         HashSet pkAttrs = new HashSet();
         pkAttrs.add("companyCodeSys01PUR03");
@@ -284,12 +286,13 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
 
       String sql =
           "select PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01,PUR03_SUPPLIER_PRICELISTS.PRICELIST_CODE,"+
-          "PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
+          "PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+
           "PUR03_SUPPLIER_PRICELISTS.CURRENCY_CODE_REG03,REG04_SUBJECTS.NAME_1 "+
-          "from PUR03_SUPPLIER_PRICELISTS,SYS10_TRANSLATIONS,REG04_SUBJECTS "+
+          "from PUR03_SUPPLIER_PRICELISTS,SYS10_COMPANY_TRANSLATIONS,REG04_SUBJECTS "+
           "where "+
-          "PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "PUR03_SUPPLIER_PRICELISTS.PRICELIST_CODE=? and PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01=? and "+
           "REG04_SUBJECTS.COMPANY_CODE_SYS01=PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01 AND "+
           "REG04_SUBJECTS.PROGRESSIVE=PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_REG04 ";
@@ -301,7 +304,7 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
       attribute2dbField.put("companyCodeSys01PUR03","PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01");
       attribute2dbField.put("pricelistCodePUR03","PUR03_SUPPLIER_PRICELISTS.PRICELIST_CODE");
       attribute2dbField.put("progressiveReg04PUR03","PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_REG04");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveSys10PUR03","PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10");
       attribute2dbField.put("currencyCodeReg03PUR03","PUR03_SUPPLIER_PRICELISTS.CURRENCY_CODE_REG03");
       attribute2dbField.put("name_1REG04","REG04_SUBJECTS.NAME_1");
@@ -363,23 +366,27 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       if (changes.getStartDate()!=null && changes.getEndDate()!=null) {
-        String sql = "update PUR04_SUPPLIER_PRICES set START_DATE=?,END_DATE=? where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=?";
+        String sql = "update PUR04_SUPPLIER_PRICES set START_DATE=?,END_DATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=?";
         pstmt = conn.prepareStatement(sql);
         pstmt.setDate(1,changes.getStartDate());
         pstmt.setDate(2,changes.getEndDate());
-        pstmt.setString(3,changes.getCompanyCodeSys01PUR04());
-        pstmt.setString(4,changes.getPricelistCodePur03PUR04());
-        pstmt.setBigDecimal(5,changes.getProgressiveReg04PUR04());
+				pstmt.setString(3,username);
+				pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
+        pstmt.setString(5,changes.getCompanyCodeSys01PUR04());
+        pstmt.setString(6,changes.getPricelistCodePur03PUR04());
+        pstmt.setBigDecimal(7,changes.getProgressiveReg04PUR04());
         pstmt.execute();
         pstmt.close();
       }
 
       if (changes.getPercentage()!=null && !changes.isTruncateDecimals()) {
-        String sql = "update PUR04_SUPPLIER_PRICES set VALUE=VALUE+VALUE*"+changes.getPercentage().doubleValue()+"/100 where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=?";
+        String sql = "update PUR04_SUPPLIER_PRICES set VALUE=VALUE+VALUE*"+changes.getPercentage().doubleValue()+"/100,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=?";
         pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1,changes.getCompanyCodeSys01PUR04());
-        pstmt.setString(2,changes.getPricelistCodePur03PUR04());
-        pstmt.setBigDecimal(3,changes.getProgressiveReg04PUR04());
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+        pstmt.setString(3,changes.getCompanyCodeSys01PUR04());
+        pstmt.setString(4,changes.getPricelistCodePur03PUR04());
+        pstmt.setBigDecimal(5,changes.getProgressiveReg04PUR04());
         pstmt.execute();
         pstmt.close();
       }
@@ -390,13 +397,15 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
         pstmt.setString(1,changes.getCompanyCodeSys01PUR04());
         pstmt.setString(2,changes.getPricelistCodePur03PUR04());
         ResultSet rset = pstmt.executeQuery();
-        PreparedStatement pstmt2 = conn.prepareStatement("update PUR04_SUPPLIER_PRICES set VALUE=? where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and ITEM_CODE_ITM01=? and PROGRESSIVE_REG04=?");
+        PreparedStatement pstmt2 = conn.prepareStatement("update PUR04_SUPPLIER_PRICES set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and ITEM_CODE_ITM01=? and PROGRESSIVE_REG04=?");
         while(rset.next()) {
           pstmt2.setInt(1,(int)(rset.getDouble(2)+rset.getDouble(2)*changes.getPercentage().doubleValue()/100));
-          pstmt2.setString(2,changes.getCompanyCodeSys01PUR04());
-          pstmt2.setString(3,changes.getPricelistCodePur03PUR04());
-          pstmt2.setString(4,rset.getString(1));
-          pstmt2.setBigDecimal(5,changes.getProgressiveReg04PUR04());
+					pstmt.setString(2,username);
+					pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+          pstmt2.setString(4,changes.getCompanyCodeSys01PUR04());
+          pstmt2.setString(5,changes.getPricelistCodePur03PUR04());
+          pstmt2.setString(6,rset.getString(1));
+          pstmt2.setBigDecimal(7,changes.getProgressiveReg04PUR04());
           pstmt2.execute();
         }
         rset.close();
@@ -405,11 +414,13 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
       }
 
       if (changes.getDeltaValue()!=null) {
-        String sql = "update PUR04_SUPPLIER_PRICES set VALUE=VALUE+"+changes.getDeltaValue().doubleValue()+" where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=?";
+        String sql = "update PUR04_SUPPLIER_PRICES set VALUE=VALUE+"+changes.getDeltaValue().doubleValue()+",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=?";
         pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1,changes.getCompanyCodeSys01PUR04());
-        pstmt.setString(2,changes.getPricelistCodePur03PUR04());
-        pstmt.setBigDecimal(3,changes.getProgressiveReg04PUR04());
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+        pstmt.setString(3,changes.getCompanyCodeSys01PUR04());
+        pstmt.setString(4,changes.getPricelistCodePur03PUR04());
+        pstmt.setBigDecimal(5,changes.getProgressiveReg04PUR04());
         pstmt.execute();
         pstmt.close();
       }
@@ -466,7 +477,7 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
         stmt.execute("delete from PUR04_SUPPLIER_PRICES where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01PUR03()+"' and PRICELIST_CODE_PUR03='"+vo.getPricelistCodePUR03()+"' and PROGRESSIVE_REG04="+vo.getProgressiveReg04PUR03());
 
         // phisically delete record from SYS10...
-        TranslationUtils.deleteTranslations(vo.getProgressiveSys10PUR03(),conn);
+        CompanyTranslationUtils.deleteTranslations(vo.getCompanyCodeSys01PUR03(),vo.getProgressiveSys10PUR03(),conn);
 
         // phisically delete the record in PUR03...
         vo = (SupplierPricelistVO)list.get(i);
@@ -529,15 +540,15 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
       Response res = null;
 
       pstmt = conn.prepareStatement(
-        "insert into PUR04_SUPPLIER_PRICES(COMPANY_CODE_SYS01,PRICELIST_CODE_PUR03,PROGRESSIVE_REG04,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE) "+
-        "select ?,?,?,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE from PUR04_SUPPLIER_PRICES where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=?"
+        "insert into PUR04_SUPPLIER_PRICES(COMPANY_CODE_SYS01,PRICELIST_CODE_PUR03,PROGRESSIVE_REG04,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE,CREATE_USER,CREATE_DATE) "+
+        "select ?,?,?,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE,?,? from PUR04_SUPPLIER_PRICES where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=?"
       );
 
       for (int i=0;i<list.size();i++) {
         vo = (SupplierPricelistVO)list.get(i);
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01PUR03(),conn);
+        progressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01PUR03(),username,conn);
         vo.setProgressiveSys10PUR03(progressiveSYS10);
 
         // insert into PUR03...
@@ -562,9 +573,11 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
           pstmt.setString(1,vo.getCompanyCodeSys01PUR03());
           pstmt.setString(2,vo.getPricelistCodePUR03());
           pstmt.setBigDecimal(3,vo.getProgressiveReg04PUR03());
-          pstmt.setString(4,vo.getCompanyCodeSys01PUR03());
-          pstmt.setString(5,vo.getOldPricelistCodePur03PUR04());
-          pstmt.setBigDecimal(6,vo.getProgressiveReg04PUR03());
+					pstmt.setString(4,username);
+					pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
+          pstmt.setString(6,vo.getCompanyCodeSys01PUR03());
+          pstmt.setString(7,vo.getOldPricelistCodePur03PUR04());
+          pstmt.setBigDecimal(8,vo.getProgressiveReg04PUR03());
           pstmt.execute();
         }
 

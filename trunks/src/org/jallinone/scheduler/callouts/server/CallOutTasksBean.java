@@ -51,7 +51,7 @@ import javax.sql.DataSource;
 public class CallOutTasksBean  implements CallOutTasks {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -59,9 +59,9 @@ public class CallOutTasksBean  implements CallOutTasks {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -71,7 +71,7 @@ public class CallOutTasksBean  implements CallOutTasks {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -81,9 +81,9 @@ public class CallOutTasksBean  implements CallOutTasks {
   public CallOutTasksBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public CallOutTaskVO getCallOutTask(CallOutPK pk) {
 	  throw new UnsupportedOperationException();
@@ -109,7 +109,7 @@ public class CallOutTasksBean  implements CallOutTasks {
         vo = (CallOutTaskVO)list.get(i);
 
         // insert into SCH12...
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,
@@ -168,17 +168,18 @@ public class CallOutTasksBean  implements CallOutTasks {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       String sql =
-          "select SCH12_CALL_OUT_TASKS.COMPANY_CODE_SYS01,SCH12_CALL_OUT_TASKS.TASK_CODE_REG07,SCH12_CALL_OUT_TASKS.CALL_OUT_CODE_SCH10,SYS10_TRANSLATIONS.DESCRIPTION "+
-          "from SCH12_CALL_OUT_TASKS,REG07_TASKS,SYS10_TRANSLATIONS where "+
+          "select SCH12_CALL_OUT_TASKS.COMPANY_CODE_SYS01,SCH12_CALL_OUT_TASKS.TASK_CODE_REG07,SCH12_CALL_OUT_TASKS.CALL_OUT_CODE_SCH10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION "+
+          "from SCH12_CALL_OUT_TASKS,REG07_TASKS,SYS10_COMPANY_TRANSLATIONS where "+
           "SCH12_CALL_OUT_TASKS.TASK_CODE_REG07=REG07_TASKS.TASK_CODE and "+
-          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"REG07_TASKS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SCH12_CALL_OUT_TASKS.COMPANY_CODE_SYS01=? and "+
           "SCH12_CALL_OUT_TASKS.CALL_OUT_CODE_SCH10=?";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SCH12","SCH12_CALL_OUT_TASKS.COMPANY_CODE_SYS01");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("callOutCodeSch10SCH12","SCH12_CALL_OUT_TASKS.CALL_OUT_CODE_SCH10");
       attribute2dbField.put("taskCodeReg07SCH12","SCH12_CALL_OUT_TASKS.TASK_CODE_REG07");
 

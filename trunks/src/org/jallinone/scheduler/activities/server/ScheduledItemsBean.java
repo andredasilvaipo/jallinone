@@ -51,7 +51,7 @@ import javax.sql.DataSource;
 public class ScheduledItemsBean  implements ScheduledItems {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -59,9 +59,9 @@ public class ScheduledItemsBean  implements ScheduledItems {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -71,7 +71,7 @@ public class ScheduledItemsBean  implements ScheduledItems {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -83,12 +83,12 @@ public class ScheduledItemsBean  implements ScheduledItems {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ScheduledItemVO getScheduledItem(ScheduledActivityPK pk) {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
@@ -101,18 +101,19 @@ public class ScheduledItemsBean  implements ScheduledItems {
 
       String sql =
           "select SCH15_SCHEDULED_ITEMS.ITEM_CODE_ITM01,SCH15_SCHEDULED_ITEMS.COMPANY_CODE_SYS01,ITM01_ITEMS.PROGRESSIVE_HIE02,"+
-          "SCH15_SCHEDULED_ITEMS.PROGRESSIVE_SCH06,SYS10_TRANSLATIONS.DESCRIPTION,SCH15_SCHEDULED_ITEMS.QTY "+
-          "from SCH15_SCHEDULED_ITEMS,ITM01_ITEMS,SYS10_TRANSLATIONS where "+
+          "SCH15_SCHEDULED_ITEMS.PROGRESSIVE_SCH06,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,SCH15_SCHEDULED_ITEMS.QTY "+
+          "from SCH15_SCHEDULED_ITEMS,ITM01_ITEMS,SYS10_COMPANY_TRANSLATIONS where "+
           "SCH15_SCHEDULED_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
           "SCH15_SCHEDULED_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
-          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"ITM01_ITEMS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SCH15_SCHEDULED_ITEMS.COMPANY_CODE_SYS01=? and "+
           "SCH15_SCHEDULED_ITEMS.PROGRESSIVE_SCH06=?";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SCH15","SCH15_SCHEDULED_ITEMS.COMPANY_CODE_SYS01");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveSch06SCH15","SCH15_SCHEDULED_ITEMS.PROGRESSIVE_SCH06");
       attribute2dbField.put("itemCodeItm01SCH15","SCH15_SCHEDULED_ITEMS.ITEM_CODE_ITM01");
       attribute2dbField.put("qtySCH15","SCH15_SCHEDULED_ITEMS.QTY");
@@ -152,14 +153,15 @@ public class ScheduledItemsBean  implements ScheduledItems {
 
         // retrieve tasks defined in the call-out...
         sql =
-            "select SCH14_CALL_OUT_ITEMS.ITEM_CODE_ITM01,SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
-            "from SCH14_CALL_OUT_ITEMS,SCH03_CALL_OUT_REQUESTS,ITM01_ITEMS,SYS10_TRANSLATIONS where "+
+            "select SCH14_CALL_OUT_ITEMS.ITEM_CODE_ITM01,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
+            "from SCH14_CALL_OUT_ITEMS,SCH03_CALL_OUT_REQUESTS,ITM01_ITEMS,SYS10_COMPANY_TRANSLATIONS where "+
             "SCH03_CALL_OUT_REQUESTS.COMPANY_CODE_SYS01=SCH14_CALL_OUT_ITEMS.COMPANY_CODE_SYS01 and "+
             "SCH03_CALL_OUT_REQUESTS.CALL_OUT_CODE_SCH10=SCH14_CALL_OUT_ITEMS.CALL_OUT_CODE_SCH10 and "+
             "SCH14_CALL_OUT_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
             "SCH14_CALL_OUT_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
-            "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-            "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+						"ITM01_ITEMS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+            "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+            "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
             "SCH03_CALL_OUT_REQUESTS.COMPANY_CODE_SYS01=? and "+
             "SCH03_CALL_OUT_REQUESTS.PROGRESSIVE_SCH06=?";
         pstmt = conn.prepareStatement(sql);
@@ -246,7 +248,7 @@ public class ScheduledItemsBean  implements ScheduledItems {
         newVO = (ScheduledItemVO)newVos.get(i);
 
         // update record in SCH15...
-        res = QueryUtil.updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pk,
@@ -319,7 +321,7 @@ public class ScheduledItemsBean  implements ScheduledItems {
         vo = (ScheduledItemVO)list.get(i);
 
         // insert into SCH15...
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,

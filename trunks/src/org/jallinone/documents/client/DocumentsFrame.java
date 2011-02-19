@@ -140,6 +140,8 @@ public class DocumentsFrame extends InternalFrame {
     comboBoxControl1.getComboBox().addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent e) {
         if (e.getStateChange()==e.SELECTED) {
+					DocumentTypeVO vo = (DocumentTypeVO)docTypeList.get(comboBoxControl1.getSelectedIndex());
+					hierarTreePanel.setCompanyCode(vo.getCompanyCodeSys01DOC16());
           hierarTreePanel.setProgressiveHIE02((BigDecimal)comboBoxControl1.getValue());
           hierarTreePanel.reloadTree();
           grid.clearData();

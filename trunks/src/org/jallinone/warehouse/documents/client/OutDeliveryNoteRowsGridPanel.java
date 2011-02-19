@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.beans.Beans;
 import org.jallinone.items.java.ItemPK;
 import org.openswing.swing.table.client.GridController;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.jallinone.items.java.GridItemVO;
 import org.jallinone.sales.documents.java.SaleDocPK;
 import java.util.HashSet;
@@ -211,11 +211,11 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
       posController.setFrameTitle("warehouse positions");
 
       posController.setCodeSelectionWindow(posController.TREE_FRAME);
-      treeLevelPosDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelPosDataLocator.setServerMethodName("loadCompanyHierarchy");
       posDataLocator.setTreeDataLocator(treeLevelPosDataLocator);
       posDataLocator.setNodeNameAttribute("descriptionSYS10");
       posController.setAllowTreeLeafSelectionOnly(false);
-      posController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.HierarchyLevelVO");
+      posController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.CompanyHierarchyLevelVO");
       posController.addLookup2ParentLink("progressiveHIE01", "progressiveHie01DOC10");
       posController.addLookup2ParentLink("descriptionSYS10","locationDescriptionSYS10");
       posController.setFramePreferedSize(new Dimension(400,400));
@@ -228,7 +228,8 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
         public void beforeLookupAction(ValueObject parentVO) {
           GridOutDeliveryNoteRowVO vo = (GridOutDeliveryNoteRowVO)parentVO;
           vo.setProgressiveHie02DOC10( OutDeliveryNoteRowsGridPanel.this.parentVO.getProgressiveHie02WAR01() );
-          treeLevelPosDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02DOC10());
+          treeLevelPosDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC10());
+					treeLevelPosDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02DOC10());
         }
 
         public void forceValidate() {}
@@ -313,9 +314,9 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
             return;
           orderRows.setMode(Consts.EDIT);
 
-          Response res = ClientUtils.getData("getRootLevel",parentVO.getProgressiveHie02WAR01());
+          Response res = ClientUtils.getData("getCompanyRootLevel",new Object[]{parentVO.getCompanyCodeSys01DOC08(),parentVO.getProgressiveHie02WAR01()});
           if (!res.isError()) {
-            HierarchyLevelVO posVO = (HierarchyLevelVO)((VOResponse)res).getVo();
+            CompanyHierarchyLevelVO posVO = (CompanyHierarchyLevelVO)((VOResponse)res).getVo();
             GridOutDeliveryNoteRowVO rowVO = null;
             for(int i=0;i<orderRows.getVOListTableModel().getRowCount();i++) {
               rowVO = (GridOutDeliveryNoteRowVO)orderRows.getVOListTableModel().getObjectForRow(i);
@@ -340,11 +341,11 @@ public class OutDeliveryNoteRowsGridPanel extends JPanel implements GenericButto
       posSaleController.setFrameTitle("warehouse positions");
 
       posSaleController.setCodeSelectionWindow(posController.TREE_FRAME);
-      treeLevelPosSaleDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelPosSaleDataLocator.setServerMethodName("loadCompanyHierarchy");
       posSaleDataLocator.setTreeDataLocator(treeLevelPosSaleDataLocator);
       posSaleDataLocator.setNodeNameAttribute("descriptionSYS10");
       posSaleController.setAllowTreeLeafSelectionOnly(false);
-      posSaleController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.HierarchyLevelVO");
+      posSaleController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.CompanyHierarchyLevelVO");
       posSaleController.addLookup2ParentLink("progressiveHIE01", "progressiveHie01DOC10");
       posSaleController.addLookup2ParentLink("descriptionSYS10","locationDescriptionSYS10");
       posSaleController.setFramePreferedSize(new Dimension(400,400));

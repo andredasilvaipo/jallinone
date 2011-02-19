@@ -72,12 +72,12 @@ public class UpdateTablesAction implements Action {
 		  return new ErrorResponse(ex.getMessage());
     }
   }
-  
-  
 
-  
+
+
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public RowVO getRow() {
 	  throw new UnsupportedOperationException();
@@ -126,7 +126,7 @@ public class UpdateTablesAction implements Action {
           newRowVO = (RowVO)vo.getNewUpdatedRows().get(k);
 
           // execute update operation for the current RowVO object...
-          res = QueryUtil.updateTable(
+          res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
               conn,
               new UserSessionParameters(username),
               pkAttrs,

@@ -85,7 +85,7 @@ public class LoadPriceItemsBean  implements LoadPriceItems {
   /**
    * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
-  public PriceItemVO getPriceItem(HierarchyLevelVO pk) {
+  public PriceItemVO getPriceItem(CompanyHierarchyLevelVO pk) {
 	  throw new UnsupportedOperationException();
   }
 
@@ -105,7 +105,7 @@ public class LoadPriceItemsBean  implements LoadPriceItems {
       String companyCodeSYS01 = (String)pars.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01);
       String pricelistCodeSAL01 = (String)pars.getOtherGridParams().get(ApplicationConsts.PRICELIST);
 
-      HierarchyLevelVO vo = (HierarchyLevelVO)pars.getOtherGridParams().get(ApplicationConsts.TREE_FILTER);
+      CompanyHierarchyLevelVO vo = (CompanyHierarchyLevelVO)pars.getOtherGridParams().get(ApplicationConsts.TREE_FILTER);
       if (vo!=null) {
         progressiveHIE01 = vo.getProgressiveHIE01();
         progressiveHIE02 = vo.getProgressiveHie02HIE01();
@@ -114,17 +114,18 @@ public class LoadPriceItemsBean  implements LoadPriceItems {
       String sql =
           "select SAL02_PRICES.COMPANY_CODE_SYS01,SAL02_PRICES.ITEM_CODE_ITM01,"+
           "ITM01_ITEMS.PROGRESSIVE_HIE02,ITM01_ITEMS.PROGRESSIVE_HIE01,ITM01_ITEMS.MIN_SELLING_QTY,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,"+
-          "SYS10_TRANSLATIONS.DESCRIPTION,REG02_MEASURE_UNITS.DECIMALS,ITM01_ITEMS.NO_WAREHOUSE_MOV,"+
+          "SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,REG02_MEASURE_UNITS.DECIMALS,ITM01_ITEMS.NO_WAREHOUSE_MOV,"+
           "ITM01_ITEMS.VAT_CODE_REG01,SYS10_VAT.DESCRIPTION,REG01_VATS.DEDUCTIBLE,REG01_VATS.VALUE,"+
           "SAL02_PRICES.VALUE,SAL02_PRICES.START_DATE,SAL02_PRICES.END_DATE,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED, "+
           "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 "+
-          " from SAL02_PRICES,SYS10_TRANSLATIONS,ITM01_ITEMS,REG02_MEASURE_UNITS,SYS10_TRANSLATIONS SYS10_VAT,REG01_VATS where "+
+          " from SAL02_PRICES,SYS10_COMPANY_TRANSLATIONS,ITM01_ITEMS,REG02_MEASURE_UNITS,SYS10_TRANSLATIONS SYS10_VAT,REG01_VATS where "+
           "ITM01_ITEMS.PROGRESSIVE_HIE02=? and "+
           "ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02=REG02_MEASURE_UNITS.UM_CODE and "+
           "SAL02_PRICES.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
           "SAL02_PRICES.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
-          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"ITM01_ITEMS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SAL02_PRICES.COMPANY_CODE_SYS01 = ? and "+
           "ITM01_ITEMS.VAT_CODE_REG01=REG01_VATS.VAT_CODE and "+
           "REG01_VATS.PROGRESSIVE_SYS10=SYS10_VAT.PROGRESSIVE and "+
@@ -136,8 +137,8 @@ public class LoadPriceItemsBean  implements LoadPriceItems {
       if (rootProgressiveHIE01==null || !rootProgressiveHIE01.equals(progressiveHIE01)) {
         // retrieve all subnodes of the specified node...
         pstmt = conn.prepareStatement(
-            "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV from HIE01_LEVELS "+
-            "where ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE>=? "+
+            "select HIE01_COMPANY_LEVELS.PROGRESSIVE,HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE01,HIE01_COMPANY_LEVELS.LEV from HIE01_COMPANY_LEVELS "+
+            "where COMPANY_CODE_SYS01='"+companyCodeSYS01+"' and ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE>=? "+
             "order by LEV,PROGRESSIVE_HIE01,PROGRESSIVE"
         );
         pstmt.setBigDecimal(1,progressiveHIE02);
@@ -179,7 +180,7 @@ public class LoadPriceItemsBean  implements LoadPriceItems {
       attribute2dbField.put("progressiveHie01ITM01","ITM01_ITEMS.PROGRESSIVE_HIE01");
       attribute2dbField.put("minSellingQtyITM01","ITM01_ITEMS.MIN_SELLING_QTY");
       attribute2dbField.put("minSellingQtyUmCodeReg02ITM01","ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02");
-      attribute2dbField.put("itemDescriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("itemDescriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("decimalsREG02","REG02_MEASURE_UNITS.DECIMALS");
 
       attribute2dbField.put("vatCodeReg01ITM01","ITM01_ITEMS.VAT_CODE_REG01");

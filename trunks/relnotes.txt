@@ -1,5 +1,18 @@
 
 
+Release Notes 2.7
+-----------------
+
+Refactored database tables related to hierarchies and translations, in order to fully support data decoupling among companies.
+Changed reports according to database changes.
+Fixed problem on customizing repository path for reports.
+Fixed problem on document management window, whem defining date type properties.
+Added multiple printing of invoices.
+Updated croatian translations.
+Include 2.3.8 version of OpenSwing.
+
+
+
 Release Notes 2.6
 -----------------
 

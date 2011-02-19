@@ -60,7 +60,7 @@ public interface Translations {
 	 */
 	public CustomValueObject getCustomValueObject();
 
-	public VOListResponse updateTranslations(TopicVO topic,ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse updateTranslations(String companyCodeSys01,TopicVO topic,ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
 
 	public VOListResponse loadTranslations(GridParams gridParams,String serverLanguageId,String username) throws Throwable;
 

@@ -58,11 +58,11 @@ public class RootLevelAction implements Action {
 
 
 	public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
-		BigDecimal progressiveHIE02 = (BigDecimal)inputPar;
+		BigDecimal progressiveHIE04 = (BigDecimal)inputPar;
 		try {
 
 			Hierarchies bean = (Hierarchies)JAIOBeanFactory.getInstance().getBean(Hierarchies.class);
-			Response answer = bean.getRootLevel(progressiveHIE02,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+			Response answer = bean.getRootLevel(progressiveHIE04,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
 			return answer;
 		}

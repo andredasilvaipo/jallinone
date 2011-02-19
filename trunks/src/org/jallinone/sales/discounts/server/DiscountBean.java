@@ -49,7 +49,7 @@ import org.jallinone.events.server.*;
 public class DiscountBean implements Discount {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -57,9 +57,9 @@ public class DiscountBean implements Discount {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -69,7 +69,7 @@ public class DiscountBean implements Discount {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -81,7 +81,7 @@ public class DiscountBean implements Discount {
     Connection conn = null;
     try {
 	    if (this.conn==null) conn = getConn(); else conn = this.conn;
-	    
+
 	    String codes = "";
 	    for(int i=0;i<discountCodes.size();i++)
 	      codes += "'"+discountCodes.get(i)+"',";
@@ -89,22 +89,23 @@ public class DiscountBean implements Discount {
 	      codes = codes.substring(0,codes.length()-1);
 	    else
 	      codes = "''";
-	
+
 	    DiscountVO vo = null;
 	    String sql =
 	      "select SAL03_DISCOUNTS.COMPANY_CODE_SYS01,SAL03_DISCOUNTS.DISCOUNT_CODE,SAL03_DISCOUNTS.DISCOUNT_TYPE,"+
 	      "SAL03_DISCOUNTS.PROGRESSIVE_SYS10,SAL03_DISCOUNTS.CURRENCY_CODE_REG03,SAL03_DISCOUNTS.MIN_VALUE,"+
 	      "SAL03_DISCOUNTS.MAX_VALUE,SAL03_DISCOUNTS.MIN_PERC,SAL03_DISCOUNTS.MAX_PERC,SAL03_DISCOUNTS.START_DATE,"+
-	      "SAL03_DISCOUNTS.END_DATE,SYS10_TRANSLATIONS.DESCRIPTION,SAL03_DISCOUNTS.MIN_QTY,SAL03_DISCOUNTS.MULTIPLE_QTY "+
-	      "from SAL03_DISCOUNTS,SYS10_TRANSLATIONS where "+
+	      "SAL03_DISCOUNTS.END_DATE,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,SAL03_DISCOUNTS.MIN_QTY,SAL03_DISCOUNTS.MULTIPLE_QTY "+
+	      "from SAL03_DISCOUNTS,SYS10_COMPANY_TRANSLATIONS where "+
 	      "SAL03_DISCOUNTS.COMPANY_CODE_SYS01=? and SAL03_DISCOUNTS.DISCOUNT_CODE in ("+codes+") and "+
-	      "SAL03_DISCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-	      "SYS10_TRANSLATIONS.LANGUAGE_CODE=?";
-	
+				"SAL03_DISCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+	      "SAL03_DISCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+	      "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?";
+
 	    ArrayList values = new ArrayList();
 	    values.add(companyCodeSYS01);
 	    values.add(langId);
-	
+
 	    HashMap attribute2dbField = new HashMap();
 	    attribute2dbField.put("companyCodeSys01SAL03","SAL03_DISCOUNTS.COMPANY_CODE_SYS01");
 	    attribute2dbField.put("discountCodeSAL03","SAL03_DISCOUNTS.DISCOUNT_CODE");
@@ -117,10 +118,10 @@ public class DiscountBean implements Discount {
 	    attribute2dbField.put("maxPercSAL03","SAL03_DISCOUNTS.MAX_PERC");
 	    attribute2dbField.put("startDateSAL03","SAL03_DISCOUNTS.START_DATE");
 	    attribute2dbField.put("endDateSAL03","SAL03_DISCOUNTS.END_DATE");
-	    attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+	    attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 	    attribute2dbField.put("minQtySAL03","SAL03_DISCOUNTS.MIN_QTY");
 	    attribute2dbField.put("multipleQtySAL03","SAL03_DISCOUNTS.MULTIPLE_QTY");
-	
+
 	    return QueryUtil.getQuery(
 	        conn,
 	        new UserSessionParameters(username),
@@ -144,7 +145,7 @@ public class DiscountBean implements Discount {
             }
 
         }
-        catch (Exception exx) {}    	
+        catch (Exception exx) {}
     }
   }
 
@@ -159,7 +160,7 @@ public class DiscountBean implements Discount {
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
-      vo.setProgressiveSys10SAL03( TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01SAL03(),conn) );
+      vo.setProgressiveSys10SAL03( CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01SAL03(),"UNDEFINED",conn) );
       if (vo.getMinQtySAL03()==null)
         vo.setMinQtySAL03(new BigDecimal(1));
       if (vo.getMultipleQtySAL03()==null)
@@ -167,7 +168,7 @@ public class DiscountBean implements Discount {
 
       pstmt = conn.prepareStatement(
         "insert into SAL03_DISCOUNTS(COMPANY_CODE_SYS01,DISCOUNT_CODE,DISCOUNT_TYPE,PROGRESSIVE_SYS10,CURRENCY_CODE_REG03,"+
-        "MIN_VALUE,MAX_VALUE,MIN_PERC,MAX_PERC,START_DATE,END_DATE,MIN_QTY,MULTIPLE_QTY) values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        "MIN_VALUE,MAX_VALUE,MIN_PERC,MAX_PERC,START_DATE,END_DATE,MIN_QTY,MULTIPLE_QTY,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
       pstmt.setString(1,vo.getCompanyCodeSys01SAL03());
       pstmt.setString(2,vo.getDiscountCodeSAL03());
       pstmt.setString(3,vo.getDiscountTypeSAL03());
@@ -181,7 +182,8 @@ public class DiscountBean implements Discount {
       pstmt.setDate(11,vo.getEndDateSAL03());
       pstmt.setBigDecimal(12,vo.getMinQtySAL03());
       pstmt.setString(13,vo.getMultipleQtySAL03().booleanValue()?"Y":"N");
-
+			pstmt.setString(14,"UNDEFINED");
+			pstmt.setTimestamp(15,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.execute();
     }
     catch (Exception ex) {
@@ -208,7 +210,7 @@ public class DiscountBean implements Discount {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
   }
 
@@ -221,7 +223,7 @@ public class DiscountBean implements Discount {
     Connection conn = null;
     try {
 	  if (this.conn==null) conn = getConn(); else conn = this.conn;
-      TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10SAL03(),langId,conn);
+      CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01SAL03(),oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10SAL03(),langId,username,conn);
 
       HashMap attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SAL03","COMPANY_CODE_SYS01");
@@ -242,7 +244,7 @@ public class DiscountBean implements Discount {
       pkAttrs.add("companyCodeSys01SAL03");
       pkAttrs.add("discountCodeSAL03");
 
-      return QueryUtil.updateTable(
+      return org.jallinone.commons.server.QueryUtilExtension.updateTable(
           conn,
           new UserSessionParameters(username),
           pkAttrs,
@@ -265,7 +267,7 @@ public class DiscountBean implements Discount {
         catch (Exception ex3) {
         }
         throw ex;
-    }    
+    }
     finally {
       try {
         pstmt.close();
@@ -280,7 +282,7 @@ public class DiscountBean implements Discount {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
   }
 
@@ -293,7 +295,7 @@ public class DiscountBean implements Discount {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      TranslationUtils.deleteTranslations(vo.getProgressiveSys10SAL03(),conn);
+      CompanyTranslationUtils.deleteTranslations(vo.getCompanyCodeSys01SAL03(),vo.getProgressiveSys10SAL03(),conn);
 
       pstmt = conn.prepareStatement(
         "delete from SAL03_DISCOUNTS where COMPANY_CODE_SYS01=? and DISCOUNT_CODE=?");
@@ -310,7 +312,7 @@ public class DiscountBean implements Discount {
         catch (Exception ex3) {
         }
         throw ex;
-    }    
+    }
     finally {
       try {
         pstmt.close();

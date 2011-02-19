@@ -18,7 +18,7 @@ import org.openswing.swing.table.client.Grid;
 import org.jallinone.commons.client.ApplicationClientFacade;
 import org.openswing.swing.client.GridControl;
 import org.jallinone.sales.discounts.java.*;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.openswing.swing.tree.client.TreeController;
@@ -110,8 +110,8 @@ public class HierarCustomerDiscountsController extends CompanyGridController imp
   public Response insertRecords(int[] rowNumbers, ArrayList newValueObjects) throws Exception {
     HierarCustomerDiscountVO vo = null;
     DefaultMutableTreeNode node = frame.getHierarTreePanel().getSelectedNode();
-    HierarchyLevelVO levelVO = (HierarchyLevelVO)node.getUserObject();
-    HierarchyLevelVO root = (HierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
+    CompanyHierarchyLevelVO levelVO = (CompanyHierarchyLevelVO)node.getUserObject();
+    CompanyHierarchyLevelVO root = (CompanyHierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
 
     Response response = null;
     for(int i=0;i<newValueObjects.size();i++) {
@@ -166,8 +166,9 @@ public class HierarCustomerDiscountsController extends CompanyGridController imp
    * @param node selected node
    */
   public void leftClick(DefaultMutableTreeNode node) {
-    HierarchyLevelVO vo = (HierarchyLevelVO)node.getUserObject();
-    HierarchyLevelVO root = (HierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
+    CompanyHierarchyLevelVO vo = (CompanyHierarchyLevelVO)node.getUserObject();
+    CompanyHierarchyLevelVO root = (CompanyHierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
+		frame.getGrid().getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanySys01HIE01());
     frame.getGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02HIE01());
     frame.getGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE01,vo.getProgressiveHIE01());
     frame.getGrid().getOtherGridParams().put(ApplicationConsts.ROOT_PROGRESSIVE_HIE01,root.getProgressiveHIE01());

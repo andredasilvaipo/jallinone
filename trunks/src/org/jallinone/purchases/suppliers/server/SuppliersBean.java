@@ -146,7 +146,7 @@ public class SuppliersBean  implements Suppliers {
       attribute2dbField.put("noteREG04","REG04_SUBJECTS.NOTE");
       attribute2dbField.put("paymentCodeReg10PUR01","PUR01_SUPPLIERS.PAYMENT_CODE_REG10");
       attribute2dbField.put("bankCodeReg12PUR01","PUR01_SUPPLIERS.BANK_CODE_REG12");
-      attribute2dbField.put("paymentDescriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("paymentDescriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("debitAccountCodeAcc02PUR01","PUR01_SUPPLIERS.DEBIT_ACCOUNT_CODE_ACC02");
       attribute2dbField.put("costsAccountCodeAcc02PUR01","PUR01_SUPPLIERS.COSTS_ACCOUNT_CODE_ACC02");
 
@@ -158,16 +158,17 @@ public class SuppliersBean  implements Suppliers {
         "select REG04_SUBJECTS.COMPANY_CODE_SYS01,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,REG04_SUBJECTS.PROGRESSIVE,REG04_SUBJECTS.ADDRESS,REG04_SUBJECTS.CITY,REG04_SUBJECTS.PROVINCE,REG04_SUBJECTS.COUNTRY,REG04_SUBJECTS.TAX_CODE,PUR01_SUPPLIERS.SUPPLIER_CODE,"+
         "REG04_SUBJECTS.ZIP,REG04_SUBJECTS.PHONE_NUMBER,REG04_SUBJECTS.FAX_NUMBER,REG04_SUBJECTS.EMAIL_ADDRESS,"+
         "REG04_SUBJECTS.WEB_SITE,REG04_SUBJECTS.LAWFUL_SITE,REG04_SUBJECTS.NOTE,"+
-        "PUR01_SUPPLIERS.PAYMENT_CODE_REG10,PUR01_SUPPLIERS.BANK_CODE_REG12,SYS10_TRANSLATIONS.DESCRIPTION,"+
+        "PUR01_SUPPLIERS.PAYMENT_CODE_REG10,PUR01_SUPPLIERS.BANK_CODE_REG12,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+
         "PUR01_SUPPLIERS.DEBIT_ACCOUNT_CODE_ACC02,PUR01_SUPPLIERS.COSTS_ACCOUNT_CODE_ACC02 "+
-        " from REG04_SUBJECTS,PUR01_SUPPLIERS,SYS10_TRANSLATIONS,REG10_PAY_MODES where "+
+        " from REG04_SUBJECTS,PUR01_SUPPLIERS,SYS10_COMPANY_TRANSLATIONS,REG10_PAY_MODES where "+
         "PUR01_SUPPLIERS.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
         "PUR01_SUPPLIERS.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
         "REG04_SUBJECTS.COMPANY_CODE_SYS01=? and REG04_SUBJECTS.PROGRESSIVE=? and "+
 				"PUR01_SUPPLIERS.COMPANY_CODE_SYS01=REG10_PAY_MODES.COMPANY_CODE_SYS01 and "+
         "PUR01_SUPPLIERS.PAYMENT_CODE_REG10=REG10_PAY_MODES.PAYMENT_CODE and "+
-        "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-        "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+				"REG10_PAY_MODES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+        "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+        "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
         "PUR01_SUPPLIERS.ENABLED='Y' ";
 
       ArrayList values = new ArrayList();
@@ -288,15 +289,16 @@ public class SuppliersBean  implements Suppliers {
 
       String sql =
           "select REG04_SUBJECTS.COMPANY_CODE_SYS01,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,REG04_SUBJECTS.PROGRESSIVE,REG04_SUBJECTS.CITY,REG04_SUBJECTS.PROVINCE,REG04_SUBJECTS.COUNTRY,REG04_SUBJECTS.TAX_CODE,PUR01_SUPPLIERS.SUPPLIER_CODE,"+
-          "PUR01_SUPPLIERS.PAYMENT_CODE_REG10,SYS10_TRANSLATIONS.DESCRIPTION,PUR01_SUPPLIERS.DEBIT_ACCOUNT_CODE_ACC02,REG04_SUBJECTS.NOTE "+
-          " from REG04_SUBJECTS,PUR01_SUPPLIERS,REG10_PAY_MODES,SYS10_TRANSLATIONS where "+
+          "PUR01_SUPPLIERS.PAYMENT_CODE_REG10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,PUR01_SUPPLIERS.DEBIT_ACCOUNT_CODE_ACC02,REG04_SUBJECTS.NOTE "+
+          " from REG04_SUBJECTS,PUR01_SUPPLIERS,REG10_PAY_MODES,SYS10_COMPANY_TRANSLATIONS where "+
           "PUR01_SUPPLIERS.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "PUR01_SUPPLIERS.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
           "PUR01_SUPPLIERS.ENABLED='Y' and PUR01_SUPPLIERS.COMPANY_CODE_SYS01 in ("+companies+") and "+
 					"PUR01_SUPPLIERS.COMPANY_CODE_SYS01=REG10_PAY_MODES.COMPANY_CODE_SYS01 and "+
           "PUR01_SUPPLIERS.PAYMENT_CODE_REG10=REG10_PAY_MODES.PAYMENT_CODE and "+
-          "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?";
+					"REG10_PAY_MODES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01REG04","REG04_SUBJECTS.COMPANY_CODE_SYS01");
@@ -309,7 +311,7 @@ public class SuppliersBean  implements Suppliers {
       attribute2dbField.put("taxCodeREG04","REG04_SUBJECTS.TAX_CODE");
       attribute2dbField.put("supplierCodePUR01","PUR01_SUPPLIERS.SUPPLIER_CODE");
       attribute2dbField.put("paymentCodeReg10PUR01","PUR01_SUPPLIERS.PAYMENT_CODE_REG10");
-      attribute2dbField.put("paymentDescriptionPUR01","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("paymentDescriptionPUR01","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("debitAccountCodeAcc02PUR01","PUR01_SUPPLIERS.DEBIT_ACCOUNT_CODE_ACC02");
       attribute2dbField.put("noteREG04","REG04_SUBJECTS.NOTE");
 
@@ -488,15 +490,16 @@ public class SuppliersBean  implements Suppliers {
 
       String sql =
           "select REG04_SUBJECTS.COMPANY_CODE_SYS01,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,REG04_SUBJECTS.PROGRESSIVE,REG04_SUBJECTS.CITY,REG04_SUBJECTS.PROVINCE,REG04_SUBJECTS.COUNTRY,REG04_SUBJECTS.TAX_CODE,PUR01_SUPPLIERS.SUPPLIER_CODE,"+
-          "PUR01_SUPPLIERS.PAYMENT_CODE_REG10,SYS10_TRANSLATIONS.DESCRIPTION,PUR01_SUPPLIERS.DEBIT_ACCOUNT_CODE_ACC02,REG04_SUBJECTS.NOTE "+
-          " from REG04_SUBJECTS,PUR01_SUPPLIERS,REG10_PAY_MODES,SYS10_TRANSLATIONS where "+
+          "PUR01_SUPPLIERS.PAYMENT_CODE_REG10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,PUR01_SUPPLIERS.DEBIT_ACCOUNT_CODE_ACC02,REG04_SUBJECTS.NOTE "+
+          " from REG04_SUBJECTS,PUR01_SUPPLIERS,REG10_PAY_MODES,SYS10_COMPANY_TRANSLATIONS where "+
           "PUR01_SUPPLIERS.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "PUR01_SUPPLIERS.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
           "PUR01_SUPPLIERS.ENABLED='Y' and PUR01_SUPPLIERS.COMPANY_CODE_SYS01 in ("+companies+") and "+
 					"PUR01_SUPPLIERS.COMPANY_CODE_SYS01=REG10_PAY_MODES.COMPANY_CODE_SYS01 and "+
           "PUR01_SUPPLIERS.PAYMENT_CODE_REG10=REG10_PAY_MODES.PAYMENT_CODE and "+
-          "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and PUR01_SUPPLIERS.SUPPLIER_CODE=?";
+					"REG10_PAY_MODES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and PUR01_SUPPLIERS.SUPPLIER_CODE=?";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01REG04","REG04_SUBJECTS.COMPANY_CODE_SYS01");
@@ -509,7 +512,7 @@ public class SuppliersBean  implements Suppliers {
       attribute2dbField.put("taxCodeREG04","REG04_SUBJECTS.TAX_CODE");
       attribute2dbField.put("supplierCodePUR01","PUR01_SUPPLIERS.SUPPLIER_CODE");
       attribute2dbField.put("paymentCodeReg10PUR01","PUR01_SUPPLIERS.PAYMENT_CODE_REG10");
-      attribute2dbField.put("paymentDescriptionPUR01","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("paymentDescriptionPUR01","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("debitAccountCodeAcc02PUR01","PUR01_SUPPLIERS.DEBIT_ACCOUNT_CODE_ACC02");
       attribute2dbField.put("noteREG04","REG04_SUBJECTS.NOTE");
 
@@ -680,35 +683,36 @@ public class SuppliersBean  implements Suppliers {
    * Business logic to execute.
    */
   public VOResponse deleteSuppliers(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
     PreparedStatement pstmt = null;
-
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-
-
-
-      stmt = conn.createStatement();
-
       SubjectPK pk = null;
 
       for(int i=0;i<list.size();i++) {
         pk = (SubjectPK)list.get(i);
 
         // logically delete the record in REG04...
-        stmt.execute(
-            "update REG04_SUBJECTS set ENABLED='N' where "+
+				pstmt = conn.prepareStatement(
+            "update REG04_SUBJECTS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
             "COMPANY_CODE_SYS01='"+pk.getCompanyCodeSys01REG04()+"' and "+
             "PROGRESSIVE='"+pk.getProgressiveREG04()+"'"
         );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
 
         // logically delete the record in PUR01...
-        stmt.execute(
-            "update PUR01_SUPPLIERS set ENABLED='N' where "+
+				pstmt = conn.prepareStatement(
+            "update PUR01_SUPPLIERS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
             "COMPANY_CODE_SYS01='"+pk.getCompanyCodeSys01REG04()+"' and "+
             "PROGRESSIVE_REG04='"+pk.getProgressiveREG04()+"'"
         );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
       return new VOResponse(new Boolean(true));
     }
@@ -726,7 +730,7 @@ public class SuppliersBean  implements Suppliers {
     }
     finally {
       try {
-        stmt.close();
+        pstmt.close();
       }
       catch (Exception ex2) {
       }

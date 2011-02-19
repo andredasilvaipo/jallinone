@@ -49,7 +49,7 @@ import javax.sql.DataSource;
 public class LoadWindowCustomizationsBean  implements LoadWindowCustomizations {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -57,9 +57,9 @@ public class LoadWindowCustomizationsBean  implements LoadWindowCustomizations {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -69,13 +69,13 @@ public class LoadWindowCustomizationsBean  implements LoadWindowCustomizations {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public WindowCustomizationVO getWindowCustomization() {
 	  throw new UnsupportedOperationException();
@@ -107,7 +107,10 @@ public class LoadWindowCustomizationsBean  implements LoadWindowCustomizations {
 
       stmt = conn.createStatement();
       ResultSet rset = stmt.executeQuery(
-          "select SYS12_WINDOW_CUSTOMIZATIONS.PROGRESSIVE_SYS13,SYS12_WINDOW_CUSTOMIZATIONS.COLUMN_NAME,SYS12_WINDOW_CUSTOMIZATIONS.COLUMN_TYPE,SYS12_WINDOW_CUSTOMIZATIONS.COLUMN_SIZE,SYS12_WINDOW_CUSTOMIZATIONS.COLUMN_DEC,SYS12_WINDOW_CUSTOMIZATIONS.PROGRESSIVE_SYS10,SYS12_WINDOW_CUSTOMIZATIONS.ATTRIBUTE_NAME,SYS10_TRANSLATIONS.DESCRIPTION from "+
+          "select SYS12_WINDOW_CUSTOMIZATIONS.PROGRESSIVE_SYS13,SYS12_WINDOW_CUSTOMIZATIONS.COLUMN_NAME,"+
+					 "SYS12_WINDOW_CUSTOMIZATIONS.COLUMN_TYPE,SYS12_WINDOW_CUSTOMIZATIONS.COLUMN_SIZE,SYS12_WINDOW_CUSTOMIZATIONS.COLUMN_DEC,"+
+					 "SYS12_WINDOW_CUSTOMIZATIONS.PROGRESSIVE_SYS10,SYS12_WINDOW_CUSTOMIZATIONS.ATTRIBUTE_NAME,SYS10_TRANSLATIONS.DESCRIPTION "+
+					 "from "+
           "SYS12_WINDOW_CUSTOMIZATIONS,SYS10_TRANSLATIONS where "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE='"+serverLanguageId+"' and "+
           "SYS12_WINDOW_CUSTOMIZATIONS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+

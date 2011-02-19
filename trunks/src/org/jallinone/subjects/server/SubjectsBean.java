@@ -14,7 +14,7 @@ import java.sql.*;
 import org.openswing.swing.logger.server.*;
 import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 import org.jallinone.system.server.*;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.jallinone.subjects.java.*;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.events.server.*;
@@ -55,7 +55,7 @@ import javax.sql.DataSource;
 public class SubjectsBean  implements Subjects {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -63,9 +63,9 @@ public class SubjectsBean  implements Subjects {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -75,7 +75,7 @@ public class SubjectsBean  implements Subjects {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -99,23 +99,23 @@ public class SubjectsBean  implements Subjects {
   public SubjectsBean() {
   }
 
-  
+
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ReferenceVO getReferenceVO(SubjectPK pk) {
 	  throw new UnsupportedOperationException();
   }
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public SubjectHierarchyLevelVO getSubjectHierarchyLevel(SubjectVO vo) {
 	  throw new UnsupportedOperationException();
   }
 
-  
+
 
   /**
    * Business logic to execute.
@@ -124,7 +124,7 @@ public class SubjectsBean  implements Subjects {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      
+
       peopleBean.setConn(conn); // use same transaction...
       orgBean.setConn(conn); // use same transaction...
       orgBean.insert(true,(OrganizationVO)inputPar,t2,serverLanguageId,username);
@@ -140,7 +140,7 @@ public class SubjectsBean  implements Subjects {
 	  }
 	  catch (Exception ex3) {
 	  }
-	  throw new Exception(ex.getMessage()); 
+	  throw new Exception(ex.getMessage());
     }
     finally {
 
@@ -152,7 +152,7 @@ public class SubjectsBean  implements Subjects {
     		}
 
     	}
-    	catch (Exception exx) {}    
+    	catch (Exception exx) {}
     	try {
     		peopleBean.setConn(null);
     		orgBean.setConn(null);
@@ -167,7 +167,7 @@ public class SubjectsBean  implements Subjects {
    * Business logic to execute.
    */
   public VOResponse insertPeople(PeopleVO inputPar,String t1,String t2,String serverLanguageId,String username) throws Throwable {
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -186,7 +186,7 @@ public class SubjectsBean  implements Subjects {
 	  }
 	  catch (Exception ex3) {
 	  }
-	  throw new Exception(ex.getMessage()); 
+	  throw new Exception(ex.getMessage());
     }
     finally {
     	try {
@@ -197,7 +197,7 @@ public class SubjectsBean  implements Subjects {
     		}
 
     	}
-    	catch (Exception exx) {}    	
+    	catch (Exception exx) {}
     	try {
     		peopleBean.setConn(null);
     		orgBean.setConn(null);
@@ -219,27 +219,33 @@ public class SubjectsBean  implements Subjects {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       // insert record in SYS10...
-      BigDecimal progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01REG08(),conn);
+      BigDecimal progressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01REG08(),username,conn);
       vo.setProgressiveSys10REG08(progressiveSYS10);
 
       // insert into HIE02...
       vo.setProgressiveHie02REG08( CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01REG08(),"HIE02_HIERARCHIES","PROGRESSIVE",conn) );
-      pstmt = conn.prepareStatement("insert into HIE02_HIERARCHIES(PROGRESSIVE,COMPANY_CODE_SYS01,ENABLED) values(?,'"+vo.getCompanyCodeSys01REG08()+"','Y')");
+      pstmt = conn.prepareStatement("insert into HIE02_COMPANY_HIERARCHIES(PROGRESSIVE,COMPANY_CODE_SYS01,ENABLED,CREATE_USER,CREATE_DATE) values(?,'"+vo.getCompanyCodeSys01REG08()+"','Y',?,?)");
       pstmt.setBigDecimal(1,vo.getProgressiveHie02REG08());
-      pstmt.execute();
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
       pstmt.close();
 
       // insert into HIE01...
-      BigDecimal progressiveHIE01 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01REG08(),conn);
-      pstmt = conn.prepareStatement("insert into HIE01_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE02,LEV,ENABLED) values(?,?,0,'Y')");
+      BigDecimal progressiveHIE01 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01REG08(),username,conn);
+      pstmt = conn.prepareStatement("insert into HIE01_COMPANY_LEVELS(COMPANY_CODE_SYS01,PROGRESSIVE,PROGRESSIVE_HIE02,LEV,ENABLED,CREATE_USER,CREATE_DATE) values('"+vo.getCompanyCodeSys01REG08()+"',?,?,0,'Y',?,?)");
       pstmt.setBigDecimal(1,progressiveHIE01);
       pstmt.setBigDecimal(2,vo.getProgressiveHie02REG08());
-      pstmt.execute();
+			pstmt.setString(3,username);
+			pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
       pstmt.close();
-      pstmt = conn.prepareStatement("update HIE02_HIERARCHIES set PROGRESSIVE_HIE01=? where PROGRESSIVE=?");
+      pstmt = conn.prepareStatement("update HIE02_COMPANY_HIERARCHIES set PROGRESSIVE_HIE01=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG08()+"' and  PROGRESSIVE=?");
       pstmt.setBigDecimal(1,progressiveHIE01);
-      pstmt.setBigDecimal(2,vo.getProgressiveHie02REG08());
-      pstmt.execute();
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setBigDecimal(4,vo.getProgressiveHie02REG08());
+			pstmt.execute();
 
       // insert into REG08...
       Map attribute2dbField = new HashMap();
@@ -248,7 +254,7 @@ public class SubjectsBean  implements Subjects {
       attribute2dbField.put("subjectTypeREG08","SUBJECT_TYPE");
       attribute2dbField.put("progressiveHie02REG08","PROGRESSIVE_HIE02");
 
-      Response res = QueryUtil.insertTable(
+      Response res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
           conn,
           new UserSessionParameters(username),
           vo,
@@ -311,7 +317,7 @@ public class SubjectsBean  implements Subjects {
 
 
       // insert record in REG16...
-      pstmt = conn.prepareStatement("insert into REG16_SUBJECTS_LINKS(COMPANY_CODE_SYS01,PROGRESSIVE_REG04,PROGRESSIVE_HIE01,PROGRESSIVE_HIE02) values(?,?,?,?)");
+      pstmt = conn.prepareStatement("insert into REG16_SUBJECTS_LINKS(COMPANY_CODE_SYS01,PROGRESSIVE_REG04,PROGRESSIVE_HIE01,PROGRESSIVE_HIE02,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?)");
       Subject vo = null;
       for(int i=0;i<hsVO.getSubjects().size();i++) {
         vo = (Subject)hsVO.getSubjects().get(i);
@@ -319,6 +325,8 @@ public class SubjectsBean  implements Subjects {
         pstmt.setBigDecimal(2,vo.getProgressiveREG04());
         pstmt.setBigDecimal(3,hsVO.getProgressiveHie01REG16());
         pstmt.setBigDecimal(4,hsVO.getProgressiveHie02REG16());
+				pstmt.setString(5,username);
+				pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
         try {
           pstmt.execute();
         }
@@ -409,14 +417,14 @@ public class SubjectsBean  implements Subjects {
 
         if (loadOnlyCurrentLevel!=null && loadOnlyCurrentLevel.booleanValue())
           pstmt = conn.prepareStatement(
-              "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV from HIE01_LEVELS "+
-              "where ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE=? "+
+              "select HIE01_COMPANY_LEVELS.PROGRESSIVE,HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE01,HIE01_COMPANY_LEVELS.LEV from HIE01_COMPANY_LEVELS "+
+              "where COMPANY_CODE_SYS01='"+companyCodeSYS01+"' and ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE=? "+
               "order by LEV,PROGRESSIVE_HIE01,PROGRESSIVE"
           );
         else
           pstmt = conn.prepareStatement(
-              "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV from HIE01_LEVELS "+
-              "where ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE>=? "+
+              "select HIE01_COMPANY_LEVELS.PROGRESSIVE,HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE01,HIE01_COMPANY_LEVELS.LEV from HIE01_COMPANY_LEVELS "+
+              "where COMPANY_CODE_SYS01='"+companyCodeSYS01+"' and ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE>=? "+
               "order by LEV,PROGRESSIVE_HIE01,PROGRESSIVE"
           );
         pstmt.setBigDecimal(1,progressiveHIE02);
@@ -600,14 +608,18 @@ public class SubjectsBean  implements Subjects {
 
 
       String sql =
-          "select REG08_SUBJECT_HIERARCHIES.COMPANY_CODE_SYS01,REG08_SUBJECT_HIERARCHIES.SUBJECT_TYPE,REG08_SUBJECT_HIERARCHIES.PROGRESSIVE_SYS10,REG08_SUBJECT_HIERARCHIES.PROGRESSIVE_HIE02,SYS10_TRANSLATIONS.DESCRIPTION from REG08_SUBJECT_HIERARCHIES,SYS10_TRANSLATIONS where "+
-          "REG08_SUBJECT_HIERARCHIES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          "select REG08_SUBJECT_HIERARCHIES.COMPANY_CODE_SYS01,REG08_SUBJECT_HIERARCHIES.SUBJECT_TYPE,"+
+					"REG08_SUBJECT_HIERARCHIES.PROGRESSIVE_SYS10,REG08_SUBJECT_HIERARCHIES.PROGRESSIVE_HIE02,"+
+					"SYS10_COMPANY_TRANSLATIONS.DESCRIPTION "+
+					"from REG08_SUBJECT_HIERARCHIES,SYS10_COMPANY_TRANSLATIONS where "+
+					"REG08_SUBJECT_HIERARCHIES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "REG08_SUBJECT_HIERARCHIES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "REG08_SUBJECT_HIERARCHIES.COMPANY_CODE_SYS01 in ("+companies+") and SUBJECT_TYPE='"+subjectTypeREG08+"'";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01REG08","REG08_SUBJECT_HIERARCHIES.COMPANY_CODE_SYS01");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveHie02REG08","REG08_SUBJECT_HIERARCHIES.PROGRESSIVE_HIE02");
       attribute2dbField.put("progressiveSys10REG08","REG08_SUBJECT_HIERARCHIES.PROGRESSIVE_SYS10");
       attribute2dbField.put("subjectTypeREG08","REG08_SUBJECT_HIERARCHIES.SUBJECT_TYPE");
@@ -677,14 +689,15 @@ public class SubjectsBean  implements Subjects {
 
 
       String sql =
-          "select REG08_SUBJECT_HIERARCHIES.COMPANY_CODE_SYS01,REG08_SUBJECT_HIERARCHIES.PROGRESSIVE_HIE02,SYS10_TRANSLATIONS.DESCRIPTION from REG08_SUBJECT_HIERARCHIES,SYS10_TRANSLATIONS where "+
-          "REG08_SUBJECT_HIERARCHIES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          "select REG08_SUBJECT_HIERARCHIES.COMPANY_CODE_SYS01,REG08_SUBJECT_HIERARCHIES.PROGRESSIVE_HIE02,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION from REG08_SUBJECT_HIERARCHIES,SYS10_COMPANY_TRANSLATIONS where "+
+					"REG08_SUBJECT_HIERARCHIES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "REG08_SUBJECT_HIERARCHIES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "REG08_SUBJECT_HIERARCHIES.COMPANY_CODE_SYS01=? and SUBJECT_TYPE=?";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01REG16","REG08_SUBJECT_HIERARCHIES.COMPANY_CODE_SYS01");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveHie02REG16","REG08_SUBJECT_HIERARCHIES.PROGRESSIVE_HIE02");
       ArrayList values = new ArrayList();
       values.add(serverLanguageId);
@@ -721,11 +734,12 @@ public class SubjectsBean  implements Subjects {
       }
 
       sql =
-          "select SYS10_TRANSLATIONS.DESCRIPTION,REG16_SUBJECTS_LINKS.PROGRESSIVE_HIE02,REG16_SUBJECTS_LINKS.PROGRESSIVE_HIE01 "+
-          "from REG16_SUBJECTS_LINKS,SYS10_TRANSLATIONS "+
+          "select SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,REG16_SUBJECTS_LINKS.PROGRESSIVE_HIE02,REG16_SUBJECTS_LINKS.PROGRESSIVE_HIE01 "+
+          "from REG16_SUBJECTS_LINKS,SYS10_COMPANY_TRANSLATIONS "+
           "where "+
-          "REG16_SUBJECTS_LINKS.PROGRESSIVE_HIE01=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"REG16_SUBJECTS_LINKS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "REG16_SUBJECTS_LINKS.PROGRESSIVE_HIE01=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "REG16_SUBJECTS_LINKS.COMPANY_CODE_SYS01=? and REG16_SUBJECTS_LINKS.PROGRESSIVE_REG04=?";
       pstmt = conn.prepareStatement(sql);
       pstmt.setString(1,serverLanguageId);
@@ -957,7 +971,7 @@ public class SubjectsBean  implements Subjects {
         attr2dbFields.put("valueREG15","VALUE");
 
 
-        res = new QueryUtil().updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
@@ -1010,7 +1024,7 @@ public class SubjectsBean  implements Subjects {
    * Business logic to execute.
    */
   public void updateOrganization(OrganizationVO oldVO,OrganizationVO newVO,String t1,String t2,String serverLanguageId,String username) throws Throwable {
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -1028,7 +1042,7 @@ public class SubjectsBean  implements Subjects {
 	  }
 	  catch (Exception ex3) {
 	  }
-      throw new Exception(ex.getMessage()); 
+      throw new Exception(ex.getMessage());
     }
     finally {
       try {
@@ -1045,17 +1059,17 @@ public class SubjectsBean  implements Subjects {
 
       }
       catch (Exception exx) {}
-      
+
     }
 
   }
 
-  
+
   /**
    * Business logic to execute.
    */
   public void updatePeople(PeopleVO oldVO,PeopleVO newVO,String t1,String t2,String serverLanguageId,String username) throws Throwable {
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -1073,7 +1087,7 @@ public class SubjectsBean  implements Subjects {
 	  }
 	  catch (Exception ex3) {
 	  }
-      throw new Exception(ex.getMessage()); 
+      throw new Exception(ex.getMessage());
     }
     finally {
       try {
@@ -1088,7 +1102,7 @@ public class SubjectsBean  implements Subjects {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }
@@ -1114,7 +1128,7 @@ public class SubjectsBean  implements Subjects {
         newVO = (SubjectHierarchyVO)newVOs.get(i);
 
         // update SYS10 table...
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10REG08(),serverLanguageId,conn);
+        CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01REG08(),oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10REG08(),serverLanguageId,username,conn);
 
       }
 
@@ -1154,7 +1168,7 @@ public class SubjectsBean  implements Subjects {
    */
   public VOListResponse updateSubjectHierarchyLevels(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable {
     Statement stmt = null;
-    
+		PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -1171,23 +1185,31 @@ public class SubjectsBean  implements Subjects {
         // update/insert REG16 table...
         if (oldVO.getProgressiveHie01REG16()==null) {
           // insert...
-          stmt.execute(
-            "insert into REG16_SUBJECTS_LINKS(COMPANY_CODE_SYS01,PROGRESSIVE_REG04,PROGRESSIVE_HIE01,PROGRESSIVE_HIE02) "+
-            "values('"+newVO.getCompanyCodeSys01REG16()+"',"+newVO.getProgressiveReg04REG16()+","+newVO.getProgressiveHie01REG16()+","+newVO.getProgressiveHie02REG16()+")"
-          );
-        }
+          pstmt = conn.prepareStatement(
+            "insert into REG16_SUBJECTS_LINKS(COMPANY_CODE_SYS01,PROGRESSIVE_REG04,PROGRESSIVE_HIE01,PROGRESSIVE_HIE02,CREATE_USER,CREATE_DATE) "+
+            "values('"+newVO.getCompanyCodeSys01REG16()+"',"+newVO.getProgressiveReg04REG16()+","+newVO.getProgressiveHie01REG16()+","+newVO.getProgressiveHie02REG16()+",?,?)"
+					);
+					pstmt.setString(1,username);
+					pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+					pstmt.execute();
+					pstmt.close();
+				}
         else {
           // update...
-          stmt.execute(
-            "update REG16_SUBJECTS_LINKS set PROGRESSIVE_HIE01="+newVO.getProgressiveHie01REG16()+" where "+
+					pstmt = conn.prepareStatement(
+            "update REG16_SUBJECTS_LINKS set PROGRESSIVE_HIE01="+newVO.getProgressiveHie01REG16()+",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
            "COMPANY_CODE_SYS01='"+newVO.getCompanyCodeSys01REG16()+"' and "+
            "PROGRESSIVE_REG04="+newVO.getProgressiveReg04REG16()+" and "+
            "PROGRESSIVE_HIE02="+newVO.getProgressiveHie02REG16()+" and "+
            "PROGRESSIVE_HIE01="+oldVO.getProgressiveHie01REG16()
           );
+					pstmt.setString(1,username);
+					pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+					pstmt.execute();
+					pstmt.close();
         }
 
-      }
+      } // end for
 
       return new VOListResponse(newVOs,false,newVOs.size());
     }
@@ -1208,6 +1230,10 @@ public class SubjectsBean  implements Subjects {
             stmt.close();
         }
         catch (Exception exx) {}
+				try {
+						pstmt.close();
+				}
+				catch (Exception exx) {}
         try {
             if (this.conn==null && conn!=null) {
                 // close only local connection
@@ -1224,7 +1250,7 @@ public class SubjectsBean  implements Subjects {
 
 
 
-  
+
   /**
    * Business logic to execute.
    */
@@ -1248,7 +1274,7 @@ public class SubjectsBean  implements Subjects {
         vo.setProgressiveREG15( CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01REG15(),"REG15_REFERENCES","PROGRESSIVE",conn) );
 
         // insert into REG15...
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,
@@ -1304,6 +1330,7 @@ public class SubjectsBean  implements Subjects {
    */
   public VOResponse deleteSubjectHierarchy(ArrayList list,String serverLanguageId,String username) throws Throwable {
     Statement stmt = null;
+		PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -1314,12 +1341,12 @@ public class SubjectsBean  implements Subjects {
         vo = (SubjectHierarchyVO)list.get(i);
 
         // phisically delete the record in SYS10...
-        TranslationUtils.deleteTranslations(vo.getProgressiveSys10REG08(),conn);
+        CompanyTranslationUtils.deleteTranslations(vo.getCompanyCodeSys01REG08(),vo.getProgressiveSys10REG08(),conn);
 
         // phisically delete records in REG16...
         stmt.execute(
             "delete REG16_SUBJECT_LINKS where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG08()+"' and "+
-            "PROGRESSIVE_HIE01 in (SELECT PROGRESSIVE from HIE01_LEVELS where PROGRESSIVE_HIE02="+vo.getProgressiveHie02REG08()+")"
+            "PROGRESSIVE_HIE01 in (SELECT PROGRESSIVE from HIE01_COMPANY_LEVELS where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG08()+"' and PROGRESSIVE_HIE02="+vo.getProgressiveHie02REG08()+")"
         );
 
         // phisically delete the record in REG08...
@@ -1329,16 +1356,21 @@ public class SubjectsBean  implements Subjects {
         );
 
         // phisically delete records in HIE01...
-        stmt.execute(
-            "update HIE02_HIERARCHIES set PROGRESSIVE_HIE01=null where PROGRESSIVE="+vo.getProgressiveHie02REG08()
+				pstmt = conn.prepareStatement(
+            "update HIE02_COMPANY_HIERARCHIES set PROGRESSIVE_HIE01=null,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG08()+"' and  PROGRESSIVE="+vo.getProgressiveHie02REG08()
         );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
+
         stmt.execute(
-            "delete HIE01_LEVELS where PROGRESSIVE_HIE02="+vo.getProgressiveHie02REG08()
+            "delete HIE01_COMPANY_LEVELS where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG08()+"' and PROGRESSIVE_HIE02="+vo.getProgressiveHie02REG08()
         );
 
         // phisically delete record in HIE02...
         stmt.execute(
-            "delete HIE02_HIERARCHIES where PROGRESSIVE="+vo.getProgressiveHie02REG08()
+            "delete HIE02_COMPANY_HIERARCHIES where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG08()+"' and PROGRESSIVE="+vo.getProgressiveHie02REG08()
         );
 
       }
@@ -1362,6 +1394,10 @@ public class SubjectsBean  implements Subjects {
             stmt.close();
         }
         catch (Exception exx) {}
+				try {
+						pstmt.close();
+				}
+				catch (Exception exx) {}
         try {
             if (this.conn==null && conn!=null) {
                 // close only local connection
@@ -1441,7 +1477,7 @@ public class SubjectsBean  implements Subjects {
    */
   public VOResponse deleteReferences(ArrayList list,String serverLanguageId,String username) throws Throwable {
     Statement stmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;

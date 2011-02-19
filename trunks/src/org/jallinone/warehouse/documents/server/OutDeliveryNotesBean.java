@@ -161,7 +161,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
       attribute2dbField.put("transportMotiveCodeReg20DOC08","TRANSPORT_MOTIVE_CODE_REG20");
 
       // insert into DOC08...
-      Response res = QueryUtil.insertTable(
+      Response res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
           conn,
           new UserSessionParameters(username),
           vo,
@@ -274,14 +274,16 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
 
         // update note...
         pstmt = conn.prepareStatement(
-          "UPDATE DOC08_DELIVERY_NOTES SET NOTE=? "+
+          "UPDATE DOC08_DELIVERY_NOTES SET NOTE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  "+
           "WHERE COMPANY_CODE_SYS01=? AND DOC_TYPE=? AND DOC_YEAR=? AND DOC_NUMBER=? "
         );
         pstmt.setString(1,currentNote);
-        pstmt.setString(2,vo.getCompanyCodeSys01DOC10());
-        pstmt.setString(3,vo.getDocTypeDOC10());
-        pstmt.setBigDecimal(4,vo.getDocYearDOC10());
-        pstmt.setBigDecimal(5,vo.getDocNumberDOC10());
+				pstmt.setString(2,username);
+				pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+        pstmt.setString(4,vo.getCompanyCodeSys01DOC10());
+        pstmt.setString(5,vo.getDocTypeDOC10());
+        pstmt.setBigDecimal(6,vo.getDocYearDOC10());
+        pstmt.setBigDecimal(7,vo.getDocNumberDOC10());
         pstmt.execute();
         pstmt.close();
 
@@ -333,7 +335,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
 */
 
       // insert into DOC10...
-      Response res = QueryUtil.insertTable(
+      Response res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
           conn,
           new UserSessionParameters(username),
           vo,
@@ -350,12 +352,14 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
       }
 
       // update delivery note state...
-      pstmt = conn.prepareStatement("update DOC08_DELIVERY_NOTES set DOC_STATE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
+      pstmt = conn.prepareStatement("update DOC08_DELIVERY_NOTES set DOC_STATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
       pstmt.setString(1,ApplicationConsts.HEADER_BLOCKED);
-      pstmt.setString(2,vo.getCompanyCodeSys01DOC10());
-      pstmt.setString(3,vo.getDocTypeDOC10());
-      pstmt.setBigDecimal(4,vo.getDocYearDOC10());
-      pstmt.setBigDecimal(5,vo.getDocNumberDOC10());
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01DOC10());
+      pstmt.setString(5,vo.getDocTypeDOC10());
+      pstmt.setBigDecimal(6,vo.getDocYearDOC10());
+      pstmt.setBigDecimal(7,vo.getDocNumberDOC10());
       pstmt.execute();
 
       // insert serial numbers...
@@ -465,7 +469,8 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
           "DOC08_DELIVERY_NOTES.COMPANY_CODE_SYS01=WAR01_WAREHOUSES.COMPANY_CODE_SYS01 and "+
           "DOC08_DELIVERY_NOTES.WAREHOUSE_CODE_WAR01=WAR01_WAREHOUSES.WAREHOUSE_CODE and "+
           "DOC08_DELIVERY_NOTES.CARRIER_CODE_REG09=REG09_CARRIERS.CARRIER_CODE and "+
-          "REG09_CARRIERS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          "REG09_CARRIERS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
+					"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "DOC08_DELIVERY_NOTES.COMPANY_CODE_SYS01=SAL07_CUSTOMERS.COMPANY_CODE_SYS01 and "+
           "DOC08_DELIVERY_NOTES.PROGRESSIVE_REG04=SAL07_CUSTOMERS.PROGRESSIVE_REG04 and "+
           "DOC08_DELIVERY_NOTES.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
@@ -475,7 +480,8 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
           "DOC08_DELIVERY_NOTES.DOC_YEAR=? and "+
           "DOC08_DELIVERY_NOTES.DOC_NUMBER=? and "+
           "DOC08_DELIVERY_NOTES.TRANSPORT_MOTIVE_CODE_REG20=REG20_TRANSPORT_MOTIVES.TRANSPORT_MOTIVE_CODE and "+
-          "REG20_TRANSPORT_MOTIVES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS_B.PROGRESSIVE and SYS10_TRANSLATIONS_B.LANGUAGE_CODE=? ";
+          "REG20_TRANSPORT_MOTIVES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS_B.PROGRESSIVE and "+
+					"SYS10_TRANSLATIONS_B.LANGUAGE_CODE=? ";
 
       ArrayList values = new ArrayList();
       values.add(serverLanguageId);
@@ -681,7 +687,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
       pkAttributes.add("docNumberDOC08");
 
       // update DOC08 table...
-      Response res = QueryUtil.updateTable(
+      Response res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
           conn,
           new UserSessionParameters(username),
           pkAttributes,
@@ -780,7 +786,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
         pkAttributes.add("progressiveDOC10");
 
         // update DOC10 table...
-        res = QueryUtil.updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttributes,
@@ -922,9 +928,11 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
 
   /**
    * Update out qty in referred sale documents when closing an out delivery note.
-   * It update warehouse available quantities too.
+   * It updates available quantities in warehouse too.
    * No commit/rollback is executed.
    * @return ErrorResponse in case of errors, new VOResponse(Boolean.TRUE) if qtys updating was correctly executed
+	 *
+			* NOTE: NOT USED!
    */
   public VOResponse updateOutQtysPurchaseOrder(
 		HashMap variant1Descriptions,
@@ -946,14 +954,13 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
       movBean.setConn(conn);
       bean.setConn(conn);
 
-      // retrieve all in delivery note rows...
+      // retrieve all out delivery note rows...
       GridParams pars = new GridParams();
       pars.getOtherGridParams().put(ApplicationConsts.DELIVERY_NOTE_PK,pk);
       Response res = bean.loadOutDeliveryNoteRows(variant1Descriptions,variant2Descriptions,variant3Descriptions,variant4Descriptions,variant5Descriptions,pars,serverLanguageId,username);
       if (res.isError())
     	  throw new Exception(res.getErrorMessage());
 
-      ArrayList values = new ArrayList();
       String sql1 =
           "select QTY,OUT_QTY from DOC02_SELLING_ITEMS where "+
           "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and "+
@@ -964,7 +971,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
           "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? ";
 
       String sql2 =
-          "update DOC02_SELLING_ITEMS set OUT_QTY=? where "+
+          "update DOC02_SELLING_ITEMS set OUT_QTY=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
           "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and OUT_QTY=? and "+
           "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
           "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
@@ -975,7 +982,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
       pstmt1 = conn.prepareStatement(sql1);
       pstmt2 = conn.prepareStatement(sql2);
 
-      // for each item row it will be updated the related purchase order row and warehouse available quantities...
+      // for each item row, the related sale order row will be updated and available quantities in warehouse...
       GridOutDeliveryNoteRowVO vo = null;
       ResultSet rset1 = null;
       BigDecimal qtyDOC02 = null;
@@ -1147,7 +1154,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
           "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? ";
 
       String sql2 =
-          "update DOC02_SELLING_ITEMS set OUT_QTY=? where "+
+          "update DOC02_SELLING_ITEMS set OUT_QTY=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
           "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and OUT_QTY=? and "+
           "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
           "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
@@ -1156,7 +1163,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
           "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? ";
 
       String sql3 =
-          "update DOC01_SELLING set DOC_STATE=? where "+
+          "update DOC01_SELLING set DOC_STATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
           "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and "+
           " EXISTS(SELECT * FROM DOC02_SELLING_ITEMS WHERE "+
           " COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? "+
@@ -1174,7 +1181,6 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
       BigDecimal outQtyDOC02 = null;
       BigDecimal qtyToAdd = null;
       Response innerResponse = null;
-      Response saleDocRes = null;
       DetailSaleDocVO saleDocVO = null;
       for(int i=0;i<((VOListResponse)res).getRows().size();i++) {
         vo = (GridOutDeliveryNoteRowVO)((VOListResponse)res).getRows().get(i);
@@ -1209,23 +1215,25 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
           else
             qtyToAdd = qtyDOC02.subtract(outQtyDOC02);
           pstmt2.setBigDecimal(1,outQtyDOC02.add(qtyToAdd).setScale(vo.getDecimalsREG02().intValue(),BigDecimal.ROUND_HALF_UP));
-          pstmt2.setString(2,vo.getCompanyCodeSys01DOC10());
-          pstmt2.setString(3,vo.getDocTypeDoc01DOC10());
-          pstmt2.setBigDecimal(4,vo.getDocYearDoc01DOC10());
-          pstmt2.setBigDecimal(5,vo.getDocNumberDoc01DOC10());
-          pstmt2.setString(6,vo.getItemCodeItm01DOC10());
-          pstmt2.setBigDecimal(7,outQtyDOC02);
+					pstmt2.setString(2,username);
+				  pstmt2.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+          pstmt2.setString(4,vo.getCompanyCodeSys01DOC10());
+          pstmt2.setString(5,vo.getDocTypeDoc01DOC10());
+          pstmt2.setBigDecimal(6,vo.getDocYearDoc01DOC10());
+          pstmt2.setBigDecimal(7,vo.getDocNumberDoc01DOC10());
+          pstmt2.setString(8,vo.getItemCodeItm01DOC10());
+          pstmt2.setBigDecimal(9,outQtyDOC02);
 
-          pstmt2.setString(8,vo.getVariantTypeItm06DOC10());
-          pstmt2.setString(9,vo.getVariantCodeItm11DOC10());
-          pstmt2.setString(10,vo.getVariantTypeItm07DOC10());
-          pstmt2.setString(11,vo.getVariantCodeItm12DOC10());
-          pstmt2.setString(12,vo.getVariantTypeItm08DOC10());
-          pstmt2.setString(13,vo.getVariantCodeItm13DOC10());
-          pstmt2.setString(14,vo.getVariantTypeItm09DOC10());
-          pstmt2.setString(15,vo.getVariantCodeItm14DOC10());
-          pstmt2.setString(16,vo.getVariantTypeItm10DOC10());
-          pstmt2.setString(17,vo.getVariantCodeItm15DOC10());
+          pstmt2.setString(10,vo.getVariantTypeItm06DOC10());
+          pstmt2.setString(11,vo.getVariantCodeItm11DOC10());
+          pstmt2.setString(12,vo.getVariantTypeItm07DOC10());
+          pstmt2.setString(13,vo.getVariantCodeItm12DOC10());
+          pstmt2.setString(14,vo.getVariantTypeItm08DOC10());
+          pstmt2.setString(15,vo.getVariantCodeItm13DOC10());
+          pstmt2.setString(16,vo.getVariantTypeItm09DOC10());
+          pstmt2.setString(17,vo.getVariantCodeItm14DOC10());
+          pstmt2.setString(18,vo.getVariantTypeItm10DOC10());
+          pstmt2.setString(19,vo.getVariantCodeItm15DOC10());
 
           if (pstmt2.executeUpdate()==0)
             throw new Exception("Updating not performed: the record was previously updated.");
@@ -1235,14 +1243,16 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
 
 			  // close delivery note requests document...
         pstmt3.setString(1,ApplicationConsts.CLOSED);
-        pstmt3.setString(2,vo.getCompanyCodeSys01DOC10());
-        pstmt3.setString(3,vo.getDocTypeDoc01DOC10());
-        pstmt3.setBigDecimal(4,vo.getDocYearDoc01DOC10());
-        pstmt3.setBigDecimal(5,vo.getDocNumberDoc01DOC10());
-        pstmt3.setString(6,vo.getCompanyCodeSys01DOC10());
-        pstmt3.setString(7,vo.getDocTypeDoc01DOC10());
-        pstmt3.setBigDecimal(8,vo.getDocYearDoc01DOC10());
-        pstmt3.setBigDecimal(9,vo.getDocNumberDoc01DOC10());
+				pstmt3.setString(2,username);
+				pstmt3.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt3.setString(4,vo.getCompanyCodeSys01DOC10());
+        pstmt3.setString(5,vo.getDocTypeDoc01DOC10());
+        pstmt3.setBigDecimal(6,vo.getDocYearDoc01DOC10());
+        pstmt3.setBigDecimal(7,vo.getDocNumberDoc01DOC10());
+        pstmt3.setString(8,vo.getCompanyCodeSys01DOC10());
+        pstmt3.setString(9,vo.getDocTypeDoc01DOC10());
+        pstmt3.setBigDecimal(10,vo.getDocYearDoc01DOC10());
+        pstmt3.setBigDecimal(11,vo.getDocNumberDoc01DOC10());
         int processedRows = pstmt3.executeUpdate();
 
 
@@ -1286,23 +1296,25 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
             else
               qtyToAdd = qtyDOC02.subtract(outQtyDOC02);
             pstmt2.setBigDecimal(1,outQtyDOC02.add(qtyToAdd).setScale(vo.getDecimalsREG02().intValue(),BigDecimal.ROUND_HALF_UP));
-            pstmt2.setString(2,saleDocVO.getCompanyCodeSys01DOC01());
-            pstmt2.setString(3,saleDocVO.getDocTypeDoc01DOC01());
-            pstmt2.setBigDecimal(4,saleDocVO.getDocYearDoc01DOC01());
-            pstmt2.setBigDecimal(5,saleDocVO.getDocNumberDoc01DOC01());
-            pstmt2.setString(6,vo.getItemCodeItm01DOC10());
-            pstmt2.setBigDecimal(7,outQtyDOC02);
+						pstmt2.setString(2,username);
+						pstmt2.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+            pstmt2.setString(4,saleDocVO.getCompanyCodeSys01DOC01());
+            pstmt2.setString(5,saleDocVO.getDocTypeDoc01DOC01());
+            pstmt2.setBigDecimal(6,saleDocVO.getDocYearDoc01DOC01());
+            pstmt2.setBigDecimal(7,saleDocVO.getDocNumberDoc01DOC01());
+            pstmt2.setString(8,vo.getItemCodeItm01DOC10());
+            pstmt2.setBigDecimal(9,outQtyDOC02);
 
-            pstmt2.setString(8,vo.getVariantTypeItm06DOC10());
-            pstmt2.setString(9,vo.getVariantCodeItm11DOC10());
-            pstmt2.setString(10,vo.getVariantTypeItm07DOC10());
-            pstmt2.setString(11,vo.getVariantCodeItm12DOC10());
-            pstmt2.setString(12,vo.getVariantTypeItm08DOC10());
-            pstmt2.setString(13,vo.getVariantCodeItm13DOC10());
-            pstmt2.setString(14,vo.getVariantTypeItm09DOC10());
-            pstmt2.setString(15,vo.getVariantCodeItm14DOC10());
-            pstmt2.setString(16,vo.getVariantTypeItm10DOC10());
-            pstmt2.setString(17,vo.getVariantCodeItm15DOC10());
+            pstmt2.setString(10,vo.getVariantTypeItm06DOC10());
+            pstmt2.setString(11,vo.getVariantCodeItm11DOC10());
+            pstmt2.setString(12,vo.getVariantTypeItm07DOC10());
+            pstmt2.setString(13,vo.getVariantCodeItm12DOC10());
+            pstmt2.setString(14,vo.getVariantTypeItm08DOC10());
+            pstmt2.setString(15,vo.getVariantCodeItm13DOC10());
+            pstmt2.setString(16,vo.getVariantTypeItm09DOC10());
+            pstmt2.setString(17,vo.getVariantCodeItm14DOC10());
+            pstmt2.setString(18,vo.getVariantTypeItm10DOC10());
+            pstmt2.setString(19,vo.getVariantCodeItm15DOC10());
 
             if (pstmt2.executeUpdate()==0)
             	throw new Exception("Updating not performed: the record was previously updated.");
@@ -1450,18 +1462,19 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
 					 // validate variants barcode...
 					 String sql =
 							 "select "+
-							 "ITM22_VARIANT_BARCODES.COMPANY_CODE_SYS01,ITM22_VARIANT_BARCODES.ITEM_CODE_ITM01,SYS10_TRANSLATIONS.DESCRIPTION,"+
+							 "ITM22_VARIANT_BARCODES.COMPANY_CODE_SYS01,ITM22_VARIANT_BARCODES.ITEM_CODE_ITM01,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+
 							 "ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM06,ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM07,ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM08,ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM09,ITM22_VARIANT_BARCODES.VARIANT_TYPE_ITM10,"+
 							 "ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM11,ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM12,ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM13,ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM14,ITM22_VARIANT_BARCODES.VARIANT_CODE_ITM15,"+
 							 "ITM22_VARIANT_BARCODES.BAR_CODE,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
-							 "from ITM22_VARIANT_BARCODES,ITM01_ITEMS,SYS10_TRANSLATIONS,DOC02_SELLING_ITEMS "+
+							 "from ITM22_VARIANT_BARCODES,ITM01_ITEMS,SYS10_COMPANY_TRANSLATIONS,DOC02_SELLING_ITEMS "+
 							 "where "+
 							 "ITM22_VARIANT_BARCODES.COMPANY_CODE_SYS01=? AND "+
 							 "ITM22_VARIANT_BARCODES.BAR_CODE=? AND "+
 							 "ITM22_VARIANT_BARCODES.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 AND "+
 							 "ITM22_VARIANT_BARCODES.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and ITM01_ITEMS.ENABLED='Y' AND "+
-							 "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE AND "+
-							 "SYS10_TRANSLATIONS.LANGUAGE_CODE=? AND "+
+							 "ITM01_ITEMS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 AND "+
+							 "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE AND "+
+							 "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? AND "+
 							 "DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01=ITM22_VARIANT_BARCODES.COMPANY_CODE_SYS01 AND "+
 							 "DOC02_SELLING_ITEMS.DOC_TYPE=? AND "+
 							 "DOC02_SELLING_ITEMS.DOC_YEAR=? AND "+
@@ -1482,7 +1495,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
 					 Map attribute2dbField = new HashMap();
 					 attribute2dbField.put("companyCodeSys01ITM22","ITM22_VARIANT_BARCODES.COMPANY_CODE_SYS01");
 					 attribute2dbField.put("itemCodeItm01ITM22","ITM22_VARIANT_BARCODES.ITEM_CODE_ITM01");
-					 attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+					 attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 					 attribute2dbField.put("barCodeITM22","ITM22_VARIANT_BARCODES.BAR_CODE");
 					 attribute2dbField.put("serialNumberRequiredITM01","ITM01_ITEMS.SERIAL_NUMBER_REQUIRED");
 					 attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
@@ -1560,14 +1573,15 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
 						 // trying to find a barcode at item level...
 						 sql =
 								 "select "+
-								 "ITM01_ITEMS.COMPANY_CODE_SYS01,ITM01_ITEMS.ITEM_CODE,SYS10_TRANSLATIONS.DESCRIPTION,"+
+								 "ITM01_ITEMS.COMPANY_CODE_SYS01,ITM01_ITEMS.ITEM_CODE,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+
 								 "ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
-								 "from ITM01_ITEMS,SYS10_TRANSLATIONS,DOC02_SELLING_ITEMS where "+
+								 "from ITM01_ITEMS,SYS10_COMPANY_TRANSLATIONS,DOC02_SELLING_ITEMS where "+
 								 "ITM01_ITEMS.COMPANY_CODE_SYS01=? AND "+
 								 "ITM01_ITEMS.BAR_CODE=? AND "+
 								 "ITM01_ITEMS.ENABLED='Y' AND "+
-								 "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE AND "+
-								 "SYS10_TRANSLATIONS.LANGUAGE_CODE=? AND "+
+								 "ITM01_ITEMS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 AND "+
+								 "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE AND "+
+								 "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? AND "+
 								 "DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 AND " +
 								 "DOC02_SELLING_ITEMS.DOC_TYPE=? AND " +
 								 "DOC02_SELLING_ITEMS.DOC_YEAR=? AND " +
@@ -1588,7 +1602,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
 						 attribute2dbField.clear();
 						 attribute2dbField.put("companyCodeSys01ITM01","ITM01_ITEMS.COMPANY_CODE_SYS01");
 						 attribute2dbField.put("itemCodeITM01","ITM01_ITEMS.ITEM_CODE");
-						 attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+						 attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 						 attribute2dbField.put("barCodeITM01","ITM01_ITEMS.BAR_CODE");
 						 attribute2dbField.put("serialNumberRequiredITM01","ITM01_ITEMS.SERIAL_NUMBER_REQUIRED");
 						 attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
@@ -1663,21 +1677,21 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
 					 String sql =
 							 "select WAR05_STORED_SERIAL_NUMBERS.COMPANY_CODE_SYS01,WAR05_STORED_SERIAL_NUMBERS.SERIAL_NUMBER,"+
 							 "WAR05_STORED_SERIAL_NUMBERS.ITEM_CODE_ITM01,WAR05_STORED_SERIAL_NUMBERS.PROGRESSIVE_HIE01,"+
-							 "SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,ITM01_ITEMS.PROGRESSIVE_HIE02,"+
+							 "SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,ITM01_ITEMS.PROGRESSIVE_HIE02,"+
 							 "WAR05_STORED_SERIAL_NUMBERS.VARIANT_TYPE_ITM06,WAR05_STORED_SERIAL_NUMBERS.VARIANT_CODE_ITM11,"+
 							 "WAR05_STORED_SERIAL_NUMBERS.VARIANT_TYPE_ITM07,WAR05_STORED_SERIAL_NUMBERS.VARIANT_CODE_ITM12,"+
 							 "WAR05_STORED_SERIAL_NUMBERS.VARIANT_TYPE_ITM08,WAR05_STORED_SERIAL_NUMBERS.VARIANT_CODE_ITM13,"+
 							 "WAR05_STORED_SERIAL_NUMBERS.VARIANT_TYPE_ITM09,WAR05_STORED_SERIAL_NUMBERS.VARIANT_CODE_ITM14,"+
 							 "WAR05_STORED_SERIAL_NUMBERS.VARIANT_TYPE_ITM10,WAR05_STORED_SERIAL_NUMBERS.VARIANT_CODE_ITM15 "+
-							 "from WAR05_STORED_SERIAL_NUMBERS,ITM01_ITEMS,SYS10_TRANSLATIONS,DOC02_SELLING_ITEMS "+
+							 "from WAR05_STORED_SERIAL_NUMBERS,ITM01_ITEMS,SYS10_COMPANY_TRANSLATIONS,DOC02_SELLING_ITEMS "+
 							 "where "+
 							 "WAR05_STORED_SERIAL_NUMBERS.COMPANY_CODE_SYS01=? and "+
 							 "WAR05_STORED_SERIAL_NUMBERS.SERIAL_NUMBER=? and "+
 							 "ITM01_ITEMS.COMPANY_CODE_SYS01=? AND "+
 							 "ITM01_ITEMS.ITEM_CODE=WAR05_STORED_SERIAL_NUMBERS.ITEM_CODE_ITM01 AND "+
 							 "ITM01_ITEMS.ENABLED='Y' AND "+
-							 "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE AND "+
-							 "SYS10_TRANSLATIONS.LANGUAGE_CODE=? AND "+
+							 "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE AND "+
+							 "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? AND "+
 							 "DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 AND " +
 							 "DOC02_SELLING_ITEMS.DOC_TYPE=? AND " +
 							 "DOC02_SELLING_ITEMS.DOC_YEAR=? AND " +
@@ -1708,7 +1722,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
 					 attribute2dbField.put("serialNumberWAR05","WAR05_STORED_SERIAL_NUMBERS.SERIAL_NUMBER");
 					 attribute2dbField.put("itemCodeItm01WAR05","WAR05_STORED_SERIAL_NUMBERS.ITEM_CODE_ITM01");
 					 attribute2dbField.put("progressiveHie01WAR05","WAR05_STORED_SERIAL_NUMBERS.PROGRESSIVE_HIE01");
-					 attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+					 attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 					 attribute2dbField.put("serialNumberRequiredITM01","ITM01_ITEMS.SERIAL_NUMBER_REQUIRED");
 					 attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
 
@@ -1783,18 +1797,19 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
 					 // check for item code WITHOUT VARIANTS in sale doc...
 					 String sql =
 							 "select DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01,DOC02_SELLING_ITEMS.ITEM_CODE_ITM01,"+
-							 "SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,DOC02_SELLING_ITEMS.PROGRESSIVE_HIE02,"+
+							 "SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,DOC02_SELLING_ITEMS.PROGRESSIVE_HIE02,"+
 							 "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM06,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM11,"+
 							 "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM07,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM12,"+
 							 "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM08,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM13,"+
 							 "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM09,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM14,"+
 							 "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM10,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM15, "+
 							 "ITM01_ITEMS.NO_WAREHOUSE_MOV "+
-							 "from DOC02_SELLING_ITEMS,ITM01_ITEMS,SYS10_TRANSLATIONS where "+
+							 "from DOC02_SELLING_ITEMS,ITM01_ITEMS,SYS10_COMPANY_TRANSLATIONS where "+
 							 "DOC02_SELLING_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
 							 "DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
-							 "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-							 "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+							 "ITM01_ITEMS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+							 "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+							 "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
 							 "DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01=? and "+
 							 "DOC02_SELLING_ITEMS.DOC_TYPE=? and "+
 							 "DOC02_SELLING_ITEMS.DOC_YEAR=? and "+
@@ -1815,7 +1830,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
 					 Map attribute2dbField = new HashMap();
 					 attribute2dbField.put("companyCodeSys01DOC02","DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01");
 					 attribute2dbField.put("itemCodeItm01DOC02","DOC02_SELLING_ITEMS.ITEM_CODE_ITM01");
-					 attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+					 attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 					 attribute2dbField.put("serialNumberRequiredITM01","ITM01_ITEMS.SERIAL_NUMBER_REQUIRED");
 					 attribute2dbField.put("progressiveHie02DOC02","DOC02_SELLING_ITEMS.PROGRESSIVE_HIE02");
 

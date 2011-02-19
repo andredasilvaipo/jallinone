@@ -48,6 +48,7 @@ public class CallOutTypesController extends CompanyGridController {
 
   /** grid frame */
   private CallOutTypesFrame frame = null;
+  private java.util.List list = null;
 
 
   public CallOutTypesController() {

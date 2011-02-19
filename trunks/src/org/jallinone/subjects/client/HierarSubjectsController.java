@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import org.openswing.swing.util.client.ClientUtils;
 import org.jallinone.subjects.java.Subject;
 import org.openswing.swing.message.receive.java.Response;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.jallinone.subjects.java.HierarSubjectsVO;
 import javax.swing.JOptionPane;
 import org.openswing.swing.util.client.ClientSettings;
@@ -73,7 +73,7 @@ public class HierarSubjectsController extends CompanyGridController {
         );
         return false;
       }
-      HierarchyLevelVO levelVO = (HierarchyLevelVO)frame.getTreePanel().getSelectedNode().getUserObject();
+      CompanyHierarchyLevelVO levelVO = (CompanyHierarchyLevelVO)frame.getTreePanel().getSelectedNode().getUserObject();
       SubjectFrame f = (SubjectFrame)MDIFrame.getSelectedFrame();
       int[] rows = f.getGrid().getSelectedRows();
       Subject vo = null;
@@ -106,7 +106,7 @@ public class HierarSubjectsController extends CompanyGridController {
    * @return an ErrorResponse value object in case of errors, VOResponse if the operation is successfully completed
    */
   public Response deleteRecords(ArrayList persistentObjects) throws Exception {
-    HierarchyLevelVO levelVO = (HierarchyLevelVO)frame.getTreePanel().getSelectedNode().getUserObject();
+    CompanyHierarchyLevelVO levelVO = (CompanyHierarchyLevelVO)frame.getTreePanel().getSelectedNode().getUserObject();
     return ClientUtils.getData("deleteSubjectsLinks",new HierarSubjectsVO(
         levelVO.getProgressiveHIE01(),
         levelVO.getProgressiveHie02HIE01(),

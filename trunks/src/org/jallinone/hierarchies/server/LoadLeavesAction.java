@@ -14,7 +14,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.commons.server.JAIOBeanFactory;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.*;
 import org.jallinone.system.server.JAIOUserSessionParameters;
 import org.openswing.swing.logger.server.Logger;
 import org.openswing.swing.message.receive.java.ErrorResponse;
@@ -70,10 +70,10 @@ public class LoadLeavesAction implements Action {
 	public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
 		try {
 			Map treePars = (Map)inputPar;
-			BigDecimal progressiveHIE02 = (BigDecimal)treePars.get(ApplicationConsts.PROGRESSIVE_HIE02);
+			BigDecimal progressiveHIE04 = (BigDecimal)treePars.get(ApplicationConsts.PROGRESSIVE_HIE04);
 
 			Hierarchies bean = (Hierarchies)JAIOBeanFactory.getInstance().getBean(Hierarchies.class);
-			Response answer = bean.getLeaves(progressiveHIE02,null,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+			Response answer = bean.getLeaves(progressiveHIE04,null,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
 			return answer;
 		}

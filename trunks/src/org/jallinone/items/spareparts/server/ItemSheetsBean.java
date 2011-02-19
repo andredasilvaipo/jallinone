@@ -168,7 +168,7 @@ public class ItemSheetsBean implements ItemSheets {
 			attribute2dbField.put("companyCodeSys01ITM25","ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01");
 			attribute2dbField.put("sheetCodeITM25","ITM25_ITEM_SHEETS.SHEET_CODE");
 			attribute2dbField.put("progressiveSys10ITM25","ITM25_ITEM_SHEETS.PROGRESSIVE_SYS10");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("imageNameITM25","ITM25_ITEM_SHEETS.IMAGE_NAME");
 			attribute2dbField.put("levITM25","ITM25_ITEM_SHEETS.LEV");
 
@@ -212,7 +212,7 @@ public class ItemSheetsBean implements ItemSheets {
 
 			String select =
 					"select ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01,ITM25_ITEM_SHEETS.SHEET_CODE,"+
-					"ITM25_ITEM_SHEETS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
+					"ITM25_ITEM_SHEETS.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+
 					"ITM25_ITEM_SHEETS.IMAGE_NAME,ITM25_ITEM_SHEETS.LEV,"+
 					"ITM25_ITEM_SHEETS.S_PROP0,ITM25_ITEM_SHEETS.S_PROP1,ITM25_ITEM_SHEETS.S_PROP2,ITM25_ITEM_SHEETS.S_PROP3,ITM25_ITEM_SHEETS.S_PROP4,"+
 					"ITM25_ITEM_SHEETS.S_PROP5,ITM25_ITEM_SHEETS.S_PROP6,ITM25_ITEM_SHEETS.S_PROP7,ITM25_ITEM_SHEETS.S_PROP8,ITM25_ITEM_SHEETS.S_PROP9,"+
@@ -221,11 +221,12 @@ public class ItemSheetsBean implements ItemSheets {
 					"ITM25_ITEM_SHEETS.N_PROP0,ITM25_ITEM_SHEETS.N_PROP1,ITM25_ITEM_SHEETS.N_PROP2,ITM25_ITEM_SHEETS.N_PROP3,ITM25_ITEM_SHEETS.N_PROP4,"+
 					"ITM25_ITEM_SHEETS.N_PROP5,ITM25_ITEM_SHEETS.N_PROP6,ITM25_ITEM_SHEETS.N_PROP7,ITM25_ITEM_SHEETS.N_PROP8,ITM25_ITEM_SHEETS.N_PROP9 ";
 			String from =
-					" from ITM25_ITEM_SHEETS,SYS10_TRANSLATIONS ";
+					" from ITM25_ITEM_SHEETS,SYS10_COMPANY_TRANSLATIONS ";
 			String where =
 				  " where "+
-					"ITM25_ITEM_SHEETS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-					"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+					"ITM25_ITEM_SHEETS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+					"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
 					"ITM25_ITEM_SHEETS.ENABLED='Y' ";
 
 			ArrayList values = new ArrayList();
@@ -329,7 +330,7 @@ public class ItemSheetsBean implements ItemSheets {
 			attribute2dbField.put("companyCodeSys01ITM25","ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01");
 			attribute2dbField.put("sheetCodeITM25","ITM25_ITEM_SHEETS.SHEET_CODE");
 			attribute2dbField.put("progressiveSys10ITM25","ITM25_ITEM_SHEETS.PROGRESSIVE_SYS10");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("imageNameITM25","ITM25_ITEM_SHEETS.IMAGE_NAME");
 			attribute2dbField.put("levITM25","ITM25_ITEM_SHEETS.LEV");
 
@@ -373,7 +374,7 @@ public class ItemSheetsBean implements ItemSheets {
 
 			String select =
 					"select ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01,ITM25_ITEM_SHEETS.SHEET_CODE,"+
-					"ITM25_ITEM_SHEETS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
+					"ITM25_ITEM_SHEETS.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+
 					"ITM25_ITEM_SHEETS.IMAGE_NAME,ITM25_ITEM_SHEETS.LEV,"+
 					"ITM25_ITEM_SHEETS.S_PROP0,ITM25_ITEM_SHEETS.S_PROP1,ITM25_ITEM_SHEETS.S_PROP2,ITM25_ITEM_SHEETS.S_PROP3,ITM25_ITEM_SHEETS.S_PROP4,"+
 					"ITM25_ITEM_SHEETS.S_PROP5,ITM25_ITEM_SHEETS.S_PROP6,ITM25_ITEM_SHEETS.S_PROP7,ITM25_ITEM_SHEETS.S_PROP8,ITM25_ITEM_SHEETS.S_PROP9,"+
@@ -382,11 +383,12 @@ public class ItemSheetsBean implements ItemSheets {
 					"ITM25_ITEM_SHEETS.N_PROP0,ITM25_ITEM_SHEETS.N_PROP1,ITM25_ITEM_SHEETS.N_PROP2,ITM25_ITEM_SHEETS.N_PROP3,ITM25_ITEM_SHEETS.N_PROP4,"+
 					"ITM25_ITEM_SHEETS.N_PROP5,ITM25_ITEM_SHEETS.N_PROP6,ITM25_ITEM_SHEETS.N_PROP7,ITM25_ITEM_SHEETS.N_PROP8,ITM25_ITEM_SHEETS.N_PROP9 ";
 			String from =
-					" from ITM25_ITEM_SHEETS,SYS10_TRANSLATIONS ";
+					" from ITM25_ITEM_SHEETS,SYS10_COMPANY_TRANSLATIONS ";
 			String where =
 					" where "+
-					"ITM25_ITEM_SHEETS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-					"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+					"ITM25_ITEM_SHEETS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+					"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
 					"ITM25_ITEM_SHEETS.ENABLED='Y' and "+
 					"ITM25_ITEM_SHEETS.COMPANY_CODE_SYS01=? and "+
 					"ITM25_ITEM_SHEETS.SHEET_CODE=? ";
@@ -487,14 +489,14 @@ public class ItemSheetsBean implements ItemSheets {
 			vo.setEnabledITM25("Y");
 
 			// generate progressive for sheet description...
-			BigDecimal progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ITM25(),conn);
+			BigDecimal progressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ITM25(),username,conn);
 			vo.setProgressiveSys10ITM25(progressiveSYS10);
 
 			Map attribute2dbField = new HashMap();
 			attribute2dbField.put("companyCodeSys01ITM25","COMPANY_CODE_SYS01");
 			attribute2dbField.put("sheetCodeITM25","SHEET_CODE");
 			attribute2dbField.put("progressiveSys10ITM25","PROGRESSIVE_SYS10");
-//			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+//			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("levITM25","LEV");
 			attribute2dbField.put("enabledITM25","ENABLED");
 
@@ -556,7 +558,7 @@ public class ItemSheetsBean implements ItemSheets {
 
 
 			// insert into ITM25...
-			Response res = QueryUtil.insertTable(
+			Response res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 					conn,
 					new UserSessionParameters(username),
 					vo,
@@ -569,10 +571,12 @@ public class ItemSheetsBean implements ItemSheets {
 			);
 
 		  if (!res.isError() && vo.getLevITM25().intValue()==1) {
-				 pstmt = conn.prepareStatement("insert into ITM30_SUB_SHEETS(COMPANY_CODE_SYS01,PARENT_SHEET_CODE_ITM25,SHEET_CODE_ITM25) VALUES(?,?,?)");
+				 pstmt = conn.prepareStatement("insert into ITM30_SUB_SHEETS(COMPANY_CODE_SYS01,PARENT_SHEET_CODE_ITM25,SHEET_CODE_ITM25,CREATE_USER,CREATE_DATE) VALUES(?,?,?,?,?)");
 				 pstmt.setString(1,vo.getCompanyCodeSys01ITM25());
 				 pstmt.setString(2,vo.getSheetCodeITM25());
 				 pstmt.setString(3,vo.getSheetCodeITM25());
+				 pstmt.setString(4,username);
+				 pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
 				 pstmt.execute();
 				 pstmt.close();
 		  }
@@ -631,7 +635,7 @@ public class ItemSheetsBean implements ItemSheets {
 			attribute2dbField.put("companyCodeSys01ITM25","COMPANY_CODE_SYS01");
 			attribute2dbField.put("sheetCodeITM25","SHEET_CODE");
 			attribute2dbField.put("progressiveSys10ITM25","PROGRESSIVE_SYS10");
-//			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+//			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("imageNameITM25","IMAGE_NAME");
 			attribute2dbField.put("levITM25","LEV");
 
@@ -679,11 +683,13 @@ public class ItemSheetsBean implements ItemSheets {
 				newVO = (ItemSheetVO)newVOs.get(i);
 
 				// update sheet description...
-				TranslationUtils.updateTranslation(
+				CompanyTranslationUtils.updateTranslation(
+           newVO.getCompanyCodeSys01ITM25(),
 						oldVO.getDescriptionSYS10(),
 						newVO.getDescriptionSYS10(),
 						newVO.getProgressiveSys10ITM25(),
 						serverLanguageId,
+						username,
 						conn
 				);
 
@@ -729,7 +735,7 @@ public class ItemSheetsBean implements ItemSheets {
 
 
 				// update ITM01 table...
-				Response res = QueryUtil.updateTable(
+				Response res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
 						conn,
 						new UserSessionParameters(username),
 						pkAttributes,
@@ -851,14 +857,18 @@ public class ItemSheetsBean implements ItemSheets {
 				);
 
 				// logically delete the record in ITM25...
-				stmt.execute(
-						"update ITM25_ITEM_SHEETS set ENABLED='N' where "+
+				pstmt = conn.prepareStatement(
+						"update ITM25_ITEM_SHEETS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
 						"COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ITM25()+"' and "+
 						"SHEET_CODE='"+vo.getSheetCodeITM25()+"'"
 				);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
 
 	      for(int k=0;k<rootSheetsToUpdate.size();k++)
-					recalculateRootSheetSpareParts(conn,vo.getCompanyCodeSys01ITM25(),rootSheetsToUpdate.get(k).toString());
+					recalculateRootSheetSpareParts(conn,vo.getCompanyCodeSys01ITM25(),rootSheetsToUpdate.get(k).toString(),username);
 			}
 
 			return new VOResponse(new Boolean(true));
@@ -916,13 +926,15 @@ public class ItemSheetsBean implements ItemSheets {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
 			ItemSheetVO vo = null;
      	HashSet leafSheetCodes = new HashSet();
-	    pstmt = conn.prepareStatement("insert into ITM30_SUB_SHEETS(COMPANY_CODE_SYS01,PARENT_SHEET_CODE_ITM25,SHEET_CODE_ITM25) VALUES(?,?,?)");
+	    pstmt = conn.prepareStatement("insert into ITM30_SUB_SHEETS(COMPANY_CODE_SYS01,PARENT_SHEET_CODE_ITM25,SHEET_CODE_ITM25,CREATE_USER,CREATE_DATE) VALUES(?,?,?,?,?)");
 			for(int i=0;i<list.size();i++) {
 				vo = (ItemSheetVO)list.get(i);
 
 				pstmt.setString(1,vo.getCompanyCodeSys01ITM25());
 				pstmt.setString(2,parentVO.getSheetCodeITM25());
 				pstmt.setString(3,vo.getSheetCodeITM25());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
 				pstmt.execute();
 
 				retrieveLeafSheets(conn,leafSheetCodes,vo.getCompanyCodeSys01ITM25(),vo.getSheetCodeITM25());
@@ -939,7 +951,7 @@ public class ItemSheetsBean implements ItemSheets {
 				// for each leaf: insert it in ITM24_LEAFSHEETS...
 				if (rootSheetCodes.size()>0) {
 					pstmt = conn.prepareStatement(
-						"insert into ITM24_LEAFSHEETS(COMPANY_CODE_SYS01,ROOT_SHEET_CODE_ITM25,SHEET_CODE_ITM25) values(?,?,?)"
+						"insert into ITM24_LEAFSHEETS(COMPANY_CODE_SYS01,ROOT_SHEET_CODE_ITM25,SHEET_CODE_ITM25,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)"
 					);
 					pstmt2 = conn.prepareStatement(
 						"select SHEET_CODE_ITM25 from ITM24_LEAFSHEETS where "+
@@ -962,13 +974,15 @@ public class ItemSheetsBean implements ItemSheets {
 								pstmt.setString(1,vo.getCompanyCodeSys01ITM25());
 								pstmt.setString(2,rootSheetCode);
 								pstmt.setString(3,sheetCode);
+								pstmt.setString(4,username);
+								pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
 								pstmt.execute();
 							}
 							rset.close();
 						}
 
 						// regenerate root sheet's spare parts...
-						recalculateRootSheetSpareParts(conn,vo.getCompanyCodeSys01ITM25(),rootSheetCode);
+						recalculateRootSheetSpareParts(conn,vo.getCompanyCodeSys01ITM25(),rootSheetCode,username);
 
 					} // end while on root sheets...
 				}
@@ -1021,12 +1035,14 @@ public class ItemSheetsBean implements ItemSheets {
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
 			pstmt = conn.prepareStatement(
-			  "update ITM30_SUB_SHEETS set POLYGON=? where "+
+			  "update ITM30_SUB_SHEETS set POLYGON=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
 				"COMPANY_CODE_SYS01=? and PARENT_SHEET_CODE_ITM25=? and SHEET_CODE_ITM25=?");
 			pstmt.setString(1,vo.getPolygonITM30());
-			pstmt.setString(2,vo.getCompanyCodeSys01ITM30());
-			pstmt.setString(3,vo.getParentSheetCodeItm25ITM30());
-			pstmt.setString(4,vo.getSheetCodeItm25ITM30());
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4,vo.getCompanyCodeSys01ITM30());
+			pstmt.setString(5,vo.getParentSheetCodeItm25ITM30());
+			pstmt.setString(6,vo.getSheetCodeItm25ITM30());
 			pstmt.execute();
 
 			return new VOResponse(new Boolean(true));
@@ -1110,7 +1126,7 @@ public class ItemSheetsBean implements ItemSheets {
 					}
 
 					// regenerate root sheet's spare parts...
-					recalculateRootSheetSpareParts(conn,vo.getCompanyCodeSys01ITM25(),rootSheetCode);
+					recalculateRootSheetSpareParts(conn,vo.getCompanyCodeSys01ITM25(),rootSheetCode,username);
 
 				} // end while on root sheets...
 			}
@@ -1161,7 +1177,7 @@ public class ItemSheetsBean implements ItemSheets {
 	 * according to ITM24_LEAFSHEETS content.
 	 * Pre-condition: ITM24_LEAFSHEETS must be already correctly filled.
 	 */
-	private void recalculateRootSheetSpareParts(Connection conn,String companyCodeSys01ITM25,String rootSheetCodeITM25) throws Exception {
+	private void recalculateRootSheetSpareParts(Connection conn,String companyCodeSys01ITM25,String rootSheetCodeITM25,String username) throws Exception {
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(
@@ -1173,17 +1189,19 @@ public class ItemSheetsBean implements ItemSheets {
 			pstmt.close();
 
 			pstmt = conn.prepareStatement(
-				"insert into ITM28_ROOT_S_SPARE_PARTS(COMPANY_CODE_SYS01,ROOT_SHEET_CODE_ITM25,ITEM_CODE_ITM01) "+
-				"select ?,?,ITEM_CODE_ITM01 from ITM27_SHEETS_SPARE_PARTS where "+
+				"insert into ITM28_ROOT_S_SPARE_PARTS(COMPANY_CODE_SYS01,ROOT_SHEET_CODE_ITM25,ITEM_CODE_ITM01,CREATE_USER,CREATE_DATE) "+
+				"select ?,?,ITEM_CODE_ITM01,?,? from ITM27_SHEETS_SPARE_PARTS where "+
 				"COMPANY_CODE_SYS01=? and SHEET_CODE_ITM25 in ("+
 				"  select SHEET_CODE_ITM25 from ITM24_LEAFSHEETS where COMPANY_CODE_SYS01=? and ROOT_SHEET_CODE_ITM25=?"+
 				")"
 			);
 			pstmt.setString(1,companyCodeSys01ITM25);
 			pstmt.setString(2,rootSheetCodeITM25);
-			pstmt.setString(3,companyCodeSys01ITM25);
-			pstmt.setString(4,companyCodeSys01ITM25);
-			pstmt.setString(5,rootSheetCodeITM25);
+			pstmt.setString(3,username);
+			pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(5,companyCodeSys01ITM25);
+			pstmt.setString(6,companyCodeSys01ITM25);
+			pstmt.setString(7,rootSheetCodeITM25);
 			pstmt.execute();
 			pstmt.close();
 		}
@@ -1346,7 +1364,7 @@ public class ItemSheetsBean implements ItemSheets {
 			attribute2dbField.put("companyCodeSys01ITM29","COMPANY_CODE_SYS01");
 			attribute2dbField.put("levITM29","LEV");
 			attribute2dbField.put("progressiveSys10ITM29","PROGRESSIVE_SYS10");
-//			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+//			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 
 			attribute2dbField.put("sProp0ProgressiveSys10ITM29","S_PROP0_PROGRESSIVE_SYS10");
 			attribute2dbField.put("sProp1ProgressiveSys10ITM29","S_PROP1_PROGRESSIVE_SYS10");
@@ -1387,34 +1405,34 @@ public class ItemSheetsBean implements ItemSheets {
 				vo = (ItemSheetLevelVO)vos.get(i);
 
 				// generate progressive for level description...
-				progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ITM29(),conn);
+				progressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ITM29(),username,conn);
 				vo.setProgressiveSys10ITM29(progressiveSYS10);
 
       	String value = null;
 				for(int j=0;j<=9;j++) {
 					value = (String)ItemSheetLevelVO.class.getMethod("getSProp"+j+"DescriptionSys10ITM29",new Class[0]).invoke(vo,new Object[0]);
 					if (value!=null && !value.equals("")) {
-						progressiveSYS10 = TranslationUtils.insertTranslations(value,vo.getCompanyCodeSys01ITM29(),conn);
+						progressiveSYS10 = CompanyTranslationUtils.insertTranslations(value,vo.getCompanyCodeSys01ITM29(),username,conn);
 						ItemSheetLevelVO.class.getMethod("setSProp"+j+"ProgressiveSys10ITM29",new Class[]{BigDecimal.class}).invoke(vo,new Object[]{progressiveSYS10});
 					}
 				}
 				for(int j=0;j<=9;j++) {
 					value = (String)ItemSheetLevelVO.class.getMethod("getDProp"+j+"DescriptionSys10ITM29",new Class[0]).invoke(vo,new Object[0]);
 					if (value!=null && !value.equals("")) {
-						progressiveSYS10 = TranslationUtils.insertTranslations(value,vo.getCompanyCodeSys01ITM29(),conn);
+						progressiveSYS10 = CompanyTranslationUtils.insertTranslations(value,vo.getCompanyCodeSys01ITM29(),username,conn);
 						ItemSheetLevelVO.class.getMethod("setDProp"+j+"ProgressiveSys10ITM29",new Class[]{BigDecimal.class}).invoke(vo,new Object[]{progressiveSYS10});
 					}
 				}
 				for(int j=0;j<=9;j++) {
 					value = (String)ItemSheetLevelVO.class.getMethod("getNProp"+j+"DescriptionSys10ITM29",new Class[0]).invoke(vo,new Object[0]);
 					if (value!=null && !value.equals("")) {
-						progressiveSYS10 = TranslationUtils.insertTranslations(value,vo.getCompanyCodeSys01ITM29(),conn);
+						progressiveSYS10 = CompanyTranslationUtils.insertTranslations(value,vo.getCompanyCodeSys01ITM29(),username,conn);
 						ItemSheetLevelVO.class.getMethod("setNProp"+j+"ProgressiveSys10ITM29",new Class[]{BigDecimal.class}).invoke(vo,new Object[]{progressiveSYS10});
 					}
 				}
 
 				// insert into ITM29...
-				res = QueryUtil.insertTable(
+				res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 						conn,
 						new UserSessionParameters(username),
 						vo,
@@ -1480,7 +1498,7 @@ public class ItemSheetsBean implements ItemSheets {
 			attribute2dbField.put("companyCodeSys01ITM29","COMPANY_CODE_SYS01");
 			attribute2dbField.put("levITM29","LEV");
 			attribute2dbField.put("progressiveSys10ITM29","PROGRESSIVE_SYS10");
-//			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+//			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 
 			attribute2dbField.put("sProp0ProgressiveSys10ITM29","S_PROP0_PROGRESSIVE_SYS10");
 			attribute2dbField.put("sProp1ProgressiveSys10ITM29","S_PROP1_PROGRESSIVE_SYS10");
@@ -1529,22 +1547,24 @@ public class ItemSheetsBean implements ItemSheets {
 				oldVO = (ItemSheetLevelVO)oldVos.get(i);
 				newVO = (ItemSheetLevelVO)newVos.get(i);
 
-				TranslationUtils.updateTranslation(
-				  oldVO.getDescriptionSYS10(),
+				CompanyTranslationUtils.updateTranslation(
+         newVO.getCompanyCodeSys01ITM29(),
+				 oldVO.getDescriptionSYS10(),
 					newVO.getDescriptionSYS10(),
 					newVO.getProgressiveSys10ITM29(),
 					serverLanguageId,
-					conn)
-				;
+					username,
+					conn
+				);
 
 				for(int j=0;j<=9;j++) {
 					oldValue = (String)ItemSheetLevelVO.class.getMethod("getSProp"+j+"DescriptionSys10ITM29",new Class[0]).invoke(oldVO,new Object[0]);
 					newValue = (String)ItemSheetLevelVO.class.getMethod("getSProp"+j+"DescriptionSys10ITM29",new Class[0]).invoke(newVO,new Object[0]);
 					progressive = (BigDecimal)ItemSheetLevelVO.class.getMethod("getSProp"+j+"ProgressiveSys10ITM29",new Class[0]).invoke(newVO,new Object[0]);
 					if (progressive!=null)
-						TranslationUtils.updateTranslation(oldValue,newValue,progressive,serverLanguageId,conn);
+						CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01ITM29(),oldValue,newValue,progressive,serverLanguageId,username,conn);
 					else	if (newValue!=null && !newValue.equals("")) {
-						progressive = TranslationUtils.insertTranslations(newValue,newVO.getCompanyCodeSys01ITM29(),conn);
+						progressive = CompanyTranslationUtils.insertTranslations(newValue,newVO.getCompanyCodeSys01ITM29(),username,conn);
 						ItemSheetLevelVO.class.getMethod("setSProp"+j+"ProgressiveSys10ITM29",new Class[]{BigDecimal.class}).invoke(newVO,new Object[]{progressive});
 					}
 				}
@@ -1553,9 +1573,9 @@ public class ItemSheetsBean implements ItemSheets {
 					newValue = (String)ItemSheetLevelVO.class.getMethod("getDProp"+j+"DescriptionSys10ITM29",new Class[0]).invoke(newVO,new Object[0]);
 					progressive = (BigDecimal)ItemSheetLevelVO.class.getMethod("getDProp"+j+"ProgressiveSys10ITM29",new Class[0]).invoke(newVO,new Object[0]);
 					if (progressive!=null)
-						TranslationUtils.updateTranslation(oldValue,newValue,progressive,serverLanguageId,conn);
+						CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01ITM29(),oldValue,newValue,progressive,serverLanguageId,username,conn);
 					else	if (newValue!=null && !newValue.equals("")) {
-						progressive = TranslationUtils.insertTranslations(newValue,newVO.getCompanyCodeSys01ITM29(),conn);
+						progressive = CompanyTranslationUtils.insertTranslations(newValue,newVO.getCompanyCodeSys01ITM29(),username,conn);
 						ItemSheetLevelVO.class.getMethod("setDProp"+j+"ProgressiveSys10ITM29",new Class[]{BigDecimal.class}).invoke(newVO,new Object[]{progressive});
 					}
 				}
@@ -1564,15 +1584,15 @@ public class ItemSheetsBean implements ItemSheets {
 					newValue = (String)ItemSheetLevelVO.class.getMethod("getNProp"+j+"DescriptionSys10ITM29",new Class[0]).invoke(newVO,new Object[0]);
 					progressive = (BigDecimal)ItemSheetLevelVO.class.getMethod("getNProp"+j+"ProgressiveSys10ITM29",new Class[0]).invoke(newVO,new Object[0]);
 					if (progressive!=null)
-						TranslationUtils.updateTranslation(oldValue,newValue,progressive,serverLanguageId,conn);
+						CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01ITM29(),oldValue,newValue,progressive,serverLanguageId,username,conn);
 					else	if (newValue!=null && !newValue.equals("")) {
-						progressive = TranslationUtils.insertTranslations(newValue,newVO.getCompanyCodeSys01ITM29(),conn);
+						progressive = CompanyTranslationUtils.insertTranslations(newValue,newVO.getCompanyCodeSys01ITM29(),username,conn);
 						ItemSheetLevelVO.class.getMethod("setDProp"+j+"ProgressiveSys10ITM29",new Class[]{BigDecimal.class}).invoke(newVO,new Object[]{progressive});
 					}
 				}
 
 				// update ITM29...
-				res = QueryUtil.updateTable(
+				res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
 						conn,
 						new UserSessionParameters(username),
 						pkAttrs,
@@ -1645,13 +1665,13 @@ public class ItemSheetsBean implements ItemSheets {
 				for(int j=0;j<=9;j++) {
 					progressive = (BigDecimal)ItemSheetLevelVO.class.getMethod("getSProp"+j+"ProgressiveSys10ITM29",new Class[0]).invoke(vo,new Object[0]);
 					if (progressive!=null)
-						TranslationUtils.deleteTranslations(progressive,conn);
+						CompanyTranslationUtils.deleteTranslations(vo.getCompanyCodeSys01ITM29(),progressive,conn);
 					progressive = (BigDecimal)ItemSheetLevelVO.class.getMethod("getNProp"+j+"ProgressiveSys10ITM29",new Class[0]).invoke(vo,new Object[0]);
 					if (progressive!=null)
-						TranslationUtils.deleteTranslations(progressive,conn);
+						CompanyTranslationUtils.deleteTranslations(vo.getCompanyCodeSys01ITM29(),progressive,conn);
 					progressive = (BigDecimal)ItemSheetLevelVO.class.getMethod("getDProp"+j+"ProgressiveSys10ITM29",new Class[0]).invoke(vo,new Object[0]);
 					if (progressive!=null)
-						TranslationUtils.deleteTranslations(progressive,conn);
+						CompanyTranslationUtils.deleteTranslations(vo.getCompanyCodeSys01ITM29(),progressive,conn);
 				}
 
 	      pstmt.setString(1,vo.getCompanyCodeSys01ITM29());
@@ -1730,7 +1750,7 @@ public class ItemSheetsBean implements ItemSheets {
 			companies = companies.substring(0,companies.length()-1);
 
 			String sql =
-					"select ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01,ITM29_SHEET_LEVELS.LEV,ITM29_SHEET_LEVELS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
+					"select ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01,ITM29_SHEET_LEVELS.LEV,ITM29_SHEET_LEVELS.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+
 					"ITM29_SHEET_LEVELS.S_PROP0_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.S_PROP1_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.S_PROP2_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.S_PROP3_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.S_PROP4_PROGRESSIVE_SYS10,"+
 					"ITM29_SHEET_LEVELS.S_PROP5_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.S_PROP6_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.S_PROP7_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.S_PROP8_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.S_PROP9_PROGRESSIVE_SYS10,"+
 					"ITM29_SHEET_LEVELS.D_PROP0_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.D_PROP1_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.D_PROP2_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.D_PROP3_PROGRESSIVE_SYS10,ITM29_SHEET_LEVELS.D_PROP4_PROGRESSIVE_SYS10,"+
@@ -1743,45 +1763,46 @@ public class ItemSheetsBean implements ItemSheets {
 					"DT5.DESCRIPTION,DT6.DESCRIPTION,DT7.DESCRIPTION,DT8.DESCRIPTION,DT9.DESCRIPTION,"+
 					"NT0.DESCRIPTION,NT1.DESCRIPTION,NT2.DESCRIPTION,NT3.DESCRIPTION,NT4.DESCRIPTION,"+
 					"NT5.DESCRIPTION,NT6.DESCRIPTION,NT7.DESCRIPTION,NT8.DESCRIPTION,NT9.DESCRIPTION "+
-					"from SYS10_TRANSLATIONS,ITM29_SHEET_LEVELS "+
+					"from SYS10_COMPANY_TRANSLATIONS,ITM29_SHEET_LEVELS "+
 
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST0 ON ITM29_SHEET_LEVELS.S_PROP0_PROGRESSIVE_SYS10=ST0.PROGRESSIVE AND ST0.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST1 ON ITM29_SHEET_LEVELS.S_PROP1_PROGRESSIVE_SYS10=ST1.PROGRESSIVE AND ST1.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST2 ON ITM29_SHEET_LEVELS.S_PROP2_PROGRESSIVE_SYS10=ST2.PROGRESSIVE AND ST2.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST3 ON ITM29_SHEET_LEVELS.S_PROP3_PROGRESSIVE_SYS10=ST3.PROGRESSIVE AND ST3.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST4 ON ITM29_SHEET_LEVELS.S_PROP4_PROGRESSIVE_SYS10=ST4.PROGRESSIVE AND ST4.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST5 ON ITM29_SHEET_LEVELS.S_PROP5_PROGRESSIVE_SYS10=ST5.PROGRESSIVE AND ST5.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST6 ON ITM29_SHEET_LEVELS.S_PROP6_PROGRESSIVE_SYS10=ST6.PROGRESSIVE AND ST6.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST7 ON ITM29_SHEET_LEVELS.S_PROP7_PROGRESSIVE_SYS10=ST7.PROGRESSIVE AND ST7.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST8 ON ITM29_SHEET_LEVELS.S_PROP8_PROGRESSIVE_SYS10=ST8.PROGRESSIVE AND ST8.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS ST9 ON ITM29_SHEET_LEVELS.S_PROP9_PROGRESSIVE_SYS10=ST9.PROGRESSIVE AND ST9.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS ST0 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=ST0.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.S_PROP0_PROGRESSIVE_SYS10=ST0.PROGRESSIVE AND ST0.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS ST1 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=ST1.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.S_PROP1_PROGRESSIVE_SYS10=ST1.PROGRESSIVE AND ST1.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS ST2 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=ST2.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.S_PROP2_PROGRESSIVE_SYS10=ST2.PROGRESSIVE AND ST2.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS ST3 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=ST3.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.S_PROP3_PROGRESSIVE_SYS10=ST3.PROGRESSIVE AND ST3.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS ST4 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=ST4.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.S_PROP4_PROGRESSIVE_SYS10=ST4.PROGRESSIVE AND ST4.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS ST5 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=ST5.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.S_PROP5_PROGRESSIVE_SYS10=ST5.PROGRESSIVE AND ST5.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS ST6 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=ST6.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.S_PROP6_PROGRESSIVE_SYS10=ST6.PROGRESSIVE AND ST6.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS ST7 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=ST7.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.S_PROP7_PROGRESSIVE_SYS10=ST7.PROGRESSIVE AND ST7.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS ST8 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=ST8.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.S_PROP8_PROGRESSIVE_SYS10=ST8.PROGRESSIVE AND ST8.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS ST9 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=ST9.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.S_PROP9_PROGRESSIVE_SYS10=ST9.PROGRESSIVE AND ST9.LANGUAGE_CODE=? "+
 
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT0 ON ITM29_SHEET_LEVELS.D_PROP0_PROGRESSIVE_SYS10=DT0.PROGRESSIVE AND DT0.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT1 ON ITM29_SHEET_LEVELS.D_PROP1_PROGRESSIVE_SYS10=DT1.PROGRESSIVE AND DT1.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT2 ON ITM29_SHEET_LEVELS.D_PROP2_PROGRESSIVE_SYS10=DT2.PROGRESSIVE AND DT2.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT3 ON ITM29_SHEET_LEVELS.D_PROP3_PROGRESSIVE_SYS10=DT3.PROGRESSIVE AND DT3.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT4 ON ITM29_SHEET_LEVELS.D_PROP4_PROGRESSIVE_SYS10=DT4.PROGRESSIVE AND DT4.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT5 ON ITM29_SHEET_LEVELS.D_PROP5_PROGRESSIVE_SYS10=DT5.PROGRESSIVE AND DT5.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT6 ON ITM29_SHEET_LEVELS.D_PROP6_PROGRESSIVE_SYS10=DT6.PROGRESSIVE AND DT6.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT7 ON ITM29_SHEET_LEVELS.D_PROP7_PROGRESSIVE_SYS10=DT7.PROGRESSIVE AND DT7.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT8 ON ITM29_SHEET_LEVELS.D_PROP8_PROGRESSIVE_SYS10=DT8.PROGRESSIVE AND DT8.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS DT9 ON ITM29_SHEET_LEVELS.D_PROP9_PROGRESSIVE_SYS10=DT9.PROGRESSIVE AND DT9.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS DT0 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=DT0.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.D_PROP0_PROGRESSIVE_SYS10=DT0.PROGRESSIVE AND DT0.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS DT1 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=DT1.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.D_PROP1_PROGRESSIVE_SYS10=DT1.PROGRESSIVE AND DT1.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS DT2 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=DT2.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.D_PROP2_PROGRESSIVE_SYS10=DT2.PROGRESSIVE AND DT2.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS DT3 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=DT3.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.D_PROP3_PROGRESSIVE_SYS10=DT3.PROGRESSIVE AND DT3.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS DT4 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=DT4.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.D_PROP4_PROGRESSIVE_SYS10=DT4.PROGRESSIVE AND DT4.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS DT5 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=DT5.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.D_PROP5_PROGRESSIVE_SYS10=DT5.PROGRESSIVE AND DT5.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS DT6 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=DT6.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.D_PROP6_PROGRESSIVE_SYS10=DT6.PROGRESSIVE AND DT6.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS DT7 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=DT7.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.D_PROP7_PROGRESSIVE_SYS10=DT7.PROGRESSIVE AND DT7.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS DT8 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=DT8.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.D_PROP8_PROGRESSIVE_SYS10=DT8.PROGRESSIVE AND DT8.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS DT9 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=DT9.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.D_PROP9_PROGRESSIVE_SYS10=DT9.PROGRESSIVE AND DT9.LANGUAGE_CODE=? "+
 
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT0 ON ITM29_SHEET_LEVELS.N_PROP0_PROGRESSIVE_SYS10=NT0.PROGRESSIVE AND NT0.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT1 ON ITM29_SHEET_LEVELS.N_PROP1_PROGRESSIVE_SYS10=NT1.PROGRESSIVE AND NT1.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT2 ON ITM29_SHEET_LEVELS.N_PROP2_PROGRESSIVE_SYS10=NT2.PROGRESSIVE AND NT2.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT3 ON ITM29_SHEET_LEVELS.N_PROP3_PROGRESSIVE_SYS10=NT3.PROGRESSIVE AND NT3.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT4 ON ITM29_SHEET_LEVELS.N_PROP4_PROGRESSIVE_SYS10=NT4.PROGRESSIVE AND NT4.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT5 ON ITM29_SHEET_LEVELS.N_PROP5_PROGRESSIVE_SYS10=NT5.PROGRESSIVE AND NT5.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT6 ON ITM29_SHEET_LEVELS.N_PROP6_PROGRESSIVE_SYS10=NT6.PROGRESSIVE AND NT6.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT7 ON ITM29_SHEET_LEVELS.N_PROP7_PROGRESSIVE_SYS10=NT7.PROGRESSIVE AND NT7.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT8 ON ITM29_SHEET_LEVELS.N_PROP8_PROGRESSIVE_SYS10=NT8.PROGRESSIVE AND NT8.LANGUAGE_CODE=? "+
-					"LEFT OUTER JOIN SYS10_TRANSLATIONS NT9 ON ITM29_SHEET_LEVELS.N_PROP9_PROGRESSIVE_SYS10=NT9.PROGRESSIVE AND NT9.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS NT0 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=NT0.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.N_PROP0_PROGRESSIVE_SYS10=NT0.PROGRESSIVE AND NT0.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS NT1 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=NT1.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.N_PROP1_PROGRESSIVE_SYS10=NT1.PROGRESSIVE AND NT1.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS NT2 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=NT2.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.N_PROP2_PROGRESSIVE_SYS10=NT2.PROGRESSIVE AND NT2.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS NT3 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=NT3.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.N_PROP3_PROGRESSIVE_SYS10=NT3.PROGRESSIVE AND NT3.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS NT4 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=NT4.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.N_PROP4_PROGRESSIVE_SYS10=NT4.PROGRESSIVE AND NT4.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS NT5 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=NT5.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.N_PROP5_PROGRESSIVE_SYS10=NT5.PROGRESSIVE AND NT5.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS NT6 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=NT6.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.N_PROP6_PROGRESSIVE_SYS10=NT6.PROGRESSIVE AND NT6.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS NT7 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=NT7.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.N_PROP7_PROGRESSIVE_SYS10=NT7.PROGRESSIVE AND NT7.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS NT8 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=NT8.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.N_PROP8_PROGRESSIVE_SYS10=NT8.PROGRESSIVE AND NT8.LANGUAGE_CODE=? "+
+					"LEFT OUTER JOIN SYS10_COMPANY_TRANSLATIONS NT9 ON ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=NT9.COMPANY_CODE_SYS01 AND ITM29_SHEET_LEVELS.N_PROP9_PROGRESSIVE_SYS10=NT9.PROGRESSIVE AND NT9.LANGUAGE_CODE=? "+
 
 					" where "+
 					"ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01 in ("+companies+") and "+
-					"ITM29_SHEET_LEVELS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-					"SYS10_TRANSLATIONS.LANGUAGE_CODE=? "+
+					"ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+					"ITM29_SHEET_LEVELS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+					"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? "+
 					"ORDER BY ITM29_SHEET_LEVELS.LEV ";
 
 
@@ -1826,7 +1847,7 @@ public class ItemSheetsBean implements ItemSheets {
 			attribute2dbField.put("companyCodeSys01ITM29","ITM29_SHEET_LEVELS.COMPANY_CODE_SYS01");
 			attribute2dbField.put("levITM29","ITM29_SHEET_LEVELS.LEV");
 			attribute2dbField.put("progressiveSys10ITM29","ITM29_SHEET_LEVELS.PROGRESSIVE_SYS10");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 
 			attribute2dbField.put("sProp0ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.S_PROP0_PROGRESSIVE_SYS10");
 			attribute2dbField.put("sProp1ProgressiveSys10ITM29","ITM29_SHEET_LEVELS.S_PROP1_PROGRESSIVE_SYS10");
@@ -1951,14 +1972,15 @@ public class ItemSheetsBean implements ItemSheets {
 
 			String sql =
 					"select ITM27_SHEETS_SPARE_PARTS.COMPANY_CODE_SYS01,ITM27_SHEETS_SPARE_PARTS.SHEET_CODE_ITM25,"+
-					"ITM27_SHEETS_SPARE_PARTS.ITEM_CODE_ITM01,SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
-					" from ITM27_SHEETS_SPARE_PARTS,ITM01_ITEMS,SYS10_TRANSLATIONS where "+
+					"ITM27_SHEETS_SPARE_PARTS.ITEM_CODE_ITM01,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
+					" from ITM27_SHEETS_SPARE_PARTS,ITM01_ITEMS,SYS10_COMPANY_TRANSLATIONS where "+
 					"ITM27_SHEETS_SPARE_PARTS.COMPANY_CODE_SYS01=? and "+
 					"ITM27_SHEETS_SPARE_PARTS.SHEET_CODE_ITM25=? and "+
 					"ITM27_SHEETS_SPARE_PARTS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
 					"ITM27_SHEETS_SPARE_PARTS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
-					"ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-					"SYS10_TRANSLATIONS.LANGUAGE_CODE=? ";
+					"ITM01_ITEMS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+					"ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+					"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? ";
 
 			ArrayList values = new ArrayList();
 			values.add(companyCodeSys01ITM25);
@@ -1969,7 +1991,7 @@ public class ItemSheetsBean implements ItemSheets {
 			attribute2dbField.put("companyCodeSys01ITM27","ITM27_SHEETS_SPARE_PARTS.COMPANY_CODE_SYS01");
 			attribute2dbField.put("sheetCodeItm25ITM27","ITM27_SHEETS_SPARE_PARTS.SHEET_CODE_ITM25");
 			attribute2dbField.put("itemCodeItm01ITM27","ITM27_SHEETS_SPARE_PARTS.ITEM_CODE_ITM01");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
 
 			// read from ITM27 table...
@@ -2030,7 +2052,7 @@ public class ItemSheetsBean implements ItemSheets {
 				vo = (SheetSparePartVO)vos.get(i);
 
 				// insert into ITM27...
-				Response res = QueryUtil.insertTable(
+				Response res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 							conn,
 							new UserSessionParameters(username),
 							vos,
@@ -2053,7 +2075,7 @@ public class ItemSheetsBean implements ItemSheets {
 			pstmt.setString(2,vo.getSheetCodeItm25ITM27());
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
-				recalculateRootSheetSpareParts(conn,vo.getCompanyCodeSys01ITM27(),rset.getString(1));
+				recalculateRootSheetSpareParts(conn,vo.getCompanyCodeSys01ITM27(),rset.getString(1),username);
 			}
 			rset.close();
 			pstmt.close();
@@ -2195,11 +2217,12 @@ public class ItemSheetsBean implements ItemSheets {
 			String sql =
 					"select ITM26_SHEETS_ATTACHED_DOCS.COMPANY_CODE_SYS01,ITM26_SHEETS_ATTACHED_DOCS.PROGRESSIVE_DOC14,"+
 					"ITM26_SHEETS_ATTACHED_DOCS.SHEET_CODE_ITM25,DOC14_DOCUMENTS.DESCRIPTION,ITM26_SHEETS_ATTACHED_DOCS.PROGRESSIVE_HIE01, "+
-					"HIE01_LEVELS.PROGRESSIVE_HIE02 "+
-					"from ITM26_SHEETS_ATTACHED_DOCS,DOC14_DOCUMENTS,HIE01_LEVELS where "+
+					"HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE02 "+
+					"from ITM26_SHEETS_ATTACHED_DOCS,DOC14_DOCUMENTS,HIE01_COMPANY_LEVELS where "+
 					"ITM26_SHEETS_ATTACHED_DOCS.COMPANY_CODE_SYS01=DOC14_DOCUMENTS.COMPANY_CODE_SYS01 and "+
 					"ITM26_SHEETS_ATTACHED_DOCS.PROGRESSIVE_DOC14=DOC14_DOCUMENTS.PROGRESSIVE and "+
-					"HIE01_LEVELS.PROGRESSIVE=ITM26_SHEETS_ATTACHED_DOCS.PROGRESSIVE_HIE01 and "+
+					"HIE01_COMPANY_LEVELS.COMPANY_CODE_SYS01=ITM26_SHEETS_ATTACHED_DOCS.COMPANY_CODE_SYS01 and "+
+					"HIE01_COMPANY_LEVELS.PROGRESSIVE=ITM26_SHEETS_ATTACHED_DOCS.PROGRESSIVE_HIE01 and "+
 					"ITM26_SHEETS_ATTACHED_DOCS.COMPANY_CODE_SYS01=? and "+
 					"ITM26_SHEETS_ATTACHED_DOCS.SHEET_CODE_ITM25=?";
 
@@ -2209,7 +2232,7 @@ public class ItemSheetsBean implements ItemSheets {
 			attribute2dbField.put("sheetCodeItm25ITM26","ITM26_SHEETS_ATTACHED_DOCS.SHEET_CODE_ITM25");
 			attribute2dbField.put("progressiveDoc14ITM26","ITM26_SHEETS_ATTACHED_DOCS.PROGRESSIVE_DOC14");
 			attribute2dbField.put("progressiveHie01ITM26","ITM26_SHEETS_ATTACHED_DOCS.PROGRESSIVE_HIE01");
-			attribute2dbField.put("progressiveHie02HIE01","HIE01_LEVELS.PROGRESSIVE_HIE02");
+			attribute2dbField.put("progressiveHie02HIE01","HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE02");
 
 			String companyCode = (String)gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01);
 			String sheetCode = (String)gridParams.getOtherGridParams().get(ApplicationConsts.ID);
@@ -2285,7 +2308,7 @@ public class ItemSheetsBean implements ItemSheets {
 				vo = (SheetAttachedDocVO)list.get(i);
 
 				// insert into ITM26...
-				res = QueryUtil.insertTable(
+				res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 						conn,
 						new UserSessionParameters(username),
 						vo,
@@ -2401,16 +2424,17 @@ public class ItemSheetsBean implements ItemSheets {
 
 			String sql =
 					"select ITM28_ROOT_S_SPARE_PARTS.COMPANY_CODE_SYS01,ITM28_ROOT_S_SPARE_PARTS.ROOT_SHEET_CODE_ITM25,"+
-					"ITM28_ROOT_S_SPARE_PARTS.ITEM_CODE_ITM01,SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
-					" from ITM28_ROOT_S_SPARE_PARTS,ITM01_ITEMS I,ITM01_ITEMS,SYS10_TRANSLATIONS where "+
+					"ITM28_ROOT_S_SPARE_PARTS.ITEM_CODE_ITM01,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
+					" from ITM28_ROOT_S_SPARE_PARTS,ITM01_ITEMS I,ITM01_ITEMS,SYS10_COMPANY_TRANSLATIONS where "+
 					"I.COMPANY_CODE_SYS01=? and "+
 					"I.ITEM_CODE=? and "+
 					"I.COMPANY_CODE_SYS01=ITM28_ROOT_S_SPARE_PARTS.COMPANY_CODE_SYS01 and "+
 					"I.SHEET_CODE_ITM25=ITM28_ROOT_S_SPARE_PARTS.ROOT_SHEET_CODE_ITM25 and "+
 					"ITM28_ROOT_S_SPARE_PARTS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
 					"ITM28_ROOT_S_SPARE_PARTS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
-					"ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-					"SYS10_TRANSLATIONS.LANGUAGE_CODE=? ";
+					"ITM01_ITEMS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+					"ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+					"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? ";
 
 			ArrayList values = new ArrayList();
 			values.add(companyCodeSys01ITM01);
@@ -2421,7 +2445,7 @@ public class ItemSheetsBean implements ItemSheets {
 			attribute2dbField.put("companyCodeSys01ITM28","ITM28_ROOT_S_SPARE_PARTS.COMPANY_CODE_SYS01");
 			attribute2dbField.put("rootSheetCodeItm25ITM28","ITM28_ROOT_S_SPARE_PARTS.ROOT_SHEET_CODE_ITM25");
 			attribute2dbField.put("itemCodeItm01ITM28","ITM28_ROOT_S_SPARE_PARTS.ITEM_CODE_ITM01");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
 
 			// read from ITM28 table...

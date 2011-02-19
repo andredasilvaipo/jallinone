@@ -12,6 +12,7 @@ import org.openswing.swing.server.*;
 
 
 import org.jallinone.commons.server.JAIOBeanFactory;
+import java.math.BigDecimal;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -57,10 +58,10 @@ public class DeleteBarcodeLabelsDataAction implements Action {
 
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
     try {
-      String reportId = (String)inputPar;
+      BigDecimal reportId = (BigDecimal)inputPar;
 
       DeleteBarcodeLabelsData bean = (DeleteBarcodeLabelsData)JAIOBeanFactory.getInstance().getBean(DeleteBarcodeLabelsData.class);
-      Response answer = bean.deleteBarcodeLabelsData(null,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+      Response answer = bean.deleteBarcodeLabelsData(reportId.toString(),((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
     return answer;
     }

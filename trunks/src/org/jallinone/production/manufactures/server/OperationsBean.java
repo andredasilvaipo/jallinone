@@ -13,7 +13,7 @@ import java.sql.*;
 
 import org.openswing.swing.logger.server.*;
 import org.jallinone.system.server.*;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.jallinone.production.manufactures.java.*;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.events.server.*;
@@ -53,7 +53,7 @@ import javax.sql.DataSource;
 public class OperationsBean  implements Operations {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -61,9 +61,9 @@ public class OperationsBean  implements Operations {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -73,7 +73,7 @@ public class OperationsBean  implements Operations {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -85,7 +85,7 @@ public class OperationsBean  implements Operations {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public OperationVO getOperation() {
 	  throw new UnsupportedOperationException();
@@ -107,34 +107,34 @@ public class OperationsBean  implements Operations {
       companies = companies.substring(0,companies.length()-1);
 
       String sql =
-          "select PRO04_OPERATIONS.COMPANY_CODE_SYS01,PRO04_OPERATIONS.OPERATION_CODE,SYS10_TRANSLATIONS.DESCRIPTION,"+
+          "select PRO04_OPERATIONS.COMPANY_CODE_SYS01,PRO04_OPERATIONS.OPERATION_CODE,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+
           "PRO04_OPERATIONS.PROGRESSIVE_SYS10,PRO04_OPERATIONS.QTY,PRO04_OPERATIONS.TASK_CODE_REG07,"+
           "PRO04_OPERATIONS.MACHINERY_CODE_PRO03,PRO04_OPERATIONS.DURATION,PRO04_OPERATIONS.VALUE,"+
           "PRO04_OPERATIONS.NOTE,TASKS.DESCRIPTION,PRO03.DESCRIPTION "+
-          "from SYS10_TRANSLATIONS,PRO04_OPERATIONS "+
+          "from SYS10_COMPANY_TRANSLATIONS,PRO04_OPERATIONS "+
           "LEFT OUTER JOIN "+
-          "(select SYS10_TRANSLATIONS.DESCRIPTION,REG07_TASKS.COMPANY_CODE_SYS01,REG07_TASKS.TASK_CODE "+
-          "from REG07_TASKS,SYS10_TRANSLATIONS where "+
-          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?) TASKS ON "+
+          "(select SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,REG07_TASKS.COMPANY_CODE_SYS01,REG07_TASKS.TASK_CODE "+
+          "from REG07_TASKS,SYS10_COMPANY_TRANSLATIONS where "+
+          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?) TASKS ON "+
           "TASKS.COMPANY_CODE_SYS01=PRO04_OPERATIONS.COMPANY_CODE_SYS01 and "+
           "TASKS.TASK_CODE=PRO04_OPERATIONS.TASK_CODE_REG07 "+
           "LEFT OUTER JOIN "+
-          "(select SYS10_TRANSLATIONS.DESCRIPTION,PRO03_MACHINERIES.COMPANY_CODE_SYS01,PRO03_MACHINERIES.MACHINERY_CODE "+
-          "from PRO03_MACHINERIES,SYS10_TRANSLATIONS where "+
-          "PRO03_MACHINERIES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?) PRO03 ON "+
+          "(select SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,PRO03_MACHINERIES.COMPANY_CODE_SYS01,PRO03_MACHINERIES.MACHINERY_CODE "+
+          "from PRO03_MACHINERIES,SYS10_COMPANY_TRANSLATIONS where "+
+          "PRO03_MACHINERIES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?) PRO03 ON "+
           "PRO03.COMPANY_CODE_SYS01=PRO04_OPERATIONS.COMPANY_CODE_SYS01 and "+
           "PRO03.MACHINERY_CODE=PRO04_OPERATIONS.MACHINERY_CODE_PRO03 "+
           "where "+
-          "PRO04_OPERATIONS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          "PRO04_OPERATIONS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "PRO04_OPERATIONS.COMPANY_CODE_SYS01 in ("+companies+") and "+
           "PRO04_OPERATIONS.ENABLED='Y'";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01PRO04","PRO04_OPERATIONS.COMPANY_CODE_SYS01");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("operationCodePRO04","PRO04_OPERATIONS.OPERATION_CODE");
       attribute2dbField.put("progressiveSys10PRO04","PRO04_OPERATIONS.PROGRESSIVE_SYS10");
       attribute2dbField.put("qtyPRO04","PRO04_OPERATIONS.QTY");
@@ -224,9 +224,9 @@ public class OperationsBean  implements Operations {
         oldVO = (OperationVO)oldVOs.get(i);
         newVO = (OperationVO)newVOs.get(i);
 
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10PRO04(),serverLanguageId,conn);
+        CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01PRO04(),oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10PRO04(),serverLanguageId,username,conn);
 
-        res = new QueryUtil().updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
@@ -254,7 +254,7 @@ public class OperationsBean  implements Operations {
     			conn.rollback();
     	}
     	catch (Exception ex3) {
-    	} 
+    	}
     	throw new Exception(ex.getMessage());
     }
     finally {
@@ -294,28 +294,28 @@ public class OperationsBean  implements Operations {
       }
 
       String sql =
-          "select PRO04_OPERATIONS.COMPANY_CODE_SYS01,PRO04_OPERATIONS.OPERATION_CODE,SYS10_TRANSLATIONS.DESCRIPTION,"+
+          "select PRO04_OPERATIONS.COMPANY_CODE_SYS01,PRO04_OPERATIONS.OPERATION_CODE,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+
           "PRO04_OPERATIONS.PROGRESSIVE_SYS10,PRO04_OPERATIONS.QTY,PRO04_OPERATIONS.TASK_CODE_REG07,"+
           "PRO04_OPERATIONS.MACHINERY_CODE_PRO03,PRO04_OPERATIONS.DURATION,PRO04_OPERATIONS.VALUE,"+
           "PRO04_OPERATIONS.NOTE,TASKS.DESCRIPTION,PRO03.DESCRIPTION "+
-          "from SYS10_TRANSLATIONS,PRO04_OPERATIONS "+
+          "from SYS10_COMPANY_TRANSLATIONS,PRO04_OPERATIONS "+
           "LEFT OUTER JOIN "+
-          "(select SYS10_TRANSLATIONS.DESCRIPTION,REG07_TASKS.COMPANY_CODE_SYS01,REG07_TASKS.TASK_CODE "+
-          "from REG07_TASKS,SYS10_TRANSLATIONS where "+
-          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?) TASKS ON "+
+          "(select SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,REG07_TASKS.COMPANY_CODE_SYS01,REG07_TASKS.TASK_CODE "+
+          "from REG07_TASKS,SYS10_COMPANY_TRANSLATIONS where "+
+          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?) TASKS ON "+
           "TASKS.COMPANY_CODE_SYS01=PRO04_OPERATIONS.COMPANY_CODE_SYS01 and "+
           "TASKS.TASK_CODE=PRO04_OPERATIONS.TASK_CODE_REG07 "+
           "LEFT OUTER JOIN "+
-          "(select SYS10_TRANSLATIONS.DESCRIPTION,PRO03_MACHINERIES.COMPANY_CODE_SYS01,PRO03_MACHINERIES.MACHINERY_CODE "+
-          "from PRO03_MACHINERIES,SYS10_TRANSLATIONS where "+
-          "PRO03_MACHINERIES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?) PRO03 ON "+
+          "(select SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,PRO03_MACHINERIES.COMPANY_CODE_SYS01,PRO03_MACHINERIES.MACHINERY_CODE "+
+          "from PRO03_MACHINERIES,SYS10_COMPANY_TRANSLATIONS where "+
+          "PRO03_MACHINERIES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?) PRO03 ON "+
           "PRO03.COMPANY_CODE_SYS01=PRO04_OPERATIONS.COMPANY_CODE_SYS01 and "+
           "PRO03.MACHINERY_CODE=PRO04_OPERATIONS.MACHINERY_CODE_PRO03 "+
           "where "+
-          "PRO04_OPERATIONS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          "PRO04_OPERATIONS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "PRO04_OPERATIONS.COMPANY_CODE_SYS01 in ("+companies+") and "+
           "PRO04_OPERATIONS.ENABLED='Y' and "+
           "PRO04_OPERATIONS.OPERATION_CODE='"+validationPars.getCode()+"'";
@@ -323,7 +323,7 @@ public class OperationsBean  implements Operations {
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01PRO04","PRO04_OPERATIONS.COMPANY_CODE_SYS01");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("operationCodePRO04","PRO04_OPERATIONS.OPERATION_CODE");
       attribute2dbField.put("progressiveSys10PRO04","PRO04_OPERATIONS.PROGRESSIVE_SYS10");
       attribute2dbField.put("qtyPRO04","PRO04_OPERATIONS.QTY");
@@ -397,7 +397,7 @@ public class OperationsBean  implements Operations {
         if (vo.getCompanyCodeSys01PRO04()==null)
           vo.setCompanyCodeSys01PRO04(companyCode);
         vo.setEnabledPRO04("Y");
-        vo.setProgressiveSys10PRO04(TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01PRO04(),conn));
+        vo.setProgressiveSys10PRO04(CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01PRO04(),username,conn));
 
         Map attribute2dbField = new HashMap();
         attribute2dbField.put("companyCodeSys01PRO04","COMPANY_CODE_SYS01");
@@ -412,7 +412,7 @@ public class OperationsBean  implements Operations {
         attribute2dbField.put("enabledPRO04","ENABLED");
 
         // insert into PRO04...
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,
@@ -441,7 +441,7 @@ public class OperationsBean  implements Operations {
     			conn.rollback();
     	}
     	catch (Exception ex3) {
-    	} 
+    	}
     	throw new Exception(ex.getMessage());
     }
     finally {
@@ -470,21 +470,23 @@ public class OperationsBean  implements Operations {
    * Business logic to execute.
    */
   public VOResponse deleteOperations(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
-    
+		PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
-
       OperationVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in PRO04...
         vo = (OperationVO)list.get(i);
-        stmt.execute(
-          "update PRO04_OPERATIONS set ENABLED='N' where "+
+				pstmt = conn.prepareCall(
+   				"update PRO04_OPERATIONS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
           "COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01PRO04()+"' and "+
-          "OPERATION_CODE='"+vo.getOperationCodePRO04()+"'");
+          "OPERATION_CODE='"+vo.getOperationCodePRO04()+"'"
+				);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
       return new VOResponse(new Boolean(true));
@@ -497,12 +499,12 @@ public class OperationsBean  implements Operations {
     			conn.rollback();
     	}
     	catch (Exception ex3) {
-    	} 
+    	}
     	throw new Exception(ex.getMessage());
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {

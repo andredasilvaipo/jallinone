@@ -14,7 +14,7 @@ import java.sql.*;
 
 import org.openswing.swing.logger.server.*;
 import org.jallinone.system.server.*;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.jallinone.sales.activities.java.*;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.commons.server.CustomizeQueryUtil;
@@ -55,7 +55,7 @@ import javax.sql.DataSource;
 public class SaleActivitiesBean  implements SaleActivities {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -63,9 +63,9 @@ public class SaleActivitiesBean  implements SaleActivities {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -75,7 +75,7 @@ public class SaleActivitiesBean  implements SaleActivities {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -87,12 +87,12 @@ public class SaleActivitiesBean  implements SaleActivities {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public SaleActivityVO getSaleActivity() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
@@ -118,8 +118,9 @@ public class SaleActivitiesBean  implements SaleActivities {
           "select SAL09_ACTIVITIES.COMPANY_CODE_SYS01,SAL09_ACTIVITIES.ACTIVITY_CODE,SAL09_ACTIVITIES.PROGRESSIVE_SYS10,"+
           "SYS10_SAL09.DESCRIPTION,SAL09_ACTIVITIES.VALUE,SAL09_ACTIVITIES.VAT_CODE_REG01,"+
           "SAL09_ACTIVITIES.CURRENCY_CODE_REG03,SYS10_REG01.DESCRIPTION,REG01_VATS.VALUE,REG01_VATS.DEDUCTIBLE,REG03_CURRENCIES.CURRENCY_SYMBOL"+
-          " from SAL09_ACTIVITIES,SYS10_TRANSLATIONS SYS10_SAL09,SYS10_TRANSLATIONS SYS10_REG01,REG01_VATS,REG03_CURRENCIES where "+
+          " from SAL09_ACTIVITIES,SYS10_COMPANY_TRANSLATIONS SYS10_SAL09,SYS10_TRANSLATIONS SYS10_REG01,REG01_VATS,REG03_CURRENCIES where "+
           "SAL09_ACTIVITIES.CURRENCY_CODE_REG03=REG03_CURRENCIES.CURRENCY_CODE and "+
+					"SAL09_ACTIVITIES.COMPANY_CODE_SYS01=SYS10_SAL09.COMPANY_CODE_SYS01 and "+
           "SAL09_ACTIVITIES.PROGRESSIVE_SYS10=SYS10_SAL09.PROGRESSIVE and "+
           "SYS10_SAL09.LANGUAGE_CODE=? and "+
           "SAL09_ACTIVITIES.COMPANY_CODE_SYS01 in ("+companies+") and "+
@@ -214,7 +215,7 @@ public class SaleActivitiesBean  implements SaleActivities {
         newVO = (SaleActivityVO)newVOs.get(i);
 
         // update SYS10 table...
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10SAL09(),serverLanguageId,conn);
+        CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01SAL09(),oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10SAL09(),serverLanguageId,username,conn);
 
         HashSet pkAttrs = new HashSet();
         pkAttrs.add("companyCodeSys01SAL09");
@@ -293,8 +294,9 @@ public class SaleActivitiesBean  implements SaleActivities {
           "select SAL09_ACTIVITIES.COMPANY_CODE_SYS01,SAL09_ACTIVITIES.ACTIVITY_CODE,SAL09_ACTIVITIES.PROGRESSIVE_SYS10,"+
           "SYS10_SAL09.DESCRIPTION,SAL09_ACTIVITIES.VALUE,SAL09_ACTIVITIES.VAT_CODE_REG01,"+
           "SAL09_ACTIVITIES.CURRENCY_CODE_REG03,SYS10_REG01.DESCRIPTION,REG01_VATS.VALUE,REG01_VATS.DEDUCTIBLE,REG03_CURRENCIES.CURRENCY_SYMBOL"+
-          " from SAL09_ACTIVITIES,SYS10_TRANSLATIONS SYS10_SAL09,SYS10_TRANSLATIONS SYS10_REG01,REG01_VATS,REG03_CURRENCIES where "+
+          " from SAL09_ACTIVITIES,SYS10_COMPANY_TRANSLATIONS SYS10_SAL09,SYS10_TRANSLATIONS SYS10_REG01,REG01_VATS,REG03_CURRENCIES where "+
           "SAL09_ACTIVITIES.CURRENCY_CODE_REG03=REG03_CURRENCIES.CURRENCY_CODE and "+
+					"SAL09_ACTIVITIES.COMPANY_CODE_SYS01=SYS10_SAL09.COMPANY_CODE_SYS01 and "+
           "SAL09_ACTIVITIES.PROGRESSIVE_SYS10=SYS10_SAL09.PROGRESSIVE and "+
           "SYS10_SAL09.LANGUAGE_CODE=? and "+
           "REG01_VATS.VAT_CODE=SAL09_ACTIVITIES.VAT_CODE_REG01 and "+
@@ -398,7 +400,7 @@ public class SaleActivitiesBean  implements SaleActivities {
         vo = (SaleActivityVO)list.get(i);
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01SAL09(),conn);
+        progressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01SAL09(),username,conn);
         vo.setProgressiveSys10SAL09(progressiveSYS10);
 
         // insert into SAL09...

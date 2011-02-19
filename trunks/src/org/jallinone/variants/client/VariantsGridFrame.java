@@ -129,7 +129,8 @@ public class VariantsGridFrame extends InternalFrame {
             }
           }
           varNameComboBoxControl.setDomain(d);
-          varNameComboBoxControl.setSelectedIndex(0);
+					if (d.getDomainPairList().length>0)
+						varNameComboBoxControl.setSelectedIndex(0);
         }
       }
 

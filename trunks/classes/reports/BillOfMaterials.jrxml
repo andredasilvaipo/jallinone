@@ -47,7 +47,7 @@
 		<defaultValueExpression ><![CDATA["MOB"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="DECIMALS" isForPrompting="false" class="java.math.BigDecimal">
-		<defaultValueExpression ><![CDATA[new java.math.BigDecimal(2)]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[new java.math.BigDecimal("2")]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[select * from TMP01_BILL_OF_MATERIALS where REPORT_ID=$P{REPORT_ID} and PROGRESSIVE=1]]></queryString>
 

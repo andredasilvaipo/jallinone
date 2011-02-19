@@ -21,19 +21,19 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import org.jallinone.commons.java.ApplicationConsts;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
-import org.jallinone.hierarchies.server.HierarchiesBean;
-import org.jallinone.hierarchies.server.HierarchyUtil;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
+import org.jallinone.hierarchies.server.CompanyHierarchyUtil;
 import org.jallinone.system.importdata.java.ETLProcessFieldVO;
 import org.jallinone.system.importdata.java.ETLProcessVO;
 import org.jallinone.system.importdata.java.ImportDescriptorVO;
 import org.jallinone.system.languages.java.LanguageVO;
 import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.openswing.swing.logger.server.Logger;
 import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.message.receive.java.VOResponse;
 import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.hierarchies.server.CompanyHierarchiesBean;
 
 
 /**
@@ -93,9 +93,9 @@ public class ImportDataBean implements ImportData {
 
 
 
-  private HierarchiesBean bean;
+  private CompanyHierarchiesBean bean;
 
-  public void setBean(HierarchiesBean bean) {
+  public void setBean(CompanyHierarchiesBean bean) {
     this.bean = bean;
   }
 
@@ -143,7 +143,7 @@ public class ImportDataBean implements ImportData {
         // retrieve the whole hierarchy currently defined in the database, for each language...
         for(int i=0;i<langsVO.size();i++) {
           LanguageVO vo = (LanguageVO)langsVO.get(i);
-          DefaultTreeModel model = HierarchyUtil.loadHierarchy(processVO.getProgressiveHIE02(),vo.getLanguageCodeSYS09(),username);
+          DefaultTreeModel model = CompanyHierarchyUtil.loadHierarchy(processVO.getCompanyCodeSys01SYS23(),processVO.getProgressiveHIE02(),vo.getLanguageCodeSYS09(),username);
           treeIndexes[i] = new HashMap();
           indexingTree((DefaultMutableTreeNode)model.getRoot(),treeIndexes[i],processVO.getLevelsSepSYS23(),"");
         }
@@ -189,7 +189,7 @@ public class ImportDataBean implements ImportData {
       for(int k=0;k<impVO.getTableNames().length;k++) {
         alreadyAdded.clear();
         tableName = impVO.getTableNames()[k];
-        insSQL = "INSERT INTO " + tableName + "(";
+        insSQL = "INSERT INTO " + tableName + "(CREATE_USER,CREATE_DATE,";
         count = 0;
         if (impVO.isSupportsCompanyCode()) {
           insSQL += "COMPANY_CODE_SYS01,";
@@ -251,7 +251,7 @@ public class ImportDataBean implements ImportData {
           }
         }
         insSQL = insSQL.substring(0, insSQL.length() - 1);
-        insSQL += ") VALUES(";
+        insSQL += ") VALUES(?,?,";
         for(int i=0;i<count;i++)
           insSQL += "?,";
         insSQL = insSQL.substring(0, insSQL.length() - 1);
@@ -266,7 +266,7 @@ public class ImportDataBean implements ImportData {
       Iterator it = null;
       for(int k=0;k<impVO.getTableNames().length;k++) {
         tableName = impVO.getTableNames()[k];
-        updSQL = "UPDATE " + tableName + " SET ";
+        updSQL = "UPDATE " + tableName + " SET LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?,";
         alreadyAdded.clear();
         for (int i = 0; i < fieldsVO.size(); i++) {
           vo = (ETLProcessFieldVO) fieldsVO.get(i);
@@ -316,12 +316,12 @@ public class ImportDataBean implements ImportData {
 
 
       // prepare SQL for insert description ops...
-      String insSYS10 = "INSERT INTO SYS10_TRANSLATIONS(PROGRESSIVE,LANGUAGE_CODE,DESCRIPTION,COMPANY_CODE_SYS01) VALUES(?,?,?,?)";
+      String insSYS10 = "INSERT INTO SYS10_COMPANY_TRANSLATIONS(PROGRESSIVE,LANGUAGE_CODE,DESCRIPTION,COMPANY_CODE_SYS01,CREATE_USER,CREATE_DATE) VALUES(?,?,?,?,?,?)";
       insSYS10Pstmt = conn.prepareStatement(insSYS10);
 
 
       // prepare SQL for update description ops...
-      String updSYS10 = "UPDATE SYS10_TRANSLATIONS SET DESCRIPTION=? WHERE PROGRESSIVE=? and LANGUAGE_CODE=?";
+      String updSYS10 = "UPDATE SYS10_COMPANY_TRANSLATIONS SET DESCRIPTION=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? WHERE COMPANY_CODE_SYS01=? and PROGRESSIVE=? and LANGUAGE_CODE=?";
       updSYS10Pstmt = conn.prepareStatement(updSYS10);
 
 
@@ -508,8 +508,11 @@ public class ImportDataBean implements ImportData {
                     continue;
                   index = indexInt.intValue();
                   updSYS10Pstmt.setObject(1,row[index]);
-                  updSYS10Pstmt.setBigDecimal(2,progressiveSYS10);
-                  updSYS10Pstmt.setString(3,langVO.getLanguageCodeSYS09());
+									updSYS10Pstmt.setString(2,username); pos++;
+									updSYS10Pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis())); pos++;
+									updSYS10Pstmt.setString(4,processVO.getCompanyCodeSys01SYS23());
+                  updSYS10Pstmt.setBigDecimal(5,progressiveSYS10);
+                  updSYS10Pstmt.setString(6,langVO.getLanguageCodeSYS09());
                   updSYS10Pstmt.execute();
                   row[index] = progressiveSYS10;
                 }
@@ -543,7 +546,7 @@ public class ImportDataBean implements ImportData {
                 		processVO.getLevelsSepSYS23(),
                 		treeIndexes,
                 		processVO.getProgressiveHIE02(),
-                		processVO.getCompanyCodeSys01SYS23() // ???defCompanyCodeSys01SYS03
+                		processVO.getCompanyCodeSys01SYS23()
                 );
               }
 
@@ -560,6 +563,9 @@ public class ImportDataBean implements ImportData {
             pos = 1;
 //            for(int i=0;i<row.length;i++)
 //              updPstmt[k].setObject(pos++,row[i]);
+
+						updPstmt[k].setString(pos,username); pos++;
+						updPstmt[k].setTimestamp(pos,new java.sql.Timestamp(System.currentTimeMillis())); pos++;
 
             alreadyAdded.clear();
             for (int i = 0; i < fieldsVO.size(); i++) {
@@ -615,7 +621,7 @@ public class ImportDataBean implements ImportData {
 
                 progressiveSYS10 = CompanyProgressiveUtils.getInternalProgressive(
                 		processVO.getCompanyCodeSys01SYS23(), // ??? defCompanyCodeSys01SYS03,
-                		"SYS10_TRANSLATIONS",
+                		"SYS10_COMPANY_TRANSLATIONS",
                 		"PROGRESSIVE",
                 		conn
                 );
@@ -634,6 +640,8 @@ public class ImportDataBean implements ImportData {
                   insSYS10Pstmt.setString(2,langVO.getLanguageCodeSYS09());
                   insSYS10Pstmt.setObject(3,row[index]);
                   insSYS10Pstmt.setString(4,processVO.getCompanyCodeSys01SYS23());
+									insSYS10Pstmt.setString(5,username);
+									insSYS10Pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
                   insSYS10Pstmt.execute();
                   row[index] = progressiveSYS10;
                 }
@@ -665,7 +673,7 @@ public class ImportDataBean implements ImportData {
                 		processVO.getLevelsSepSYS23(),
                 		treeIndexes,
                 		processVO.getProgressiveHIE02(),
-                		processVO.getCompanyCodeSys01SYS23() // ???defCompanyCodeSys01SYS03
+                		processVO.getCompanyCodeSys01SYS23()
                 );
               }
               params[k].set(hierarchyLevelIndex,progressiveHIE01);
@@ -697,6 +705,8 @@ public class ImportDataBean implements ImportData {
               alreadyAdded.add(getFieldName(impVO.getProgressiveFieldName(),tableName));
             }
 
+            insPstmt[k].setString(pos,username); pos++;
+						insPstmt[k].setTimestamp(pos,new java.sql.Timestamp(System.currentTimeMillis())); pos++;
             for(int i=0;i<params[k].size();i++)
               insPstmt[k].setObject(pos++,params[k].get(i));
 
@@ -869,14 +879,14 @@ public class ImportDataBean implements ImportData {
    * @param map collection of pairs <leveldescr1 levelsSeparator leveldescr2 levelsSeparator ...,progressiveHIE01>
    */
   private void indexingTree(DefaultMutableTreeNode node,HashMap map,String levelsSeparator,String parentDesc) {
-    HierarchyLevelVO vo = (HierarchyLevelVO)node.getUserObject();
+    CompanyHierarchyLevelVO vo = (CompanyHierarchyLevelVO)node.getUserObject();
     DefaultMutableTreeNode childNode = null;
 
     map.put(parentDesc+vo.getDescriptionSYS10(),vo.getProgressiveHIE01());
 
     for(int i=0;i<node.getChildCount();i++) {
       childNode = (DefaultMutableTreeNode)node.getChildAt(i);
-      vo = (HierarchyLevelVO)node.getUserObject();
+      vo = (CompanyHierarchyLevelVO)node.getUserObject();
       indexingTree(childNode,map,levelsSeparator,parentDesc+vo.getDescriptionSYS10()+levelsSeparator);
     }
   }
@@ -901,7 +911,7 @@ public class ImportDataBean implements ImportData {
     for(int i=0;i<langsVO.size();i++)
       aux[i] = "";
     Response res = null;
-    HierarchyLevelVO vo = null;
+    CompanyHierarchyLevelVO vo = null;
 
     langVO = (LanguageVO)langsVO.get(0);
     for(int j=0;j<splittedLevelsDesc[0].length;j++) {
@@ -913,20 +923,21 @@ public class ImportDataBean implements ImportData {
       progressiveHIE01 = (BigDecimal)treeIndexes[0].get(aux[0]);
       if (progressiveHIE01==null) {
         // level to insert, for each language...
-        vo = new HierarchyLevelVO();
+        vo = new CompanyHierarchyLevelVO();
+				vo.setCompanySys01HIE01(defCompanyCodeSys01SYS03);
         vo.setDescriptionSYS10(splittedLevelsDesc[0][j]);
         vo.setLevelHIE01(new BigDecimal(j));
         vo.setProgressiveHie02HIE01(progressiveHIE02);
         vo.setProgressiveHie01HIE01(parentProgressiveHIE01);
         res = bean.insertLevel(vo,serverLanguageId,username,defCompanyCodeSys01SYS03);
         if (!res.isError()) {
-          vo = (HierarchyLevelVO)((VOResponse)res).getVo();
+          vo = (CompanyHierarchyLevelVO)((VOResponse)res).getVo();
           progressiveHIE01 = vo.getProgressiveHIE01();
           treeIndexes[0].put(aux[0],progressiveHIE01);
 
           for(int i=0;i<langsVO.size();i++) {
             langVO = (LanguageVO)langsVO.get(i);
-            TranslationUtils.updateTranslation(splittedLevelsDesc[0][j],splittedLevelsDesc[i][j],progressiveHIE01,langVO.getLanguageCodeSYS09(),conn);
+            CompanyTranslationUtils.updateTranslation(vo.getCompanySys01HIE01(),splittedLevelsDesc[0][j],splittedLevelsDesc[i][j],progressiveHIE01,langVO.getLanguageCodeSYS09(),username,conn);
             treeIndexes[i].put(aux[i],progressiveHIE01);
           }
         }

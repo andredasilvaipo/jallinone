@@ -203,7 +203,8 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
           if (col<1)
             return false;
           if (barcodeVO!=null) {
-            return getCells()[row][col-1]!=null;
+						return grid.getVOListTableModel().getValueAt(row,grid.getVOListTableModel().findColumn(attributeName))!=null;
+            //return getCells()[row][col-1]!=null;
           }
           return grid.isFieldEditable(row,attributeName);
         }
@@ -685,8 +686,11 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
    * @return list of objects stored withing the grid
    */
   public Object[][] getCells() {
-    if (!onValidating && grid!=null && grid.getTable()!=null && grid.getTable().getGrid()!=null)
+    if (!onValidating && grid!=null && grid.getTable()!=null && grid.getTable().getGrid()!=null) {
+			onValidating = true;
       grid.getTable().getGrid().stopCellEditing();
+			onValidating = false;
+    }
 
     if (grid==null)
       return null;

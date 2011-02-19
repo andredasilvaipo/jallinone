@@ -54,7 +54,7 @@ import javax.sql.DataSource;
 public class HierarItemDiscountsBean  implements HierarItemDiscounts {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -62,9 +62,9 @@ public class HierarItemDiscountsBean  implements HierarItemDiscounts {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -74,12 +74,12 @@ public class HierarItemDiscountsBean  implements HierarItemDiscounts {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
   private DiscountBean discountBean;
-  
+
   public void setDiscountBean(DiscountBean discountBean) {
 	  this.discountBean = discountBean;
   }
@@ -88,19 +88,19 @@ public class HierarItemDiscountsBean  implements HierarItemDiscounts {
   public HierarItemDiscountsBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public DiscountVO getDiscount() {
 	  throw new UnsupportedOperationException();
   }
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public HierarItemDiscountVO getHierarItemDiscount() {
-	  throw new UnsupportedOperationException();	
+	  throw new UnsupportedOperationException();
   }
 
 
@@ -114,25 +114,13 @@ public class HierarItemDiscountsBean  implements HierarItemDiscounts {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       discountBean.setConn(conn);
 
+			String companyCodeSYS01 = (String)gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01);
       BigDecimal progressiveHIE01 = (BigDecimal)gridParams.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_HIE01);
       BigDecimal progressiveHIE02 = (BigDecimal)gridParams.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_HIE02);
 
-      // retrieve COMPANY_CODE from progressiveHIE02...
-      stmt = conn.createStatement();
-      ResultSet rset = stmt.executeQuery(
-          "select COMPANY_CODE_SYS01 from ITM02_ITEM_TYPES where PROGRESSIVE_HIE02="+progressiveHIE02
-      );
-      String companyCodeSYS01 = null;
-      if(rset.next())
-        companyCodeSYS01 = rset.getString(1);
-      else {
-        rset.close();
-        return new VOListResponse("Item hierarchy not found.");
-      }
-      rset.close();
-
       // retrieve discounts...
-      rset = stmt.executeQuery(
+			stmt = conn.createStatement();
+      ResultSet rset = stmt.executeQuery(
           "select DISCOUNT_CODE_SAL03 from SAL05_ITEM_HIERAR_DISCOUNTS where "+
           "COMPANY_CODE_SYS01='"+companyCodeSYS01+"' and PROGRESSIVE_HIE01="+progressiveHIE01
       );
@@ -187,7 +175,7 @@ public class HierarItemDiscountsBean  implements HierarItemDiscounts {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
     	  discountBean.setConn(null);
       } catch (Exception ex) {}
@@ -251,7 +239,7 @@ public class HierarItemDiscountsBean  implements HierarItemDiscounts {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }
@@ -262,7 +250,7 @@ public class HierarItemDiscountsBean  implements HierarItemDiscounts {
    * Business logic to execute.
    */
   public VOListResponse insertHierarItemDiscounts(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
+		PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -270,16 +258,16 @@ public class HierarItemDiscountsBean  implements HierarItemDiscounts {
 
       HierarItemDiscountVO vo = null;
       ResultSet rset = null;
-      stmt = conn.createStatement();
       for(int i=0;i<list.size();i++) {
         vo = (HierarItemDiscountVO)list.get(i);
         vo.setDiscountTypeSAL03(ApplicationConsts.DISCOUNT_CUSTOMER);
 
         // retrieve COMPANY_CODE from progressiveHIE01...
-        rset = stmt.executeQuery(
-            "select COMPANY_CODE_SYS01 from ITM02_ITEM_TYPES where PROGRESSIVE_HIE02 in "+
-            "(select PROGRESSIVE_HIE02 from HIE01_LEVELS where PROGRESSIVE="+vo.getProgressiveHie01SAL05()+")"
+        pstmt = conn.prepareStatement(
+            "select COMPANY_CODE_SYS01 from ITM02_ITEM_TYPES where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01SAL03()+"' and PROGRESSIVE_HIE02 in "+
+            "(select PROGRESSIVE_HIE02 from HIE01_COMPANY_LEVELS where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01SAL03()+"' and PROGRESSIVE="+vo.getProgressiveHie01SAL05()+")"
         );
+				rset = pstmt.executeQuery();
         if(rset.next())
           vo.setCompanyCodeSys01SAL03(rset.getString(1));
         else {
@@ -287,13 +275,18 @@ public class HierarItemDiscountsBean  implements HierarItemDiscounts {
           return new VOListResponse("Item hierarchy not found.");
         }
         rset.close();
+				pstmt.close();
 
         discountBean.insertDiscount(vo);
 
-        stmt.execute(
-            "insert into SAL05_ITEM_HIERAR_DISCOUNTS(COMPANY_CODE_SYS01,PROGRESSIVE_HIE01,DISCOUNT_CODE_SAL03) "+
-            "values('"+vo.getCompanyCodeSys01SAL03()+"',"+vo.getProgressiveHie01SAL05()+",'"+vo.getDiscountCodeSAL03()+"')"
+				pstmt = conn.prepareStatement(
+            "insert into SAL05_ITEM_HIERAR_DISCOUNTS(COMPANY_CODE_SYS01,PROGRESSIVE_HIE01,DISCOUNT_CODE_SAL03,CREATE_USER,CREATE_DATE) "+
+            "values('"+vo.getCompanyCodeSys01SAL03()+"',"+vo.getProgressiveHie01SAL05()+",'"+vo.getDiscountCodeSAL03()+"',?,?)"
         );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
       return new VOListResponse(list,false,list.size());
@@ -312,7 +305,7 @@ public class HierarItemDiscountsBean  implements HierarItemDiscounts {
     }
     finally {
       try {
-        stmt.close();
+        pstmt.close();
       }
       catch (Exception ex2) {
       }
@@ -324,9 +317,9 @@ public class HierarItemDiscountsBean  implements HierarItemDiscounts {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
-    	  discountBean.setConn(null);   	  
+    	  discountBean.setConn(null);
       } catch (Exception ex) {}
     }
 
@@ -339,9 +332,9 @@ public class HierarItemDiscountsBean  implements HierarItemDiscounts {
    * Business logic to execute.
    */
   public VOResponse deleteHierarItemDiscounts(ArrayList vos,String serverLanguageId,String username) throws Throwable {
-    
+
     Statement stmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -391,7 +384,7 @@ public class HierarItemDiscountsBean  implements HierarItemDiscounts {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
     	  discountBean.setConn(null);
       } catch (Exception ex) {}

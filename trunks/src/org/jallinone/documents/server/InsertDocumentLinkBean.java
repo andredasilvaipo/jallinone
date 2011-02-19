@@ -1,44 +1,15 @@
 package org.jallinone.documents.server;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
+import java.io.*;
+import java.math.*;
+import java.sql.*;
+import java.util.*;
+import javax.sql.*;
 
-import javax.sql.DataSource;
-
-import org.jallinone.commons.java.ApplicationConsts;
-import org.jallinone.commons.server.CustomizeQueryUtil;
-import org.jallinone.documents.java.DetailDocumentVO;
-import org.jallinone.documents.java.DocPropertyVO;
-import org.jallinone.documents.java.DocumentLinkVO;
-import org.jallinone.documents.java.DocumentPK;
-import org.jallinone.documents.java.DocumentVersionVO;
-import org.jallinone.documents.java.GridDocumentVO;
-import org.jallinone.documents.java.LevelPropertyVO;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
-import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
-import org.jallinone.system.server.JAIOUserSessionParameters;
-import org.jallinone.system.translations.server.TranslationUtils;
-import org.openswing.swing.logger.server.Logger;
-import org.openswing.swing.message.receive.java.Response;
-import org.openswing.swing.message.receive.java.VOListResponse;
-import org.openswing.swing.message.receive.java.VOResponse;
-import org.openswing.swing.message.send.java.GridParams;
-import org.openswing.swing.server.QueryUtil;
-import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.documents.java.*;
+import org.openswing.swing.logger.server.*;
+import org.openswing.swing.message.receive.java.*;
+import org.openswing.swing.server.*;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -121,7 +92,7 @@ public class InsertDocumentLinkBean implements InsertDocumentLink {
 			attribute2dbField.put("progressiveHie01DOC17","PROGRESSIVE_HIE01");
 
 			// insert into DOC17...
-			Response res = QueryUtil.insertTable(
+			Response res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 					conn,
 					new UserSessionParameters(username),
 					vo,
@@ -207,6 +178,9 @@ public class InsertDocumentLinkBean implements InsertDocumentLink {
 			attribute2dbField.put("createUsernameDOC15","CREATE_USERNAME");
 			attribute2dbField.put("versionDOC15","VERSION");
 
+			Map fieldsValues = new HashMap();
+			fieldsValues.put("CREATE_USER",username);
+
 			// insert into DOC15...
 			Response res = QueryUtil.insertTable(
 					conn,
@@ -216,6 +190,7 @@ public class InsertDocumentLinkBean implements InsertDocumentLink {
 					attribute2dbField,
 					"Y",
 					"N",
+					fieldsValues,
 					null,
 					true
 			);

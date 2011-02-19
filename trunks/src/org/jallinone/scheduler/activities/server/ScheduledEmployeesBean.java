@@ -51,7 +51,7 @@ import javax.sql.DataSource;
 public class ScheduledEmployeesBean  implements ScheduledEmployees {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -59,9 +59,9 @@ public class ScheduledEmployeesBean  implements ScheduledEmployees {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -71,7 +71,7 @@ public class ScheduledEmployeesBean  implements ScheduledEmployees {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -83,7 +83,7 @@ public class ScheduledEmployeesBean  implements ScheduledEmployees {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ScheduledEmployeeVO getScheduledEmployee(ScheduledActivityPK pk) {
 	  throw new UnsupportedOperationException();
@@ -102,16 +102,17 @@ public class ScheduledEmployeesBean  implements ScheduledEmployees {
       String sql =
           "select SCH07_SCHEDULED_EMPLOYEES.COMPANY_CODE_SYS01,SCH07_SCHEDULED_EMPLOYEES.PROGRESSIVE_REG04,SCH07_SCHEDULED_EMPLOYEES.PROGRESSIVE_SCH06,"+
           "SCH07_SCHEDULED_EMPLOYEES.START_DATE,SCH07_SCHEDULED_EMPLOYEES.END_DATE,SCH07_SCHEDULED_EMPLOYEES.DURATION,"+
-          "SCH07_SCHEDULED_EMPLOYEES.NOTE,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,SCH01_EMPLOYEES.EMPLOYEE_CODE,SCH01_EMPLOYEES.TASK_CODE_REG07,SYS10_TRANSLATIONS.DESCRIPTION "+
-          "from SCH07_SCHEDULED_EMPLOYEES,REG04_SUBJECTS,SCH01_EMPLOYEES,REG07_TASKS,SYS10_TRANSLATIONS where "+
+          "SCH07_SCHEDULED_EMPLOYEES.NOTE,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,SCH01_EMPLOYEES.EMPLOYEE_CODE,SCH01_EMPLOYEES.TASK_CODE_REG07,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION "+
+          "from SCH07_SCHEDULED_EMPLOYEES,REG04_SUBJECTS,SCH01_EMPLOYEES,REG07_TASKS,SYS10_COMPANY_TRANSLATIONS where "+
           "SCH07_SCHEDULED_EMPLOYEES.COMPANY_CODE_SYS01=SCH01_EMPLOYEES.COMPANY_CODE_SYS01 and "+
           "SCH07_SCHEDULED_EMPLOYEES.PROGRESSIVE_REG04=SCH01_EMPLOYEES.PROGRESSIVE_REG04 and "+
           "SCH07_SCHEDULED_EMPLOYEES.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "SCH07_SCHEDULED_EMPLOYEES.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
           "SCH01_EMPLOYEES.COMPANY_CODE_SYS01=REG07_TASKS.COMPANY_CODE_SYS01 and "+
           "SCH01_EMPLOYEES.TASK_CODE_REG07=REG07_TASKS.TASK_CODE and "+
-          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"REG07_TASKS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SCH07_SCHEDULED_EMPLOYEES.COMPANY_CODE_SYS01=? and "+
           "SCH07_SCHEDULED_EMPLOYEES.PROGRESSIVE_SCH06=?";
 
@@ -127,7 +128,7 @@ public class ScheduledEmployeesBean  implements ScheduledEmployees {
       attribute2dbField.put("name_2REG04","REG04_SUBJECTS.NAME_2");
       attribute2dbField.put("employeeCodeSCH01","SCH01_EMPLOYEES.EMPLOYEE_CODE");
       attribute2dbField.put("taskCodeREG07","SCH01_EMPLOYEES.TASK_CODE_REG07");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 
       ScheduledActivityPK pk = (ScheduledActivityPK)gridParams.getOtherGridParams().get(ApplicationConsts.SCHEDULED_ACTIVITY_PK);
 
@@ -162,14 +163,15 @@ public class ScheduledEmployeesBean  implements ScheduledEmployees {
 
         // retrieve tasks defined in the call-out...
         sql =
-            "select SCH12_CALL_OUT_TASKS.TASK_CODE_REG07,SYS10_TRANSLATIONS.DESCRIPTION "+
-            "from SCH12_CALL_OUT_TASKS,SCH03_CALL_OUT_REQUESTS,REG07_TASKS,SYS10_TRANSLATIONS where "+
+            "select SCH12_CALL_OUT_TASKS.TASK_CODE_REG07,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION "+
+            "from SCH12_CALL_OUT_TASKS,SCH03_CALL_OUT_REQUESTS,REG07_TASKS,SYS10_COMPANY_TRANSLATIONS where "+
             "SCH03_CALL_OUT_REQUESTS.COMPANY_CODE_SYS01=SCH12_CALL_OUT_TASKS.COMPANY_CODE_SYS01 and "+
             "SCH03_CALL_OUT_REQUESTS.CALL_OUT_CODE_SCH10=SCH12_CALL_OUT_TASKS.CALL_OUT_CODE_SCH10 and "+
             "SCH12_CALL_OUT_TASKS.COMPANY_CODE_SYS01=REG07_TASKS.COMPANY_CODE_SYS01 and "+
             "SCH12_CALL_OUT_TASKS.TASK_CODE_REG07=REG07_TASKS.TASK_CODE and "+
-            "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-            "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+						"REG07_TASKS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+            "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+            "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
             "SCH03_CALL_OUT_REQUESTS.COMPANY_CODE_SYS01=? and "+
             "SCH03_CALL_OUT_REQUESTS.PROGRESSIVE_SCH06=?";
         pstmt = conn.prepareStatement(sql);
@@ -223,7 +225,7 @@ public class ScheduledEmployeesBean  implements ScheduledEmployees {
    * Business logic to execute.
    */
   public VOListResponse updateScheduledEmployees(ArrayList oldVos,ArrayList newVos,String serverLanguageId,String username) throws Throwable {
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -251,7 +253,7 @@ public class ScheduledEmployeesBean  implements ScheduledEmployees {
         newVO = (ScheduledEmployeeVO)newVos.get(i);
 
         // update record in SCH07...
-        res = QueryUtil.updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pk,
@@ -324,7 +326,7 @@ public class ScheduledEmployeesBean  implements ScheduledEmployees {
         vo = (ScheduledEmployeeVO)list.get(i);
 
         // insert into SCH07...
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,

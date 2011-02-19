@@ -222,6 +222,7 @@ public class AddMovementBean implements AddMovement {
 		      else if (itemType.equals(ApplicationConsts.ITEM_DAMAGED))
 		        sql += "DAMAGED_QTY=DAMAGED_QTY";
 		      sql += qtySign+vo.getDeltaQtyWAR02();
+					sql += ",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? ";
 		      sql +=
 		          " where COMPANY_CODE_SYS01=? and WAREHOUSE_CODE_WAR01=? and PROGRESSIVE_HIE01=? and ITEM_CODE_ITM01=? and "+
 		          "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
@@ -231,21 +232,23 @@ public class AddMovementBean implements AddMovement {
 		          "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? ";
 
 		      pstmt = conn.prepareStatement(sql);
-		      pstmt.setString(1,vo.getCompanyCodeSys01WAR02());
-		      pstmt.setString(2,vo.getWarehouseCodeWar01WAR02());
-		      pstmt.setBigDecimal(3,vo.getProgressiveHie01WAR02());
-		      pstmt.setString(4,vo.getItemCodeItm01WAR02());
+					pstmt.setString(1,username);
+					pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+		      pstmt.setString(3,vo.getCompanyCodeSys01WAR02());
+		      pstmt.setString(4,vo.getWarehouseCodeWar01WAR02());
+		      pstmt.setBigDecimal(5,vo.getProgressiveHie01WAR02());
+		      pstmt.setString(6,vo.getItemCodeItm01WAR02());
 
-		      pstmt.setString(5,vo.getVariantTypeItm06WAR02());
-		      pstmt.setString(6,vo.getVariantCodeItm11WAR02());
-		      pstmt.setString(7,vo.getVariantTypeItm07WAR02());
-		      pstmt.setString(8,vo.getVariantCodeItm12WAR02());
-		      pstmt.setString(9,vo.getVariantTypeItm08WAR02());
-		      pstmt.setString(10,vo.getVariantCodeItm13WAR02());
-		      pstmt.setString(11,vo.getVariantTypeItm09WAR02());
-		      pstmt.setString(12,vo.getVariantCodeItm14WAR02());
-		      pstmt.setString(13,vo.getVariantTypeItm10WAR02());
-		      pstmt.setString(14,vo.getVariantCodeItm15WAR02());
+		      pstmt.setString(7,vo.getVariantTypeItm06WAR02());
+		      pstmt.setString(8,vo.getVariantCodeItm11WAR02());
+		      pstmt.setString(9,vo.getVariantTypeItm07WAR02());
+		      pstmt.setString(10,vo.getVariantCodeItm12WAR02());
+		      pstmt.setString(11,vo.getVariantTypeItm08WAR02());
+		      pstmt.setString(12,vo.getVariantCodeItm13WAR02());
+		      pstmt.setString(13,vo.getVariantTypeItm09WAR02());
+		      pstmt.setString(14,vo.getVariantCodeItm14WAR02());
+		      pstmt.setString(15,vo.getVariantTypeItm10WAR02());
+		      pstmt.setString(16,vo.getVariantCodeItm15WAR02());
 
 		      rows = pstmt.executeUpdate();
 		    }
@@ -276,8 +279,8 @@ public class AddMovementBean implements AddMovement {
 		              "VARIANT_TYPE_ITM07,VARIANT_CODE_ITM12,"+
 		              "VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13,"+
 		              "VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14,"+
-		              "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15 "+
-		              ") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		              "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15,CREATE_USER,CREATE_DATE "+
+		              ") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		        pstmt = conn.prepareStatement(sql);
 		        pstmt.setString(1,vo.getCompanyCodeSys01WAR02());
 		        pstmt.setString(2,vo.getItemCodeItm01WAR02());
@@ -309,6 +312,9 @@ public class AddMovementBean implements AddMovement {
 		        pstmt.setString(15,vo.getVariantTypeItm10WAR02()!=null?vo.getVariantTypeItm10WAR02():ApplicationConsts.JOLLY);
 		        pstmt.setString(16,vo.getVariantCodeItm15WAR02()!=null?vo.getVariantCodeItm15WAR02():ApplicationConsts.JOLLY);
 
+						pstmt.setString(17,username);
+						pstmt.setTimestamp(18,new java.sql.Timestamp(System.currentTimeMillis()));
+
 		        pstmt.execute();
 		      }
 		    catch (Throwable ex){
@@ -336,14 +342,14 @@ public class AddMovementBean implements AddMovement {
 
 		    // insert movement in WAR02...
 		    try {
-		      sql = "insert into WAR02_WAREHOUSE_MOVEMENTS(PROGRESSIVE,COMPANY_CODE_SYS01,WAREHOUSE_CODE_WAR01,"+
+		      sql = "insert into WAR02_WAREHOUSE_MOVS(PROGRESSIVE,COMPANY_CODE_SYS01,WAREHOUSE_CODE_WAR01,"+
 		            "ITEM_CODE_ITM01,DELTA_QTY,WAREHOUSE_MOTIVE_WAR04,PROGRESSIVE_HIE01,MOVEMENT_DATE,USERNAME,NOTE,"+
 		            "VARIANT_TYPE_ITM06,VARIANT_CODE_ITM11,"+
 		            "VARIANT_TYPE_ITM07,VARIANT_CODE_ITM12,"+
 		            "VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13,"+
 		            "VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14,"+
-		            "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15 "+
-		            ") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		            "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15,CREATE_USER,CREATE_DATE "+
+		            ") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		      pstmt = conn.prepareStatement(sql);
 		      BigDecimal progressiveWAR02 = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01WAR02(),"WAR02_WAREHOUSE_MOVEMENTS","PROGRESSIVE",conn);
 		      pstmt.setBigDecimal(1,progressiveWAR02);
@@ -368,6 +374,8 @@ public class AddMovementBean implements AddMovement {
 		      pstmt.setString(19,vo.getVariantTypeItm10WAR02()!=null?vo.getVariantTypeItm10WAR02():ApplicationConsts.JOLLY);
 		      pstmt.setString(20,vo.getVariantCodeItm15WAR02()!=null?vo.getVariantCodeItm15WAR02():ApplicationConsts.JOLLY);
 
+					pstmt.setString(21,username);
+					pstmt.setTimestamp(22,new java.sql.Timestamp(System.currentTimeMillis()));
 
 		      pstmt.execute();
 		    }
@@ -398,8 +406,8 @@ public class AddMovementBean implements AddMovement {
 		            "VARIANT_TYPE_ITM07,VARIANT_CODE_ITM12,"+
 		            "VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13,"+
 		            "VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14,"+
-		            "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15 "+
-		            ") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		            "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15,CREATE_USER,CREATE_DATE "+
+		            ") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		        pstmt = conn.prepareStatement(sql);
 		        for(int i=0;i<vo.getSerialNumbers().size();i++) {
 		          pstmt.setString(1,vo.getSerialNumbers().get(i).toString());
@@ -417,6 +425,9 @@ public class AddMovementBean implements AddMovement {
 		          pstmt.setString(12,vo.getVariantCodeItm14WAR02());
 		          pstmt.setString(13,vo.getVariantTypeItm10WAR02());
 		          pstmt.setString(14,vo.getVariantCodeItm15WAR02());
+
+							pstmt.setString(15,username);
+							pstmt.setTimestamp(16,new java.sql.Timestamp(System.currentTimeMillis()));
 
 		          pstmt.execute();
 		        }

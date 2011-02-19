@@ -13,7 +13,7 @@ import java.sql.*;
 
 import org.openswing.swing.logger.server.*;
 import org.jallinone.system.server.*;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.events.server.*;
@@ -138,11 +138,12 @@ public class VariantsBean  implements Variants {
 
       String sql =
           "select "+tableName+".COMPANY_CODE_SYS01,"+tableName+".VARIANT_CODE,"+tableName+"."+variantTypeJoin+","+
-          tableName+".CODE_ORDER,"+tableName+".PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+tableName+".ENABLED "+
-          "from "+tableName+",SYS10_TRANSLATIONS "+
+          tableName+".CODE_ORDER,"+tableName+".PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+tableName+".ENABLED "+
+          "from "+tableName+",SYS10_COMPANY_TRANSLATIONS "+
           "where "+tableName+".COMPANY_CODE_SYS01=? and "+
-          tableName+".PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					tableName+".COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          tableName+".PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           tableName+".ENABLED='Y' and "+tableName+"."+variantTypeJoin+"=? and not "+tableName+".VARIANT_CODE=?" ;
 
       Map attribute2dbField = new HashMap();
@@ -151,7 +152,7 @@ public class VariantsBean  implements Variants {
       attribute2dbField.put("variantCode",tableName+".VARIANT_CODE");
       attribute2dbField.put("variantType",tableName+"."+variantTypeJoin);
       attribute2dbField.put("progressiveSys10",tableName+".PROGRESSIVE_SYS10");
-      attribute2dbField.put("descriptionSys10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSys10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("enabled",tableName+".ENABLED");
 
       ArrayList values = new ArrayList();
@@ -208,16 +209,17 @@ public class VariantsBean  implements Variants {
 
       String sql =
           "select ITM21_VARIANTS.COMPANY_CODE_SYS01,ITM21_VARIANTS.TABLE_NAME,ITM21_VARIANTS.PROGRESSIVE_SYS10,"+
-          "SYS10_TRANSLATIONS.DESCRIPTION,ITM21_VARIANTS.USE_VARIANT_TYPE "+
-          "from ITM21_VARIANTS,SYS10_TRANSLATIONS where "+
-          "ITM21_VARIANTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          "SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ITM21_VARIANTS.USE_VARIANT_TYPE "+
+          "from ITM21_VARIANTS,SYS10_COMPANY_TRANSLATIONS where "+
+					"ITM21_VARIANTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ITM21_VARIANTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "ITM21_VARIANTS.COMPANY_CODE_SYS01=?";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01ITM21","ITM21_VARIANTS.COMPANY_CODE_SYS01");
       attribute2dbField.put("tableName","ITM21_VARIANTS.TABLE_NAME");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveSys10ITM21","ITM21_VARIANTS.PROGRESSIVE_SYS10");
       attribute2dbField.put("useVariantTypeITM21","ITM21_VARIANTS.USE_VARIANT_TYPE");
 
@@ -288,7 +290,7 @@ public class VariantsBean  implements Variants {
         newVO = (VariantVO)newVOs.get(i);
 
         // update SYS10 table...
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSys10(),newVO.getDescriptionSys10(),newVO.getProgressiveSys10(),serverLanguageId,conn);
+        CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01(),oldVO.getDescriptionSys10(),newVO.getDescriptionSys10(),newVO.getProgressiveSys10(),serverLanguageId,username,conn);
 
         HashSet pkAttrs = new HashSet();
         pkAttrs.add("companyCodeSys01");
@@ -303,7 +305,7 @@ public class VariantsBean  implements Variants {
         attribute2dbField.put("progressiveSys10","PROGRESSIVE_SYS10");
         attribute2dbField.put("enabled","ENABLED");
 
-        res = new QueryUtil().updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
@@ -381,11 +383,11 @@ public class VariantsBean  implements Variants {
           vo.setVariantType(ApplicationConsts.JOLLY);
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSys10(),vo.getCompanyCodeSys01(),conn);
+        progressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSys10(),vo.getCompanyCodeSys01(),username,conn);
         vo.setProgressiveSys10(progressiveSYS10);
 
         // insert into ITMxxx...
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,
@@ -439,23 +441,23 @@ public class VariantsBean  implements Variants {
    * Business logic to execute.
    */
   public VOResponse deleteVariants(String tableName,ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
-
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
-
       String variantTypeJoin = (String)variantTypeJoins.get(tableName);
-
       VariantVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in ITMxxx...
         vo = (VariantVO)list.get(i);
-        stmt.execute(
-          "update "+tableName+" set ENABLED='N' "+
+				pstmt = conn.prepareStatement(
+          "update "+tableName+" set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  "+
           "where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01()+"' and VARIANT_CODE='"+vo.getVariantCode()+"' and "+variantTypeJoin+"='"+vo.getVariantType()+"'"
         );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
       return new VOResponse(new Boolean(true));
@@ -474,7 +476,7 @@ public class VariantsBean  implements Variants {
     }
     finally {
       try {
-        stmt.close();
+        pstmt.close();
       }
       catch (Exception ex2) {
       }
@@ -501,11 +503,12 @@ public class VariantsBean  implements Variants {
 
       String sql =
           "select "+tableName+".COMPANY_CODE_SYS01,"+tableName+".VARIANT_CODE,"+tableName+"."+variantTypeJoin+","+
-          tableName+".CODE_ORDER,"+tableName+".PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+tableName+".ENABLED "+
-          "from "+tableName+",SYS10_TRANSLATIONS "+
+          tableName+".CODE_ORDER,"+tableName+".PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+tableName+".ENABLED "+
+          "from "+tableName+",SYS10_COMPANY_TRANSLATIONS "+
           "where "+
-          tableName+".PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					tableName+".COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          tableName+".PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           tableName+".ENABLED='Y'  and not "+tableName+".VARIANT_CODE=?" ;
 
       Map attribute2dbField = new HashMap();
@@ -514,7 +517,7 @@ public class VariantsBean  implements Variants {
       attribute2dbField.put("variantCode",tableName+".VARIANT_CODE");
       attribute2dbField.put("variantType",tableName+"."+variantTypeJoin);
       attribute2dbField.put("progressiveSys10",tableName+".PROGRESSIVE_SYS10");
-      attribute2dbField.put("descriptionSys10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSys10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("enabled",tableName+".ENABLED");
 
       ArrayList values = new ArrayList();

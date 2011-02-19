@@ -71,12 +71,7 @@ import org.jallinone.employees.server.UpdateEmployeeAction;
 import org.jallinone.employees.server.UpdateEmployeeCalendarsAction;
 import org.jallinone.employees.server.ValidateEmployeeCodeAction;
 import org.jallinone.expirations.server.*;
-import org.jallinone.hierarchies.server.DeleteLevelAction;
-import org.jallinone.hierarchies.server.InsertLevelAction;
-import org.jallinone.hierarchies.server.LoadHierarchyAction;
-import org.jallinone.hierarchies.server.LoadLeavesAction;
-import org.jallinone.hierarchies.server.RootLevelAction;
-import org.jallinone.hierarchies.server.UpdateLevelAction;
+import org.jallinone.hierarchies.server.*;
 import org.jallinone.items.server.CreateBarcodeLabelsDataAction;
 import org.jallinone.items.server.DeleteBarcodeLabelsDataAction;
 import org.jallinone.items.server.DeleteItemAttachedDocsAction;
@@ -634,6 +629,12 @@ public class ApplicationActionClasses extends ActionsCollection {
     a = new UpdateLevelAction(); put(a.getRequestName(),a);
     a = new DeleteLevelAction(); put(a.getRequestName(),a);
     a = new RootLevelAction(); put(a.getRequestName(),a);
+
+		a = new CompanyLoadHierarchyAction(); put(a.getRequestName(),a);
+		a = new CompanyInsertLevelAction(); put(a.getRequestName(),a);
+		a = new CompanyUpdateLevelAction(); put(a.getRequestName(),a);
+		a = new CompanyDeleteLevelAction(); put(a.getRequestName(),a);
+		a = new CompanyRootLevelAction(); put(a.getRequestName(),a);
 
     a = new LoadRolesAction(); put(a.getRequestName(),a);
     a = new InsertRolesAction(); put(a.getRequestName(),a);

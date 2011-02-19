@@ -475,7 +475,7 @@ public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
       String vatDescr = null;
       TaxableIncomeVO tVO = null;
       pstmt = conn.prepareStatement(
-        "update DOC02_SELLING_ITEMS set TAXABLE_INCOME=?,VAT_VALUE=?,VALUE=?,TOTAL_DISCOUNT=? "+
+        "update DOC02_SELLING_ITEMS set TAXABLE_INCOME=?,VAT_VALUE=?,VALUE=?,TOTAL_DISCOUNT=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  "+
         "where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and "+
         "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
         "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
@@ -520,22 +520,24 @@ public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
         pstmt.setBigDecimal(2,detailItemVO.getVatValueDOC02());
         pstmt.setBigDecimal(3,detailItemVO.getValueDOC02());
         pstmt.setBigDecimal(4,detailItemVO.getTotalDiscountDOC02());
-        pstmt.setString(5,detailItemVO.getCompanyCodeSys01DOC02());
-        pstmt.setString(6,detailItemVO.getDocTypeDOC02());
-        pstmt.setBigDecimal(7,detailItemVO.getDocYearDOC02());
-        pstmt.setBigDecimal(8,detailItemVO.getDocNumberDOC02());
-        pstmt.setString(9,detailItemVO.getItemCodeItm01DOC02());
+				pstmt.setString(5,username);
+				pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
+        pstmt.setString(7,detailItemVO.getCompanyCodeSys01DOC02());
+        pstmt.setString(8,detailItemVO.getDocTypeDOC02());
+        pstmt.setBigDecimal(9,detailItemVO.getDocYearDOC02());
+        pstmt.setBigDecimal(10,detailItemVO.getDocNumberDOC02());
+        pstmt.setString(11,detailItemVO.getItemCodeItm01DOC02());
 
-        pstmt.setString(10,detailItemVO.getVariantTypeItm06DOC02());
-        pstmt.setString(11,detailItemVO.getVariantCodeItm11DOC02());
-        pstmt.setString(12,detailItemVO.getVariantTypeItm07DOC02());
-        pstmt.setString(13,detailItemVO.getVariantCodeItm12DOC02());
-        pstmt.setString(14,detailItemVO.getVariantTypeItm08DOC02());
-        pstmt.setString(15,detailItemVO.getVariantCodeItm13DOC02());
-        pstmt.setString(16,detailItemVO.getVariantTypeItm09DOC02());
-        pstmt.setString(17,detailItemVO.getVariantCodeItm14DOC02());
-        pstmt.setString(18,detailItemVO.getVariantTypeItm10DOC02());
-        pstmt.setString(19,detailItemVO.getVariantCodeItm15DOC02());
+        pstmt.setString(12,detailItemVO.getVariantTypeItm06DOC02());
+        pstmt.setString(13,detailItemVO.getVariantCodeItm11DOC02());
+        pstmt.setString(14,detailItemVO.getVariantTypeItm07DOC02());
+        pstmt.setString(15,detailItemVO.getVariantCodeItm12DOC02());
+        pstmt.setString(16,detailItemVO.getVariantTypeItm08DOC02());
+        pstmt.setString(17,detailItemVO.getVariantCodeItm13DOC02());
+        pstmt.setString(18,detailItemVO.getVariantTypeItm09DOC02());
+        pstmt.setString(19,detailItemVO.getVariantCodeItm14DOC02());
+        pstmt.setString(20,detailItemVO.getVariantTypeItm10DOC02());
+        pstmt.setString(21,detailItemVO.getVariantCodeItm15DOC02());
 
         pstmt.execute();
       }
@@ -543,7 +545,7 @@ public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
 
       // update vat values, activities rows and calculate totals...
       Hashtable actsTaxableIncomeRows = new Hashtable(); // collection of pairs <vatcode,TaxableIncomeVO>
-      pstmt = conn.prepareStatement("update DOC13_SELLING_ACTIVITIES set TAXABLE_INCOME=?,VAT_VALUE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ACTIVITY_CODE_SAL09=?");
+      pstmt = conn.prepareStatement("update DOC13_SELLING_ACTIVITIES set TAXABLE_INCOME=?,VAT_VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ACTIVITY_CODE_SAL09=?");
       for(int i=0;i<actsRows.size();i++) {
         actVO = (SaleDocActivityVO)actsRows.get(i);
 
@@ -578,18 +580,20 @@ public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
 
         pstmt.setBigDecimal(1,actVO.getTaxableIncomeDOC13());
         pstmt.setBigDecimal(2,actVO.getVatValueDOC13());
-        pstmt.setString(3,actVO.getCompanyCodeSys01DOC13());
-        pstmt.setString(4,actVO.getDocTypeDOC13());
-        pstmt.setBigDecimal(5,actVO.getDocYearDOC13());
-        pstmt.setBigDecimal(6,actVO.getDocNumberDOC13());
-        pstmt.setString(7,actVO.getActivityCodeSal09DOC13());
+				pstmt.setString(3,username);
+				pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
+        pstmt.setString(5,actVO.getCompanyCodeSys01DOC13());
+        pstmt.setString(6,actVO.getDocTypeDOC13());
+        pstmt.setBigDecimal(7,actVO.getDocYearDOC13());
+        pstmt.setBigDecimal(8,actVO.getDocNumberDOC13());
+        pstmt.setString(9,actVO.getActivityCodeSal09DOC13());
         pstmt.execute();
       }
       pstmt.close();
 
       // update vat values, value charges rows and calculate totals...
       Hashtable chargesTaxableIncomeRows = new Hashtable(); // collection of pairs <vatcode,TaxableIncomeVO>
-      pstmt = conn.prepareStatement("update DOC03_SELLING_CHARGES set TAXABLE_INCOME=?,VAT_VALUE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and CHARGE_CODE_SAL06=?");
+      pstmt = conn.prepareStatement("update DOC03_SELLING_CHARGES set TAXABLE_INCOME=?,VAT_VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and CHARGE_CODE_SAL06=?");
       for(int i=0;i<chargesRows.size();i++) {
         chargeVO = (SaleDocChargeVO)chargesRows.get(i);
         if (chargeVO.getValueDOC03()!=null) {
@@ -624,11 +628,13 @@ public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
 
           pstmt.setBigDecimal(1,chargeVO.getTaxableIncomeDOC03());
           pstmt.setBigDecimal(2,chargeVO.getVatValueDOC03());
-          pstmt.setString(3,chargeVO.getCompanyCodeSys01DOC03());
-          pstmt.setString(4,chargeVO.getDocTypeDOC03());
-          pstmt.setBigDecimal(5,chargeVO.getDocYearDOC03());
-          pstmt.setBigDecimal(6,chargeVO.getDocNumberDOC03());
-          pstmt.setString(7,chargeVO.getChargeCodeSal06DOC03());
+					pstmt.setString(3,username);
+					pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
+          pstmt.setString(5,chargeVO.getCompanyCodeSys01DOC03());
+          pstmt.setString(6,chargeVO.getDocTypeDOC03());
+          pstmt.setBigDecimal(7,chargeVO.getDocYearDOC03());
+          pstmt.setBigDecimal(8,chargeVO.getDocNumberDOC03());
+          pstmt.setString(9,chargeVO.getChargeCodeSal06DOC03());
           pstmt.execute();
         }
       }
@@ -637,7 +643,7 @@ public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
 
       // update document totals..
       pstmt = conn.prepareStatement(
-        "update DOC01_SELLING set TAXABLE_INCOME=?,TOTAL_VAT=?,TOTAL=? "+
+        "update DOC01_SELLING set TAXABLE_INCOME=?,TOTAL_VAT=?,TOTAL=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  "+
         "where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and "+
         "TAXABLE_INCOME=? and TOTAL_VAT=? and TOTAL=?"
       );
@@ -652,13 +658,15 @@ public class UpdateTaxableIncomesBean implements UpdateTaxableIncomes {
       pstmt.setBigDecimal(1,totalTaxableIncome);
       pstmt.setBigDecimal(2,totalVat);
       pstmt.setBigDecimal(3,total);
-      pstmt.setString(4,vo.getCompanyCodeSys01DOC01());
-      pstmt.setString(5,vo.getDocTypeDOC01());
-      pstmt.setBigDecimal(6,vo.getDocYearDOC01());
-      pstmt.setBigDecimal(7,vo.getDocNumberDOC01());
-      pstmt.setBigDecimal(8,vo.getTaxableIncomeDOC01());
-      pstmt.setBigDecimal(9,vo.getTotalVatDOC01());
-      pstmt.setBigDecimal(10,vo.getTotalDOC01());
+			pstmt.setString(4,username);
+			pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(6,vo.getCompanyCodeSys01DOC01());
+      pstmt.setString(7,vo.getDocTypeDOC01());
+      pstmt.setBigDecimal(8,vo.getDocYearDOC01());
+      pstmt.setBigDecimal(9,vo.getDocNumberDOC01());
+      pstmt.setBigDecimal(10,vo.getTaxableIncomeDOC01());
+      pstmt.setBigDecimal(11,vo.getTotalVatDOC01());
+      pstmt.setBigDecimal(12,vo.getTotalDOC01());
       int updatedRows = pstmt.executeUpdate();
       if (updatedRows==0)
         return new VOListResponse("record already updated");

@@ -51,7 +51,7 @@ import javax.sql.DataSource;
 public class SchedulerAttachedDocsBean  implements SchedulerAttachedDocs {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -59,9 +59,9 @@ public class SchedulerAttachedDocsBean  implements SchedulerAttachedDocs {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -71,13 +71,13 @@ public class SchedulerAttachedDocsBean  implements SchedulerAttachedDocs {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ActAttachedDocVO getActAttachedDoc(ScheduledActivityPK pk) {
 	  throw new UnsupportedOperationException();
@@ -109,7 +109,7 @@ public class SchedulerAttachedDocsBean  implements SchedulerAttachedDocs {
         vo = (ActAttachedDocVO)list.get(i);
 
         // insert into SCH08...
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,
@@ -169,11 +169,12 @@ public class SchedulerAttachedDocsBean  implements SchedulerAttachedDocs {
       String sql =
           "select SCH08_ACT_ATTACHED_DOCS.COMPANY_CODE_SYS01,SCH08_ACT_ATTACHED_DOCS.PROGRESSIVE_DOC14,"+
           "SCH08_ACT_ATTACHED_DOCS.PROGRESSIVE_SCH06,DOC14_DOCUMENTS.DESCRIPTION,SCH08_ACT_ATTACHED_DOCS.PROGRESSIVE_HIE01, "+
-          "HIE01_LEVELS.PROGRESSIVE_HIE02 "+
-          "from SCH08_ACT_ATTACHED_DOCS,DOC14_DOCUMENTS,HIE01_LEVELS where "+
+          "HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE02 "+
+          "from SCH08_ACT_ATTACHED_DOCS,DOC14_DOCUMENTS,HIE01_COMPANY_LEVELS where "+
           "SCH08_ACT_ATTACHED_DOCS.COMPANY_CODE_SYS01=DOC14_DOCUMENTS.COMPANY_CODE_SYS01 and "+
           "SCH08_ACT_ATTACHED_DOCS.PROGRESSIVE_DOC14=DOC14_DOCUMENTS.PROGRESSIVE and "+
-          "HIE01_LEVELS.PROGRESSIVE=SCH08_ACT_ATTACHED_DOCS.PROGRESSIVE_HIE01 and "+
+					"HIE01_COMPANY_LEVELS.COMPANY_CODE_SYS01=SCH08_ACT_ATTACHED_DOCS.COMPANY_CODE_SYS01 and "+
+          "HIE01_COMPANY_LEVELS.PROGRESSIVE=SCH08_ACT_ATTACHED_DOCS.PROGRESSIVE_HIE01 and "+
           "SCH08_ACT_ATTACHED_DOCS.COMPANY_CODE_SYS01=? and "+
           "SCH08_ACT_ATTACHED_DOCS.PROGRESSIVE_SCH06=?";
 
@@ -183,7 +184,7 @@ public class SchedulerAttachedDocsBean  implements SchedulerAttachedDocs {
       attribute2dbField.put("progressiveSch06SCH08","SCH08_ACT_ATTACHED_DOCS.PROGRESSIVE_SCH06");
       attribute2dbField.put("progressiveDoc14SCH08","SCH08_ACT_ATTACHED_DOCS.PROGRESSIVE_DOC14");
       attribute2dbField.put("progressiveHie01SCH08","SCH08_ACT_ATTACHED_DOCS.PROGRESSIVE_HIE01");
-      attribute2dbField.put("progressiveHie02HIE01","HIE01_LEVELS.PROGRESSIVE_HIE02");
+      attribute2dbField.put("progressiveHie02HIE01","HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE02");
 
       ScheduledActivityPK pk = (ScheduledActivityPK)gridParams.getOtherGridParams().get(ApplicationConsts.SCHEDULED_ACTIVITY_PK);
 

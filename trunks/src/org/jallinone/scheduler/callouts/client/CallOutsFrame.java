@@ -75,6 +75,7 @@ public class CallOutsFrame extends InternalFrame {
   TextColumn colCod = new TextColumn();
   TextColumn colDescr = new TextColumn();
   TextColumn colCompany = new TextColumn();
+  private java.util.List list = null;
 
   /** grid data locator */
   private ServerGridDataLocator gridDataLocator = new ServerGridDataLocator();
@@ -120,7 +121,7 @@ public class CallOutsFrame extends InternalFrame {
     Domain d = new Domain("CALL_OUT_TYPES");
     if (!res.isError()) {
       CallOutTypeVO vo = null;
-      java.util.List list = ((VOListResponse)res).getRows();
+      list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (CallOutTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02SCH11(),vo.getDescriptionSYS10());
@@ -130,7 +131,9 @@ public class CallOutsFrame extends InternalFrame {
     comboBoxControl1.getComboBox().addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent e) {
         if (e.getStateChange()==e.SELECTED) {
-          hierarTreePanel.setProgressiveHIE02((BigDecimal)comboBoxControl1.getValue());
+					CallOutTypeVO vo = (CallOutTypeVO)list.get(comboBoxControl1.getSelectedIndex());
+          hierarTreePanel.setCompanyCode(vo.getCompanyCodeSys01SCH11());
+					hierarTreePanel.setProgressiveHIE02((BigDecimal)comboBoxControl1.getValue());
           hierarTreePanel.reloadTree();
           grid.clearData();
         }

@@ -20,6 +20,7 @@ import org.openswing.swing.message.receive.java.VOResponse;
 import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.message.send.java.LookupValidationParams;
 import org.openswing.swing.server.UserSessionParameters;
+import java.sql.PreparedStatement;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -52,7 +53,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class VatsBean implements Vats {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -60,9 +61,9 @@ public class VatsBean implements Vats {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -79,14 +80,14 @@ public class VatsBean implements Vats {
   public VatsBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public VatVO getVat() {
-	  throw new UnsupportedOperationException();	  
+	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
@@ -240,7 +241,7 @@ public class VatsBean implements Vats {
         newVO = (VatVO)newVOs.get(i);
 
         // update SYS10 table...
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10REG01(),serverLanguageId,conn);
+        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10REG01(),serverLanguageId,username,conn);
 
         HashSet pkAttrs = new HashSet();
         pkAttrs.add("vatCodeREG01");
@@ -327,7 +328,7 @@ public class VatsBean implements Vats {
         vo.setEnabledREG01("Y");
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),defCompanyCodeSys01SYS03,conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),username,conn);
         vo.setProgressiveSys10REG01(progressiveSYS10);
 
         // insert into REG01...
@@ -387,22 +388,30 @@ public class VatsBean implements Vats {
    * Business logic to execute.
    */
   public VOResponse deleteVats(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
-
-
       VatVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in REG01...
         vo = (VatVO)list.get(i);
-        stmt.execute("update REG01_VATS set ENABLED='N' where VAT_CODE='"+vo.getVatCodeREG01()+"'");
+				pstmt = conn.prepareStatement(
+         "update REG01_VATS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where VAT_CODE='"+vo.getVatCodeREG01()+"'"
+				);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
 
         // remove default vat code from customers too...
-        stmt.execute("update SAL07_CUSTOMERS set VAT_CODE_REG01=NULL where VAT_CODE_REG01='"+vo.getVatCodeREG01()+"'");
-
+				pstmt = conn.prepareStatement(
+          "update SAL07_CUSTOMERS set VAT_CODE_REG01=NULL where VAT_CODE_REG01='"+vo.getVatCodeREG01()+"'"
+				);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
 
       }
 
@@ -422,7 +431,7 @@ public class VatsBean implements Vats {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {

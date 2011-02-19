@@ -54,7 +54,7 @@ import javax.sql.DataSource;
 public class UpdatePurchaseDocRowBean  implements UpdatePurchaseDocRow {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -62,9 +62,9 @@ public class UpdatePurchaseDocRowBean  implements UpdatePurchaseDocRow {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -74,7 +74,7 @@ public class UpdatePurchaseDocRowBean  implements UpdatePurchaseDocRow {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -172,7 +172,7 @@ public class UpdatePurchaseDocRowBean  implements UpdatePurchaseDocRow {
       pkAttributes.add("variantCodeItm15DOC07");
 
       // update DOC07 table...
-      Response res = QueryUtil.updateTable(
+      Response res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
           conn,
           new UserSessionParameters(username),
           pkAttributes,
@@ -203,14 +203,16 @@ public class UpdatePurchaseDocRowBean  implements UpdatePurchaseDocRow {
       if (totalResponse.isError())
     	  throw new Exception(totalResponse.getErrorMessage());
 
-      pstmt = conn.prepareStatement("update DOC06_PURCHASE set TAXABLE_INCOME=?,TOTAL_VAT=?,TOTAL=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
+      pstmt = conn.prepareStatement("update DOC06_PURCHASE set TAXABLE_INCOME=?,TOTAL_VAT=?,TOTAL=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
       pstmt.setBigDecimal(1,vo.getTaxableIncomeDOC06());
       pstmt.setBigDecimal(2,vo.getTotalVatDOC06());
       pstmt.setBigDecimal(3,vo.getTotalDOC06());
-      pstmt.setString(4,newVO.getCompanyCodeSys01DOC07());
-      pstmt.setString(5,newVO.getDocTypeDOC07());
-      pstmt.setBigDecimal(6,newVO.getDocYearDOC07());
-      pstmt.setBigDecimal(7,newVO.getDocNumberDOC07());
+			pstmt.setString(4,username);
+			pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(6,newVO.getCompanyCodeSys01DOC07());
+      pstmt.setString(7,newVO.getDocTypeDOC07());
+      pstmt.setBigDecimal(8,newVO.getDocYearDOC07());
+      pstmt.setBigDecimal(9,newVO.getDocNumberDOC07());
       pstmt.execute();
 
       Response answer =  res;
@@ -242,7 +244,7 @@ public class UpdatePurchaseDocRowBean  implements UpdatePurchaseDocRow {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
       try {
         totalBean.setConn(null);
         docBean.setConn(null);

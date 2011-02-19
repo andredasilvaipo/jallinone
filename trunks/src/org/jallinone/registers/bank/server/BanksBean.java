@@ -52,7 +52,7 @@ import javax.sql.DataSource;
 public class BanksBean  implements Banks {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -60,9 +60,9 @@ public class BanksBean  implements Banks {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -72,7 +72,7 @@ public class BanksBean  implements Banks {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -82,7 +82,7 @@ public class BanksBean  implements Banks {
   public BanksBean() {
   }
 
-  
+
 
   /**
    * Business logic to execute.
@@ -218,8 +218,8 @@ public class BanksBean  implements Banks {
 
 
 
-  
-  
+
+
   /**
    * Business logic to execute.
    */
@@ -360,21 +360,21 @@ public class BanksBean  implements Banks {
    * Business logic to execute.
    */
   public VOResponse deleteBanks(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
-    
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-
-
-
-      stmt = conn.createStatement();
-
       BankVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in REG12...
         vo = (BankVO)list.get(i);
-        stmt.execute("update REG12_BANKS set ENABLED='N' where BANK_CODE='"+vo.getBankCodeREG12()+"'");
+				pstmt = conn.prepareStatement(
+					"update REG12_BANKS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where BANK_CODE='"+vo.getBankCodeREG12()+"'"
+				);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
       return new VOResponse(new Boolean(true));
@@ -392,7 +392,7 @@ public class BanksBean  implements Banks {
     }
     finally {
       try {
-        stmt.close();
+        pstmt.close();
       }
       catch (Exception ex2) {
       }
@@ -409,9 +409,9 @@ public class BanksBean  implements Banks {
 
   }
 
-  
-  
-  
+
+
+
 
 
 }

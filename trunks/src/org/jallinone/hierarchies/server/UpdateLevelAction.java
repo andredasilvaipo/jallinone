@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.jallinone.commons.server.JAIOBeanFactory;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.*;
 import org.jallinone.system.server.JAIOUserSessionParameters;
 import org.openswing.swing.logger.server.Logger;
 import org.openswing.swing.message.receive.java.ErrorResponse;
@@ -52,7 +52,7 @@ public class UpdateLevelAction implements Action {
 	 * @return request name
 	 */
 	public final String getRequestName() {
-		return "updateLevel";
+		return "updateCompanyLevel";
 	}
 
 

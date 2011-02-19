@@ -96,6 +96,14 @@ public class UpgradeBean {
           Logger.debug("NONAME",this.getClass().getName(),"maybeUpgradeDB","Applying SQL script 'inssql"+i+"_"+supportedClientLanguages.get(k)+".ini'");
           executer.executeSQL(conn,vo,"inssql"+i+"_"+supportedClientLanguages.get(k)+".ini");
         }
+
+				// update db version value...
+				pstmt = conn.prepareStatement("UPDATE SYS11_APPLICATION_PARS SET VALUE=? WHERE PARAM_CODE='VERSION'");
+				pstmt.setString(1,String.valueOf(i));
+				pstmt.execute();
+				pstmt.close();
+				conn.commit();
+
       }
 
 
@@ -107,15 +115,19 @@ public class UpgradeBean {
         companyCode = rset.getString(1);
       rset.close();
       pstmt.close();
-      pstmt = conn.prepareStatement("UPDATE SYS03_USERS SET DEF_COMPANY_CODE_SYS01=? WHERE DEF_COMPANY_CODE_SYS01 IS NULL");
+      pstmt = conn.prepareStatement("UPDATE SYS03_USERS SET DEF_COMPANY_CODE_SYS01=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  WHERE DEF_COMPANY_CODE_SYS01 IS NULL");
       pstmt.setString(1,companyCode);
+			pstmt.setString(2,"UNDEFINED");
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.execute();
       pstmt.close();
 
 
       // update db version value...
-      pstmt = conn.prepareStatement("UPDATE SYS11_APPLICATION_PARS SET VALUE=? WHERE PARAM_CODE='VERSION'");
+      pstmt = conn.prepareStatement("UPDATE SYS11_APPLICATION_PARS SET VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  WHERE PARAM_CODE='VERSION'");
       pstmt.setString(1,String.valueOf(ApplicationConsts.DB_VERSION));
+			pstmt.setString(2,"UNDEFINED");
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.execute();
       pstmt.close();
     }

@@ -1,44 +1,16 @@
 package org.jallinone.documents.server;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
+import javax.sql.*;
 
-import javax.sql.DataSource;
-
-import org.jallinone.commons.java.ApplicationConsts;
-import org.jallinone.commons.server.CustomizeQueryUtil;
-import org.jallinone.documents.java.DetailDocumentVO;
-import org.jallinone.documents.java.DocPropertyVO;
-import org.jallinone.documents.java.DocumentLinkVO;
-import org.jallinone.documents.java.DocumentPK;
-import org.jallinone.documents.java.DocumentVersionVO;
-import org.jallinone.documents.java.GridDocumentVO;
-import org.jallinone.documents.java.LevelPropertyVO;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
-import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
-import org.jallinone.system.server.JAIOUserSessionParameters;
-import org.jallinone.system.translations.server.TranslationUtils;
-import org.openswing.swing.logger.server.Logger;
-import org.openswing.swing.message.receive.java.Response;
-import org.openswing.swing.message.receive.java.VOListResponse;
-import org.openswing.swing.message.receive.java.VOResponse;
-import org.openswing.swing.message.send.java.GridParams;
-import org.openswing.swing.server.QueryUtil;
-import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.commons.java.*;
+import org.jallinone.commons.server.*;
+import org.jallinone.documents.java.*;
+import org.openswing.swing.logger.server.*;
+import org.openswing.swing.message.receive.java.*;
+import org.openswing.swing.message.send.java.*;
+import org.openswing.swing.server.*;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -72,7 +44,7 @@ public class LoadDocumentLinksBean implements LoadDocumentLinks {
 
 
 
-	private DataSource dataSource; 
+	private DataSource dataSource;
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -82,7 +54,7 @@ public class LoadDocumentLinksBean implements LoadDocumentLinks {
 	private Connection conn = null;
 
 	/**
-	 * Set external connection. 
+	 * Set external connection.
 	 */
 	public void setConn(Connection conn) {
 		this.conn = conn;
@@ -96,20 +68,20 @@ public class LoadDocumentLinksBean implements LoadDocumentLinks {
 	}
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public DocumentLinkVO getDocumentLink(DocumentPK pk) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public DocumentVersionVO getDocumentVersion() {
 		throw new UnsupportedOperationException();
 	}
-	
-	
+
+
 	/**
 	 * Business logic to execute.
 	 */
@@ -120,11 +92,13 @@ public class LoadDocumentLinksBean implements LoadDocumentLinks {
 
 			String sql =
 				"select DOC17_DOCUMENT_LINKS.COMPANY_CODE_SYS01,DOC17_DOCUMENT_LINKS.PROGRESSIVE_DOC14,DOC17_DOCUMENT_LINKS.PROGRESSIVE_HIE01,"+
-				"HIE01_LEVELS.PROGRESSIVE_HIE02,SYS10_TRANSLATIONS.DESCRIPTION "+
-				" from DOC17_DOCUMENT_LINKS,SYS10_TRANSLATIONS,HIE01_LEVELS where "+
-				"DOC17_DOCUMENT_LINKS.PROGRESSIVE_HIE01=HIE01_LEVELS.PROGRESSIVE and "+
-				"HIE01_LEVELS.PROGRESSIVE=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-				"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+				"HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE02,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION "+
+				" from DOC17_DOCUMENT_LINKS,SYS10_COMPANY_TRANSLATIONS,HIE01_COMPANY_LEVELS where "+
+				"DOC17_DOCUMENT_LINKS.COMPANY_CODE_SYS01=HIE01_COMPANY_LEVELS.COMPANY_CODE_SYS01 and "+
+				"DOC17_DOCUMENT_LINKS.PROGRESSIVE_HIE01=HIE01_COMPANY_LEVELS.PROGRESSIVE and "+
+				"HIE01_COMPANY_LEVELS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+				"HIE01_COMPANY_LEVELS.PROGRESSIVE=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+				"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
 				"DOC17_DOCUMENT_LINKS.COMPANY_CODE_SYS01=? and "+
 				"DOC17_DOCUMENT_LINKS.PROGRESSIVE_DOC14=?";
 
@@ -132,8 +106,8 @@ public class LoadDocumentLinksBean implements LoadDocumentLinks {
 			attribute2dbField.put("companyCodeSys01DOC17","DOC17_DOCUMENT_LINKS.COMPANY_CODE_SYS01");
 			attribute2dbField.put("progressiveDoc14DOC17","DOC17_DOCUMENT_LINKS.PROGRESSIVE_DOC14");
 			attribute2dbField.put("progressiveHie01DOC17","DOC17_DOCUMENT_LINKS.PROGRESSIVE_HIE01");
-			attribute2dbField.put("progressiveHIE02","HIE01_LEVELS.PROGRESSIVE_HIE02");
-			attribute2dbField.put("levelDescriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("progressiveHIE02","HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE02");
+			attribute2dbField.put("levelDescriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 
 			DocumentPK pk = (DocumentPK)gridParams.getOtherGridParams().get(ApplicationConsts.DOCUMENT_PK);
 
@@ -184,7 +158,7 @@ public class LoadDocumentLinksBean implements LoadDocumentLinks {
 	}
 
 
-	
+
 
 	/**
 	 * Retrieve the list of DocumentVersionVO objects, based on the specified DocumentPK.
@@ -248,7 +222,7 @@ public class LoadDocumentLinksBean implements LoadDocumentLinks {
 		}
 	}
 
-	
+
 
 	/**
 	 * Retrieve DetailDocumentVO object from the specified DocumentPK value.
@@ -326,5 +300,5 @@ public class LoadDocumentLinksBean implements LoadDocumentLinks {
 
 
 
-	
+
 }

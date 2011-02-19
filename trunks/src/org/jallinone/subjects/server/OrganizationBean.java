@@ -19,6 +19,7 @@ import org.openswing.swing.internationalization.server.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
 import org.jallinone.system.progressives.server.*;
+import org.jallinone.commons.server.QueryUtilExtension;
 
 
 
@@ -53,7 +54,7 @@ import org.jallinone.system.progressives.server.*;
 public class OrganizationBean implements Organization {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -61,9 +62,9 @@ public class OrganizationBean implements Organization {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -73,17 +74,17 @@ public class OrganizationBean implements Organization {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
 
   private CheckSubjectExistBean bean;
-  
+
   public void setBean(CheckSubjectExistBean bean) {
 	  this.bean = bean;
   }
-  
+
 
 
   public OrganizationBean() {
@@ -102,16 +103,18 @@ public class OrganizationBean implements Organization {
 
 	  if (vo.getProgressiveREG04()==null)
       bean.checkOrganizationExist(vo,t1,serverLanguageId,username);
-      
+
       // check if there already exists a progressive (a contact...)
       if (vo.getProgressiveREG04()!=null) {
         // update subject type in REG04...
         pstmt = conn.prepareStatement(
-          "update REG04_SUBJECTS set SUBJECT_TYPE=? where COMPANY_CODE_SYS01=? and PROGRESSIVE=? "
+          "update REG04_SUBJECTS set SUBJECT_TYPE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PROGRESSIVE=? "
         );
         pstmt.setString(1,vo.getSubjectTypeREG04());
-        pstmt.setString(2,vo.getCompanyCodeSys01REG04());
-        pstmt.setBigDecimal(3,vo.getProgressiveREG04());
+				pstmt.setString(2,username);
+				pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+        pstmt.setString(4,vo.getCompanyCodeSys01REG04());
+        pstmt.setBigDecimal(5,vo.getProgressiveREG04());
         pstmt.execute();
         return;
       }
@@ -122,8 +125,8 @@ public class OrganizationBean implements Organization {
 
       // insert record in REG04...
       pstmt = conn.prepareStatement(
-          "insert into REG04_SUBJECTS(COMPANY_CODE_SYS01,NAME_1,NAME_2,ADDRESS,CITY,ZIP,PROVINCE,COUNTRY,TAX_CODE,PHONE_NUMBER,FAX_NUMBER,EMAIL_ADDRESS,WEB_SITE,LAWFUL_SITE,NOTE,ENABLED,SUBJECT_TYPE,PROGRESSIVE,COMPANY_CODE_SYS01_REG04,PROGRESSIVE_REG04) VALUES("+
-          "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Y',?,?,?,?)"
+          "insert into REG04_SUBJECTS(COMPANY_CODE_SYS01,NAME_1,NAME_2,ADDRESS,CITY,ZIP,PROVINCE,COUNTRY,TAX_CODE,PHONE_NUMBER,FAX_NUMBER,EMAIL_ADDRESS,WEB_SITE,LAWFUL_SITE,NOTE,ENABLED,SUBJECT_TYPE,PROGRESSIVE,COMPANY_CODE_SYS01_REG04,PROGRESSIVE_REG04,CREATE_USER,CREATE_DATE) VALUES("+
+          "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Y',?,?,?,?,?,?)"
       );
       pstmt.setString(1,vo.getCompanyCodeSys01REG04());
       pstmt.setString(2,vo.getName_1REG04());
@@ -144,7 +147,8 @@ public class OrganizationBean implements Organization {
       pstmt.setBigDecimal(17,vo.getProgressiveREG04());
       pstmt.setString(18,vo.getCompanyCodeSys01Reg04REG04());
       pstmt.setBigDecimal(19,vo.getProgressiveReg04REG04());
-
+			pstmt.setString(20,username);
+			pstmt.setTimestamp(21,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.execute();
     }
     catch (Exception ex) {
@@ -175,7 +179,7 @@ public class OrganizationBean implements Organization {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }
@@ -189,13 +193,13 @@ public class OrganizationBean implements Organization {
 	try {
 		if (this.conn==null) conn = getConn(); else conn = this.conn;
 		bean.setConn(conn);
-	
+
 		bean.checkOrganizationExist(newVO,t1,serverLanguageId,username);
 
 	    HashSet pkAttrs = new HashSet();
 	    pkAttrs.add("companyCodeSys01REG04");
 	    pkAttrs.add("progressiveREG04");
-	
+
 	    HashMap attr2dbFields = new HashMap();
 	    attr2dbFields.put("companyCodeSys01REG04","COMPANY_CODE_SYS01");
 	    attr2dbFields.put("progressiveREG04","PROGRESSIVE");
@@ -215,8 +219,8 @@ public class OrganizationBean implements Organization {
 	    attr2dbFields.put("noteREG04","NOTE");
 	    attr2dbFields.put("companyCodeSys01Reg04REG04","COMPANY_CODE_SYS01_REG04");
 	    attr2dbFields.put("progressiveReg04REG04","PROGRESSIVE_REG04");
-	
-	    Response res = new QueryUtil().updateTable(
+
+	    Response res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
 	        conn,
 	        new UserSessionParameters(username),
 	        pkAttrs,
@@ -231,7 +235,7 @@ public class OrganizationBean implements Organization {
 	    );
 	    if (res.isError())
 	    	throw new Exception(res.getErrorMessage());
-	    
+
 	    return (VOResponse)res;
     }
     catch (Exception ex) {
@@ -259,7 +263,7 @@ public class OrganizationBean implements Organization {
     		}
 
     	}
-    	catch (Exception exx) {}      
+    	catch (Exception exx) {}
     }
   }
 

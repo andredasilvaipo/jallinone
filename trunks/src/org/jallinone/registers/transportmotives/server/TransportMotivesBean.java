@@ -22,6 +22,7 @@ import org.openswing.swing.message.receive.java.VOResponse;
 import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.message.send.java.LookupValidationParams;
 import org.openswing.swing.server.UserSessionParameters;
+import java.sql.PreparedStatement;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -54,7 +55,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class TransportMotivesBean  implements TransportMotives {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -62,9 +63,9 @@ public class TransportMotivesBean  implements TransportMotives {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -74,7 +75,7 @@ public class TransportMotivesBean  implements TransportMotives {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -87,12 +88,12 @@ public class TransportMotivesBean  implements TransportMotives {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public TransportMotiveVO getTransportMotive() {
-	  throw new UnsupportedOperationException();  
+	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
@@ -250,7 +251,7 @@ public class TransportMotivesBean  implements TransportMotives {
         vo.setEnabledREG20("Y");
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),defCompanyCodeSys01SYS03,conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),username,conn);
         vo.setProgressiveSys10REG20(progressiveSYS10);
 
         // insert into REG20...
@@ -306,7 +307,7 @@ public class TransportMotivesBean  implements TransportMotives {
    * Business logic to execute.
    */
   public VOListResponse updateTransportMotives(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable {
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -321,7 +322,7 @@ public class TransportMotivesBean  implements TransportMotives {
         newVO = (TransportMotiveVO)newVOs.get(i);
 
         // update SYS10 table...
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10REG20(),serverLanguageId,conn);
+        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10REG20(),serverLanguageId,username,conn);
 
         HashSet pkAttrs = new HashSet();
         pkAttrs.add("transportMotiveCodeREG20");
@@ -380,22 +381,26 @@ public class TransportMotivesBean  implements TransportMotives {
 
 
 
-  
+
   /**
    * Business logic to execute.
    */
   public VOResponse deleteTransportMotives(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
-
       TransportMotiveVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in REG20...
         vo = (TransportMotiveVO)list.get(i);
-        stmt.execute("update REG20_TRANSPORT_MOTIVES set ENABLED='N' where TRANSPORT_MOTIVE_CODE='"+vo.getTransportMotiveCodeREG20()+"'");
+				pstmt = conn.prepareStatement(
+          "update REG20_TRANSPORT_MOTIVES set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where TRANSPORT_MOTIVE_CODE='"+vo.getTransportMotiveCodeREG20()+"'"
+				);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
       return new VOResponse(new Boolean(true));
@@ -413,7 +418,7 @@ public class TransportMotivesBean  implements TransportMotives {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {

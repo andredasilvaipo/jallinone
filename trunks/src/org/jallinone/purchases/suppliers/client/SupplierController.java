@@ -18,7 +18,7 @@ import org.jallinone.subjects.java.SubjectPK;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.purchases.suppliers.java.DetailSupplierVO;
 import org.openswing.swing.tree.client.TreeController;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.HashMap;
 
@@ -283,8 +283,8 @@ public class SupplierController extends CompanyFormController implements TreeCon
    */
   public void leftClick(DefaultMutableTreeNode node) {
     try {
-      HierarchyLevelVO vo = (HierarchyLevelVO)node.getUserObject();
-      HierarchyLevelVO root = (HierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
+      CompanyHierarchyLevelVO vo = (CompanyHierarchyLevelVO)node.getUserObject();
+      CompanyHierarchyLevelVO root = (CompanyHierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
       detailFrame.getItemsGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02HIE01());
       detailFrame.getItemsGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE01,vo.getProgressiveHIE01());
       detailFrame.getItemsGrid().getOtherGridParams().put(ApplicationConsts.ROOT_PROGRESSIVE_HIE01,root.getProgressiveHIE01());

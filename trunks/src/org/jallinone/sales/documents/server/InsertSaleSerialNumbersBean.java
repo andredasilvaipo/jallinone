@@ -53,7 +53,7 @@ import org.jallinone.events.server.*;
 public class InsertSaleSerialNumbersBean implements InsertSaleSerialNumbers {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -61,9 +61,9 @@ public class InsertSaleSerialNumbersBean implements InsertSaleSerialNumbers {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -73,7 +73,7 @@ public class InsertSaleSerialNumbersBean implements InsertSaleSerialNumbers {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -137,8 +137,8 @@ public class InsertSaleSerialNumbersBean implements InsertSaleSerialNumbers {
         "VARIANT_TYPE_ITM07,VARIANT_CODE_ITM12,"+
         "VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13,"+
         "VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14,"+
-        "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15"+
-        ") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+        "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15,CREATE_USER,CREATE_DATE"+
+        ") values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
       );
 
       for(int i=0;i<serialNums.size();i++) {
@@ -159,6 +159,8 @@ public class InsertSaleSerialNumbersBean implements InsertSaleSerialNumbers {
          pstmt.setString(14,vo.getVariantCodeItm14DOC02());
          pstmt.setString(15,vo.getVariantTypeItm10DOC02());
          pstmt.setString(16,vo.getVariantCodeItm15DOC02());
+				 pstmt.setString(17,username);
+				 pstmt.setTimestamp(18,new java.sql.Timestamp(System.currentTimeMillis()));
 
          pstmt.execute();
       }

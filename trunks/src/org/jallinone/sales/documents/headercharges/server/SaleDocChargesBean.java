@@ -134,14 +134,16 @@ public class SaleDocChargesBean  implements SaleDocCharges {
       if (totalResponse.isError())
         return totalResponse;
 
-      pstmt = conn.prepareStatement("update DOC01_SELLING set TAXABLE_INCOME=?,TOTAL_VAT=?,TOTAL=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
+      pstmt = conn.prepareStatement("update DOC01_SELLING set TAXABLE_INCOME=?,TOTAL_VAT=?,TOTAL=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
       pstmt.setBigDecimal(1,vo.getTaxableIncomeDOC01());
       pstmt.setBigDecimal(2,vo.getTotalVatDOC01());
       pstmt.setBigDecimal(3,vo.getTotalDOC01());
-      pstmt.setString(4,docPK.getCompanyCodeSys01DOC01());
-      pstmt.setString(5,docPK.getDocTypeDOC01());
-      pstmt.setBigDecimal(6,docPK.getDocYearDOC01());
-      pstmt.setBigDecimal(7,docPK.getDocNumberDOC01());
+			pstmt.setString(4,username);
+			pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(6,docPK.getCompanyCodeSys01DOC01());
+      pstmt.setString(7,docPK.getDocTypeDOC01());
+      pstmt.setBigDecimal(8,docPK.getDocYearDOC01());
+      pstmt.setBigDecimal(9,docPK.getDocNumberDOC01());
       pstmt.execute();
 
       conn.commit();
@@ -236,7 +238,7 @@ public class SaleDocChargesBean  implements SaleDocCharges {
         attribute2dbField.put("valueReg01DOC03","VALUE_REG01");
 //        attribute2dbField.put("taxableIncomeDOC03","TAXABLE_INCOME"); this field is updated from  UpdateTaxableIncomesBean...
 
-        res = new QueryUtil().updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
@@ -334,12 +336,14 @@ public class SaleDocChargesBean  implements SaleDocCharges {
         list.set(i,((VOResponse)res).getVo());
       }
 
-      pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
+      pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
       pstmt.setString(1,ApplicationConsts.HEADER_BLOCKED);
-      pstmt.setString(2,vo.getCompanyCodeSys01DOC03());
-      pstmt.setString(3,vo.getDocTypeDOC03());
-      pstmt.setBigDecimal(4,vo.getDocYearDOC03());
-      pstmt.setBigDecimal(5,vo.getDocNumberDOC03());
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01DOC03());
+      pstmt.setString(5,vo.getDocTypeDOC03());
+      pstmt.setBigDecimal(6,vo.getDocYearDOC03());
+      pstmt.setBigDecimal(7,vo.getDocNumberDOC03());
       pstmt.execute();
 
       res = totals.updateTaxableIncomes(
@@ -431,7 +435,7 @@ public class SaleDocChargesBean  implements SaleDocCharges {
 		  vo.setTaxableIncomeDOC03(vo.getValueDOC03());
 
 		  // insert into DOC03...
-		  res = QueryUtil.insertTable(
+		  res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 				  conn,
 				  new UserSessionParameters(username),
 				  vo,

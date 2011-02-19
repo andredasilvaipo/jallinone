@@ -47,7 +47,7 @@ import javax.sql.DataSource;
 public class DeletePurchaseDocRowsBean  implements DeletePurchaseDocRows {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -55,9 +55,9 @@ public class DeletePurchaseDocRowsBean  implements DeletePurchaseDocRows {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -67,7 +67,7 @@ public class DeletePurchaseDocRowsBean  implements DeletePurchaseDocRows {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -92,12 +92,12 @@ public class DeletePurchaseDocRowsBean  implements DeletePurchaseDocRows {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public PurchaseDocRowPK getPurchaseDocRow() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
@@ -158,14 +158,16 @@ public class DeletePurchaseDocRowsBean  implements DeletePurchaseDocRows {
       if (totalResponse.isError())
         return new VOResponse(totalResponse.getErrorMessage());
 
-      pstmt = conn.prepareStatement("update DOC06_PURCHASE set TAXABLE_INCOME=?,TOTAL_VAT=?,TOTAL=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
+      pstmt = conn.prepareStatement("update DOC06_PURCHASE set TAXABLE_INCOME=?,TOTAL_VAT=?,TOTAL=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
       pstmt.setBigDecimal(1,docVO.getTaxableIncomeDOC06());
       pstmt.setBigDecimal(2,docVO.getTotalVatDOC06());
       pstmt.setBigDecimal(3,docVO.getTotalDOC06());
-      pstmt.setString(4,rowPK.getCompanyCodeSys01DOC07());
-      pstmt.setString(5,rowPK.getDocTypeDOC07());
-      pstmt.setBigDecimal(6,rowPK.getDocYearDOC07());
-      pstmt.setBigDecimal(7,rowPK.getDocNumberDOC07());
+			pstmt.setString(4,username);
+			pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(6,rowPK.getCompanyCodeSys01DOC07());
+      pstmt.setString(7,rowPK.getDocTypeDOC07());
+      pstmt.setBigDecimal(8,rowPK.getDocYearDOC07());
+      pstmt.setBigDecimal(9,rowPK.getDocNumberDOC07());
       pstmt.execute();
 
       return  new VOResponse(new Boolean(true));

@@ -11,7 +11,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.jallinone.system.server.JAIOUserSessionParameters;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.jallinone.warehouse.tables.motives.java.MotiveVO;
 import org.openswing.swing.logger.server.Logger;
 import org.openswing.swing.message.receive.java.Response;
@@ -21,6 +21,8 @@ import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.message.send.java.LookupValidationParams;
 import org.openswing.swing.server.QueryUtil;
 import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.system.translations.server.TranslationUtils;
+import java.sql.PreparedStatement;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -53,7 +55,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class WarehouseMotivesBean  implements WarehouseMotives {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -61,9 +63,9 @@ public class WarehouseMotivesBean  implements WarehouseMotives {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -73,7 +75,7 @@ public class WarehouseMotivesBean  implements WarehouseMotives {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -94,7 +96,8 @@ public class WarehouseMotivesBean  implements WarehouseMotives {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       String sql =
-          "select WAR04_WAREHOUSE_MOTIVES.WAREHOUSE_MOTIVE,WAR04_WAREHOUSE_MOTIVES.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,WAR04_WAREHOUSE_MOTIVES.ENABLED,WAR04_WAREHOUSE_MOTIVES.ITEM_TYPE,WAR04_WAREHOUSE_MOTIVES.QTY_SIGN from WAR04_WAREHOUSE_MOTIVES,SYS10_TRANSLATIONS where "+
+          "select WAR04_WAREHOUSE_MOTIVES.WAREHOUSE_MOTIVE,WAR04_WAREHOUSE_MOTIVES.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,WAR04_WAREHOUSE_MOTIVES.ENABLED,WAR04_WAREHOUSE_MOTIVES.ITEM_TYPE,WAR04_WAREHOUSE_MOTIVES.QTY_SIGN "+
+					"from WAR04_WAREHOUSE_MOTIVES,SYS10_TRANSLATIONS where "+
           "WAR04_WAREHOUSE_MOTIVES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "WAR04_WAREHOUSE_MOTIVES.ENABLED='Y'";
@@ -169,7 +172,7 @@ public class WarehouseMotivesBean  implements WarehouseMotives {
         newVO = (MotiveVO)newVOs.get(i);
 
         // update SYS10 table...
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10WAR04(),serverLanguageId,conn);
+        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10WAR04(),serverLanguageId,username,conn);
 
         HashSet pkAttrs = new HashSet();
         pkAttrs.add("warehouseMotiveWAR04");
@@ -181,7 +184,7 @@ public class WarehouseMotivesBean  implements WarehouseMotives {
         attribute2dbField.put("itemTypeWAR04","ITEM_TYPE");
         attribute2dbField.put("qtySignWAR04","QTY_SIGN");
 
-        res = new QueryUtil().updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
@@ -239,7 +242,8 @@ public class WarehouseMotivesBean  implements WarehouseMotives {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       String sql =
-          "select WAR04_WAREHOUSE_MOTIVES.WAREHOUSE_MOTIVE,WAR04_WAREHOUSE_MOTIVES.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,WAR04_WAREHOUSE_MOTIVES.ENABLED,WAR04_WAREHOUSE_MOTIVES.ITEM_TYPE,WAR04_WAREHOUSE_MOTIVES.QTY_SIGN  from WAR04_WAREHOUSE_MOTIVES,SYS10_TRANSLATIONS where "+
+          "select WAR04_WAREHOUSE_MOTIVES.WAREHOUSE_MOTIVE,WAR04_WAREHOUSE_MOTIVES.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,WAR04_WAREHOUSE_MOTIVES.ENABLED,WAR04_WAREHOUSE_MOTIVES.ITEM_TYPE,WAR04_WAREHOUSE_MOTIVES.QTY_SIGN  "+
+					"from WAR04_WAREHOUSE_MOTIVES,SYS10_TRANSLATIONS where "+
           "WAR04_WAREHOUSE_MOTIVES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "WAR04_WAREHOUSE_MOTIVES.ENABLED='Y' and "+
@@ -274,7 +278,7 @@ public class WarehouseMotivesBean  implements WarehouseMotives {
       );
 
       if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (VOListResponse)answer;
-      
+
     }
     catch (Throwable ex) {
       Logger.error(username,this.getClass().getName(),"executeCommand","Error while validating warehouse motive code",ex);
@@ -307,7 +311,7 @@ public class WarehouseMotivesBean  implements WarehouseMotives {
       vo.setEnabledWAR04("Y");
 
       // insert record in SYS10...
-      BigDecimal progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),defCompanyCodeSys01SYS03,conn);
+      BigDecimal progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),username,conn);
       vo.setProgressiveSys10WAR04(progressiveSYS10);
 
       Map attribute2dbField = new HashMap();
@@ -318,7 +322,7 @@ public class WarehouseMotivesBean  implements WarehouseMotives {
       attribute2dbField.put("qtySignWAR04","QTY_SIGN");
 
       // insert into WAR04...
-      Response res = QueryUtil.insertTable(
+      Response res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
           conn,
           new UserSessionParameters(username),
           vo,
@@ -386,11 +390,11 @@ public class WarehouseMotivesBean  implements WarehouseMotives {
         vo.setEnabledWAR04("Y");
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),defCompanyCodeSys01SYS03,conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),username,conn);
         vo.setProgressiveSys10WAR04(progressiveSYS10);
 
         // insert into WAR04...
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,
@@ -443,17 +447,22 @@ public class WarehouseMotivesBean  implements WarehouseMotives {
    * Business logic to execute.
    */
   public VOResponse deleteWarehouseMotives(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
 
       MotiveVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in WAR04...
         vo = (MotiveVO)list.get(i);
-        stmt.execute("update WAR04_WAREHOUSE_MOTIVES set ENABLED='N' where WAREHOUSE_MOTIVE='"+vo.getWarehouseMotiveWAR04()+"'");
+        pstmt = conn.prepareStatement(
+		      "update WAR04_WAREHOUSE_MOTIVES set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where WAREHOUSE_MOTIVE='"+vo.getWarehouseMotiveWAR04()+"'"
+				);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
       return new VOResponse(new Boolean(true));
@@ -472,7 +481,7 @@ public class WarehouseMotivesBean  implements WarehouseMotives {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {

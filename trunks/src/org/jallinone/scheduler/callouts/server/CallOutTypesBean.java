@@ -14,7 +14,7 @@ import java.sql.*;
 import org.openswing.swing.logger.server.*;
 import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 import org.jallinone.system.server.*;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.jallinone.scheduler.callouts.java.*;
 import org.jallinone.commons.server.CustomizeQueryUtil;
 import org.jallinone.events.server.*;
@@ -54,7 +54,7 @@ import javax.sql.DataSource;
 public class CallOutTypesBean  implements CallOutTypes {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -62,9 +62,9 @@ public class CallOutTypesBean  implements CallOutTypes {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -74,7 +74,7 @@ public class CallOutTypesBean  implements CallOutTypes {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -91,6 +91,7 @@ public class CallOutTypesBean  implements CallOutTypes {
    * Business logic to execute.
    */
   public VOResponse insertCallOutType(CallOutTypeVO vo,String serverLanguageId,String username,ArrayList companiesList) throws Throwable {
+		PreparedStatement pstmt = null;
     Statement stmt = null;
     Connection conn = null;
     try {
@@ -104,10 +105,33 @@ public class CallOutTypesBean  implements CallOutTypes {
       // generate PROGRESSIVE_HIE02 value...
       stmt = conn.createStatement();
       BigDecimal progressiveHIE02 = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01SCH11(),"HIE02_HIERARCHIES","PROGRESSIVE",conn);
-      BigDecimal progressiveHIE01 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01SCH11(),conn);
-      stmt.execute("INSERT INTO HIE02_HIERARCHIES(PROGRESSIVE,COMPANY_CODE_SYS01,ENABLED) VALUES("+progressiveHIE02+",'"+vo.getCompanyCodeSys01SCH11()+"','Y')");
-      stmt.execute("INSERT INTO HIE01_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE02,LEV,ENABLED) VALUES("+progressiveHIE01+","+progressiveHIE02+",0,'Y')");
-      stmt.execute("UPDATE HIE02_HIERARCHIES SET PROGRESSIVE_HIE01="+progressiveHIE01+" WHERE PROGRESSIVE="+progressiveHIE02);
+      BigDecimal progressiveHIE01 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01SCH11(),username,conn);
+
+			pstmt = conn.prepareStatement(
+        "INSERT INTO HIE02_COMPANY_HIERARCHIES(PROGRESSIVE,COMPANY_CODE_SYS01,ENABLED,CREATE_USER,CREATE_DATE) VALUES("+progressiveHIE02+",'"+vo.getCompanyCodeSys01SCH11()+"','Y',?,?)"
+			);
+		  pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
+
+		  pstmt = conn.prepareStatement(
+        "INSERT INTO HIE01_COMPANY_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE02,LEV,ENABLED,COMPANY_CODE_SYS01,CREATE_USER,CREATE_DATE) VALUES("+progressiveHIE01+","+progressiveHIE02+",0,'Y','"+vo.getCompanyCodeSys01SCH11()+"',?,?)"
+			);
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
+
+      pstmt = conn.prepareStatement(
+		    "UPDATE HIE02_COMPANY_HIERARCHIES SET PROGRESSIVE_HIE01="+progressiveHIE01+",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? "+
+				"WHERE COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01SCH11()+"' and PROGRESSIVE="+progressiveHIE02
+			);
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
+
       vo.setProgressiveHie02SCH11(progressiveHIE02);
       vo.setProgressiveHie01HIE02(progressiveHIE01);
 
@@ -117,7 +141,7 @@ public class CallOutTypesBean  implements CallOutTypes {
       attribute2dbField.put("enabledSCH11","ENABLED");
 
       // insert into SCH11...
-      Response res = QueryUtil.insertTable(
+      Response res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
           conn,
           new UserSessionParameters(username),
           vo,
@@ -152,6 +176,10 @@ public class CallOutTypesBean  implements CallOutTypes {
             stmt.close();
         }
         catch (Exception exx) {}
+				try {
+						pstmt.close();
+				}
+				catch (Exception exx) {}
         try {
             if (this.conn==null && conn!=null) {
                 // close only local connection
@@ -184,10 +212,12 @@ public class CallOutTypesBean  implements CallOutTypes {
       companies = companies.substring(0,companies.length()-1);
 
       String sql =
-          "select SCH11_CALL_OUT_TYPES.COMPANY_CODE_SYS01,SCH11_CALL_OUT_TYPES.PROGRESSIVE_HIE02,SCH11_CALL_OUT_TYPES.ENABLED,SYS10_TRANSLATIONS.DESCRIPTION,HIE02_HIERARCHIES.PROGRESSIVE_HIE01 from SCH11_CALL_OUT_TYPES,SYS10_TRANSLATIONS,HIE02_HIERARCHIES where "+
-          "SCH11_CALL_OUT_TYPES.PROGRESSIVE_HIE02=HIE02_HIERARCHIES.PROGRESSIVE and "+
-          "HIE02_HIERARCHIES.PROGRESSIVE_HIE01=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          "select SCH11_CALL_OUT_TYPES.COMPANY_CODE_SYS01,SCH11_CALL_OUT_TYPES.PROGRESSIVE_HIE02,SCH11_CALL_OUT_TYPES.ENABLED,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01 from SCH11_CALL_OUT_TYPES,SYS10_COMPANY_TRANSLATIONS,HIE02_COMPANY_HIERARCHIES where "+
+					"SCH11_CALL_OUT_TYPES.COMPANY_CODE_SYS01=HIE02_COMPANY_HIERARCHIES.COMPANY_CODE_SYS01 and "+
+          "SCH11_CALL_OUT_TYPES.PROGRESSIVE_HIE02=HIE02_COMPANY_HIERARCHIES.PROGRESSIVE and "+
+					"HIE02_COMPANY_HIERARCHIES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SCH11_CALL_OUT_TYPES.COMPANY_CODE_SYS01 in ("+companies+") and "+
           "SCH11_CALL_OUT_TYPES.ENABLED='Y'";
 
@@ -195,8 +225,8 @@ public class CallOutTypesBean  implements CallOutTypes {
       attribute2dbField.put("companyCodeSys01SCH11","SCH11_CALL_OUT_TYPES.COMPANY_CODE_SYS01");
       attribute2dbField.put("progressiveHie02SCH11","SCH11_CALL_OUT_TYPES.PROGRESSIVE_HIE02");
       attribute2dbField.put("enabledSCH11","SCH11_CALL_OUT_TYPES.ENABLED");
-      attribute2dbField.put("progressiveHie01HIE02","HIE02_HIERARCHIES.PROGRESSIVE_HIE01");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("progressiveHie01HIE02","HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 
       ArrayList values = new ArrayList();
       values.add(serverLanguageId);
@@ -215,7 +245,7 @@ public class CallOutTypesBean  implements CallOutTypes {
           null,
           gridParams,
           true,
-          customizedFields 
+          customizedFields
       );
       if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (VOListResponse)answer;
 
@@ -262,11 +292,13 @@ public class CallOutTypesBean  implements CallOutTypes {
         newVO = (CallOutTypeVO)newVOs.get(i);
 
         // update root description...
-        TranslationUtils.updateTranslation(
+        CompanyTranslationUtils.updateTranslation(
+		        newVO.getCompanyCodeSys01SCH11(),
             oldVO.getDescriptionSYS10(),
             newVO.getDescriptionSYS10(),
             newVO.getProgressiveHie01HIE02(),
             serverLanguageId,
+					  username,
             conn
         );
 
@@ -307,17 +339,20 @@ public class CallOutTypesBean  implements CallOutTypes {
    * Business logic to execute.
    */
   public VOResponse deleteCallOutType(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
 
       CallOutTypeVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in SCH11...
         vo = (CallOutTypeVO)list.get(i);
-        stmt.execute("update SCH11_CALL_OUT_TYPES set ENABLED='N' where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01SCH11()+"' and PROGRESSIVE_HIE02="+vo.getProgressiveHie02SCH11());
+        pstmt = conn.prepareStatement("update SCH11_CALL_OUT_TYPES set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01SCH11()+"' and PROGRESSIVE_HIE02="+vo.getProgressiveHie02SCH11());
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
       return new VOResponse(new Boolean(true));
@@ -336,7 +371,7 @@ public class CallOutTypesBean  implements CallOutTypes {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {

@@ -107,7 +107,7 @@ public class ItemAttachedDocsPanel extends JPanel {
 //      colDocProg.setControllerMethodName("getDocumentsList");
 
       docController.setCodeSelectionWindow(docController.TREE_GRID_FRAME);
-      treeLevelDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
       docDataLocator.setTreeDataLocator(treeLevelDataLocator);
       docDataLocator.setNodeNameAttribute("descriptionSYS10");
 
@@ -136,6 +136,7 @@ public class ItemAttachedDocsPanel extends JPanel {
           ItemAttachedDocVO vo = (ItemAttachedDocVO)parentVO;
           docDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,itemVO.getCompanyCodeSys01ITM01());
           docDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,itemVO.getCompanyCodeSys01ITM01());
+					treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01,itemVO.getCompanyCodeSys01ITM01());
           treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02HIE01());
         }
 

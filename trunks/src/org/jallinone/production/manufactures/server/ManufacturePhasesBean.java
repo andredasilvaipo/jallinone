@@ -13,7 +13,7 @@ import java.sql.*;
 import org.openswing.swing.logger.server.*;
 import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 import org.jallinone.system.server.*;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.jallinone.production.manufactures.java.*;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.commons.server.CustomizeQueryUtil;
@@ -54,7 +54,7 @@ import javax.sql.DataSource;
 public class ManufacturePhasesBean  implements ManufacturePhases {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -62,9 +62,9 @@ public class ManufacturePhasesBean  implements ManufacturePhases {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -74,7 +74,7 @@ public class ManufacturePhasesBean  implements ManufacturePhases {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -86,19 +86,19 @@ public class ManufacturePhasesBean  implements ManufacturePhases {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ManufacturePhaseVO getManufacturePhase() {
 	  throw new UnsupportedOperationException();
   }
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ManufactureVO getManufacture() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
@@ -111,42 +111,46 @@ public class ManufacturePhasesBean  implements ManufacturePhases {
       ManufactureVO vo = (ManufactureVO)gridParams.getOtherGridParams().get(ApplicationConsts.MANUFACTURE_VO);
 
       String sql =
-          "select PRO02_MANUFACTURE_PHASES.COMPANY_CODE_SYS01,PRO02_MANUFACTURE_PHASES.PROGRESSIVE,SYS10_TRANSLATIONS.DESCRIPTION,PRO02_MANUFACTURE_PHASES.MANUFACTURE_CODE_PRO01,"+
+          "select PRO02_MANUFACTURE_PHASES.COMPANY_CODE_SYS01,PRO02_MANUFACTURE_PHASES.PROGRESSIVE,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,PRO02_MANUFACTURE_PHASES.MANUFACTURE_CODE_PRO01,"+
           "PRO02_MANUFACTURE_PHASES.PROGRESSIVE_SYS10,PRO02_MANUFACTURE_PHASES.QTY,PRO02_MANUFACTURE_PHASES.TASK_CODE_REG07,"+
           "PRO02_MANUFACTURE_PHASES.MACHINERY_CODE_PRO03,PRO02_MANUFACTURE_PHASES.PHASE_NUMBER,PRO02_MANUFACTURE_PHASES.MANUFACTURE_TYPE,"+
           "PRO02_MANUFACTURE_PHASES.DURATION,PRO02_MANUFACTURE_PHASES.VALUE,PRO02_MANUFACTURE_PHASES.COMPLETION_PERC,PRO02_MANUFACTURE_PHASES.OPERATION_CODE_PRO04,"+
           "PRO02_MANUFACTURE_PHASES.NOTE,PRO02_MANUFACTURE_PHASES.OPERATION_CODE_PRO04,PRO04_ALIAS.DESCRIPTION,TASKS.DESCRIPTION,PRO03.DESCRIPTION "+
-          "from SYS10_TRANSLATIONS,PRO02_MANUFACTURE_PHASES "+
+          "from SYS10_COMPANY_TRANSLATIONS,PRO02_MANUFACTURE_PHASES "+
           "LEFT OUTER JOIN "+
-          "(select SYS10_TRANSLATIONS.DESCRIPTION,PRO04_OPERATIONS.OPERATION_CODE,PRO04_OPERATIONS.COMPANY_CODE_SYS01 "+
-          "from PRO04_OPERATIONS,SYS10_TRANSLATIONS where "+
-          "PRO04_OPERATIONS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?) PRO04_ALIAS ON "+
+          "(select SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,PRO04_OPERATIONS.OPERATION_CODE,PRO04_OPERATIONS.COMPANY_CODE_SYS01 "+
+          "from PRO04_OPERATIONS,SYS10_COMPANY_TRANSLATIONS where "+
+					"PRO04_OPERATIONS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "PRO04_OPERATIONS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?) PRO04_ALIAS ON "+
           "PRO04_ALIAS.COMPANY_CODE_SYS01=PRO02_MANUFACTURE_PHASES.COMPANY_CODE_SYS01 and "+
           "PRO04_ALIAS.OPERATION_CODE=PRO02_MANUFACTURE_PHASES.SUBST_OPERATION_CODE_PRO04 "+
           "LEFT OUTER JOIN "+
-          "(select SYS10_TRANSLATIONS.DESCRIPTION,REG07_TASKS.COMPANY_CODE_SYS01,REG07_TASKS.TASK_CODE "+
-          "from REG07_TASKS,SYS10_TRANSLATIONS where "+
-          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?) TASKS ON "+
+          "(select SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,REG07_TASKS.COMPANY_CODE_SYS01,REG07_TASKS.TASK_CODE "+
+          "from REG07_TASKS,SYS10_COMPANY_TRANSLATIONS where "+
+					"REG07_TASKS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?) TASKS ON "+
           "TASKS.COMPANY_CODE_SYS01=PRO02_MANUFACTURE_PHASES.COMPANY_CODE_SYS01 and "+
           "TASKS.TASK_CODE=PRO02_MANUFACTURE_PHASES.TASK_CODE_REG07 "+
           "LEFT OUTER JOIN "+
-          "(select SYS10_TRANSLATIONS.DESCRIPTION,PRO03_MACHINERIES.COMPANY_CODE_SYS01,PRO03_MACHINERIES.MACHINERY_CODE "+
-          "from PRO03_MACHINERIES,SYS10_TRANSLATIONS where "+
-          "PRO03_MACHINERIES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?) PRO03 ON "+
+          "(select SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,PRO03_MACHINERIES.COMPANY_CODE_SYS01,PRO03_MACHINERIES.MACHINERY_CODE "+
+          "from PRO03_MACHINERIES,SYS10_COMPANY_TRANSLATIONS where "+
+					"PRO03_MACHINERIES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "PRO03_MACHINERIES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?) PRO03 ON "+
           "PRO03.COMPANY_CODE_SYS01=PRO02_MANUFACTURE_PHASES.COMPANY_CODE_SYS01 and "+
           "PRO03.MACHINERY_CODE=PRO02_MANUFACTURE_PHASES.MACHINERY_CODE_PRO03 "+
           "where "+
-          "PRO02_MANUFACTURE_PHASES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"PRO02_MANUFACTURE_PHASES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "PRO02_MANUFACTURE_PHASES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "PRO02_MANUFACTURE_PHASES.COMPANY_CODE_SYS01=? and "+
           "PRO02_MANUFACTURE_PHASES.MANUFACTURE_CODE_PRO01=? ";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01PRO02","PRO02_MANUFACTURE_PHASES.COMPANY_CODE_SYS01");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("manufactureCodePro01PRO02","PRO02_MANUFACTURE_PHASES.MANUFACTURE_CODE_PRO01");
       attribute2dbField.put("progressivePRO02","PRO02_MANUFACTURE_PHASES.PROGRESSIVE");
       attribute2dbField.put("progressiveSys10PRO02","PRO02_MANUFACTURE_PHASES.PROGRESSIVE_SYS10");
@@ -279,7 +283,7 @@ public class ManufacturePhasesBean  implements ManufacturePhases {
     			conn.rollback();
     	}
     	catch (Exception ex3) {
-    	} 
+    	}
     	throw new Exception(ex.getMessage());
     }
     finally {
@@ -314,7 +318,7 @@ public class ManufacturePhasesBean  implements ManufacturePhases {
 
       for(int i=0;i<vos.size();i++) {
         vo = (ManufacturePhaseVO)vos.get(i);
-        vo.setProgressiveSys10PRO02(TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01PRO02(),conn));
+        vo.setProgressiveSys10PRO02(CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01PRO02(),username,conn));
         vo.setProgressivePRO02(CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01PRO02(),"PRO02_MANUFACTURE_PHASES","PROGRESSIVE",conn));
 
         Map attribute2dbField = new HashMap();
@@ -365,7 +369,7 @@ public class ManufacturePhasesBean  implements ManufacturePhases {
     			conn.rollback();
     	}
     	catch (Exception ex3) {
-    	} 
+    	}
     	throw new Exception(ex.getMessage());
     }
     finally {
@@ -420,7 +424,7 @@ public class ManufacturePhasesBean  implements ManufacturePhases {
     			conn.rollback();
     	}
     	catch (Exception ex3) {
-    	} 
+    	}
     	throw new Exception(ex.getMessage());
     }
     finally {

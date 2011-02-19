@@ -47,7 +47,7 @@ import javax.sql.DataSource;
 public class UpdateWindowCustomizationsBean implements UpdateWindowCustomizations {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -55,9 +55,9 @@ public class UpdateWindowCustomizationsBean implements UpdateWindowCustomization
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -67,16 +67,16 @@ public class UpdateWindowCustomizationsBean implements UpdateWindowCustomization
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public WindowCustomizationVO getWindowCustomization() {
-	  throw new UnsupportedOperationException();	  
+	  throw new UnsupportedOperationException();
   }
 
 
@@ -105,6 +105,7 @@ public class UpdateWindowCustomizationsBean implements UpdateWindowCustomization
             newVO.getDescriptionSYS10(),
             newVO.getProgressiveSys10SYS12(),
             serverLanguageId,
+					  username,
             conn
         );
       }

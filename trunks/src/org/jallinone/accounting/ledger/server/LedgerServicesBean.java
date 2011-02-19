@@ -14,7 +14,7 @@ import org.jallinone.accounting.ledger.java.LedgerVO;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.commons.server.CustomizeQueryUtil;
 import org.jallinone.system.server.JAIOUserSessionParameters;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.openswing.swing.logger.server.Logger;
 import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.message.receive.java.VOListResponse;
@@ -22,6 +22,7 @@ import org.openswing.swing.message.receive.java.VOResponse;
 import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.message.send.java.LookupValidationParams;
 import org.openswing.swing.server.UserSessionParameters;
+import java.sql.PreparedStatement;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -54,7 +55,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class LedgerServicesBean  implements LedgerServices {
 
 
-	private DataSource dataSource; 
+	private DataSource dataSource;
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -64,7 +65,7 @@ public class LedgerServicesBean  implements LedgerServices {
   private Connection conn = null;
 
 	/**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
 	  this.conn = conn;
@@ -86,12 +87,12 @@ public class LedgerServicesBean  implements LedgerServices {
 
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public LedgerVO getLedger() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 
 	/**
 	 * Business logic to execute.
@@ -113,14 +114,15 @@ public class LedgerServicesBean  implements LedgerServices {
 			}
 
 			String sql =
-				"select ACC01_LEDGER.COMPANY_CODE_SYS01,ACC01_LEDGER.LEDGER_CODE,ACC01_LEDGER.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,ACC01_LEDGER.ENABLED,ACC01_LEDGER.ACCOUNT_TYPE from ACC01_LEDGER,SYS10_TRANSLATIONS where "+
-				"ACC01_LEDGER.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-				"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+				"select ACC01_LEDGER.COMPANY_CODE_SYS01,ACC01_LEDGER.LEDGER_CODE,ACC01_LEDGER.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ACC01_LEDGER.ENABLED,ACC01_LEDGER.ACCOUNT_TYPE from ACC01_LEDGER,SYS10_COMPANY_TRANSLATIONS where "+
+				"ACC01_LEDGER.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+				"ACC01_LEDGER.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+				"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
 				"ACC01_LEDGER.ENABLED='Y' and ACC01_LEDGER.COMPANY_CODE_SYS01 in ("+companies+")";
 
 			Map attribute2dbField = new HashMap();
 			attribute2dbField.put("ledgerCodeACC01","ACC01_LEDGER.LEDGER_CODE");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("progressiveSys10ACC01","ACC01_LEDGER.PROGRESSIVE_SYS10");
 			attribute2dbField.put("enabledACC01","ACC01_LEDGER.ENABLED");
 			attribute2dbField.put("companyCodeSys01ACC01","ACC01_LEDGER.COMPANY_CODE_SYS01");
@@ -193,15 +195,16 @@ public class LedgerServicesBean  implements LedgerServices {
 			}
 
 			String sql =
-				"select ACC01_LEDGER.COMPANY_CODE_SYS01,ACC01_LEDGER.LEDGER_CODE,ACC01_LEDGER.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,ACC01_LEDGER.ENABLED,ACC01_LEDGER.ACCOUNT_TYPE from ACC01_LEDGER,SYS10_TRANSLATIONS where "+
-				"ACC01_LEDGER.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-				"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+				"select ACC01_LEDGER.COMPANY_CODE_SYS01,ACC01_LEDGER.LEDGER_CODE,ACC01_LEDGER.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ACC01_LEDGER.ENABLED,ACC01_LEDGER.ACCOUNT_TYPE from ACC01_LEDGER,SYS10_COMPANY_TRANSLATIONS where "+
+				"ACC01_LEDGER.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+				"ACC01_LEDGER.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+				"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
 				"ACC01_LEDGER.ENABLED='Y' and "+
 				"ACC01_LEDGER.LEDGER_CODE='"+validationPars.getCode()+"' and ACC01_LEDGER.COMPANY_CODE_SYS01 in ("+companies+")";
 
 			Map attribute2dbField = new HashMap();
 			attribute2dbField.put("ledgerCodeACC01","ACC01_LEDGER.LEDGER_CODE");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("progressiveSys10ACC01","ACC01_LEDGER.PROGRESSIVE_SYS10");
 			attribute2dbField.put("enabledACC01","ACC01_LEDGER.ENABLED");
 			attribute2dbField.put("companyCodeSys01ACC01","ACC01_LEDGER.COMPANY_CODE_SYS01");
@@ -284,7 +287,7 @@ public class LedgerServicesBean  implements LedgerServices {
 					vo.setCompanyCodeSys01ACC01(companyCode);
 
 				// insert record in SYS10...
-				progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ACC01(),conn);
+				progressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ACC01(),username,conn);
 				vo.setProgressiveSys10ACC01(progressiveSYS10);
 
 				// insert into ACC01...
@@ -353,7 +356,7 @@ public class LedgerServicesBean  implements LedgerServices {
 				newVO = (LedgerVO)newVOs.get(i);
 
 				// update SYS10 table...
-				TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10ACC01(),serverLanguageId,conn);
+				CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01ACC01(),oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10ACC01(),serverLanguageId,username,conn);
 
 				HashSet pkAttrs = new HashSet();
 				pkAttrs.add("companyCodeSys01ACC01");
@@ -420,17 +423,20 @@ public class LedgerServicesBean  implements LedgerServices {
 	 * Business logic to execute.
 	 */
 	public VOResponse deleteLedger(ArrayList list,String serverLanguageId,String username) throws Throwable {
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		Connection conn = null;
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
-			stmt = conn.createStatement();
 
 			LedgerVO vo = null;
 			for(int i=0;i<list.size();i++) {
 				// logically delete the record in ACC01...
 				vo = (LedgerVO)list.get(i);
-				stmt.execute("update ACC01_LEDGER set ENABLED='N' where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ACC01()+"' and LEDGER_CODE='"+vo.getLedgerCodeACC01()+"'");
+				pstmt = conn.prepareStatement("update ACC01_LEDGER set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ACC01()+"' and LEDGER_CODE='"+vo.getLedgerCodeACC01()+"'");
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
 			}
 
 			return new VOResponse(new Boolean(true));
@@ -446,19 +452,19 @@ public class LedgerServicesBean  implements LedgerServices {
 		      }			throw new Exception(ex.getMessage());
 		}
 		finally {
-          try {
-              stmt.close();
+        try {
+              pstmt.close();
         }
-          catch (Exception exx) {}
-          try {
-              if (this.conn==null && conn!=null) {
-                // close only local connection
-                conn.commit();
-                conn.close();
-            }
-
+        catch (Exception exx) {}
+        try {
+            if (this.conn==null && conn!=null) {
+              // close only local connection
+              conn.commit();
+              conn.close();
           }
-          catch (Exception exx) {}
+
+        }
+        catch (Exception exx) {}
     }
 
 

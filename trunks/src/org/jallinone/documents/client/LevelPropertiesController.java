@@ -12,7 +12,7 @@ import org.jallinone.commons.client.CompanyGridController;
 import org.openswing.swing.client.GridControl;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.openswing.swing.util.client.ClientSettings;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 
 
 /**
@@ -116,7 +116,7 @@ public class LevelPropertiesController extends CompanyGridController {
   public void createValueObject(ValueObject valueObject) throws Exception {
     LevelPropertyVO vo = (LevelPropertyVO)valueObject;
     DefaultMutableTreeNode node = frame.getHierarTreePanel().getSelectedNode();
-    HierarchyLevelVO levelVO = (HierarchyLevelVO)node.getUserObject();
+    CompanyHierarchyLevelVO levelVO = (CompanyHierarchyLevelVO)node.getUserObject();
     DocumentTypeVO docTypeVO = (DocumentTypeVO)frame.getGrid().getVOListTableModel().getObjectForRow(frame.getGrid().getSelectedRow());
     vo.setProgressiveHie02DOC21(frame.getHierarTreePanel().getProgressiveHIE02());
     vo.setProgressiveHie01DOC21(levelVO.getProgressiveHIE01());

@@ -89,7 +89,7 @@ public class InsertTablesAction implements Action {
 		  return new ErrorResponse(ex.getMessage());
 	  }
   }
-  
+
 
 
 
@@ -135,7 +135,7 @@ public class InsertTablesAction implements Action {
           }
 
           // execute insert operation for the current RowVO object...
-          res = QueryUtil.insertTable(
+          res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
               conn,
               new UserSessionParameters(username),
               rowVO,

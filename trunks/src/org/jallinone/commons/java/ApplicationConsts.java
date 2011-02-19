@@ -33,7 +33,7 @@ import java.math.BigDecimal;
  */
 public class ApplicationConsts {
 
-  public static final int DB_VERSION = 13;
+  public static final int DB_VERSION = 14;
 
   public static final String DO_NOT_ADD_ENABLED = "DO_NOT_ADD_ENABLED";
 
@@ -182,7 +182,10 @@ public class ApplicationConsts {
   public static final String PROGRESSIVE_REG04 = "PROGRESSIVE_REG04";
   public static final String PROGRESSIVE_HIE02 = "PROGRESSIVE_HIE02";
   public static final String PROGRESSIVE_HIE01 = "PROGRESSIVE_HIE01";
-  public static final String ROOT_PROGRESSIVE_HIE01 = "ROOT_PROGRESSIVE_HIE01";
+	public static final String PROGRESSIVE_HIE04 = "PROGRESSIVE_HIE04";
+	public static final String PROGRESSIVE_HIE03 = "PROGRESSIVE_HIE04";
+	public static final String ROOT_PROGRESSIVE_HIE01 = "ROOT_PROGRESSIVE_HIE01";
+	public static final String ROOT_PROGRESSIVE_HIE03 = "ROOT_PROGRESSIVE_HIE03";
   public static final String LOAD_ANCIENTS = "LOAD_ANCIENTS";
   public static final String COMPANY_CODE_SYS01 = "COMPANY_CODE_SYS01";
   public static final String PRICELIST = "PRICELIST";

@@ -247,7 +247,15 @@ $F{DOC_DATE}
 					<textElement>
 						<font fontName="Courier New" size="10"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ADDRESS}+" "+$F{ZIP}+" "+$F{CITY}+" "+($F{PROVINCE}.equals("")?"":$F{PROVINCE})+" "+$F{COUNTRY}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[($F{ADDRESS}==null?"":$F{ADDRESS})+
+" "+
+($F{ZIP}==null?"":$F{ZIP})+
+" "+
+($F{CITY}==null?"":$F{CITY})+
+" "+
+($F{PROVINCE}.equals("")?"":$F{PROVINCE})+
+" "+
+($F{COUNTRY}==null?"":$F{COUNTRY})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

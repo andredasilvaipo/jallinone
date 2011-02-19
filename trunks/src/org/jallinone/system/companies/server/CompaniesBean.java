@@ -245,10 +245,12 @@ public class CompaniesBean  implements Companies {
 
       // insert record in SYS01...
       pstmt = conn.prepareStatement(
-          "insert into SYS01_COMPANIES(COMPANY_CODE,CURRENCY_CODE_REG03,CREATION_DATE,ENABLED) "+
-          "VALUES('"+vo.getCompanyCodeSys01REG04()+"','"+vo.getCurrencyCodeReg03()+"',?,'Y')"
+          "insert into SYS01_COMPANIES(COMPANY_CODE,CURRENCY_CODE_REG03,CREATION_DATE,ENABLED,CREATE_USER,CREATE_DATE) "+
+          "VALUES('"+vo.getCompanyCodeSys01REG04()+"','"+vo.getCurrencyCodeReg03()+"',?,'Y',?,?)"
       );
       pstmt.setTimestamp(1,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.execute();
       pstmt.close();
 
@@ -258,19 +260,23 @@ public class CompaniesBean  implements Companies {
 
       // add grants of the new company code to ADMIN user...
       stmt.execute(
-          "INSERT INTO SYS02_COMPANIES_ACCESS(COMPANY_CODE_SYS01,PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL) "+
-          "SELECT '"+vo.getCompanyCodeSys01REG04()+"',2,FUNCTION_CODE_SYS06,'Y','Y','Y' FROM SYS07_ROLE_FUNCTIONS,SYS06_FUNCTIONS WHERE FUNCTION_CODE_SYS06=FUNCTION_CODE AND USE_COMPANY_CODE='Y' and SYS07_ROLE_FUNCTIONS.PROGRESSIVE_SYS04=2"
+          "INSERT INTO SYS02_COMPANIES_ACCESS(COMPANY_CODE_SYS01,PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL,CREATE_USER,CREATE_DATE) "+
+          "SELECT '"+vo.getCompanyCodeSys01REG04()+"',2,FUNCTION_CODE_SYS06,'Y','Y','Y',?,? FROM SYS07_ROLE_FUNCTIONS,SYS06_FUNCTIONS WHERE FUNCTION_CODE_SYS06=FUNCTION_CODE AND USE_COMPANY_CODE='Y' and SYS07_ROLE_FUNCTIONS.PROGRESSIVE_SYS04=2"
       );
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.close();
 
       // insert company description...
       pstmt = conn.prepareStatement(
-        "INSERT INTO REG04_SUBJECTS(COMPANY_CODE_SYS01,PROGRESSIVE,NAME_1,SUBJECT_TYPE,ENABLED) "+
-        "VALUES(?,2,?,?,'Y')"
+        "INSERT INTO REG04_SUBJECTS(COMPANY_CODE_SYS01,PROGRESSIVE,NAME_1,SUBJECT_TYPE,ENABLED,CREATE_USER,CREATE_DATE) "+
+        "VALUES(?,2,?,?,'Y',?,?)"
       );
       pstmt.setString(1,vo.getCompanyCodeSys01REG04());
       pstmt.setString(2,vo.getName_1REG04());
       pstmt.setString(3,ApplicationConsts.SUBJECT_MY_COMPANY);
+			pstmt.setString(4,username);
+			pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.execute();
       pstmt.close();
 
@@ -287,33 +293,39 @@ public class CompaniesBean  implements Companies {
 
       // insert company report customizations...
       pstmt = conn.prepareStatement(
-        "INSERT INTO SYS15_REPORT_CUSTOMIZATIONS(COMPANY_CODE_SYS01,FUNCTION_CODE_SYS06,REPORT_NAME) "+
-        "SELECT ?,FUNCTION_CODE_SYS06,REPORT_NAME FROM SYS15_REPORT_CUSTOMIZATIONS WHERE COMPANY_CODE_SYS01=?"
+        "INSERT INTO SYS15_REPORT_CUSTOMIZATIONS(COMPANY_CODE_SYS01,FUNCTION_CODE_SYS06,REPORT_NAME,CREATE_USER,CREATE_DATE) "+
+        "SELECT ?,FUNCTION_CODE_SYS06,REPORT_NAME,?,? FROM SYS15_REPORT_CUSTOMIZATIONS WHERE COMPANY_CODE_SYS01=?"
       );
       pstmt.setString(1,vo.getCompanyCodeSys01REG04());
-      pstmt.setString(2,companyCode);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,companyCode);
       pstmt.execute();
       pstmt.close();
 
 
       // insert company user parameters...
       pstmt = conn.prepareStatement(
-        "INSERT INTO SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE) "+
-        "SELECT ?,USERNAME_SYS03,PARAM_CODE,VALUE FROM SYS19_USER_PARAMS WHERE COMPANY_CODE_SYS01=?"
+        "INSERT INTO SYS19_USER_PARAMS(COMPANY_CODE_SYS01,USERNAME_SYS03,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) "+
+        "SELECT ?,USERNAME_SYS03,PARAM_CODE,VALUE,?,? FROM SYS19_USER_PARAMS WHERE COMPANY_CODE_SYS01=?"
       );
       pstmt.setString(1,vo.getCompanyCodeSys01REG04());
-      pstmt.setString(2,companyCode);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,companyCode);
       pstmt.execute();
       pstmt.close();
 
 
       // insert company user parameters...
       pstmt = conn.prepareStatement(
-        "INSERT INTO SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE) "+
-        "SELECT DISTINCT ?,PARAM_CODE,VALUE FROM SYS21_COMPANY_PARAMS WHERE COMPANY_CODE_SYS01=?"
+        "INSERT INTO SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) "+
+        "SELECT DISTINCT ?,PARAM_CODE,VALUE,?,? FROM SYS21_COMPANY_PARAMS WHERE COMPANY_CODE_SYS01=?"
       );
       pstmt.setString(1,vo.getCompanyCodeSys01REG04());
-      pstmt.setString(2,companyCode);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,companyCode);
       pstmt.execute();
       pstmt.close();
 
@@ -326,11 +338,13 @@ public class CompaniesBean  implements Companies {
 			rset.close();
 			pstmt.close();
 			pstmt = conn.prepareStatement(
-				"UPDATE SYS21_COMPANY_PARAMS SET VALUE=? WHERE COMPANY_CODE_SYS01=? AND PARAM_CODE=?"
+				"UPDATE SYS21_COMPANY_PARAMS SET VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  WHERE COMPANY_CODE_SYS01=? AND PARAM_CODE=?"
 			);
  		  pstmt.setString(1,String.valueOf(companies+2)); // progressive 2 is locked for db initialization...
-			pstmt.setString(2,vo.getCompanyCodeSys01REG04());
-			pstmt.setString(3,ApplicationConsts.INITIAL_VALUE);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4,vo.getCompanyCodeSys01REG04());
+			pstmt.setString(5,ApplicationConsts.INITIAL_VALUE);
 			int rows = pstmt.executeUpdate();
 			pstmt.close();
 
@@ -521,11 +535,11 @@ public class CompaniesBean  implements Companies {
         "select "+selectFields+" from "+tableName+" where COMPANY_CODE_SYS01='"+oldCompanyCode+"'"
       );
       pstmt2 = conn.prepareStatement(
-        "insert into "+tableName+"(COMPANY_CODE_SYS01,"+selectFields+") values('"+newCompanyCode+"',"+aux+")"
+        "insert into "+tableName+"(COMPANY_CODE_SYS01,"+selectFields+",CREATE_USER,CREATE_DATE) values('"+newCompanyCode+"',"+aux+",?,?)"
       );
       pstmt3 = conn.prepareStatement(
-        "insert into SYS10_TRANSLATIONS(PROGRESSIVE,LANGUAGE_CODE,DESCRIPTION) "+
-        "select ?,LANGUAGE_CODE,DESCRIPTION from SYS10_TRANSLATIONS where PROGRESSIVE=?"
+        "insert into SYS10_COMPANY_TRANSLATIONS(COMPANY_CODE_SYS01,PROGRESSIVE,LANGUAGE_CODE,DESCRIPTION,CREATE_USER,CREATE_DATE) "+
+        "select '"+newCompanyCode+"',?,LANGUAGE_CODE,DESCRIPTION,?,? from SYS10_COMPANY_TRANSLATIONS where PROGRESSIVE=?"
       );
 
       ResultSet rset = pstmt.executeQuery();
@@ -540,11 +554,15 @@ public class CompaniesBean  implements Companies {
             newProgressive = CompanyProgressiveUtils.getInternalProgressive(newCompanyCode,"SYS10_TRANSLATIONS","PROGRESSIVE",conn);
             pstmt2.setObject(i,newProgressive);
           }
-        pstmt2.execute();
+				pstmt2.setString(count+1,"UNDEFINED");
+				pstmt2.setTimestamp(count+2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt2.execute();
 
-        pstmt3.setBigDecimal(1,newProgressive);
-        pstmt3.setObject(2,oldProgressive);
-        pstmt3.execute();
+				pstmt3.setBigDecimal(1,newProgressive);
+				pstmt3.setString(2,"UNDEFINED");
+				pstmt3.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt3.setObject(4,oldProgressive);
+				pstmt3.execute();
 
       }
       rset.close();
@@ -633,20 +651,25 @@ public class CompaniesBean  implements Companies {
    * Business logic to execute.
    */
   public VOResponse deleteCompany(SubjectPK pk,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
-      stmt = conn.createStatement();
-
-
       // logically delete the record in SYS01...
-      stmt.execute("update SYS01_COMPANIES set ENABLED='N' where COMPANY_CODE='"+pk.getCompanyCodeSys01REG04()+"'");
+      pstmt = conn.prepareStatement(
+		     "update SYS01_COMPANIES set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE='"+pk.getCompanyCodeSys01REG04()+"'"
+			);
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
 
       // phisically delete records in SYS02, linked to this company code...
-      stmt.execute("delete from SYS02_COMPANIES_ACCESS where COMPANY_CODE_SYS01='"+pk.getCompanyCodeSys01REG04()+"'");
+			pstmt = conn.prepareStatement(
+			  "delete from SYS02_COMPANIES_ACCESS where COMPANY_CODE_SYS01='"+pk.getCompanyCodeSys01REG04()+"'"
+			);
+		  pstmt.execute();
 
       return new VOResponse(new Boolean(true));
     }
@@ -664,7 +687,7 @@ public class CompaniesBean  implements Companies {
     }
     finally {
       try {
-        stmt.close();
+        pstmt.close();
       }
       catch (Exception ex2) {
       }

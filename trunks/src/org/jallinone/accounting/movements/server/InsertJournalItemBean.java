@@ -48,7 +48,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class InsertJournalItemBean implements InsertJournalItem {
 
 
-	private DataSource dataSource; 
+	private DataSource dataSource;
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -58,7 +58,7 @@ public class InsertJournalItemBean implements InsertJournalItem {
 	private Connection conn = null;
 
 	/**
-	 * Set external connection. 
+	 * Set external connection.
 	 */
 	public void setConn(Connection conn) {
 		this.conn = conn;
@@ -102,7 +102,7 @@ public class InsertJournalItemBean implements InsertJournalItem {
 			attribute2dbField.put("itemYearACC05","ITEM_YEAR");
 			attribute2dbField.put("itemDateACC05","ITEM_DATE");
 			attribute2dbField.put("descriptionACC05","DESCRIPTION");
-			Response res = QueryUtil.insertTable(
+			Response res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 					conn,
 					new UserSessionParameters(username),
 					vo,
@@ -140,7 +140,7 @@ public class InsertJournalItemBean implements InsertJournalItem {
 						"PROGRESSIVE",
 						conn
 				));
-				res = QueryUtil.insertTable(
+				res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 						conn,
 						new UserSessionParameters(username),
 						rowVO,
@@ -190,5 +190,5 @@ public class InsertJournalItemBean implements InsertJournalItem {
 
 
 
-	
+
 }

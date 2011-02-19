@@ -13,7 +13,7 @@ import org.openswing.swing.message.receive.java.*;
 import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.util.client.ClientUtils;
 import org.openswing.swing.domains.java.*;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import java.util.ArrayList;
 import org.openswing.swing.lookup.client.*;
 import org.openswing.swing.tree.client.*;
@@ -137,11 +137,11 @@ public class DocumentFrame extends InternalFrame {
       levelController.setFrameTitle("hierarchy");
       levelController.setAllowTreeLeafSelectionOnly(true);
       levelController.getLookupDataLocator().setNodeNameAttribute("descriptionSYS10");
-      levelController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.HierarchyLevelVO");
+      levelController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.CompanyHierarchyLevelVO");
       levelController.addLookup2ParentLink("progressiveHIE01", "progressiveHie01DOC17");
       levelController.addLookup2ParentLink("descriptionSYS10", "levelDescriptionSYS10");
       levelDataLocator.setTreeDataLocator(treeLevelDataLocator);
-      treeLevelDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
 
 
       init();
@@ -217,6 +217,7 @@ public class DocumentFrame extends InternalFrame {
           DocumentLinkVO vo = (DocumentLinkVO)linksgrid.getVOListTableModel().getObjectForRow(linksgrid.getSelectedRow());
           vo.setProgressiveHie01DOC17(null);
           vo.setLevelDescriptionSYS10("");
+					treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01, vo.getCompanyCodeSys01DOC17());
           treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02, vo.getProgressiveHIE02());
         }
       }

@@ -140,8 +140,10 @@ public class TranslationsGridFrame extends InternalFrame {
     Domain d = new Domain("DOMAIN_SYS10");
     d.addDomainPair(new TopicVO(langs,"ITM01_ITEMS","PROGRESSIVE_SYS10",true,true),"item descriptions");
     d.addDomainPair(new TopicVO(langs,"ITM01_ITEMS","ADD_PROGRESSIVE_SYS10",true,true),"item additional descriptions");
-    d.addDomainPair(new TopicVO(langs,"HIE02_HIERARCHIES","PROGRESSIVE_HIE01",false,true),"hierarchies names");
-    d.addDomainPair(new TopicVO(langs,"HIE01_LEVELS","PROGRESSIVE",false,true),"hierarchy levels names");
+    d.addDomainPair(new TopicVO(langs,"HIE02_COMPANY_HIERARCHIES","PROGRESSIVE_HIE01",true,true),"hierarchies names");
+    d.addDomainPair(new TopicVO(langs,"HIE01_COMPANY_LEVELS","PROGRESSIVE",true,true),"hierarchy levels names");
+		d.addDomainPair(new TopicVO(langs,"HIE04_HIERARCHIES","PROGRESSIVE_HIE03",false,true),"hierarchies names");
+		d.addDomainPair(new TopicVO(langs,"HIE03_LEVELS","PROGRESSIVE",false,true),"hierarchy levels names");
     d.addDomainPair(new TopicVO(langs,"ITM21_VARIANTS","PROGRESSIVE_SYS10",true,false),"variant names");
 
     if (companyCodeSys01!=null) {
@@ -272,7 +274,7 @@ public class TranslationsGridFrame extends InternalFrame {
        * @return an ErrorResponse value object in case of errors, VOListResponse if the operation is successfully completed
        */
       public Response updateRecords(int[] rowNumbers,ArrayList oldPersistentObjects,ArrayList persistentObjects) throws Exception {
-        return ClientUtils.getData("updateTranslations",new Object[]{controlTopic.getValue(),oldPersistentObjects,persistentObjects});
+        return ClientUtils.getData("updateTranslations",new Object[]{controlCompaniesCombo.getValue(),controlTopic.getValue(),oldPersistentObjects,persistentObjects});
       }
 
     });

@@ -57,7 +57,7 @@ import javax.sql.DataSource;
 public class TranslationsBean  implements Translations {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -65,9 +65,9 @@ public class TranslationsBean  implements Translations {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -88,13 +88,13 @@ public class TranslationsBean  implements Translations {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public CustomValueObject getCustomValueObject() {
 	  throw new UnsupportedOperationException();
   }
-  
-  
+
+
 
   /**
    * Business logic to execute.
@@ -123,7 +123,12 @@ public class TranslationsBean  implements Translations {
         attribute2dbField.put("attributeNameS"+i,"T"+i+".DESCRIPTION");
 
         select += "T"+i+".DESCRIPTION,";
-        from += "SYS10_TRANSLATIONS T"+i+",";
+
+	       if (topic.isUseCompanyCode())
+					 from += "SYS10_COMPANY_TRANSLATIONS T"+i+",";
+				else
+					 from += "SYS10_TRANSLATIONS T"+i+",";
+
         where +=
             "not T"+i+".DESCRIPTION='"+ApplicationConsts.JOLLY+"' and "+
             "T"+i+".LANGUAGE_CODE='"+vo.getLanguageCodeSYS09()+"' and ";
@@ -131,8 +136,10 @@ public class TranslationsBean  implements Translations {
           where += "T"+i+".PROGRESSIVE="+topic.getTableName()+"."+topic.getColumnName()+" and ";
         else if (langs.length>1 && i>0)
           where += "T0.PROGRESSIVE=T"+i+".PROGRESSIVE and ";
-        if (topic.isUseCompanyCode())
-          where += topic.getTableName()+".COMPANY_CODE_SYS01='"+companyCodeSys01+"' and ";
+        if (topic.isUseCompanyCode()) {
+					where += topic.getTableName() + ".COMPANY_CODE_SYS01='" + companyCodeSys01 + "' and "+
+					         "T"+i+".COMPANY_CODE_SYS01='" + companyCodeSys01 + "' and ";
+				}
         if (topic.isUseEnabled())
           where += topic.getTableName()+".ENABLED='Y' and ";
       }
@@ -182,13 +189,13 @@ public class TranslationsBean  implements Translations {
   }
 
 
-  
+
 
 
   /**
    * Business logic to execute.
    */
-  public VOListResponse updateTranslations(TopicVO topic,ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable {
+  public VOListResponse updateTranslations(String companyCodeSys01,TopicVO topic,ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -207,13 +214,27 @@ public class TranslationsBean  implements Translations {
         // update SYS10 tables...
         for(int k=0;k<langs.length;k++) {
           vo = (LanguageVO)langs[k];
-          TranslationUtils.updateTranslation(
-            (String)clazz.getMethod("getAttributeNameS"+k,new Class[0]).invoke(oldVO,new Object[0]),
-            (String)clazz.getMethod("getAttributeNameS"+k,new Class[0]).invoke(newVO,new Object[0]),
-            newVO.getAttributeNameN0(),
-            vo.getLanguageCodeSYS09(),
-            conn
-          );
+					if (topic.isUseCompanyCode()) {
+						CompanyTranslationUtils.updateTranslation(
+   					  companyCodeSys01,
+							(String)clazz.getMethod("getAttributeNameS"+k,new Class[0]).invoke(oldVO,new Object[0]),
+							(String)clazz.getMethod("getAttributeNameS"+k,new Class[0]).invoke(newVO,new Object[0]),
+							newVO.getAttributeNameN0(),
+							vo.getLanguageCodeSYS09(),
+							username,
+							conn
+						);
+					}
+					else {
+						TranslationUtils.updateTranslation(
+							(String)clazz.getMethod("getAttributeNameS"+k,new Class[0]).invoke(oldVO,new Object[0]),
+							(String)clazz.getMethod("getAttributeNameS"+k,new Class[0]).invoke(newVO,new Object[0]),
+							newVO.getAttributeNameN0(),
+							vo.getLanguageCodeSYS09(),
+							username,
+							conn
+						);
+					}
         }
       }
 

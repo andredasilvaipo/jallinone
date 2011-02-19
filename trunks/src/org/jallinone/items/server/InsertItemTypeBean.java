@@ -51,7 +51,7 @@ import javax.sql.DataSource;
 public class InsertItemTypeBean  implements InsertItemType {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -59,9 +59,9 @@ public class InsertItemTypeBean  implements InsertItemType {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -71,7 +71,7 @@ public class InsertItemTypeBean  implements InsertItemType {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -87,6 +87,7 @@ public class InsertItemTypeBean  implements InsertItemType {
    */
   public VOResponse insertItemType(ItemTypeVO vo,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable {
     Statement stmt = null;
+		PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -99,10 +100,32 @@ public class InsertItemTypeBean  implements InsertItemType {
       // generate PROGRESSIVE_HIE02 value...
       stmt = conn.createStatement();
       BigDecimal progressiveHIE02 = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01ITM02(),"HIE02_HIERARCHIES","PROGRESSIVE",conn);
-      BigDecimal progressiveHIE01 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ITM02(),conn);
-      stmt.execute("INSERT INTO HIE02_HIERARCHIES(PROGRESSIVE,COMPANY_CODE_SYS01,ENABLED) VALUES("+progressiveHIE02+",'"+vo.getCompanyCodeSys01ITM02()+"','Y')");
-      stmt.execute("INSERT INTO HIE01_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE02,LEV,ENABLED) VALUES("+progressiveHIE01+","+progressiveHIE02+",0,'Y')");
-      stmt.execute("UPDATE HIE02_HIERARCHIES SET PROGRESSIVE_HIE01="+progressiveHIE01+" WHERE PROGRESSIVE="+progressiveHIE02);
+      BigDecimal progressiveHIE01 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ITM02(),username,conn);
+      pstmt = conn.prepareStatement(
+		    "INSERT INTO HIE02_COMPANY_HIERARCHIES(PROGRESSIVE,COMPANY_CODE_SYS01,ENABLED,CREATE_USER,CREATE_DATE) VALUES("+progressiveHIE02+",'"+vo.getCompanyCodeSys01ITM02()+"','Y',?,?)"
+			);
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
+
+			pstmt = conn.prepareStatement(
+        "INSERT INTO HIE01_COMPANY_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE02,LEV,ENABLED,COMPANY_CODE_SYS01,CREATE_USER,CREATE_DATE) VALUES("+progressiveHIE01+","+progressiveHIE02+",0,'Y','"+vo.getCompanyCodeSys01ITM02()+"',?,?)"
+			);
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
+
+     pstmt = conn.prepareStatement(
+		    "UPDATE HIE02_COMPANY_HIERARCHIES SET PROGRESSIVE_HIE01="+progressiveHIE01+",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? "+
+				"WHERE COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ITM02()+"' and PROGRESSIVE="+progressiveHIE02
+			);
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
+
       vo.setProgressiveHie02ITM02(progressiveHIE02);
       vo.setProgressiveHie01HIE02(progressiveHIE01);
 
@@ -126,7 +149,13 @@ public class InsertItemTypeBean  implements InsertItemType {
       );
 
       if (!res.isError()) {
-        stmt.execute("INSERT INTO SYS13_WINDOWS(TABLE_NAME,PROGRESSIVE,FUNCTION_CODE_SYS06) VALUES('ITM01_ITEMS',"+progressiveHIE01+",'ITM01')");
+				pstmt = conn.prepareStatement(
+					 "INSERT INTO SYS13_WINDOWS(TABLE_NAME,PROGRESSIVE,FUNCTION_CODE_SYS06,CREATE_USER,CREATE_DATE) VALUES('ITM01_ITEMS',"+progressiveHIE01+",'ITM01',?,?)"
+				);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
       return new VOResponse(vo);

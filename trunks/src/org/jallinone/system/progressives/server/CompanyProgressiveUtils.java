@@ -46,6 +46,7 @@ public class CompanyProgressiveUtils {
    */
   public static final BigDecimal getConsecutiveProgressive(String companyCode,String tableName,String columnName,Connection conn) throws Exception {
     Statement stmt = null;
+		PreparedStatement pstmt = null;
     BigDecimal progressive = null;
     try {
       stmt = conn.createStatement();
@@ -66,10 +67,15 @@ public class CompanyProgressiveUtils {
         // progressive found: it will be incremented by "incrementValue"...
         progressive = rset.getBigDecimal(1);
         rset.close();
-        int rows = stmt.executeUpdate(
-            "update SYS20_COMPANY_PROGRESSIVES set VALUE=VALUE+"+incrementValue+" where "+
+				pstmt = conn.prepareStatement(
+            "update SYS20_COMPANY_PROGRESSIVES set VALUE=VALUE+"+incrementValue+",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
             "COMPANY_CODE_SYS01='"+companyCode+"' and TABLE_NAME='"+tableName+"' and COLUMN_NAME='"+columnName+"' and VALUE="+progressive
         );
+				pstmt.setString(1,"UNDEFINED");
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				int rows = pstmt.executeUpdate();
+				pstmt.close();
+
         if (rows==0)
           throw new Exception("Updating not performed: the record was previously updated.");
 
@@ -78,10 +84,14 @@ public class CompanyProgressiveUtils {
       else {
         // record not found: it will be inserted, beginning from "initialValue"...
         rset.close();
-        stmt.execute(
-            "insert into SYS20_COMPANY_PROGRESSIVES(COMPANY_CODE_SYS01,TABLE_NAME,COLUMN_NAME,VALUE) values("+
-            "'"+companyCode+"','"+tableName+"','"+columnName+"',"+initialValue+")"
+        pstmt = conn.prepareStatement(
+            "insert into SYS20_COMPANY_PROGRESSIVES(COMPANY_CODE_SYS01,TABLE_NAME,COLUMN_NAME,VALUE,CREATE_USER,CREATE_DATE) values("+
+            "'"+companyCode+"','"+tableName+"','"+columnName+"',"+initialValue+",?,?)"
         );
+				pstmt.setString(1,"UNDEFINED");
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+
         progressive = new BigDecimal(1);
       }
     }
@@ -91,6 +101,11 @@ public class CompanyProgressiveUtils {
       }
       catch (Exception ex) {
       }
+			try {
+				pstmt.close();
+			}
+			catch (Exception ex) {
+			}
     }
     return progressive;
   }
@@ -105,6 +120,7 @@ public class CompanyProgressiveUtils {
    */
   public static final BigDecimal getInternalProgressive(String companyCode,String tableName,String columnName,Connection conn) throws Exception {
     Statement stmt = null;
+		PreparedStatement pstmt = null;
     BigDecimal progressive = null;
     BigDecimal initialValue = null;
     BigDecimal incrementValue = null;
@@ -127,10 +143,15 @@ public class CompanyProgressiveUtils {
       rset.close();
       if (progressive!=null) {
         // record found: it will be incremented by 10...
-        int rows = stmt.executeUpdate(
-            "update SYS20_COMPANY_PROGRESSIVES set VALUE=VALUE+"+incrementValue+" where "+
+				pstmt = conn.prepareStatement(
+            "update SYS20_COMPANY_PROGRESSIVES set VALUE=VALUE+"+incrementValue+",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
             "COMPANY_CODE_SYS01='"+companyCode+"' and TABLE_NAME='"+tableName+"' and COLUMN_NAME='"+columnName+"' and VALUE="+progressive
         );
+				pstmt.setString(1,"UNDEFINED");
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				int rows = pstmt.executeUpdate();
+				pstmt.close();
+
         if (rows==0)
           throw new Exception("Updating not performed: the record was previously updated.");
 
@@ -138,10 +159,13 @@ public class CompanyProgressiveUtils {
       }
       else {
         // record not found: it will be inserted, beginning from "initialValue"...
-        stmt.execute(
-            "insert into SYS20_COMPANY_PROGRESSIVES(COMPANY_CODE_SYS01,TABLE_NAME,COLUMN_NAME,VALUE) values("+
-            "'"+companyCode+"','"+tableName+"','"+columnName+"',"+initialValue+")"
+        pstmt = conn.prepareStatement(
+        		"insert into SYS20_COMPANY_PROGRESSIVES(COMPANY_CODE_SYS01,TABLE_NAME,COLUMN_NAME,VALUE,CREATE_USER,CREATE_DATE) values("+
+            "'"+companyCode+"','"+tableName+"','"+columnName+"',"+initialValue+",?,?)"
         );
+				pstmt.setString(1,"UNDEFINED");
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
         progressive = initialValue;
       }
     }
@@ -151,6 +175,11 @@ public class CompanyProgressiveUtils {
       }
       catch (Exception ex) {
       }
+			try {
+				pstmt.close();
+			}
+			catch (Exception ex) {
+			}
     }
     return progressive;
   }

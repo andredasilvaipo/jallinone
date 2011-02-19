@@ -190,7 +190,7 @@ public class SupplierPricelistPanel extends JPanel implements DateChangedListene
       codtemCode.setLookupController(itemController);
       itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
       itemController.setLookupDataLocator(itemDataLocator);
-      treeLevelDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
       itemDataLocator.setTreeDataLocator(treeLevelDataLocator);
       itemController.setFrameTitle("supplier items");
       itemController.setLookupValueObjectClassName("org.jallinone.purchases.items.java.SupplierItemVO");

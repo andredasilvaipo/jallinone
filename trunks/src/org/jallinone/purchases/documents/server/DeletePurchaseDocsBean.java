@@ -46,7 +46,7 @@ import javax.sql.DataSource;
 public class DeletePurchaseDocsBean  implements DeletePurchaseDocs {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -54,9 +54,9 @@ public class DeletePurchaseDocsBean  implements DeletePurchaseDocs {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -66,7 +66,7 @@ public class DeletePurchaseDocsBean  implements DeletePurchaseDocs {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -76,9 +76,9 @@ public class DeletePurchaseDocsBean  implements DeletePurchaseDocs {
   public DeletePurchaseDocsBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public PurchaseDocPK getPurchaseDoc() {
 	  throw new UnsupportedOperationException();
@@ -97,17 +97,19 @@ public class DeletePurchaseDocsBean  implements DeletePurchaseDocs {
       PurchaseDocPK pk = null;
 
       pstmt = conn.prepareStatement(
-          "update DOC06_PURCHASE set ENABLED='N' where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?"
+          "update DOC06_PURCHASE set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?"
       );
 
       for(int i=0;i<list.size();i++) {
         pk = (PurchaseDocPK)list.get(i);
 
         // logically delete the record in DOC06...
-        pstmt.setString(1,pk.getCompanyCodeSys01DOC06());
-        pstmt.setString(2,pk.getDocTypeDOC06());
-        pstmt.setBigDecimal(3,pk.getDocYearDOC06());
-        pstmt.setBigDecimal(4,pk.getDocNumberDOC06());
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+        pstmt.setString(3,pk.getCompanyCodeSys01DOC06());
+        pstmt.setString(4,pk.getDocTypeDOC06());
+        pstmt.setBigDecimal(5,pk.getDocYearDOC06());
+        pstmt.setBigDecimal(6,pk.getDocNumberDOC06());
         pstmt.execute();
       }
 

@@ -45,7 +45,7 @@ import javax.sql.DataSource;
 public class DeleteItemTypeBean  implements DeleteItemType {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -53,9 +53,9 @@ public class DeleteItemTypeBean  implements DeleteItemType {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -65,7 +65,7 @@ public class DeleteItemTypeBean  implements DeleteItemType {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -81,26 +81,21 @@ public class DeleteItemTypeBean  implements DeleteItemType {
    * Business logic to execute.
    */
   public VOResponse deleteItemType(ItemTypeVO vo,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
-    
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
-
-
-
-      stmt = conn.createStatement();
-
       // logically delete the record in ITM02...
-      stmt.execute("update ITM02_ITEM_TYPES set ENABLED='N' where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ITM02()+"' and PROGRESSIVE_HIE02="+vo.getProgressiveHie02ITM02());
+      pstmt = conn.prepareStatement(
+		     "update ITM02_ITEM_TYPES set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ITM02()+"' and PROGRESSIVE_HIE02="+vo.getProgressiveHie02ITM02()
+			);
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
 
-      Response answer = new VOResponse(new Boolean(true));
-
-
-
-
-      if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (VOResponse)answer;
+      return new VOResponse(new Boolean(true));
     }
     catch (Throwable ex) {
     	Logger.error(username,this.getClass().getName(),"executeCommand","Error while deleting existing item type",ex);
@@ -115,7 +110,7 @@ public class DeleteItemTypeBean  implements DeleteItemType {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {

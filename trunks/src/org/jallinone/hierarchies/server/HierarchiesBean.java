@@ -49,7 +49,7 @@ import javax.swing.tree.DefaultTreeModel;
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the Free
- * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 04139, USA.
  *
  *       The author may be contacted at:
  *           maurocarniel@tin.it</p>
@@ -95,7 +95,7 @@ public class HierarchiesBean  implements Hierarchies {
   /**
    * Business logic to execute.
    */
-  public VOResponse getRootLevel(BigDecimal progressiveHIE02,String langId,String username) throws Throwable {
+  public VOResponse getRootLevel(BigDecimal progressiveHIE04,String langId,String username) throws Throwable {
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
@@ -104,23 +104,23 @@ public class HierarchiesBean  implements Hierarchies {
       // retrieve the whole tree...
       DefaultTreeModel model = null;
       pstmt = conn.prepareStatement(
-          "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV,SYS10_TRANSLATIONS.DESCRIPTION "+
-          "from HIE01_LEVELS,SYS10_TRANSLATIONS,HIE02_HIERARCHIES "+
-          "where HIE02_HIERARCHIES.PROGRESSIVE=? and "+
-          "HIE02_HIERARCHIES.PROGRESSIVE_HIE01=HIE01_LEVELS.PROGRESSIVE and "+
-          "HIE01_LEVELS.PROGRESSIVE = SYS10_TRANSLATIONS.PROGRESSIVE and "+
+          "select HIE03_LEVELS.PROGRESSIVE,HIE03_LEVELS.PROGRESSIVE_HIE03,HIE03_LEVELS.LEV,SYS10_TRANSLATIONS.DESCRIPTION "+
+          "from HIE03_LEVELS,SYS10_TRANSLATIONS,HIE04_HIERARCHIES "+
+          "where HIE04_HIERARCHIES.PROGRESSIVE=? and "+
+          "HIE04_HIERARCHIES.PROGRESSIVE_HIE03=HIE03_LEVELS.PROGRESSIVE and "+
+          "HIE03_LEVELS.PROGRESSIVE = SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE='"+langId+"'"
       );
-      pstmt.setBigDecimal(1,progressiveHIE02);
+      pstmt.setBigDecimal(1,progressiveHIE04);
       ResultSet rset = pstmt.executeQuery();
       HierarchyLevelVO vo = null;
       if(rset.next()) {
         vo = new HierarchyLevelVO();
-        vo.setEnabledHIE01("Y");
-        vo.setLevelHIE01(rset.getBigDecimal(3));
-        vo.setProgressiveHIE01(rset.getBigDecimal(1));
-        vo.setProgressiveHie01HIE01(rset.getBigDecimal(2));
-        vo.setProgressiveHie02HIE01(progressiveHIE02);
+        vo.setEnabledHIE03("Y");
+        vo.setLevelHIE03(rset.getBigDecimal(3));
+        vo.setProgressiveHIE03(rset.getBigDecimal(1));
+        vo.setProgressiveHie03HIE03(rset.getBigDecimal(2));
+        vo.setProgressiveHie04HIE03(progressiveHIE04);
         vo.setDescriptionSYS10(rset.getString(4));
       }
       rset.close();
@@ -154,29 +154,29 @@ public class HierarchiesBean  implements Hierarchies {
   /**
    * Business logic to execute.
    */
-  public VOResponse insertLevel(HierarchyLevelVO vo,String serverLanguageId,String username,String defCompanyCodeSys01SYS03)  throws Throwable{
+  public VOResponse insertLevel(HierarchyLevelVO vo,String serverLanguageId,String username)  throws Throwable{
     PreparedStatement pstmt = null;
-
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
-
-      vo.setEnabledHIE01("Y");
+      vo.setEnabledHIE03("Y");
 
       // insert record in SYS10...
-      BigDecimal progressiveHIE01 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),defCompanyCodeSys01SYS03,conn);
-      vo.setProgressiveHIE01(progressiveHIE01);
+      BigDecimal progressiveHIE03 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),username,conn);
+      vo.setProgressiveHIE03(progressiveHIE03);
 
-      // insert record in HIE01...
+      // insert record in HIE03...
       pstmt = conn.prepareStatement(
-          "insert into HIE01_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE01,PROGRESSIVE_HIE02,LEV,ENABLED) values(?,?,?,?,?)"
+          "insert into HIE03_LEVELS(PROGRESSIVE,PROGRESSIVE_HIE03,PROGRESSIVE_HIE04,LEV,ENABLED,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?)"
       );
-      pstmt.setBigDecimal(1,progressiveHIE01);
-      pstmt.setBigDecimal(2,vo.getProgressiveHie01HIE01());
-      pstmt.setBigDecimal(3,vo.getProgressiveHie02HIE01());
-      pstmt.setBigDecimal(4,vo.getLevelHIE01());
-      pstmt.setString(5,vo.getEnabledHIE01());
+      pstmt.setBigDecimal(1,progressiveHIE03);
+      pstmt.setBigDecimal(2,vo.getProgressiveHie03HIE03());
+      pstmt.setBigDecimal(3,vo.getProgressiveHie04HIE03());
+      pstmt.setBigDecimal(4,vo.getLevelHIE03());
+      pstmt.setString(5,vo.getEnabledHIE03());
+			pstmt.setString(6,username);
+			pstmt.setTimestamp(7,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.execute();
 
       return new VOResponse(vo);
@@ -229,8 +229,9 @@ public class HierarchiesBean  implements Hierarchies {
       TranslationUtils.updateTranslation(
           oldVO.getDescriptionSYS10(),
           newVO.getDescriptionSYS10(),
-          newVO.getProgressiveHIE01(),
+          newVO.getProgressiveHIE03(),
           serverLanguageId,
+					username,
           conn
       );
 
@@ -282,12 +283,12 @@ public class HierarchiesBean  implements Hierarchies {
 
       // retrieve nodes to delete...
       pstmt = conn.prepareStatement(
-          "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV from HIE01_LEVELS "+
-          "where ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE>=? "+
-          "order by LEV,PROGRESSIVE_HIE01,PROGRESSIVE"
+          "select HIE03_LEVELS.PROGRESSIVE,HIE03_LEVELS.PROGRESSIVE_HIE03,HIE03_LEVELS.LEV from HIE03_LEVELS "+
+          "where ENABLED='Y' and PROGRESSIVE_HIE04=? and PROGRESSIVE>=? "+
+          "order by LEV,PROGRESSIVE_HIE03,PROGRESSIVE"
       );
-      pstmt.setBigDecimal(1,vo.getProgressiveHie02HIE01());
-      pstmt.setBigDecimal(2,vo.getProgressiveHIE01());
+      pstmt.setBigDecimal(1,vo.getProgressiveHie04HIE03());
+      pstmt.setBigDecimal(2,vo.getProgressiveHIE03());
       ResultSet rset = pstmt.executeQuery();
 
       HashSet currentLevelNodes = new HashSet();
@@ -301,7 +302,7 @@ public class HierarchiesBean  implements Hierarchies {
           currentLevelNodes = newLevelNodes;
           newLevelNodes = new HashSet();
         }
-        if (rset.getBigDecimal(1).equals(vo.getProgressiveHIE01())) {
+        if (rset.getBigDecimal(1).equals(vo.getProgressiveHIE03())) {
           newLevelNodes.add(rset.getBigDecimal(1));
           nodesToDelete.add(rset.getBigDecimal(1));
         }
@@ -313,12 +314,14 @@ public class HierarchiesBean  implements Hierarchies {
       rset.close();
       pstmt.close();
 
-      // logically delete (update...) records in HIE01...
+      // logically delete (update...) records in HIE03...
       String in = "";
       for(int i=0;i<nodesToDelete.size();i++)
         in += nodesToDelete.get(i)+",";
       in = in.substring(0,in.length()-1);
-      pstmt = conn.prepareStatement("update HIE01_LEVELS set ENABLED='N' where PROGRESSIVE in ("+in+")");
+      pstmt = conn.prepareStatement("update HIE03_LEVELS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where PROGRESSIVE in ("+in+")");
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.execute();
 
       return new VOResponse(new Boolean(true));
@@ -359,7 +362,7 @@ public class HierarchiesBean  implements Hierarchies {
 		/**
 		 * Business logic to execute.
 		 */
-		public VOListResponse getLeaves(BigDecimal progressiveHIE02,BigDecimal progressiveHIE01,String langId,String username) throws Throwable {
+		public VOListResponse getLeaves(BigDecimal progressiveHIE04,BigDecimal progressiveHIE03,String langId,String username) throws Throwable {
 			PreparedStatement pstmt = null;
 			Connection conn = null;
 			try {
@@ -367,16 +370,16 @@ public class HierarchiesBean  implements Hierarchies {
 
 				// retrieve the whole tree...
 				pstmt = conn.prepareStatement(
-						"select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV,"+
-						"SYS10_TRANSLATIONS.DESCRIPTION,HIE02_HIERARCHIES.PROGRESSIVE_HIE01 "+
-						"from HIE01_LEVELS,HIE02_HIERARCHIES,SYS10_TRANSLATIONS where "+
-						"HIE01_LEVELS.PROGRESSIVE_HIE02=HIE02_HIERARCHIES.PROGRESSIVE and "+
-						"HIE01_LEVELS.PROGRESSIVE = SYS10_TRANSLATIONS.PROGRESSIVE and "+
-						"SYS10_TRANSLATIONS.LANGUAGE_CODE='"+langId+"' and HIE01_LEVELS.ENABLED='Y' and "+
-						"HIE01_LEVELS.PROGRESSIVE_HIE02=? "+
-						"order by HIE01_LEVELS.LEV,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.PROGRESSIVE"
+						"select HIE03_LEVELS.PROGRESSIVE,HIE03_LEVELS.PROGRESSIVE_HIE03,HIE03_LEVELS.LEV,"+
+						"SYS10_TRANSLATIONS.DESCRIPTION,HIE04_HIERARCHIES.PROGRESSIVE_HIE03 "+
+						"from HIE03_LEVELS,HIE04_HIERARCHIES,SYS10_TRANSLATIONS where "+
+						"HIE03_LEVELS.PROGRESSIVE_HIE04=HIE04_HIERARCHIES.PROGRESSIVE and "+
+						"HIE03_LEVELS.PROGRESSIVE = SYS10_TRANSLATIONS.PROGRESSIVE and "+
+						"SYS10_TRANSLATIONS.LANGUAGE_CODE='"+langId+"' and HIE03_LEVELS.ENABLED='Y' and "+
+						"HIE03_LEVELS.PROGRESSIVE_HIE04=? "+
+						"order by HIE03_LEVELS.LEV,HIE03_LEVELS.PROGRESSIVE_HIE03,HIE03_LEVELS.PROGRESSIVE"
 				);
-				pstmt.setBigDecimal(1,progressiveHIE02);
+				pstmt.setBigDecimal(1,progressiveHIE04);
 				ResultSet rset = pstmt.executeQuery();
 
 				Hashtable currentLevelNodes = new Hashtable();
@@ -397,25 +400,25 @@ public class HierarchiesBean  implements Hierarchies {
 					if (currentLevel==0) {
 						// prepare a tree model with the root node...
 						vo = new HierarchyLevelVO();
-						vo.setEnabledHIE01("Y");
-						vo.setLevelHIE01(rset.getBigDecimal(3));
-						vo.setProgressiveHIE01(rset.getBigDecimal(1));
-						vo.setProgressiveHie01HIE01(rset.getBigDecimal(2));
-						vo.setProgressiveHie02HIE01(progressiveHIE02);
+						vo.setEnabledHIE03("Y");
+						vo.setLevelHIE03(rset.getBigDecimal(3));
+						vo.setProgressiveHIE03(rset.getBigDecimal(1));
+						vo.setProgressiveHie03HIE03(rset.getBigDecimal(2));
+						vo.setProgressiveHie04HIE03(progressiveHIE04);
 						vo.setDescriptionSYS10(rset.getString(4));
-						vo.setProgressiveHie01HIE02(rset.getBigDecimal(5));
+						vo.setProgressiveHie03HIE04(rset.getBigDecimal(5));
 						currentNode = new DefaultMutableTreeNode(vo);
 						rootNode = currentNode;
 					}
 					else {
 						vo = new HierarchyLevelVO();
-						vo.setEnabledHIE01("Y");
-						vo.setLevelHIE01(rset.getBigDecimal(3));
-						vo.setProgressiveHIE01(rset.getBigDecimal(1));
-						vo.setProgressiveHie01HIE01(rset.getBigDecimal(2));
-						vo.setProgressiveHie02HIE01(progressiveHIE02);
+						vo.setEnabledHIE03("Y");
+						vo.setLevelHIE03(rset.getBigDecimal(3));
+						vo.setProgressiveHIE03(rset.getBigDecimal(1));
+						vo.setProgressiveHie03HIE03(rset.getBigDecimal(2));
+						vo.setProgressiveHie04HIE03(progressiveHIE04);
 						vo.setDescriptionSYS10(rset.getString(4));
-						vo.setProgressiveHie01HIE02(rset.getBigDecimal(5));
+						vo.setProgressiveHie03HIE04(rset.getBigDecimal(5));
 						currentNode = new DefaultMutableTreeNode(vo);
 
 						parentNode = (DefaultMutableTreeNode)currentLevelNodes.get(new Integer(rset.getInt(2)));
@@ -427,9 +430,9 @@ public class HierarchiesBean  implements Hierarchies {
 				}
 				rset.close();
 
-				if (progressiveHIE01!=null) {
-					// remove all nodes not descendents of the node identified by progressiveHIE01...
-					rootNode = getNode(rootNode,progressiveHIE01);
+				if (progressiveHIE03!=null) {
+					// remove all nodes not descendents of the node identified by progressiveHIE03...
+					rootNode = getNode(rootNode,progressiveHIE03);
 				}
 
 				ArrayList leaves = new ArrayList();
@@ -476,9 +479,9 @@ public class HierarchiesBean  implements Hierarchies {
 			}
 
 
-			private DefaultMutableTreeNode getNode(DefaultMutableTreeNode node,BigDecimal progressiveHIE01) {
+			private DefaultMutableTreeNode getNode(DefaultMutableTreeNode node,BigDecimal progressiveHIE03) {
 				HierarchyLevelVO vo = (HierarchyLevelVO)node.getUserObject();
-				if (vo!=null && vo.getProgressiveHIE01().equals(progressiveHIE01)) {
+				if (vo!=null && vo.getProgressiveHIE03().equals(progressiveHIE03)) {
 					return node;
 				}
 				else {
@@ -486,7 +489,7 @@ public class HierarchiesBean  implements Hierarchies {
 					for(int i=0;i<node.getChildCount();i++) {
 						aux = getNode(
 							(DefaultMutableTreeNode)node.getChildAt(i),
-							progressiveHIE01
+							progressiveHIE03
 						);
 						if (aux!=null)
 							return aux;

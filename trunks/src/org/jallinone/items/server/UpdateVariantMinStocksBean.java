@@ -115,7 +115,7 @@ public class UpdateVariantMinStocksBean  implements UpdateVariantMinStocks {
           "COMPANY_CODE_SYS01,ITEM_CODE_ITM01,"+
           "VARIANT_TYPE_ITM06,VARIANT_TYPE_ITM07,VARIANT_TYPE_ITM08,VARIANT_TYPE_ITM09,VARIANT_TYPE_ITM10,"+
           "VARIANT_CODE_ITM11,VARIANT_CODE_ITM12,VARIANT_CODE_ITM13,VARIANT_CODE_ITM14,VARIANT_CODE_ITM15,"+
-          "MIN_STOCK) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+          "MIN_STOCK,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       pstmt = conn.prepareStatement(sql);
 
       VariantsMatrixRowVO rowVO = null;
@@ -161,6 +161,9 @@ public class UpdateVariantMinStocksBean  implements UpdateVariantMinStocks {
 
           pstmt.setBigDecimal(13,(BigDecimal)row[0]);
 
+					pstmt.setString(14,username);
+					pstmt.setTimestamp(15,new java.sql.Timestamp(System.currentTimeMillis()));
+
           pstmt.execute();
 
         }
@@ -194,6 +197,9 @@ public class UpdateVariantMinStocksBean  implements UpdateVariantMinStocks {
             pstmt.setString(12,vo.getVariantCodeItm15ITM23());
 
             pstmt.setBigDecimal(13,(BigDecimal)row[j]);
+
+						pstmt.setString(14,username);
+						pstmt.setTimestamp(15,new java.sql.Timestamp(System.currentTimeMillis()));
 
             pstmt.execute();
 

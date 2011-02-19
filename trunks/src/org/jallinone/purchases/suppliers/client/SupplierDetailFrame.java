@@ -97,6 +97,7 @@ public class SupplierDetailFrame extends InternalFrame {
 
   LookupController payController = new LookupController();
   LookupServerDataLocator payDataLocator = new LookupServerDataLocator();
+  private java.util.List list = null;
 
   JPanel refPanel = new JPanel();
   BorderLayout borderLayout1 = new BorderLayout();
@@ -419,7 +420,7 @@ public class SupplierDetailFrame extends InternalFrame {
     Domain d = new Domain("ITEM_TYPES");
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      java.util.List list = ((VOListResponse)res).getRows();
+      list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (ItemTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
@@ -429,6 +430,8 @@ public class SupplierDetailFrame extends InternalFrame {
     controlHierarchy.getComboBox().addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent e) {
         if (e.getStateChange()==e.SELECTED) {
+					ItemTypeVO typeVO = (ItemTypeVO)list.get(controlHierarchy.getSelectedIndex());
+					treePanel.setCompanyCode(typeVO.getCompanyCodeSys01ITM02());
           treePanel.setProgressiveHIE02((BigDecimal)controlHierarchy.getValue());
           DetailSupplierVO vo = (DetailSupplierVO)supplierPanel.getVOModel().getValueObject();
           treePanel.setCompanyCode(vo.getCompanyCodeSys01REG04());

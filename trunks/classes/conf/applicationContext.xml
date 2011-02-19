@@ -77,6 +77,9 @@
      <property name="insJornalItemAction" ref="InsertJournalItemBean" />
      <property name="userParamAction" ref="ParamsBean" />
    </bean>
+   <bean id="CompanyHierarchiesBean" scope="prototype" class="org.jallinone.hierarchies.server.CompanyHierarchiesBean">
+     <property name="dataSource" ref="JALLINONE" />
+   </bean>
    <bean id="HierarchiesBean" scope="prototype" class="org.jallinone.hierarchies.server.HierarchiesBean">
      <property name="dataSource" ref="JALLINONE" />
    </bean>
@@ -793,7 +796,7 @@
    </bean>
    <bean id="ImportDataBean" scope="prototype" class="org.jallinone.system.importdata.server.ImportDataBean">
      <property name="dataSource" ref="JALLINONE" />
-     <property name="bean" ref="HierarchiesBean" />
+     <property name="bean" ref="CompanyHierarchiesBean" />
    </bean>
    <bean id="AddMovementBean" scope="prototype" class="org.jallinone.warehouse.movements.server.AddMovementBean">
      <property name="dataSource" ref="JALLINONE" />
@@ -818,7 +821,7 @@
    </bean>
    <bean id="InventoriesBean" scope="prototype" class="org.jallinone.warehouse.server.InventoriesBean">
      <property name="dataSource" ref="JALLINONE" />
-     <property name="bean" ref="HierarchiesBean" />
+     <property name="bean" ref="CompanyHierarchiesBean" />
    </bean>
    <bean id="ItemSheetsBean" scope="prototype" class="org.jallinone.items.spareparts.server.ItemSheetsBean">
      <property name="dataSource" ref="JALLINONE" />

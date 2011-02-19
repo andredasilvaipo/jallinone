@@ -15,7 +15,7 @@ import org.jallinone.system.server.*;
 import java.math.*;
 import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.*;
 
 
 /**
@@ -52,7 +52,7 @@ public interface CallOuts {
 	/**
 	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
 	 */
-	public HierarchyLevelVO getHierarchyLevel();
+	public CompanyHierarchyLevelVO getHierarchyLevel();
 
 	public VOListResponse validateCallOutCode(LookupValidationParams pars,String serverLanguageId,String username) throws Throwable;
 

@@ -86,7 +86,7 @@ public class LoadSupplierPriceItemsBean  implements LoadSupplierPriceItems {
   /**
    * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
-  public SupplierPriceItemVO getSupplierPriceItem(HierarchyLevelVO pk) {
+  public SupplierPriceItemVO getSupplierPriceItem(CompanyHierarchyLevelVO pk) {
 	  throw new UnsupportedOperationException();
   }
 
@@ -107,7 +107,7 @@ public class LoadSupplierPriceItemsBean  implements LoadSupplierPriceItems {
       String companyCodeSYS01 = (String)pars.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01);
       String pricelistCodePUR03 = (String)pars.getOtherGridParams().get(ApplicationConsts.PRICELIST);
 
-      HierarchyLevelVO vo = (HierarchyLevelVO)pars.getOtherGridParams().get(ApplicationConsts.TREE_FILTER);
+      CompanyHierarchyLevelVO vo = (CompanyHierarchyLevelVO)pars.getOtherGridParams().get(ApplicationConsts.TREE_FILTER);
       if (vo!=null) {
         progressiveHIE01 = vo.getProgressiveHIE01();
         progressiveHIE02 = vo.getProgressiveHie02HIE01();
@@ -116,18 +116,19 @@ public class LoadSupplierPriceItemsBean  implements LoadSupplierPriceItems {
       String sql =
           "select PUR02_SUPPLIER_ITEMS.COMPANY_CODE_SYS01,PUR02_SUPPLIER_ITEMS.ITEM_CODE_ITM01,PUR02_SUPPLIER_ITEMS.SUPPLIER_ITEM_CODE,PUR02_SUPPLIER_ITEMS.PROGRESSIVE_REG04,"+
           "PUR02_SUPPLIER_ITEMS.PROGRESSIVE_HIE02,PUR02_SUPPLIER_ITEMS.PROGRESSIVE_HIE01,PUR02_SUPPLIER_ITEMS.MIN_PURCHASE_QTY,PUR02_SUPPLIER_ITEMS.MULTIPLE_QTY,"+
-          "PUR02_SUPPLIER_ITEMS.UM_CODE_REG02,PUR02_SUPPLIER_ITEMS.ENABLED,SYS10_TRANSLATIONS.DESCRIPTION,REG02_MEASURE_UNITS.DECIMALS,"+
+          "PUR02_SUPPLIER_ITEMS.UM_CODE_REG02,PUR02_SUPPLIER_ITEMS.ENABLED,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,REG02_MEASURE_UNITS.DECIMALS,"+
           "ITM01_ITEMS.VAT_CODE_REG01,SYS10_VAT.DESCRIPTION,REG01_VATS.DEDUCTIBLE,REG01_VATS.VALUE,"+
           "PUR04_SUPPLIER_PRICES.VALUE,PUR04_SUPPLIER_PRICES.START_DATE,PUR04_SUPPLIER_PRICES.END_DATE,"+
           "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5, "+
 					"ITM01_ITEMS.NO_WAREHOUSE_MOV "+
-          " from PUR02_SUPPLIER_ITEMS,SYS10_TRANSLATIONS,ITM01_ITEMS,REG02_MEASURE_UNITS,SYS10_TRANSLATIONS SYS10_VAT,REG01_VATS,PUR04_SUPPLIER_PRICES where "+
+          " from PUR02_SUPPLIER_ITEMS,SYS10_COMPANY_TRANSLATIONS,ITM01_ITEMS,REG02_MEASURE_UNITS,SYS10_TRANSLATIONS SYS10_VAT,REG01_VATS,PUR04_SUPPLIER_PRICES where "+
           "PUR02_SUPPLIER_ITEMS.PROGRESSIVE_HIE02=? and "+
           "PUR02_SUPPLIER_ITEMS.UM_CODE_REG02=REG02_MEASURE_UNITS.UM_CODE and "+
           "PUR02_SUPPLIER_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
           "PUR02_SUPPLIER_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
-          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"ITM01_ITEMS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "PUR02_SUPPLIER_ITEMS.COMPANY_CODE_SYS01 = ? and "+
           "PUR02_SUPPLIER_ITEMS.PROGRESSIVE_REG04=? and "+
           "PUR02_SUPPLIER_ITEMS.ENABLED='Y' and "+
@@ -144,8 +145,8 @@ public class LoadSupplierPriceItemsBean  implements LoadSupplierPriceItems {
       if (rootProgressiveHIE01==null || !rootProgressiveHIE01.equals(progressiveHIE01)) {
         // retrieve all subnodes of the specified node...
         pstmt = conn.prepareStatement(
-            "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV from HIE01_LEVELS "+
-            "where ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE>=? "+
+            "select HIE01_COMPANY_LEVELS.PROGRESSIVE,HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE01,HIE01_COMPANY_LEVELS.LEV from HIE01_COMPANY_LEVELS "+
+            "where COMPANY_CODE_SYS01='"+companyCodeSYS01+"' and ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE>=? "+
             "order by LEV,PROGRESSIVE_HIE01,PROGRESSIVE"
         );
         pstmt.setBigDecimal(1,progressiveHIE02);
@@ -191,7 +192,7 @@ public class LoadSupplierPriceItemsBean  implements LoadSupplierPriceItems {
       attribute2dbField.put("multipleQtyPUR02","PUR02_SUPPLIER_ITEMS.MULTIPLE_QTY");
       attribute2dbField.put("umCodeReg02PUR02","PUR02_SUPPLIER_ITEMS.UM_CODE_REG02");
       attribute2dbField.put("enabledPUR02","PUR02_SUPPLIER_ITEMS.ENABLED");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("decimalsREG02","REG02_MEASURE_UNITS.DECIMALS");
 
       attribute2dbField.put("vatCodeReg01ITM01","ITM01_ITEMS.VAT_CODE_REG01");

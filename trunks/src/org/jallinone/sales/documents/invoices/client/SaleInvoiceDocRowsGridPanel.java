@@ -221,7 +221,7 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
       itemController.setFrameTitle("items");
 
       itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
-      treeLevelDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
       itemDataLocator.setTreeDataLocator(treeLevelDataLocator);
       itemDataLocator.setNodeNameAttribute("descriptionSYS10");
 
@@ -338,6 +338,7 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
 			public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {
 				try {
 					controlItemCode.validateCode(null);
+					itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.PRICELIST,controlPricelistCode.getValue());
 				}
 				catch (Exception ex) {
 				}
@@ -385,6 +386,7 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
 
           int selIndex = ((JComboBox)e.getSource()).getSelectedIndex();
           Object selValue = d.getDomainPairList()[selIndex].getCode();
+					treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC02());
           treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,selValue);
         }
       }
@@ -766,8 +768,8 @@ public class SaleInvoiceDocRowsGridPanel extends JPanel implements CurrencyColum
 		controlPricelistDescr.setAttributeName("pricelistDescriptionDOC02");
 
 
-    discountsPanel.setMinimumSize(new Dimension(500, 180));
-    discountsPanel.setPreferredSize(new Dimension(700, 180));
+    discountsPanel.setMinimumSize(new Dimension(500, 130));
+    discountsPanel.setPreferredSize(new Dimension(700, 130));
 
     splitPane.setDividerLocation(160);
 

@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.jallinone.commons.server.JAIOBeanFactory;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.*;
 import org.jallinone.system.server.JAIOUserSessionParameters;
 import org.openswing.swing.logger.server.Logger;
 import org.openswing.swing.message.receive.java.ErrorResponse;
@@ -52,7 +52,7 @@ public class InsertLevelAction implements Action {
 	 * @return request name
 	 */
 	public final String getRequestName() {
-		return "insertLevel";
+		return "companyInsertLevel";
 	}
 
 
@@ -60,8 +60,7 @@ public class InsertLevelAction implements Action {
 		HierarchyLevelVO vo = (HierarchyLevelVO)inputPar;
 		try {
 			Hierarchies bean = (Hierarchies)JAIOBeanFactory.getInstance().getBean(Hierarchies.class);
-			String defCompanyCodeSys01SYS03 = ((JAIOUserSessionParameters)userSessionPars).getDefCompanyCodeSys01SYS03();
-			Response answer = bean.insertLevel(vo,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),defCompanyCodeSys01SYS03);
+			Response answer = bean.insertLevel(vo,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
 			return answer;
 		}

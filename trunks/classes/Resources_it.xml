@@ -736,7 +736,7 @@
   <object key="orderQtyDOC07" value="Qt&#224; ord." />
 
   <object key="manual movement" value="Movimento manuale" />
-  <object key="manual movement correctly inserted" value="Movmento manuale correttamente inserito." />
+  <object key="manual movement correctly inserted" value="Movimento manuale correttamente inserito." />
 
   <object key="companyCodeSys01DOC01" value="Cod.Organizz." />
   <object key="docTypeDOC01" value="Tipo Doc." />
@@ -1615,7 +1615,7 @@
   <object key="import items" value="Importazione articoli" />
   <object key="import items that match the filtering conditions" value="Importazione articoli che soddisfano le condizioni di filtro" />
   <object key="confirm inventory" value="Conferma articoli" />
-  <object key="close inventory" value="Chiusa inventario" />
+  <object key="close inventory" value="Chiusura inventario" />
   <object key="stateWAR07" value="Stato" />
   <object key="itemCodeItm01WAR07" value="Cod.Art." />
   <object key="progressiveHie02WAR07" value="Tipo Art." />
@@ -1693,6 +1693,7 @@
   <object key="payments specified for expirations are not equal to the total payment value" value="L'ammontare dei pagamenti per le scadenze specificate non coincide con il valore del pagamento" />
   <object key="you need to specify a pricelist for the default customer" value="E' necessario specificare un cliente avente un listino associato" />
   <object key="reports repository path" value="Path repository reports" />
+  <object key="print invoices" value="Stampa massiva fatture" />
 
 <!-- application translations -->
 

@@ -73,8 +73,8 @@ public class LoadFunctionsAction implements Action {
       return new ErrorResponse(ex.getMessage());
     }
   }
-  
-  
+
+
 
 
   /**
@@ -93,13 +93,13 @@ public class LoadFunctionsAction implements Action {
       HashSet functionsAdded = new HashSet();
       pstmt = conn.prepareStatement(
           "select SYS06_FUNCTIONS.FUNCTION_CODE,SYS06_FUNCTIONS.IMAGE_NAME,SYS06_FUNCTIONS.METHOD_NAME,"+
-          "SYS18_FUNCTION_LINKS.PROGRESSIVE_HIE01,SYS10_TRANSLATIONS.DESCRIPTION,SYS18_FUNCTION_LINKS.POS_ORDER,SYS06_FUNCTIONS.PROGRESSIVE_SYS10 "+
-          "from SYS06_FUNCTIONS,SYS10_TRANSLATIONS,SYS18_FUNCTION_LINKS "+
+          "SYS18_FUNCTIONS_LINKS.PROGRESSIVE_HIE03,SYS10_TRANSLATIONS.DESCRIPTION,SYS18_FUNCTIONS_LINKS.POS_ORDER,SYS06_FUNCTIONS.PROGRESSIVE_SYS10 "+
+          "from SYS06_FUNCTIONS,SYS10_TRANSLATIONS,SYS18_FUNCTIONS_LINKS "+
           "where "+
-          "SYS18_FUNCTION_LINKS.FUNCTION_CODE_SYS06=SYS06_FUNCTIONS.FUNCTION_CODE and "+
+          "SYS18_FUNCTIONS_LINKS.FUNCTION_CODE_SYS06=SYS06_FUNCTIONS.FUNCTION_CODE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE='"+langId+"' and "+
           "SYS10_TRANSLATIONS.PROGRESSIVE=SYS06_FUNCTIONS.PROGRESSIVE_SYS10 order by "+
-          "SYS18_FUNCTION_LINKS.PROGRESSIVE_HIE01,SYS18_FUNCTION_LINKS.POS_ORDER"
+          "SYS18_FUNCTIONS_LINKS.PROGRESSIVE_HIE03,SYS18_FUNCTIONS_LINKS.POS_ORDER"
       );
       ResultSet rset = pstmt.executeQuery();
       while(rset.next()) {
@@ -131,11 +131,11 @@ public class LoadFunctionsAction implements Action {
       // retrieve the whole tree...
       DefaultTreeModel model = null;
       pstmt = conn.prepareStatement(
-          "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV,SYS10_TRANSLATIONS.DESCRIPTION "+
-          "from HIE01_LEVELS,SYS10_TRANSLATIONS "+
-          "where HIE01_LEVELS.PROGRESSIVE = SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE='"+langId+"' and ENABLED='Y' and PROGRESSIVE_HIE02=2 "+
-          "order by LEV,PROGRESSIVE_HIE01,PROGRESSIVE"
+          "select HIE03_LEVELS.PROGRESSIVE,HIE03_LEVELS.PROGRESSIVE_HIE03,HIE03_LEVELS.LEV,SYS10_TRANSLATIONS.DESCRIPTION "+
+          "from HIE03_LEVELS,SYS10_TRANSLATIONS "+
+          "where HIE03_LEVELS.PROGRESSIVE = SYS10_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_TRANSLATIONS.LANGUAGE_CODE='"+langId+"' and ENABLED='Y' and PROGRESSIVE_HIE04=2 "+
+          "order by LEV,PROGRESSIVE_HIE03,PROGRESSIVE"
       );
       rset = pstmt.executeQuery();
       Hashtable currentLevelNodes = new Hashtable();
@@ -191,7 +191,7 @@ public class LoadFunctionsAction implements Action {
       try {
     	  ConnectionManager.releaseConnection(conn, null);
       } catch (Exception e) {
-      }      
+      }
     }
   }
 

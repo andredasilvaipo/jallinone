@@ -14,7 +14,7 @@ import org.jallinone.commons.client.*;
 import java.math.BigDecimal;
 import org.jallinone.hierarchies.client.HierarTreePanel;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.warehouse.availability.client.*;
 import java.util.HashSet;
@@ -93,7 +93,8 @@ public class WarehouseDetailFrame extends InternalFrame {
      */
     public void leftClick(DefaultMutableTreeNode node) {
       if (hierarTreePanel.getSelectedNode()!=null) {
-        HierarchyLevelVO levelVO = (HierarchyLevelVO)hierarTreePanel.getSelectedNode().getUserObject();
+        CompanyHierarchyLevelVO levelVO = (CompanyHierarchyLevelVO)hierarTreePanel.getSelectedNode().getUserObject();
+				getAvailPanel().getGrid().getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,levelVO.getCompanySys01HIE01());
         getAvailPanel().getGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE01,levelVO.getProgressiveHIE01());
       }
     }

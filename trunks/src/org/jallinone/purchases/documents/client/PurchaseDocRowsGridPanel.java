@@ -201,7 +201,7 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
       itemController.setFrameTitle("supplier items");
 
       itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
-      treeLevelDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
       itemDataLocator.setTreeDataLocator(treeLevelDataLocator);
       itemDataLocator.setNodeNameAttribute("descriptionSYS10");
 
@@ -262,7 +262,8 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
           updateTotals();
         }
 
-        public void beforeLookupAction(ValueObject parentVO) {}
+        public void beforeLookupAction(ValueObject parentVO) {
+				}
 
         public void forceValidate() {}
 
@@ -315,7 +316,8 @@ public class PurchaseDocRowsGridPanel extends JPanel implements CurrencyColumnSe
 
           int selIndex = ((JComboBox)e.getSource()).getSelectedIndex();
           Object selValue = d.getDomainPairList()[selIndex].getCode();
-          treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,selValue);
+          treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC07());
+					treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,selValue);
 
           detailPanel.pull(controlItemCode.getAttributeName());
           try {

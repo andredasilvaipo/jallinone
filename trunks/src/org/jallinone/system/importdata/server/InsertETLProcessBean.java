@@ -54,7 +54,7 @@ import javax.sql.DataSource;
 public class InsertETLProcessBean  implements InsertETLProcess {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -62,9 +62,9 @@ public class InsertETLProcessBean  implements InsertETLProcess {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -74,7 +74,7 @@ public class InsertETLProcessBean  implements InsertETLProcess {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -97,7 +97,7 @@ public class InsertETLProcessBean  implements InsertETLProcess {
    * Business logic to execute.
    */
   public VOResponse insertETLProcess(ETLProcessVO processVO,java.util.List fieldsVO,String serverLanguageId,String username,String defCompanyCodeSys01SYS03) throws Throwable {
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -108,7 +108,7 @@ public class InsertETLProcessBean  implements InsertETLProcess {
       vos.add(processVO);
       VOResponse answer = bean.deleteETLProcesses(vos,serverLanguageId,username);
       if (answer.isError()) {
-        throw new Exception(answer.getErrorMessage()); 
+        throw new Exception(answer.getErrorMessage());
       }
 
       BigDecimal progressive = CompanyProgressiveUtils.getInternalProgressive(
@@ -135,7 +135,7 @@ public class InsertETLProcessBean  implements InsertETLProcess {
       attribute2dbField.put("descriptionSYS23","DESCRIPTION");
 
       // insert into SYS23...
-      Response res = QueryUtil.insertTable(
+      Response res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
           conn,
           new UserSessionParameters(username),
           processVO,
@@ -180,7 +180,7 @@ public class InsertETLProcessBean  implements InsertETLProcess {
           field.getField().setProgressiveSys23SYS24(processVO.getProgressiveSYS23());
 
           // insert into SYS24...
-          res = QueryUtil.insertTable(
+          res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
               conn,
               new UserSessionParameters(username),
               field.getField(),
@@ -225,7 +225,7 @@ public class InsertETLProcessBean  implements InsertETLProcess {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }

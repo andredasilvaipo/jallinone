@@ -37,7 +37,7 @@ import org.jallinone.items.java.ItemTypeVO;
 import org.openswing.swing.message.send.java.GridParams;
 import javax.swing.border.*;
 import org.jallinone.warehouse.java.InventoryItemVO;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 
 
 /**
@@ -212,9 +212,9 @@ public class InventoryItemsFrame extends InternalFrame {
 
 
 		// items level lookup...
-		filterLevelDataLocator.setGridMethodName("loadHierarchy");
+		filterLevelDataLocator.setGridMethodName("loadCompanyHierarchy");
 		filterLevelDataLocator.setValidationMethodName("");
-		filterTreeLevelDataLocator.setServerMethodName("loadHierarchy");
+		filterTreeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
 		filterTreeLevelDataLocator.setNodeNameAttribute("descriptionSYS10");
 		filterLevelDataLocator.setTreeDataLocator(filterTreeLevelDataLocator);
 		filterLevelDataLocator.setNodeNameAttribute("descriptionSYS10");
@@ -225,7 +225,7 @@ public class InventoryItemsFrame extends InternalFrame {
 		levelController.setForm(filterPanel);
 		levelController.setLookupDataLocator(filterLevelDataLocator);
 		levelController.setFrameTitle("level");
-		levelController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.HierarchyLevelVO");
+		levelController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.CompanyHierarchyLevelVO");
 		levelController.setAllColumnVisible(false);
 		levelController.setVisibleColumn("descriptionSYS10", true);
 		levelController.setPreferredWidthColumn("descriptionSYS10",200);
@@ -235,12 +235,15 @@ public class InventoryItemsFrame extends InternalFrame {
 			public void codeValidated(boolean validated) {}
 
 			public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {
-				HierarchyLevelVO vo = (HierarchyLevelVO)controlItemLevel.getLookupController().getLookupVO();
+				CompanyHierarchyLevelVO vo = (CompanyHierarchyLevelVO)controlItemLevel.getLookupController().getLookupVO();
 				controlDescr.setText(vo==null?null:vo.getDescriptionSYS10());
 				progressiveHIE01 = vo==null?null:vo.getProgressiveHIE01();
 			}
 
 			public void beforeLookupAction(ValueObject parentVO) {
+				ItemTypeVO vo = (ItemTypeVO)itemTypesList.get(controlLOB.getSelectedIndex());
+
+				filterTreeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01ITM02());
 				filterTreeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,controlLOB.getValue());
 			}
 
@@ -262,7 +265,7 @@ public class InventoryItemsFrame extends InternalFrame {
 		itemController.setShowErrorMessage(false);
 
 		itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
-		treeLevelDataLocator.setServerMethodName("loadHierarchy");
+		treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
 		itemDataLocator.setTreeDataLocator(treeLevelDataLocator);
 		itemDataLocator.setNodeNameAttribute("descriptionSYS10");
 
@@ -307,15 +310,16 @@ public class InventoryItemsFrame extends InternalFrame {
 
 		// domain for locations...
 		HashMap map = new HashMap();
+		map.put(ApplicationConsts.COMPANY_CODE_SYS01,inventoryVO.getCompanyCodeSys01WAR06());
 		map.put(ApplicationConsts.PROGRESSIVE_HIE02,inventoryVO.getProgressiveHie02WAR01());
-		res = ClientUtils.getData("loadLeaves",map);
+		res = ClientUtils.getData("loadCompanyLeaves",map);
 		d = new Domain("WAR_LOCATIONS");
 		if (!res.isError()) {
 			java.util.List rows = null;
-			HierarchyLevelVO vo = null;
+			CompanyHierarchyLevelVO vo = null;
 			rows = ((VOListResponse)res).getRows();
 			for(int i=0;i<rows.size();i++) {
-				vo = (HierarchyLevelVO)rows.get(i);
+				vo = (CompanyHierarchyLevelVO)rows.get(i);
 				d.addDomainPair(vo.getProgressiveHIE01(),vo.getDescriptionSYS10());
 			}
 		}

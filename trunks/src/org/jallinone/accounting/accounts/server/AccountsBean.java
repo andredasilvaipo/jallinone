@@ -14,7 +14,7 @@ import org.jallinone.accounting.accounts.java.AccountVO;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.commons.server.CustomizeQueryUtil;
 import org.jallinone.system.server.JAIOUserSessionParameters;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.openswing.swing.logger.server.Logger;
 import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.message.receive.java.VOListResponse;
@@ -22,6 +22,7 @@ import org.openswing.swing.message.receive.java.VOResponse;
 import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.message.send.java.LookupValidationParams;
 import org.openswing.swing.server.UserSessionParameters;
+import java.sql.PreparedStatement;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -54,7 +55,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class AccountsBean  implements Accounts {
 
 
-	private DataSource dataSource; 
+	private DataSource dataSource;
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -64,7 +65,7 @@ public class AccountsBean  implements Accounts {
   private Connection conn = null;
 
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
 	  this.conn = conn;
@@ -85,7 +86,7 @@ public class AccountsBean  implements Accounts {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public AccountVO getAccount() {
 	  throw new UnsupportedOperationException();
@@ -112,11 +113,12 @@ public class AccountsBean  implements Accounts {
 			}
 
 			String sql =
-				"select ACC02_ACCOUNTS.ACCOUNT_CODE,ACC02_ACCOUNTS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,ACC02_ACCOUNTS.ENABLED,"+
+				"select ACC02_ACCOUNTS.ACCOUNT_CODE,ACC02_ACCOUNTS.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ACC02_ACCOUNTS.ENABLED,"+
 				"ACC02_ACCOUNTS.COMPANY_CODE_SYS01,ACC02_ACCOUNTS.ACCOUNT_TYPE,ACC02_ACCOUNTS.LEDGER_CODE_ACC01,SYS10_B.DESCRIPTION,ACC02_ACCOUNTS.CAN_DEL "+
-				" from ACC02_ACCOUNTS,SYS10_TRANSLATIONS,SYS10_TRANSLATIONS SYS10_B,ACC01_LEDGER where "+
-				"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-				"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+				" from ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS,SYS10_COMPANY_TRANSLATIONS SYS10_B,ACC01_LEDGER where "+
+				"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+				"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+				"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
 				"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=ACC01_LEDGER.COMPANY_CODE_SYS01 and "+
 				"ACC02_ACCOUNTS.LEDGER_CODE_ACC01=ACC01_LEDGER.LEDGER_CODE and "+
 				"ACC01_LEDGER.PROGRESSIVE_SYS10=SYS10_B.PROGRESSIVE and "+
@@ -133,7 +135,7 @@ public class AccountsBean  implements Accounts {
 
 			Map attribute2dbField = new HashMap();
 			attribute2dbField.put("accountCodeACC02","ACC02_ACCOUNTS.ACCOUNT_CODE");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("progressiveSys10ACC02","ACC02_ACCOUNTS.PROGRESSIVE_SYS10");
 			attribute2dbField.put("enabledACC02","ACC02_ACCOUNTS.ENABLED");
 			attribute2dbField.put("companyCodeSys01ACC02","ACC02_ACCOUNTS.COMPANY_CODE_SYS01");
@@ -211,11 +213,12 @@ public class AccountsBean  implements Accounts {
 			}
 
 			String sql =
-				"select ACC02_ACCOUNTS.ACCOUNT_CODE,ACC02_ACCOUNTS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,ACC02_ACCOUNTS.ENABLED,"+
+				"select ACC02_ACCOUNTS.ACCOUNT_CODE,ACC02_ACCOUNTS.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ACC02_ACCOUNTS.ENABLED,"+
 				"ACC02_ACCOUNTS.COMPANY_CODE_SYS01,ACC02_ACCOUNTS.ACCOUNT_TYPE,ACC02_ACCOUNTS.LEDGER_CODE_ACC01,SYS10_B.DESCRIPTION,ACC02_ACCOUNTS.CAN_DEL "+
-				" from ACC02_ACCOUNTS,SYS10_TRANSLATIONS,SYS10_TRANSLATIONS SYS10_B,ACC01_LEDGER where "+
-				"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-				"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+				" from ACC02_ACCOUNTS,SYS10_COMPANY_TRANSLATIONS,SYS10_COMPANY_TRANSLATIONS SYS10_B,ACC01_LEDGER where "+
+				"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+				"ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+				"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
 				"ACC02_ACCOUNTS.COMPANY_CODE_SYS01=ACC01_LEDGER.COMPANY_CODE_SYS01 and "+
 				"ACC02_ACCOUNTS.LEDGER_CODE_ACC01=ACC01_LEDGER.LEDGER_CODE and "+
 				"ACC01_LEDGER.PROGRESSIVE_SYS10=SYS10_B.PROGRESSIVE and "+
@@ -228,7 +231,7 @@ public class AccountsBean  implements Accounts {
 
 			Map attribute2dbField = new HashMap();
 			attribute2dbField.put("accountCodeACC02","ACC02_ACCOUNTS.ACCOUNT_CODE");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("progressiveSys10ACC02","ACC02_ACCOUNTS.PROGRESSIVE_SYS10");
 			attribute2dbField.put("enabledACC02","ACC02_ACCOUNTS.ENABLED");
 			attribute2dbField.put("companyCodeSys01ACC02","ACC02_ACCOUNTS.COMPANY_CODE_SYS01");
@@ -313,7 +316,7 @@ public class AccountsBean  implements Accounts {
 					vo.setCanDelACC02(new Boolean(true));
 
 				// insert record in SYS10...
-				progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ACC02(),conn);
+				progressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01ACC02(),username,conn);
 				vo.setProgressiveSys10ACC02(progressiveSYS10);
 
 				// insert into ACC02...
@@ -384,7 +387,7 @@ public class AccountsBean  implements Accounts {
 				newVO = (AccountVO)newVOs.get(i);
 
 				// update SYS10 table...
-				TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10ACC02(),serverLanguageId,conn);
+				CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01ACC02(),oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10ACC02(),serverLanguageId,username,conn);
 
 				HashSet pkAttrs = new HashSet();
 				pkAttrs.add("companyCodeSys01ACC02");
@@ -453,48 +456,53 @@ public class AccountsBean  implements Accounts {
 	 * Business logic to execute.
 	 */
 	public VOResponse deleteAccounts(ArrayList list,String serverLanguageId,String username) throws Throwable {
-		Statement stmt = null;
-
+		PreparedStatement pstmt = null;
 		Connection conn = null;
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
-			stmt = conn.createStatement();
 
 			AccountVO vo = null;
 			for(int i=0;i<list.size();i++) {
+
 				// logically delete the record in ACC02...
 				vo = (AccountVO)list.get(i);
-				stmt.execute("update ACC02_ACCOUNTS set ENABLED='N' where "+
-						"COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ACC02()+"' and ACCOUNT_CODE='"+vo.getAccountCodeACC02()+"'");
+				pstmt = conn.prepareStatement(
+				  "update ACC02_ACCOUNTS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
+					"COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01ACC02()+"' and ACCOUNT_CODE='"+vo.getAccountCodeACC02()+"'"
+				);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
 			}
 
 			return new VOResponse(new Boolean(true));
 		}
 		catch (Throwable ex) {
 			Logger.error(username,this.getClass().getName(),"executeCommand","Error while deleting existing accounts",ex);
-		      try {
-		    	  if (this.conn==null && conn!=null)
-		    		  // rollback only local connection
-		    		  conn.rollback();
-		      }
-		      catch (Exception ex3) {
-		      }
-		      throw new Exception(ex.getMessage());
+			try {
+				if (this.conn==null && conn!=null)
+					// rollback only local connection
+					conn.rollback();
+			}
+			catch (Exception ex3) {
+			}
+			throw new Exception(ex.getMessage());
 		}
 		finally {
-          try {
-              stmt.close();
+        try {
+              pstmt.close();
         }
-          catch (Exception exx) {}
-          try {
-              if (this.conn==null && conn!=null) {
-                // close only local connection
-                conn.commit();
-                conn.close();
-            }
-
+        catch (Exception exx) {}
+        try {
+            if (this.conn==null && conn!=null) {
+              // close only local connection
+              conn.commit();
+              conn.close();
           }
-          catch (Exception exx) {}
+
+        }
+        catch (Exception exx) {}
     }
 
 

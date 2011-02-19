@@ -103,8 +103,8 @@ public class SaleInvoiceDocFrame extends InternalFrame implements InvoiceDocumen
     this.controller = controller;
     try {
       jbInit();
-      setSize(750,650);
-      setMinimumSize(new Dimension(750,650));
+      setSize(750,680);
+      setMinimumSize(new Dimension(750,680));
       setTitle(ClientSettings.getInstance().getResources().getResource("sale invoice"));
 
 //      CustomizedControls customizedControls = new CustomizedControls(tabbedPane,headerFormPanel,ApplicationConsts.ID_SALE_ESTIMATE);

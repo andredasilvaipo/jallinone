@@ -173,12 +173,12 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 
 			pstmt3 = conn.prepareStatement(
 			  "INSERT INTO DOC27_PAYMENTS(COMPANY_CODE_SYS01,PROGRESSIVE,PAYMENT_DATE,PAYMENT_VALUE,CUSTOMER_SUPPLIER_CODE,"+
-			  "ACCOUNT_CODE_ACC02,PAYMENT_TYPE_CODE_REG11,CURRENCY_CODE_REG03,PROGRESSIVE_REG04) "+
-			  "VALUES (?,?,?,?,?,?,?,?,?)"
+			  "ACCOUNT_CODE_ACC02,PAYMENT_TYPE_CODE_REG11,CURRENCY_CODE_REG03,PROGRESSIVE_REG04,CREATE_USER,CREATE_DATE) "+
+			  "VALUES (?,?,?,?,?,?,?,?,?,?,?)"
 			);
  		  pstmt2 = conn.prepareStatement(
 				"INSERT INTO DOC28_PAYMENT_DISTRIBUTION(COMPANY_CODE_SYS01,PROGRESSIVE_DOC27,PROGRESSIVE_DOC19,"+
-				"PAYMENT_VALUE,PAYED) VALUES (?,?,?,?,?)"
+				"PAYMENT_VALUE,PAYED,CREATE_USER,CREATE_DATE) VALUES (?,?,?,?,?,?,?)"
 		  );
 
       JournalHeaderVO jhVO = null;
@@ -190,7 +190,7 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
         oldVO = (ExpirationVO)oldVOs.get(i);
         newVO = (ExpirationVO)newVOs.get(i);
 
-        res = new QueryUtil().updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
@@ -235,6 +235,8 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 					pstmt3.setString(7,newVO.getRealPaymentTypeCodeReg11DOC19());
 					pstmt3.setString(8,newVO.getCurrencyCodeReg03DOC19());
 					pstmt3.setBigDecimal(9,newVO.getProgressiveReg04DOC19());
+					pstmt3.setString(10,username);
+					pstmt3.setTimestamp(11,new java.sql.Timestamp(System.currentTimeMillis()));
 					pstmt3.execute();
 
 					// insert record in DOC28...
@@ -243,6 +245,8 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 					pstmt2.setBigDecimal(3,newVO.getProgressiveDOC19());
 					pstmt2.setBigDecimal(4,newVO.getPayedValueDOC19());
 					pstmt2.setString(5,"Y");
+					pstmt2.setString(6,username);
+					pstmt2.setTimestamp(7,new java.sql.Timestamp(System.currentTimeMillis()));
 					pstmt2.execute();
 
           jhVO = new JournalHeaderVO();
@@ -417,13 +421,16 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 			userParamAction.setConn(conn); // use same transaction...
 
 			pstmt = conn.prepareStatement(
-			  "UPDATE DOC19_EXPIRATIONS SET PAYED_VALUE=VALUE,PAYED_DATE=EXPIRATION_DATE,PAYED='Y',REAL_PAYMENT_TYPE_CODE_REG11=PAYMENT_TYPE_CODE_REG11 WHERE "+
+			  "UPDATE DOC19_EXPIRATIONS SET PAYED_VALUE=VALUE,PAYED_DATE=EXPIRATION_DATE,PAYED='Y',"+
+				"REAL_PAYMENT_TYPE_CODE_REG11=PAYMENT_TYPE_CODE_REG11,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  WHERE "+
 				"COMPANY_CODE_SYS01=? AND DOC_TYPE=? AND DOC_YEAR=? AND DOC_NUMBER=? "
 			);
-		  pstmt.setString(1,companyCode);
-			pstmt.setString(2,docType);
-			pstmt.setBigDecimal(3,docYear);
-			pstmt.setBigDecimal(4,docNumber);
+ 		  pstmt.setString(1,username);
+		  pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+		  pstmt.setString(3,companyCode);
+			pstmt.setString(4,docType);
+			pstmt.setBigDecimal(5,docYear);
+			pstmt.setBigDecimal(6,docNumber);
 			int rows = pstmt.executeUpdate();
 			if (rows!=1)
 				throw new Exception("invalid number of payments");
@@ -457,12 +464,12 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 
 			pstmt = conn.prepareStatement(
 				"INSERT INTO DOC27_PAYMENTS(COMPANY_CODE_SYS01,PROGRESSIVE,PAYMENT_DATE,PAYMENT_VALUE,CUSTOMER_SUPPLIER_CODE,"+
-				"ACCOUNT_CODE_ACC02,PAYMENT_TYPE_CODE_REG11,CURRENCY_CODE_REG03,PROGRESSIVE_REG04) "+
-				"VALUES (?,?,?,?,?,?,?,?,?)"
+				"ACCOUNT_CODE_ACC02,PAYMENT_TYPE_CODE_REG11,CURRENCY_CODE_REG03,PROGRESSIVE_REG04,CREATE_USER,CREATE_DATE) "+
+				"VALUES (?,?,?,?,?,?,?,?,?,?,?)"
       );
       pstmt2 = conn.prepareStatement(
 				"INSERT INTO DOC28_PAYMENT_DISTRIBUTION(COMPANY_CODE_SYS01,PROGRESSIVE_DOC27,PROGRESSIVE_DOC19,"+
-				"PAYMENT_VALUE,PAYED) VALUES (?,?,?,?,?)"
+				"PAYMENT_VALUE,PAYED,CREATE_USER,CREATE_DATE) VALUES (?,?,?,?,?,?,?)"
 			);
 
 			// insert record in DOC27...
@@ -481,6 +488,8 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 			pstmt.setString(7,payTypeCode);
 			pstmt.setString(8,currencyCode);
 			pstmt.setBigDecimal(9,progressiveReg04DOC19);
+			pstmt.setString(10,username);
+			pstmt.setTimestamp(11,new java.sql.Timestamp(System.currentTimeMillis()));
 			pstmt.execute();
 
 			// insert record in DOC28...
@@ -489,6 +498,8 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 			pstmt2.setBigDecimal(3,progressiveDOC19);
 			pstmt2.setBigDecimal(4,valueDOC19);
 			pstmt2.setString(5,"Y");
+			pstmt2.setString(6,username);
+			pstmt2.setTimestamp(7,new java.sql.Timestamp(System.currentTimeMillis()));
 			pstmt2.execute();
 
 
@@ -670,7 +681,7 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 			attribute2dbField.put("bankCodeReg12DOC27","BANK_CODE_REG12");
 			attribute2dbField.put("currencyCodeReg03DOC27","CURRENCY_CODE_REG03");
 
-			Response res = new QueryUtil().insertTable(
+			Response res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 					conn,
 					new UserSessionParameters(username),
 					vo,
@@ -695,7 +706,8 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 
 		  pstmt2 = conn.prepareStatement(
 			  "UPDATE DOC19_EXPIRATIONS SET "+
-				"PAYED=?,PAYED_VALUE=?,ALREADY_PAYED=?,REAL_PAYMENT_TYPE_CODE_REG11=?,REAL_ACCOUNT_CODE_ACC02=?,ROUNDING_ACCOUNT_CODE_ACC02=? "+
+				"PAYED=?,PAYED_VALUE=?,ALREADY_PAYED=?,REAL_PAYMENT_TYPE_CODE_REG11=?,REAL_ACCOUNT_CODE_ACC02=?,"+
+				"ROUNDING_ACCOUNT_CODE_ACC02=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  "+
 			  "WHERE COMPANY_CODE_SYS01=? AND PROGRESSIVE=?"
 			);
 
@@ -708,7 +720,7 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 				dVO = (PaymentDistributionVO)payDistrs.get(i);
 				dVO.setProgressiveDoc27DOC28(vo.getProgressiveDOC27());
 
-				res = new QueryUtil().insertTable(
+				res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 						conn,
 						new UserSessionParameters(username),
 						dVO,
@@ -740,8 +752,10 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 				pstmt2.setString(4,vo.getPaymentTypeCodeReg11DOC27());
 				pstmt2.setString(5,vo.getAccountCodeAcc02DOC27());
 				pstmt2.setString(6,dVO.getRoundingAccountCodeAcc02DOC19());
-				pstmt2.setString(7,dVO.getCompanyCodeSys01DOC28());
-				pstmt2.setBigDecimal(8,dVO.getProgressiveDoc19DOC28());
+				pstmt2.setString(7,username);
+				pstmt2.setTimestamp(8,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt2.setString(9,dVO.getCompanyCodeSys01DOC28());
+				pstmt2.setBigDecimal(10,dVO.getProgressiveDoc19DOC28());
 				pstmt2.execute();
 
 

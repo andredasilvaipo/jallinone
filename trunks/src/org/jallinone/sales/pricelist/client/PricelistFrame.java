@@ -190,7 +190,7 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
       codtemCode.setControllerMethodName("getItemsList");
       itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
       itemController.setLookupDataLocator(itemDataLocator);
-      treeLevelDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
       itemDataLocator.setTreeDataLocator(treeLevelDataLocator);
       itemController.setFrameTitle("items");
       itemController.setLookupValueObjectClassName("org.jallinone.items.java.GridItemVO");

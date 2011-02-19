@@ -90,8 +90,19 @@ public class JasperReportAction implements Action {
 		  Resources res = factory.getResources(userSessionPars.getLanguageId());
 		  String t1 = res.getResource("jasper file not found: report generation is not possible.");
 		  String langId = res.getLanguageId();
-		  String reportDir = context.getRealPath("WEB-INF/classes/reports/") +"/";
+//		  String reportDir = context.getRealPath("WEB-INF/classes/reports/") +"/";
 		  String dateformat = res.getDateMask(Consts.TYPE_DATE);
+
+
+			String path = this.getClass().getResource("/").getPath().replaceAll("%20"," ");
+			String reportsPath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.REPORT_PATH);
+			if (new File(reportsPath).isAbsolute())
+				path = reportsPath;
+			else
+				path += reportsPath;
+			path = path.replace('\\','/');
+			if (!path.endsWith("/"))
+				path += "/";
 
 		  try {
 			  System.setProperty(
@@ -104,7 +115,7 @@ public class JasperReportAction implements Action {
 		  catch (Throwable ex3) {
 		  }
 
-		  Response answer = new VOResponse(getJasperReport(params,t1,langId,reportDir,dateformat,(JAIOUserSessionParameters)userSessionPars,userSessionPars.getUsername()));
+		  Response answer = new VOResponse(getJasperReport(params,t1,langId,path,dateformat,(JAIOUserSessionParameters)userSessionPars,userSessionPars.getUsername()));
 
 		  return answer;
 	  }
@@ -155,17 +166,8 @@ public class JasperReportAction implements Action {
         new ErrorResponse(t1);
       }
 
-			String path = this.getClass().getResource("/").getPath().replaceAll("%20"," ");
-			String reportsPath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.REPORT_PATH);
-			if (new File(reportsPath).isAbsolute())
-				path = reportsPath;
-			else
-				path += reportsPath;
-			path = path.replace('\\','/');
-			if (!path.endsWith("/"))
-				path += "/";
 
-      String reportName = path+baseName.substring(0,baseName.lastIndexOf("."));
+      String reportName = reportDir+baseName.substring(0,baseName.lastIndexOf("."));
 
       File file = new File(reportName+".jasper");
 

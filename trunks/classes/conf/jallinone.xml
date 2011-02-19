@@ -70,6 +70,10 @@
                <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/Hierarchies" /></inbound>
                <pooled-component><spring-object bean="HierarchiesBean" ></spring-object></pooled-component>
           </service>
+          <service name="CompanyHierarchiesService">
+               <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/CompanyHierarchies" /></inbound>
+               <pooled-component><spring-object bean="CompanyHierarchiesBean" ></spring-object></pooled-component>
+          </service>
           <service name="CreateBarcodeLabelsDataService">
                <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/CreateBarcodeLabelsData" /></inbound>
                <pooled-component><spring-object bean="CreateBarcodeLabelsDataBean" ></spring-object></pooled-component>

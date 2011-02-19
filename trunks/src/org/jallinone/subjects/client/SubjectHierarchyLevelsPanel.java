@@ -68,7 +68,7 @@ public class SubjectHierarchyLevelsPanel extends JPanel {
       gridDataLocator.setServerMethodName("loadSubjectHierarchyLevels");
 
       levelDataLocator.setTreeDataLocator(treeLevelDataLocator);
-      treeLevelDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
 
 
       colLevel.setLookupController(levelController);
@@ -77,7 +77,7 @@ public class SubjectHierarchyLevelsPanel extends JPanel {
       levelController.setCodeSelectionWindow(levelController.TREE_FRAME);
       levelController.setAllowTreeLeafSelectionOnly(true);
       levelController.getLookupDataLocator().setNodeNameAttribute("descriptionSYS10");
-      levelController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.HierarchyLevelVO");
+      levelController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.CompanyHierarchyLevelVO");
       levelController.addLookup2ParentLink("progressiveHIE01", "progressiveHie01REG16");
       levelController.addLookup2ParentLink("descriptionSYS10", "levelDescriptionSYS10");
       levelController.addLookupListener(new LookupListener() {
@@ -97,6 +97,10 @@ public class SubjectHierarchyLevelsPanel extends JPanel {
               ApplicationConsts.PROGRESSIVE_HIE02,
               vo.getProgressiveHie02REG16()
           );
+					treeLevelDataLocator.getTreeNodeParams().put(
+							ApplicationConsts.COMPANY_CODE_SYS01,
+							vo.getCompanyCodeSys01REG16()
+					);
         }
 
       });

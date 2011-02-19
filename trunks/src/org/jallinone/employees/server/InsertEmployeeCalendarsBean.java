@@ -46,7 +46,7 @@ public class InsertEmployeeCalendarsBean implements InsertEmployeeCalendars {
 
 
 
-	  private DataSource dataSource; 
+	  private DataSource dataSource;
 
 	  public void setDataSource(DataSource dataSource) {
 	    this.dataSource = dataSource;
@@ -54,9 +54,9 @@ public class InsertEmployeeCalendarsBean implements InsertEmployeeCalendars {
 
 	  /** external connection */
 	  private Connection conn = null;
-	  
+
 	  /**
-	   * Set external connection. 
+	   * Set external connection.
 	   */
 	  public void setConn(Connection conn) {
 	    this.conn = conn;
@@ -66,19 +66,19 @@ public class InsertEmployeeCalendarsBean implements InsertEmployeeCalendars {
 	   * Create local connection
 	   */
 	  public Connection getConn() throws Exception {
-	    
+
 	    Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
 	  }
-	  
-	  
+
+
 	  /**
-	   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	   */
 	  public EmployeeCalendarVO getEmployeeCalendar() {
 		  throw new UnsupportedOperationException();
 	  }
 
-	
+
 	  /**
 	   * Business logic to execute.
 	   */
@@ -103,7 +103,7 @@ public class InsertEmployeeCalendarsBean implements InsertEmployeeCalendars {
 	        vo = (EmployeeCalendarVO)list.get(i);
 
 	        // insert into SCH02...
-	        res = QueryUtil.insertTable(
+	        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 	            conn,
 	            new UserSessionParameters(username),
 	            vo,
@@ -150,5 +150,5 @@ public class InsertEmployeeCalendarsBean implements InsertEmployeeCalendars {
 
 
 
-	
+
 }

@@ -142,7 +142,7 @@ public class SalePricesBean  implements SalePrices {
       Response res = null;
       for(int i=0;i<list.size();i++) {
         vo = (PriceVO)list.get(i);
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,
@@ -210,9 +210,10 @@ public class SalePricesBean  implements SalePrices {
         sql =
             "select SAL02_PRICES.COMPANY_CODE_SYS01,SAL02_PRICES.PRICELIST_CODE_SAL01,SAL02_PRICES.ITEM_CODE_ITM01,SAL02_PRICES.VALUE,SAL02_PRICES.START_DATE,SAL02_PRICES.END_DATE,A.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,"+
             "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 "+
-            " from SAL02_PRICES,SYS10_TRANSLATIONS A,ITM01_ITEMS where "+
+            " from SAL02_PRICES,SYS10_COMPANY_TRANSLATIONS A,ITM01_ITEMS where "+
             "SAL02_PRICES.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
             "SAL02_PRICES.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
+						"ITM01_ITEMS.COMPANY_CODE_SYS01=A.COMPANY_CODE_SYS01 and "+
             "ITM01_ITEMS.PROGRESSIVE_SYS10=A.PROGRESSIVE and "+
             "A.LANGUAGE_CODE=? and SAL02_PRICES.COMPANY_CODE_SYS01=? and ITM01_ITEMS.ENABLED='Y' and "+
             "SAL02_PRICES.PRICELIST_CODE_SAL01='"+vo.getPricelistCodeSAL01()+"'";
@@ -224,9 +225,10 @@ public class SalePricesBean  implements SalePrices {
         sql =
             "select SAL02_PRICES.COMPANY_CODE_SYS01,SAL02_PRICES.PRICELIST_CODE_SAL01,SAL02_PRICES.ITEM_CODE_ITM01,SAL02_PRICES.VALUE,SAL02_PRICES.START_DATE,SAL02_PRICES.END_DATE,B.DESCRIPTION,"+
             "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 "+
-            " from SAL02_PRICES,SYS10_TRANSLATIONS B,SAL01_PRICELISTS,ITM01_ITEMS where "+
+            " from SAL02_PRICES,SYS10_COMPANY_TRANSLATIONS B,SAL01_PRICELISTS,ITM01_ITEMS where "+
             "SAL02_PRICES.COMPANY_CODE_SYS01=SAL01_PRICELISTS.COMPANY_CODE_SYS01 and "+
             "SAL02_PRICES.PRICELIST_CODE_SAL01=SAL01_PRICELISTS.PRICELIST_CODE and "+
+						"SAL01_PRICELISTS.COMPANY_CODE_SYS01=B.COMPANY_CODE_SYS01 and "+
             "SAL01_PRICELISTS.PROGRESSIVE_SYS10=B.PROGRESSIVE and "+
             "B.LANGUAGE_CODE=? and SAL02_PRICES.COMPANY_CODE_SYS01=? and "+
             "SAL02_PRICES.ITEM_CODE_ITM01='"+vo.getItemCodeITM01()+"' and "+
@@ -340,9 +342,10 @@ public class SalePricesBean  implements SalePrices {
             "SAL11_VARIANTS_PRICES.VARIANT_TYPE_ITM08,SAL11_VARIANTS_PRICES.VARIANT_CODE_ITM13,"+
             "SAL11_VARIANTS_PRICES.VARIANT_TYPE_ITM09,SAL11_VARIANTS_PRICES.VARIANT_CODE_ITM14,"+
             "SAL11_VARIANTS_PRICES.VARIANT_TYPE_ITM10,SAL11_VARIANTS_PRICES.VARIANT_CODE_ITM15 "+
-            " from SAL11_VARIANTS_PRICES,SYS10_TRANSLATIONS A,ITM01_ITEMS where "+
+            " from SAL11_VARIANTS_PRICES,SYS10_COMPANY_TRANSLATIONS A,ITM01_ITEMS where "+
             "SAL11_VARIANTS_PRICES.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
             "SAL11_VARIANTS_PRICES.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
+						"ITM01_ITEMS.COMPANY_CODE_SYS01=A.COMPANY_CODE_SYS01 and "+
             "ITM01_ITEMS.PROGRESSIVE_SYS10=A.PROGRESSIVE and "+
             "A.LANGUAGE_CODE=? and SAL11_VARIANTS_PRICES.COMPANY_CODE_SYS01=? and ITM01_ITEMS.ENABLED='Y' and "+
             "SAL11_VARIANTS_PRICES.PRICELIST_CODE_SAL01=? and "+
@@ -408,7 +411,9 @@ public class SalePricesBean  implements SalePrices {
           true
       );
 
-     throw new Exception(res.getErrorMessage());
+		  if (res.isError())
+				throw new Exception(res.getErrorMessage());
+			return (VOListResponse)res;
     }
     catch (Throwable ex) {
       Logger.error(username,this.getClass().getName(),"executeCommand","Error while fetching a price for the specified barcode",ex);
@@ -452,9 +457,10 @@ public class SalePricesBean  implements SalePrices {
             "SAL11_VARIANTS_PRICES.VARIANT_TYPE_ITM08,SAL11_VARIANTS_PRICES.VARIANT_CODE_ITM13,"+
             "SAL11_VARIANTS_PRICES.VARIANT_TYPE_ITM09,SAL11_VARIANTS_PRICES.VARIANT_CODE_ITM14,"+
             "SAL11_VARIANTS_PRICES.VARIANT_TYPE_ITM10,SAL11_VARIANTS_PRICES.VARIANT_CODE_ITM15 "+
-            " from SAL11_VARIANTS_PRICES,SYS10_TRANSLATIONS A,ITM01_ITEMS where "+
+            " from SAL11_VARIANTS_PRICES,SYS10_COMPANY_TRANSLATIONS A,ITM01_ITEMS where "+
             "SAL11_VARIANTS_PRICES.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
             "SAL11_VARIANTS_PRICES.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
+						"ITM01_ITEMS.COMPANY_CODE_SYS01=A.COMPANY_CODE_SYS01 and "+
             "ITM01_ITEMS.PROGRESSIVE_SYS10=A.PROGRESSIVE and "+
             "A.LANGUAGE_CODE=? and SAL11_VARIANTS_PRICES.COMPANY_CODE_SYS01=? and ITM01_ITEMS.ENABLED='Y' and "+
             "SAL11_VARIANTS_PRICES.PRICELIST_CODE_SAL01=? and "+
@@ -631,7 +637,7 @@ public class SalePricesBean  implements SalePrices {
         attribute2dbField.put("startDateSAL02","START_DATE");
         attribute2dbField.put("endDateSAL02","END_DATE");
 
-        res = new QueryUtil().updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
@@ -745,7 +751,7 @@ public class SalePricesBean  implements SalePrices {
             vo.setEndDateSAL11(variantsPrice.getEndDate());
             VariantsMatrixUtils.setVariantTypesAndCodes(vo,"SAL11",variantsPrice.getMatrixVO(),rowVO,null);
 
-            res = QueryUtil.insertTable(
+            res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
                 conn,
                 new UserSessionParameters(username),
                 vo,
@@ -781,7 +787,7 @@ public class SalePricesBean  implements SalePrices {
               vo.setEndDateSAL11(variantsPrice.getEndDate());
               VariantsMatrixUtils.setVariantTypesAndCodes(vo,"SAL11",variantsPrice.getMatrixVO(),rowVO,colVO);
 
-              res = QueryUtil.insertTable(
+              res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
                   conn,
                   new UserSessionParameters(username),
                   vo,

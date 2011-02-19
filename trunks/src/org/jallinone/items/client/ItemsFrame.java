@@ -144,6 +144,8 @@ public class ItemsFrame extends InternalFrame {
     comboBoxControl1.getComboBox().addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent e) {
         if (e.getStateChange()==e.SELECTED) {
+					ItemTypeVO vo = (ItemTypeVO)itemTypesList.get(comboBoxControl1.getSelectedIndex());
+					hierarTreePanel.setCompanyCode(vo.getCompanyCodeSys01ITM02());
           hierarTreePanel.setProgressiveHIE02((BigDecimal)comboBoxControl1.getValue());
           hierarTreePanel.reloadTree();
           grid.clearData();

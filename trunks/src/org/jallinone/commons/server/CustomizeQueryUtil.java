@@ -78,7 +78,7 @@ public class CustomizeQueryUtil {
   ) throws Exception {
 	if (list==null)
 		list = new ArrayList();
-	  
+
     String select = baseSQL.substring(0,baseSQL.toLowerCase().indexOf(" from "));
     String otherSQL = baseSQL.substring(baseSQL.toLowerCase().indexOf(" from "));
     WindowCustomizationVO vo = null;
@@ -268,7 +268,7 @@ public class CustomizeQueryUtil {
       );
     }
 
-    return QueryUtil.insertTable(
+    return org.jallinone.commons.server.QueryUtilExtension.insertTable(
        conn,
        userSessionPars,
        vo,
@@ -323,7 +323,7 @@ public class CustomizeQueryUtil {
       );
     }
 
-    return QueryUtil.updateTable(
+    return org.jallinone.commons.server.QueryUtilExtension.updateTable(
         conn,
         userSessionPars,
         pkAttributes,

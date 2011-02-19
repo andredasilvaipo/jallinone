@@ -9,7 +9,7 @@ import org.openswing.swing.util.client.ClientUtils;
 import org.openswing.swing.tree.client.TreeController;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.jallinone.documents.java.*;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.openswing.swing.mdi.client.MDIFrame;
 import org.openswing.swing.client.GridControl;
 import org.jallinone.commons.java.ApplicationConsts;
@@ -77,7 +77,7 @@ public class DocumentsController extends CompanyGridController implements TreeCo
         return false;
       }
 
-      HierarchyLevelVO levelVO = (HierarchyLevelVO)node.getUserObject();
+      CompanyHierarchyLevelVO levelVO = (CompanyHierarchyLevelVO)node.getUserObject();
       new DocumentController(frame,null, frame.getSelectedDocumentType().getCompanyCodeSys01DOC16(),levelVO.getProgressiveHIE01());
     }
     return false;
@@ -120,8 +120,9 @@ public class DocumentsController extends CompanyGridController implements TreeCo
    * @param node selected node
    */
   public void leftClick(DefaultMutableTreeNode node) {
-    HierarchyLevelVO vo = (HierarchyLevelVO)node.getUserObject();
-    HierarchyLevelVO root = (HierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
+    CompanyHierarchyLevelVO vo = (CompanyHierarchyLevelVO)node.getUserObject();
+    CompanyHierarchyLevelVO root = (CompanyHierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
+		frame.getGrid().getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanySys01HIE01());
     frame.getGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02HIE01());
     frame.getGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE01,vo.getProgressiveHIE01());
     frame.getGrid().getOtherGridParams().put(ApplicationConsts.ROOT_PROGRESSIVE_HIE01,root.getProgressiveHIE01());

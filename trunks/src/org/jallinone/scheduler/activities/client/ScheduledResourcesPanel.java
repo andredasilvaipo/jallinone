@@ -267,7 +267,7 @@ public class ScheduledResourcesPanel extends JPanel {
       colItemCode.setControllerMethodName("getItemsList");
       itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
       itemController.setLookupDataLocator(itemDataLocator);
-      itemTreeLevelDataLocator.setServerMethodName("loadHierarchy");
+      itemTreeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
       itemDataLocator.setTreeDataLocator(itemTreeLevelDataLocator);
       itemController.setFrameTitle("items");
       itemController.setLookupValueObjectClassName("org.jallinone.items.java.GridItemVO");
@@ -338,7 +338,7 @@ public class ScheduledResourcesPanel extends JPanel {
 //      colDocProg.setControllerMethodName("getDocumentsList");
 
       docController.setCodeSelectionWindow(docController.TREE_GRID_FRAME);
-      treeLevelDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
       docDataLocator.setTreeDataLocator(treeLevelDataLocator);
       docDataLocator.setNodeNameAttribute("descriptionSYS10");
 
@@ -367,6 +367,7 @@ public class ScheduledResourcesPanel extends JPanel {
           ActAttachedDocVO vo = (ActAttachedDocVO)parentVO;
           docDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,actVO.getCompanyCodeSys01SCH06());
           docDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,actVO.getCompanyCodeSys01SCH06());
+					treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01SCH08());
           treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02HIE01());
         }
 

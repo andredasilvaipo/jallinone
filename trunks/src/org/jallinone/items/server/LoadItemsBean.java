@@ -86,7 +86,7 @@ public class LoadItemsBean  implements LoadItems {
   /**
    * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
-  public GridItemVO getGridItem(HierarchyLevelVO pk) {
+  public GridItemVO getGridItem(CompanyHierarchyLevelVO pk) {
 	  throw new UnsupportedOperationException();
   }
 
@@ -115,7 +115,7 @@ public class LoadItemsBean  implements LoadItems {
 			Map attribute2dbField = new HashMap();
 			attribute2dbField.put("companyCodeSys01ITM01","ITM01_ITEMS.COMPANY_CODE_SYS01");
 			attribute2dbField.put("itemCodeITM01","ITM01_ITEMS.ITEM_CODE");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
 			attribute2dbField.put("minSellingQtyUmCodeReg02ITM01","ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02");
 			attribute2dbField.put("progressiveHie01ITM01","ITM01_ITEMS.PROGRESSIVE_HIE01");
@@ -130,7 +130,7 @@ public class LoadItemsBean  implements LoadItems {
 
 			attribute2dbField.put("noWarehouseMovITM01","ITM01_ITEMS.NO_WAREHOUSE_MOV");
 
-      HierarchyLevelVO vo = (HierarchyLevelVO)pars.getOtherGridParams().get(ApplicationConsts.TREE_FILTER);
+      CompanyHierarchyLevelVO vo = (CompanyHierarchyLevelVO)pars.getOtherGridParams().get(ApplicationConsts.TREE_FILTER);
       if (vo!=null) {
         progressiveHIE01 = vo.getProgressiveHIE01();
         progressiveHIE02 = vo.getProgressiveHie02HIE01();
@@ -143,17 +143,18 @@ public class LoadItemsBean  implements LoadItems {
       companies = companies.substring(0,companies.length()-1);
 
       String select =
-          "select ITM01_ITEMS.COMPANY_CODE_SYS01,ITM01_ITEMS.ITEM_CODE,SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,"+
+          "select ITM01_ITEMS.COMPANY_CODE_SYS01,ITM01_ITEMS.ITEM_CODE,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,"+
           "ITM01_ITEMS.PROGRESSIVE_HIE01,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,REG02_MEASURE_UNITS.DECIMALS,"+
 					"ITM01_ITEMS.SHEET_CODE_ITM25,ITM01_ITEMS.NO_WAREHOUSE_MOV, "+
           "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 ";
 				String from =
-          "from SYS10_TRANSLATIONS,REG02_MEASURE_UNITS,ITM01_ITEMS ";
+          "from SYS10_COMPANY_TRANSLATIONS,REG02_MEASURE_UNITS,ITM01_ITEMS ";
 				String where =
 					"where "+
           "ITM01_ITEMS.PROGRESSIVE_HIE02=? and "+
-          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"ITM01_ITEMS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "ITM01_ITEMS.COMPANY_CODE_SYS01 in ("+companies+") and "+
           "ITM01_ITEMS.ENABLED='Y' and "+
           "ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02=REG02_MEASURE_UNITS.UM_CODE ";
@@ -199,8 +200,8 @@ public class LoadItemsBean  implements LoadItems {
       if (rootProgressiveHIE01==null || !rootProgressiveHIE01.equals(progressiveHIE01)) {
         // retrieve all subnodes of the specified node...
         pstmt = conn.prepareStatement(
-            "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV from HIE01_LEVELS "+
-            "where ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE>=? "+
+            "select HIE01_COMPANY_LEVELS.PROGRESSIVE,HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE01,HIE01_COMPANY_LEVELS.LEV from HIE01_COMPANY_LEVELS "+
+            "where COMPANY_CODE_SYS01='"+vo.getCompanySys01HIE01()+"' and ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE>=? "+
             "order by LEV,PROGRESSIVE_HIE01,PROGRESSIVE"
         );
         pstmt.setBigDecimal(1,progressiveHIE02);

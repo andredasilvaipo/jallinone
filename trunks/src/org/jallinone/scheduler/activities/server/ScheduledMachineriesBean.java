@@ -51,7 +51,7 @@ import javax.sql.DataSource;
 public class ScheduledMachineriesBean  implements ScheduledMachineries {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -59,9 +59,9 @@ public class ScheduledMachineriesBean  implements ScheduledMachineries {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -71,7 +71,7 @@ public class ScheduledMachineriesBean  implements ScheduledMachineries {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -83,7 +83,7 @@ public class ScheduledMachineriesBean  implements ScheduledMachineries {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ScheduledMachineriesVO getScheduledMachineries(ScheduledActivityPK pk) {
 	  throw new UnsupportedOperationException();
@@ -101,19 +101,20 @@ public class ScheduledMachineriesBean  implements ScheduledMachineries {
 
       String sql =
           "select SCH09_SCHEDULED_MACHINERIES.MACHINERY_CODE_PRO03,SCH09_SCHEDULED_MACHINERIES.COMPANY_CODE_SYS01,SCH09_SCHEDULED_MACHINERIES.PROGRESSIVE_SCH06,"+
-          "SYS10_TRANSLATIONS.DESCRIPTION,SCH09_SCHEDULED_MACHINERIES.START_DATE,SCH09_SCHEDULED_MACHINERIES.END_DATE,SCH09_SCHEDULED_MACHINERIES.DURATION,"+
+          "SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,SCH09_SCHEDULED_MACHINERIES.START_DATE,SCH09_SCHEDULED_MACHINERIES.END_DATE,SCH09_SCHEDULED_MACHINERIES.DURATION,"+
           "SCH09_SCHEDULED_MACHINERIES.NOTE "+
-          "from SCH09_SCHEDULED_MACHINERIES,PRO03_MACHINERIES,SYS10_TRANSLATIONS where "+
+          "from SCH09_SCHEDULED_MACHINERIES,PRO03_MACHINERIES,SYS10_COMPANY_TRANSLATIONS where "+
           "SCH09_SCHEDULED_MACHINERIES.COMPANY_CODE_SYS01=PRO03_MACHINERIES.COMPANY_CODE_SYS01 and "+
           "SCH09_SCHEDULED_MACHINERIES.MACHINERY_CODE_PRO03=PRO03_MACHINERIES.MACHINERY_CODE and "+
-          "PRO03_MACHINERIES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"PRO03_MACHINERIES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "PRO03_MACHINERIES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SCH09_SCHEDULED_MACHINERIES.COMPANY_CODE_SYS01=? and "+
           "SCH09_SCHEDULED_MACHINERIES.PROGRESSIVE_SCH06=?";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SCH09","SCH09_SCHEDULED_MACHINERIES.COMPANY_CODE_SYS01");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveSch06SCH09","SCH09_SCHEDULED_MACHINERIES.PROGRESSIVE_SCH06");
       attribute2dbField.put("machineryCodePro03SCH09","SCH09_SCHEDULED_MACHINERIES.MACHINERY_CODE_PRO03");
       attribute2dbField.put("startDateSCH09","SCH09_SCHEDULED_MACHINERIES.START_DATE");
@@ -155,14 +156,15 @@ public class ScheduledMachineriesBean  implements ScheduledMachineries {
 
         // retrieve tasks defined in the call-out...
         sql =
-            "select SCH13_CALL_OUT_MACHINERIES.MACHINERY_CODE_PRO03,SYS10_TRANSLATIONS.DESCRIPTION "+
-            "from SCH13_CALL_OUT_MACHINERIES,SCH03_CALL_OUT_REQUESTS,PRO03_MACHINERIES,SYS10_TRANSLATIONS where "+
+            "select SCH13_CALL_OUT_MACHINERIES.MACHINERY_CODE_PRO03,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION "+
+            "from SCH13_CALL_OUT_MACHINERIES,SCH03_CALL_OUT_REQUESTS,PRO03_MACHINERIES,SYS10_COMPANY_TRANSLATIONS where "+
             "SCH03_CALL_OUT_REQUESTS.COMPANY_CODE_SYS01=SCH13_CALL_OUT_MACHINERIES.COMPANY_CODE_SYS01 and "+
             "SCH03_CALL_OUT_REQUESTS.CALL_OUT_CODE_SCH10=SCH13_CALL_OUT_MACHINERIES.CALL_OUT_CODE_SCH10 and "+
             "SCH13_CALL_OUT_MACHINERIES.COMPANY_CODE_SYS01=PRO03_MACHINERIES.COMPANY_CODE_SYS01 and "+
             "SCH13_CALL_OUT_MACHINERIES.MACHINERY_CODE_PRO03=PRO03_MACHINERIES.MACHINERY_CODE and "+
-            "PRO03_MACHINERIES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-            "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+						"PRO03_MACHINERIES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+            "PRO03_MACHINERIES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+            "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
             "SCH03_CALL_OUT_REQUESTS.COMPANY_CODE_SYS01=? and "+
             "SCH03_CALL_OUT_REQUESTS.PROGRESSIVE_SCH06=?";
         pstmt = conn.prepareStatement(sql);
@@ -241,7 +243,7 @@ public class ScheduledMachineriesBean  implements ScheduledMachineries {
         newVO = (ScheduledMachineriesVO)newVos.get(i);
 
         // update record in SCH09...
-        res = QueryUtil.updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pk,
@@ -315,7 +317,7 @@ public class ScheduledMachineriesBean  implements ScheduledMachineries {
         vo = (ScheduledMachineriesVO)list.get(i);
 
         // insert into SCH09...
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,

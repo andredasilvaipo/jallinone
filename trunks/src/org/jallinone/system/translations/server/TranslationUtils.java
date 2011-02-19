@@ -38,15 +38,6 @@ import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 public class TranslationUtils {
 
 
-//  /**
-//   * Insert a record in SYS10 table for each language defined in SYS09.
-//   * @param description description to insert
-//   * @param conn database connection
-//   * @return new progressive relative to SYS10
-//   */
-//  public static final BigDecimal insertTranslations(String description,Connection conn) throws Exception {
-//    return insertTranslations(description,null,conn);
-//  }
 
   /**
    * Insert a record in SYS10 table for each language defined in SYS09.
@@ -55,16 +46,17 @@ public class TranslationUtils {
    * @param conn database connection
    * @return new progressive relative to SYS10
    */
-  public static final BigDecimal insertTranslations(String description,String companyCodeSys01,Connection conn) throws Exception {
-    BigDecimal progressive = CompanyProgressiveUtils.getInternalProgressive(companyCodeSys01,"SYS10_TRANSLATIONS","PROGRESSIVE",conn);
+  public static final BigDecimal insertTranslations(String description,String username,Connection conn) throws Exception {
+    BigDecimal progressive = ProgressiveUtils.getInternalProgressive("SYS10_TRANSLATIONS","PROGRESSIVE",conn);
     PreparedStatement pstmt = null;
     try {
 			pstmt = conn.prepareStatement(
-				"insert into SYS10_TRANSLATIONS(PROGRESSIVE,LANGUAGE_CODE,DESCRIPTION,COMPANY_CODE_SYS01) "+
-				"select "+progressive+",LANGUAGE_CODE,?,? FROM SYS09_LANGUAGES where ENABLED='Y'"
+				"insert into SYS10_TRANSLATIONS(PROGRESSIVE,LANGUAGE_CODE,DESCRIPTION,CREATE_USER,CREATE_DATE) "+
+				"select "+progressive+",LANGUAGE_CODE,?,?,? FROM SYS09_LANGUAGES where ENABLED='Y'"
 			);
 		  pstmt.setString(1,description);
-			pstmt.setString(2,companyCodeSys01);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
 			pstmt.execute();
     }
     finally {
@@ -86,19 +78,21 @@ public class TranslationUtils {
    * @param languageCode server language identifier
    * @param conn database connection
    */
-  public static final void updateTranslation(String oldDescription,String description,BigDecimal progressive,String languageCode,Connection conn) throws Exception {
+  public static final void updateTranslation(String oldDescription,String description,BigDecimal progressive,String languageCode,String username,Connection conn) throws Exception {
 		PreparedStatement pstmt = null;
     try {
 			String sql =
-				"update SYS10_TRANSLATIONS set DESCRIPTION=? where "+
+				"update SYS10_TRANSLATIONS set DESCRIPTION=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
 		  	"PROGRESSIVE="+progressive+" and LANGUAGE_CODE=? and DESCRIPTION=? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1,description);
-			pstmt.setString(2,languageCode);
-			pstmt.setString(3,oldDescription);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4,languageCode);
+			pstmt.setString(5,oldDescription);
 			int updatedRows = pstmt.executeUpdate();
 			if (updatedRows==0) {
-			Logger.error("NONAME","org.jallinone.system.translations.server.TranslationUtils","updateTranslation",sql+"\n\nUpdate not allowed: description already updated by another process",null);
+			Logger.error(username,"org.jallinone.system.translations.server.TranslationUtils","updateTranslation",sql+"\n\nUpdate not allowed: description already updated by another process",null);
         throw new Exception("Update not allowed: description already updated by another process");
       }
     }

@@ -99,12 +99,12 @@ public class InsertSaleDocActivitiesBean  implements InsertSaleDocActivities {
 
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public SaleDocActivityVO getSaleDocActivity() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 
 	/**
 	 * Business logic to execute.
@@ -133,12 +133,14 @@ public class InsertSaleDocActivitiesBean  implements InsertSaleDocActivities {
 				}
 			}
 
-			pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
+			pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
 			pstmt.setString(1,ApplicationConsts.HEADER_BLOCKED);
-			pstmt.setString(2,vo.getCompanyCodeSys01DOC13());
-			pstmt.setString(3,vo.getDocTypeDOC13());
-			pstmt.setBigDecimal(4,vo.getDocYearDOC13());
-			pstmt.setBigDecimal(5,vo.getDocNumberDOC13());
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4,vo.getCompanyCodeSys01DOC13());
+			pstmt.setString(5,vo.getDocTypeDOC13());
+			pstmt.setBigDecimal(6,vo.getDocYearDOC13());
+			pstmt.setBigDecimal(7,vo.getDocNumberDOC13());
 			pstmt.execute();
 
 			res = totals.updateTaxableIncomes(

@@ -51,7 +51,7 @@ import javax.sql.DataSource;
 public class CallOutItemsBean  implements CallOutItems {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -59,9 +59,9 @@ public class CallOutItemsBean  implements CallOutItems {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -71,7 +71,7 @@ public class CallOutItemsBean  implements CallOutItems {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -81,7 +81,7 @@ public class CallOutItemsBean  implements CallOutItems {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public CallOutItemVO getCallOutItem(CallOutPK pk) {
 	  throw new UnsupportedOperationException();
@@ -99,18 +99,19 @@ public class CallOutItemsBean  implements CallOutItems {
 
       String sql =
           "select SCH14_CALL_OUT_ITEMS.ITEM_CODE_ITM01,SCH14_CALL_OUT_ITEMS.COMPANY_CODE_SYS01,"+
-          "SCH14_CALL_OUT_ITEMS.CALL_OUT_CODE_SCH10,SYS10_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
-          "from SCH14_CALL_OUT_ITEMS,ITM01_ITEMS,SYS10_TRANSLATIONS where "+
+          "SCH14_CALL_OUT_ITEMS.CALL_OUT_CODE_SCH10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02 "+
+          "from SCH14_CALL_OUT_ITEMS,ITM01_ITEMS,SYS10_COMPANY_TRANSLATIONS where "+
           "SCH14_CALL_OUT_ITEMS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
           "SCH14_CALL_OUT_ITEMS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
-          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"ITM01_ITEMS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SCH14_CALL_OUT_ITEMS.COMPANY_CODE_SYS01=? and "+
           "SCH14_CALL_OUT_ITEMS.CALL_OUT_CODE_SCH10=?";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SCH14","SCH14_CALL_OUT_ITEMS.COMPANY_CODE_SYS01");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("callOutCodeSch10SCH14","SCH14_CALL_OUT_ITEMS.CALL_OUT_CODE_SCH10");
       attribute2dbField.put("itemCodeItm01SCH14","SCH14_CALL_OUT_ITEMS.ITEM_CODE_ITM01");
       attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
@@ -184,7 +185,7 @@ public class CallOutItemsBean  implements CallOutItems {
         vo = (CallOutItemVO)list.get(i);
 
         // insert into SCH14...
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,

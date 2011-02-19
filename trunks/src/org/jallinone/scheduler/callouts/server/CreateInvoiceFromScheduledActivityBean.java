@@ -180,20 +180,22 @@ public class CreateInvoiceFromScheduledActivityBean  implements CreateInvoiceFro
         pstmt = conn.prepareStatement(
             "insert into SAL07_CUSTOMERS(COMPANY_CODE_SYS01,PROGRESSIVE_REG04,CUSTOMER_CODE,PAYMENT_CODE_REG10,"+
             "PRICELIST_CODE_SAL01,ENABLED,CREDIT_ACCOUNT_CODE_ACC02,ITEMS_ACCOUNT_CODE_ACC02,"+
-            "ACTIVITIES_ACCOUNT_CODE_ACC02,CHARGES_ACCOUNT_CODE_ACC02) values(?,?,?,?,?,?,?,?,?,?)"
+            "ACTIVITIES_ACCOUNT_CODE_ACC02,CHARGES_ACCOUNT_CODE_ACC02,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?,?,?,?,?,?)"
         );
-        pstmt.setString(1,vo.getCompanyCodeSys01DOC01());
-        pstmt.setBigDecimal(2,vo.getProgressiveReg04DOC01());
-        pstmt.setString(3,vo.getCustomerCodeSAL07());
-        pstmt.setString(4,vo.getPaymentCodeReg10DOC01());
-        pstmt.setString(5,vo.getPricelistCodeSal01DOC01());
-        pstmt.setString(6,"Y");
-        pstmt.setString(7,invVO.getCreditAccountCodeAcc02SAL07());
-        pstmt.setString(8,invVO.getItemsAccountCodeAcc02SAL07());
-        pstmt.setString(9,invVO.getActivitiesAccountCodeAcc02SAL07());
-        pstmt.setString(10,invVO.getChargesAccountCodeAcc02SAL07());
-        pstmt.execute();
-        pstmt.close();
+				pstmt.setString(1,vo.getCompanyCodeSys01DOC01());
+				pstmt.setBigDecimal(2,vo.getProgressiveReg04DOC01());
+				pstmt.setString(3,vo.getCustomerCodeSAL07());
+				pstmt.setString(4,vo.getPaymentCodeReg10DOC01());
+				pstmt.setString(5,vo.getPricelistCodeSal01DOC01());
+				pstmt.setString(6,"Y");
+				pstmt.setString(7,invVO.getCreditAccountCodeAcc02SAL07());
+				pstmt.setString(8,invVO.getItemsAccountCodeAcc02SAL07());
+				pstmt.setString(9,invVO.getActivitiesAccountCodeAcc02SAL07());
+				pstmt.setString(10,invVO.getChargesAccountCodeAcc02SAL07());
+				pstmt.setString(11,username);
+				pstmt.setTimestamp(12,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
       // insert invoice header...
@@ -290,9 +292,10 @@ public class CreateInvoiceFromScheduledActivityBean  implements CreateInvoiceFro
       pstmt = conn.prepareStatement(
         "select SAL09_ACTIVITIES.ACTIVITY_CODE,SAL09_ACTIVITIES.VALUE,sum(SCH07_SCHEDULED_EMPLOYEES.DURATION),"+
         "SAL09_ACTIVITIES.VAT_CODE_REG01,REG01_VATS.VALUE,REG01_VATS.DEDUCTIBLE,ACT_SYS10.DESCRIPTION,VAT_SYS10.DESCRIPTION "+
-        "from SAL09_ACTIVITIES,SCH01_EMPLOYEES,REG07_TASKS,SCH07_SCHEDULED_EMPLOYEES,REG01_VATS,SYS10_TRANSLATIONS ACT_SYS10,SYS10_TRANSLATIONS VAT_SYS10 where "+
+        "from SAL09_ACTIVITIES,SCH01_EMPLOYEES,REG07_TASKS,SCH07_SCHEDULED_EMPLOYEES,REG01_VATS,SYS10_COMPANY_TRANSLATIONS ACT_SYS10,SYS10_TRANSLATIONS VAT_SYS10 where "+
         "SAL09_ACTIVITIES.COMPANY_CODE_SYS01=REG07_TASKS.COMPANY_CODE_SYS01 and "+
         "SAL09_ACTIVITIES.ACTIVITY_CODE=REG07_TASKS.ACTIVITY_CODE_SAL09 and "+
+				"SAL09_ACTIVITIES.COMPANY_CODE_SYS01=ACT_SYS10.COMPANY_CODE_SYS01 and "+
         "SAL09_ACTIVITIES.PROGRESSIVE_SYS10=ACT_SYS10.PROGRESSIVE and "+
         "ACT_SYS10.LANGUAGE_CODE=? and "+
         "REG01_VATS.PROGRESSIVE_SYS10=VAT_SYS10.PROGRESSIVE and "+
@@ -363,12 +366,14 @@ public class CreateInvoiceFromScheduledActivityBean  implements CreateInvoiceFro
 
 
       // update invoice state...
-      pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
+      pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
       pstmt.setString(1,ApplicationConsts.HEADER_BLOCKED);
-      pstmt.setString(2,vo.getCompanyCodeSys01DOC01());
-      pstmt.setString(3,vo.getDocTypeDOC01());
-      pstmt.setBigDecimal(4,vo.getDocYearDOC01());
-      pstmt.setBigDecimal(5,vo.getDocNumberDOC01());
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01DOC01());
+      pstmt.setString(5,vo.getDocTypeDOC01());
+      pstmt.setBigDecimal(6,vo.getDocYearDOC01());
+      pstmt.setBigDecimal(7,vo.getDocNumberDOC01());
       pstmt.execute();
       pstmt.close();
 
@@ -376,7 +381,7 @@ public class CreateInvoiceFromScheduledActivityBean  implements CreateInvoiceFro
 
       // update call out doc references and state...
       pstmt = conn.prepareStatement(
-        "update SCH03_CALL_OUT_REQUESTS set DOC_TYPE_DOC01=?,DOC_YEAR_DOC01=?,DOC_NUMBER_DOC01=?,CALL_OUT_STATE=? where "+
+        "update SCH03_CALL_OUT_REQUESTS set DOC_TYPE_DOC01=?,DOC_YEAR_DOC01=?,DOC_NUMBER_DOC01=?,CALL_OUT_STATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
         "COMPANY_CODE_SYS01=? and REQUEST_YEAR=? and PROGRESSIVE=?"
       );
       reqVO.setCallOutStateSCH03(ApplicationConsts.INVOICED);
@@ -384,9 +389,11 @@ public class CreateInvoiceFromScheduledActivityBean  implements CreateInvoiceFro
       pstmt.setBigDecimal(2,vo.getDocYearDOC01());
       pstmt.setBigDecimal(3,vo.getDocNumberDOC01());
       pstmt.setString(4,reqVO.getCallOutStateSCH03());
-      pstmt.setString(5,vo.getCompanyCodeSys01DOC01());
-      pstmt.setBigDecimal(6,reqVO.getRequestYearSCH03());
-      pstmt.setBigDecimal(7,reqVO.getProgressiveSCH03());
+			pstmt.setString(5,username);
+			pstmt.setTimestamp(6,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(7,vo.getCompanyCodeSys01DOC01());
+      pstmt.setBigDecimal(8,reqVO.getRequestYearSCH03());
+      pstmt.setBigDecimal(9,reqVO.getProgressiveSCH03());
       pstmt.execute();
       pstmt.close();
 
@@ -394,13 +401,15 @@ public class CreateInvoiceFromScheduledActivityBean  implements CreateInvoiceFro
 
       // update sheduled activities doc state...
       pstmt = conn.prepareStatement(
-        "update SCH06_SCHEDULED_ACTIVITIES set ACTIVITY_STATE=? where "+
+        "update SCH06_SCHEDULED_ACTIVITIES set ACTIVITY_STATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
         "COMPANY_CODE_SYS01=? and PROGRESSIVE=?"
       );
       actVO.setActivityStateSCH06(ApplicationConsts.INVOICED);
       pstmt.setString(1,actVO.getActivityStateSCH06());
-      pstmt.setString(2,actVO.getCompanyCodeSys01SCH06());
-      pstmt.setBigDecimal(3,actVO.getProgressiveSCH06());
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,actVO.getCompanyCodeSys01SCH06());
+      pstmt.setBigDecimal(5,actVO.getProgressiveSCH06());
       pstmt.execute();
       pstmt.close();
 

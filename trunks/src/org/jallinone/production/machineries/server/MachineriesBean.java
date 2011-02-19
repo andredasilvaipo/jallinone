@@ -14,7 +14,7 @@ import java.sql.*;
 
 import org.openswing.swing.logger.server.*;
 import org.jallinone.system.server.*;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.jallinone.production.machineries.java.*;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.commons.server.CustomizeQueryUtil;
@@ -55,7 +55,7 @@ import javax.sql.DataSource;
 public class MachineriesBean  implements Machineries {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -63,9 +63,9 @@ public class MachineriesBean  implements Machineries {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -75,7 +75,7 @@ public class MachineriesBean  implements Machineries {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -87,7 +87,7 @@ public class MachineriesBean  implements Machineries {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public MachineryVO getMachinery() {
 	  throw new UnsupportedOperationException();
@@ -114,17 +114,18 @@ public class MachineriesBean  implements Machineries {
       }
 
       String sql =
-          "select PRO03_MACHINERIES.COMPANY_CODE_SYS01,PRO03_MACHINERIES.MACHINERY_CODE,PRO03_MACHINERIES.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,PRO03_MACHINERIES.ENABLED, "+
+          "select PRO03_MACHINERIES.COMPANY_CODE_SYS01,PRO03_MACHINERIES.MACHINERY_CODE,PRO03_MACHINERIES.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,PRO03_MACHINERIES.ENABLED, "+
           "PRO03_MACHINERIES.CURRENCY_CODE_REG03,PRO03_MACHINERIES.VALUE,PRO03_MACHINERIES.DURATION,PRO03_MACHINERIES.FINITE_CAPACITY "+
-          "from PRO03_MACHINERIES,SYS10_TRANSLATIONS where "+
-          "PRO03_MACHINERIES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          "from PRO03_MACHINERIES,SYS10_COMPANY_TRANSLATIONS where "+
+					"PRO03_MACHINERIES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "PRO03_MACHINERIES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "PRO03_MACHINERIES.ENABLED='Y' and "+
           "PRO03_MACHINERIES.COMPANY_CODE_SYS01 in ("+companies+")";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("machineryCodePRO03","PRO03_MACHINERIES.MACHINERY_CODE");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveSys10PRO03","PRO03_MACHINERIES.PROGRESSIVE_SYS10");
       attribute2dbField.put("enabledPRO03","PRO03_MACHINERIES.ENABLED");
       attribute2dbField.put("companyCodeSys01PRO03","PRO03_MACHINERIES.COMPANY_CODE_SYS01");
@@ -196,7 +197,7 @@ public class MachineriesBean  implements Machineries {
         newVO = (MachineryVO)newVOs.get(i);
 
         // update SYS10 table...
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10PRO03(),serverLanguageId,conn);
+        CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01PRO03(),oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10PRO03(),serverLanguageId,username,conn);
 
         HashSet pkAttrs = new HashSet();
         pkAttrs.add("companyCodeSys01PRO03");
@@ -241,7 +242,7 @@ public class MachineriesBean  implements Machineries {
     			conn.rollback();
     	}
     	catch (Exception ex3) {
-    	} 
+    	}
     	throw new Exception(ex.getMessage());
     }
     finally {
@@ -270,18 +271,19 @@ public class MachineriesBean  implements Machineries {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       String sql =
-          "select PRO03_MACHINERIES.COMPANY_CODE_SYS01,PRO03_MACHINERIES.MACHINERY_CODE,PRO03_MACHINERIES.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,PRO03_MACHINERIES.ENABLED, "+
+          "select PRO03_MACHINERIES.COMPANY_CODE_SYS01,PRO03_MACHINERIES.MACHINERY_CODE,PRO03_MACHINERIES.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,PRO03_MACHINERIES.ENABLED, "+
           "PRO03_MACHINERIES.CURRENCY_CODE_REG03,PRO03_MACHINERIES.VALUE,PRO03_MACHINERIES.DURATION,PRO03_MACHINERIES.FINITE_CAPACITY "+
-          "from PRO03_MACHINERIES,SYS10_TRANSLATIONS where "+
-          "PRO03_MACHINERIES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          "from PRO03_MACHINERIES,SYS10_COMPANY_TRANSLATIONS where "+
+					"PRO03_MACHINERIES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "PRO03_MACHINERIES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "PRO03_MACHINERIES.ENABLED='Y' and "+
           "PRO03_MACHINERIES.MACHINERY_CODE='"+validationPars.getCode()+"' and "+
           "PRO03_MACHINERIES.COMPANY_CODE_SYS01='"+validationPars.getLookupValidationParameters().get(ApplicationConsts.COMPANY_CODE_SYS01)+"'";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("machineryCodePRO03","PRO03_MACHINERIES.MACHINERY_CODE");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveSys10PRO03","PRO03_MACHINERIES.PROGRESSIVE_SYS10");
       attribute2dbField.put("enabledPRO03","PRO03_MACHINERIES.ENABLED");
       attribute2dbField.put("companyCodeSys01PRO03","PRO03_MACHINERIES.COMPANY_CODE_SYS01");
@@ -335,7 +337,7 @@ public class MachineriesBean  implements Machineries {
 
 
 
-  
+
 
   /**
    * Business logic to execute.
@@ -368,7 +370,7 @@ public class MachineriesBean  implements Machineries {
           vo.setCompanyCodeSys01PRO03(companyCode);
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01PRO03(),conn);
+        progressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01PRO03(),username,conn);
         vo.setProgressiveSys10PRO03(progressiveSYS10);
 
         // insert into PRO03...
@@ -401,7 +403,7 @@ public class MachineriesBean  implements Machineries {
     			conn.rollback();
     	}
     	catch (Exception ex3) {
-    	} 
+    	}
 
     	throw new Exception(ex.getMessage());
     }
@@ -428,20 +430,23 @@ public class MachineriesBean  implements Machineries {
    * Business logic to execute.
    */
   public VOResponse deleteMachineries(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
-
       MachineryVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in PRO03...
         vo = (MachineryVO)list.get(i);
-        stmt.execute("update PRO03_MACHINERIES set ENABLED='N' where "+
-                     "COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01PRO03()+"' and "+
-                     "MACHINERY_CODE='"+vo.getMachineryCodePRO03()+"'"
+        pstmt = conn.prepareStatement(
+		       "update PRO03_MACHINERIES set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
+					 "COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01PRO03()+"' and "+
+					 "MACHINERY_CODE='"+vo.getMachineryCodePRO03()+"'"
         );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
       return  new VOResponse(new Boolean(true));
@@ -454,12 +459,12 @@ public class MachineriesBean  implements Machineries {
     			conn.rollback();
     	}
     	catch (Exception ex3) {
-    	} 
+    	}
     	throw new Exception(ex.getMessage());
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {

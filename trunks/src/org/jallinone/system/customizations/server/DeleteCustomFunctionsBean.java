@@ -47,7 +47,7 @@ import javax.sql.DataSource;
 public class DeleteCustomFunctionsBean  implements DeleteCustomFunctions {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -55,9 +55,9 @@ public class DeleteCustomFunctionsBean  implements DeleteCustomFunctions {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -67,7 +67,7 @@ public class DeleteCustomFunctionsBean  implements DeleteCustomFunctions {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -99,7 +99,7 @@ public class DeleteCustomFunctionsBean  implements DeleteCustomFunctions {
             "delete from SYS16_CUSTOM_FUNCTIONS where FUNCTION_CODE_SYS06='"+functionCode+"'"
         );
         stmt.execute(
-            "delete from SYS18_FUNCTION_LINKS where FUNCTION_CODE_SYS06='"+functionCode+"'"
+            "delete from SYS18_FUNCTIONS_LINKS where FUNCTION_CODE_SYS06='"+functionCode+"'"
         );
         stmt.execute(
             "delete from SYS07_ROLE_FUNCTIONS where FUNCTION_CODE_SYS06='"+functionCode+"'"

@@ -52,7 +52,7 @@ import javax.sql.DataSource;
 public class UpdateCustomFunctionBean  implements UpdateCustomFunction {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -60,9 +60,9 @@ public class UpdateCustomFunctionBean  implements UpdateCustomFunction {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -72,7 +72,7 @@ public class UpdateCustomFunctionBean  implements UpdateCustomFunction {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -120,25 +120,28 @@ public class UpdateCustomFunctionBean  implements UpdateCustomFunction {
           newVO.getDescriptionSYS10(),
           newVO.getProgressiveSys10SYS06(),
           serverLanguageId,
+				  username,
           conn
         );
       }
 
       // delete previous record in SYS18...
       pstmt = conn.prepareStatement(
-        "delete from SYS18_FUNCTION_LINKS where FUNCTION_CODE_SYS06=? and PROGRESSIVE_HIE01=? "
+        "delete from SYS18_FUNCTIONS_LINKS where FUNCTION_CODE_SYS06=? and PROGRESSIVE_HIE03=? "
       );
       pstmt.setString(1,oldVO.getFunctionCodeSys06SYS16());
-      pstmt.setBigDecimal(2,oldVO.getProgressiveHie01SYS18());
+      pstmt.setBigDecimal(2,oldVO.getProgressiveHie03SYS18());
       pstmt.execute();
 
       // insert new record in SYS18...
       pstmt = conn.prepareStatement(
-        "insert into SYS18_FUNCTION_LINKS(FUNCTION_CODE_SYS06,PROGRESSIVE_HIE01,POS_ORDER) values(?,?,?)"
+        "insert into SYS18_FUNCTIONS_LINKS(FUNCTION_CODE_SYS06,PROGRESSIVE_HIE03,POS_ORDER,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)"
       );
       pstmt.setString(1,newVO.getFunctionCodeSys06SYS16());
-      pstmt.setBigDecimal(2,newVO.getProgressiveHie01SYS18());
+      pstmt.setBigDecimal(2,newVO.getProgressiveHie03SYS18());
       pstmt.setInt(3,1);
+			pstmt.setString(4,username);
+			pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.execute();
 
       // update record in SYS16...
@@ -156,7 +159,7 @@ public class UpdateCustomFunctionBean  implements UpdateCustomFunction {
       HashSet pkAttrs = new HashSet();
       pkAttrs.add("functionCodeSys06SYS16");
 
-      res = QueryUtil.updateTable(
+      res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
           conn,
           new UserSessionParameters(username),
           pkAttrs,
@@ -210,7 +213,7 @@ public class UpdateCustomFunctionBean  implements UpdateCustomFunction {
             columnVO.setColumnTypeSYS22(ApplicationConsts.TYPE_TEXT);
           columnVO.setColumnVisibleSYS22(true);
           columnVO.setFunctionCodeSys06SYS22(newVO.getFunctionCodeSys06SYS16());
-          res = QueryUtil.insertTable(
+          res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
               conn,
               new UserSessionParameters(username),
               columnVO,
@@ -276,7 +279,7 @@ public class UpdateCustomFunctionBean  implements UpdateCustomFunction {
               columnVO.setIsParamSYS22(true);
               columnVO.setIsParamRequiredSYS22(true);
               columnVO.setFunctionCodeSys06SYS22(newVO.getFunctionCodeSys06SYS16());
-              res = QueryUtil.insertTable(
+              res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
                   conn,
                   new UserSessionParameters(username),
                   columnVO,
@@ -336,7 +339,7 @@ public class UpdateCustomFunctionBean  implements UpdateCustomFunction {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
     }
 
   }

@@ -52,7 +52,7 @@ import javax.sql.DataSource;
 public class InsertCustomFunctionBean  implements InsertCustomFunction {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -60,9 +60,9 @@ public class InsertCustomFunctionBean  implements InsertCustomFunction {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -72,7 +72,7 @@ public class InsertCustomFunctionBean  implements InsertCustomFunction {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -105,11 +105,11 @@ public class InsertCustomFunctionBean  implements InsertCustomFunction {
       vo.setSql(tableVO.getSql());
 
       // insert new record in SYS10...
-      vo.setProgressiveSys10SYS06( TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),defCompanyCodeSys01SYS03,conn) );
+      vo.setProgressiveSys10SYS06( TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),username,conn) );
 
       // insert new record in SYS06...
       pstmt = conn.prepareStatement(
-        "insert into SYS06_FUNCTIONS(FUNCTION_CODE,PROGRESSIVE_SYS10,IMAGE_NAME,METHOD_NAME,USE_COMPANY_CODE,CAN_DEL) values(?,?,?,?,?,?)"
+        "insert into SYS06_FUNCTIONS(FUNCTION_CODE,PROGRESSIVE_SYS10,IMAGE_NAME,METHOD_NAME,USE_COMPANY_CODE,CAN_DEL,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?,?)"
       );
       pstmt.setString(1,vo.getFunctionCodeSys06SYS16());
       pstmt.setBigDecimal(2,vo.getProgressiveSys10SYS06());
@@ -117,35 +117,43 @@ public class InsertCustomFunctionBean  implements InsertCustomFunction {
       pstmt.setString(4,"executeCustomFunction");
       pstmt.setString(5,vo.isUseCompanyCodeSYS06()?"Y":"N");
       pstmt.setString(6,"Y");
+			pstmt.setString(7,username);
+			pstmt.setTimestamp(8,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.execute();
 
       // insert new record in SYS18...
       pstmt = conn.prepareStatement(
-        "insert into SYS18_FUNCTION_LINKS(FUNCTION_CODE_SYS06,PROGRESSIVE_HIE01,POS_ORDER) values(?,?,?)"
+        "insert into SYS18_FUNCTIONS_LINKS(FUNCTION_CODE_SYS06,PROGRESSIVE_HIE03,POS_ORDER,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)"
       );
       pstmt.setString(1,vo.getFunctionCodeSys06SYS16());
-      pstmt.setBigDecimal(2,vo.getProgressiveHie01SYS18());
+      pstmt.setBigDecimal(2,vo.getProgressiveHie03SYS18());
       pstmt.setInt(3,1);
+			pstmt.setString(4,username);
+			pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.execute();
 
       // insert new record in SYS07...
       pstmt = conn.prepareStatement(
-        "insert into SYS07_ROLE_FUNCTIONS(PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL) values(?,?,?,?,?)"
+        "insert into SYS07_ROLE_FUNCTIONS(PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?)"
       );
       pstmt.setInt(1,2); // administrator role...
       pstmt.setString(2,vo.getFunctionCodeSys06SYS16());
       pstmt.setString(3,"Y");
       pstmt.setString(4,"Y");
       pstmt.setString(5,"Y");
+			pstmt.setString(6,username);
+			pstmt.setTimestamp(7,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.execute();
 
       if (vo.isUseCompanyCodeSYS06()) {
         // insert records into SYS02...
         pstmt = conn.prepareStatement(
-          "insert into SYS02_COMPANIES_ACCESS(COMPANY_CODE_SYS01,PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL) "+
-          "select COMPANY_CODE,2,?,'Y','Y',Y' from SYS01_COMPANIES where ENABLED='Y'"
+          "insert into SYS02_COMPANIES_ACCESS(COMPANY_CODE_SYS01,PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL,CREATE_USER,CREATE_DATE) "+
+          "select COMPANY_CODE,2,?,'Y','Y',Y',?,? from SYS01_COMPANIES where ENABLED='Y'"
         );
         pstmt.setString(1,vo.getFunctionCodeSys06SYS16());
+				pstmt.setString(2,username);
+				pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.execute();
       }
 
@@ -160,7 +168,7 @@ public class InsertCustomFunctionBean  implements InsertCustomFunction {
       attribute2dbField.put("noteSYS16","NOTE");
       attribute2dbField.put("autoLoadDataSYS16","AUTO_LOAD_DATA");
       attribute2dbField.put("mainTablesSYS16","MAIN_TABLES");
-      res = QueryUtil.insertTable(
+      res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
           conn,
           new UserSessionParameters(username),
           vo,
@@ -210,7 +218,7 @@ public class InsertCustomFunctionBean  implements InsertCustomFunction {
           columnVO.setColumnTypeSYS22(ApplicationConsts.TYPE_TEXT);
         columnVO.setColumnVisibleSYS22(true);
         columnVO.setFunctionCodeSys06SYS22(vo.getFunctionCodeSys06SYS16());
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             columnVO,
@@ -276,7 +284,7 @@ public class InsertCustomFunctionBean  implements InsertCustomFunction {
             columnVO.setIsParamSYS22(true);
             columnVO.setIsParamRequiredSYS22(true);
             columnVO.setFunctionCodeSys06SYS22(vo.getFunctionCodeSys06SYS16());
-            res = QueryUtil.insertTable(
+            res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
                 conn,
                 new UserSessionParameters(username),
                 columnVO,
@@ -333,7 +341,7 @@ public class InsertCustomFunctionBean  implements InsertCustomFunction {
           }
 
       }
-      catch (Exception exx) {}    
+      catch (Exception exx) {}
     }
 
   }

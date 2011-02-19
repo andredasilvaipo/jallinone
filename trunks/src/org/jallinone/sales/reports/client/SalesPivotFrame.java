@@ -105,7 +105,7 @@ public class SalesPivotFrame extends InternalFrame {
 
   LookupController customerController = new LookupController();
   LookupServerDataLocator customerDataLocator = new LookupServerDataLocator();
-
+  private java.util.List itemTypes = null;
 
   public SalesPivotFrame() {
     try {
@@ -113,7 +113,7 @@ public class SalesPivotFrame extends InternalFrame {
       setSize(700,600);
       this.setTitle(ClientSettings.getInstance().getResources().getResource("pivot table for sales"));
       init();
-      
+
       MDIFrame.add(this);
       filterPanel.setMode(Consts.INSERT);
 
@@ -123,7 +123,7 @@ public class SalesPivotFrame extends InternalFrame {
       vo.setDocYear((BigDecimal)controlYear.getValue());
       controlDocStates.setValue(ApplicationConsts.CLOSED);
 
-      
+
     }
     catch(Exception e) {
       e.printStackTrace();
@@ -137,9 +137,9 @@ public class SalesPivotFrame extends InternalFrame {
       final Domain d = new Domain("ITEM_TYPES");
       if (!res.isError()) {
         ItemTypeVO vo = null;
-        java.util.List list = ((VOListResponse)res).getRows();
-        for(int i=0;i<list.size();i++) {
-          vo = (ItemTypeVO)list.get(i);
+        itemTypes = ((VOListResponse)res).getRows();
+        for(int i=0;i<itemTypes.size();i++) {
+          vo = (ItemTypeVO)itemTypes.get(i);
           d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
         }
       }
@@ -149,6 +149,9 @@ public class SalesPivotFrame extends InternalFrame {
           if (e.getStateChange() == e.SELECTED) {
             int selIndex = ( (JComboBox) e.getSource()).getSelectedIndex();
             Object selValue = d.getDomainPairList()[selIndex].getCode();
+						ItemTypeVO vo = (ItemTypeVO)itemTypes.get(controlItemType.getSelectedIndex());
+
+						treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01, vo.getCompanyCodeSys01ITM02());
             treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02, selValue);
           }
         }
@@ -166,7 +169,7 @@ public class SalesPivotFrame extends InternalFrame {
       itemController.setFrameTitle("items");
 
       itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
-      treeLevelDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
       itemDataLocator.setTreeDataLocator(treeLevelDataLocator);
       itemDataLocator.setNodeNameAttribute("descriptionSYS10");
 

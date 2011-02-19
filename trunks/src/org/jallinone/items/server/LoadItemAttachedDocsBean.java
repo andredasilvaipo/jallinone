@@ -50,7 +50,7 @@ import javax.sql.DataSource;
 public class LoadItemAttachedDocsBean  implements LoadItemAttachedDocs {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -58,9 +58,9 @@ public class LoadItemAttachedDocsBean  implements LoadItemAttachedDocs {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -70,7 +70,7 @@ public class LoadItemAttachedDocsBean  implements LoadItemAttachedDocs {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -81,14 +81,14 @@ public class LoadItemAttachedDocsBean  implements LoadItemAttachedDocs {
   }
 
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ItemAttachedDocVO getItemAttachedDoc(ItemPK pk) {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
@@ -101,11 +101,12 @@ public class LoadItemAttachedDocsBean  implements LoadItemAttachedDocs {
       String sql =
           "select ITM05_ITEM_ATTACHED_DOCS.COMPANY_CODE_SYS01,ITM05_ITEM_ATTACHED_DOCS.PROGRESSIVE_DOC14,"+
           "ITM05_ITEM_ATTACHED_DOCS.ITEM_CODE_ITM01,DOC14_DOCUMENTS.DESCRIPTION,ITM05_ITEM_ATTACHED_DOCS.PROGRESSIVE_HIE01, "+
-          "HIE01_LEVELS.PROGRESSIVE_HIE02 "+
-          "from ITM05_ITEM_ATTACHED_DOCS,DOC14_DOCUMENTS,HIE01_LEVELS where "+
+          "HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE02 "+
+          "from ITM05_ITEM_ATTACHED_DOCS,DOC14_DOCUMENTS,HIE01_COMPANY_LEVELS where "+
           "ITM05_ITEM_ATTACHED_DOCS.COMPANY_CODE_SYS01=DOC14_DOCUMENTS.COMPANY_CODE_SYS01 and "+
           "ITM05_ITEM_ATTACHED_DOCS.PROGRESSIVE_DOC14=DOC14_DOCUMENTS.PROGRESSIVE and "+
-          "HIE01_LEVELS.PROGRESSIVE=ITM05_ITEM_ATTACHED_DOCS.PROGRESSIVE_HIE01 and "+
+					"HIE01_COMPANY_LEVELS.COMPANY_CODE_SYS01=ITM05_ITEM_ATTACHED_DOCS.COMPANY_CODE_SYS01 and "+
+          "HIE01_COMPANY_LEVELS.PROGRESSIVE=ITM05_ITEM_ATTACHED_DOCS.PROGRESSIVE_HIE01 and "+
           "ITM05_ITEM_ATTACHED_DOCS.COMPANY_CODE_SYS01=? and "+
           "ITM05_ITEM_ATTACHED_DOCS.ITEM_CODE_ITM01=?";
 
@@ -115,7 +116,7 @@ public class LoadItemAttachedDocsBean  implements LoadItemAttachedDocs {
       attribute2dbField.put("itemCodeItm01ITM05","ITM05_ITEM_ATTACHED_DOCS.ITEM_CODE_ITM01");
       attribute2dbField.put("progressiveDoc14ITM05","ITM05_ITEM_ATTACHED_DOCS.PROGRESSIVE_DOC14");
       attribute2dbField.put("progressiveHie01ITM05","ITM05_ITEM_ATTACHED_DOCS.PROGRESSIVE_HIE01");
-      attribute2dbField.put("progressiveHie02HIE01","HIE01_LEVELS.PROGRESSIVE_HIE02");
+      attribute2dbField.put("progressiveHie02HIE01","HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE02");
 
       ItemPK pk = (ItemPK)gridParams.getOtherGridParams().get(ApplicationConsts.ITEM_PK);
 

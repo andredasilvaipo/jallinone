@@ -383,7 +383,7 @@ public class ItemSheetsGridPanel	extends JPanel {
 		itemController.setFrameTitle("items");
 
 		itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
-		treeLevelDataLocator.setServerMethodName("loadHierarchy");
+		treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
 		itemDataLocator.setTreeDataLocator(treeLevelDataLocator);
 		itemDataLocator.setNodeNameAttribute("descriptionSYS10");
 

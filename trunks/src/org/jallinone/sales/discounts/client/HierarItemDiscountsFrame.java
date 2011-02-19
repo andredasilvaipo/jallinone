@@ -93,6 +93,7 @@ public class HierarItemDiscountsFrame extends InternalFrame {
   LookupServerDataLocator currencyDataLocator = new LookupServerDataLocator();
   SaveButton saveButton1 = new SaveButton();
   EditButton editButton1 = new EditButton();
+  private java.util.List list = null;
 
 
   public HierarItemDiscountsFrame(final HierarItemDiscountsController controller) {
@@ -150,7 +151,7 @@ public class HierarItemDiscountsFrame extends InternalFrame {
     Domain d = new Domain("ITEM_TYPES");
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      java.util.List list = ((VOListResponse)res).getRows();
+      list = ((VOListResponse)res).getRows();
       for(int i=0;i<list.size();i++) {
         vo = (ItemTypeVO)list.get(i);
         d.addDomainPair(vo.getProgressiveHie02ITM02(),vo.getDescriptionSYS10());
@@ -160,6 +161,8 @@ public class HierarItemDiscountsFrame extends InternalFrame {
     comboBoxControl1.getComboBox().addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent e) {
         if (e.getStateChange()==e.SELECTED) {
+					ItemTypeVO vo = (ItemTypeVO)list.get(comboBoxControl1.getSelectedIndex());
+					hierarTreePanel.setCompanyCode(vo.getCompanyCodeSys01ITM02());
           hierarTreePanel.setProgressiveHIE02((BigDecimal)comboBoxControl1.getValue());
           hierarTreePanel.reloadTree();
           discountsGrid.clearData();

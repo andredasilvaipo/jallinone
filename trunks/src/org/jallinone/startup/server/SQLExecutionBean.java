@@ -275,7 +275,7 @@ public class SQLExecutionBean {
 						table = table.substring(10).trim();
 						if (table.endsWith(";"))
 							table = table.substring(0,table.length()-1);
-						ResultSet rset = conn.getMetaData().getExportedKeys(null,vo.getUsername().toUpperCase(),table);
+							ResultSet rset = conn.getMetaData().getExportedKeys(null,vo.getUsername().toUpperCase(),table);
 						String fkName = null;
 						String tName = null;
 						Statement stmt2 = conn.createStatement();
@@ -299,9 +299,32 @@ public class SQLExecutionBean {
 								!vo.getDriverName().equals("oracle.jdbc.driver.OracleDriver") &&
 								!vo.getDriverName().equals("com.microsoft.jdbc.sqlserver.SQLServerDriver") &&
 								!vo.getDriverName().equals("com.microsoft.sqlserver.jdbc.SQLServerDriver") &&
+								vo.getUrl().toLowerCase().indexOf("sqlserver")==-1 &&
 								!vo.getDriverName().equals("com.mysql.jdbc.Driver")) {
 							// case postgres...
 							rset = conn.getMetaData().getExportedKeys(null,null,null);
+							while(rset.next()) {
+								if (rset.getString(3).toUpperCase().equals(table)) {
+									tName = rset.getString(7);
+									fkName = rset.getString(12);
+
+									if (vo.getDriverName().equals("com.mysql.jdbc.Driver"))
+										stmt2.execute("ALTER TABLE "+tName+" DROP FOREIGN KEY "+fkName);
+									else
+										stmt2.execute("ALTER TABLE "+tName+" DROP CONSTRAINT "+fkName);
+								}
+							}
+							try {
+								rset.close();
+							}
+							catch (Exception ex6) {}
+						}
+						else if (!fksFound &&
+							 (vo.getUrl().toLowerCase().indexOf("sqlserver")!=-1 ||
+								vo.getDriverName().equals("com.microsoft.jdbc.sqlserver.SQLServerDriver") ||
+								vo.getDriverName().equals("com.microsoft.sqlserver.jdbc.SQLServerDriver"))) {
+							// case sql server...
+							rset = conn.getMetaData().getExportedKeys(null,null,table);
 							while(rset.next()) {
 								if (rset.getString(3).toUpperCase().equals(table)) {
 									tName = rset.getString(7);
@@ -325,6 +348,7 @@ public class SQLExecutionBean {
 						catch (Exception ex6) {}
 
           } // end if
+
 
           if (sql.toString().trim().length()>0) {
             pstmt = conn.prepareStatement(sql.toString().substring(0,sql.length() - 1));

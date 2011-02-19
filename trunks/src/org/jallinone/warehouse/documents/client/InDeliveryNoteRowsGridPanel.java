@@ -33,7 +33,7 @@ import org.jallinone.purchases.documents.java.PurchaseDocPK;
 import org.openswing.swing.table.client.GridController;
 import org.jallinone.purchases.documents.java.GridPurchaseDocRowVO;
 import org.jallinone.purchases.items.java.SupplierItemVO;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import java.util.HashSet;
 
 
@@ -220,7 +220,7 @@ public class InDeliveryNoteRowsGridPanel extends JPanel implements GenericButton
       itemController.setFrameTitle("supplier items");
 
       itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
-      treeLevelDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
       itemDataLocator.setTreeDataLocator(treeLevelDataLocator);
       itemDataLocator.setNodeNameAttribute("descriptionSYS10");
 
@@ -269,9 +269,11 @@ public class InDeliveryNoteRowsGridPanel extends JPanel implements GenericButton
         }
 
         public void beforeLookupAction(ValueObject parentVO) {
-          GridInDeliveryNoteRowVO vo = (GridInDeliveryNoteRowVO)grid.getVOListTableModel().getObjectForRow(grid.getSelectedRow());
-          treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02DOC09());
-          itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02DOC09());
+					GridInDeliveryNoteRowVO vo = (GridInDeliveryNoteRowVO)grid.getVOListTableModel().getObjectForRow(grid.getSelectedRow());
+					treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC09());
+					itemDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC09());
+					treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02DOC09());
+					itemDataLocator.getLookupFrameParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02DOC09());
         }
 
         public void forceValidate() {}
@@ -285,11 +287,11 @@ public class InDeliveryNoteRowsGridPanel extends JPanel implements GenericButton
       posController.setFrameTitle("warehouse positions");
 
       posController.setCodeSelectionWindow(posController.TREE_FRAME);
-      treeLevelPosDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelPosDataLocator.setServerMethodName("loadCompanyHierarchy");
       posDataLocator.setTreeDataLocator(treeLevelPosDataLocator);
       posDataLocator.setNodeNameAttribute("descriptionSYS10");
       posController.setAllowTreeLeafSelectionOnly(false);
-      posController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.HierarchyLevelVO");
+      posController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.CompanyHierarchyLevelVO");
       posController.addLookup2ParentLink("progressiveHIE01", "progressiveHie01DOC09");
       posController.addLookup2ParentLink("descriptionSYS10","locationDescriptionSYS10");
       posController.setFramePreferedSize(new Dimension(400,400));
@@ -379,9 +381,9 @@ public class InDeliveryNoteRowsGridPanel extends JPanel implements GenericButton
             return;
           orderRows.setMode(Consts.EDIT);
 
-          Response res = ClientUtils.getData("getRootLevel",parentVO.getProgressiveHie02WAR01());
+          Response res = ClientUtils.getData("getCompanyRootLevel",new Object[]{parentVO.getCompanyCodeSys01DOC08(),parentVO.getProgressiveHie02WAR01()});
           if (!res.isError()) {
-            HierarchyLevelVO posVO = (HierarchyLevelVO)((VOResponse)res).getVo();
+            CompanyHierarchyLevelVO posVO = (CompanyHierarchyLevelVO)((VOResponse)res).getVo();
             GridInDeliveryNoteRowVO rowVO = null;
             for(int i=0;i<orderRows.getVOListTableModel().getRowCount();i++) {
               rowVO = (GridInDeliveryNoteRowVO)orderRows.getVOListTableModel().getObjectForRow(i);
@@ -405,11 +407,11 @@ public class InDeliveryNoteRowsGridPanel extends JPanel implements GenericButton
       posPurchaseController.setFrameTitle("warehouse positions");
 
       posPurchaseController.setCodeSelectionWindow(posController.TREE_FRAME);
-      treeLevelPosPurchaseDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelPosPurchaseDataLocator.setServerMethodName("loadCompanyHierarchy");
       posPurchaseDataLocator.setTreeDataLocator(treeLevelPosPurchaseDataLocator);
       posPurchaseDataLocator.setNodeNameAttribute("descriptionSYS10");
       posPurchaseController.setAllowTreeLeafSelectionOnly(false);
-      posPurchaseController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.HierarchyLevelVO");
+      posPurchaseController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.CompanyHierarchyLevelVO");
       posPurchaseController.addLookup2ParentLink("progressiveHIE01", "progressiveHie01DOC09");
       posPurchaseController.addLookup2ParentLink("descriptionSYS10","locationDescriptionSYS10");
       posPurchaseController.setFramePreferedSize(new Dimension(400,400));

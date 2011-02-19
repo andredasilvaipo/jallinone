@@ -137,7 +137,7 @@ public class ABCServiceBean  implements ABCService {
         "T.DESCRIPTION,"+
         "T1.QTY,T2.QTY,"+
         "T1.UNSOLD_GRADE,T2.INVOICED_GRADE,ITM23.MIN_STOCK "+
-        "FROM SYS10_TRANSLATIONS T,ITM01_ITEMS I,TMP03_ABC T1 LEFT OUTER JOIN ("+
+        "FROM SYS10_COMPANY_TRANSLATIONS T,ITM01_ITEMS I,TMP03_ABC T1 LEFT OUTER JOIN ("+
         " SELECT QTY,INVOICED_GRADE,REPORT_ID,COMPANY_CODE_SYS01,ITEM_CODE_ITM01,"+
         " VARIANT_TYPE_ITM06,"+
         " VARIANT_CODE_ITM11,"+
@@ -181,6 +181,7 @@ public class ABCServiceBean  implements ABCService {
         "T1.QTY_TYPE=? AND "+
         "T1.COMPANY_CODE_SYS01=I.COMPANY_CODE_SYS01 AND "+
         "T1.ITEM_CODE_ITM01=I.ITEM_CODE AND "+
+				"I.COMPANY_CODE_SYS01=T.COMPANY_CODE_SYS01 AND "+
         "I.PROGRESSIVE_SYS10=T.PROGRESSIVE AND "+
         "T.LANGUAGE_CODE=?";
 
@@ -371,7 +372,7 @@ public class ABCServiceBean  implements ABCService {
         "VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13,"+
         "VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14,"+
         "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15,"+
-        "QTY_TYPE,QTY) "+
+        "QTY_TYPE,QTY,CREATE_USER,CREATE_DATE) "+
         "SELECT "+reportId+",WAR03_ITEMS_AVAILABILITY.COMPANY_CODE_SYS01,WAR03_ITEMS_AVAILABILITY.ITEM_CODE_ITM01,"+
         "WAR03_ITEMS_AVAILABILITY.VARIANT_TYPE_ITM06,WAR03_ITEMS_AVAILABILITY.VARIANT_CODE_ITM11,"+
         "WAR03_ITEMS_AVAILABILITY.VARIANT_TYPE_ITM07,WAR03_ITEMS_AVAILABILITY.VARIANT_CODE_ITM12,"+
@@ -379,7 +380,7 @@ public class ABCServiceBean  implements ABCService {
         "WAR03_ITEMS_AVAILABILITY.VARIANT_TYPE_ITM09,WAR03_ITEMS_AVAILABILITY.VARIANT_CODE_ITM14,"+
         "WAR03_ITEMS_AVAILABILITY.VARIANT_TYPE_ITM10,WAR03_ITEMS_AVAILABILITY.VARIANT_CODE_ITM15,"+
         "'"+ApplicationConsts.ABC_TYPE_GOOD_QTY+"',"+
-        "SUM(WAR03_ITEMS_AVAILABILITY.AVAILABLE_QTY) "+
+        "SUM(WAR03_ITEMS_AVAILABILITY.AVAILABLE_QTY),?,? "+
         "FROM WAR03_ITEMS_AVAILABILITY,ITM01_ITEMS WHERE "+
         "WAR03_ITEMS_AVAILABILITY.COMPANY_CODE_SYS01=? AND "+
         "WAR03_ITEMS_AVAILABILITY.WAREHOUSE_CODE_WAR01=? AND "+
@@ -393,9 +394,11 @@ public class ABCServiceBean  implements ABCService {
         "WAR03_ITEMS_AVAILABILITY.VARIANT_TYPE_ITM09,WAR03_ITEMS_AVAILABILITY.VARIANT_CODE_ITM14,"+
         "WAR03_ITEMS_AVAILABILITY.VARIANT_TYPE_ITM10,WAR03_ITEMS_AVAILABILITY.VARIANT_CODE_ITM15 ";
       pstmt = conn.prepareStatement(sql);
-      pstmt.setString(1,filterVO.getCompanyCode());
-      pstmt.setString(2,filterVO.getWarehouseCode());
-      pstmt.setBigDecimal(3,filterVO.getProgressiveHie02ITM01());
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(3,filterVO.getCompanyCode());
+      pstmt.setString(4,filterVO.getWarehouseCode());
+      pstmt.setBigDecimal(5,filterVO.getProgressiveHie02ITM01());
       pstmt.execute();
       pstmt.close();
 
@@ -408,7 +411,7 @@ public class ABCServiceBean  implements ABCService {
        "VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13,"+
        "VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14,"+
        "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15,"+
-       "QTY_TYPE,QTY) "+
+       "QTY_TYPE,QTY,CREATE_USER,CREATE_DATE) "+
        "SELECT "+reportId+",DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01,DOC02_SELLING_ITEMS.ITEM_CODE_ITM01,"+
        "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM06,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM11,"+
        "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM07,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM12,"+
@@ -416,7 +419,7 @@ public class ABCServiceBean  implements ABCService {
        "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM09,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM14,"+
        "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM10,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM15,"+
        "'"+ApplicationConsts.ABC_TYPE_SOLD_QTY+"',"+
-       "SUM(DOC02_SELLING_ITEMS.VALUE) "+
+       "SUM(DOC02_SELLING_ITEMS.VALUE),?,? "+
        "FROM DOC02_SELLING_ITEMS,DOC01_SELLING WHERE "+
        "DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01=? AND "+
        "DOC02_SELLING_ITEMS.PROGRESSIVE_HIE02=? AND "+
@@ -437,17 +440,19 @@ public class ABCServiceBean  implements ABCService {
        "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM09,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM14,"+
        "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM10,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM15 ";
       pstmt = conn.prepareStatement(sql);
-      pstmt.setString(1,filterVO.getCompanyCode());
-      pstmt.setBigDecimal(2,filterVO.getProgressiveHie02ITM01());
-      pstmt.setString(3,filterVO.getWarehouseCode());
-      pstmt.setString(4,filterVO.getCurrencyCodeREG03());
-      pstmt.setString(5,ApplicationConsts.SALE_INVOICE_DOC_TYPE);
-      pstmt.setString(6,ApplicationConsts.SALE_INVOICE_FROM_DN_DOC_TYPE);
-      pstmt.setString(7,ApplicationConsts.SALE_INVOICE_FROM_SD_DOC_TYPE);
-      pstmt.setString(8,ApplicationConsts.SALE_DESK_DOC_TYPE);
-      pstmt.setString(9,ApplicationConsts.CLOSED); // ???
-      pstmt.setDate(10,filterVO.getStartDate());
-      pstmt.setDate(11,filterVO.getEndDate());
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(3,filterVO.getCompanyCode());
+      pstmt.setBigDecimal(4,filterVO.getProgressiveHie02ITM01());
+      pstmt.setString(5,filterVO.getWarehouseCode());
+      pstmt.setString(6,filterVO.getCurrencyCodeREG03());
+      pstmt.setString(7,ApplicationConsts.SALE_INVOICE_DOC_TYPE);
+      pstmt.setString(8,ApplicationConsts.SALE_INVOICE_FROM_DN_DOC_TYPE);
+      pstmt.setString(9,ApplicationConsts.SALE_INVOICE_FROM_SD_DOC_TYPE);
+      pstmt.setString(10,ApplicationConsts.SALE_DESK_DOC_TYPE);
+      pstmt.setString(11,ApplicationConsts.CLOSED); // ???
+      pstmt.setDate(12,filterVO.getStartDate());
+      pstmt.setDate(13,filterVO.getEndDate());
       int rows = pstmt.executeUpdate();
       pstmt.close();
 
@@ -460,7 +465,7 @@ public class ABCServiceBean  implements ABCService {
        "VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13,"+
        "VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14,"+
        "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15,"+
-       "QTY_TYPE,QTY) "+
+       "QTY_TYPE,QTY,CREATE_USER,CREATE_DATE) "+
        "SELECT "+reportId+",DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01,DOC02_SELLING_ITEMS.ITEM_CODE_ITM01,"+
        "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM06,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM11,"+
        "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM07,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM12,"+
@@ -468,7 +473,7 @@ public class ABCServiceBean  implements ABCService {
        "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM09,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM14,"+
        "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM10,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM15,"+
        "'"+ApplicationConsts.ABC_TYPE_PAWNED_QTY+"',"+
-       "SUM(DOC02_SELLING_ITEMS.QTY-DOC02_SELLING_ITEMS.OUT_QTY) "+
+       "SUM(DOC02_SELLING_ITEMS.QTY-DOC02_SELLING_ITEMS.OUT_QTY),?,? "+
        "FROM DOC02_SELLING_ITEMS,DOC01_SELLING WHERE "+
        "DOC02_SELLING_ITEMS.COMPANY_CODE_SYS01=? AND "+
        "DOC02_SELLING_ITEMS.PROGRESSIVE_HIE02=? AND "+
@@ -489,15 +494,17 @@ public class ABCServiceBean  implements ABCService {
        "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM09,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM14,"+
        "DOC02_SELLING_ITEMS.VARIANT_TYPE_ITM10,DOC02_SELLING_ITEMS.VARIANT_CODE_ITM15 ";
       pstmt = conn.prepareStatement(sql);
-      pstmt.setString(1,filterVO.getCompanyCode());
-      pstmt.setBigDecimal(2,filterVO.getProgressiveHie02ITM01());
-      pstmt.setString(3,filterVO.getWarehouseCode());
-      pstmt.setString(4,filterVO.getCurrencyCodeREG03());
-      pstmt.setString(5,ApplicationConsts.SALE_ORDER_DOC_TYPE);
-      pstmt.setString(6,ApplicationConsts.SALE_CONTRACT_DOC_TYPE);
-      pstmt.setString(7,ApplicationConsts.CONFIRMED);
-      pstmt.setDate(8,filterVO.getStartDate());
-      pstmt.setDate(9,filterVO.getEndDate());
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(3,filterVO.getCompanyCode());
+      pstmt.setBigDecimal(4,filterVO.getProgressiveHie02ITM01());
+      pstmt.setString(5,filterVO.getWarehouseCode());
+      pstmt.setString(6,filterVO.getCurrencyCodeREG03());
+      pstmt.setString(7,ApplicationConsts.SALE_ORDER_DOC_TYPE);
+      pstmt.setString(8,ApplicationConsts.SALE_CONTRACT_DOC_TYPE);
+      pstmt.setString(9,ApplicationConsts.CONFIRMED);
+      pstmt.setDate(10,filterVO.getStartDate());
+      pstmt.setDate(11,filterVO.getEndDate());
       rows = pstmt.executeUpdate();
       pstmt.close();
 
@@ -510,7 +517,7 @@ public class ABCServiceBean  implements ABCService {
        "VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13,"+
        "VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14,"+
        "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15,"+
-       "QTY_TYPE,QTY) "+
+       "QTY_TYPE,QTY,CREATE_USER,CREATE_DATE) "+
        "SELECT "+reportId+",T1.COMPANY_CODE_SYS01,T1.ITEM_CODE_ITM01,"+
        "T1.VARIANT_TYPE_ITM06,T1.VARIANT_CODE_ITM11,"+
        "T1.VARIANT_TYPE_ITM07,T1.VARIANT_CODE_ITM12,"+
@@ -518,7 +525,7 @@ public class ABCServiceBean  implements ABCService {
        "T1.VARIANT_TYPE_ITM09,T1.VARIANT_CODE_ITM14,"+
        "T1.VARIANT_TYPE_ITM10,T1.VARIANT_CODE_ITM15,"+
        "'"+ApplicationConsts.ABC_TYPE_UNSOLD_QTY+"',"+
-       "T1.QTY-T2.QTY "+
+       "T1.QTY-T2.QTY,?,? "+
        "FROM TMP03_ABC T1,TMP03_ABC T2 WHERE "+
        "T1.REPORT_ID=? AND "+
        "T2.REPORT_ID=? AND "+
@@ -539,8 +546,10 @@ public class ABCServiceBean  implements ABCService {
        "T1.QTY-T2.QTY>0 ";
 
       pstmt = conn.prepareStatement(sql);
-      pstmt.setBigDecimal(1,filterVO.getReportId());
-      pstmt.setBigDecimal(2,filterVO.getReportId());
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setBigDecimal(3,filterVO.getReportId());
+      pstmt.setBigDecimal(4,filterVO.getReportId());
       rows = pstmt.executeUpdate();
       pstmt.close();
 
@@ -553,7 +562,7 @@ public class ABCServiceBean  implements ABCService {
        "VARIANT_TYPE_ITM08,VARIANT_CODE_ITM13,"+
        "VARIANT_TYPE_ITM09,VARIANT_CODE_ITM14,"+
        "VARIANT_TYPE_ITM10,VARIANT_CODE_ITM15,"+
-       "QTY_TYPE,QTY) "+
+       "QTY_TYPE,QTY,CREATE_USER,CREATE_DATE) "+
        "SELECT "+reportId+",T1.COMPANY_CODE_SYS01,T1.ITEM_CODE_ITM01,"+
        "T1.VARIANT_TYPE_ITM06,T1.VARIANT_CODE_ITM11,"+
        "T1.VARIANT_TYPE_ITM07,T1.VARIANT_CODE_ITM12,"+
@@ -561,7 +570,7 @@ public class ABCServiceBean  implements ABCService {
        "T1.VARIANT_TYPE_ITM09,T1.VARIANT_CODE_ITM14,"+
        "T1.VARIANT_TYPE_ITM10,T1.VARIANT_CODE_ITM15,"+
        "'"+ApplicationConsts.ABC_TYPE_UNSOLD_QTY+"',"+
-       "T1.QTY "+
+       "T1.QTY,?,? "+
        "FROM TMP03_ABC T1 WHERE "+
        "T1.REPORT_ID=? AND "+
        "T1.QTY_TYPE='"+ApplicationConsts.ABC_TYPE_GOOD_QTY+"' AND "+
@@ -583,8 +592,10 @@ public class ABCServiceBean  implements ABCService {
        ")";
 
       pstmt = conn.prepareStatement(sql);
-      pstmt.setBigDecimal(1,filterVO.getReportId());
-      pstmt.setBigDecimal(2,filterVO.getReportId());
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setBigDecimal(3,filterVO.getReportId());
+      pstmt.setBigDecimal(4,filterVO.getReportId());
       rows = pstmt.executeUpdate();
       pstmt.close();
 
@@ -615,55 +626,67 @@ public class ABCServiceBean  implements ABCService {
 
 
       // grade unsold items...
-      sql = "UPDATE TMP03_ABC SET UNSOLD_GRADE='A' WHERE REPORT_ID=? AND QTY_TYPE=? AND QTY/?>? ";
+      sql = "UPDATE TMP03_ABC SET UNSOLD_GRADE='A',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  WHERE REPORT_ID=? AND QTY_TYPE=? AND QTY/?>? ";
       pstmt = conn.prepareStatement(sql);
-      pstmt.setBigDecimal(1,filterVO.getReportId());
-      pstmt.setString(2,ApplicationConsts.ABC_TYPE_UNSOLD_QTY);
-      pstmt.setBigDecimal(3,totalUnsold);
-      pstmt.setBigDecimal(4,filterVO.getPerc1Unsold().divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setBigDecimal(3,filterVO.getReportId());
+      pstmt.setString(4,ApplicationConsts.ABC_TYPE_UNSOLD_QTY);
+      pstmt.setBigDecimal(5,totalUnsold);
+      pstmt.setBigDecimal(6,filterVO.getPerc1Unsold().divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
       pstmt.execute();
       pstmt.close();
 
-      sql = "UPDATE TMP03_ABC SET UNSOLD_GRADE='C' WHERE REPORT_ID=? AND QTY_TYPE=? AND QTY/?<? ";
+      sql = "UPDATE TMP03_ABC SET UNSOLD_GRADE='C',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  WHERE REPORT_ID=? AND QTY_TYPE=? AND QTY/?<? ";
       pstmt = conn.prepareStatement(sql);
-      pstmt.setBigDecimal(1,filterVO.getReportId());
-      pstmt.setString(2,ApplicationConsts.ABC_TYPE_UNSOLD_QTY);
-      pstmt.setBigDecimal(3,totalUnsold);
-      pstmt.setBigDecimal(4,filterVO.getPerc2Unsold().divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setBigDecimal(3,filterVO.getReportId());
+      pstmt.setString(4,ApplicationConsts.ABC_TYPE_UNSOLD_QTY);
+      pstmt.setBigDecimal(5,totalUnsold);
+      pstmt.setBigDecimal(6,filterVO.getPerc2Unsold().divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
       pstmt.execute();
       pstmt.close();
 
-      sql = "UPDATE TMP03_ABC SET UNSOLD_GRADE='B' WHERE REPORT_ID=? AND QTY_TYPE=? AND UNSOLD_GRADE IS NULL ";
+      sql = "UPDATE TMP03_ABC SET UNSOLD_GRADE='B',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  WHERE REPORT_ID=? AND QTY_TYPE=? AND UNSOLD_GRADE IS NULL ";
       pstmt = conn.prepareStatement(sql);
-      pstmt.setBigDecimal(1,filterVO.getReportId());
-      pstmt.setString(2,ApplicationConsts.ABC_TYPE_UNSOLD_QTY);
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setBigDecimal(3,filterVO.getReportId());
+      pstmt.setString(4,ApplicationConsts.ABC_TYPE_UNSOLD_QTY);
       pstmt.execute();
       pstmt.close();
 
 
       // grade invoiced items...
-      sql = "UPDATE TMP03_ABC SET INVOICED_GRADE='A' WHERE REPORT_ID=? AND QTY_TYPE=? AND QTY/?>? ";
+      sql = "UPDATE TMP03_ABC SET INVOICED_GRADE='A',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  WHERE REPORT_ID=? AND QTY_TYPE=? AND QTY/?>? ";
       pstmt = conn.prepareStatement(sql);
-      pstmt.setBigDecimal(1,filterVO.getReportId());
-      pstmt.setString(2,ApplicationConsts.ABC_TYPE_SOLD_QTY);
-      pstmt.setBigDecimal(3,totalSold);
-      pstmt.setBigDecimal(4,filterVO.getPerc1Invoiced().divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setBigDecimal(3,filterVO.getReportId());
+      pstmt.setString(4,ApplicationConsts.ABC_TYPE_SOLD_QTY);
+      pstmt.setBigDecimal(5,totalSold);
+      pstmt.setBigDecimal(6,filterVO.getPerc1Invoiced().divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
       pstmt.execute();
       pstmt.close();
 
-      sql = "UPDATE TMP03_ABC SET INVOICED_GRADE='C' WHERE REPORT_ID=? AND QTY_TYPE=? AND QTY/?<? ";
+      sql = "UPDATE TMP03_ABC SET INVOICED_GRADE='C',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  WHERE REPORT_ID=? AND QTY_TYPE=? AND QTY/?<? ";
       pstmt = conn.prepareStatement(sql);
-      pstmt.setBigDecimal(1,filterVO.getReportId());
-      pstmt.setString(2,ApplicationConsts.ABC_TYPE_SOLD_QTY);
-      pstmt.setBigDecimal(3,totalSold);
-      pstmt.setBigDecimal(4,filterVO.getPerc2Invoiced().divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setBigDecimal(3,filterVO.getReportId());
+      pstmt.setString(4,ApplicationConsts.ABC_TYPE_SOLD_QTY);
+      pstmt.setBigDecimal(5,totalSold);
+      pstmt.setBigDecimal(6,filterVO.getPerc2Invoiced().divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP));
       pstmt.execute();
       pstmt.close();
 
-      sql = "UPDATE TMP03_ABC SET INVOICED_GRADE='B' WHERE REPORT_ID=? AND QTY_TYPE=? AND INVOICED_GRADE IS NULL ";
+      sql = "UPDATE TMP03_ABC SET INVOICED_GRADE='B',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  WHERE REPORT_ID=? AND QTY_TYPE=? AND INVOICED_GRADE IS NULL ";
       pstmt = conn.prepareStatement(sql);
-      pstmt.setBigDecimal(1,filterVO.getReportId());
-      pstmt.setString(2,ApplicationConsts.ABC_TYPE_SOLD_QTY);
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setBigDecimal(3,filterVO.getReportId());
+      pstmt.setString(4,ApplicationConsts.ABC_TYPE_SOLD_QTY);
       pstmt.execute();
       pstmt.close();
 

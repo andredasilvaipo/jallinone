@@ -53,7 +53,7 @@ import javax.sql.DataSource;
 public class ProdOrderProductsBean  implements ProdOrderProducts {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -61,9 +61,9 @@ public class ProdOrderProductsBean  implements ProdOrderProducts {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -73,7 +73,7 @@ public class ProdOrderProductsBean  implements ProdOrderProducts {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -85,7 +85,7 @@ public class ProdOrderProductsBean  implements ProdOrderProducts {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ProdOrderProductVO getProdOrderProduct(ProdOrderPK pk) {
 	  throw new UnsupportedOperationException();
@@ -116,7 +116,7 @@ public class ProdOrderProductsBean  implements ProdOrderProducts {
         vo = (ProdOrderProductVO)list.get(i);
 
         // insert into DOC23...
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,
@@ -134,11 +134,13 @@ public class ProdOrderProductsBean  implements ProdOrderProducts {
       }
 
       // update order state...
-      pstmt = conn.prepareStatement("update DOC22_PRODUCTION_ORDER set DOC_STATE=? where COMPANY_CODE_SYS01=? and DOC_YEAR=? and DOC_NUMBER=?");
+      pstmt = conn.prepareStatement("update DOC22_PRODUCTION_ORDER set DOC_STATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_YEAR=? and DOC_NUMBER=?");
       pstmt.setString(1,ApplicationConsts.HEADER_BLOCKED);
-      pstmt.setString(2,vo.getCompanyCodeSys01DOC23());
-      pstmt.setBigDecimal(3,vo.getDocYearDOC23());
-      pstmt.setBigDecimal(4,vo.getDocNumberDOC23());
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,vo.getCompanyCodeSys01DOC23());
+      pstmt.setBigDecimal(5,vo.getDocYearDOC23());
+      pstmt.setBigDecimal(6,vo.getDocNumberDOC23());
       pstmt.execute();
       pstmt.close();
 
@@ -152,7 +154,7 @@ public class ProdOrderProductsBean  implements ProdOrderProducts {
     			conn.rollback();
     	}
     	catch (Exception ex3) {
-    	} 
+    	}
     	throw new Exception(ex.getMessage());
     }
     finally {
@@ -188,14 +190,15 @@ public class ProdOrderProductsBean  implements ProdOrderProducts {
 
       String sql =
           "select DOC24_PRODUCTION_COMPONENTS.COMPANY_CODE_SYS01,DOC24_PRODUCTION_COMPONENTS.DOC_YEAR,"+
-          "DOC24_PRODUCTION_COMPONENTS.DOC_NUMBER,DOC24_PRODUCTION_COMPONENTS.ITEM_CODE_ITM01,SYS10_TRANSLATIONS.DESCRIPTION,"+
+          "DOC24_PRODUCTION_COMPONENTS.DOC_NUMBER,DOC24_PRODUCTION_COMPONENTS.ITEM_CODE_ITM01,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+
           "DOC24_PRODUCTION_COMPONENTS.QTY,DOC24_PRODUCTION_COMPONENTS.PROGRESSIVE_HIE01,B.DESCRIPTION,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02 "+
-          " from DOC24_PRODUCTION_COMPONENTS,ITM01_ITEMS,SYS10_TRANSLATIONS,SYS10_TRANSLATIONS B "+
+          " from DOC24_PRODUCTION_COMPONENTS,ITM01_ITEMS,SYS10_COMPANY_TRANSLATIONS,SYS10_COMPANY_TRANSLATIONS B "+
           " where "+
           "DOC24_PRODUCTION_COMPONENTS.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
           "DOC24_PRODUCTION_COMPONENTS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
-          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"ITM01_ITEMS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "DOC24_PRODUCTION_COMPONENTS.COMPANY_CODE_SYS01=? and "+
           "DOC24_PRODUCTION_COMPONENTS.DOC_YEAR=? and "+
           "DOC24_PRODUCTION_COMPONENTS.DOC_NUMBER=? and "+
@@ -207,7 +210,7 @@ public class ProdOrderProductsBean  implements ProdOrderProducts {
       attribute2dbField.put("docYearDOC24","DOC24_PRODUCTION_COMPONENTS.DOC_YEAR");
       attribute2dbField.put("docNumberDOC24","DOC24_PRODUCTION_COMPONENTS.DOC_NUMBER");
       attribute2dbField.put("itemCodeItm01DOC24","DOC24_PRODUCTION_COMPONENTS.ITEM_CODE_ITM01");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("qtyDOC24","DOC24_PRODUCTION_COMPONENTS.QTY");
       attribute2dbField.put("progressiveHie01DOC24","DOC24_PRODUCTION_COMPONENTS.PROGRESSIVE_HIE01");
       attribute2dbField.put("locationDescriptionSYS10","B.DESCRIPTION");
@@ -274,7 +277,7 @@ public class ProdOrderProductsBean  implements ProdOrderProducts {
           "DOC23_PRODUCTION_PRODUCTS.DOC_NUMBER,DOC23_PRODUCTION_PRODUCTS.ITEM_CODE_ITM01,A.DESCRIPTION,"+
           "DOC23_PRODUCTION_PRODUCTS.QTY,DOC23_PRODUCTION_PRODUCTS.PROGRESSIVE_HIE01,B.DESCRIPTION,"+
           "DOC22_PRODUCTION_ORDER.WAREHOUSE_CODE_WAR01,DOC23_PRODUCTION_PRODUCTS.PROGRESSIVE_HIE02 "+
-          " from DOC23_PRODUCTION_PRODUCTS,ITM01_ITEMS,SYS10_TRANSLATIONS A,SYS10_TRANSLATIONS B,DOC22_PRODUCTION_ORDER "+
+          " from DOC23_PRODUCTION_PRODUCTS,ITM01_ITEMS,SYS10_COMPANY_TRANSLATIONS A,SYS10_COMPANY_TRANSLATIONS B,DOC22_PRODUCTION_ORDER "+
           " where "+
           "DOC23_PRODUCTION_PRODUCTS.COMPANY_CODE_SYS01=DOC22_PRODUCTION_ORDER.COMPANY_CODE_SYS01 and "+
           "DOC23_PRODUCTION_PRODUCTS.DOC_YEAR=DOC22_PRODUCTION_ORDER.DOC_YEAR and "+
@@ -283,6 +286,7 @@ public class ProdOrderProductsBean  implements ProdOrderProducts {
           "DOC23_PRODUCTION_PRODUCTS.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
           "DOC23_PRODUCTION_PRODUCTS.PROGRESSIVE_HIE01=B.PROGRESSIVE and "+
           "B.LANGUAGE_CODE=? and "+
+					"ITM01_ITEMS.COMPANY_CODE_SYS01=A.COMPANY_CODE_SYS01 and "+
           "ITM01_ITEMS.PROGRESSIVE_SYS10=A.PROGRESSIVE and "+
           "A.LANGUAGE_CODE=? and "+
           "DOC23_PRODUCTION_PRODUCTS.COMPANY_CODE_SYS01=? and "+
@@ -380,7 +384,7 @@ public class ProdOrderProductsBean  implements ProdOrderProducts {
         newVO = (ProdOrderProductVO)newVOs.get(i);
 
         // update DOC23 table...
-        res = QueryUtil.updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttributes,
@@ -409,7 +413,7 @@ public class ProdOrderProductsBean  implements ProdOrderProducts {
     			conn.rollback();
     	}
     	catch (Exception ex3) {
-    	} 
+    	}
     	throw new Exception(ex.getMessage());
     }
     finally {
@@ -468,7 +472,7 @@ public class ProdOrderProductsBean  implements ProdOrderProducts {
     			conn.rollback();
     	}
     	catch (Exception ex3) {
-    	} 
+    	}
     	throw new Exception(ex.getMessage());
     }
     finally {

@@ -14,7 +14,7 @@ import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.util.client.ClientUtils;
 import org.openswing.swing.domains.java.*;
 import org.jallinone.scheduler.callouts.java.CallOutTypeVO;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import java.util.ArrayList;
 import org.openswing.swing.lookup.client.*;
 import org.openswing.swing.tree.client.*;
@@ -97,6 +97,8 @@ public class CallOutFrame extends InternalFrame {
   LookupController levelController = new LookupController();
   LookupServerDataLocator levelDataLocator = new LookupServerDataLocator();
   TreeServerDataLocator treeLevelDataLocator = new TreeServerDataLocator();
+
+	private java.util.List itemTypes = null;
 
   BorderLayout borderLayout1 = new BorderLayout();
   JPanel macsButtonsPanel = new JPanel();
@@ -185,11 +187,11 @@ public class CallOutFrame extends InternalFrame {
       levelController.setFrameTitle("hierarchy");
       levelController.setAllowTreeLeafSelectionOnly(true);
       levelController.getLookupDataLocator().setNodeNameAttribute("descriptionSYS10");
-      levelController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.HierarchyLevelVO");
+      levelController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.CompanyHierarchyLevelVO");
       levelController.addLookup2ParentLink("progressiveHIE01", "progressiveHie01SCH10");
       levelController.addLookup2ParentLink("descriptionSYS10", "levelDescriptionSYS10");
       levelDataLocator.setTreeDataLocator(treeLevelDataLocator);
-      treeLevelDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
 
 
       init();
@@ -247,7 +249,7 @@ public class CallOutFrame extends InternalFrame {
       colItemCode.setControllerMethodName("getItemsList");
       itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
       itemController.setLookupDataLocator(itemDataLocator);
-      itemTreeLevelDataLocator.setServerMethodName("loadHierarchy");
+      itemTreeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
       itemDataLocator.setTreeDataLocator(itemTreeLevelDataLocator);
       itemController.setFrameTitle("items");
       itemController.setLookupValueObjectClassName("org.jallinone.items.java.GridItemVO");
@@ -357,9 +359,9 @@ public class CallOutFrame extends InternalFrame {
     d = new Domain("CALL_OUT_TYPES");
     if (!res.isError()) {
       CallOutTypeVO vo = null;
-      java.util.List list = ((VOListResponse)res).getRows();
-      for(int i=0;i<list.size();i++) {
-        vo = (CallOutTypeVO)list.get(i);
+      itemTypes = ((VOListResponse)res).getRows();
+      for(int i=0;i<itemTypes.size();i++) {
+        vo = (CallOutTypeVO)itemTypes.get(i);
         d.addDomainPair(vo.getProgressiveHie02SCH11(),vo.getDescriptionSYS10());
       }
     }
@@ -370,7 +372,10 @@ public class CallOutFrame extends InternalFrame {
 //          formPanel.getBinding((ValueObject)formPanel.getVOModel().getValueObject(),"progressiveHie02SCH10").push();
           controlLevel.getCodBox().setText(null);
           controlLevelDescr.setText("");
-          treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02, controlCallOutType.getValue());
+
+	        CallOutTypeVO vo = (CallOutTypeVO)itemTypes.get(controlCallOutType.getSelectedIndex());
+					treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01, vo.getCompanyCodeSys01SCH11());
+					treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02, controlCallOutType.getValue());
         }
       }
     });

@@ -467,7 +467,7 @@ public class CurrenciesBean  implements Currencies {
 				attribute2dbField.put("valueREG06","VALUE");
 
 				// insert into REG03...
-				Response res = QueryUtil.insertTable(
+				Response res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 						conn,
 						new UserSessionParameters(username),
 						vos,
@@ -493,7 +493,7 @@ public class CurrenciesBean  implements Currencies {
 					vo.setValueREG06(new BigDecimal(1).divide( vo.getValueREG06(),5,BigDecimal.ROUND_HALF_UP ));
 					inverseVOs.add(vo);
 				}
-				Response res2 = QueryUtil.insertTable(
+				Response res2 = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 						conn,
 						new UserSessionParameters(username),
 						inverseVOs,
@@ -638,27 +638,31 @@ public class CurrenciesBean  implements Currencies {
 
 				pstmt = conn.prepareStatement(
 						"update REG06_CURRENCY_CONVS set VALUE="+
-						(newVO.getValueREG06()==null?"null":conv.toString())+
+						(newVO.getValueREG06()==null?"null":conv.toString())+",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? "+
 						" where "+
 						"CURRENCY_CODE_REG03='"+newVO.getCurrencyCodeReg03REG06()+"' and "+
 						"CURRENCY_CODE2_REG03='"+newVO.getCurrencyCode2Reg03REG06()+"' and "+
 						"START_DATE=? and "+
 						"VALUE"+(oldVO.getValueREG06()==null?" is null":"="+oldVO.getValueREG06())
 				);
-				pstmt.setDate(1,newVO.getStartDateREG06());
-				pstmt.execute();
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.setDate(3,oldVO.getStartDateREG06());
+				int rows = pstmt.executeUpdate();
 				pstmt.close();
 
 	      pstmt = conn.prepareStatement(
 					"update REG06_CURRENCY_CONVS set VALUE="+
-					(newVO.getValueREG06()==null?"null":invConv.toString())+
+					(newVO.getValueREG06()==null?"null":invConv.toString())+",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? "+
 					" where "+
 					"CURRENCY_CODE_REG03='"+newVO.getCurrencyCode2Reg03REG06()+"' and "+
 					"CURRENCY_CODE2_REG03='"+newVO.getCurrencyCodeReg03REG06()+"' and "+
 				  "START_DATE=? "
 				);
-				pstmt.setDate(1,newVO.getStartDateREG06());
-				pstmt.execute();
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.setDate(3,oldVO.getStartDateREG06());
+				rows = pstmt.executeUpdate();
 				pstmt.close();
 
       }
@@ -702,26 +706,28 @@ public class CurrenciesBean  implements Currencies {
    * Business logic to execute.
    */
   public VOResponse deleteCurrencies(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
-
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-
-
-
-      stmt = conn.createStatement();
-
       CurrencyVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in REG03...
         vo = (CurrencyVO)list.get(i);
-        stmt.execute("update REG03_CURRENCIES set ENABLED='N' where CURRENCY_CODE='"+vo.getCurrencyCodeREG03()+"'");
+        pstmt = conn.prepareStatement(
+		       "update REG03_CURRENCIES set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where CURRENCY_CODE='"+vo.getCurrencyCodeREG03()+"'"
+				);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
 
         // delete records from REG06...
-        stmt.execute(
+        pstmt = conn.prepareStatement(
             "delete from REG06_CURRENCY_CONVS where CURRENCY_CODE_REG03 = '"+vo.getCurrencyCodeREG03()+"' or CURRENCY_CODE2_REG03 = '"+vo.getCurrencyCodeREG03()+"'"
         );
+				pstmt.execute();
+				pstmt.close();
       }
 
       return new VOResponse(new Boolean(true));
@@ -739,7 +745,7 @@ public class CurrenciesBean  implements Currencies {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {

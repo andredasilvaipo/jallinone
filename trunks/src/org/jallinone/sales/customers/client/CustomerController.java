@@ -119,7 +119,12 @@ public class CustomerController extends CompanyFormController {
         ApplicationConsts.SUBJECT_TYPE,
         ApplicationConsts.SUBJECT_ORGANIZATION_CUSTOMER
     );
-    detailFrame.getHierarchiesPanel().getGrid().reloadData();
+		try {
+			detailFrame.getHierarchiesPanel().getGrid().setMode(Consts.READONLY);
+			detailFrame.getHierarchiesPanel().getGrid().reloadData();
+		}
+		catch (Exception ex) {
+		}
 
     detailFrame.getDiscountsGrid().getOtherGridParams().put(
         ApplicationConsts.SUBJECT_PK,

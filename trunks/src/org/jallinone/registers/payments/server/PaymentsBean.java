@@ -17,7 +17,7 @@ import org.jallinone.registers.payments.java.PaymentInstalmentVO;
 import org.jallinone.registers.payments.java.PaymentTypeVO;
 import org.jallinone.registers.payments.java.PaymentVO;
 import org.jallinone.system.server.JAIOUserSessionParameters;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.openswing.swing.logger.server.Logger;
 import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.message.receive.java.VOListResponse;
@@ -129,19 +129,21 @@ public class PaymentsBean implements Payments {
 
       String sql =
           "select REG17_PAY_INSTALMENTS.COMPANY_CODE_SYS01,REG17_PAY_INSTALMENTS.PAYMENT_CODE_REG10,REG17_PAY_INSTALMENTS.RATE_NUMBER,"+
-          "SYS10_TRANSLATIONS.DESCRIPTION,REG17_PAY_INSTALMENTS.PERCENTAGE,REG17_PAY_INSTALMENTS.INSTALMENT_DAYS,"+
+          "SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,REG17_PAY_INSTALMENTS.PERCENTAGE,REG17_PAY_INSTALMENTS.INSTALMENT_DAYS,"+
           "REG17_PAY_INSTALMENTS.PAYMENT_TYPE_CODE_REG11 "+
-          " from REG17_PAY_INSTALMENTS,SYS10_TRANSLATIONS,REG11_PAY_TYPES where "+
+          " from REG17_PAY_INSTALMENTS,SYS10_COMPANY_TRANSLATIONS,REG11_PAY_TYPES where "+
 					"REG17_PAY_INSTALMENTS.COMPANY_CODE_SYS01='"+companyCodeSys01+"' and "+
+					"REG17_PAY_INSTALMENTS.COMPANY_CODE_SYS01=REG11_PAY_TYPES.COMPANY_CODE_SYS01 and "+
           "REG17_PAY_INSTALMENTS.PAYMENT_TYPE_CODE_REG11=REG11_PAY_TYPES.PAYMENT_TYPE_CODE and "+
-          "REG11_PAY_TYPES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and REG17_PAY_INSTALMENTS.PAYMENT_CODE_REG10='"+paymentCodeREG10+"'";
+					"REG11_PAY_TYPES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "REG11_PAY_TYPES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and REG17_PAY_INSTALMENTS.PAYMENT_CODE_REG10='"+paymentCodeREG10+"'";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01REG17","REG17_PAY_INSTALMENTS.COMPANY_CODE_SYS01");
       attribute2dbField.put("paymentCodeReg10REG17","REG17_PAY_INSTALMENTS.PAYMENT_CODE_REG10");
       attribute2dbField.put("rateNumberREG17","REG17_PAY_INSTALMENTS.RATE_NUMBER");
-      attribute2dbField.put("paymentTypeDescriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("paymentTypeDescriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("percentageREG17","REG17_PAY_INSTALMENTS.PERCENTAGE");
       attribute2dbField.put("instalmentDaysREG17","REG17_PAY_INSTALMENTS.INSTALMENT_DAYS");
       attribute2dbField.put("paymentTypeCodeReg11REG17","REG17_PAY_INSTALMENTS.PAYMENT_TYPE_CODE_REG11");
@@ -213,16 +215,18 @@ public class PaymentsBean implements Payments {
       String sql =
           "select REG11_PAY_TYPES.COMPANY_CODE_SYS01,REG11_PAY_TYPES.PAYMENT_TYPE_CODE,REG11_PAY_TYPES.PROGRESSIVE_SYS10,"+
 					"SYS10.DESCRIPTION,REG11_PAY_TYPES.ENABLED,REG11_PAY_TYPES.ACCOUNT_CODE_ACC02,ACC02_SYS10.DESCRIPTION "+
-					"from SYS10_TRANSLATIONS SYS10,REG11_PAY_TYPES "+
+					"from SYS10_COMPANY_TRANSLATIONS SYS10,REG11_PAY_TYPES "+
 					"LEFT OUTER JOIN ("+
-					"  SELECT ACC02_ACCOUNTS.COMPANY_CODE_SYS01,ACC02_ACCOUNTS.ACCOUNT_CODE,SYS10_TRANSLATIONS.DESCRIPTION "+
-					"  FROM SYS10_TRANSLATIONS,ACC02_ACCOUNTS where "+
-					"  ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-					"  SYS10_TRANSLATIONS.LANGUAGE_CODE=? "+
+					"  SELECT ACC02_ACCOUNTS.COMPANY_CODE_SYS01,ACC02_ACCOUNTS.ACCOUNT_CODE,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION "+
+					"  FROM SYS10_COMPANY_TRANSLATIONS,ACC02_ACCOUNTS where "+
+					"  ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+					"  ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+					"  SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? "+
           ") ACC02_SYS10 ON "+
 					"REG11_PAY_TYPES.COMPANY_CODE_SYS01=ACC02_SYS10.COMPANY_CODE_SYS01 and "+
 					"REG11_PAY_TYPES.ACCOUNT_CODE_ACC02=ACC02_SYS10.ACCOUNT_CODE "+
 					"where "+
+					"REG11_PAY_TYPES.COMPANY_CODE_SYS01=SYS10.COMPANY_CODE_SYS01 and "+
 					"REG11_PAY_TYPES.PROGRESSIVE_SYS10=SYS10.PROGRESSIVE and "+
           "REG11_PAY_TYPES.ENABLED='Y' and "+
 					"SYS10.LANGUAGE_CODE=? and "+
@@ -307,14 +311,17 @@ public class PaymentsBean implements Payments {
 
 
      String sql =
-          "select REG10_PAY_MODES.COMPANY_CODE_SYS01,REG10_PAY_MODES.PAYMENT_CODE,REG10_PAY_MODES.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
+          "select REG10_PAY_MODES.COMPANY_CODE_SYS01,REG10_PAY_MODES.PAYMENT_CODE,REG10_PAY_MODES.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+
           "REG10_PAY_MODES.ENABLED,REG10_PAY_MODES.STEP,REG10_PAY_MODES.INSTALMENT_NUMBER,REG10_PAY_MODES.START_DAY,"+
           "REG10_PAY_MODES.PAYMENT_TYPE_CODE_REG11,REG10_PAY_MODES.FIRST_INSTALMENT_DAYS,SYS10_REG11.DESCRIPTION, "+
 					"REG11_PAY_TYPES.ACCOUNT_CODE_ACC02 "+
-          " from REG10_PAY_MODES,SYS10_TRANSLATIONS,SYS10_TRANSLATIONS SYS10_REG11,REG11_PAY_TYPES where "+
-          "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          " from REG10_PAY_MODES,SYS10_COMPANY_TRANSLATIONS,SYS10_COMPANY_TRANSLATIONS SYS10_REG11,REG11_PAY_TYPES where "+
+					"REG10_PAY_MODES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"REG10_PAY_MODES.COMPANY_CODE_SYS01=REG11_PAY_TYPES.COMPANY_CODE_SYS01 and "+
           "REG10_PAY_MODES.PAYMENT_TYPE_CODE_REG11=REG11_PAY_TYPES.PAYMENT_TYPE_CODE and "+
+					"REG11_PAY_TYPES.COMPANY_CODE_SYS01=SYS10_REG11.COMPANY_CODE_SYS01 and "+
           "REG11_PAY_TYPES.PROGRESSIVE_SYS10=SYS10_REG11.PROGRESSIVE and "+
           "SYS10_REG11.LANGUAGE_CODE=? and "+
           "REG10_PAY_MODES.ENABLED='Y' and "+
@@ -324,7 +331,7 @@ public class PaymentsBean implements Payments {
 			attribute2dbField.put("companyCodeSys01REG10","REG10_PAY_MODES.COMPANY_CODE_SYS01");
       attribute2dbField.put("paymentCodeREG10","REG10_PAY_MODES.PAYMENT_CODE");
       attribute2dbField.put("progressiveSys10REG10","REG10_PAY_MODES.PROGRESSIVE_SYS10");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("enabledREG10","REG10_PAY_MODES.ENABLED");
       attribute2dbField.put("stepREG10","REG10_PAY_MODES.STEP");
       attribute2dbField.put("instalmentNumberREG10","REG10_PAY_MODES.INSTALMENT_NUMBER");
@@ -406,8 +413,8 @@ public class PaymentsBean implements Payments {
 			attribute2dbField.put("companyCodeSys01REG10","COMPANY_CODE_SYS01");
 
       pstmt = conn.prepareStatement(
-        "insert into REG17_PAY_INSTALMENTS(COMPANY_CODE_SYS01,PAYMENT_CODE_REG10,RATE_NUMBER,PAYMENT_TYPE_CODE_REG11,PERCENTAGE,INSTALMENT_DAYS) "+
-        "values(?,?,?,?,?,?)"
+        "insert into REG17_PAY_INSTALMENTS(COMPANY_CODE_SYS01,PAYMENT_CODE_REG10,RATE_NUMBER,PAYMENT_TYPE_CODE_REG11,PERCENTAGE,INSTALMENT_DAYS,CREATE_USER,CREATE_DATE) "+
+        "values(?,?,?,?,?,?,?,?)"
       );
 
       int days;
@@ -419,7 +426,7 @@ public class PaymentsBean implements Payments {
         vo.setEnabledREG10("Y");
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01REG10(),conn);
+        progressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01REG10(),username,conn);
         vo.setProgressiveSys10REG10(progressiveSYS10);
 
         // insert into REG10...
@@ -456,6 +463,8 @@ public class PaymentsBean implements Payments {
           else
             pstmt.setBigDecimal(5,new BigDecimal(100).subtract(total));
           pstmt.setInt(6,days);
+					pstmt.setString(7,username);
+					pstmt.setTimestamp(8,new java.sql.Timestamp(System.currentTimeMillis()));
           days += vo.getStepREG10().intValue();
           pstmt.execute();
         }
@@ -521,7 +530,7 @@ public class PaymentsBean implements Payments {
         vo.setEnabledREG11("Y");
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01REG11(),conn);
+        progressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01REG11(),username,conn);
         vo.setProgressiveSys10REG11(progressiveSYS10);
 
         // insert into REG11...
@@ -603,7 +612,7 @@ public class PaymentsBean implements Payments {
         oldVO = (PaymentInstalmentVO)oldVOs.get(i);
         newVO = (PaymentInstalmentVO)newVOs.get(i);
 
-        res = new QueryUtil().updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
@@ -678,7 +687,7 @@ public class PaymentsBean implements Payments {
         newVO = (PaymentVO)newVOs.get(i);
 
         // update SYS10 table...
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10REG10(),serverLanguageId,conn);
+        CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01REG10(),oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10REG10(),serverLanguageId,username,conn);
 
         res = new CustomizeQueryUtil().updateTable(
             conn,
@@ -757,7 +766,7 @@ public class PaymentsBean implements Payments {
         newVO = (PaymentTypeVO)newVOs.get(i);
 
         // update SYS10 table...
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10REG11(),serverLanguageId,conn);
+        CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01REG11(),oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10REG11(),serverLanguageId,username,conn);
 
         res = new CustomizeQueryUtil().updateTable(
             conn,
@@ -839,16 +848,18 @@ public class PaymentsBean implements Payments {
       String sql =
 				"select REG11_PAY_TYPES.COMPANY_CODE_SYS01,REG11_PAY_TYPES.PAYMENT_TYPE_CODE,REG11_PAY_TYPES.PROGRESSIVE_SYS10,"+
 				"SYS10.DESCRIPTION,REG11_PAY_TYPES.ENABLED,REG11_PAY_TYPES.ACCOUNT_CODE_ACC02,ACC02_SYS10.DESCRIPTION "+
-				"from SYS10_TRANSLATIONS SYS10,REG11_PAY_TYPES "+
+				"from SYS10_COMPANY_TRANSLATIONS SYS10,REG11_PAY_TYPES "+
 				"LEFT OUTER JOIN ("+
-				"  SELECT ACC02_ACCOUNTS.COMPANY_CODE_SYS01,ACC02_ACCOUNTS.ACCOUNT_CODE,SYS10_TRANSLATIONS.DESCRIPTION "+
-				"  FROM SYS10_TRANSLATIONS,ACC02_ACCOUNTS where "+
-				"  ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-				"  SYS10_TRANSLATIONS.LANGUAGE_CODE=? "+
+				"  SELECT ACC02_ACCOUNTS.COMPANY_CODE_SYS01,ACC02_ACCOUNTS.ACCOUNT_CODE,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION "+
+				"  FROM SYS10_COMPANY_TRANSLATIONS,ACC02_ACCOUNTS where "+
+				"  ACC02_ACCOUNTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+				"  ACC02_ACCOUNTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+				"  SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? "+
 				") ACC02_SYS10 ON "+
 				"REG11_PAY_TYPES.COMPANY_CODE_SYS01=ACC02_SYS10.COMPANY_CODE_SYS01 and "+
 				"REG11_PAY_TYPES.ACCOUNT_CODE_ACC02=ACC02_SYS10.ACCOUNT_CODE "+
 				"where "+
+				"REG11_PAY_TYPES.COMPANY_CODE_SYS01=SYS10.COMPANY_CODE_SYS01 and "+
 				"REG11_PAY_TYPES.PROGRESSIVE_SYS10=SYS10.PROGRESSIVE and "+
 				"REG11_PAY_TYPES.ENABLED='Y' and "+
 				"SYS10.LANGUAGE_CODE=? and "+
@@ -941,15 +952,17 @@ public class PaymentsBean implements Payments {
 				companies = companies.substring(0,companies.length()-1);
 
       String sql =
-          "select REG10_PAY_MODES.COMPANY_CODE_SYS01,REG10_PAY_MODES.PAYMENT_CODE,REG10_PAY_MODES.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
+          "select REG10_PAY_MODES.COMPANY_CODE_SYS01,REG10_PAY_MODES.PAYMENT_CODE,REG10_PAY_MODES.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+
           "REG10_PAY_MODES.ENABLED,REG10_PAY_MODES.STEP,REG10_PAY_MODES.INSTALMENT_NUMBER,REG10_PAY_MODES.START_DAY,"+
           "REG10_PAY_MODES.PAYMENT_TYPE_CODE_REG11,REG10_PAY_MODES.FIRST_INSTALMENT_DAYS,SYS10_REG11.DESCRIPTION, "+
 					"REG11_PAY_TYPES.ACCOUNT_CODE_ACC02 "+
-          " from REG10_PAY_MODES,SYS10_TRANSLATIONS,SYS10_TRANSLATIONS SYS10_REG11,REG11_PAY_TYPES where "+
-          "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          " from REG10_PAY_MODES,SYS10_COMPANY_TRANSLATIONS,SYS10_COMPANY_TRANSLATIONS SYS10_REG11,REG11_PAY_TYPES where "+
+					"REG10_PAY_MODES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "REG10_PAY_MODES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
 					"REG10_PAY_MODES.COMPANY_CODE_SYS01=REG11_PAY_TYPES.COMPANY_CODE_SYS01 and "+
           "REG10_PAY_MODES.PAYMENT_TYPE_CODE_REG11=REG11_PAY_TYPES.PAYMENT_TYPE_CODE and "+
+					"REG11_PAY_TYPES.COMPANY_CODE_SYS01=SYS10_REG11.COMPANY_CODE_SYS01 and "+
           "REG11_PAY_TYPES.PROGRESSIVE_SYS10=SYS10_REG11.PROGRESSIVE and "+
           "SYS10_REG11.LANGUAGE_CODE=? and "+
           "REG10_PAY_MODES.ENABLED='Y' and "+
@@ -960,7 +973,7 @@ public class PaymentsBean implements Payments {
 			attribute2dbField.put("companyCodeSys01REG10","REG10_PAY_MODES.COMPANY_CODE_SYS01");
       attribute2dbField.put("paymentCodeREG10","REG10_PAY_MODES.PAYMENT_CODE");
       attribute2dbField.put("progressiveSys10REG10","REG10_PAY_MODES.PROGRESSIVE_SYS10");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("enabledREG10","REG10_PAY_MODES.ENABLED");
       attribute2dbField.put("stepREG10","REG10_PAY_MODES.STEP");
       attribute2dbField.put("instalmentNumberREG10","REG10_PAY_MODES.INSTALMENT_NUMBER");
@@ -1021,25 +1034,26 @@ public class PaymentsBean implements Payments {
    * Business logic to execute.
    */
   public VOResponse deletePaymentTypes(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
-
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
-      stmt = conn.createStatement();
-
       PaymentTypeVO vo = null;
+			pstmt = conn.prepareStatement(
+			   "update REG11_PAY_TYPES set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? where COMPANY_CODE_SYS01=? and PAYMENT_TYPE_CODE=?"
+			);
       for(int i=0;i<list.size();i++) {
         // logically delete the record in REG11...
         vo = (PaymentTypeVO)list.get(i);
-        stmt.execute("update REG11_PAY_TYPES set ENABLED='N' where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG11()+"' and PAYMENT_TYPE_CODE='"+vo.getPaymentTypeCodeREG11()+"'");
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.setString(3,vo.getCompanyCodeSys01REG11());
+				pstmt.setString(4,vo.getPaymentTypeCodeREG11());
+			  pstmt.execute();
       }
 
-      Response answer = new VOResponse(new Boolean(true));
-
-
-      if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (VOResponse)answer;
+      return new VOResponse(new Boolean(true));
     }
     catch (Throwable ex) {
       Logger.error(username,this.getClass().getName(),"executeCommand","Error while deleting existing payment types",ex);
@@ -1055,7 +1069,7 @@ public class PaymentsBean implements Payments {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {
@@ -1080,17 +1094,23 @@ public class PaymentsBean implements Payments {
    * Business logic to execute.
    */
   public VOResponse deletePayments(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
+		PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
 
       PaymentVO vo = null;
+			pstmt = conn.prepareStatement(
+			   "update REG10_PAY_MODES set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? where COMPANY_CODE_SYS01=? and PAYMENT_CODE=?"
+			);
       for(int i=0;i<list.size();i++) {
         // logically delete the record in REG10...
         vo = (PaymentVO)list.get(i);
-        stmt.execute("update REG10_PAY_MODES set ENABLED='N' where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG10()+"' and PAYMENT_CODE='"+vo.getPaymentCodeREG10()+"'");
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.setString(3,vo.getCompanyCodeSys01REG10());
+				pstmt.setString(4,vo.getPaymentCodeREG10());
+				pstmt.execute();
       }
 
       Response answer = new VOResponse(new Boolean(true));
@@ -1110,7 +1130,7 @@ public class PaymentsBean implements Payments {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {

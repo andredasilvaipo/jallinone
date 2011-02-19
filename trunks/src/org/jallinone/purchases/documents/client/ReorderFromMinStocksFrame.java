@@ -492,6 +492,7 @@ public class ReorderFromMinStocksFrame extends InternalFrame {
 
 
   void buttonCreate_actionPerformed(ActionEvent e) {
+		grid.stopCellEditing();
     ReorderFromMinStockVO vo = null;
     ArrayList vos = new ArrayList();
     for(int i=0;i<grid.getVOListTableModel().getRowCount();i++) {

@@ -215,7 +215,7 @@ public class SaleDocRowsBean  implements SaleDocRows {
 				newVO.setOutQtyDOC02(newVO.getQtyDOC02());
 
       // update DOC02 table...
-      Response res = QueryUtil.updateTable(
+      Response res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
           conn,
           new UserSessionParameters(username),
           pkAttributes,
@@ -458,13 +458,15 @@ public class SaleDocRowsBean  implements SaleDocRows {
           voTemplate.getDocYearDOC02(),
           voTemplate.getDocNumberDOC02()
       );
-      pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and DOC_STATE=?");
+      pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and DOC_STATE=?");
       pstmt.setString(1,ApplicationConsts.HEADER_BLOCKED);
-      pstmt.setString(2,pk.getCompanyCodeSys01DOC01());
-      pstmt.setString(3,pk.getDocTypeDOC01());
-      pstmt.setBigDecimal(4,pk.getDocYearDOC01());
-      pstmt.setBigDecimal(5,pk.getDocNumberDOC01());
-			pstmt.setString(6,ApplicationConsts.OPENED);
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4,pk.getCompanyCodeSys01DOC01());
+      pstmt.setString(5,pk.getDocTypeDOC01());
+      pstmt.setBigDecimal(6,pk.getDocYearDOC01());
+      pstmt.setBigDecimal(7,pk.getDocNumberDOC01());
+			pstmt.setString(8,ApplicationConsts.OPENED);
       pstmt.execute();
 
       // recalculate totals...

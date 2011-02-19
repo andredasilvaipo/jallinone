@@ -14,7 +14,7 @@ import java.sql.*;
 
 import org.openswing.swing.logger.server.*;
 import org.jallinone.system.server.*;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.jallinone.sales.charges.java.*;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.commons.server.CustomizeQueryUtil;
@@ -55,7 +55,7 @@ import javax.sql.DataSource;
 public class ChargesBean  implements Charges {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -63,9 +63,9 @@ public class ChargesBean  implements Charges {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -75,7 +75,7 @@ public class ChargesBean  implements Charges {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -85,9 +85,9 @@ public class ChargesBean  implements Charges {
   public ChargesBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ChargeVO getCharge() {
 	  throw new UnsupportedOperationException();
@@ -118,18 +118,19 @@ public class ChargesBean  implements Charges {
 
       String sql =
           "select SAL06_CHARGES.COMPANY_CODE_SYS01,SAL06_CHARGES.CHARGE_CODE,SAL06_CHARGES.PROGRESSIVE_SYS10,"+
-          "SYS10_TRANSLATIONS.DESCRIPTION,SAL06_CHARGES.VALUE,SAL06_CHARGES.PERC,SAL06_CHARGES.VAT_CODE_REG01,"+
+          "SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,SAL06_CHARGES.VALUE,SAL06_CHARGES.PERC,SAL06_CHARGES.VAT_CODE_REG01,"+
           "SAL06_CHARGES.CURRENCY_CODE_REG03,SAL06_CHARGES.ENABLED"+
-          " from SAL06_CHARGES,SYS10_TRANSLATIONS where "+
-          "SAL06_CHARGES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          " from SAL06_CHARGES,SYS10_COMPANY_TRANSLATIONS where "+
+					"SAL06_CHARGES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "SAL06_CHARGES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SAL06_CHARGES.ENABLED='Y' and "+
           "SAL06_CHARGES.COMPANY_CODE_SYS01 in ("+companies+")";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SAL06","SAL06_CHARGES.COMPANY_CODE_SYS01");
       attribute2dbField.put("chargeCodeSAL06","SAL06_CHARGES.CHARGE_CODE");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveSys10SAL06","SAL06_CHARGES.PROGRESSIVE_SYS10");
       attribute2dbField.put("valueSAL06","SAL06_CHARGES.VALUE");
       attribute2dbField.put("percSAL06","SAL06_CHARGES.PERC");
@@ -230,7 +231,7 @@ public class ChargesBean  implements Charges {
         newVO = (ChargeVO)newVOs.get(i);
 
         // update SYS10 table...
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10SAL06(),serverLanguageId,conn);
+        CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01SAL06(),oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10SAL06(),serverLanguageId,username,conn);
 
         HashSet pkAttrs = new HashSet();
         pkAttrs.add("companyCodeSys01SAL06");
@@ -307,11 +308,12 @@ public class ChargesBean  implements Charges {
 
       String sql =
           "select SAL06_CHARGES.COMPANY_CODE_SYS01,SAL06_CHARGES.CHARGE_CODE,SAL06_CHARGES.PROGRESSIVE_SYS10,"+
-          "SYS10_TRANSLATIONS.DESCRIPTION,SAL06_CHARGES.VALUE,SAL06_CHARGES.PERC,SAL06_CHARGES.VAT_CODE_REG01,"+
+          "SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,SAL06_CHARGES.VALUE,SAL06_CHARGES.PERC,SAL06_CHARGES.VAT_CODE_REG01,"+
           "SAL06_CHARGES.CURRENCY_CODE_REG03,SAL06_CHARGES.ENABLED"+
-          " from SAL06_CHARGES,SYS10_TRANSLATIONS where "+
-          "SAL06_CHARGES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          " from SAL06_CHARGES,SYS10_COMPANY_TRANSLATIONS where "+
+					"SAL06_CHARGES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "SAL06_CHARGES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SAL06_CHARGES.ENABLED='Y' and "+
           "SAL06_CHARGES.COMPANY_CODE_SYS01='"+validationPars.getLookupValidationParameters().get(ApplicationConsts.COMPANY_CODE_SYS01)+"' and "+
           "SAL06_CHARGES.CHARGE_CODE='"+validationPars.getCode()+"'";
@@ -319,7 +321,7 @@ public class ChargesBean  implements Charges {
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SAL06","SAL06_CHARGES.COMPANY_CODE_SYS01");
       attribute2dbField.put("chargeCodeSAL06","SAL06_CHARGES.CHARGE_CODE");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveSys10SAL06","SAL06_CHARGES.PROGRESSIVE_SYS10");
       attribute2dbField.put("valueSAL06","SAL06_CHARGES.VALUE");
       attribute2dbField.put("percSAL06","SAL06_CHARGES.PERC");
@@ -436,7 +438,7 @@ public class ChargesBean  implements Charges {
         vo.setEnabledSAL06("Y");
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01SAL06(),conn);
+        progressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01SAL06(),username,conn);
         vo.setProgressiveSys10SAL06(progressiveSYS10);
 
 
@@ -493,22 +495,27 @@ public class ChargesBean  implements Charges {
 
 
 
-  
+
   /**
    * Business logic to execute.
    */
   public VOResponse deleteCharges(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
 
       ChargeVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in SAL06...
         vo = (ChargeVO)list.get(i);
-        stmt.execute("update SAL06_CHARGES set ENABLED='N' where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01SAL06()+"' and CHARGE_CODE='"+vo.getChargeCodeSAL06()+"'");
+        pstmt = conn.prepareStatement(
+		       "update SAL06_CHARGES set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01SAL06()+"' and CHARGE_CODE='"+vo.getChargeCodeSAL06()+"'"
+				);
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
       return new VOResponse(new Boolean(true));
@@ -527,7 +534,7 @@ public class ChargesBean  implements Charges {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {

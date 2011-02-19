@@ -14,7 +14,7 @@ import org.jallinone.items.java.DetailItemVO;
 import org.openswing.swing.form.client.Form;
 import org.jallinone.commons.java.ApplicationConsts;
 import java.math.BigDecimal;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.openswing.swing.util.client.ClientSettings;
 
 
@@ -306,7 +306,7 @@ public class ItemController extends CompanyFormController {
     vo.setRevisionITM01(new BigDecimal(1));
 
 		if (parentFrame != null) {
-			HierarchyLevelVO levelVO = (HierarchyLevelVO)parentFrame.getHierarTreePanel().getSelectedNode().getUserObject();
+			CompanyHierarchyLevelVO levelVO = (CompanyHierarchyLevelVO)parentFrame.getHierarTreePanel().getSelectedNode().getUserObject();
 			vo.setProgressiveHie01ITM01(levelVO.getProgressiveHIE01());
 			vo.setProgressiveHie02ITM01(levelVO.getProgressiveHie02HIE01());
 			vo.setLevelDescriptionSYS10(levelVO.getDescriptionSYS10());

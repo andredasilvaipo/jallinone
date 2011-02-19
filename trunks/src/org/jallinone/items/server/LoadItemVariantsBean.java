@@ -60,7 +60,7 @@ public class LoadItemVariantsBean implements LoadItemVariants {
 
 
 
-	private DataSource dataSource; 
+	private DataSource dataSource;
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -70,7 +70,7 @@ public class LoadItemVariantsBean implements LoadItemVariants {
   private Connection conn = null;
 
 	/**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
 		this.conn = conn;
@@ -80,7 +80,7 @@ public class LoadItemVariantsBean implements LoadItemVariants {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-		
+
 		Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
 	}
 
@@ -113,30 +113,30 @@ public class LoadItemVariantsBean implements LoadItemVariants {
 	}
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public ItemVariantVO getItemVariant(ItemPK pk) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public VariantNameVO getVariantName() {
-		throw new UnsupportedOperationException();  
+		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * Business logic to execute.
 	 */
 	public VOListResponse loadItemVariants(GridParams pars,String serverLanguageId,String username)  throws Throwable{
-		
+
 		PreparedStatement pstmt = null;
 
 		Connection conn = null;
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
-	
+
 			String tableName = (String)pars.getOtherGridParams().get(ApplicationConsts.TABLE_NAME);
 			ItemPK pk = (ItemPK)pars.getOtherGridParams().get(ApplicationConsts.ITEM_PK);
 			String productVariant = (String)productVariants.get(tableName);
@@ -147,12 +147,14 @@ public class LoadItemVariantsBean implements LoadItemVariants {
 			String sql =
 				"select "+tableName+"."+variantTypeJoin+","+tableName+".VARIANT_CODE,A.DESCRIPTION,B.DESCRIPTION, "+
 				tableName+".PROGRESSIVE_SYS10,"+variantType+".PROGRESSIVE_SYS10 "+
-				"from "+tableName+","+variantType+",SYS10_TRANSLATIONS A,SYS10_TRANSLATIONS B "+
+				"from "+tableName+","+variantType+",SYS10_COMPANY_TRANSLATIONS A,SYS10_COMPANY_TRANSLATIONS B "+
 				"where "+
 				tableName+".COMPANY_CODE_SYS01=? and "+
 				tableName+".COMPANY_CODE_SYS01="+variantType+".COMPANY_CODE_SYS01 and "+
 				tableName+"."+variantTypeJoin+"="+variantType+".VARIANT_TYPE and "+
+				tableName+".COMPANY_CODE_SYS01=A.COMPANY_CODE_SYS01 and "+
 				tableName+".PROGRESSIVE_SYS10=A.PROGRESSIVE and A.LANGUAGE_CODE=? and "+
+				variantType+".COMPANY_CODE_SYS01=B.COMPANY_CODE_SYS01 and "+
 				variantType+".PROGRESSIVE_SYS10=B.PROGRESSIVE and B.LANGUAGE_CODE=? and "+
 				tableName+".ENABLED='Y' and "+
 				variantType+".ENABLED='Y' and "+//and not "+tableName+"."+variantTypeJoin+"=? and "+

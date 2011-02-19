@@ -119,11 +119,13 @@ public class UpdateItemBean  implements UpdateItem {
       }
 
       // update item description...
-      TranslationUtils.updateTranslation(
+      CompanyTranslationUtils.updateTranslation(
+  		    newVO.getCompanyCodeSys01(),
           oldVO.getDescriptionSYS10(),
           newVO.getDescriptionSYS10(),
           newVO.getProgressiveSys10ITM01(),
           serverLanguageId,
+					username,
           conn
       );
 
@@ -135,15 +137,17 @@ public class UpdateItemBean  implements UpdateItem {
            oldVO.getAddDescriptionSYS10()!=null && oldVO.getAddDescriptionSYS10().trim().length()>0 && oldVO.getAddDescriptionSYS10()!=null && !oldVO.getAddDescriptionSYS10().equals(newVO.getAddDescriptionSYS10()))) {
         // update item additional description...
         if (newVO.getAddProgressiveSys10ITM01()!=null)
-          TranslationUtils.updateTranslation(
+          CompanyTranslationUtils.updateTranslation(
+			         newVO.getCompanyCodeSys01(),
               oldVO.getAddDescriptionSYS10(),
               newVO.getAddDescriptionSYS10(),
               newVO.getAddProgressiveSys10ITM01(),
               serverLanguageId,
+							username,
               conn
           );
         else {
-          BigDecimal addProgressiveSYS10 = TranslationUtils.insertTranslations(newVO.getAddDescriptionSYS10(),newVO.getCompanyCodeSys01ITM01(),conn);
+          BigDecimal addProgressiveSYS10 = CompanyTranslationUtils.insertTranslations(newVO.getAddDescriptionSYS10(),newVO.getCompanyCodeSys01ITM01(),username,conn);
           newVO.setAddProgressiveSys10ITM01(addProgressiveSYS10);
         }
       }
@@ -315,17 +319,17 @@ public class UpdateItemBean  implements UpdateItem {
 
         // retrieve the min stock for the item that does not have variants...
         String sql =
-            "update ITM23_VARIANT_MIN_STOCKS set MIN_STOCK=? where "+
+            "update ITM23_VARIANT_MIN_STOCKS set MIN_STOCK=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
             "COMPANY_CODE_SYS01=? and ITEM_CODE_ITM01=? and   "+
             "VARIANT_TYPE_ITM06=? and VARIANT_TYPE_ITM07=? and VARIANT_TYPE_ITM08=? and VARIANT_TYPE_ITM09=? and VARIANT_TYPE_ITM10=? and "+
             "VARIANT_CODE_ITM11=? and VARIANT_CODE_ITM12=? and VARIANT_CODE_ITM13=? and VARIANT_CODE_ITM14=? and VARIANT_CODE_ITM15=? ";
 
         pstmt = conn.prepareStatement(sql);
         pstmt.setBigDecimal(1,newVO.getMinStockITM23());
-        pstmt.setString(2,newVO.getCompanyCodeSys01());
-        pstmt.setString(3,newVO.getItemCodeITM01());
-        pstmt.setString(4,ApplicationConsts.JOLLY);
-        pstmt.setString(5,ApplicationConsts.JOLLY);
+				pstmt.setString(2,username);
+				pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+        pstmt.setString(4,newVO.getCompanyCodeSys01());
+        pstmt.setString(5,newVO.getItemCodeITM01());
         pstmt.setString(6,ApplicationConsts.JOLLY);
         pstmt.setString(7,ApplicationConsts.JOLLY);
         pstmt.setString(8,ApplicationConsts.JOLLY);
@@ -334,6 +338,8 @@ public class UpdateItemBean  implements UpdateItem {
         pstmt.setString(11,ApplicationConsts.JOLLY);
         pstmt.setString(12,ApplicationConsts.JOLLY);
         pstmt.setString(13,ApplicationConsts.JOLLY);
+        pstmt.setString(14,ApplicationConsts.JOLLY);
+        pstmt.setString(15,ApplicationConsts.JOLLY);
         pstmt.execute();
         pstmt.close();
       }

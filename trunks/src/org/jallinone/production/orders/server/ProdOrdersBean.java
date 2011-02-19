@@ -398,19 +398,21 @@ public class ProdOrdersBean  implements ProdOrders {
 
 
 			 // update order state...
-			 pstmt = conn.prepareStatement("update DOC22_PRODUCTION_ORDER set DOC_STATE=?,DOC_SEQUENCE=? where COMPANY_CODE_SYS01=? and DOC_YEAR=? and DOC_NUMBER=?");
+			 pstmt = conn.prepareStatement("update DOC22_PRODUCTION_ORDER set DOC_STATE=?,DOC_SEQUENCE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_YEAR=? and DOC_NUMBER=?");
 			 pstmt.setString(1,ApplicationConsts.CONFIRMED);
 			 pstmt.setInt(2,docSequenceDOC22);
-			 pstmt.setString(3,vo.getCompanyCodeSys01DOC22());
-			 pstmt.setBigDecimal(4,vo.getDocYearDOC22());
-			 pstmt.setBigDecimal(5,vo.getDocNumberDOC22());
+			 pstmt.setString(3,username);
+			 pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
+			 pstmt.setString(5,vo.getCompanyCodeSys01DOC22());
+			 pstmt.setBigDecimal(6,vo.getDocYearDOC22());
+			 pstmt.setBigDecimal(7,vo.getDocNumberDOC22());
 			 pstmt.execute();
 			 pstmt.close();
 
 
 			 // insert components in DOC24 for the specified production order...
 			 pstmt2 = conn.prepareStatement(
-					 "insert into DOC24_PRODUCTION_COMPONENTS(COMPANY_CODE_SYS01,DOC_YEAR,DOC_NUMBER,ITEM_CODE_ITM01,QTY,PROGRESSIVE_HIE01) values(?,?,?,?,?,?)"
+					 "insert into DOC24_PRODUCTION_COMPONENTS(COMPANY_CODE_SYS01,DOC_YEAR,DOC_NUMBER,ITEM_CODE_ITM01,QTY,PROGRESSIVE_HIE01,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?,?)"
 			 );
 			 ProdOrderComponentVO compVO = null;
 			 ProdOrderComponentVO auxCompVO = null;
@@ -463,6 +465,8 @@ public class ProdOrdersBean  implements ProdOrders {
 					 pstmt2.setString(4, compVO.getItemCodeItm01DOC24());
 					 pstmt2.setBigDecimal(5, delta);
 					 pstmt2.setBigDecimal(6, compVO.getProgressiveHie01DOC24());
+					 pstmt2.setString(7,username);
+					 pstmt2.setTimestamp(8,new java.sql.Timestamp(System.currentTimeMillis()));
 					 pstmt2.execute();
 
 					 // create a warehouse movement...
@@ -566,12 +570,12 @@ public class ProdOrdersBean  implements ProdOrders {
 		 PreparedStatement pstmt2 = null;
 		 try {
 			 pstmt = conn.prepareStatement(
-					 "insert into DOC25_PRODUCTION_PROD_COMPS(COMPANY_CODE_SYS01,DOC_YEAR,DOC_NUMBER,PRODUCT_ITEM_CODE_ITM01,COMPONENT_ITEM_CODE_ITM01,QTY,SEQUENCE) values(?,?,?,?,?,?,?)"
+					 "insert into DOC25_PRODUCTION_PROD_COMPS(COMPANY_CODE_SYS01,DOC_YEAR,DOC_NUMBER,PRODUCT_ITEM_CODE_ITM01,COMPONENT_ITEM_CODE_ITM01,QTY,SEQUENCE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?,?,?)"
 			 );
 			 pstmt2 = conn.prepareStatement(
 					 "insert into DOC26_PRODUCTION_OPERATIONS(COMPANY_CODE_SYS01,DOC_YEAR,DOC_NUMBER,ITEM_CODE_ITM01,PHASE_NUMBER,"+
 					 "OPERATION_CODE,OPERATION_DESCRIPTION,VALUE,DURATION,MANUFACTURE_TYPE,COMPLETION_PERC,QTY,TASK_CODE,TASK_DESCRIPTION,"+
-					 "MACHINERY_CODE,MACHINERY_DESCRIPTION,SUBST_OPERATION_CODE,SUBST_OPERATION_DESCRIPTION,NOTE) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+					 "MACHINERY_CODE,MACHINERY_DESCRIPTION,SUBST_OPERATION_CODE,SUBST_OPERATION_DESCRIPTION,NOTE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 			 );
 
 			 ProdOrderProductVO prodVO = null;
@@ -653,6 +657,8 @@ public class ProdOrdersBean  implements ProdOrders {
 					 pstmt.setString(5,vo.getItemCodeItm01ITM03());
 					 pstmt.setBigDecimal(6,delta);
 					 pstmt.setInt(7,sequence);
+					 pstmt.setString(8,username);
+					 pstmt.setTimestamp(9,new java.sql.Timestamp(System.currentTimeMillis()));
 					 pstmt.execute();
 					 sequence++;
 				 }
@@ -696,6 +702,8 @@ public class ProdOrdersBean  implements ProdOrders {
 							 pstmt.setString(5,itemCode);
 							 pstmt.setBigDecimal(6,delta);
 							 pstmt.setInt(7,sequence);
+							 pstmt.setString(8,username);
+							 pstmt.setTimestamp(9,new java.sql.Timestamp(System.currentTimeMillis()));
 							 pstmt.execute();
 							 sequence++;
 						 }
@@ -711,6 +719,8 @@ public class ProdOrdersBean  implements ProdOrders {
 				 pstmt.setString(5,vo.getItemCodeItm01ITM03());
 				 pstmt.setBigDecimal(6,vo.getQtyITM03());
 				 pstmt.setInt(7,sequence);
+				 pstmt.setString(8,username);
+				 pstmt.setTimestamp(9,new java.sql.Timestamp(System.currentTimeMillis()));
 				 pstmt.execute();
 				 sequence++;
 			 }
@@ -775,6 +785,8 @@ public class ProdOrdersBean  implements ProdOrders {
 			 pstmt2.setString(17,phaseVO.getSubstOperationCodePro04PRO02());
 			 pstmt2.setString(18,phaseVO.getDescription2());
 			 pstmt2.setString(19,phaseVO.getNotePRO02());
+			 pstmt2.setString(20,username);
+			 pstmt2.setTimestamp(21,new java.sql.Timestamp(System.currentTimeMillis()));
 			 pstmt2.execute();
 
 			 try {
@@ -805,11 +817,13 @@ public class ProdOrdersBean  implements ProdOrders {
       mov.setConn(conn); // use same transaction...
 
       // update order state...
-      pstmt = conn.prepareStatement("update DOC22_PRODUCTION_ORDER set DOC_STATE=? where COMPANY_CODE_SYS01=? and DOC_YEAR=? and DOC_NUMBER=?");
+      pstmt = conn.prepareStatement("update DOC22_PRODUCTION_ORDER set DOC_STATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_YEAR=? and DOC_NUMBER=?");
       pstmt.setString(1, ApplicationConsts.CLOSED);
-      pstmt.setString(2, vo.getCompanyCodeSys01DOC22());
-      pstmt.setBigDecimal(3, vo.getDocYearDOC22());
-      pstmt.setBigDecimal(4, vo.getDocNumberDOC22());
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(4, vo.getCompanyCodeSys01DOC22());
+      pstmt.setBigDecimal(5, vo.getDocYearDOC22());
+      pstmt.setBigDecimal(6, vo.getDocNumberDOC22());
       pstmt.execute();
       pstmt.close();
       vo.setDocStateDOC22(ApplicationConsts.CLOSED);

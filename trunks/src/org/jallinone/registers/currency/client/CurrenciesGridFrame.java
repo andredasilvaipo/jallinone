@@ -242,7 +242,6 @@ public class CurrenciesGridFrame extends InternalFrame {
     colStartDate.setColumnName("startDateREG06");
     colStartDate.setColumnFilterable(true);
     colStartDate.setColumnSortable(true);
-    colStartDate.setEditableOnEdit(true);
     colStartDate.setEditableOnInsert(true);
     colStartDate.setHeaderColumnName("startDate");
     colStartDate.setSortVersus(org.openswing.swing.util.java.Consts.DESC_SORTED);

@@ -44,6 +44,8 @@ public class OrderTrackingFilterVO extends ValueObjectImpl {
   private Date docDate;
   private String docState;
   private BigDecimal progressiveREG04;
+	private Date fromDate;
+	private Date toDate;
 
 
   public OrderTrackingFilterVO() {
@@ -110,5 +112,17 @@ public class OrderTrackingFilterVO extends ValueObjectImpl {
   }
   public void setProgressiveREG04(BigDecimal progressiveREG04) {
     this.progressiveREG04 = progressiveREG04;
+  }
+  public Date getFromDate() {
+    return fromDate;
+  }
+  public Date getToDate() {
+    return toDate;
+  }
+  public void setFromDate(Date fromDate) {
+    this.fromDate = fromDate;
+  }
+  public void setToDate(Date toDate) {
+    this.toDate = toDate;
   }
 }

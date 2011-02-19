@@ -30,7 +30,7 @@ import org.jallinone.warehouse.tables.movements.java.MovementVO;
 import org.jallinone.warehouse.java.WarehouseVO;
 import org.jallinone.items.java.GridItemVO;
 import org.openswing.swing.util.java.Consts;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.openswing.swing.message.receive.java.VOResponse;
 import org.jallinone.variants.client.ProductVariantsPanel;
 import org.jallinone.variants.client.ProductVariantsController;
@@ -214,9 +214,9 @@ public class ManualMovementDetailFrame extends InternalFrame {
             treeLevelPosDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,lookupVO.getProgressiveHie02WAR01());
 
             // set root level as default position...
-            Response res = ClientUtils.getData("getRootLevel",lookupVO.getProgressiveHie02WAR01());
+            Response res = ClientUtils.getData("getCompanyRootLevel",new Object[]{lookupVO.getCompanyCodeSys01WAR01(),lookupVO.getProgressiveHie02WAR01()});
             if (!res.isError()) {
-              HierarchyLevelVO posVO = (HierarchyLevelVO)((VOResponse)res).getVo();
+              CompanyHierarchyLevelVO posVO = (CompanyHierarchyLevelVO)((VOResponse)res).getVo();
               vo.setProgressiveHie01WAR02(posVO.getProgressiveHIE01());
               vo.setLocationDescriptionSYS10(posVO.getDescriptionSYS10());
             }
@@ -244,7 +244,7 @@ public class ManualMovementDetailFrame extends InternalFrame {
       itemController.setFrameTitle("items");
 
       itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
-      treeLevelDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
       itemDataLocator.setTreeDataLocator(treeLevelDataLocator);
       itemDataLocator.setNodeNameAttribute("descriptionSYS10");
 
@@ -300,11 +300,11 @@ public class ManualMovementDetailFrame extends InternalFrame {
       posController.setFrameTitle("warehouse positions");
 
       posController.setCodeSelectionWindow(posController.TREE_FRAME);
-      treeLevelPosDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelPosDataLocator.setServerMethodName("loadCompanyHierarchy");
       posDataLocator.setTreeDataLocator(treeLevelPosDataLocator);
       posDataLocator.setNodeNameAttribute("descriptionSYS10");
 
-      posController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.HierarchyLevelVO");
+      posController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.CompanyHierarchyLevelVO");
       posController.addLookup2ParentLink("progressiveHIE01", "progressiveHie01WAR02");
       posController.addLookup2ParentLink("descriptionSYS10","locationDescriptionSYS10");
       posController.setFramePreferedSize(new Dimension(400,400));

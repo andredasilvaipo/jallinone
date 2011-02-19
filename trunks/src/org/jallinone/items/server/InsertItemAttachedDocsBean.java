@@ -47,7 +47,7 @@ import javax.sql.DataSource;
 public class InsertItemAttachedDocsBean  implements InsertItemAttachedDocs {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -55,9 +55,9 @@ public class InsertItemAttachedDocsBean  implements InsertItemAttachedDocs {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -67,7 +67,7 @@ public class InsertItemAttachedDocsBean  implements InsertItemAttachedDocs {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -77,14 +77,14 @@ public class InsertItemAttachedDocsBean  implements InsertItemAttachedDocs {
   public InsertItemAttachedDocsBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ItemAttachedDocVO getItemAttachedDoc() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
@@ -107,7 +107,7 @@ public class InsertItemAttachedDocsBean  implements InsertItemAttachedDocs {
         vo = (ItemAttachedDocVO)list.get(i);
 
         // insert into ITM05...
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,

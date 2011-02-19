@@ -48,6 +48,7 @@ public class ItemTypesController extends CompanyGridController {
 
   /** grid frame */
   private ItemTypesFrame frame = null;
+  private java.util.List list = null;
 
 
   public ItemTypesController() {

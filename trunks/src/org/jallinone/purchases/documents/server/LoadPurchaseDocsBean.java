@@ -51,7 +51,7 @@ import javax.sql.DataSource;
 public class LoadPurchaseDocsBean  implements LoadPurchaseDocs {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -59,9 +59,9 @@ public class LoadPurchaseDocsBean  implements LoadPurchaseDocs {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -71,7 +71,7 @@ public class LoadPurchaseDocsBean  implements LoadPurchaseDocs {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -83,12 +83,12 @@ public class LoadPurchaseDocsBean  implements LoadPurchaseDocs {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public GridPurchaseDocVO getGridPurchaseDoc() {
 	  throw new UnsupportedOperationException();
-  } 
-  
+  }
+
 
   /**
    * Business logic to execute.
@@ -116,13 +116,14 @@ public class LoadPurchaseDocsBean  implements LoadPurchaseDocs {
           "DOC06_PURCHASE.TOTAL_VAT,DOC06_PURCHASE.TOTAL,DOC06_PURCHASE.DOC_DATE,PUR01_SUPPLIERS.SUPPLIER_CODE, "+
           "REG03_CURRENCIES.DECIMALS,REG03_CURRENCIES.CURRENCY_SYMBOL,REG03_CURRENCIES.THOUSAND_SYMBOL,REG03_CURRENCIES.DECIMAL_SYMBOL, "+
           "DOC06_PURCHASE.DOC_SEQUENCE "+
-          " from DOC06_PURCHASE,PUR03_SUPPLIER_PRICELISTS,SYS10_TRANSLATIONS,REG04_SUBJECTS,PUR01_SUPPLIERS,REG03_CURRENCIES where "+
+          " from DOC06_PURCHASE,PUR03_SUPPLIER_PRICELISTS,SYS10_COMPANY_TRANSLATIONS,REG04_SUBJECTS,PUR01_SUPPLIERS,REG03_CURRENCIES where "+
           "DOC06_PURCHASE.CURRENCY_CODE_REG03=REG03_CURRENCIES.CURRENCY_CODE and "+
           "DOC06_PURCHASE.PRICELIST_CODE_PUR03=PUR03_SUPPLIER_PRICELISTS.PRICELIST_CODE and "+
           "DOC06_PURCHASE.PROGRESSIVE_REG04=PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_REG04 and "+
           "DOC06_PURCHASE.COMPANY_CODE_SYS01=PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01 and "+
-          "PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "DOC06_PURCHASE.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
           "DOC06_PURCHASE.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "DOC06_PURCHASE.PROGRESSIVE_REG04=PUR01_SUPPLIERS.PROGRESSIVE_REG04 and "+

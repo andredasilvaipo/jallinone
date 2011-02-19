@@ -9,7 +9,7 @@ import org.openswing.swing.util.client.ClientUtils;
 import org.openswing.swing.tree.client.TreeController;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.jallinone.production.orders.java.*;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.openswing.swing.mdi.client.MDIFrame;
 import org.openswing.swing.client.GridControl;
 import org.jallinone.commons.java.ApplicationConsts;

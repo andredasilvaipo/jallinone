@@ -15,7 +15,7 @@ import org.openswing.swing.tree.java.OpenSwingTreeNode;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
- * <p>Description: Utility class used to retrieve a hierarchy tree model from HIE01 table, based on the specified hierarchy identifier..</p>
+ * <p>Description: Utility class used to retrieve a hierarchy tree model from HIE03 table, based on the specified hierarchy identifier..</p>
  * <p>Copyright: Copyright (C) 2006 Mauro Carniel</p>
  *
  * <p> This file is part of JAllInOne ERP/CRM application.
@@ -33,7 +33,7 @@ import org.openswing.swing.tree.java.OpenSwingTreeNode;
  *
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the Free
- * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 04139, USA.
  *
  *       The author may be contacted at:
  *           maurocarniel@tin.it</p>
@@ -48,7 +48,7 @@ public class HierarchyUtil {
 	  /**
 	   * Business logic to execute.
 	   */
-	  public static DefaultTreeModel loadHierarchy(BigDecimal progressiveHIE02,String langId,String username) throws Throwable {
+	  public static DefaultTreeModel loadHierarchy(BigDecimal progressiveHIE04,String langId,String username) throws Throwable {
 	    PreparedStatement pstmt = null;
 	    Connection conn = null;
 	    try {
@@ -57,16 +57,16 @@ public class HierarchyUtil {
 	      // retrieve the whole tree...
 	      DefaultTreeModel model = null;
 	      pstmt = conn.prepareStatement(
-	          "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV,"+
-	          "SYS10_TRANSLATIONS.DESCRIPTION,HIE02_HIERARCHIES.PROGRESSIVE_HIE01 "+
-	          "from HIE01_LEVELS,HIE02_HIERARCHIES,SYS10_TRANSLATIONS where "+
-	          "HIE01_LEVELS.PROGRESSIVE_HIE02=HIE02_HIERARCHIES.PROGRESSIVE and "+
-	          "HIE01_LEVELS.PROGRESSIVE = SYS10_TRANSLATIONS.PROGRESSIVE and "+
-	          "SYS10_TRANSLATIONS.LANGUAGE_CODE='"+langId+"' and HIE01_LEVELS.ENABLED='Y' and "+
-	          "HIE01_LEVELS.PROGRESSIVE_HIE02=? "+
-	          "order by HIE01_LEVELS.LEV,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.PROGRESSIVE"
+	          "select HIE03_LEVELS.PROGRESSIVE,HIE03_LEVELS.PROGRESSIVE_HIE03,HIE03_LEVELS.LEV,"+
+	          "SYS10_TRANSLATIONS.DESCRIPTION,HIE04_HIERARCHIES.PROGRESSIVE_HIE03 "+
+	          "from HIE03_LEVELS,HIE04_HIERARCHIES,SYS10_TRANSLATIONS where "+
+	          "HIE03_LEVELS.PROGRESSIVE_HIE04=HIE04_HIERARCHIES.PROGRESSIVE and "+
+	          "HIE03_LEVELS.PROGRESSIVE = SYS10_TRANSLATIONS.PROGRESSIVE and "+
+	          "SYS10_TRANSLATIONS.LANGUAGE_CODE='"+langId+"' and HIE03_LEVELS.ENABLED='Y' and "+
+	          "HIE03_LEVELS.PROGRESSIVE_HIE04=? "+
+	          "order by HIE03_LEVELS.LEV,HIE03_LEVELS.PROGRESSIVE_HIE03,HIE03_LEVELS.PROGRESSIVE"
 	      );
-	      pstmt.setBigDecimal(1,progressiveHIE02);
+	      pstmt.setBigDecimal(1,progressiveHIE04);
 	      ResultSet rset = pstmt.executeQuery();
 
 	      Hashtable currentLevelNodes = new Hashtable();
@@ -86,25 +86,25 @@ public class HierarchyUtil {
 	        if (currentLevel==0) {
 	          // prepare a tree model with the root node...
 	          vo = new HierarchyLevelVO();
-	          vo.setEnabledHIE01("Y");
-	          vo.setLevelHIE01(rset.getBigDecimal(3));
-	          vo.setProgressiveHIE01(rset.getBigDecimal(1));
-	          vo.setProgressiveHie01HIE01(rset.getBigDecimal(2));
-	          vo.setProgressiveHie02HIE01(progressiveHIE02);
+	          vo.setEnabledHIE03("Y");
+	          vo.setLevelHIE03(rset.getBigDecimal(3));
+	          vo.setProgressiveHIE03(rset.getBigDecimal(1));
+	          vo.setProgressiveHie03HIE03(rset.getBigDecimal(2));
+	          vo.setProgressiveHie04HIE03(progressiveHIE04);
 	          vo.setDescriptionSYS10(rset.getString(4));
-	          vo.setProgressiveHie01HIE02(rset.getBigDecimal(5));
+	          vo.setProgressiveHie03HIE04(rset.getBigDecimal(5));
 	          currentNode = new OpenSwingTreeNode(vo);
 	          model = new DefaultTreeModel(currentNode);
 	        }
 	        else {
 	          vo = new HierarchyLevelVO();
-	          vo.setEnabledHIE01("Y");
-	          vo.setLevelHIE01(rset.getBigDecimal(3));
-	          vo.setProgressiveHIE01(rset.getBigDecimal(1));
-	          vo.setProgressiveHie01HIE01(rset.getBigDecimal(2));
-	          vo.setProgressiveHie02HIE01(progressiveHIE02);
+	          vo.setEnabledHIE03("Y");
+	          vo.setLevelHIE03(rset.getBigDecimal(3));
+	          vo.setProgressiveHIE03(rset.getBigDecimal(1));
+	          vo.setProgressiveHie03HIE03(rset.getBigDecimal(2));
+	          vo.setProgressiveHie04HIE03(progressiveHIE04);
 	          vo.setDescriptionSYS10(rset.getString(4));
-	          vo.setProgressiveHie01HIE02(rset.getBigDecimal(5));
+	          vo.setProgressiveHie03HIE04(rset.getBigDecimal(5));
 	          currentNode = new OpenSwingTreeNode(vo);
 
 	          parentNode = (DefaultMutableTreeNode)currentLevelNodes.get(new Integer(rset.getInt(2)));
@@ -136,5 +136,5 @@ public class HierarchyUtil {
 
 
 
-	
+
 }

@@ -47,7 +47,7 @@ import javax.sql.DataSource;
 public class DeleteWindowCustomizationsBean  implements DeleteWindowCustomizations {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -55,9 +55,9 @@ public class DeleteWindowCustomizationsBean  implements DeleteWindowCustomizatio
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -76,12 +76,12 @@ public class DeleteWindowCustomizationsBean  implements DeleteWindowCustomizatio
   public DeleteWindowCustomizationsBean() {
   }
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public WindowCustomizationVO getWindowCustomization() {
-	  throw new UnsupportedOperationException();	  
+	  throw new UnsupportedOperationException();
   }
 
 

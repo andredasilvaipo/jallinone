@@ -67,13 +67,11 @@ public class LoadTranslationsAction implements Action {
 
 
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
-      GridParams gridParams = (GridParams)inputPar;
+    GridParams gridParams = (GridParams)inputPar;
     try {
-
-      Translations bean = (Translations)JAIOBeanFactory.getInstance().getBean(Translations.class);
+			Translations bean = (Translations)JAIOBeanFactory.getInstance().getBean(Translations.class);
       Response answer = bean.loadTranslations(gridParams,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
-
-    return answer;
+      return answer;
     }
     catch (Throwable ex) {
       Logger.error(userSessionPars.getUsername(),this.getClass().getName(),"executeCommand","Error while processing request",ex);

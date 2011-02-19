@@ -61,7 +61,7 @@ import javax.sql.DataSource;
 public class LoadSaleDocBean implements LoadSaleDoc {
 
 
-	  private DataSource dataSource; 
+	  private DataSource dataSource;
 
 	  public void setDataSource(DataSource dataSource) {
 	    this.dataSource = dataSource;
@@ -69,9 +69,9 @@ public class LoadSaleDocBean implements LoadSaleDoc {
 
 	  /** external connection */
 	  private Connection conn = null;
-	  
+
 	  /**
-	   * Set external connection. 
+	   * Set external connection.
 	   */
 	  public void setConn(Connection conn) {
 	    this.conn = conn;
@@ -81,11 +81,11 @@ public class LoadSaleDocBean implements LoadSaleDoc {
 	   * Create local connection
 	   */
 	  public Connection getConn() throws Exception {
-	    
+
 	    Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
 	  }
-  
-	  
+
+
 	  /**
 	   * Retrieve a sale document header.
 	   * No commit or rollback are executed; no connection is created or released.
@@ -156,7 +156,7 @@ public class LoadSaleDocBean implements LoadSaleDoc {
 	      attribute2dbField.put("countryDOC01","DOC01_SELLING.COUNTRY");
 	      attribute2dbField.put("customerVatCodeReg01DOC01","DOC01_SELLING.CUSTOMER_VAT_CODE_REG01");
 	      attribute2dbField.put("progressiveHie02WAR01","WAR01_WAREHOUSES.PROGRESSIVE_HIE02");
-	      attribute2dbField.put("progressiveHie01HIE02","HIE02_HIERARCHIES.PROGRESSIVE_HIE01");
+	      attribute2dbField.put("progressiveHie01HIE02","HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01");
 	      attribute2dbField.put("discountValueDOC01","DOC01_SELLING.DISCOUNT_VALUE");
 	      attribute2dbField.put("discountPercDOC01","DOC01_SELLING.DISCOUNT_PERC");
 	      attribute2dbField.put("docSequenceDOC01","DOC01_SELLING.DOC_SEQUENCE");
@@ -191,10 +191,10 @@ public class LoadSaleDocBean implements LoadSaleDoc {
 	          "DOC01_SELLING.WAREHOUSE_CODE_WAR01,DOC01_SELLING.DESCRIPTION_WAR01,DOC01_SELLING.ADDRESS,DOC01_SELLING.CITY,DOC01_SELLING.PROVINCE,DOC01_SELLING.ZIP,"+
 	          "DOC01_SELLING.COUNTRY,DOC01_SELLING.CUSTOMER_VAT_CODE_REG01,WAR01_WAREHOUSES.PROGRESSIVE_HIE02,"+
 	          "DOC01_SELLING.DOC_SEQUENCE,DOC01_SELLING.DOC_SEQUENCE_DOC01,DOC01_SELLING.SECTIONAL,"+
-	          "HIE02_HIERARCHIES.PROGRESSIVE_HIE01,DOC01_SELLING.DELIVERY_DATE, "+
+	          "HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01,DOC01_SELLING.DELIVERY_DATE, "+
 	          "REG01_VATS.VALUE,REG01_VATS.DEDUCTIBLE,REG01_VATS.DESCRIPTION "+
-	          " from SAL01_PRICELISTS,SYS10_TRANSLATIONS,REG04_SUBJECTS,SAL07_CUSTOMERS,REG03_CURRENCIES,"+
-	          "WAR01_WAREHOUSES,HIE02_HIERARCHIES,DOC01_SELLING "+
+	          " from SAL01_PRICELISTS,SYS10_COMPANY_TRANSLATIONS,REG04_SUBJECTS,SAL07_CUSTOMERS,REG03_CURRENCIES,"+
+	          "WAR01_WAREHOUSES,HIE02_COMPANY_HIERARCHIES,DOC01_SELLING "+
 	          "LEFT OUTER JOIN "+
 	          "(select REG01_VATS.VAT_CODE,REG01_VATS.VALUE,REG01_VATS.DEDUCTIBLE,SYS10_TRANSLATIONS.DESCRIPTION "+
 	          " from REG01_VATS,SYS10_TRANSLATIONS where "+
@@ -203,8 +203,9 @@ public class LoadSaleDocBean implements LoadSaleDoc {
 	          "where "+
 	          "DOC01_SELLING.PRICELIST_CODE_SAL01=SAL01_PRICELISTS.PRICELIST_CODE and "+
 	          "DOC01_SELLING.COMPANY_CODE_SYS01=SAL01_PRICELISTS.COMPANY_CODE_SYS01 and "+
-	          "SAL01_PRICELISTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-	          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+						"SAL01_PRICELISTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+	          "SAL01_PRICELISTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+	          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
 	          "DOC01_SELLING.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
 	          "DOC01_SELLING.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
 	          "DOC01_SELLING.PROGRESSIVE_REG04=SAL07_CUSTOMERS.PROGRESSIVE_REG04 and "+
@@ -216,7 +217,8 @@ public class LoadSaleDocBean implements LoadSaleDoc {
 	          "DOC01_SELLING.CURRENCY_CODE_REG03=REG03_CURRENCIES.CURRENCY_CODE and "+
 	          "DOC01_SELLING.COMPANY_CODE_SYS01=WAR01_WAREHOUSES.COMPANY_CODE_SYS01 and "+
 	          "DOC01_SELLING.WAREHOUSE_CODE_WAR01=WAR01_WAREHOUSES.WAREHOUSE_CODE and "+
-	          "WAR01_WAREHOUSES.PROGRESSIVE_HIE02=HIE02_HIERARCHIES.PROGRESSIVE";
+						"WAR01_WAREHOUSES.COMPANY_CODE_SYS01=HIE02_COMPANY_HIERARCHIES.COMPANY_CODE_SYS01 and "+
+	          "WAR01_WAREHOUSES.PROGRESSIVE_HIE02=HIE02_COMPANY_HIERARCHIES.PROGRESSIVE";
 
 	      ArrayList values = new ArrayList();
 	      values.add(serverLanguageId);

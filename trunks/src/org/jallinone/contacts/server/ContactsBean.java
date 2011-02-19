@@ -25,10 +25,11 @@ import org.openswing.swing.message.receive.java.VOResponse;
 import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.server.QueryUtil;
 import org.openswing.swing.server.UserSessionParameters;
+import java.sql.PreparedStatement;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
- * <p>Description: Bean used to manage contacts and in case of organization, 
+ * <p>Description: Bean used to manage contacts and in case of organization,
  * then manage also linked people contacts.</p>
  * <p>Copyright: Copyright (C) 2006 Mauro Carniel</p>
  *
@@ -58,7 +59,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class ContactsBean  implements Contacts {
 
 
-	private DataSource dataSource; 
+	private DataSource dataSource;
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
@@ -68,7 +69,7 @@ public class ContactsBean  implements Contacts {
 	private Connection conn = null;
 
 	/**
-	 * Set external connection. 
+	 * Set external connection.
 	 */
 	public void setConn(Connection conn) {
 		this.conn = conn;
@@ -96,22 +97,22 @@ public class ContactsBean  implements Contacts {
 	}
 
 	private ContactBean bean;
-	
+
 	public void setBean(ContactBean bean) {
 		this.bean = bean;
 	}
-	
-	
+
+
 
 	public ContactsBean() {
 	}
 
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public GridContactVO getGridContactVO() {
-		throw new UnsupportedOperationException();	  
+		throw new UnsupportedOperationException();
 	}
 
 
@@ -192,7 +193,7 @@ public class ContactsBean  implements Contacts {
 			Response contactRes = null;
 			SubjectVO subVO = null;
 			OrganizationVO orgVO = null;
-			
+
 			for(int i=0;i<rows.size();i++) {
 				vo = (GridContactVO)rows.get(i);
 				if (vo.getProgressiveReg04REG04()!=null) {
@@ -280,7 +281,7 @@ public class ContactsBean  implements Contacts {
 	            }
 
 	          }
-	          catch (Exception exx) {}			
+	          catch (Exception exx) {}
 			try {
 				peopleBean.setConn(null);
 				organizationBean.setConn(null);
@@ -329,7 +330,7 @@ public class ContactsBean  implements Contacts {
 	            }
 
 	          }
-	          catch (Exception exx) {}			
+	          catch (Exception exx) {}
 			try {
 				peopleBean.setConn(null);
 				organizationBean.setConn(null);
@@ -378,7 +379,7 @@ public class ContactsBean  implements Contacts {
 	            }
 
 	          }
-	          catch (Exception exx) {}			
+	          catch (Exception exx) {}
 			try {
 				peopleBean.setConn(null);
 				organizationBean.setConn(null);
@@ -425,7 +426,7 @@ public class ContactsBean  implements Contacts {
 				}
 
 			}
-			catch (Exception exx) {}			
+			catch (Exception exx) {}
 			try {
 				peopleBean.setConn(null);
 				organizationBean.setConn(null);
@@ -441,17 +442,28 @@ public class ContactsBean  implements Contacts {
 	 * Business logic to execute.
 	 */
 	public VOResponse deleteContact(SubjectPK vo,String serverLanguageId,String username) throws Throwable {
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		Connection conn = null;
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
-			stmt = conn.createStatement();
 
 			// logically delete record in REG04...
-			stmt.execute("update REG04_SUBJECTS set ENABLED='N' where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG04()+"' and PROGRESSIVE="+vo.getProgressiveREG04());
+     pstmt = conn.prepareCall(
+		    "update REG04_SUBJECTS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG04()+"' and PROGRESSIVE="+vo.getProgressiveREG04()
+			);
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
 
-			stmt.execute("update REG04_SUBJECTS set ENABLED='N' where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG04()+"' and PROGRESSIVE_REG04="+vo.getProgressiveREG04());
-			
+      pstmt = conn.prepareCall(
+		    "update REG04_SUBJECTS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG04()+"' and PROGRESSIVE_REG04="+vo.getProgressiveREG04()
+			);
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
+
 			return new VOResponse(new Boolean(true));
 		}
 		catch (Throwable ex) {
@@ -467,7 +479,7 @@ public class ContactsBean  implements Contacts {
 		}
 		finally {
           try {
-              stmt.close();
+              pstmt.close();
           }
           catch (Exception exx) {}
           try {

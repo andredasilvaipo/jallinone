@@ -3,10 +3,11 @@ package org.jallinone.system.permissions.client;
 import org.openswing.swing.tree.client.TreeController;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.openswing.swing.client.GridControl;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.jallinone.system.permissions.java.RoleFunctionVO;
 import org.jallinone.system.permissions.java.RoleVO;
 import org.jallinone.commons.java.ApplicationConsts;
+import org.jallinone.hierarchies.java.HierarchyLevelVO;
 
 
 /**
@@ -61,7 +62,7 @@ public class TreeFoldersController implements TreeController {
       HierarchyLevelVO f = (HierarchyLevelVO)node.getUserObject();
       RoleVO vo = (RoleVO)rolesGridControl.getVOListTableModel().getObjectForRow(rolesGridControl.getSelectedRow());
       functionsGridControl.getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_SYS04,vo.getProgressiveSYS04());
-      functionsGridControl.getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE01,f.getProgressiveHIE01());
+      functionsGridControl.getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE03,f.getProgressiveHIE03());
       functionsGridControl.reloadData();
     }
   }

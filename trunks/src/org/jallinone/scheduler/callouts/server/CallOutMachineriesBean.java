@@ -51,7 +51,7 @@ import javax.sql.DataSource;
 public class CallOutMachineriesBean  implements CallOutMachineries {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -59,9 +59,9 @@ public class CallOutMachineriesBean  implements CallOutMachineries {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -71,7 +71,7 @@ public class CallOutMachineriesBean  implements CallOutMachineries {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -83,7 +83,7 @@ public class CallOutMachineriesBean  implements CallOutMachineries {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public CallOutMachineryVO getCallOutMachinery(CallOutPK pk) {
 	  throw new UnsupportedOperationException();
@@ -99,18 +99,19 @@ public class CallOutMachineriesBean  implements CallOutMachineries {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       String sql =
-          "select SCH13_CALL_OUT_MACHINERIES.MACHINERY_CODE_PRO03,SCH13_CALL_OUT_MACHINERIES.COMPANY_CODE_SYS01,SCH13_CALL_OUT_MACHINERIES.CALL_OUT_CODE_SCH10,SYS10_TRANSLATIONS.DESCRIPTION "+
-          "from SCH13_CALL_OUT_MACHINERIES,PRO03_MACHINERIES,SYS10_TRANSLATIONS where "+
+          "select SCH13_CALL_OUT_MACHINERIES.MACHINERY_CODE_PRO03,SCH13_CALL_OUT_MACHINERIES.COMPANY_CODE_SYS01,SCH13_CALL_OUT_MACHINERIES.CALL_OUT_CODE_SCH10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION "+
+          "from SCH13_CALL_OUT_MACHINERIES,PRO03_MACHINERIES,SYS10_COMPANY_TRANSLATIONS where "+
           "SCH13_CALL_OUT_MACHINERIES.COMPANY_CODE_SYS01=PRO03_MACHINERIES.COMPANY_CODE_SYS01 and "+
           "SCH13_CALL_OUT_MACHINERIES.MACHINERY_CODE_PRO03=PRO03_MACHINERIES.MACHINERY_CODE and "+
-          "PRO03_MACHINERIES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"PRO03_MACHINERIES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "PRO03_MACHINERIES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SCH13_CALL_OUT_MACHINERIES.COMPANY_CODE_SYS01=? and "+
           "SCH13_CALL_OUT_MACHINERIES.CALL_OUT_CODE_SCH10=?";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SCH13","SCH13_CALL_OUT_MACHINERIES.COMPANY_CODE_SYS01");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("callOutCodeSch10SCH13","SCH13_CALL_OUT_MACHINERIES.CALL_OUT_CODE_SCH10");
       attribute2dbField.put("machineryCodePro03SCH13","SCH13_CALL_OUT_MACHINERIES.MACHINERY_CODE_PRO03");
 
@@ -180,7 +181,7 @@ public class CallOutMachineriesBean  implements CallOutMachineries {
         vo = (CallOutMachineryVO)list.get(i);
 
         // insert into SCH13...
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,

@@ -45,6 +45,7 @@ public class DocumentTrackingVO extends ValueObjectImpl {
   private BigDecimal docSequence;
   private String docState;
   private Date docDate;
+	private boolean selected;
 
 
   public DocumentTrackingVO() {
@@ -117,6 +118,12 @@ public class DocumentTrackingVO extends ValueObjectImpl {
   }
   public void setDocTypeDescr(String docTypeDescr) {
     this.docTypeDescr = docTypeDescr;
+  }
+  public boolean isSelected() {
+    return selected;
+  }
+  public void setSelected(boolean selected) {
+    this.selected = selected;
   }
 
 }

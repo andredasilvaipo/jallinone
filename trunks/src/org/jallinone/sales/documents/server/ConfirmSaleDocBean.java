@@ -308,13 +308,15 @@ public class ConfirmSaleDocBean  implements ConfirmSaleDoc {
       } // end del.req. creation for sale orders/contracts...
 
 
-      pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=?,DOC_SEQUENCE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
+      pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=?,DOC_SEQUENCE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
       pstmt.setString(1,ApplicationConsts.CONFIRMED);
       pstmt.setInt(2,docSequenceDOC01);
-      pstmt.setString(3,pk.getCompanyCodeSys01DOC01());
-      pstmt.setString(4,pk.getDocTypeDOC01());
-      pstmt.setBigDecimal(5,pk.getDocYearDOC01());
-      pstmt.setBigDecimal(6,pk.getDocNumberDOC01());
+			pstmt.setString(3,username);
+			pstmt.setTimestamp(4,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(5,pk.getCompanyCodeSys01DOC01());
+      pstmt.setString(6,pk.getDocTypeDOC01());
+      pstmt.setBigDecimal(7,pk.getDocYearDOC01());
+      pstmt.setBigDecimal(8,pk.getDocNumberDOC01());
       pstmt.execute();
 
       return new VOResponse(new BigDecimal(docSequenceDOC01));

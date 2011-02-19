@@ -14,7 +14,7 @@ import org.jallinone.commons.client.ClientApplet;
 import org.jallinone.commons.client.ApplicationClientFacade;
 import org.openswing.swing.util.client.ClientSettings;
 import org.jallinone.commons.java.ApplicationConsts;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 
 
 /**
@@ -57,6 +57,7 @@ public class WarehouseController extends CompanyFormController {
   /** parent frame */
   private WarehousesGridFrame gridFrame = null;
 
+  private java.util.List list = null;
 
   public WarehouseController(WarehousesGridFrame gridFrame,String companyCodeSys01WAR01,String warehouseCodeWAR01) {
     this.gridFrame = gridFrame;
@@ -225,7 +226,8 @@ public class WarehouseController extends CompanyFormController {
     detailFrame.getAvailPanel().getGrid().getOtherGridParams().put(ApplicationConsts.WAREHOUSE_CODE,vo.getWarehouseCodeWAR01());
     detailFrame.getAvailPanel().getGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02WAR01());
     if (detailFrame.getHierarTreePanel().getSelectedNode()!=null) {
-      HierarchyLevelVO levelVO = (HierarchyLevelVO)detailFrame.getHierarTreePanel().getSelectedNode().getUserObject();
+      CompanyHierarchyLevelVO levelVO = (CompanyHierarchyLevelVO)detailFrame.getHierarTreePanel().getSelectedNode().getUserObject();
+			detailFrame.getAvailPanel().getGrid().getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,levelVO.getCompanySys01HIE01());
       detailFrame.getAvailPanel().getGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE01,levelVO.getProgressiveHIE01());
     }
     detailFrame.getAvailPanel().setEnabled(true);

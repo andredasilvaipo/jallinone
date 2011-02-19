@@ -31,7 +31,7 @@ import org.jallinone.documents.java.DocumentPK;
 import org.jallinone.documents.java.DocumentVersionVO;
 import org.jallinone.documents.java.GridDocumentVO;
 import org.jallinone.documents.java.LevelPropertyVO;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.*;
 import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 import org.jallinone.system.server.JAIOUserSessionParameters;
 import org.jallinone.system.translations.server.TranslationUtils;

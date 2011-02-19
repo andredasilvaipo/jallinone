@@ -1,28 +1,18 @@
 package org.jallinone.sales.agents.server;
 
-import org.openswing.swing.server.*;
-
-import java.io.*;
-import java.math.BigDecimal;
-import java.util.*;
-
-import org.openswing.swing.message.receive.java.*;
-import org.openswing.swing.message.send.java.GridParams;
-import org.openswing.swing.message.send.java.LookupValidationParams;
-
+import java.math.*;
 import java.sql.*;
+import java.util.*;
+import javax.sql.*;
 
-import org.openswing.swing.logger.server.*;
-import org.jallinone.system.server.*;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.commons.java.*;
+import org.jallinone.commons.server.*;
 import org.jallinone.sales.agents.java.*;
-import org.jallinone.commons.java.ApplicationConsts;
-import org.jallinone.commons.server.CustomizeQueryUtil;
-import org.jallinone.events.server.*;
-import org.jallinone.events.server.*;
-
-
-import javax.sql.DataSource;
+import org.jallinone.system.translations.server.*;
+import org.openswing.swing.logger.server.*;
+import org.openswing.swing.message.receive.java.*;
+import org.openswing.swing.message.send.java.*;
+import org.openswing.swing.server.*;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -55,7 +45,7 @@ import javax.sql.DataSource;
 public class AgentsBean  implements Agents {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -63,9 +53,9 @@ public class AgentsBean  implements Agents {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -75,7 +65,7 @@ public class AgentsBean  implements Agents {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -87,14 +77,14 @@ public class AgentsBean  implements Agents {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public AgentVO getAgent() {
 	  throw new UnsupportedOperationException();
   }
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public AgentTypeVO getAgentType() {
 	  throw new UnsupportedOperationException();
@@ -115,17 +105,18 @@ public class AgentsBean  implements Agents {
         companies = "'"+gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01)+"'";
       }
       else {
-        
+
         for(int i=0;i<companiesList.size();i++)
           companies += "'"+companiesList.get(i).toString()+"',";
         companies = companies.substring(0,companies.length()-1);
       }
 
       String sql =
-          "select SAL10_AGENTS.COMPANY_CODE_SYS01,SAL10_AGENTS.AGENT_CODE,SAL10_AGENTS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,SAL10_AGENTS.PERCENTAGE,SAL10_AGENTS.PROGRESSIVE_REG04,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2 "+
-          "from SAL10_AGENTS,SYS10_TRANSLATIONS,REG04_SUBJECTS where "+
-          "SAL10_AGENTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          "select SAL10_AGENTS.COMPANY_CODE_SYS01,SAL10_AGENTS.AGENT_CODE,SAL10_AGENTS.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,SAL10_AGENTS.PERCENTAGE,SAL10_AGENTS.PROGRESSIVE_REG04,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2 "+
+          "from SAL10_AGENTS,SYS10_COMPANY_TRANSLATIONS,REG04_SUBJECTS where "+
+					"SAL10_AGENTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "SAL10_AGENTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SAL10_AGENTS.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "SAL10_AGENTS.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
           "SAL10_AGENTS.COMPANY_CODE_SYS01 in ("+companies+")";
@@ -137,7 +128,7 @@ public class AgentsBean  implements Agents {
       attribute2dbField.put("name_1REG04","REG04_SUBJECTS.NAME_1");
       attribute2dbField.put("name_2REG04","REG04_SUBJECTS.NAME_2");
       attribute2dbField.put("agentCodeSAL10","SAL10_AGENTS.AGENT_CODE");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveSys10SAL10","SAL10_AGENTS.PROGRESSIVE_SYS10");
 
       ArrayList values = new ArrayList();
@@ -195,7 +186,8 @@ public class AgentsBean  implements Agents {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       String sql =
-          "select REG19_AGENT_TYPES.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,REG19_AGENT_TYPES.ENABLED from REG19_AGENT_TYPES,SYS10_TRANSLATIONS where "+
+          "select REG19_AGENT_TYPES.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,REG19_AGENT_TYPES.ENABLED "+
+					"from REG19_AGENT_TYPES,SYS10_TRANSLATIONS where "+
           "REG19_AGENT_TYPES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "REG19_AGENT_TYPES.ENABLED='Y'";
@@ -344,7 +336,7 @@ public class AgentsBean  implements Agents {
         newVO = (AgentTypeVO)newVOs.get(i);
 
         // update SYS10 table...
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10REG19(),serverLanguageId,conn);
+        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10REG19(),serverLanguageId,username,conn);
       }
 
       return new VOListResponse(newVOs,false,newVOs.size());
@@ -388,10 +380,11 @@ public class AgentsBean  implements Agents {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       String sql =
-          "select SAL10_AGENTS.COMPANY_CODE_SYS01,SAL10_AGENTS.AGENT_CODE,SAL10_AGENTS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,SAL10_AGENTS.PERCENTAGE,SAL10_AGENTS.PROGRESSIVE_REG04,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2 "+
-          "from SAL10_AGENTS,SYS10_TRANSLATIONS,REG04_SUBJECTS where "+
-          "SAL10_AGENTS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          "select SAL10_AGENTS.COMPANY_CODE_SYS01,SAL10_AGENTS.AGENT_CODE,SAL10_AGENTS.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,SAL10_AGENTS.PERCENTAGE,SAL10_AGENTS.PROGRESSIVE_REG04,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2 "+
+          "from SAL10_AGENTS,SYS10_COMPANY_TRANSLATIONS,REG04_SUBJECTS where "+
+					"SAL10_AGENTS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "SAL10_AGENTS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SAL10_AGENTS.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "SAL10_AGENTS.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
           "SAL10_AGENTS.COMPANY_CODE_SYS01=? and "+
@@ -404,7 +397,7 @@ public class AgentsBean  implements Agents {
       attribute2dbField.put("name_1REG04","REG04_SUBJECTS.NAME_1");
       attribute2dbField.put("name_2REG04","REG04_SUBJECTS.NAME_2");
       attribute2dbField.put("agentCodeSAL10","SAL10_AGENTS.AGENT_CODE");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveSys10SAL10","SAL10_AGENTS.PROGRESSIVE_SYS10");
 
       ArrayList values = new ArrayList();
@@ -563,11 +556,11 @@ public class AgentsBean  implements Agents {
         vo.setEnabledREG19("Y");
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),defCompanyCodeSys01SYS03,conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),username,conn);
         vo.setProgressiveSys10REG19(progressiveSYS10);
 
         // insert into REG19...
-        res = QueryUtil.insertTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,
@@ -672,17 +665,20 @@ public class AgentsBean  implements Agents {
    * Business logic to execute.
    */
   public VOResponse deleteAgentTypes(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
 
       AgentTypeVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in REG19...
         vo = (AgentTypeVO)list.get(i);
-        stmt.execute("update REG19_AGENT_TYPES set ENABLED='N' where PROGRESSIVE_SYS10="+vo.getProgressiveSys10REG19());
+        pstmt = conn.prepareStatement("update REG19_AGENT_TYPES set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where PROGRESSIVE_SYS10="+vo.getProgressiveSys10REG19());
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
       return new VOResponse(new Boolean(true));
@@ -701,7 +697,7 @@ public class AgentsBean  implements Agents {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {

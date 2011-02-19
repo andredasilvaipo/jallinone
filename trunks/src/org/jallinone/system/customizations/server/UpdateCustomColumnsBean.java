@@ -47,7 +47,7 @@ import javax.sql.DataSource;
 public class UpdateCustomColumnsBean  implements UpdateCustomColumns {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -55,9 +55,9 @@ public class UpdateCustomColumnsBean  implements UpdateCustomColumns {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -78,12 +78,12 @@ public class UpdateCustomColumnsBean  implements UpdateCustomColumns {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public CustomColumnVO getCustomColumn() {
 	  throw new UnsupportedOperationException();
   }
-  
+
 
   /**
    * Business logic to execute.
@@ -116,7 +116,7 @@ public class UpdateCustomColumnsBean  implements UpdateCustomColumns {
       for(int i=0;i<oldVOs.size();i++) {
         oldVO = (CustomColumnVO)oldVOs.get(i);
         newVO = (CustomColumnVO)newVOs.get(i);
-        res = QueryUtil.updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,

@@ -111,7 +111,7 @@ public class CreateBarcodeLabelsDataBean  implements CreateBarcodeLabelsData {
       ItemToPrintVO rowVO = (ItemToPrintVO)rows[0];
       BigDecimal reportId = CompanyProgressiveUtils.getInternalProgressive(rowVO.getCompanyCodeSys01(),"TMP02_BARCODES","REPORT_ID",conn);
       pstmt = conn.prepareStatement(
-        "insert into TMP02_BARCODES(REPORT_ID,PROGRESSIVE,BAR_CODE,BARCODE_TYPE,DESCRIPTION) values(?,?,?,?,?)"
+        "insert into TMP02_BARCODES(REPORT_ID,PROGRESSIVE,BAR_CODE,BARCODE_TYPE,DESCRIPTION,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?)"
       );
       pstmt2 = conn.prepareStatement(
         "select BAR_CODE from ITM22_VARIANT_BARCODES where "+
@@ -141,7 +141,7 @@ public class CreateBarcodeLabelsDataBean  implements CreateBarcodeLabelsData {
         rowVO = rows[i];
 
         pk = new ItemPK(rowVO.getCompanyCodeSys01(),rowVO.getItemCodeItm01());
-		progressiveHie02ITM01 = bean.getProgressiveHie02ITM01(pk, username);
+				progressiveHie02ITM01 = bean.getProgressiveHie02ITM01(pk, username);
         res = new VOResponse(bean.loadItem(
         		pk,
         		progressiveHie02ITM01,
@@ -271,9 +271,13 @@ public class CreateBarcodeLabelsDataBean  implements CreateBarcodeLabelsData {
 
 
           pstmt.setString(5,aux);
+					pstmt.setString(6,username);
+					pstmt.setTimestamp(7,new java.sql.Timestamp(System.currentTimeMillis()));
 
           for(int j=0;j<rowVO.getQty().intValue();j++) {
             pstmt.setLong(2,progressive);
+
+
             pstmt.execute();
             progressive++;
           }

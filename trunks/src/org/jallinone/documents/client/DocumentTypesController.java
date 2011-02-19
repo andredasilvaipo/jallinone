@@ -11,7 +11,7 @@ import org.openswing.swing.util.java.Consts;
 import org.jallinone.commons.client.CompanyGridController;
 import org.openswing.swing.client.GridControl;
 import javax.swing.tree.DefaultMutableTreeNode;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.openswing.swing.tree.client.TreeController;
 
@@ -48,6 +48,7 @@ public class DocumentTypesController extends CompanyGridController implements Tr
 
   /** grid frame */
   private DocumentTypesFrame frame = null;
+  private java.util.List list = null;
 
 
   public DocumentTypesController() {
@@ -162,8 +163,9 @@ public class DocumentTypesController extends CompanyGridController implements Tr
    * @param node selected node
    */
   public void leftClick(DefaultMutableTreeNode node) {
-    HierarchyLevelVO vo = (HierarchyLevelVO)node.getUserObject();
-    HierarchyLevelVO root = (HierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
+    CompanyHierarchyLevelVO vo = (CompanyHierarchyLevelVO)node.getUserObject();
+    CompanyHierarchyLevelVO root = (CompanyHierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
+		frame.getPropsgrid().getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanySys01HIE01());
     frame.getPropsgrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02HIE01());
     frame.getPropsgrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE01,vo.getProgressiveHIE01());
     frame.getPropsgrid().getOtherGridParams().put(ApplicationConsts.ROOT_PROGRESSIVE_HIE01,root.getProgressiveHIE01());

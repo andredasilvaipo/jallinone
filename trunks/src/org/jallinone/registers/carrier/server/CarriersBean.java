@@ -13,7 +13,7 @@ import java.sql.*;
 
 import org.openswing.swing.logger.server.*;
 import org.jallinone.system.server.*;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.jallinone.registers.carrier.java.*;
 import org.jallinone.commons.server.CustomizeQueryUtil;
 import org.jallinone.events.server.*;
@@ -21,6 +21,7 @@ import org.jallinone.events.server.*;
 
 
 import javax.sql.DataSource;
+import org.jallinone.system.translations.server.TranslationUtils;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -53,7 +54,7 @@ import javax.sql.DataSource;
 public class CarriersBean  implements Carriers {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -61,9 +62,9 @@ public class CarriersBean  implements Carriers {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -73,7 +74,7 @@ public class CarriersBean  implements Carriers {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -83,27 +84,28 @@ public class CarriersBean  implements Carriers {
   public CarriersBean() {
   }
 
-  
-  
+
+
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public CarrierVO getCarrier() {
 	  throw new UnsupportedOperationException();
   }
 
-  
+
   /**
    * Business logic to execute.
    */
   public VOListResponse loadCarriers(GridParams gridParams,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable {
-    
+
     Connection conn = null;
     try {
      if (this.conn==null) conn = getConn(); else conn = this.conn;
      String sql =
-          "select REG09_CARRIERS.CARRIER_CODE,REG09_CARRIERS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,REG09_CARRIERS.ENABLED from REG09_CARRIERS,SYS10_TRANSLATIONS where "+
+          "select REG09_CARRIERS.CARRIER_CODE,REG09_CARRIERS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,REG09_CARRIERS.ENABLED "+
+					"from REG09_CARRIERS,SYS10_TRANSLATIONS where "+
           "REG09_CARRIERS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "REG09_CARRIERS.ENABLED='Y'";
@@ -167,7 +169,8 @@ public class CarriersBean  implements Carriers {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       String sql =
-          "select REG09_CARRIERS.CARRIER_CODE,REG09_CARRIERS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,REG09_CARRIERS.ENABLED from REG09_CARRIERS,SYS10_TRANSLATIONS where "+
+          "select REG09_CARRIERS.CARRIER_CODE,REG09_CARRIERS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,REG09_CARRIERS.ENABLED "+
+					"from REG09_CARRIERS,SYS10_TRANSLATIONS where "+
           "REG09_CARRIERS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "REG09_CARRIERS.ENABLED='Y' and "+
@@ -224,7 +227,7 @@ public class CarriersBean  implements Carriers {
   }
 
 
-  
+
 
   /**
    * Business logic to execute.
@@ -248,7 +251,7 @@ public class CarriersBean  implements Carriers {
         vo.setEnabledREG09("Y");
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),defCompanyCodeSys01SYS03,conn);
+        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),username,conn);
         vo.setProgressiveSys10REG09(progressiveSYS10);
 
         // insert into REG09...
@@ -318,7 +321,7 @@ public class CarriersBean  implements Carriers {
         newVO = (CarrierVO)newVOs.get(i);
 
         // update SYS10 table...
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10REG09(),serverLanguageId,conn);
+        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10REG09(),serverLanguageId,username,conn);
 
         HashSet pkAttrs = new HashSet();
         pkAttrs.add("carrierCodeREG09");
@@ -377,23 +380,28 @@ public class CarriersBean  implements Carriers {
 
 
 
-  
+
 
   /**
    * Business logic to execute.
    */
   public VOResponse deleteCarriers(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
+		PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
 
       CarrierVO vo = null;
+			 pstmt = conn.prepareStatement(
+			   "update REG09_CARRIERS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where CARRIER_CODE=?"
+			 );
       for(int i=0;i<list.size();i++) {
         // logically delete the record in REG09...
         vo = (CarrierVO)list.get(i);
-        stmt.execute("update REG09_CARRIERS set ENABLED='N' where CARRIER_CODE='"+vo.getCarrierCodeREG09()+"'");
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.setString(3,vo.getCarrierCodeREG09());
+				pstmt.execute();
       }
 
       return new VOResponse(new Boolean(true));
@@ -411,11 +419,11 @@ public class CarriersBean  implements Carriers {
     }
     finally {
       try {
-        stmt.close();
+        pstmt.close();
       }
       catch (Exception ex2) {
       }
-    
+
       try {
           if (this.conn==null && conn!=null) {
                 // close only local connection

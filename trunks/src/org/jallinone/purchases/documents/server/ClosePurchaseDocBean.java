@@ -263,7 +263,7 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 
 					 // update ref. item row...
 					 pstmt = conn.prepareStatement(
-							 "update DOC07_PURCHASE_ITEMS set INVOICE_QTY=? where "+
+							 "update DOC07_PURCHASE_ITEMS set INVOICE_QTY=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
 									 "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ITEM_CODE_ITM01=? and "+
 									 "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
 									 "VARIANT_TYPE_ITM07=? and VARIANT_CODE_ITM12=? and "+
@@ -272,22 +272,24 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 									 "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? "
 					 );
 					 pstmt.setBigDecimal(1,refDetailVO.getInvoiceQtyDOC07());
-					 pstmt.setString(2,refDetailVO.getCompanyCodeSys01DOC07());
-					 pstmt.setString(3,refDetailVO.getDocTypeDOC07());
-					 pstmt.setBigDecimal(4,refDetailVO.getDocYearDOC07());
-					 pstmt.setBigDecimal(5,refDetailVO.getDocNumberDOC07());
-					 pstmt.setString(6,refDetailVO.getItemCodeItm01DOC07());
+					 pstmt.setString(2,username);
+					 pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+					 pstmt.setString(4,refDetailVO.getCompanyCodeSys01DOC07());
+					 pstmt.setString(5,refDetailVO.getDocTypeDOC07());
+					 pstmt.setBigDecimal(6,refDetailVO.getDocYearDOC07());
+					 pstmt.setBigDecimal(7,refDetailVO.getDocNumberDOC07());
+					 pstmt.setString(8,refDetailVO.getItemCodeItm01DOC07());
 
-					 pstmt.setString(7,refDetailVO.getVariantTypeItm06DOC07());
-					 pstmt.setString(8,refDetailVO.getVariantCodeItm11DOC07());
-					 pstmt.setString(9,refDetailVO.getVariantTypeItm07DOC07());
-					 pstmt.setString(10,refDetailVO.getVariantCodeItm12DOC07());
-					 pstmt.setString(11,refDetailVO.getVariantTypeItm08DOC07());
-					 pstmt.setString(12,refDetailVO.getVariantCodeItm13DOC07());
-					 pstmt.setString(13,refDetailVO.getVariantTypeItm09DOC07());
-					 pstmt.setString(14,refDetailVO.getVariantCodeItm14DOC07());
-					 pstmt.setString(15,refDetailVO.getVariantTypeItm10DOC07());
-					 pstmt.setString(16,refDetailVO.getVariantCodeItm15DOC07());
+					 pstmt.setString(9,refDetailVO.getVariantTypeItm06DOC07());
+					 pstmt.setString(10,refDetailVO.getVariantCodeItm11DOC07());
+					 pstmt.setString(11,refDetailVO.getVariantTypeItm07DOC07());
+					 pstmt.setString(12,refDetailVO.getVariantCodeItm12DOC07());
+					 pstmt.setString(13,refDetailVO.getVariantTypeItm08DOC07());
+					 pstmt.setString(14,refDetailVO.getVariantCodeItm13DOC07());
+					 pstmt.setString(15,refDetailVO.getVariantTypeItm09DOC07());
+					 pstmt.setString(16,refDetailVO.getVariantCodeItm14DOC07());
+					 pstmt.setString(17,refDetailVO.getVariantTypeItm10DOC07());
+					 pstmt.setString(18,refDetailVO.getVariantCodeItm15DOC07());
 
 					 pstmt.execute();
 					 pstmt.close();
@@ -341,7 +343,7 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 							 qty = invoiceQty.add(vo.getQtyDOC07());
 
 						 pstmt = conn.prepareStatement(
-								 "update DOC09_IN_DELIVERY_NOTE_ITEMS set INVOICE_QTY=? where "+
+								 "update DOC09_IN_DELIVERY_NOTE_ITEMS set INVOICE_QTY=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
 								 "COMPANY_CODE_SYS01=? and DOC_TYPE_DOC06=? and DOC_YEAR_DOC06=? and DOC_NUMBER_DOC06=? and ITEM_CODE_ITM01=? and "+
 								 "DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and ROW_NUMBER=? and "+
 								 "VARIANT_TYPE_ITM06=? and VARIANT_CODE_ITM11=? and "+
@@ -351,26 +353,28 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 								 "VARIANT_TYPE_ITM10=? and VARIANT_CODE_ITM15=? "
 						 );
 						 pstmt.setBigDecimal(1,qty);
-						 pstmt.setString(2,refDetailVO.getCompanyCodeSys01DOC07());
-						 pstmt.setString(3,refDetailVO.getDocTypeDOC07());
-						 pstmt.setBigDecimal(4,refDetailVO.getDocYearDOC07());
-						 pstmt.setBigDecimal(5,refDetailVO.getDocNumberDOC07());
-						 pstmt.setString(6,refDetailVO.getItemCodeItm01DOC07());
-						 pstmt.setString(7,docType);
-						 pstmt.setBigDecimal(8,docYear);
-						 pstmt.setBigDecimal(9,docNumber);
-						 pstmt.setBigDecimal(10,rowNumber);
+						 pstmt.setString(2,username);
+						 pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+						 pstmt.setString(4,refDetailVO.getCompanyCodeSys01DOC07());
+						 pstmt.setString(5,refDetailVO.getDocTypeDOC07());
+						 pstmt.setBigDecimal(6,refDetailVO.getDocYearDOC07());
+						 pstmt.setBigDecimal(7,refDetailVO.getDocNumberDOC07());
+						 pstmt.setString(8,refDetailVO.getItemCodeItm01DOC07());
+						 pstmt.setString(9,docType);
+						 pstmt.setBigDecimal(10,docYear);
+						 pstmt.setBigDecimal(11,docNumber);
+						 pstmt.setBigDecimal(12,rowNumber);
 
-						 pstmt.setString(11,refDetailVO.getVariantTypeItm06DOC07());
-						 pstmt.setString(12,refDetailVO.getVariantCodeItm11DOC07());
-						 pstmt.setString(13,refDetailVO.getVariantTypeItm07DOC07());
-						 pstmt.setString(14,refDetailVO.getVariantCodeItm12DOC07());
-						 pstmt.setString(15,refDetailVO.getVariantTypeItm08DOC07());
-						 pstmt.setString(16,refDetailVO.getVariantCodeItm13DOC07());
-						 pstmt.setString(17,refDetailVO.getVariantTypeItm09DOC07());
-						 pstmt.setString(18,refDetailVO.getVariantCodeItm14DOC07());
-						 pstmt.setString(19,refDetailVO.getVariantTypeItm10DOC07());
-						 pstmt.setString(20,refDetailVO.getVariantCodeItm15DOC07());
+						 pstmt.setString(13,refDetailVO.getVariantTypeItm06DOC07());
+						 pstmt.setString(14,refDetailVO.getVariantCodeItm11DOC07());
+						 pstmt.setString(15,refDetailVO.getVariantTypeItm07DOC07());
+						 pstmt.setString(16,refDetailVO.getVariantCodeItm12DOC07());
+						 pstmt.setString(17,refDetailVO.getVariantTypeItm08DOC07());
+						 pstmt.setString(18,refDetailVO.getVariantCodeItm13DOC07());
+						 pstmt.setString(19,refDetailVO.getVariantTypeItm09DOC07());
+						 pstmt.setString(20,refDetailVO.getVariantCodeItm14DOC07());
+						 pstmt.setString(21,refDetailVO.getVariantTypeItm10DOC07());
+						 pstmt.setString(22,refDetailVO.getVariantCodeItm15DOC07());
 
 						 pstmt.execute();
 						 pstmt.close();
@@ -394,12 +398,14 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 
 				 if (canCloseLinkedDoc) {
 					 // the linked document can be closed...
-					 pstmt = conn.prepareStatement("update DOC06_PURCHASE set DOC_STATE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
+					 pstmt = conn.prepareStatement("update DOC06_PURCHASE set DOC_STATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
 					 pstmt.setString(1,ApplicationConsts.CLOSED);
-					 pstmt.setString(2,refPK.getCompanyCodeSys01DOC06());
-					 pstmt.setString(3,refPK.getDocTypeDOC06());
-					 pstmt.setBigDecimal(4,refPK.getDocYearDOC06());
-					 pstmt.setBigDecimal(5,refPK.getDocNumberDOC06());
+					 pstmt.setString(2,username);
+					 pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+					 pstmt.setString(4,refPK.getCompanyCodeSys01DOC06());
+					 pstmt.setString(5,refPK.getDocTypeDOC06());
+					 pstmt.setBigDecimal(6,refPK.getDocYearDOC06());
+					 pstmt.setBigDecimal(7,refPK.getDocNumberDOC06());
 					 pstmt.execute();
 				 }
 
@@ -496,8 +502,8 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 			 pstmt = conn.prepareStatement(
 					 "insert into DOC19_EXPIRATIONS(COMPANY_CODE_SYS01,DOC_TYPE,DOC_YEAR,DOC_NUMBER,DOC_SEQUENCE,PROGRESSIVE,"+
 					 "DOC_DATE,EXPIRATION_DATE,NAME_1,NAME_2,VALUE,DESCRIPTION,CUSTOMER_SUPPLIER_CODE,PROGRESSIVE_REG04,CURRENCY_CODE_REG03,"+
-					 "PAYMENT_TYPE_CODE_REG11,PAYED,REAL_PAYMENT_TYPE_CODE_REG11,PAYED_DATE,PAYED_VALUE,REAL_ACCOUNT_CODE_ACC02,ROUNDING_ACCOUNT_CODE_ACC02,ALREADY_PAYED) "+
-					 "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+					 "PAYMENT_TYPE_CODE_REG11,PAYED,REAL_PAYMENT_TYPE_CODE_REG11,PAYED_DATE,PAYED_VALUE,REAL_ACCOUNT_CODE_ACC02,ROUNDING_ACCOUNT_CODE_ACC02,ALREADY_PAYED,CREATE_USER,CREATE_DATE) "+
+					 "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 			 );
 
 			 long startTime = docVO.getDocDateDOC06().getTime(); // invoice date...
@@ -552,6 +558,8 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 				 pstmt.setString(21,payVO.getAccountCodeAcc02REG11());
 				 pstmt.setString(22,roundingAccountCode);
 				 pstmt.setBigDecimal(23,new BigDecimal(0));
+				 pstmt.setString(24,username);
+				 pstmt.setTimestamp(25,new java.sql.Timestamp(System.currentTimeMillis()));
 
 				 pstmt.execute();
 			 }
@@ -560,12 +568,14 @@ public class ClosePurchaseDocBean  implements ClosePurchaseDoc {
 
 
 			 // change doc state to close...
-			 pstmt = conn.prepareStatement("update DOC06_PURCHASE set DOC_STATE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
+			 pstmt = conn.prepareStatement("update DOC06_PURCHASE set DOC_STATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=?");
 			 pstmt.setString(1,ApplicationConsts.CLOSED);
-			 pstmt.setString(2,pk.getCompanyCodeSys01DOC06());
-			 pstmt.setString(3,pk.getDocTypeDOC06());
-			 pstmt.setBigDecimal(4,pk.getDocYearDOC06());
-			 pstmt.setBigDecimal(5,pk.getDocNumberDOC06());
+			 pstmt.setString(2,username);
+			 pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			 pstmt.setString(4,pk.getCompanyCodeSys01DOC06());
+			 pstmt.setString(5,pk.getDocTypeDOC06());
+			 pstmt.setBigDecimal(6,pk.getDocYearDOC06());
+			 pstmt.setBigDecimal(7,pk.getDocNumberDOC06());
 			 pstmt.execute();
 
 

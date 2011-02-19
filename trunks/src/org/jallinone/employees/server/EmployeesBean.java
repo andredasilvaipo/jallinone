@@ -64,7 +64,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class EmployeesBean  implements Employees {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -72,9 +72,9 @@ public class EmployeesBean  implements Employees {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -84,7 +84,7 @@ public class EmployeesBean  implements Employees {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -101,24 +101,24 @@ public class EmployeesBean  implements Employees {
   public void setBean(PeopleBean bean) {
 	  this.bean = bean;
   }
-  
-  
+
+
 
 
   private InsertEmployeeCalendarsBean calbean;
-  
+
   public void setCalbean(InsertEmployeeCalendarsBean calbean) {
 	  this.calbean = calbean;
   }
 
-  
+
 
   public EmployeesBean() {
   }
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public GridEmployeeVO getGridEmployee() {
 	  throw new UnsupportedOperationException();
@@ -126,7 +126,7 @@ public class EmployeesBean  implements Employees {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public EmployeeCalendarVO getEmployeeCalendar() {
 	  throw new UnsupportedOperationException();
@@ -148,18 +148,19 @@ public class EmployeesBean  implements Employees {
           "REG04_SUBJECTS.SUBJECT_TYPE,REG04_SUBJECTS.ZIP,REG04_SUBJECTS.SEX,REG04_SUBJECTS.MARITAL_STATUS,REG04_SUBJECTS.NATIONALITY,REG04_SUBJECTS.BIRTHDAY,"+
           "REG04_SUBJECTS.BIRTHPLACE,REG04_SUBJECTS.PHONE_NUMBER,REG04_SUBJECTS.MOBILE_NUMBER,REG04_SUBJECTS.FAX_NUMBER,REG04_SUBJECTS.EMAIL_ADDRESS,"+
           "REG04_SUBJECTS.WEB_SITE,REG04_SUBJECTS.NOTE,"+
-          "SCH01_EMPLOYEES.COMPANY_CODE_SYS01,SCH01_EMPLOYEES.PROGRESSIVE_REG04,SCH01_EMPLOYEES.EMPLOYEE_CODE,SYS10_TRANSLATIONS.DESCRIPTION,SCH01_EMPLOYEES.PHONE_NUMBER,SCH01_EMPLOYEES.OFFICE,"+
+          "SCH01_EMPLOYEES.COMPANY_CODE_SYS01,SCH01_EMPLOYEES.PROGRESSIVE_REG04,SCH01_EMPLOYEES.EMPLOYEE_CODE,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,SCH01_EMPLOYEES.PHONE_NUMBER,SCH01_EMPLOYEES.OFFICE,"+
           "SCH01_EMPLOYEES.TASK_CODE_REG07,SCH01_EMPLOYEES.DIVISION,SCH01_EMPLOYEES.EMAIL_ADDRESS,SCH01_EMPLOYEES.MANAGER_PROGRESSIVE_REG04,"+
           "SCH01_EMPLOYEES.ASSISTANT_PROGRESSIVE_REG04,SCH01_EMPLOYEES.LEV,SCH01_EMPLOYEES.ENABLED,SCH01_EMPLOYEES.ENGAGED_DATE,SCH01_EMPLOYEES.DISMISSAL_DATE,"+
           "SCH01_EMPLOYEES.COMPANY_CODE_SYS01_MAN_SCH01,SCH01_EMPLOYEES.COMPANY_CODE_SYS01_ASS_SCH01,SCH01_EMPLOYEES.SALARY "+
-          " from REG04_SUBJECTS,SCH01_EMPLOYEES,REG07_TASKS,SYS10_TRANSLATIONS where "+
+          " from REG04_SUBJECTS,SCH01_EMPLOYEES,REG07_TASKS,SYS10_COMPANY_TRANSLATIONS where "+
           "SCH01_EMPLOYEES.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "SCH01_EMPLOYEES.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
           "REG04_SUBJECTS.COMPANY_CODE_SYS01=? and REG04_SUBJECTS.PROGRESSIVE=? and "+
           "SCH01_EMPLOYEES.COMPANY_CODE_SYS01=REG07_TASKS.COMPANY_CODE_SYS01 and "+
           "SCH01_EMPLOYEES.TASK_CODE_REG07=REG07_TASKS.TASK_CODE and "+
-          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? ";
+					"REG07_TASKS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? ";
 
 
 
@@ -191,7 +192,7 @@ public class EmployeesBean  implements Employees {
       attribute2dbField.put("companyCodeSys01SCH01","SCH01_EMPLOYEES.COMPANY_CODE_SYS01");
       attribute2dbField.put("progressiveReg04SCH01","SCH01_EMPLOYEES.PROGRESSIVE_REG04");
       attribute2dbField.put("employeeCodeSCH01","SCH01_EMPLOYEES.EMPLOYEE_CODE");
-      attribute2dbField.put("taskDescriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("taskDescriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("phoneNumberSCH01","SCH01_EMPLOYEES.PHONE_NUMBER");
       attribute2dbField.put("officeSCH01","SCH01_EMPLOYEES.OFFICE");
       attribute2dbField.put("taskCodeReg07SCH01","SCH01_EMPLOYEES.TASK_CODE_REG07");
@@ -469,12 +470,13 @@ public class EmployeesBean  implements Employees {
 
       String sql =
           "select SCH01_EMPLOYEES.COMPANY_CODE_SYS01,SCH01_EMPLOYEES.PROGRESSIVE_REG04,SCH01_EMPLOYEES.EMPLOYEE_CODE,"+
-          "REG07_TASKS.TASK_CODE,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,SYS10_TRANSLATIONS.DESCRIPTION,SCH01_EMPLOYEES.PHONE_NUMBER,SCH01_EMPLOYEES.OFFICE "+
-          "from SCH01_EMPLOYEES,SYS10_TRANSLATIONS,REG07_TASKS,REG04_SUBJECTS where "+
+          "REG07_TASKS.TASK_CODE,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,SCH01_EMPLOYEES.PHONE_NUMBER,SCH01_EMPLOYEES.OFFICE "+
+          "from SCH01_EMPLOYEES,SYS10_COMPANY_TRANSLATIONS,REG07_TASKS,REG04_SUBJECTS where "+
           "SCH01_EMPLOYEES.COMPANY_CODE_SYS01=REG07_TASKS.COMPANY_CODE_SYS01 and "+
           "SCH01_EMPLOYEES.TASK_CODE_REG07=REG07_TASKS.TASK_CODE and "+
-          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"REG07_TASKS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SCH01_EMPLOYEES.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "SCH01_EMPLOYEES.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
           "SCH01_EMPLOYEES.ENABLED='Y'";
@@ -501,7 +503,7 @@ public class EmployeesBean  implements Employees {
       attribute2dbField.put("phoneNumberSCH01","SCH01_EMPLOYEES.PHONE_NUMBER");
       attribute2dbField.put("officeSCH01","SCH01_EMPLOYEES.OFFICE");
       attribute2dbField.put("employeeCodeSCH01","SCH01_EMPLOYEES.EMPLOYEE_CODE");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("taskCodeReg07SCH01","REG07_TASKS.TASK_CODE");
 
       ArrayList values = new ArrayList();
@@ -555,12 +557,12 @@ public class EmployeesBean  implements Employees {
    * Business logic to execute.
    */
   public VOResponse updateEmployee(DetailEmployeeVO oldVO,DetailEmployeeVO newVO,String t1,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable {
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       bean.setConn(conn);
-      
+
       // update REG04 table...
       Response res = bean.update(oldVO,newVO,t1,serverLanguageId,username);
       if (res.isError()) {
@@ -634,7 +636,7 @@ public class EmployeesBean  implements Employees {
             }
 
         }
-        catch (Exception exx) {}    	
+        catch (Exception exx) {}
     }
 
   }
@@ -645,7 +647,7 @@ public class EmployeesBean  implements Employees {
    * Business logic to execute.
    */
   public VOListResponse updateEmployeeCalendars(ArrayList oldList,ArrayList newList,String serverLanguageId,String username) throws Throwable {
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -672,7 +674,7 @@ public class EmployeesBean  implements Employees {
         oldVO = (EmployeeCalendarVO)oldList.get(i);
         newVO = (EmployeeCalendarVO)newList.get(i);
 
-        res = new QueryUtil().updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
@@ -742,12 +744,13 @@ public class EmployeesBean  implements Employees {
 
       String sql =
           "select SCH01_EMPLOYEES.COMPANY_CODE_SYS01,SCH01_EMPLOYEES.PROGRESSIVE_REG04,SCH01_EMPLOYEES.EMPLOYEE_CODE,"+
-          "SCH01_EMPLOYEES.TASK_CODE_REG07,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,SYS10_TRANSLATIONS.DESCRIPTION,SCH01_EMPLOYEES.PHONE_NUMBER,SCH01_EMPLOYEES.OFFICE "+
-          "from SCH01_EMPLOYEES,SYS10_TRANSLATIONS,REG07_TASKS,REG04_SUBJECTS where "+
+          "SCH01_EMPLOYEES.TASK_CODE_REG07,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,SCH01_EMPLOYEES.PHONE_NUMBER,SCH01_EMPLOYEES.OFFICE "+
+          "from SCH01_EMPLOYEES,SYS10_COMPANY_TRANSLATIONS,REG07_TASKS,REG04_SUBJECTS where "+
           "SCH01_EMPLOYEES.COMPANY_CODE_SYS01=REG07_TASKS.COMPANY_CODE_SYS01 and "+
           "SCH01_EMPLOYEES.TASK_CODE_REG07=REG07_TASKS.TASK_CODE and "+
-          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"REG07_TASKS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SCH01_EMPLOYEES.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "SCH01_EMPLOYEES.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
           "SCH01_EMPLOYEES.ENABLED='Y' and "+
@@ -762,7 +765,7 @@ public class EmployeesBean  implements Employees {
       attribute2dbField.put("phoneNumberSCH01","SCH01_EMPLOYEES.PHONE_NUMBER");
       attribute2dbField.put("officeSCH01","SCH01_EMPLOYEES.OFFICE");
       attribute2dbField.put("employeeCodeSCH01","SCH01_EMPLOYEES.EMPLOYEE_CODE");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("taskCodeReg07SCH01","SCH01_EMPLOYEES.TASK_CODE_REG07");
 
       ArrayList values = new ArrayList();
@@ -822,14 +825,14 @@ public class EmployeesBean  implements Employees {
 
 
 
-  
+
 
   /**
    * Business logic to execute.
    */
   public VOResponse insertEmployee(DetailEmployeeVO vo,String t1,String t2,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable {
     PreparedStatement pstmt = null;
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -855,8 +858,8 @@ public class EmployeesBean  implements Employees {
       pstmt.setString(2,vo.getEmployeeCodeSCH01());
       ResultSet rset = pstmt.executeQuery();
       if (rset.next()) {
-        rset.close(); 
-        
+        rset.close();
+
     	throw new Exception(t1);
       }
       rset.close();
@@ -945,12 +948,12 @@ public class EmployeesBean  implements Employees {
       ArrayList list = new ArrayList();
       list.add(calVO);
 
-      
+
       calRes = calbean.insertEmployeeCalendars(list,serverLanguageId,username);
       if (calRes.isError()) {
         	throw new Exception(calRes.getErrorMessage());
       }
-      
+
       calVO.setDayOfWeekSCH02(String.valueOf(Calendar.TUESDAY));
       list.clear();
       list.add(calVO);
@@ -1003,7 +1006,7 @@ public class EmployeesBean  implements Employees {
       }
       catch (Exception ex2) {
       }
-    
+
       try {
         loadPars.setConn(null);
         bean.setConn(null);
@@ -1017,29 +1020,40 @@ public class EmployeesBean  implements Employees {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
 
   }
 
 
-  
+
 
   /**
    * Business logic to execute.
    */
   public VOResponse deleteEmployee(SubjectPK vo,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
-    
+		PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
 
       // logically delete record in SCH01...
-      stmt.execute("update SCH01_EMPLOYEES set ENABLED='N' where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG04()+"' and PROGRESSIVE_REG04="+vo.getProgressiveREG04());
+      pstmt = conn.prepareCall(
+		     "update SCH01_EMPLOYEES set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG04()+"' and PROGRESSIVE_REG04="+vo.getProgressiveREG04()
+		  );
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
+
       // logically delete record in REG04...
-      stmt.execute("update REG04_SUBJECTS set ENABLED='N' where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG04()+"' and PROGRESSIVE="+vo.getProgressiveREG04());
+      pstmt = conn.prepareCall(
+		     "update REG04_SUBJECTS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG04()+"' and PROGRESSIVE="+vo.getProgressiveREG04()
+		  );
+			pstmt.setString(1,username);
+			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
+			pstmt.close();
 
       return new VOResponse(new Boolean(true));
     }
@@ -1056,7 +1070,7 @@ public class EmployeesBean  implements Employees {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {

@@ -54,7 +54,7 @@ public interface LoadItems {
 	/**
 	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
 	 */
-	public GridItemVO getGridItem(HierarchyLevelVO pk);
+	public GridItemVO getGridItem(CompanyHierarchyLevelVO pk);
 
 	public VOListResponse loadItems(GridParams pars,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
 

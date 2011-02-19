@@ -46,7 +46,7 @@ public class CustomFunctionVO extends ValueObjectImpl {
   private String noteSYS16;
   private String mainTablesSYS16;
   private boolean useCompanyCodeSYS06;
-  private java.math.BigDecimal progressiveHie01SYS18;
+  private java.math.BigDecimal progressiveHie03SYS18;
   private String levelDescriptionSYS10;
 
 
@@ -176,11 +176,11 @@ public class CustomFunctionVO extends ValueObjectImpl {
   public String getLevelDescriptionSYS10() {
     return levelDescriptionSYS10;
   }
-  public java.math.BigDecimal getProgressiveHie01SYS18() {
-    return progressiveHie01SYS18;
+  public java.math.BigDecimal getProgressiveHie03SYS18() {
+    return progressiveHie03SYS18;
   }
-  public void setProgressiveHie01SYS18(java.math.BigDecimal progressiveHie01SYS18) {
-    this.progressiveHie01SYS18 = progressiveHie01SYS18;
+  public void setProgressiveHie03SYS18(java.math.BigDecimal progressiveHie03SYS18) {
+    this.progressiveHie03SYS18 = progressiveHie03SYS18;
   }
   public void setLevelDescriptionSYS10(String levelDescriptionSYS10) {
     this.levelDescriptionSYS10 = levelDescriptionSYS10;

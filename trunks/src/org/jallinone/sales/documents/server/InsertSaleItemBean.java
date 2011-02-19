@@ -192,7 +192,7 @@ public class InsertSaleItemBean implements InsertSaleItem {
 	      vo.setRowNumberDOC02( CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01DOC02(),"DOC02_SELLING_ITEMS","ROW_NUMBER",conn) );
 
 	      // insert into DOC02...
-	      Response res = QueryUtil.insertTable(
+	      Response res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 	          conn,
 	          new UserSessionParameters(username),
 	          vo,
@@ -215,13 +215,15 @@ public class InsertSaleItemBean implements InsertSaleItem {
 						vo.getDocYearDOC02(),
 						vo.getDocNumberDOC02()
 				);
-				pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=? where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and DOC_STATE=?");
+				pstmt = conn.prepareStatement("update DOC01_SELLING set DOC_STATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and DOC_STATE=?");
 				pstmt.setString(1,ApplicationConsts.HEADER_BLOCKED);
-				pstmt.setString(2,pk.getCompanyCodeSys01DOC01());
-				pstmt.setString(3,pk.getDocTypeDOC01());
-				pstmt.setBigDecimal(4,pk.getDocYearDOC01());
-				pstmt.setBigDecimal(5,pk.getDocNumberDOC01());
-				pstmt.setString(6,ApplicationConsts.OPENED);
+				pstmt.setString(2,username);
+				pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.setString(4,pk.getCompanyCodeSys01DOC01());
+				pstmt.setString(5,pk.getDocTypeDOC01());
+				pstmt.setBigDecimal(6,pk.getDocYearDOC01());
+				pstmt.setBigDecimal(7,pk.getDocNumberDOC01());
+				pstmt.setString(8,ApplicationConsts.OPENED);
 				pstmt.execute();
 
 				// recalculate totals...

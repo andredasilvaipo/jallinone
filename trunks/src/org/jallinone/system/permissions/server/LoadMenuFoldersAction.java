@@ -11,7 +11,6 @@ import java.util.Hashtable;
 
 import javax.swing.tree.*;
 import org.jallinone.commons.server.JAIOBeanFactory;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
 import org.jallinone.system.server.JAIOUserSessionParameters;
 import org.openswing.swing.logger.server.Logger;
 import org.openswing.swing.message.receive.java.ErrorResponse;
@@ -21,10 +20,11 @@ import org.openswing.swing.server.Action;
 import org.openswing.swing.server.ConnectionManager;
 import org.openswing.swing.server.UserSessionParameters;
 import org.openswing.swing.tree.java.OpenSwingTreeNode;
+import org.jallinone.hierarchies.java.HierarchyLevelVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
- * <p>Description: Action class used to retrieve menu folders from HIE01, based on the menu hierarchy.</p>
+ * <p>Description: Action class used to retrieve menu folders from HIE03, based on the menu hierarchy.</p>
  * <p>Copyright: Copyright (C) 2006 Mauro Carniel</p>
  *
  * <p> This file is part of JAllInOne ERP/CRM application.
@@ -74,8 +74,8 @@ public class LoadMenuFoldersAction implements Action {
 			return new ErrorResponse(ex.getMessage());
 		}
 	}
-	
-	
+
+
 
 
 	  /**
@@ -91,11 +91,11 @@ public class LoadMenuFoldersAction implements Action {
 	      DefaultTreeModel model = null;
 	      stmt = conn.createStatement();
 	      ResultSet rset = stmt.executeQuery(
-	          "select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV,SYS10_TRANSLATIONS.DESCRIPTION "+
-	          "from HIE01_LEVELS,SYS10_TRANSLATIONS "+
-	          "where HIE01_LEVELS.PROGRESSIVE = SYS10_TRANSLATIONS.PROGRESSIVE and "+
-	          "SYS10_TRANSLATIONS.LANGUAGE_CODE='"+langId+"' and ENABLED='Y' and PROGRESSIVE_HIE02=2 "+
-	          "order by LEV,PROGRESSIVE_HIE01,PROGRESSIVE"
+	          "select HIE03_LEVELS.PROGRESSIVE,HIE03_LEVELS.PROGRESSIVE_HIE03,HIE03_LEVELS.LEV,SYS10_TRANSLATIONS.DESCRIPTION "+
+	          "from HIE03_LEVELS,SYS10_TRANSLATIONS "+
+	          "where HIE03_LEVELS.PROGRESSIVE = SYS10_TRANSLATIONS.PROGRESSIVE and "+
+	          "SYS10_TRANSLATIONS.LANGUAGE_CODE='"+langId+"' and ENABLED='Y' and PROGRESSIVE_HIE04=2 "+
+	          "order by LEV,PROGRESSIVE_HIE03,PROGRESSIVE"
 	      );
 	      Hashtable currentLevelNodes = new Hashtable();
 	      Hashtable newLevelNodes = new Hashtable();
@@ -115,22 +115,22 @@ public class LoadMenuFoldersAction implements Action {
 	          // prepare a tree model with the root node...
 	          vo = new HierarchyLevelVO();
 	          vo.setDescriptionSYS10(rset.getString(4));
-	          vo.setEnabledHIE01("Y");
-	          vo.setLevelHIE01(rset.getBigDecimal(3));
-	          vo.setProgressiveHIE01(rset.getBigDecimal(1));
-	          vo.setProgressiveHie01HIE01(rset.getBigDecimal(2));
-	          vo.setProgressiveHie02HIE01(new BigDecimal(2));
+	          vo.setEnabledHIE03("Y");
+	          vo.setLevelHIE03(rset.getBigDecimal(3));
+	          vo.setProgressiveHIE03(rset.getBigDecimal(1));
+	          vo.setProgressiveHie03HIE03(rset.getBigDecimal(2));
+	          vo.setProgressiveHie04HIE03(new BigDecimal(2));
 	          currentNode = new OpenSwingTreeNode(vo);
 	          model = new DefaultTreeModel(currentNode);
 	        }
 	        else {
 	          vo = new HierarchyLevelVO();
 	          vo.setDescriptionSYS10(rset.getString(4));
-	          vo.setEnabledHIE01("Y");
-	          vo.setLevelHIE01(rset.getBigDecimal(3));
-	          vo.setProgressiveHIE01(rset.getBigDecimal(1));
-	          vo.setProgressiveHie01HIE01(rset.getBigDecimal(2));
-	          vo.setProgressiveHie02HIE01(new BigDecimal(2));
+	          vo.setEnabledHIE03("Y");
+	          vo.setLevelHIE03(rset.getBigDecimal(3));
+	          vo.setProgressiveHIE03(rset.getBigDecimal(1));
+	          vo.setProgressiveHie03HIE03(rset.getBigDecimal(2));
+	          vo.setProgressiveHie04HIE03(new BigDecimal(2));
 	          currentNode = new OpenSwingTreeNode(vo);
 
 	          parentNode = (DefaultMutableTreeNode)currentLevelNodes.get(new Integer(rset.getInt(2)));
@@ -160,7 +160,7 @@ public class LoadMenuFoldersAction implements Action {
 	    }
 
 	  }
-	
-	
+
+
 }
 

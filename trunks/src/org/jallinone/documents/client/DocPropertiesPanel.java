@@ -13,7 +13,7 @@ import org.openswing.swing.message.receive.java.*;
 import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.util.client.ClientUtils;
 import org.openswing.swing.domains.java.*;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import java.util.ArrayList;
 import org.openswing.swing.lookup.client.*;
 import org.openswing.swing.tree.client.*;
@@ -98,9 +98,13 @@ public class DocPropertiesPanel extends Form {
               vo.setTextValueDOC20((String)control.getValue());
             else if (vo.getPropertyTypeDOC21().equals(ApplicationConsts.TYPE_NUM))
               vo.setNumValueDOC20((BigDecimal)control.getValue());
-            else if (vo.getPropertyTypeDOC21().equals(ApplicationConsts.TYPE_DATE))
-              vo.setDateValueDOC20((Timestamp)control.getValue());
-            newRows.add(vo);
+            else if (vo.getPropertyTypeDOC21().equals(ApplicationConsts.TYPE_DATE)) {
+							Object value = control.getValue();
+							if (value!=null && !(value instanceof java.sql.Timestamp))
+									value = new java.sql.Timestamp( ((java.util.Date)control.getValue()).getTime() );
+              vo.setDateValueDOC20((Timestamp)value);
+            }
+						 newRows.add(vo);
           }
           ArrayList[] list = new ArrayList[]{oldRows,newRows};
           Response res = ClientUtils.getData("updateDocProperties",list);

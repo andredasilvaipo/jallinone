@@ -28,10 +28,10 @@ import org.jallinone.documents.java.DocumentPK;
 import org.jallinone.documents.java.DocumentVersionVO;
 import org.jallinone.documents.java.GridDocumentVO;
 import org.jallinone.documents.java.LevelPropertyVO;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 import org.jallinone.system.server.JAIOUserSessionParameters;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.openswing.swing.logger.server.Logger;
 import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.message.receive.java.VOListResponse;
@@ -114,7 +114,7 @@ public class DocumentsBean  implements Documents {
 	/**
 	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
-	public GridDocumentVO getGridDocument(HierarchyLevelVO pk) {
+	public GridDocumentVO getGridDocument(CompanyHierarchyLevelVO pk) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -149,7 +149,7 @@ public class DocumentsBean  implements Documents {
 			BigDecimal progressiveHIE01 = (BigDecimal)pars.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_HIE01);
 			BigDecimal progressiveHIE02 = (BigDecimal)pars.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_HIE02);
 
-			HierarchyLevelVO vo = (HierarchyLevelVO)pars.getOtherGridParams().get(ApplicationConsts.TREE_FILTER);
+			CompanyHierarchyLevelVO vo = (CompanyHierarchyLevelVO)pars.getOtherGridParams().get(ApplicationConsts.TREE_FILTER);
 			if (vo!=null) {
 				progressiveHIE01 = vo.getProgressiveHIE01();
 				progressiveHIE02 = vo.getProgressiveHie02HIE01();
@@ -163,20 +163,21 @@ public class DocumentsBean  implements Documents {
 
 			String sql =
 				"select DOC14_DOCUMENTS.COMPANY_CODE_SYS01,DOC14_DOCUMENTS.PROGRESSIVE,DOC14_DOCUMENTS.DESCRIPTION,DOC14_DOCUMENTS.FILENAME,"+
-				"HIE01_LEVELS.PROGRESSIVE_HIE02,DOC17_DOCUMENT_LINKS.PROGRESSIVE_HIE01"+
-				" from DOC14_DOCUMENTS,DOC17_DOCUMENT_LINKS,HIE01_LEVELS where "+
+				"HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE02,DOC17_DOCUMENT_LINKS.PROGRESSIVE_HIE01"+
+				" from DOC14_DOCUMENTS,DOC17_DOCUMENT_LINKS,HIE01_COMPANY_LEVELS where "+
 				"DOC14_DOCUMENTS.COMPANY_CODE_SYS01=DOC17_DOCUMENT_LINKS.COMPANY_CODE_SYS01 and "+
 				"DOC14_DOCUMENTS.PROGRESSIVE=DOC17_DOCUMENT_LINKS.PROGRESSIVE_DOC14 and "+
-				"DOC17_DOCUMENT_LINKS.PROGRESSIVE_HIE01=HIE01_LEVELS.PROGRESSIVE and "+
-				"HIE01_LEVELS.PROGRESSIVE_HIE02=? and "+
+				"DOC17_DOCUMENT_LINKS.COMPANY_CODE_SYS01=HIE01_COMPANY_LEVELS.COMPANY_CODE_SYS01 and "+
+				"DOC17_DOCUMENT_LINKS.PROGRESSIVE_HIE01=HIE01_COMPANY_LEVELS.PROGRESSIVE and "+
+				"HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE02=? and "+
 				"DOC14_DOCUMENTS.COMPANY_CODE_SYS01 in ("+companies+") ";
 
 
 			if (rootProgressiveHIE01==null || !rootProgressiveHIE01.equals(progressiveHIE01)) {
 				// retrieve all subnodes of the specified node...
 				pstmt = conn.prepareStatement(
-						"select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01,HIE01_LEVELS.LEV from HIE01_LEVELS "+
-						"where ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE>=? "+
+						"select HIE01_COMPANY_LEVELS.PROGRESSIVE,HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE01,HIE01_COMPANY_LEVELS.LEV from HIE01_COMPANY_LEVELS "+
+						"where COMPANY_CODE_SYS01='"+vo.getCompanySys01HIE01()+"' and ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE>=? "+
 						"order by LEV,PROGRESSIVE_HIE01,PROGRESSIVE"
 				);
 				pstmt.setBigDecimal(1,progressiveHIE02);
@@ -247,7 +248,7 @@ public class DocumentsBean  implements Documents {
 			attribute2dbField.put("progressiveDOC14","DOC14_DOCUMENTS.PROGRESSIVE");
 			attribute2dbField.put("descriptionDOC14","DOC14_DOCUMENTS.DESCRIPTION");
 			attribute2dbField.put("filenameDOC14","DOC14_DOCUMENTS.FILENAME");
-			attribute2dbField.put("progressiveHie02HIE01","HIE01_LEVELS.PROGRESSIVE_HIE02");
+			attribute2dbField.put("progressiveHie02HIE01","HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE02");
 			attribute2dbField.put("progressiveHie01DOC17","DOC17_DOCUMENT_LINKS.PROGRESSIVE_HIE01");
 
 			// read from DOC14 table...
@@ -309,7 +310,7 @@ public class DocumentsBean  implements Documents {
 			BigDecimal progressiveHIE01 = (BigDecimal)pars.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_HIE01);
 			BigDecimal progressiveHIE02 = (BigDecimal)pars.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_HIE02);
 
-			HierarchyLevelVO vo = (HierarchyLevelVO)pars.getOtherGridParams().get(ApplicationConsts.TREE_FILTER);
+			CompanyHierarchyLevelVO vo = (CompanyHierarchyLevelVO)pars.getOtherGridParams().get(ApplicationConsts.TREE_FILTER);
 			if (vo!=null) {
 				progressiveHIE01 = vo.getProgressiveHIE01();
 				progressiveHIE02 = vo.getProgressiveHie02HIE01();
@@ -322,11 +323,12 @@ public class DocumentsBean  implements Documents {
 			companies = companies.substring(0,companies.length()-1);
 
 			String sql =
-				"select DOC21_LEVEL_PROPERTIES.COMPANY_CODE_SYS01,DOC21_LEVEL_PROPERTIES.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
+				"select DOC21_LEVEL_PROPERTIES.COMPANY_CODE_SYS01,DOC21_LEVEL_PROPERTIES.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+
 				"DOC21_LEVEL_PROPERTIES.PROGRESSIVE_HIE01,DOC21_LEVEL_PROPERTIES.PROGRESSIVE_HIE02,DOC21_LEVEL_PROPERTIES.PROPERTY_TYPE "+
-				" from DOC21_LEVEL_PROPERTIES,SYS10_TRANSLATIONS where "+
-				"DOC21_LEVEL_PROPERTIES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-				"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+				" from DOC21_LEVEL_PROPERTIES,SYS10_COMPANY_TRANSLATIONS where "+
+				"DOC21_LEVEL_PROPERTIES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+				"DOC21_LEVEL_PROPERTIES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+				"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
 				"DOC21_LEVEL_PROPERTIES.PROGRESSIVE_HIE02=? and "+
 				"DOC21_LEVEL_PROPERTIES.COMPANY_CODE_SYS01 in ("+companies+") ";
 
@@ -336,10 +338,12 @@ public class DocumentsBean  implements Documents {
 					progressiveHIE01!=null) {
 
 				// retrieve all subnodes of the specified node...
-				pstmt = conn.prepareStatement(
-						"select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01 from HIE01_LEVELS "+
-						"where HIE01_LEVELS.PROGRESSIVE<=? and PROGRESSIVE_HIE02=?"
-				);
+				String sql2 =
+					"select HIE01_COMPANY_LEVELS.PROGRESSIVE,HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE01 from HIE01_COMPANY_LEVELS "+
+   				"where HIE01_COMPANY_LEVELS.PROGRESSIVE<=? and PROGRESSIVE_HIE02=?";
+				if (vo!=null)
+					sql2 += " and COMPANY_CODE_SYS01='"+vo.getCompanySys01HIE01()+"' ";
+				pstmt = conn.prepareStatement(sql2);
 				pstmt.setBigDecimal(1,progressiveHIE01);
 				pstmt.setBigDecimal(2,progressiveHIE02);
 				ResultSet rset = pstmt.executeQuery();
@@ -373,7 +377,7 @@ public class DocumentsBean  implements Documents {
 			Map attribute2dbField = new HashMap();
 			attribute2dbField.put("companyCodeSys01DOC21","DOC21_LEVEL_PROPERTIES.COMPANY_CODE_SYS01");
 			attribute2dbField.put("progressiveSys10DOC21","DOC21_LEVEL_PROPERTIES.PROGRESSIVE_SYS10");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("progressiveHie01DOC21","DOC21_LEVEL_PROPERTIES.PROGRESSIVE_HIE01");
 			attribute2dbField.put("progressiveHie02DOC21","DOC21_LEVEL_PROPERTIES.PROGRESSIVE_HIE02");
 			attribute2dbField.put("propertyTypeDOC21","DOC21_LEVEL_PROPERTIES.PROPERTY_TYPE");
@@ -471,7 +475,7 @@ public class DocumentsBean  implements Documents {
 				rset = pstmt.executeQuery();
 				if(rset.next()) {
 					// the record exixts: it will be updated...
-					res = QueryUtil.updateTable(
+					res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
 							conn,
 							new UserSessionParameters(username),
 							pkAttributes,
@@ -490,7 +494,7 @@ public class DocumentsBean  implements Documents {
 				}
 				else {
 					// the record does not exixt: it will be inserted...
-					res = QueryUtil.insertTable(
+					res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 							conn,
 							new UserSessionParameters(username),
 							newVO,
@@ -650,11 +654,13 @@ public class DocumentsBean  implements Documents {
 				newVO = (LevelPropertyVO)newVOs.get(i);
 
 				// update property description...
-				TranslationUtils.updateTranslation(
+				CompanyTranslationUtils.updateTranslation(
+				    newVO.getCompanyCodeSys01DOC21(),
 						oldVO.getDescriptionSYS10(),
 						newVO.getDescriptionSYS10(),
 						newVO.getProgressiveSys10DOC21(),
 						serverLanguageId,
+						username,
 						conn
 				);
 			}
@@ -875,11 +881,11 @@ public class DocumentsBean  implements Documents {
 					vo.setCompanyCodeSys01DOC21(companyCode);
 
 				// insert record in SYS10 and generate progressive for property description...
-				progressiveSys10DOC21 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01DOC21(),conn);
+				progressiveSys10DOC21 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01DOC21(),username,conn);
 				vo.setProgressiveSys10DOC21(progressiveSys10DOC21);
 
 				// insert into DOC21...
-				res = QueryUtil.insertTable(
+				res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
 						conn,
 						new UserSessionParameters(username),
 						vo,
@@ -949,8 +955,8 @@ public class DocumentsBean  implements Documents {
 			java.util.List linkVOs = ((VOListResponse)res).getRows();
 			DocumentLinkVO linkVO = null;
 			pstmt = conn.prepareStatement(
-					"select HIE01_LEVELS.PROGRESSIVE,HIE01_LEVELS.PROGRESSIVE_HIE01 from HIE01_LEVELS "+
-					"where HIE01_LEVELS.PROGRESSIVE<=? and PROGRESSIVE_HIE02=?"
+					"select HIE01_COMPANY_LEVELS.PROGRESSIVE,HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE01 from HIE01_COMPANY_LEVELS "+
+					"where COMPANY_CODE_SYS01='"+pk.getCompanyCodeSys01DOC14()+"' and HIE01_COMPANY_LEVELS.PROGRESSIVE<=? and PROGRESSIVE_HIE02=?"
 			);
 			Hashtable parents = new Hashtable();
 			HashSet progressiveHIE01s = new HashSet();
@@ -978,18 +984,19 @@ public class DocumentsBean  implements Documents {
 			pstmt.close();
 
 			sql =
-				"select DOC21_LEVEL_PROPERTIES.COMPANY_CODE_SYS01,DOC21_LEVEL_PROPERTIES.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
+				"select DOC21_LEVEL_PROPERTIES.COMPANY_CODE_SYS01,DOC21_LEVEL_PROPERTIES.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+
 				"DOC21_LEVEL_PROPERTIES.PROGRESSIVE_HIE01,DOC21_LEVEL_PROPERTIES.PROGRESSIVE_HIE02,DOC21_LEVEL_PROPERTIES.PROPERTY_TYPE, "+
 				"DOC20_DOC_PROPERTIES.PROGRESSIVE_DOC14,DOC20_DOC_PROPERTIES.TEXT_VALUE,DOC20_DOC_PROPERTIES.NUM_VALUE,DOC20_DOC_PROPERTIES.DATE_VALUE "+
-				" from SYS10_TRANSLATIONS,DOC21_LEVEL_PROPERTIES LEFT OUTER JOIN "+
+				" from SYS10_COMPANY_TRANSLATIONS,DOC21_LEVEL_PROPERTIES LEFT OUTER JOIN "+
 				"(select DOC20_DOC_PROPERTIES.COMPANY_CODE_SYS01,DOC20_DOC_PROPERTIES.PROGRESSIVE_DOC14,DOC20_DOC_PROPERTIES.TEXT_VALUE,"+
 				"DOC20_DOC_PROPERTIES.NUM_VALUE,DOC20_DOC_PROPERTIES.DATE_VALUE,DOC20_DOC_PROPERTIES.PROGRESSIVE_SYS10 "+
 				"from DOC20_DOC_PROPERTIES where DOC20_DOC_PROPERTIES.PROGRESSIVE_DOC14=?) DOC20_DOC_PROPERTIES ON "+
 				"DOC20_DOC_PROPERTIES.COMPANY_CODE_SYS01=DOC21_LEVEL_PROPERTIES.COMPANY_CODE_SYS01 and "+
 				"DOC20_DOC_PROPERTIES.PROGRESSIVE_SYS10=DOC21_LEVEL_PROPERTIES.PROGRESSIVE_SYS10 "+
 				" where "+
-				"DOC21_LEVEL_PROPERTIES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-				"SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+				"DOC21_LEVEL_PROPERTIES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+				"DOC21_LEVEL_PROPERTIES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+				"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
 				"DOC21_LEVEL_PROPERTIES.COMPANY_CODE_SYS01=? ";
 
 			// append to SQL the filter on progressiveHIE0xs...
@@ -1011,7 +1018,7 @@ public class DocumentsBean  implements Documents {
 			attribute2dbField.put("progressiveSys10DOC20","DOC21_LEVEL_PROPERTIES.PROGRESSIVE_SYS10");
 			attribute2dbField.put("progressiveHie01DOC21","DOC21_LEVEL_PROPERTIES.PROGRESSIVE_HIE01");
 			attribute2dbField.put("progressiveHie02DOC21","DOC21_LEVEL_PROPERTIES.PROGRESSIVE_HIE02");
-			attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+			attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 			attribute2dbField.put("progressiveDoc14DOC20","DOC20_DOC_PROPERTIES.PROGRESSIVE_DOC14");
 			attribute2dbField.put("textValueDOC20","DOC20_DOC_PROPERTIES.TEXT_VALUE");
 			attribute2dbField.put("numValueDOC20","DOC20_DOC_PROPERTIES.NUM_VALUE");

@@ -53,7 +53,7 @@ public interface LoadSupplierPriceItems {
 	/**
 	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
 	 */
-	public SupplierPriceItemVO getSupplierPriceItem(HierarchyLevelVO pk);
+	public SupplierPriceItemVO getSupplierPriceItem(CompanyHierarchyLevelVO pk);
 
 	public VOListResponse loadSupplierPriceItems(GridParams pars,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
 

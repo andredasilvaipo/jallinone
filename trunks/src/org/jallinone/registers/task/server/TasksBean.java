@@ -14,7 +14,7 @@ import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.commons.server.CustomizeQueryUtil;
 import org.jallinone.registers.task.java.TaskVO;
 import org.jallinone.system.server.JAIOUserSessionParameters;
-import org.jallinone.system.translations.server.TranslationUtils;
+import org.jallinone.system.translations.server.CompanyTranslationUtils;
 import org.openswing.swing.logger.server.Logger;
 import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.message.receive.java.VOListResponse;
@@ -22,6 +22,7 @@ import org.openswing.swing.message.receive.java.VOResponse;
 import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.message.send.java.LookupValidationParams;
 import org.openswing.swing.server.UserSessionParameters;
+import java.sql.PreparedStatement;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -54,7 +55,7 @@ import org.openswing.swing.server.UserSessionParameters;
 public class TasksBean  implements Tasks {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -62,9 +63,9 @@ public class TasksBean  implements Tasks {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -74,7 +75,7 @@ public class TasksBean  implements Tasks {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -86,10 +87,10 @@ public class TasksBean  implements Tasks {
 
 
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public TaskVO getTask() {
-	  throw new UnsupportedOperationException();	  
+	  throw new UnsupportedOperationException();
   }
 
 
@@ -102,18 +103,20 @@ public class TasksBean  implements Tasks {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       String sql =
-          "select REG07_TASKS.COMPANY_CODE_SYS01,REG07_TASKS.TASK_CODE,REG07_TASKS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
+          "select REG07_TASKS.COMPANY_CODE_SYS01,REG07_TASKS.TASK_CODE,REG07_TASKS.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+
           "REG07_TASKS.ACTIVITY_CODE_SAL09,REG07_TASKS.ENABLED,REG07_TASKS.FINITE_CAPACITY, "+
-          "SAL09_ACTIVITIES.DESCRIPTION from SYS10_TRANSLATIONS,REG07_TASKS "+
+          "SAL09_ACTIVITIES.DESCRIPTION from SYS10_COMPANY_TRANSLATIONS,REG07_TASKS "+
           "LEFT OUTER JOIN "+
-          "(select SYS10_TRANSLATIONS.DESCRIPTION,SAL09_ACTIVITIES.COMPANY_CODE_SYS01,SAL09_ACTIVITIES.ACTIVITY_CODE from SAL09_ACTIVITIES,SYS10_TRANSLATIONS where "+
-          "SAL09_ACTIVITIES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?) SAL09_ACTIVITIES ON "+
+          "(select SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,SAL09_ACTIVITIES.COMPANY_CODE_SYS01,SAL09_ACTIVITIES.ACTIVITY_CODE from SAL09_ACTIVITIES,SYS10_COMPANY_TRANSLATIONS where "+
+					"SAL09_ACTIVITIES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "SAL09_ACTIVITIES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?) SAL09_ACTIVITIES ON "+
           "SAL09_ACTIVITIES.COMPANY_CODE_SYS01=REG07_TASKS.COMPANY_CODE_SYS01 and "+
           "SAL09_ACTIVITIES.ACTIVITY_CODE=REG07_TASKS.ACTIVITY_CODE_SAL09 "+
           "where "+
-          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"REG07_TASKS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "REG07_TASKS.ENABLED='Y' and "+
           "REG07_TASKS.TASK_CODE='"+validationPars.getCode()+"' and "+
           "REG07_TASKS.COMPANY_CODE_SYS01=?";
@@ -121,7 +124,7 @@ public class TasksBean  implements Tasks {
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01REG07","REG07_TASKS.COMPANY_CODE_SYS01");
       attribute2dbField.put("taskCodeREG07","REG07_TASKS.TASK_CODE");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveSys10REG07","REG07_TASKS.PROGRESSIVE_SYS10");
       attribute2dbField.put("enabledREG07","REG07_TASKS.ENABLED");
       attribute2dbField.put("activityCodeSal09REG07","REG07_TASKS.ACTIVITY_CODE_SAL09");
@@ -198,25 +201,27 @@ public class TasksBean  implements Tasks {
       }
 
       String sql =
-          "select REG07_TASKS.COMPANY_CODE_SYS01,REG07_TASKS.TASK_CODE,REG07_TASKS.PROGRESSIVE_SYS10,SYS10_TRANSLATIONS.DESCRIPTION,"+
+          "select REG07_TASKS.COMPANY_CODE_SYS01,REG07_TASKS.TASK_CODE,REG07_TASKS.PROGRESSIVE_SYS10,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,"+
           "REG07_TASKS.ACTIVITY_CODE_SAL09,REG07_TASKS.ENABLED,REG07_TASKS.FINITE_CAPACITY, "+
-          "SAL09_ACTIVITIES.DESCRIPTION from SYS10_TRANSLATIONS,REG07_TASKS "+
+          "SAL09_ACTIVITIES.DESCRIPTION from SYS10_COMPANY_TRANSLATIONS,REG07_TASKS "+
           "LEFT OUTER JOIN "+
-          "(select SYS10_TRANSLATIONS.DESCRIPTION,SAL09_ACTIVITIES.COMPANY_CODE_SYS01,SAL09_ACTIVITIES.ACTIVITY_CODE from SAL09_ACTIVITIES,SYS10_TRANSLATIONS where "+
-          "SAL09_ACTIVITIES.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=?) SAL09_ACTIVITIES ON "+
+          "(select SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,SAL09_ACTIVITIES.COMPANY_CODE_SYS01,SAL09_ACTIVITIES.ACTIVITY_CODE from SAL09_ACTIVITIES,SYS10_COMPANY_TRANSLATIONS where "+
+					"SAL09_ACTIVITIES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "SAL09_ACTIVITIES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=?) SAL09_ACTIVITIES ON "+
           "SAL09_ACTIVITIES.COMPANY_CODE_SYS01=REG07_TASKS.COMPANY_CODE_SYS01 and "+
           "SAL09_ACTIVITIES.ACTIVITY_CODE=REG07_TASKS.ACTIVITY_CODE_SAL09 "+
           "where "+
-          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"REG07_TASKS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "REG07_TASKS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "REG07_TASKS.ENABLED='Y' and "+
           "REG07_TASKS.COMPANY_CODE_SYS01 in ("+companies+")";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01REG07","REG07_TASKS.COMPANY_CODE_SYS01");
       attribute2dbField.put("taskCodeREG07","REG07_TASKS.TASK_CODE");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
       attribute2dbField.put("progressiveSys10REG07","REG07_TASKS.PROGRESSIVE_SYS10");
       attribute2dbField.put("enabledREG07","REG07_TASKS.ENABLED");
       attribute2dbField.put("activityCodeSal09REG07","REG07_TASKS.ACTIVITY_CODE_SAL09");
@@ -271,7 +276,7 @@ public class TasksBean  implements Tasks {
 
 
 
-  
+
   /**
    * Business logic to execute.
    */
@@ -297,7 +302,7 @@ public class TasksBean  implements Tasks {
         vo.setEnabledREG07("Y");
 
         // insert record in SYS10...
-        progressiveSYS10 = TranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01REG07(),conn);
+        progressiveSYS10 = CompanyTranslationUtils.insertTranslations(vo.getDescriptionSYS10(),vo.getCompanyCodeSys01REG07(),username,conn);
         vo.setProgressiveSys10REG07(progressiveSYS10);
 
         // insert into REG07...
@@ -355,7 +360,7 @@ public class TasksBean  implements Tasks {
    * Business logic to execute.
    */
   public VOListResponse updateTasks(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable {
-    
+
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -369,7 +374,7 @@ public class TasksBean  implements Tasks {
         newVO = (TaskVO)newVOs.get(i);
 
         // update SYS10 table...
-        TranslationUtils.updateTranslation(oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10REG07(),serverLanguageId,conn);
+        CompanyTranslationUtils.updateTranslation(newVO.getCompanyCodeSys01REG07(),oldVO.getDescriptionSYS10(),newVO.getDescriptionSYS10(),newVO.getProgressiveSys10REG07(),serverLanguageId,username,conn);
 
         HashSet pkAttrs = new HashSet();
         pkAttrs.add("companyCodeSys01REG07");
@@ -437,22 +442,23 @@ public class TasksBean  implements Tasks {
    * Business logic to execute.
    */
   public VOResponse deleteTasks(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-
-      stmt = conn.createStatement();
-
       TaskVO vo = null;
       for(int i=0;i<list.size();i++) {
         // logically delete the record in REG07...
         vo = (TaskVO)list.get(i);
-        stmt.execute(
-            "update REG07_TASKS set ENABLED='N' where "+
+				pstmt = conn.prepareStatement(
+            "update REG07_TASKS set ENABLED='N',LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
             "TASK_CODE='"+vo.getTaskCodeREG07()+"' and "+
             "COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG07()+"'"
         );
+				pstmt.setString(1,username);
+				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.execute();
+				pstmt.close();
       }
 
       return new VOResponse(new Boolean(true));
@@ -470,7 +476,7 @@ public class TasksBean  implements Tasks {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {

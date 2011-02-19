@@ -51,13 +51,13 @@ public interface Hierarchies {
 
   public VOResponse deleteLevel(HierarchyLevelVO vo,String serverLanguageId,String username) throws Throwable;
 
-  public VOResponse insertLevel(HierarchyLevelVO vo,String serverLanguageId,String username,String defCompanyCodeSys01SYS03) throws Throwable;
+  public VOResponse insertLevel(HierarchyLevelVO vo,String serverLanguageId,String username) throws Throwable;
 
-  public VOResponse getRootLevel(BigDecimal progressiveHIE02,String serverLanguageId,String username) throws Throwable;
+  public VOResponse getRootLevel(BigDecimal progressiveHIE04,String serverLanguageId,String username) throws Throwable;
 
   public VOResponse updateLevel(HierarchyLevelVO oldVO,HierarchyLevelVO newVO,String serverLanguageId,String username) throws Throwable;
 
-  public VOListResponse getLeaves(BigDecimal progressiveHIE02,BigDecimal progressiveHIE01,String langId,String username) throws Throwable;
+  public VOListResponse getLeaves(BigDecimal progressiveHIE04,BigDecimal progressiveHIE03,String langId,String username) throws Throwable;
 
 
 }

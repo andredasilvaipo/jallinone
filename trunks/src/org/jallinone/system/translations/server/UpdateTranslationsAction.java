@@ -68,12 +68,13 @@ public class UpdateTranslationsAction implements Action {
 
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
 	  try {
-		  TopicVO topic = (TopicVO)((Object[])inputPar)[0];
-		  ArrayList oldVOs = (ArrayList)((Object[])inputPar)[1];
-		  ArrayList newVOs = (ArrayList)((Object[])inputPar)[2];
+			String companyCodeSys01 = (String)((Object[])inputPar)[0];
+		  TopicVO topic = (TopicVO)((Object[])inputPar)[1];
+		  ArrayList oldVOs = (ArrayList)((Object[])inputPar)[2];
+		  ArrayList newVOs = (ArrayList)((Object[])inputPar)[3];
 
 		  Translations bean = (Translations)JAIOBeanFactory.getInstance().getBean(Translations.class);
-		  Response answer = bean.updateTranslations(topic,oldVOs,newVOs,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+		  Response answer = bean.updateTranslations(companyCodeSys01,topic,oldVOs,newVOs,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
 		  return answer;
 	  }

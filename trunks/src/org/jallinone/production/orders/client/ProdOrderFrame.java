@@ -39,7 +39,7 @@ import org.jallinone.items.java.ItemTypeVO;
 import org.openswing.swing.domains.java.Domain;
 import org.openswing.swing.tree.client.TreeServerDataLocator;
 import org.jallinone.warehouse.java.WarehouseVO;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.jallinone.registers.currency.java.CurrencyVO;
 
 
@@ -208,11 +208,11 @@ public class ProdOrderFrame extends InternalFrame  {
       posController.setFrameTitle("warehouse positions");
 
       posController.setCodeSelectionWindow(posController.TREE_FRAME);
-      treeLevelPosDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelPosDataLocator.setServerMethodName("loadCompanyHierarchy");
       posDataLocator.setTreeDataLocator(treeLevelPosDataLocator);
       posDataLocator.setNodeNameAttribute("descriptionSYS10");
 
-      posController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.HierarchyLevelVO");
+      posController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.CompanyHierarchyLevelVO");
       posController.addLookup2ParentLink("progressiveHIE01", "progressiveHie01DOC23");
       posController.addLookup2ParentLink("descriptionSYS10","locationDescriptionSYS10");
       posController.setFramePreferedSize(new Dimension(400,400));
@@ -221,15 +221,15 @@ public class ProdOrderFrame extends InternalFrame  {
         public void codeValidated(boolean validated) {}
 
         public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {
-        	HierarchyLevelVO lookupVO = (HierarchyLevelVO)posController.getLookupVO();
+        	CompanyHierarchyLevelVO lookupVO = (CompanyHierarchyLevelVO)posController.getLookupVO();
         	if (lookupVO!=null && "".equals(lookupVO.getDescriptionSYS10()))
         		((ProdOrderProductVO)parentVO).setLocationDescriptionSYS10(" ");
         }
 
         public void beforeLookupAction(ValueObject parentVO) {
           DetailProdOrderVO vo = (DetailProdOrderVO)headerFormPanel.getVOModel().getValueObject();
-          treeLevelPosDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02WAR01());
-
+          treeLevelPosDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC22());
+					treeLevelPosDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02WAR01());
         }
 
         public void forceValidate() {}
@@ -316,7 +316,7 @@ public class ProdOrderFrame extends InternalFrame  {
       itemController.setFrameTitle("products");
 
       itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
-      treeLevelDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
       itemDataLocator.setTreeDataLocator(treeLevelDataLocator);
       itemDataLocator.setNodeNameAttribute("descriptionSYS10");
 
@@ -341,7 +341,8 @@ public class ProdOrderFrame extends InternalFrame  {
           itemDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01DOC22());
 
           ProdOrderProductVO prodVO = (ProdOrderProductVO)productsGrid.getVOListTableModel().getObjectForRow(productsGrid.getSelectedRow());
-          treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02, prodVO.getProgressiveHie02DOC23());
+          treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01, prodVO.getCompanyCodeSys01DOC23());
+					treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02, prodVO.getProgressiveHie02DOC23());
 
         }
 
@@ -622,7 +623,7 @@ public class ProdOrderFrame extends InternalFrame  {
     colProgressiveHie01.setColumnName("progressiveHie01DOC23");
     colProgressiveHie01.setColumnVisible(false);
     colProgressiveHie01.setColumnSelectable(false);
-    
+
     colQty.setColumnFilterable(true);
     colQty.setPreferredWidth(70);
     colQty.setColumnName("qtyDOC23");
@@ -646,7 +647,7 @@ public class ProdOrderFrame extends InternalFrame  {
     productsGrid.getColumnContainer().add(colQty,null);
     productsGrid.getColumnContainer().add(colLocation,null);
     productsGrid.getColumnContainer().add(colProgressiveHie01,null);
-    
+
     productsGrid.setFunctionId("DOC22");
 
     compsGrid.setAutoLoadData(false);

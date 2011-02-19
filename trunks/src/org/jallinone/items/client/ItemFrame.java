@@ -14,7 +14,7 @@ import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.util.client.ClientUtils;
 import org.openswing.swing.domains.java.*;
 import org.jallinone.items.java.ItemTypeVO;
-import org.jallinone.hierarchies.java.HierarchyLevelVO;
+import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import java.util.ArrayList;
 import org.openswing.swing.lookup.client.*;
 import org.openswing.swing.tree.client.*;
@@ -222,6 +222,9 @@ public class ItemFrame extends InternalFrame {
   LabelControl labeLstPur = new LabelControl();
   DateControl controlLastPurDate = new DateControl();
   ComboBoxControl controlBarcodeType = new ComboBoxControl();
+	private java.util.List itemTypes = null;
+
+
   private int splitDiv = 250;
   private ProductVariantsPanel variantsPricesPanel = new ProductVariantsPanel(
           new ProductVariantsController() {
@@ -338,11 +341,11 @@ public class ItemFrame extends InternalFrame {
       levelController.setFrameTitle("hierarchy");
       levelController.setAllowTreeLeafSelectionOnly(true);
       levelController.getLookupDataLocator().setNodeNameAttribute("descriptionSYS10");
-      levelController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.HierarchyLevelVO");
+      levelController.setLookupValueObjectClassName("org.jallinone.hierarchies.java.CompanyHierarchyLevelVO");
       levelController.addLookup2ParentLink("progressiveHIE01", "progressiveHie01ITM01");
       levelController.addLookup2ParentLink("descriptionSYS10", "levelDescriptionSYS10");
       levelDataLocator.setTreeDataLocator(treeLevelDataLocator);
-      treeLevelDataLocator.setServerMethodName("loadHierarchy");
+      treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
 
       umDataLocator.setGridMethodName("loadMeasures");
       umDataLocator.setValidationMethodName("validateMeasureCode");
@@ -593,7 +596,7 @@ public class ItemFrame extends InternalFrame {
 
 
 			if (controller.getParentFrame()!=null) {
-				HierarchyLevelVO levelVO = (HierarchyLevelVO) controller.getParentFrame().getHierarTreePanel().getSelectedNode().getUserObject();
+				CompanyHierarchyLevelVO levelVO = (CompanyHierarchyLevelVO) controller.getParentFrame().getHierarTreePanel().getSelectedNode().getUserObject();
 				customizedControls = new CustomizedControls(tab, formPanel, levelVO.getProgressiveHie01HIE02());
 			}
 
@@ -793,9 +796,9 @@ public class ItemFrame extends InternalFrame {
     Response res = ClientUtils.getData("loadItemTypes", new GridParams());
     if (!res.isError()) {
       ItemTypeVO vo = null;
-      java.util.List list = ((VOListResponse) res).getRows();
-      for (int i = 0; i < list.size(); i++) {
-        vo = (ItemTypeVO) list.get(i);
+      itemTypes = ((VOListResponse) res).getRows();
+      for (int i = 0; i < itemTypes.size(); i++) {
+        vo = (ItemTypeVO) itemTypes.get(i);
         d.addDomainPair(vo.getProgressiveHie02ITM02(), vo.getDescriptionSYS10());
       }
     }
@@ -811,7 +814,9 @@ public class ItemFrame extends InternalFrame {
           controlLevelDescr.setText("");
           }
            */
-          treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02, controlItemType.getValue());
+					ItemTypeVO vo = (ItemTypeVO)itemTypes.get(controlItemType.getSelectedIndex());
+					treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01, vo.getCompanyCodeSys01ITM02());
+					treeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02, controlItemType.getValue());
         }
       }
     });

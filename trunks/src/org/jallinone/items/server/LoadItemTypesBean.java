@@ -50,7 +50,7 @@ import javax.sql.DataSource;
 public class LoadItemTypesBean  implements LoadItemTypes {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -58,9 +58,9 @@ public class LoadItemTypesBean  implements LoadItemTypes {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -70,7 +70,7 @@ public class LoadItemTypesBean  implements LoadItemTypes {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -81,15 +81,15 @@ public class LoadItemTypesBean  implements LoadItemTypes {
   }
 
 
-  
+
   /**
-   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+   * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
    */
   public ItemTypeVO getItemType() {
 	  throw new UnsupportedOperationException();
   }
-  
-  
+
+
 
   /**
    * Business logic to execute.
@@ -111,10 +111,13 @@ public class LoadItemTypesBean  implements LoadItemTypes {
       companies = companies.substring(0,companies.length()-1);
 
       String sql =
-          "select ITM02_ITEM_TYPES.COMPANY_CODE_SYS01,ITM02_ITEM_TYPES.PROGRESSIVE_HIE02,ITM02_ITEM_TYPES.ENABLED,SYS10_TRANSLATIONS.DESCRIPTION,HIE02_HIERARCHIES.PROGRESSIVE_HIE01 from ITM02_ITEM_TYPES,SYS10_TRANSLATIONS,HIE02_HIERARCHIES where "+
-          "ITM02_ITEM_TYPES.PROGRESSIVE_HIE02=HIE02_HIERARCHIES.PROGRESSIVE and "+
-          "HIE02_HIERARCHIES.PROGRESSIVE_HIE01=SYS10_TRANSLATIONS.PROGRESSIVE and "+
-          "SYS10_TRANSLATIONS.LANGUAGE_CODE=? and "+
+          "select ITM02_ITEM_TYPES.COMPANY_CODE_SYS01,ITM02_ITEM_TYPES.PROGRESSIVE_HIE02,ITM02_ITEM_TYPES.ENABLED,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01 "+
+					"from ITM02_ITEM_TYPES,SYS10_COMPANY_TRANSLATIONS,HIE02_COMPANY_HIERARCHIES where "+
+					"ITM02_ITEM_TYPES.COMPANY_CODE_SYS01=HIE02_COMPANY_HIERARCHIES.COMPANY_CODE_SYS01 and "+
+          "ITM02_ITEM_TYPES.PROGRESSIVE_HIE02=HIE02_COMPANY_HIERARCHIES.PROGRESSIVE and "+
+					"HIE02_COMPANY_HIERARCHIES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
+          "HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
+          "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "ITM02_ITEM_TYPES.COMPANY_CODE_SYS01 in ("+companies+") and "+
           "ITM02_ITEM_TYPES.ENABLED='Y'";
 
@@ -122,8 +125,8 @@ public class LoadItemTypesBean  implements LoadItemTypes {
       attribute2dbField.put("companyCodeSys01ITM02","ITM02_ITEM_TYPES.COMPANY_CODE_SYS01");
       attribute2dbField.put("progressiveHie02ITM02","ITM02_ITEM_TYPES.PROGRESSIVE_HIE02");
       attribute2dbField.put("enabledITM02","ITM02_ITEM_TYPES.ENABLED");
-      attribute2dbField.put("progressiveHie01HIE02","HIE02_HIERARCHIES.PROGRESSIVE_HIE01");
-      attribute2dbField.put("descriptionSYS10","SYS10_TRANSLATIONS.DESCRIPTION");
+      attribute2dbField.put("progressiveHie01HIE02","HIE02_COMPANY_HIERARCHIES.PROGRESSIVE_HIE01");
+      attribute2dbField.put("descriptionSYS10","SYS10_COMPANY_TRANSLATIONS.DESCRIPTION");
 
       ArrayList values = new ArrayList();
       values.add(serverLanguageId);

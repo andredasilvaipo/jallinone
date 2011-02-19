@@ -119,6 +119,7 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
   LookupController orgController = new LookupController();
   LookupServerDataLocator orgDataLocator = new LookupServerDataLocator();
 
+  private java.util.List types = null;
   private CallOutSubjectController callOutSubjectController = new CallOutSubjectController(this);
   NumericControl controlProg = new NumericControl();
   LabelControl labelYear = new LabelControl();
@@ -301,7 +302,7 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
       controlCallOutCode.setControllerMethodName("getCallOuts");
       callOutController.setCodeSelectionWindow(callOutController.TREE_GRID_FRAME);
       callOutController.setLookupDataLocator(callOutDataLocator);
-      callOutTreeLevelDataLocator.setServerMethodName("loadHierarchy");
+      callOutTreeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
       callOutDataLocator.setTreeDataLocator(callOutTreeLevelDataLocator);
       callOutController.setFrameTitle("call-outs");
       callOutController.setLookupValueObjectClassName("org.jallinone.scheduler.callouts.java.CallOutVO");
@@ -525,9 +526,9 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
     Domain d = new Domain("CALL_OUT_TYPES");
     if (!res.isError()) {
       CallOutTypeVO vo = null;
-      java.util.List list = ((VOListResponse)res).getRows();
-      for(int i=0;i<list.size();i++) {
-        vo = (CallOutTypeVO)list.get(i);
+      types = ((VOListResponse)res).getRows();
+      for(int i=0;i<types.size();i++) {
+        vo = (CallOutTypeVO)types.get(i);
         d.addDomainPair(vo.getProgressiveHie02SCH11(),vo.getDescriptionSYS10());
       }
     }
@@ -537,6 +538,10 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
         if (e.getStateChange() == e.SELECTED) {
           controlCallOutCode.getCodBox().setText(null);
           controlCallOutDescr.setText("");
+
+	        CallOutTypeVO vo = (CallOutTypeVO)types.get(controlCallOutType.getSelectedIndex());
+
+					callOutTreeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01, vo.getCompanyCodeSys01SCH11());
           callOutTreeLevelDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02, controlCallOutType.getValue());
         }
       }
@@ -599,7 +604,7 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
 		itemController.setFrameTitle("items");
 
 		itemController.setCodeSelectionWindow(itemController.TREE_GRID_FRAME);
-		treeLevelDataLocator.setServerMethodName("loadHierarchy");
+		treeLevelDataLocator.setServerMethodName("loadCompanyHierarchy");
 		itemDataLocator.setTreeDataLocator(treeLevelDataLocator);
 		itemDataLocator.setNodeNameAttribute("descriptionSYS10");
 
@@ -624,14 +629,14 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
 				if (vo==null || vo.getItemCodeITM01()==null) {
 					resourcesPanel.setItem(null,null,null);
 				}
-				else {
+				else if (vo.getDocDateDOC01()!=null) {
 					SimpleDateFormat sdf = new SimpleDateFormat(ClientSettings.getInstance().getResources().getDateMask(Consts.TYPE_DATE));
 					controlNote.setText(
 					  ClientSettings.getInstance().getResources().getResource("item sold on")+" "+
 						sdf.format(vo.getDocDateDOC01())
 					);
-				  resourcesPanel.setItem(vo.getProgressiveHie02ITM01(),vo.getCompanyCodeSys01ITM01(),vo.getItemCodeITM01());
 				}
+				resourcesPanel.setItem(vo.getProgressiveHie02ITM01(),vo.getCompanyCodeSys01ITM01(),vo.getItemCodeITM01());
 			}
 
 			public void beforeLookupAction(ValueObject gridVO) {
