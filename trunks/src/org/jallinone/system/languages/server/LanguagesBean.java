@@ -151,6 +151,7 @@ public class LanguagesBean  implements Languages {
       LanguageVO vo = null;
       BufferedReader br = null;
       ResultSet rset = null;
+			stmt = conn.createStatement();
 
       pstmt = conn.prepareStatement(
           "insert into SYS09_LANGUAGES(LANGUAGE_CODE,DESCRIPTION,CLIENT_LANGUAGE_CODE,CREATE_DATE,ENABLED,CREATE_USER) VALUES(?,?,?,?,'Y',?)"

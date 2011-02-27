@@ -731,9 +731,9 @@ public class SaleDocsBean  implements SaleDocs {
       attribute2dbField.put("customerVatCodeReg01DOC01","CUSTOMER_VAT_CODE_REG01");
       attribute2dbField.put("docSequenceDOC01","DOC_SEQUENCE");
       attribute2dbField.put("docSequenceDoc01DOC01","DOC_SEQUENCE_DOC01");
-      attribute2dbField.put("sectionalDOC01","DOC01_SELLING.SECTIONAL");
+      attribute2dbField.put("sectionalDOC01","SECTIONAL");
 
-      attribute2dbField.put("deliveryDateDOC01","DOC01_SELLING.DELIVERY_DATE");
+      attribute2dbField.put("deliveryDateDOC01","DELIVERY_DATE");
 
       // insert into DOC01...
       Response res = CustomizeQueryUtil.insertTable(

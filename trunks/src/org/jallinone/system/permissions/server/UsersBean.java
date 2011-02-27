@@ -196,7 +196,7 @@ public class UsersBean  implements Users {
         oldVO = (UserVO)oldVOs.get(i);
         newVO = (UserVO)newVOs.get(i);
 
-        org.jallinone.commons.server.QueryUtilExtension.updateTable(
+        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
@@ -210,6 +210,8 @@ public class UsersBean  implements Users {
             false
         );
       }
+			if (!res.isError())
+				throw new Exception(res.getErrorMessage());
 
       return new VOListResponse(newVOs,false,newVOs.size());
     }
@@ -270,9 +272,9 @@ public class UsersBean  implements Users {
       pstmt.setString(7,vo.getCompanyCodeSys01SYS03());
       pstmt.setBigDecimal(8,vo.getProgressiveReg04SYS03());
       pstmt.setString(9,vo.getUsernameCreateSYS03());
-      pstmt.setString(10,vo.getDefCompanyCodeSys01SYS03());
-			pstmt.setString(11,username);
-			pstmt.setTimestamp(12,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setTimestamp(10,new java.sql.Timestamp(System.currentTimeMillis()));
+      pstmt.setString(11,vo.getDefCompanyCodeSys01SYS03());
+			pstmt.setString(12,username);
       pstmt.execute();
       pstmt.close();
 

@@ -110,7 +110,7 @@ public class LoadItemsBean  implements LoadItems {
       Boolean compsOnly = (Boolean)pars.getOtherGridParams().get(ApplicationConsts.COMPONENTS_ONLY);
 			Boolean showOnlyPurchasedItems = (Boolean)pars.getOtherGridParams().get(ApplicationConsts.SHOW_ONLY_PURCHASED_ITEMS); // used in call-out request to filter purchased items only
 			BigDecimal progressiveREG04 = (BigDecimal)pars.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_REG04);
-
+			String companyId = (String)pars.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01);
 
 			Map attribute2dbField = new HashMap();
 			attribute2dbField.put("companyCodeSys01ITM01","ITM01_ITEMS.COMPANY_CODE_SYS01");
@@ -134,13 +134,18 @@ public class LoadItemsBean  implements LoadItems {
       if (vo!=null) {
         progressiveHIE01 = vo.getProgressiveHIE01();
         progressiveHIE02 = vo.getProgressiveHie02HIE01();
+				companyId = vo.getCompanySys01HIE01();
       }
 
       // retrieve companies list...
       String companies = "";
-      for(int i=0;i<companiesList.size();i++)
-        companies += "'"+companiesList.get(i).toString()+"',";
-      companies = companies.substring(0,companies.length()-1);
+			if (companyId!=null)
+				companies = "'"+companyId+"'";
+			else {
+				for(int i=0;i<companiesList.size();i++)
+					companies += "'"+companiesList.get(i).toString()+"',";
+				companies = companies.substring(0,companies.length()-1);
+			}
 
       String select =
           "select ITM01_ITEMS.COMPANY_CODE_SYS01,ITM01_ITEMS.ITEM_CODE,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,"+
@@ -201,7 +206,7 @@ public class LoadItemsBean  implements LoadItems {
         // retrieve all subnodes of the specified node...
         pstmt = conn.prepareStatement(
             "select HIE01_COMPANY_LEVELS.PROGRESSIVE,HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE01,HIE01_COMPANY_LEVELS.LEV from HIE01_COMPANY_LEVELS "+
-            "where COMPANY_CODE_SYS01='"+vo.getCompanySys01HIE01()+"' and ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE>=? "+
+            "where COMPANY_CODE_SYS01 in ("+companies+") and ENABLED='Y' and PROGRESSIVE_HIE02=? and PROGRESSIVE>=? "+
             "order by LEV,PROGRESSIVE_HIE01,PROGRESSIVE"
         );
         pstmt.setBigDecimal(1,progressiveHIE02);

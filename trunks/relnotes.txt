@@ -1,3 +1,18 @@
+Release Notes 2.7.2
+-------------------
+
+Fixed problem in purchase documents list after deleting a supplier pricelist.
+Fixed problem when closing inventory.
+Fixed problem on insert/update sale documents.
+
+
+
+Release Notes 2.7.1
+-------------------
+
+Fixed problem when creating new languages.
+Fixed problem when navigating in items tree window.
+
 
 
 Release Notes 2.7

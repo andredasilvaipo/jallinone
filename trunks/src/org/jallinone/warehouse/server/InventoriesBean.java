@@ -1515,8 +1515,15 @@ public class InventoriesBean implements Inventories {
 						 "DELTA_QTY is not null and "+
 						 "not DELTA_QTY=0 and "+
 						 "STATE=?";
-//		 	  pstmt = conn.prepareStatement(sqlWAR07,ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
-		 	  pstmt = conn.prepareStatement(sqlWAR07);
+
+				try {
+					pstmt = conn.prepareStatement(sqlWAR07,
+																				ResultSet.TYPE_SCROLL_INSENSITIVE,
+																				ResultSet.CONCUR_READ_ONLY);
+				}
+				catch (SQLException ex1) {
+					pstmt = conn.prepareStatement(sqlWAR07);
+				}
 				pstmt.setString(1,companyCodeSys01);
 				pstmt.setBigDecimal(2,progressiveWAR06);
 				pstmt.setString(3,ApplicationConsts.CONFIRMED);
