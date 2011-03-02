@@ -1,0 +1,72 @@
+[PropertyInfo]
+additionalCols,ArrayList,false,false, , ,false,<default>
+borderLayout1,BorderLayout,false,false, , ,false,<default>
+borderLayout2,BorderLayout,false,false, , ,false,<default>
+borderLayout3,BorderLayout,false,false, , ,false,<default>
+borderLayout4,BorderLayout,false,false, , ,false,<default>
+borderLayout5,BorderLayout,false,false, , ,false,<default>
+bottomPanel,JPanel,false,false, , ,false,<default>
+buttonsPanel2,JPanel,false,false, , ,false,<default>
+buttonsPanel3,JPanel,false,false, , ,false,<default>
+bytes,byte[],false,false, , ,false,<default>
+callbacks,SparePartsCatalogueCallbacks,false,false, , ,false,<default>
+colItemCode,CodLookupColumn,false,false, , ,false,<default>
+colItemDescr,TextColumn,false,false, , ,false,<default>
+colItemType,ComboColumn,false,false, , ,false,<default>
+colSheetCode,CodLookupColumn,false,false, , ,false,<default>
+colSheetDescr,TextColumn,false,false, , ,false,<default>
+deleteButton2,DeleteButton,false,false, , ,false,<default>
+deleteButton3,DeleteButton,false,false, , ,false,<default>
+docsPanel,SheetAttachedDocsPanel,false,false, , ,false,<default>
+flowLayout2,FlowLayout,false,false, , ,false,<default>
+flowLayout3,FlowLayout,false,false, , ,false,<default>
+flowLayout4,FlowLayout,false,false, , ,false,<default>
+grid,GridControl,false,false, , ,true,<default>
+gridBagLayout1,GridBagLayout,false,false, , ,false,<default>
+gridBagLayout2,GridBagLayout,false,false, , ,false,<default>
+gridDataLocator,ServerGridDataLocator,false,false, , ,false,<default>
+gridDataLocator3,ServerGridDataLocator,false,false, , ,false,<default>
+gridSheets,GridControl,false,false, , ,false,<default>
+gridSpareParts,GridControl,false,false, , ,false,<default>
+imgPanel,SheetImage,false,false, , ,false,<default>
+imgScrollPane,JScrollPane,false,false, , ,false,<default>
+insertButton2,InsertButton,false,false, , ,false,<default>
+insertButton3,InsertButton,false,false, , ,false,<default>
+itemController,LookupController,false,false, , ,false,<default>
+itemDataLocator,LookupServerDataLocator,false,false, , ,false,<default>
+itemSparePartsGrid,GridControl,false,false, , ,false,<default>
+itemTypes,java.util.List,false,false, , ,false,<default>
+labelNav,LabelControl,false,false, , ,false,<default>
+leftPanel,JSplitPane,false,false, , ,false,<default>
+levelDataLocator,LookupServerDataLocator,false,false, , ,false,<default>
+levelsPerCompanyCode,HashMap,false,false, , ,false,<default>
+menuClear,JMenuItem,false,false, , ,false,<default>
+menuSave,JMenuItem,false,false, , ,false,<default>
+menuStart,JMenuItem,false,false, , ,false,<default>
+navigationPanel,JPanel,false,false, , ,false,<default>
+parentVO,ItemSheetVO,false,false, , ,false,<default>
+points,ArrayList,false,false, , ,false,<default>
+pols,ArrayList,false,false, , ,false,<default>
+popup,JPopupMenu,false,false, , ,false,<default>
+readOnly,boolean,false,false, , ,false,<default>
+reloadButton2,ReloadButton,false,false, , ,false,<default>
+reloadButton3,ReloadButton,false,false, , ,false,<default>
+rightPanel,JPanel,false,false, , ,false,<default>
+saveButton2,SaveButton,false,false, , ,false,<default>
+saveButton3,SaveButton,false,false, , ,false,<default>
+sheetController,LookupController,false,false, , ,false,<default>
+sheetDataLocator,LookupServerDataLocator,false,false, , ,false,<default>
+sheetsPanel,JPanel,false,false, , ,false,<default>
+sheetVOs,ArrayList,false,false, , ,false,<default>
+sparePartsPanel,JPanel,false,false, , ,false,<default>
+split,JSplitPane,false,false, , ,false,<default>
+titledBorder1,TitledBorder,false,false, , ,false,<default>
+titledBorder2,TitledBorder,false,false, , ,false,<default>
+titledBorder3,TitledBorder,false,false, , ,false,<default>
+topPanel,JSplitPane,false,false, , ,false,<default>
+treeLevelDataLocator,TreeServerDataLocator,false,false, , ,false,<default>
+[IconNames]
+
+
+
+
