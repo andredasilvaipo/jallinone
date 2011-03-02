@@ -1,3 +1,17 @@
+
+Release Notes 2.7.3
+-------------------
+
+Improved payments window: now insert/reload buttons are disabled until a customer/supplier has been defined.
+Improved sale pricelist: now it is possible to define multiple validity intervals within the same pricelist for the same item.
+Improved purchase pricelist: now it is possible to define multiple validity intervals within the same pricelist for the same item.
+Fixed problem on saving new companies.
+Fixed problem in accounting journal report when changing language.
+Fixed problem with payments recording related to purchase invoices.
+Now are showed in grid filters previously defined in grid by user and stored by "user profile" feature.
+
+
+
 Release Notes 2.7.2
 -------------------
 

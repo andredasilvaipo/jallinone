@@ -40,9 +40,9 @@ import java.util.*;
 public class ImportSupplierPricesDescriptorVO extends ImportDescriptorVO {
 
   public ImportSupplierPricesDescriptorVO() {
-    setTableNames(new String[]{"PUR04_SUPPLIER_PRICES"});
-    setSubTypeField("PUR04_SUPPLIER_PRICES.PRICELIST_CODE_PUR03");
-    setSubTypeField2("PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04");
+    setTableNames(new String[]{"PUR04_SUPPLIER_ITEM_PRICES"});
+    setSubTypeField("PUR04_SUPPLIER_ITEM_PRICES.PRICELIST_CODE_PUR03");
+    setSubTypeField2("PUR04_SUPPLIER_ITEM_PRICES.PROGRESSIVE_REG04");
     setSupportsCompanyCode(true);
 
     String[] labels = new String[] {
@@ -54,10 +54,10 @@ public class ImportSupplierPricesDescriptorVO extends ImportDescriptorVO {
     setLabels(labels);
 
     String[] fields = new String[] {
-        "PUR04_SUPPLIER_PRICES.ITEM_CODE_ITM01",
-        "PUR04_SUPPLIER_PRICES.VALUE",
-        "PUR04_SUPPLIER_PRICES.START_DATE",
-        "PUR04_SUPPLIER_PRICES.END_DATE"
+        "PUR04_SUPPLIER_ITEM_PRICES.ITEM_CODE_ITM01",
+        "PUR04_SUPPLIER_ITEM_PRICES.VALUE",
+        "PUR04_SUPPLIER_ITEM_PRICES.START_DATE",
+        "PUR04_SUPPLIER_ITEM_PRICES.END_DATE"
     };
     setFields(fields);
 
@@ -70,14 +70,14 @@ public class ImportSupplierPricesDescriptorVO extends ImportDescriptorVO {
     setFieldsType(fieldsType);
 
     LinkedHashSet pkFields = new LinkedHashSet();
-    pkFields.add("PUR04_SUPPLIER_PRICES.ITEM_CODE_ITM01");
+    pkFields.add("PUR04_SUPPLIER_ITEM_PRICES.ITEM_CODE_ITM01");
     setPkFields(pkFields);
 
     HashSet requiredFields = new HashSet();
-    requiredFields.add("PUR04_SUPPLIER_PRICES.ITEM_CODE_ITM01");
-    requiredFields.add("PUR04_SUPPLIER_PRICES.VALUE");
-    requiredFields.add("PUR04_SUPPLIER_PRICES.START_DATE");
-    requiredFields.add("PUR04_SUPPLIER_PRICES.END_DATE");
+    requiredFields.add("PUR04_SUPPLIER_ITEM_PRICES.ITEM_CODE_ITM01");
+    requiredFields.add("PUR04_SUPPLIER_ITEM_PRICES.VALUE");
+    requiredFields.add("PUR04_SUPPLIER_ITEM_PRICES.START_DATE");
+    requiredFields.add("PUR04_SUPPLIER_ITEM_PRICES.END_DATE");
     setRequiredFields(requiredFields);
 
 

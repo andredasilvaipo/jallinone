@@ -190,6 +190,13 @@ public class InsertSaleItemBean implements InsertSaleItem {
 				attribute2dbField.put("pricelistDescriptionDOC02","PRICELIST_DESCRIPTION");
 
 	      vo.setRowNumberDOC02( CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01DOC02(),"DOC02_SELLING_ITEMS","ROW_NUMBER",conn) );
+				if (vo.getEndDateSal02DOC02()==null) {
+					Calendar cal = Calendar.getInstance();
+					cal.set(cal.YEAR,2999);
+					cal.set(cal.MONTH,11);
+					cal.set(cal.DAY_OF_MONTH,31);
+					vo.setEndDateSal02DOC02(new java.sql.Date(cal.getTimeInMillis()));
+				}
 
 	      // insert into DOC02...
 	      Response res = org.jallinone.commons.server.QueryUtilExtension.insertTable(

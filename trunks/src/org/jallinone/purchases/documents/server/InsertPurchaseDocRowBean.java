@@ -195,6 +195,13 @@ public class InsertPurchaseDocRowBean implements InsertPurchaseDocRow {
         vo.setVariantTypeItm10DOC07(ApplicationConsts.JOLLY);
 
       vo.setRowNumberDOC07( CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01DOC07(),"DOC07_PURCHASE_ITEMS","ROW_NUMBER",conn) );
+			if (vo.getEndDatePur04DOC07()==null) {
+				Calendar cal = Calendar.getInstance();
+				cal.set(cal.YEAR,2999);
+				cal.set(cal.MONTH,11);
+				cal.set(cal.DAY_OF_MONTH,31);
+				vo.setEndDatePur04DOC07(new java.sql.Date(cal.getTimeInMillis()));
+			}
 
       // insert into DOC07...
       Response res = org.jallinone.commons.server.QueryUtilExtension.insertTable(

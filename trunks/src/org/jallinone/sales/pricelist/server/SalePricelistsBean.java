@@ -112,7 +112,7 @@ public class SalePricelistsBean  implements SalePricelists {
         vo = (PricelistVO)list.get(i);
 
         // phisically delete records from SAL02...
-        stmt.execute("delete from SAL02_PRICES where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01SAL01()+"' and PRICELIST_CODE_SAL01='"+vo.getPricelistCodeSAL01()+"'");
+        stmt.execute("delete from SAL02_ITEM_PRICES where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01SAL01()+"' and PRICELIST_CODE_SAL01='"+vo.getPricelistCodeSAL01()+"'");
 
         // phisically delete record from SYS10...
         CompanyTranslationUtils.deleteTranslations(vo.getCompanyCodeSys01SAL01(),vo.getProgressiveSys10SAL01(),conn);
@@ -164,6 +164,7 @@ public class SalePricelistsBean  implements SalePricelists {
   public VOResponse importAllItems(PricelistChanges vo,String serverLanguageId,String username) throws Throwable {
     PreparedStatement pstmt = null;
     PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
 
     Connection conn = null;
     try {
@@ -173,12 +174,26 @@ public class SalePricelistsBean  implements SalePricelists {
         "select ITEM_CODE from ITM01_ITEMS where ENABLED='Y' and COMPANY_CODE_SYS01=?"
       );
       pstmt2 = conn.prepareStatement(
-        "insert into SAL02_PRICES(COMPANY_CODE_SYS01,PRICELIST_CODE_SAL01,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?,?)"
+        "insert into SAL02_ITEM_PRICES(COMPANY_CODE_SYS01,PRICELIST_CODE_SAL01,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?,?)"
       );
+			pstmt3 = conn.prepareStatement(
+				 "UPDATE SAL02_ITEM_PRICES SET END_DATE=? WHERE "+
+				 "COMPANY_CODE_SYS01=? AND PRICELIST_CODE_SAL01=? AND ITEM_CODE_ITM01=? AND "+
+				 "(END_DATE is null or START_DATE<? AND END_DATE>? ) "
+			);
 
       pstmt.setString(1,vo.getCompanyCodeSys01SAL02());
       ResultSet rset = pstmt.executeQuery();
       while(rset.next()) {
+
+				pstmt3.setDate(1,vo.getStartDate());
+				pstmt3.setString(2,vo.getCompanyCodeSys01SAL02());
+				pstmt3.setString(3,vo.getPricelistCodeSal01SAL02());
+				pstmt3.setString(4,rset.getString(1));
+				pstmt3.setDate(5,vo.getEndDate());
+				pstmt3.setDate(6,vo.getStartDate());
+				pstmt3.execute();
+
         pstmt2.setString(1,vo.getCompanyCodeSys01SAL02());
         pstmt2.setString(2,vo.getPricelistCodeSal01SAL02());
         pstmt2.setString(3,rset.getString(1));
@@ -221,6 +236,11 @@ public class SalePricelistsBean  implements SalePricelists {
       }
       catch (Exception ex2) {
       }
+			try {
+				pstmt3.close();
+			}
+			catch (Exception ex2) {
+			}
       try {
           if (this.conn==null && conn!=null) {
               // close only local connection
@@ -256,8 +276,8 @@ public class SalePricelistsBean  implements SalePricelists {
       Response res = null;
       BigDecimal progressiveSYS10 = null;
       pstmt = conn.prepareStatement(
-        "insert into SAL02_PRICES(COMPANY_CODE_SYS01,PRICELIST_CODE_SAL01,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE,CREATE_USER,CREATE_DATE) "+
-        "select ?,?,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE,?,? from SAL02_PRICES where COMPANY_CODE_SYS01=? and PRICELIST_CODE_SAL01=?"
+        "insert into SAL02_ITEM_PRICES(COMPANY_CODE_SYS01,PRICELIST_CODE_SAL01,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE,CREATE_USER,CREATE_DATE) "+
+        "select ?,?,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE,?,? from SAL02_ITEM_PRICES where COMPANY_CODE_SYS01=? and PRICELIST_CODE_SAL01=?"
       );
       for(int i=0;i<list.size();i++) {
         vo = (PricelistVO)list.get(i);
@@ -590,7 +610,7 @@ public class SalePricelistsBean  implements SalePricelists {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       if (changes.getStartDate()!=null && changes.getEndDate()!=null) {
-        String sql = "update SAL02_PRICES set START_DATE=?,END_DATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PRICELIST_CODE_SAL01=? ";
+        String sql = "update SAL02_ITEM_PRICES set START_DATE=?,END_DATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PRICELIST_CODE_SAL01=? ";
         pstmt = conn.prepareStatement(sql);
         pstmt.setDate(1,changes.getStartDate());
         pstmt.setDate(2,changes.getEndDate());
@@ -604,7 +624,7 @@ public class SalePricelistsBean  implements SalePricelists {
 
       if (changes.getPercentage()!=null && !changes.isTruncateDecimals()) {
         String sql =
-					"update SAL02_PRICES set VALUE=VALUE+VALUE*"+changes.getPercentage().doubleValue()+"/100,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? "+
+					"update SAL02_ITEM_PRICES set VALUE=VALUE+VALUE*"+changes.getPercentage().doubleValue()+"/100,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? "+
   				"where COMPANY_CODE_SYS01=? and PRICELIST_CODE_SAL01=? ";
         pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1,username);
@@ -616,12 +636,12 @@ public class SalePricelistsBean  implements SalePricelists {
       }
 
       if (changes.getPercentage()!=null && changes.isTruncateDecimals()) {
-        String sql = "select ITEM_CODE_ITM01,VALUE from SAL02_PRICES where COMPANY_CODE_SYS01=? and PRICELIST_CODE_SAL01=? ";
+        String sql = "select ITEM_CODE_ITM01,VALUE from SAL02_ITEM_PRICES where COMPANY_CODE_SYS01=? and PRICELIST_CODE_SAL01=? ";
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1,changes.getCompanyCodeSys01SAL02());
         pstmt.setString(2,changes.getPricelistCodeSal01SAL02());
         ResultSet rset = pstmt.executeQuery();
-        PreparedStatement pstmt2 = conn.prepareStatement("update SAL02_PRICES set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PRICELIST_CODE_SAL01=? and ITEM_CODE_ITM01=?");
+        PreparedStatement pstmt2 = conn.prepareStatement("update SAL02_ITEM_PRICES set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PRICELIST_CODE_SAL01=? and ITEM_CODE_ITM01=?");
         while(rset.next()) {
           pstmt2.setInt(1,(int)(rset.getDouble(2)+rset.getDouble(2)*changes.getPercentage().doubleValue()/100));
 					pstmt.setString(2,username);
@@ -638,7 +658,7 @@ public class SalePricelistsBean  implements SalePricelists {
 
       if (changes.getDeltaValue()!=null) {
         String sql =
-					"update SAL02_PRICES set VALUE=VALUE+"+changes.getDeltaValue().doubleValue()+",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? "+
+					"update SAL02_ITEM_PRICES set VALUE=VALUE+"+changes.getDeltaValue().doubleValue()+",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? "+
 					"where COMPANY_CODE_SYS01=? and PRICELIST_CODE_SAL01=? ";
         pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1,username);

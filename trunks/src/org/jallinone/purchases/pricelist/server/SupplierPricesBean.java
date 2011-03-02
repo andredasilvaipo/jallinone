@@ -32,6 +32,7 @@ import org.jallinone.items.server.LoadItemBean;
 
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -149,34 +150,34 @@ public class SupplierPricesBean  implements SupplierPrices {
       BigDecimal progressiveREG04 = (BigDecimal)gridParams.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_REG04);
 
       sql =
-          "select PUR04_SUPPLIER_PRICES.COMPANY_CODE_SYS01,PUR04_SUPPLIER_PRICES.PRICELIST_CODE_PUR03,PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04,PUR04_SUPPLIER_PRICES.ITEM_CODE_ITM01,PUR04_SUPPLIER_PRICES.VALUE,PUR04_SUPPLIER_PRICES.START_DATE,PUR04_SUPPLIER_PRICES.END_DATE,A.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,"+
+          "select PUR04_SUPPLIER_ITEM_PRICES.COMPANY_CODE_SYS01,PUR04_SUPPLIER_ITEM_PRICES.PRICELIST_CODE_PUR03,PUR04_SUPPLIER_ITEM_PRICES.PROGRESSIVE_REG04,PUR04_SUPPLIER_ITEM_PRICES.ITEM_CODE_ITM01,PUR04_SUPPLIER_ITEM_PRICES.VALUE,PUR04_SUPPLIER_ITEM_PRICES.START_DATE,PUR04_SUPPLIER_ITEM_PRICES.END_DATE,A.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,"+
           "REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,PUR01_SUPPLIERS.SUPPLIER_CODE,B.DESCRIPTION, "+
           "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 "+
-          " from PUR04_SUPPLIER_PRICES,SYS10_COMPANY_TRANSLATIONS A,SYS10_COMPANY_TRANSLATIONS B,ITM01_ITEMS,REG04_SUBJECTS,PUR01_SUPPLIERS,PUR03_SUPPLIER_PRICELISTS where "+
-          "PUR04_SUPPLIER_PRICES.COMPANY_CODE_SYS01=PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01 and "+
-          "PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04=PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_REG04 and "+
-          "PUR04_SUPPLIER_PRICES.PRICELIST_CODE_PUR03=PUR03_SUPPLIER_PRICELISTS.PRICELIST_CODE and "+
+          " from PUR04_SUPPLIER_ITEM_PRICES,SYS10_COMPANY_TRANSLATIONS A,SYS10_COMPANY_TRANSLATIONS B,ITM01_ITEMS,REG04_SUBJECTS,PUR01_SUPPLIERS,PUR03_SUPPLIER_PRICELISTS where "+
+          "PUR04_SUPPLIER_ITEM_PRICES.COMPANY_CODE_SYS01=PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01 and "+
+          "PUR04_SUPPLIER_ITEM_PRICES.PROGRESSIVE_REG04=PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_REG04 and "+
+          "PUR04_SUPPLIER_ITEM_PRICES.PRICELIST_CODE_PUR03=PUR03_SUPPLIER_PRICELISTS.PRICELIST_CODE and "+
 					"PUR03_SUPPLIER_PRICELISTS.COMPANY_CODE_SYS01=B.COMPANY_CODE_SYS01 and "+
           "PUR03_SUPPLIER_PRICELISTS.PROGRESSIVE_SYS10=B.PROGRESSIVE and "+
           "B.LANGUAGE_CODE=? and "+
-          "PUR04_SUPPLIER_PRICES.COMPANY_CODE_SYS01=PUR01_SUPPLIERS.COMPANY_CODE_SYS01 and "+
-          "PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04=PUR01_SUPPLIERS.PROGRESSIVE_REG04 and "+
-          "PUR04_SUPPLIER_PRICES.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
-          "PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
-          "PUR04_SUPPLIER_PRICES.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
-          "PUR04_SUPPLIER_PRICES.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
+          "PUR04_SUPPLIER_ITEM_PRICES.COMPANY_CODE_SYS01=PUR01_SUPPLIERS.COMPANY_CODE_SYS01 and "+
+          "PUR04_SUPPLIER_ITEM_PRICES.PROGRESSIVE_REG04=PUR01_SUPPLIERS.PROGRESSIVE_REG04 and "+
+          "PUR04_SUPPLIER_ITEM_PRICES.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
+          "PUR04_SUPPLIER_ITEM_PRICES.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
+          "PUR04_SUPPLIER_ITEM_PRICES.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
+          "PUR04_SUPPLIER_ITEM_PRICES.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
 					"ITM01_ITEMS.COMPANY_CODE_SYS01=A.COMPANY_CODE_SYS01 and "+
           "ITM01_ITEMS.PROGRESSIVE_SYS10=A.PROGRESSIVE and "+
-          "A.LANGUAGE_CODE=? and PUR04_SUPPLIER_PRICES.COMPANY_CODE_SYS01=? and ITM01_ITEMS.ENABLED='Y' ";
+          "A.LANGUAGE_CODE=? and PUR04_SUPPLIER_ITEM_PRICES.COMPANY_CODE_SYS01=? and ITM01_ITEMS.ENABLED='Y' ";
 
       if (vo!=null) {
         sql +=
-            " and PUR04_SUPPLIER_PRICES.PRICELIST_CODE_PUR03='" +vo.getPricelistCodePUR03() + "' "+
-            " and PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04="+vo.getProgressiveReg04PUR03();
+            " and PUR04_SUPPLIER_ITEM_PRICES.PRICELIST_CODE_PUR03='" +vo.getPricelistCodePUR03() + "' "+
+            " and PUR04_SUPPLIER_ITEM_PRICES.PROGRESSIVE_REG04="+vo.getProgressiveReg04PUR03();
       }
       if (progressiveREG04!=null) {
         sql +=
-            " and PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04="+progressiveREG04;
+            " and PUR04_SUPPLIER_ITEM_PRICES.PROGRESSIVE_REG04="+progressiveREG04;
       }
       if (pk!=null)
         sql += " and ITM01_ITEMS.ITEM_CODE='"+pk.getItemCodeITM01()+"' ";
@@ -184,18 +185,20 @@ public class SupplierPricesBean  implements SupplierPrices {
       java.sql.Date filterDate = null;
       if (gridParams.getOtherGridParams().get(ApplicationConsts.DATE_FILTER)!=null) {
         filterDate = new java.sql.Date( ((java.util.Date)gridParams.getOtherGridParams().get(ApplicationConsts.DATE_FILTER)).getTime() );
-        sql += " and PUR04_SUPPLIER_PRICES.START_DATE<=? and PUR04_SUPPLIER_PRICES.END_DATE>=?";
+        sql +=
+					" and PUR04_SUPPLIER_ITEM_PRICES.START_DATE<=? "+
+					" and (PUR04_SUPPLIER_ITEM_PRICES.END_DATE>=? or PUR04_SUPPLIER_ITEM_PRICES.END_DATE is null) ";
       }
 
 
       Map attribute2dbField = new HashMap();
-      attribute2dbField.put("companyCodeSys01PUR04","PUR04_SUPPLIER_PRICES.COMPANY_CODE_SYS01");
-      attribute2dbField.put("pricelistCodePur03PUR04","PUR04_SUPPLIER_PRICES.PRICELIST_CODE_PUR03");
-      attribute2dbField.put("progressiveReg04PUR04","PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04");
-      attribute2dbField.put("itemCodeItm01PUR04","PUR04_SUPPLIER_PRICES.ITEM_CODE_ITM01");
-      attribute2dbField.put("valuePUR04","PUR04_SUPPLIER_PRICES.VALUE");
-      attribute2dbField.put("startDatePUR04","PUR04_SUPPLIER_PRICES.START_DATE");
-      attribute2dbField.put("endDatePUR04","PUR04_SUPPLIER_PRICES.END_DATE");
+      attribute2dbField.put("companyCodeSys01PUR04","PUR04_SUPPLIER_ITEM_PRICES.COMPANY_CODE_SYS01");
+      attribute2dbField.put("pricelistCodePur03PUR04","PUR04_SUPPLIER_ITEM_PRICES.PRICELIST_CODE_PUR03");
+      attribute2dbField.put("progressiveReg04PUR04","PUR04_SUPPLIER_ITEM_PRICES.PROGRESSIVE_REG04");
+      attribute2dbField.put("itemCodeItm01PUR04","PUR04_SUPPLIER_ITEM_PRICES.ITEM_CODE_ITM01");
+      attribute2dbField.put("valuePUR04","PUR04_SUPPLIER_ITEM_PRICES.VALUE");
+      attribute2dbField.put("startDatePUR04","PUR04_SUPPLIER_ITEM_PRICES.START_DATE");
+      attribute2dbField.put("endDatePUR04","PUR04_SUPPLIER_ITEM_PRICES.END_DATE");
       attribute2dbField.put("itemDescriptionSYS10","A.DESCRIPTION");
       attribute2dbField.put("pricelistDescriptionSYS10","B.DESCRIPTION");
       attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
@@ -274,44 +277,44 @@ public class SupplierPricesBean  implements SupplierPrices {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       String sql =
-            "select PUR05_SUPPLIER_VARIANTS_PRICES.PROGRESSIVE,PUR05_SUPPLIER_VARIANTS_PRICES.COMPANY_CODE_SYS01,"+
-            "PUR05_SUPPLIER_VARIANTS_PRICES.PROGRESSIVE_REG04,PUR05_SUPPLIER_VARIANTS_PRICES.PRICELIST_CODE_PUR03,"+
-            "PUR05_SUPPLIER_VARIANTS_PRICES.ITEM_CODE_ITM01,PUR05_SUPPLIER_VARIANTS_PRICES.VALUE,"+
-            "PUR05_SUPPLIER_VARIANTS_PRICES.START_DATE,PUR05_SUPPLIER_VARIANTS_PRICES.END_DATE,"+
-            "PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_TYPE_ITM06,PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_CODE_ITM11,"+
-            "PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_TYPE_ITM07,PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_CODE_ITM12,"+
-            "PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_TYPE_ITM08,PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_CODE_ITM13,"+
-            "PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_TYPE_ITM09,PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_CODE_ITM14,"+
-            "PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_TYPE_ITM10,PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_CODE_ITM15 "+
-            " from PUR05_SUPPLIER_VARIANTS_PRICES where "+
-            "PUR05_SUPPLIER_VARIANTS_PRICES.COMPANY_CODE_SYS01=? and "+
-            "PUR05_SUPPLIER_VARIANTS_PRICES.PROGRESSIVE_REG04=? and "+
-            "PUR05_SUPPLIER_VARIANTS_PRICES.PRICELIST_CODE_PUR03=? and "+
-            "PUR05_SUPPLIER_VARIANTS_PRICES.ITEM_CODE_ITM01=?";
+            "select PUR05_SUP_ITEM_VARIANTS_PRICES.PROGRESSIVE,PUR05_SUP_ITEM_VARIANTS_PRICES.COMPANY_CODE_SYS01,"+
+            "PUR05_SUP_ITEM_VARIANTS_PRICES.PROGRESSIVE_REG04,PUR05_SUP_ITEM_VARIANTS_PRICES.PRICELIST_CODE_PUR03,"+
+            "PUR05_SUP_ITEM_VARIANTS_PRICES.ITEM_CODE_ITM01,PUR05_SUP_ITEM_VARIANTS_PRICES.VALUE,"+
+            "PUR05_SUP_ITEM_VARIANTS_PRICES.START_DATE,PUR05_SUP_ITEM_VARIANTS_PRICES.END_DATE,"+
+            "PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_TYPE_ITM06,PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_CODE_ITM11,"+
+            "PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_TYPE_ITM07,PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_CODE_ITM12,"+
+            "PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_TYPE_ITM08,PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_CODE_ITM13,"+
+            "PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_TYPE_ITM09,PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_CODE_ITM14,"+
+            "PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_TYPE_ITM10,PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_CODE_ITM15 "+
+            " from PUR05_SUP_ITEM_VARIANTS_PRICES where "+
+            "PUR05_SUP_ITEM_VARIANTS_PRICES.COMPANY_CODE_SYS01=? and "+
+            "PUR05_SUP_ITEM_VARIANTS_PRICES.PROGRESSIVE_REG04=? and "+
+            "PUR05_SUP_ITEM_VARIANTS_PRICES.PRICELIST_CODE_PUR03=? and "+
+            "PUR05_SUP_ITEM_VARIANTS_PRICES.ITEM_CODE_ITM01=?";
 
       Map attribute2dbField = new HashMap();
-      attribute2dbField.put("progressivePUR05","PUR05_SUPPLIER_VARIANTS_PRICES.PROGRESSIVE");
-      attribute2dbField.put("companyCodeSys01PUR05","PUR05_SUPPLIER_VARIANTS_PRICES.COMPANY_CODE_SYS01");
-      attribute2dbField.put("progressiveReg04PUR05","PUR05_SUPPLIER_VARIANTS_PRICES.PROGRESSIVE_REG04");
-      attribute2dbField.put("pricelistCodePur03PUR05","PUR05_SUPPLIER_VARIANTS_PRICES.PRICELIST_CODE_PUR03");
-      attribute2dbField.put("itemCodeItm01PUR05","PUR05_SUPPLIER_VARIANTS_PRICES.ITEM_CODE_ITM01");
-      attribute2dbField.put("valuePUR05","PUR05_SUPPLIER_VARIANTS_PRICES.VALUE");
-      attribute2dbField.put("startDatePUR05","PUR05_SUPPLIER_VARIANTS_PRICES.START_DATE");
-      attribute2dbField.put("endDatePUR05","PUR05_SUPPLIER_VARIANTS_PRICES.END_DATE");
+      attribute2dbField.put("progressivePUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.PROGRESSIVE");
+      attribute2dbField.put("companyCodeSys01PUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.COMPANY_CODE_SYS01");
+      attribute2dbField.put("progressiveReg04PUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.PROGRESSIVE_REG04");
+      attribute2dbField.put("pricelistCodePur03PUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.PRICELIST_CODE_PUR03");
+      attribute2dbField.put("itemCodeItm01PUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.ITEM_CODE_ITM01");
+      attribute2dbField.put("valuePUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.VALUE");
+      attribute2dbField.put("startDatePUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.START_DATE");
+      attribute2dbField.put("endDatePUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.END_DATE");
       attribute2dbField.put("itemDescriptionSYS10","A.DESCRIPTION");
       attribute2dbField.put("pricelistDescriptionSYS10","B.DESCRIPTION");
       attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
 
-      attribute2dbField.put("variantTypeItm06PUR05","PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_TYPE_ITM06");
-      attribute2dbField.put("variantCodeItm11PUR05","PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_CODE_ITM11");
-      attribute2dbField.put("variantTypeItm07PUR05","PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_TYPE_ITM07");
-      attribute2dbField.put("variantCodeItm12PUR05","PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_CODE_ITM12");
-      attribute2dbField.put("variantTypeItm08PUR05","PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_TYPE_ITM08");
-      attribute2dbField.put("variantCodeItm13PUR05","PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_CODE_ITM13");
-      attribute2dbField.put("variantTypeItm09PUR05","PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_TYPE_ITM09");
-      attribute2dbField.put("variantCodeItm14PUR05","PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_CODE_ITM14");
-      attribute2dbField.put("variantTypeItm10PUR05","PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_TYPE_ITM10");
-      attribute2dbField.put("variantCodeItm15PUR05","PUR05_SUPPLIER_VARIANTS_PRICES.VARIANT_CODE_ITM15");
+      attribute2dbField.put("variantTypeItm06PUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_TYPE_ITM06");
+      attribute2dbField.put("variantCodeItm11PUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_CODE_ITM11");
+      attribute2dbField.put("variantTypeItm07PUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_TYPE_ITM07");
+      attribute2dbField.put("variantCodeItm12PUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_CODE_ITM12");
+      attribute2dbField.put("variantTypeItm08PUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_TYPE_ITM08");
+      attribute2dbField.put("variantCodeItm13PUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_CODE_ITM13");
+      attribute2dbField.put("variantTypeItm09PUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_TYPE_ITM09");
+      attribute2dbField.put("variantCodeItm14PUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_CODE_ITM14");
+      attribute2dbField.put("variantTypeItm10PUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_TYPE_ITM10");
+      attribute2dbField.put("variantCodeItm15PUR05","PUR05_SUP_ITEM_VARIANTS_PRICES.VARIANT_CODE_ITM15");
 
       ArrayList values = new ArrayList();
       values.add(itemPK.getCompanyCodeSys01ITM01());
@@ -446,39 +449,144 @@ public class SupplierPricesBean  implements SupplierPrices {
    */
   public VOListResponse updateSupplierPrices(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable {
     Connection conn = null;
+		PreparedStatement pstmt0 = null;
+		PreparedStatement pstmt1 = null;
+		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
+			pstmt0 = conn.prepareStatement(
+				"select * from PUR04_SUPPLIER_ITEM_PRICES WHERE "+
+				"COMPANY_CODE_SYS01=? AND PRICELIST_CODE_PUR03=? AND PROGRESSIVE_REG04=? AND ITEM_CODE_ITM01=? AND NOT START_DATE=? AND  "+
+				"(START_DATE>? AND END_DATE<? or START_DATE<? AND END_DATE>?) "
+			);
+
+			 pstmt1 = conn.prepareStatement(
+			 "select * from PUR04_SUPPLIER_ITEM_PRICES WHERE "+
+			 "COMPANY_CODE_SYS01=? AND PRICELIST_CODE_PUR03=? AND PROGRESSIVE_REG04=? AND ITEM_CODE_ITM01=? AND NOT START_DATE=? AND  "+
+			 "(START_DATE>? AND END_DATE<? or START_DATE<? AND END_DATE>? or START_DATE>? ) "
+			);
+
+			pstmt2 = conn.prepareStatement(
+				 "UPDATE PUR04_SUPPLIER_ITEM_PRICES SET END_DATE=? WHERE "+
+				 "COMPANY_CODE_SYS01=? AND PRICELIST_CODE_PUR03=? AND PROGRESSIVE_REG04=? AND ITEM_CODE_ITM01=? AND NOT START_DATE=? AND "+
+				 "(START_DATE<? AND END_DATE is null or START_DATE<? AND END_DATE>? ) "
+			);
+
+			 pstmt3 = conn.prepareStatement(
+				"UPDATE PUR04_SUPPLIER_ITEM_PRICES SET END_DATE=? WHERE "+
+				"COMPANY_CODE_SYS01=? AND PRICELIST_CODE_PUR03=? AND PROGRESSIVE_REG04=? AND ITEM_CODE_ITM01=? AND NOT START_DATE=? AND "+
+				"(END_DATE is null or START_DATE<? AND END_DATE>? ) "
+			 );
+
+
+			 // if current price is valid for [d1,d2]
+			 // then invervals to redefine are:
+			 // [...,null] -> [...,d1]
+			 // [<d1,>d1] -> [...,d1]
+			 // [>d1,<d2] -> error
+			 // [<d2,>d2] -> error
+
+			 // if current price is valid for [d1,null]
+			 // then invervals to redefine are:
+			 // [...,null] -> [...,d1]
+			 // [<d1,>d1] -> [...,d1]
+			 // [>d1,<d2] -> error
+			 // [<d2,>d2] -> error
+			 // [>d2,>d2] -> error
+
       SupplierPriceVO oldVO = null;
-      SupplierPriceVO newVO = null;
+      SupplierPriceVO vo = null;
       Response res = null;
+
+			HashSet pkAttrs = new HashSet();
+			pkAttrs.add("companyCodeSys01PUR04");
+			pkAttrs.add("pricelistCodePur03PUR04");
+			pkAttrs.add("itemCodeItm01PUR04");
+			pkAttrs.add("progressiveReg04PUR04");
+			pkAttrs.add("startDatePUR04");
+
+			HashMap attribute2dbField = new HashMap();
+			attribute2dbField.put("companyCodeSys01PUR04","COMPANY_CODE_SYS01");
+			attribute2dbField.put("pricelistCodePur03PUR04","PRICELIST_CODE_PUR03");
+			attribute2dbField.put("progressiveReg04PUR04","PROGRESSIVE_REG04");
+			attribute2dbField.put("itemCodeItm01PUR04","ITEM_CODE_ITM01");
+			attribute2dbField.put("valuePUR04","VALUE");
+			attribute2dbField.put("startDatePUR04","START_DATE");
+			attribute2dbField.put("endDatePUR04","END_DATE");
+
 
       for(int i=0;i<oldVOs.size();i++) {
         oldVO = (SupplierPriceVO)oldVOs.get(i);
-        newVO = (SupplierPriceVO)newVOs.get(i);
+        vo = (SupplierPriceVO)newVOs.get(i);
 
-        HashSet pkAttrs = new HashSet();
-        pkAttrs.add("companyCodeSys01PUR04");
-        pkAttrs.add("pricelistCodePur03PUR04");
-        pkAttrs.add("itemCodeItm01PUR04");
-        pkAttrs.add("progressiveReg04PUR04");
+				if (vo.getEndDatePUR04()!=null) {
 
-        HashMap attribute2dbField = new HashMap();
-        attribute2dbField.put("companyCodeSys01PUR04","COMPANY_CODE_SYS01");
-        attribute2dbField.put("pricelistCodePur03PUR04","PRICELIST_CODE_PUR03");
-        attribute2dbField.put("progressiveReg04PUR04","PROGRESSIVE_REG04");
-        attribute2dbField.put("itemCodeItm01PUR04","ITEM_CODE_ITM01");
-        attribute2dbField.put("valuePUR04","VALUE");
-        attribute2dbField.put("startDatePUR04","START_DATE");
-        attribute2dbField.put("endDatePUR04","END_DATE");
+					pstmt0.setString(1,vo.getCompanyCodeSys01PUR04());
+					pstmt0.setString(2,vo.getPricelistCodePur03PUR04());
+					pstmt0.setBigDecimal(3,vo.getProgressiveReg04PUR04());
+					pstmt0.setString(4,vo.getItemCodeItm01());
+					pstmt0.setDate(5,vo.getStartDatePUR04());
+					pstmt0.setDate(6,vo.getStartDatePUR04());
+					pstmt0.setDate(7,vo.getEndDatePUR04());
+					pstmt0.setDate(8,vo.getEndDatePUR04());
+					pstmt0.setDate(9,vo.getEndDatePUR04());
+					ResultSet rset = pstmt0.executeQuery();
+					boolean found = rset.next();
+					rset.close();
+					if (found)
+						throw new Exception("change date interval");
+
+					pstmt2.setDate(1,vo.getStartDatePUR04());
+					pstmt2.setString(2,vo.getCompanyCodeSys01PUR04());
+					pstmt2.setString(3,vo.getPricelistCodePur03PUR04());
+					pstmt2.setBigDecimal(4,vo.getProgressiveReg04PUR04());
+					pstmt2.setString(5,vo.getItemCodeItm01());
+					pstmt2.setDate(6,vo.getStartDatePUR04());
+					pstmt2.setDate(7,vo.getEndDatePUR04());
+					pstmt2.setDate(8,vo.getStartDatePUR04());
+					pstmt2.setDate(9,vo.getStartDatePUR04());
+					pstmt2.execute();
+
+				}
+				else {
+
+					pstmt1.setString(1,vo.getCompanyCodeSys01PUR04());
+					pstmt1.setString(2,vo.getPricelistCodePur03PUR04());
+					pstmt1.setBigDecimal(3,vo.getProgressiveReg04PUR04());
+					pstmt1.setString(4,vo.getItemCodeItm01());
+					pstmt1.setDate(5,vo.getStartDatePUR04());
+					pstmt1.setDate(6,vo.getStartDatePUR04());
+					pstmt1.setDate(7,vo.getEndDatePUR04());
+					pstmt1.setDate(8,vo.getEndDatePUR04());
+					pstmt1.setDate(9,vo.getEndDatePUR04());
+					pstmt1.setDate(10,vo.getEndDatePUR04());
+					ResultSet rset = pstmt1.executeQuery();
+					boolean found = rset.next();
+					rset.close();
+					if (found)
+						throw new Exception("change date interval");
+
+					pstmt3.setDate(1,vo.getStartDatePUR04());
+					pstmt3.setString(2,vo.getCompanyCodeSys01PUR04());
+					pstmt3.setString(3,vo.getPricelistCodePur03PUR04());
+					pstmt3.setBigDecimal(4,vo.getProgressiveReg04PUR04());
+					pstmt3.setString(5,vo.getItemCodeItm01());
+					pstmt3.setDate(6,vo.getStartDatePUR04());
+					pstmt3.setDate(7,vo.getStartDatePUR04());
+					pstmt3.setDate(8,vo.getStartDatePUR04());
+					pstmt3.execute();
+
+				}
 
         res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
             oldVO,
-            newVO,
-            "PUR04_SUPPLIER_PRICES",
+            vo,
+            "PUR04_SUPPLIER_ITEM_PRICES",
             attribute2dbField,
             "Y",
             "N",
@@ -504,15 +612,39 @@ public class SupplierPricesBean  implements SupplierPrices {
       throw new Exception(ex.getMessage());
     }
     finally {
-        try {
-            if (this.conn==null && conn!=null) {
-                // close only local connection
-                conn.commit();
-                conn.close();
-            }
+			try {
+				if (pstmt0!=null)
+					pstmt0.close();
+			}
+			catch (Exception ex1) {
+			}
+			try {
+				if (pstmt1!=null)
+					pstmt1.close();
+			}
+			catch (Exception ex1) {
+			}
+			try {
+				if (pstmt2!=null)
+					pstmt2.close();
+			}
+			catch (Exception ex1) {
+			}
+			try {
+				if (pstmt3!=null)
+					pstmt3.close();
+			}
+			catch (Exception ex1) {
+			}
+      try {
+          if (this.conn==null && conn!=null) {
+              // close only local connection
+              conn.commit();
+              conn.close();
+          }
 
-        }
-        catch (Exception exx) {}
+      }
+      catch (Exception exx) {}
     }
 
 
@@ -532,7 +664,7 @@ public class SupplierPricesBean  implements SupplierPrices {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       // remove all prices related to the specified item/pricelist...
-      pstmt = conn.prepareStatement("delete from PUR05_SUPPLIER_VARIANTS_PRICES where COMPANY_CODE_SYS01=? and PROGRESSIVE_REG04=? and PRICELIST_CODE_PUR03=? and ITEM_CODE_ITM01=?");
+      pstmt = conn.prepareStatement("delete from PUR05_SUP_ITEM_VARIANTS_PRICES where COMPANY_CODE_SYS01=? and PROGRESSIVE_REG04=? and PRICELIST_CODE_PUR03=? and ITEM_CODE_ITM01=?");
       pstmt.setString(1,variantsPrice.getMatrixVO().getItemPK().getCompanyCodeSys01ITM01());
       pstmt.setBigDecimal(2,variantsPrice.getProgressiveReg04());
       pstmt.setString(3,variantsPrice.getPriceListCode());
@@ -596,7 +728,7 @@ public class SupplierPricesBean  implements SupplierPrices {
                 conn,
                 new UserSessionParameters(username),
                 vo,
-                "PUR05_SUPPLIER_VARIANTS_PRICES",
+                "PUR05_SUP_ITEM_VARIANTS_PRICES",
                 attribute2dbField,
                 "Y",
                 "N",
@@ -621,7 +753,7 @@ public class SupplierPricesBean  implements SupplierPrices {
 	          }
               vo = new SupplierVariantsPriceVO();
               vo.setCompanyCodeSys01PUR05(variantsPrice.getMatrixVO().getItemPK().getCompanyCodeSys01ITM01());
-              vo.setProgressivePUR05(CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01PUR05(),"PUR05_SUPPLIER_VARIANTS_PRICES","PROGRESSIVE",conn));
+              vo.setProgressivePUR05(CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01PUR05(),"PUR05_SUP_ITEM_VARIANTS_PRICES","PROGRESSIVE",conn));
               vo.setItemCodeItm01PUR05(variantsPrice.getMatrixVO().getItemPK().getItemCodeITM01());
               vo.setProgressiveReg04PUR05(variantsPrice.getProgressiveReg04());
               vo.setPricelistCodePur03PUR05(variantsPrice.getPriceListCode());
@@ -634,7 +766,7 @@ public class SupplierPricesBean  implements SupplierPrices {
                   conn,
                   new UserSessionParameters(username),
                   vo,
-                  "PUR05_SUPPLIER_VARIANTS_PRICES",
+                  "PUR05_SUP_ITEM_VARIANTS_PRICES",
                   attribute2dbField,
                   "Y",
                   "N",
@@ -707,7 +839,7 @@ public class SupplierPricesBean  implements SupplierPrices {
         "select ITEM_CODE_ITM01 from PUR02_SUPPLIER_ITEMS where ENABLED='Y' and COMPANY_CODE_SYS01=? and PROGRESSIVE_REG04=?"
       );
       pstmt2 = conn.prepareStatement(
-        "insert into PUR04_SUPPLIER_PRICES(COMPANY_CODE_SYS01,PRICELIST_CODE_PUR03,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE,PROGRESSIVE_REG04,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?,?,?)"
+        "insert into PUR04_SUPPLIER_ITEM_PRICES(COMPANY_CODE_SYS01,PRICELIST_CODE_PUR03,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE,PROGRESSIVE_REG04,CREATE_USER,CREATE_DATE) values(?,?,?,?,?,?,?,?,?)"
       );
 
       pstmt.setString(1,vo.getCompanyCodeSys01PUR04());
@@ -780,6 +912,10 @@ public class SupplierPricesBean  implements SupplierPrices {
     PreparedStatement pstmt = null;
     ResultSet rset = null;
     Connection conn = null;
+		PreparedStatement pstmt0 = null;
+		PreparedStatement pstmt1 = null;
+		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       insItem.setConn(conn); // use same transaction...
@@ -789,6 +925,47 @@ public class SupplierPricesBean  implements SupplierPrices {
         "select ITEM_CODE_ITM01 from PUR02_SUPPLIER_ITEMS where "+
         "COMPANY_CODE_SYS01=? and PROGRESSIVE_REG04=? and ITEM_CODE_ITM01=?"
       );
+
+			pstmt0 = conn.prepareStatement(
+				"select * from PUR04_SUPPLIER_ITEM_PRICES WHERE "+
+				"COMPANY_CODE_SYS01=? AND PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=? AND ITEM_CODE_ITM01=? AND NOT START_DATE=? AND  "+
+				"(START_DATE>? AND END_DATE<? or START_DATE<? AND END_DATE>?) "
+			);
+
+			pstmt1 = conn.prepareStatement(
+			 "select * from PUR04_SUPPLIER_ITEM_PRICES WHERE "+
+			 "COMPANY_CODE_SYS01=? AND PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=? AND ITEM_CODE_ITM01=? AND NOT START_DATE=? AND  "+
+			 "(START_DATE>? AND END_DATE<? or START_DATE<? AND END_DATE>? or START_DATE>? ) "
+			);
+
+			pstmt2 = conn.prepareStatement(
+				 "UPDATE PUR04_SUPPLIER_ITEM_PRICES SET END_DATE=? WHERE "+
+				 "COMPANY_CODE_SYS01=? AND PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=? AND ITEM_CODE_ITM01=? AND NOT START_DATE=? AND "+
+				 "(START_DATE<? AND END_DATE is null or START_DATE<? AND END_DATE>? ) "
+			);
+
+		  pstmt3 = conn.prepareStatement(
+				"UPDATE PUR04_SUPPLIER_ITEM_PRICES SET END_DATE=? WHERE "+
+				"COMPANY_CODE_SYS01=? AND PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=? AND ITEM_CODE_ITM01=? AND NOT START_DATE=? AND "+
+				"(END_DATE is null or START_DATE<? AND END_DATE>? ) "
+		  );
+
+
+			// if current price is valid for [d1,d2]
+			// then invervals to redefine are:
+			// [...,null] -> [...,d1]
+			// [<d1,>d1] -> [...,d1]
+			// [>d1,<d2] -> error
+			// [<d2,>d2] -> error
+
+			// if current price is valid for [d1,null]
+			// then invervals to redefine are:
+			// [...,null] -> [...,d1]
+			// [<d1,>d1] -> [...,d1]
+			// [>d1,<d2] -> error
+			// [<d2,>d2] -> error
+			// [>d2,>d2] -> error
+
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01PUR04","COMPANY_CODE_SYS01");
@@ -842,11 +1019,71 @@ public class SupplierPricesBean  implements SupplierPrices {
         }
         rset.close();
 
+				if (vo.getEndDatePUR04()!=null) {
+
+					pstmt0.setString(1,vo.getCompanyCodeSys01PUR04());
+					pstmt0.setString(2,vo.getPricelistCodePur03PUR04());
+					pstmt0.setBigDecimal(3,vo.getProgressiveReg04PUR04());
+					pstmt0.setString(4,vo.getItemCodeItm01());
+					pstmt0.setDate(5,vo.getStartDatePUR04());
+					pstmt0.setDate(6,vo.getStartDatePUR04());
+					pstmt0.setDate(7,vo.getEndDatePUR04());
+					pstmt0.setDate(8,vo.getEndDatePUR04());
+					pstmt0.setDate(9,vo.getEndDatePUR04());
+					rset = pstmt0.executeQuery();
+					boolean found = rset.next();
+					rset.close();
+					if (found)
+						throw new Exception("change date interval");
+
+					pstmt2.setDate(1,vo.getStartDatePUR04());
+					pstmt2.setString(2,vo.getCompanyCodeSys01PUR04());
+					pstmt2.setString(3,vo.getPricelistCodePur03PUR04());
+					pstmt2.setBigDecimal(4,vo.getProgressiveReg04PUR04());
+					pstmt2.setString(5,vo.getItemCodeItm01());
+					pstmt2.setDate(6,vo.getStartDatePUR04());
+					pstmt2.setDate(7,vo.getEndDatePUR04());
+					pstmt2.setDate(8,vo.getStartDatePUR04());
+					pstmt2.setDate(9,vo.getStartDatePUR04());
+					pstmt2.execute();
+
+				}
+				else {
+
+					pstmt1.setString(1,vo.getCompanyCodeSys01PUR04());
+					pstmt1.setString(2,vo.getPricelistCodePur03PUR04());
+					pstmt1.setBigDecimal(3,vo.getProgressiveReg04PUR04());
+					pstmt1.setString(4,vo.getItemCodeItm01());
+					pstmt1.setDate(5,vo.getStartDatePUR04());
+					pstmt1.setDate(6,vo.getStartDatePUR04());
+					pstmt1.setDate(7,vo.getEndDatePUR04());
+					pstmt1.setDate(8,vo.getEndDatePUR04());
+					pstmt1.setDate(9,vo.getEndDatePUR04());
+					pstmt1.setDate(10,vo.getEndDatePUR04());
+					rset = pstmt1.executeQuery();
+					boolean found = rset.next();
+					rset.close();
+					if (found)
+						throw new Exception("change date interval");
+
+					pstmt3.setDate(1,vo.getStartDatePUR04());
+					pstmt3.setString(2,vo.getCompanyCodeSys01PUR04());
+					pstmt3.setString(3,vo.getPricelistCodePur03PUR04());
+					pstmt3.setBigDecimal(4,vo.getProgressiveReg04PUR04());
+					pstmt3.setString(5,vo.getItemCodeItm01());
+					pstmt3.setDate(6,vo.getStartDatePUR04());
+					pstmt3.setDate(7,vo.getStartDatePUR04());
+					pstmt3.setDate(8,vo.getStartDatePUR04());
+					pstmt3.execute();
+
+				}
+
+
         res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,
-            "PUR04_SUPPLIER_PRICES",
+            "PUR04_SUPPLIER_ITEM_PRICES",
             attribute2dbField,
             "Y",
             "N",
@@ -887,6 +1124,30 @@ public class SupplierPricesBean  implements SupplierPrices {
       }
       catch (Exception ex2) {
       }
+			try {
+				if (pstmt0!=null)
+					pstmt0.close();
+			}
+			catch (Exception ex1) {
+			}
+			try {
+				if (pstmt1!=null)
+					pstmt1.close();
+			}
+			catch (Exception ex1) {
+			}
+			try {
+				if (pstmt2!=null)
+					pstmt2.close();
+			}
+			catch (Exception ex1) {
+			}
+			try {
+				if (pstmt3!=null)
+					pstmt3.close();
+			}
+			catch (Exception ex1) {
+			}
       try {
           if (this.conn==null && conn!=null) {
             // close only local connection
@@ -912,18 +1173,25 @@ public class SupplierPricesBean  implements SupplierPrices {
    * Business logic to execute.
    */
   public VOResponse deleteSupplierPrices(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
-
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-     stmt = conn.createStatement();
+
+			pstmt = conn.prepareStatement(
+ 			  "delete from PUR04_SUPPLIER_ITEM_PRICES "+
+				 "where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and ITEM_CODE_ITM01=? and PROGRESSIVE_REG04=? and START_DATE=?"
+			);
 
       SupplierPriceVO vo = null;
       for(int i=0;i<list.size();i++) {
         vo = (SupplierPriceVO)list.get(i);
         // phisically delete records from PUR04...
-        stmt.execute("delete from PUR04_SUPPLIER_PRICES where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01PUR04()+"' and PRICELIST_CODE_PUR03='"+vo.getPricelistCodePur03PUR04()+"' and ITEM_CODE_ITM01='"+vo.getItemCodeItm01PUR04()+"' and PROGRESSIVE_REG04="+vo.getProgressiveReg04PUR04());
+				pstmt.setString(1,vo.getCompanyCodeSys01PUR04());
+				pstmt.setString(2,vo.getPricelistCodePur03PUR04());
+				pstmt.setString(3,vo.getItemCodeItm01PUR04());
+				pstmt.setBigDecimal(4,vo.getProgressiveReg04PUR04());
+				pstmt.setDate(5,vo.getStartDatePUR04());
       }
 
       return new VOResponse(new Boolean(true));
@@ -942,7 +1210,7 @@ public class SupplierPricesBean  implements SupplierPrices {
     }
     finally {
     	try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {

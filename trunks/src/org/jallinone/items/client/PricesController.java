@@ -23,6 +23,7 @@ import org.openswing.swing.client.SaveButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import org.openswing.swing.util.java.Consts;
+import org.openswing.swing.client.GridControl;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -63,11 +64,29 @@ public class PricesController extends CompanyGridController {
   }
 
 
+		/**
+		 * Callback method invoked after saving data when the grid was in EDIT mode (on pressing save button).
+		 * The method is called ONLY if the operation is successfully completed.
+		 */
+		public void afterEditGrid(GridControl grid) {
+			grid.reloadCurrentBlockOfData();
+		}
+
+
+		/**
+		 * Callback method invoked after saving data when the grid was in INSERT mode (on pressing save button).
+		 * The method is called ONLY if the operation is successfully completed.
+		 */
+		public void afterInsertGrid(GridControl grid) {
+			grid.reloadCurrentBlockOfData();
+		}
+
+
   /**
    * Validate dates.
    */
   private Response validateDates(PriceVO vo) {
-    if (vo.getStartDateSAL02().getTime()>vo.getEndDateSAL02().getTime())
+    if (vo.getEndDateSAL02()!=null && vo.getStartDateSAL02().getTime()>vo.getEndDateSAL02().getTime())
       return new ErrorResponse("start date must be less than or equals to end date.");
 
     return new VOResponse(new Boolean(true));

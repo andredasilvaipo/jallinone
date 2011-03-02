@@ -317,7 +317,17 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
           jrVO.setAccountCodeAcc02ACC06(creditDebitAccountCode);
           jrVO.setAccountCodeACC06(newVO.getCustomerSupplierCodeDOC19());
           jrVO.setAccountCodeTypeACC06(accountCodeTypeACC06);
-          jrVO.setCreditAmountACC06(newVO.getValueDOC19());
+
+					if (newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
+							newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_DOC_TYPE) ||
+							newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_FROM_DN_DOC_TYPE) ||
+							newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_FROM_SD_DOC_TYPE) ||
+							newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_CREDIT_NOTE_DOC_TYPE) ||
+							newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_GENERIC_INVOICE))
+						jrVO.setCreditAmountACC06(newVO.getValueDOC19());
+					else
+						jrVO.setDebitAmountACC06(newVO.getValueDOC19());
+
           jrVO.setDescriptionACC06("");
           jrVO.setItemYearAcc05ACC06(jhVO.getItemYearACC05());
           jrVO.setProgressiveAcc05ACC06(jhVO.getProgressiveACC05());
@@ -328,7 +338,17 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
           jrVO.setAccountCodeAcc02ACC06( newVO.getRealAccountCodeAcc02DOC19()==null?bankAccountCode:newVO.getRealAccountCodeAcc02DOC19() );
           jrVO.setAccountCodeACC06( newVO.getRealAccountCodeAcc02DOC19()==null?bankAccountCode:newVO.getRealAccountCodeAcc02DOC19() );
           jrVO.setAccountCodeTypeACC06(ApplicationConsts.ACCOUNT_TYPE_ACCOUNT);
-          jrVO.setDebitAmountACC06(newVO.getPayedValueDOC19());
+
+					if (newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
+							newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_DOC_TYPE) ||
+							newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_FROM_DN_DOC_TYPE) ||
+							newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_FROM_SD_DOC_TYPE) ||
+							newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_CREDIT_NOTE_DOC_TYPE) ||
+							newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_GENERIC_INVOICE))
+						jrVO.setDebitAmountACC06(newVO.getPayedValueDOC19());
+					else
+						jrVO.setCreditAmountACC06(newVO.getPayedValueDOC19());
+
           jrVO.setDescriptionACC06("");
           jrVO.setItemYearAcc05ACC06(jhVO.getItemYearACC05());
           jrVO.setProgressiveAcc05ACC06(jhVO.getProgressiveACC05());
@@ -344,7 +364,17 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 						jrVO.setAccountCodeAcc02ACC06( newVO.getRoundingAccountCodeAcc02DOC19() );
 						jrVO.setAccountCodeACC06( newVO.getRoundingAccountCodeAcc02DOC19() );
 						jrVO.setAccountCodeTypeACC06(ApplicationConsts.ACCOUNT_TYPE_ACCOUNT);
-						jrVO.setDebitAmountACC06(newVO.getValueDOC19().subtract(newVO.getPayedValueDOC19()));
+
+						if (newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
+								newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_DOC_TYPE) ||
+								newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_FROM_DN_DOC_TYPE) ||
+								newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_FROM_SD_DOC_TYPE) ||
+								newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_CREDIT_NOTE_DOC_TYPE) ||
+								newVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_GENERIC_INVOICE))
+							jrVO.setDebitAmountACC06(newVO.getValueDOC19().subtract(newVO.getPayedValueDOC19()));
+						else
+							jrVO.setCreditAmountACC06(newVO.getValueDOC19().subtract(newVO.getPayedValueDOC19()));
+
 						jrVO.setDescriptionACC06("");
 						jrVO.setItemYearAcc05ACC06(jhVO.getItemYearACC05());
 						jrVO.setProgressiveAcc05ACC06(jhVO.getProgressiveACC05());
@@ -581,7 +611,17 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 			jrVO.setAccountCodeAcc02ACC06(creditDebitAccountCode);
 			jrVO.setAccountCodeACC06(customerSupplierCodeDOC19);
 			jrVO.setAccountCodeTypeACC06(accountCodeTypeACC06);
-			jrVO.setCreditAmountACC06(valueDOC19);
+
+			if (docType.equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
+					docType.equals(ApplicationConsts.SALE_INVOICE_DOC_TYPE) ||
+					docType.equals(ApplicationConsts.SALE_INVOICE_FROM_DN_DOC_TYPE) ||
+					docType.equals(ApplicationConsts.SALE_INVOICE_FROM_SD_DOC_TYPE) ||
+					docType.equals(ApplicationConsts.SALE_CREDIT_NOTE_DOC_TYPE) ||
+					docType.equals(ApplicationConsts.SALE_GENERIC_INVOICE))
+				jrVO.setCreditAmountACC06(valueDOC19);
+			else
+				jrVO.setDebitAmountACC06(valueDOC19);
+
 			jrVO.setDescriptionACC06("");
 			jrVO.setItemYearAcc05ACC06(jhVO.getItemYearACC05());
 			jrVO.setProgressiveAcc05ACC06(jhVO.getProgressiveACC05());
@@ -592,7 +632,17 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 			jrVO.setAccountCodeAcc02ACC06(accountCode);
 			jrVO.setAccountCodeACC06(accountCode);
 			jrVO.setAccountCodeTypeACC06(ApplicationConsts.ACCOUNT_TYPE_ACCOUNT);
-			jrVO.setDebitAmountACC06(valueDOC19);
+
+			if (docType.equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
+					docType.equals(ApplicationConsts.SALE_INVOICE_DOC_TYPE) ||
+					docType.equals(ApplicationConsts.SALE_INVOICE_FROM_DN_DOC_TYPE) ||
+					docType.equals(ApplicationConsts.SALE_INVOICE_FROM_SD_DOC_TYPE) ||
+					docType.equals(ApplicationConsts.SALE_CREDIT_NOTE_DOC_TYPE) ||
+					docType.equals(ApplicationConsts.SALE_GENERIC_INVOICE))
+				jrVO.setDebitAmountACC06(valueDOC19);
+			else
+				jrVO.setCreditAmountACC06(valueDOC19);
+
 			jrVO.setDescriptionACC06("");
 			jrVO.setItemYearAcc05ACC06(jhVO.getItemYearACC05());
 			jrVO.setProgressiveAcc05ACC06(jhVO.getProgressiveACC05());
@@ -827,11 +877,27 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 				jrVO.setAccountCodeAcc02ACC06(creditDebitAccountCode);
 				jrVO.setAccountCodeACC06(vo.getCustomerSupplierCodeDOC27());
 				jrVO.setAccountCodeTypeACC06(accountCodeTypeACC06);
-				if (dVO.getPayedDOC28().booleanValue()) {
-					jrVO.setCreditAmountACC06( dVO.getValueDOC19().subtract(dVO.getAlreadyPayedDOC19()) );
+
+				if (dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
+						dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_DOC_TYPE) ||
+						dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_FROM_DN_DOC_TYPE) ||
+						dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_FROM_SD_DOC_TYPE) ||
+						dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_CREDIT_NOTE_DOC_TYPE) ||
+						dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_GENERIC_INVOICE)) {
+					if (dVO.getPayedDOC28().booleanValue()) {
+						jrVO.setCreditAmountACC06( dVO.getValueDOC19().subtract(dVO.getAlreadyPayedDOC19()) );
+					}
+					else {
+						jrVO.setCreditAmountACC06(paymentValue);
+					}
 				}
 				else {
-					jrVO.setCreditAmountACC06(paymentValue);
+					if (dVO.getPayedDOC28().booleanValue()) {
+						jrVO.setDebitAmountACC06( dVO.getValueDOC19().subtract(dVO.getAlreadyPayedDOC19()) );
+					}
+					else {
+						jrVO.setDebitAmountACC06(paymentValue);
+					}
 				}
 				jrVO.setDescriptionACC06("");
 				jrVO.setItemYearAcc05ACC06(jhVO.getItemYearACC05());
@@ -843,7 +909,17 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 				jrVO.setAccountCodeAcc02ACC06( vo.getAccountCodeAcc02DOC27() );
 				jrVO.setAccountCodeACC06( vo.getAccountCodeAcc02DOC27() );
 				jrVO.setAccountCodeTypeACC06(ApplicationConsts.ACCOUNT_TYPE_ACCOUNT);
-				jrVO.setDebitAmountACC06(paymentValue);
+
+				if (dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
+						dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_DOC_TYPE) ||
+						dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_FROM_DN_DOC_TYPE) ||
+						dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_FROM_SD_DOC_TYPE) ||
+						dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_CREDIT_NOTE_DOC_TYPE) ||
+						dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_GENERIC_INVOICE))
+					jrVO.setDebitAmountACC06(paymentValue);
+				else
+					jrVO.setCreditAmountACC06(paymentValue);
+
 				jrVO.setDescriptionACC06("");
 				jrVO.setItemYearAcc05ACC06(jhVO.getItemYearACC05());
 				jrVO.setProgressiveAcc05ACC06(jhVO.getProgressiveACC05());
@@ -860,7 +936,17 @@ public class UpdateExpirationsBean  implements UpdateExpirations {
 					jrVO.setAccountCodeAcc02ACC06( dVO.getRoundingAccountCodeAcc02DOC19() );
 					jrVO.setAccountCodeACC06( dVO.getRoundingAccountCodeAcc02DOC19() );
 					jrVO.setAccountCodeTypeACC06(ApplicationConsts.ACCOUNT_TYPE_ACCOUNT);
-					jrVO.setDebitAmountACC06(dVO.getValueDOC19().subtract(dVO.getAlreadyPayedDOC19().add(paymentValue)));
+
+					if (dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_DESK_DOC_TYPE) ||
+							dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_DOC_TYPE) ||
+							dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_FROM_DN_DOC_TYPE) ||
+							dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_INVOICE_FROM_SD_DOC_TYPE) ||
+							dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_CREDIT_NOTE_DOC_TYPE) ||
+							dVO.getDocTypeDOC19().equals(ApplicationConsts.SALE_GENERIC_INVOICE))
+						jrVO.setDebitAmountACC06(dVO.getValueDOC19().subtract(dVO.getAlreadyPayedDOC19().add(paymentValue)));
+					else
+						jrVO.setCreditAmountACC06(dVO.getValueDOC19().subtract(dVO.getAlreadyPayedDOC19().add(paymentValue)));
+
 					jrVO.setDescriptionACC06("");
 					jrVO.setItemYearAcc05ACC06(jhVO.getItemYearACC05());
 					jrVO.setProgressiveAcc05ACC06(jhVO.getProgressiveACC05());

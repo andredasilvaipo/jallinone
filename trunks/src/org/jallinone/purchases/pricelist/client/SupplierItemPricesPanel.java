@@ -262,6 +262,7 @@ public class SupplierItemPricesPanel extends JPanel {
     colEndDate.setColumnDuplicable(true);
     colEndDate.setColumnFilterable(true);
     colEndDate.setColumnName("endDatePUR04");
+		colEndDate.setColumnRequired(false);
     colEndDate.setEditableOnEdit(true);
     colEndDate.setEditableOnInsert(true);
     this.setLayout(new BorderLayout());

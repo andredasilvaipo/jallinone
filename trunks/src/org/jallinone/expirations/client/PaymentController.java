@@ -104,7 +104,7 @@ public class PaymentController extends FormController {
 		payVO.setPaymentDateDOC27(new java.sql.Date(System.currentTimeMillis()));
 		payVO.setProgressiveReg04DOC27((BigDecimal)frame.getPayGrid().getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_REG04));
 
-  	if (frame.getControlCodCustomer().getValue()!=null || !frame.getControlCodCustomer().getValue().equals(""))
+  	if (frame.getControlCodCustomer().getValue()!=null && !frame.getControlCodCustomer().getValue().equals(""))
 			payVO.setCustomerSupplierCodeDOC27((String)frame.getControlCodCustomer().getValue());
 		else
 			payVO.setCustomerSupplierCodeDOC27((String)frame.getControlCodSupplier().getValue());

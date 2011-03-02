@@ -41,8 +41,8 @@ import java.util.*;
 public class ImportSalePricesDescriptorVO extends ImportDescriptorVO {
 
   public ImportSalePricesDescriptorVO() {
-    setTableNames(new String[]{"SAL02_PRICES"});
-    setSubTypeField("SAL02_PRICES.PRICELIST_CODE_SAL01");
+    setTableNames(new String[]{"SAL02_ITEM_PRICES"});
+    setSubTypeField("SAL02_ITEM_PRICES.PRICELIST_CODE_SAL01");
     setSupportsCompanyCode(true);
 
     String[] labels = new String[] {
@@ -54,10 +54,10 @@ public class ImportSalePricesDescriptorVO extends ImportDescriptorVO {
     setLabels(labels);
 
     String[] fields = new String[] {
-        "SAL02_PRICES.ITEM_CODE_ITM01",
-        "SAL02_PRICES.VALUE",
-        "SAL02_PRICES.START_DATE",
-        "SAL02_PRICES.END_DATE"
+        "SAL02_ITEM_PRICES.ITEM_CODE_ITM01",
+        "SAL02_ITEM_PRICES.VALUE",
+        "SAL02_ITEM_PRICES.START_DATE",
+        "SAL02_ITEM_PRICES.END_DATE"
     };
     setFields(fields);
 
@@ -70,14 +70,14 @@ public class ImportSalePricesDescriptorVO extends ImportDescriptorVO {
     setFieldsType(fieldsType);
 
     LinkedHashSet pkFields = new LinkedHashSet();
-    pkFields.add("SAL02_PRICES.ITEM_CODE_ITM01");
+    pkFields.add("SAL02_ITEM_PRICES.ITEM_CODE_ITM01");
     setPkFields(pkFields);
 
     HashSet requiredFields = new HashSet();
-    requiredFields.add("SAL02_PRICES.ITEM_CODE_ITM01");
-    requiredFields.add("SAL02_PRICES.VALUE");
-    requiredFields.add("SAL02_PRICES.START_DATE");
-    requiredFields.add("SAL02_PRICES.END_DATE");
+    requiredFields.add("SAL02_ITEM_PRICES.ITEM_CODE_ITM01");
+    requiredFields.add("SAL02_ITEM_PRICES.VALUE");
+    requiredFields.add("SAL02_ITEM_PRICES.START_DATE");
+    requiredFields.add("SAL02_ITEM_PRICES.END_DATE");
     setRequiredFields(requiredFields);
 
 

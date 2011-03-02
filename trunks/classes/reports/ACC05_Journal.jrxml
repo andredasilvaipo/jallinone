@@ -188,6 +188,9 @@ $F{ITEM_DATE}
 					<subreportParameter  name="DECIMALS">
 						<subreportParameterExpression><![CDATA[$P{DECIMALS}]]></subreportParameterExpression>
 					</subreportParameter>
+					<subreportParameter  name="LANGUAGE_CODE">
+						<subreportParameterExpression><![CDATA[$P{LANGUAGE_CODE}]]></subreportParameterExpression>
+					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ACC05_Journal_subreportRows.jasper"]]></subreportExpression>
 				</subreport>

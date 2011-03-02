@@ -1317,6 +1317,7 @@ public class ItemFrame extends InternalFrame {
     colPriceEndDate.setColumnName("endDateSAL02");
     colPriceEndDate.setEditableOnEdit(true);
     colPriceEndDate.setEditableOnInsert(true);
+		colPriceEndDate.setColumnRequired(false);
 
     pricesGrid.getColumnContainer().add(colPricelistCode, null);
     pricesGrid.getColumnContainer().add(colPricelistDescr, null);

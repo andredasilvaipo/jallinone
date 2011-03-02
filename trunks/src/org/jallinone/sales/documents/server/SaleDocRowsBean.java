@@ -213,6 +213,13 @@ public class SaleDocRowsBean  implements SaleDocRows {
 					 newVO.getDocTypeDOC02().equals(ApplicationConsts.SALE_ESTIMATE_DOC_TYPE)) &&
 					Boolean.TRUE.equals(newVO.getNoWarehouseMovITM01()))
 				newVO.setOutQtyDOC02(newVO.getQtyDOC02());
+			if (newVO.getEndDateSal02DOC02()==null) {
+				Calendar cal = Calendar.getInstance();
+				cal.set(cal.YEAR,2999);
+				cal.set(cal.MONTH,11);
+				cal.set(cal.DAY_OF_MONTH,31);
+				newVO.setEndDateSal02DOC02(new java.sql.Date(cal.getTimeInMillis()));
+			}
 
       // update DOC02 table...
       Response res = org.jallinone.commons.server.QueryUtilExtension.updateTable(

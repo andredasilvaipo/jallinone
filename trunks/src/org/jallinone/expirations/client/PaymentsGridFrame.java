@@ -37,6 +37,7 @@ import javax.swing.border.*;
 import org.jallinone.expirations.java.PaymentDistributionVO;
 import org.openswing.swing.message.send.java.GridParams;
 import org.jallinone.registers.currency.java.CurrencyConvVO;
+import org.openswing.swing.message.receive.java.VOListResponse;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -172,6 +173,7 @@ public class PaymentsGridFrame extends InternalFrame  {
 		this.setParentFrame(parentFrame);
 		this.parentGrid = parentGrid;
 
+
 		payForm.setFormController(new PaymentController(this));
 
 		payGrid.setController(new GridController() {
@@ -215,10 +217,13 @@ public class PaymentsGridFrame extends InternalFrame  {
 															 Class valueObjectType, Map otherGridParams) {
 
 	      PaymentVO vo = (PaymentVO)payGrid.getVOListTableModel().getObjectForRow(payGrid.getSelectedRow());
-				return ClientUtils.getData("loadPaymentDistributions",new Object[]{
-				  vo.getCompanyCodeSys01DOC27(),
-					vo.getProgressiveDOC27()
-				});
+				if (vo!=null)
+					return ClientUtils.getData("loadPaymentDistributions",new Object[]{
+						vo.getCompanyCodeSys01DOC27(),
+						vo.getProgressiveDOC27()
+					});
+			  else
+					return new VOListResponse(new ArrayList(),false,0);
 			}
 
 		});
@@ -249,6 +254,8 @@ public class PaymentsGridFrame extends InternalFrame  {
 			else {
 				payForm.setMode(Consts.READONLY);
 				buttonSearch.setEnabled(false);
+				insertButton1.setEnabled(false);
+				reloadButton.setEnabled(false);
 			}
 
 		}

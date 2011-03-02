@@ -259,12 +259,15 @@ public class CompaniesBean  implements Companies {
       bean.insert(false,vo,t1,serverLanguageId,username);
 
       // add grants of the new company code to ADMIN user...
-      stmt.execute(
+      pstmt = conn.prepareStatement(
           "INSERT INTO SYS02_COMPANIES_ACCESS(COMPANY_CODE_SYS01,PROGRESSIVE_SYS04,FUNCTION_CODE_SYS06,CAN_INS,CAN_UPD,CAN_DEL,CREATE_USER,CREATE_DATE) "+
-          "SELECT '"+vo.getCompanyCodeSys01REG04()+"',2,FUNCTION_CODE_SYS06,'Y','Y','Y',?,? FROM SYS07_ROLE_FUNCTIONS,SYS06_FUNCTIONS WHERE FUNCTION_CODE_SYS06=FUNCTION_CODE AND USE_COMPANY_CODE='Y' and SYS07_ROLE_FUNCTIONS.PROGRESSIVE_SYS04=2"
+          "SELECT '"+vo.getCompanyCodeSys01REG04()+"',2,FUNCTION_CODE_SYS06,'Y','Y','Y',?,? "+
+					"FROM SYS07_ROLE_FUNCTIONS,SYS06_FUNCTIONS "+
+					"WHERE FUNCTION_CODE_SYS06=FUNCTION_CODE AND USE_COMPANY_CODE='Y' and SYS07_ROLE_FUNCTIONS.PROGRESSIVE_SYS04=2"
       );
 			pstmt.setString(1,username);
 			pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.execute();
       pstmt.close();
 
       // insert company description...

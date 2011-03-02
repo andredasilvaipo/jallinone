@@ -67,11 +67,29 @@ public class SupplierItemPricesController extends CompanyGridController {
    * Validate dates.
    */
   private Response validateDates(SupplierPriceVO vo) {
-    if (vo.getStartDatePUR04().getTime()>vo.getEndDatePUR04().getTime())
+    if (vo.getEndDatePUR04()!=null && vo.getStartDatePUR04().getTime()>vo.getEndDatePUR04().getTime())
       return new ErrorResponse("start date must be less than or equals to end date.");
 
     return new VOResponse(new Boolean(true));
   }
+
+
+		/**
+		 * Callback method invoked after saving data when the grid was in EDIT mode (on pressing save button).
+		 * The method is called ONLY if the operation is successfully completed.
+		 */
+		public void afterEditGrid(GridControl grid) {
+			grid.reloadCurrentBlockOfData();
+		}
+
+
+		/**
+		 * Callback method invoked after saving data when the grid was in INSERT mode (on pressing save button).
+		 * The method is called ONLY if the operation is successfully completed.
+		 */
+		public void afterInsertGrid(GridControl grid) {
+			grid.reloadCurrentBlockOfData();
+		}
 
 
   /**

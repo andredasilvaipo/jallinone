@@ -126,6 +126,10 @@ public class SalePricesBean  implements SalePrices {
    */
   public VOListResponse insertPrices(ArrayList list,String serverLanguageId,String username) throws Throwable {
     Connection conn = null;
+		PreparedStatement pstmt0 = null;
+		PreparedStatement pstmt1 = null;
+		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
@@ -137,16 +141,113 @@ public class SalePricesBean  implements SalePrices {
       attribute2dbField.put("startDateSAL02","START_DATE");
       attribute2dbField.put("endDateSAL02","END_DATE");
 
+			pstmt0 = conn.prepareStatement(
+			  "select * from SAL02_ITEM_PRICES WHERE "+
+				"COMPANY_CODE_SYS01=? AND PRICELIST_CODE_SAL01=? AND ITEM_CODE_ITM01=? AND NOT START_DATE=? AND  "+
+				"(START_DATE>? AND END_DATE<? or START_DATE<? AND END_DATE>?) "
+			);
+
+ 		  pstmt1 = conn.prepareStatement(
+			 "select * from SAL02_ITEM_PRICES WHERE "+
+			 "COMPANY_CODE_SYS01=? AND PRICELIST_CODE_SAL01=? AND ITEM_CODE_ITM01=? AND NOT START_DATE=? AND  "+
+			 "(START_DATE>? AND END_DATE<? or START_DATE<? AND END_DATE>? or START_DATE>? ) "
+		  );
+
+			pstmt2 = conn.prepareStatement(
+				 "UPDATE SAL02_ITEM_PRICES SET END_DATE=? WHERE "+
+				 "COMPANY_CODE_SYS01=? AND PRICELIST_CODE_SAL01=? AND ITEM_CODE_ITM01=? AND NOT START_DATE=? AND "+
+				 "(START_DATE<? AND END_DATE is null or START_DATE<? AND END_DATE>? ) "
+			);
+
+			pstmt3 = conn.prepareStatement(
+				"UPDATE SAL02_ITEM_PRICES SET END_DATE=? WHERE "+
+				"COMPANY_CODE_SYS01=? AND PRICELIST_CODE_SAL01=? AND ITEM_CODE_ITM01=? AND NOT START_DATE=? AND "+
+				"(END_DATE is null or START_DATE<? AND END_DATE>? ) "
+			);
+
+
+
+		 // if current price is valid for [d1,d2]
+		 // then invervals to redefine are:
+		 // [...,null] -> [...,d1]
+		 // [<d1,>d1] -> [...,d1]
+		 // [>d1,<d2] -> error
+		 // [<d2,>d2] -> error
+
+		 // if current price is valid for [d1,null]
+		 // then invervals to redefine are:
+		 // [...,null] -> [...,d1]
+		 // [<d1,>d1] -> [...,d1]
+		 // [>d1,<d2] -> error
+		 // [<d2,>d2] -> error
+		 // [>d2,>d2] -> error
+
       // insert into SAL02...
       PriceVO vo = null;
       Response res = null;
       for(int i=0;i<list.size();i++) {
         vo = (PriceVO)list.get(i);
+
+				if (vo.getEndDateSAL02()!=null) {
+
+					pstmt0.setString(1,vo.getCompanyCodeSys01SAL02());
+					pstmt0.setString(2,vo.getPricelistCodeSal01SAL02());
+					pstmt0.setString(3,vo.getItemCodeItm01());
+					pstmt0.setDate(4,vo.getStartDateSAL02());
+					pstmt0.setDate(5,vo.getStartDateSAL02());
+					pstmt0.setDate(6,vo.getEndDateSAL02());
+					pstmt0.setDate(7,vo.getEndDateSAL02());
+					pstmt0.setDate(8,vo.getEndDateSAL02());
+					ResultSet rset = pstmt0.executeQuery();
+					boolean found = rset.next();
+					rset.close();
+					if (found)
+						throw new Exception("change date interval");
+
+					pstmt2.setDate(1,vo.getStartDateSAL02());
+					pstmt2.setString(2,vo.getCompanyCodeSys01SAL02());
+					pstmt2.setString(3,vo.getPricelistCodeSal01SAL02());
+					pstmt2.setString(4,vo.getItemCodeItm01());
+					pstmt2.setDate(5,vo.getStartDateSAL02());
+					pstmt2.setDate(6,vo.getEndDateSAL02());
+					pstmt2.setDate(7,vo.getStartDateSAL02());
+					pstmt2.setDate(8,vo.getStartDateSAL02());
+					pstmt2.execute();
+
+				}
+				else {
+
+					pstmt1.setString(1,vo.getCompanyCodeSys01SAL02());
+					pstmt1.setString(2,vo.getPricelistCodeSal01SAL02());
+					pstmt1.setString(3,vo.getItemCodeItm01());
+					pstmt1.setDate(4,vo.getStartDateSAL02());
+					pstmt1.setDate(5,vo.getStartDateSAL02());
+					pstmt1.setDate(6,vo.getEndDateSAL02());
+					pstmt1.setDate(7,vo.getEndDateSAL02());
+					pstmt1.setDate(8,vo.getEndDateSAL02());
+					pstmt1.setDate(9,vo.getEndDateSAL02());
+					ResultSet rset = pstmt1.executeQuery();
+					boolean found = rset.next();
+					rset.close();
+					if (found)
+						throw new Exception("change date interval");
+
+					pstmt3.setDate(1,vo.getStartDateSAL02());
+					pstmt3.setString(2,vo.getCompanyCodeSys01SAL02());
+					pstmt3.setString(3,vo.getPricelistCodeSal01SAL02());
+					pstmt3.setString(4,vo.getItemCodeItm01());
+					pstmt3.setDate(5,vo.getStartDateSAL02());
+					pstmt3.setDate(6,vo.getStartDateSAL02());
+					pstmt3.setDate(7,vo.getStartDateSAL02());
+					pstmt3.execute();
+
+				}
+
         res = org.jallinone.commons.server.QueryUtilExtension.insertTable(
             conn,
             new UserSessionParameters(username),
             vo,
-            "SAL02_PRICES",
+            "SAL02_ITEM_PRICES",
             attribute2dbField,
             "Y",
             "N",
@@ -175,6 +276,30 @@ public class SalePricesBean  implements SalePrices {
       throw new Exception(ex.getMessage());
     }
     finally {
+				try {
+					if (pstmt0!=null)
+						pstmt0.close();
+				}
+				catch (Exception ex1) {
+				}
+				try {
+					if (pstmt1!=null)
+						pstmt1.close();
+				}
+				catch (Exception ex1) {
+				}
+				try {
+					if (pstmt2!=null)
+						pstmt2.close();
+				}
+				catch (Exception ex1) {
+				}
+				try {
+					if (pstmt3!=null)
+						pstmt3.close();
+				}
+				catch (Exception ex1) {
+				}
         try {
             if (this.conn==null && conn!=null) {
                 // close only local connection
@@ -208,47 +333,49 @@ public class SalePricesBean  implements SalePrices {
         companyCodeSYS01 = vo.getCompanyCodeSys01SAL01();
 
         sql =
-            "select SAL02_PRICES.COMPANY_CODE_SYS01,SAL02_PRICES.PRICELIST_CODE_SAL01,SAL02_PRICES.ITEM_CODE_ITM01,SAL02_PRICES.VALUE,SAL02_PRICES.START_DATE,SAL02_PRICES.END_DATE,A.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,"+
+            "select SAL02_ITEM_PRICES.COMPANY_CODE_SYS01,SAL02_ITEM_PRICES.PRICELIST_CODE_SAL01,SAL02_ITEM_PRICES.ITEM_CODE_ITM01,SAL02_ITEM_PRICES.VALUE,SAL02_ITEM_PRICES.START_DATE,SAL02_ITEM_PRICES.END_DATE,A.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,"+
             "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 "+
-            " from SAL02_PRICES,SYS10_COMPANY_TRANSLATIONS A,ITM01_ITEMS where "+
-            "SAL02_PRICES.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
-            "SAL02_PRICES.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
+            " from SAL02_ITEM_PRICES,SYS10_COMPANY_TRANSLATIONS A,ITM01_ITEMS where "+
+            "SAL02_ITEM_PRICES.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
+            "SAL02_ITEM_PRICES.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE and "+
 						"ITM01_ITEMS.COMPANY_CODE_SYS01=A.COMPANY_CODE_SYS01 and "+
             "ITM01_ITEMS.PROGRESSIVE_SYS10=A.PROGRESSIVE and "+
-            "A.LANGUAGE_CODE=? and SAL02_PRICES.COMPANY_CODE_SYS01=? and ITM01_ITEMS.ENABLED='Y' and "+
-            "SAL02_PRICES.PRICELIST_CODE_SAL01='"+vo.getPricelistCodeSAL01()+"'";
+            "A.LANGUAGE_CODE=? and SAL02_ITEM_PRICES.COMPANY_CODE_SYS01=? and ITM01_ITEMS.ENABLED='Y' and "+
+            "SAL02_ITEM_PRICES.PRICELIST_CODE_SAL01='"+vo.getPricelistCodeSAL01()+"'";
       }
       else {
         DetailItemVO vo = (DetailItemVO)gridParams.getOtherGridParams().get(ApplicationConsts.ITEM);
         companyCodeSYS01 = vo.getCompanyCodeSys01ITM01();
 
         sql =
-            "select SAL02_PRICES.COMPANY_CODE_SYS01,SAL02_PRICES.PRICELIST_CODE_SAL01,SAL02_PRICES.ITEM_CODE_ITM01,SAL02_PRICES.VALUE,SAL02_PRICES.START_DATE,SAL02_PRICES.END_DATE,B.DESCRIPTION,"+
+            "select SAL02_ITEM_PRICES.COMPANY_CODE_SYS01,SAL02_ITEM_PRICES.PRICELIST_CODE_SAL01,SAL02_ITEM_PRICES.ITEM_CODE_ITM01,SAL02_ITEM_PRICES.VALUE,SAL02_ITEM_PRICES.START_DATE,SAL02_ITEM_PRICES.END_DATE,B.DESCRIPTION,"+
             "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 "+
-            " from SAL02_PRICES,SYS10_COMPANY_TRANSLATIONS B,SAL01_PRICELISTS,ITM01_ITEMS where "+
-            "SAL02_PRICES.COMPANY_CODE_SYS01=SAL01_PRICELISTS.COMPANY_CODE_SYS01 and "+
-            "SAL02_PRICES.PRICELIST_CODE_SAL01=SAL01_PRICELISTS.PRICELIST_CODE and "+
+            " from SAL02_ITEM_PRICES,SYS10_COMPANY_TRANSLATIONS B,SAL01_PRICELISTS,ITM01_ITEMS where "+
+            "SAL02_ITEM_PRICES.COMPANY_CODE_SYS01=SAL01_PRICELISTS.COMPANY_CODE_SYS01 and "+
+            "SAL02_ITEM_PRICES.PRICELIST_CODE_SAL01=SAL01_PRICELISTS.PRICELIST_CODE and "+
 						"SAL01_PRICELISTS.COMPANY_CODE_SYS01=B.COMPANY_CODE_SYS01 and "+
             "SAL01_PRICELISTS.PROGRESSIVE_SYS10=B.PROGRESSIVE and "+
-            "B.LANGUAGE_CODE=? and SAL02_PRICES.COMPANY_CODE_SYS01=? and "+
-            "SAL02_PRICES.ITEM_CODE_ITM01='"+vo.getItemCodeITM01()+"' and "+
-            "SAL02_PRICES.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
-            "SAL02_PRICES.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE";
+            "B.LANGUAGE_CODE=? and SAL02_ITEM_PRICES.COMPANY_CODE_SYS01=? and "+
+            "SAL02_ITEM_PRICES.ITEM_CODE_ITM01='"+vo.getItemCodeITM01()+"' and "+
+            "SAL02_ITEM_PRICES.COMPANY_CODE_SYS01=ITM01_ITEMS.COMPANY_CODE_SYS01 and "+
+            "SAL02_ITEM_PRICES.ITEM_CODE_ITM01=ITM01_ITEMS.ITEM_CODE";
       }
 
       java.sql.Date filterDate = null;
       if (gridParams.getOtherGridParams().get(ApplicationConsts.DATE_FILTER)!=null) {
         filterDate = new java.sql.Date( ((java.util.Date)gridParams.getOtherGridParams().get(ApplicationConsts.DATE_FILTER)).getTime() );
-        sql += " and SAL02_PRICES.START_DATE<=? and SAL02_PRICES.END_DATE>=?";
+        sql +=
+					" and SAL02_ITEM_PRICES.START_DATE<=? and "+
+					"    (SAL02_ITEM_PRICES.END_DATE>=? or SAL02_ITEM_PRICES.END_DATE is null) ";
       }
 
       Map attribute2dbField = new HashMap();
-      attribute2dbField.put("companyCodeSys01SAL02","SAL02_PRICES.COMPANY_CODE_SYS01");
-      attribute2dbField.put("pricelistCodeSal01SAL02","SAL02_PRICES.PRICELIST_CODE_SAL01");
-      attribute2dbField.put("itemCodeItm01SAL02","SAL02_PRICES.ITEM_CODE_ITM01");
-      attribute2dbField.put("valueSAL02","SAL02_PRICES.VALUE");
-      attribute2dbField.put("startDateSAL02","SAL02_PRICES.START_DATE");
-      attribute2dbField.put("endDateSAL02","SAL02_PRICES.END_DATE");
+      attribute2dbField.put("companyCodeSys01SAL02","SAL02_ITEM_PRICES.COMPANY_CODE_SYS01");
+      attribute2dbField.put("pricelistCodeSal01SAL02","SAL02_ITEM_PRICES.PRICELIST_CODE_SAL01");
+      attribute2dbField.put("itemCodeItm01SAL02","SAL02_ITEM_PRICES.ITEM_CODE_ITM01");
+      attribute2dbField.put("valueSAL02","SAL02_ITEM_PRICES.VALUE");
+      attribute2dbField.put("startDateSAL02","SAL02_ITEM_PRICES.START_DATE");
+      attribute2dbField.put("endDateSAL02","SAL02_ITEM_PRICES.END_DATE");
       attribute2dbField.put("itemDescriptionSYS10","A.DESCRIPTION");
       attribute2dbField.put("pricelistDescriptionSYS10","B.DESCRIPTION");
       attribute2dbField.put("progressiveHie02ITM01","ITM01_ITEMS.PROGRESSIVE_HIE02");
@@ -612,38 +739,140 @@ public class SalePricesBean  implements SalePrices {
    * Business logic to execute.
    */
   public VOListResponse updatePrices(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable {
+		PreparedStatement pstmt0 = null;
+		PreparedStatement pstmt1 = null;
+		PreparedStatement pstmt2 = null;
+		PreparedStatement pstmt3 = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       PriceVO oldVO = null;
-      PriceVO newVO = null;
+      PriceVO vo = null;
       Response res = null;
 
-      for(int i=0;i<oldVOs.size();i++) {
+
+			pstmt0 = conn.prepareStatement(
+				"select * from SAL02_ITEM_PRICES WHERE "+
+				"COMPANY_CODE_SYS01=? AND PRICELIST_CODE_SAL01=? AND ITEM_CODE_ITM01=? AND NOT START_DATE=? AND  "+
+				"(START_DATE>? AND END_DATE<? or START_DATE<? AND END_DATE>?) "
+			);
+
+			 pstmt1 = conn.prepareStatement(
+			 "select * from SAL02_ITEM_PRICES WHERE "+
+			 "COMPANY_CODE_SYS01=? AND PRICELIST_CODE_SAL01=? AND ITEM_CODE_ITM01=? AND NOT START_DATE=? AND  "+
+			 "(START_DATE>? AND END_DATE<? or START_DATE<? AND END_DATE>? or START_DATE>? ) "
+			);
+
+			pstmt2 = conn.prepareStatement(
+				 "UPDATE SAL02_ITEM_PRICES SET END_DATE=? WHERE "+
+				 "COMPANY_CODE_SYS01=? AND PRICELIST_CODE_SAL01=? AND ITEM_CODE_ITM01=? AND NOT START_DATE=? AND "+
+				 "(START_DATE<? AND END_DATE is null or START_DATE<? AND END_DATE>? ) "
+			);
+
+ 		  pstmt3 = conn.prepareStatement(
+				"UPDATE SAL02_ITEM_PRICES SET END_DATE=? WHERE "+
+				"COMPANY_CODE_SYS01=? AND PRICELIST_CODE_SAL01=? AND ITEM_CODE_ITM01=? AND NOT START_DATE=? AND "+
+				"(END_DATE is null or START_DATE<? AND END_DATE>? ) "
+	 	  );
+
+
+		 // if current price is valid for [d1,d2]
+		 // then invervals to redefine are:
+		 // [<d2,null] -> [...,d1]
+		 // [<d1,>d1] -> [...,d1]
+		 // [>d1,<d2] -> error
+		 // [<d2,>d2] -> error
+
+		 // if current price is valid for [d1,null]
+		 // then invervals to redefine are:
+		 // [...,null] -> [...,d1]
+		 // [<d1,>d1] -> [...,d1]
+		 // [>d1,<d2] -> error
+		 // [<d2,>d2] -> error
+		 // [>d2,>d2] -> error
+
+		 HashSet pkAttrs = new HashSet();
+		 pkAttrs.add("companyCodeSys01SAL02");
+		 pkAttrs.add("pricelistCodeSal01SAL02");
+		 pkAttrs.add("itemCodeItm01SAL02");
+		 pkAttrs.add("startDateSAL02");
+
+		 HashMap attribute2dbField = new HashMap();
+		 attribute2dbField.put("companyCodeSys01SAL02","COMPANY_CODE_SYS01");
+		 attribute2dbField.put("pricelistCodeSal01SAL02","PRICELIST_CODE_SAL01");
+		 attribute2dbField.put("itemCodeItm01SAL02","ITEM_CODE_ITM01");
+		 attribute2dbField.put("valueSAL02","VALUE");
+		 attribute2dbField.put("startDateSAL02","START_DATE");
+		 attribute2dbField.put("endDateSAL02","END_DATE");
+
+
+     for(int i=0;i<oldVOs.size();i++) {
         oldVO = (PriceVO)oldVOs.get(i);
-        newVO = (PriceVO)newVOs.get(i);
+        vo = (PriceVO)newVOs.get(i);
 
-        HashSet pkAttrs = new HashSet();
-        pkAttrs.add("companyCodeSys01SAL02");
-        pkAttrs.add("pricelistCodeSal01SAL02");
-        pkAttrs.add("itemCodeItm01SAL02");
+				if (vo.getEndDateSAL02()!=null) {
 
-        HashMap attribute2dbField = new HashMap();
-        attribute2dbField.put("companyCodeSys01SAL02","COMPANY_CODE_SYS01");
-        attribute2dbField.put("pricelistCodeSal01SAL02","PRICELIST_CODE_SAL01");
-        attribute2dbField.put("itemCodeItm01SAL02","ITEM_CODE_ITM01");
-        attribute2dbField.put("valueSAL02","VALUE");
-        attribute2dbField.put("startDateSAL02","START_DATE");
-        attribute2dbField.put("endDateSAL02","END_DATE");
+					pstmt0.setString(1,vo.getCompanyCodeSys01SAL02());
+					pstmt0.setString(2,vo.getPricelistCodeSal01SAL02());
+					pstmt0.setString(3,vo.getItemCodeItm01());
+					pstmt0.setDate(4,vo.getStartDateSAL02());
+					pstmt0.setDate(5,vo.getStartDateSAL02());
+					pstmt0.setDate(6,vo.getEndDateSAL02());
+					pstmt0.setDate(7,vo.getEndDateSAL02());
+					pstmt0.setDate(8,vo.getEndDateSAL02());
+					ResultSet rset = pstmt0.executeQuery();
+					boolean found = rset.next();
+					rset.close();
+					if (found)
+						throw new Exception("change date interval");
+
+					pstmt2.setDate(1,vo.getStartDateSAL02());
+					pstmt2.setString(2,vo.getCompanyCodeSys01SAL02());
+					pstmt2.setString(3,vo.getPricelistCodeSal01SAL02());
+					pstmt2.setString(4,vo.getItemCodeItm01());
+					pstmt2.setDate(5,vo.getStartDateSAL02());
+					pstmt2.setDate(6,vo.getEndDateSAL02());
+					pstmt2.setDate(7,vo.getStartDateSAL02());
+					pstmt2.setDate(8,vo.getStartDateSAL02());
+					pstmt2.execute();
+
+				}
+				else {
+
+					pstmt1.setString(1,vo.getCompanyCodeSys01SAL02());
+					pstmt1.setString(2,vo.getPricelistCodeSal01SAL02());
+					pstmt1.setString(3,vo.getItemCodeItm01());
+					pstmt1.setDate(4,vo.getStartDateSAL02());
+					pstmt1.setDate(5,vo.getStartDateSAL02());
+					pstmt1.setDate(6,vo.getEndDateSAL02());
+					pstmt1.setDate(7,vo.getEndDateSAL02());
+					pstmt1.setDate(8,vo.getEndDateSAL02());
+					pstmt1.setDate(9,vo.getEndDateSAL02());
+					ResultSet rset = pstmt1.executeQuery();
+					boolean found = rset.next();
+					rset.close();
+					if (found)
+						throw new Exception("change date interval");
+
+					pstmt3.setDate(1,vo.getStartDateSAL02());
+					pstmt3.setString(2,vo.getCompanyCodeSys01SAL02());
+					pstmt3.setString(3,vo.getPricelistCodeSal01SAL02());
+					pstmt3.setString(4,vo.getItemCodeItm01());
+					pstmt3.setDate(5,vo.getStartDateSAL02());
+					pstmt3.setDate(6,vo.getStartDateSAL02());
+					pstmt3.setDate(7,vo.getStartDateSAL02());
+					pstmt3.execute();
+
+				}
 
         res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
             conn,
             new UserSessionParameters(username),
             pkAttrs,
             oldVO,
-            newVO,
-            "SAL02_PRICES",
+            vo,
+            "SAL02_ITEM_PRICES",
             attribute2dbField,
             "Y",
             "N",
@@ -653,9 +882,9 @@ public class SalePricesBean  implements SalePrices {
         if (res.isError()) {
           throw new Exception(res.getErrorMessage());
         }
-      }
+     }
 
-      return new VOListResponse(newVOs,false,newVOs.size());
+     return new VOListResponse(newVOs,false,newVOs.size());
     }
     catch (Throwable ex) {
       Logger.error(username,this.getClass().getName(),"executeCommand","Error while updating existing prices",ex);
@@ -670,6 +899,30 @@ public class SalePricesBean  implements SalePrices {
       throw new Exception(ex.getMessage());
     }
     finally {
+				try {
+					if (pstmt0!=null)
+						pstmt0.close();
+				}
+				catch (Exception ex1) {
+				}
+				try {
+					if (pstmt1!=null)
+						pstmt1.close();
+				}
+				catch (Exception ex1) {
+				}
+				try {
+					if (pstmt2!=null)
+						pstmt2.close();
+				}
+				catch (Exception ex1) {
+				}
+				try {
+					if (pstmt3!=null)
+						pstmt3.close();
+				}
+				catch (Exception ex1) {
+				}
         try {
             if (this.conn==null && conn!=null) {
                 // close only local connection
@@ -846,17 +1099,24 @@ public class SalePricesBean  implements SalePrices {
    * Business logic to execute.
    */
   public VOResponse deletePrices(ArrayList list,String serverLanguageId,String username) throws Throwable {
-    Statement stmt = null;
+    PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
-      stmt = conn.createStatement();
+
+			pstmt = conn.prepareStatement(
+				 "delete from SAL02_ITEM_PRICES where COMPANY_CODE_SYS01=? and "+
+				 "PRICELIST_CODE_SAL01=? and ITEM_CODE_ITM01=? and START_DATE=?");
 
       PriceVO vo = null;
       for(int i=0;i<list.size();i++) {
         vo = (PriceVO)list.get(i);
         // phisically delete records from SAL02...
-        stmt.execute("delete from SAL02_PRICES where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01SAL02()+"' and PRICELIST_CODE_SAL01='"+vo.getPricelistCodeSal01SAL02()+"' and ITEM_CODE_ITM01='"+vo.getItemCodeItm01SAL02()+"'");
+				pstmt.setString(1,vo.getCompanyCodeSys01SAL02());
+				pstmt.setString(2,vo.getPricelistCodeSal01SAL02());
+				pstmt.setString(3,vo.getItemCodeItm01SAL02());
+				pstmt.setDate(4,vo.getStartDateSAL02());
+				pstmt.execute();
       }
 
       return new VOResponse(new Boolean(true));
@@ -875,7 +1135,7 @@ public class SalePricesBean  implements SalePrices {
     }
     finally {
         try {
-            stmt.close();
+            pstmt.close();
         }
         catch (Exception exx) {}
         try {

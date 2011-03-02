@@ -397,6 +397,8 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
     colEndDate.setColumnName("endDateSAL02");
     colEndDate.setEditableOnEdit(true);
     colEndDate.setEditableOnInsert(true);
+		colEndDate.setColumnRequired(false);
+
     advancedButton.addActionListener(new PricelistFrame_advancedButton_actionAdapter(this));
     impAllButton.addActionListener(new PricelistFrame_impAllButton_actionAdapter(this));
 

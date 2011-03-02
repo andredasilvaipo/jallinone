@@ -366,7 +366,7 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       if (changes.getStartDate()!=null && changes.getEndDate()!=null) {
-        String sql = "update PUR04_SUPPLIER_PRICES set START_DATE=?,END_DATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=?";
+        String sql = "update PUR04_SUPPLIER_ITEM_PRICES set START_DATE=?,END_DATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=?";
         pstmt = conn.prepareStatement(sql);
         pstmt.setDate(1,changes.getStartDate());
         pstmt.setDate(2,changes.getEndDate());
@@ -380,7 +380,7 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
       }
 
       if (changes.getPercentage()!=null && !changes.isTruncateDecimals()) {
-        String sql = "update PUR04_SUPPLIER_PRICES set VALUE=VALUE+VALUE*"+changes.getPercentage().doubleValue()+"/100,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=?";
+        String sql = "update PUR04_SUPPLIER_ITEM_PRICES set VALUE=VALUE+VALUE*"+changes.getPercentage().doubleValue()+"/100,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=?";
         pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1,username);
 				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
@@ -392,12 +392,12 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
       }
 
       if (changes.getPercentage()!=null && changes.isTruncateDecimals()) {
-        String sql = "select ITEM_CODE_ITM01,VALUE from PUR04_SUPPLIER_PRICES where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? ";
+        String sql = "select ITEM_CODE_ITM01,VALUE from PUR04_SUPPLIER_ITEM_PRICES where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? ";
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1,changes.getCompanyCodeSys01PUR04());
         pstmt.setString(2,changes.getPricelistCodePur03PUR04());
         ResultSet rset = pstmt.executeQuery();
-        PreparedStatement pstmt2 = conn.prepareStatement("update PUR04_SUPPLIER_PRICES set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and ITEM_CODE_ITM01=? and PROGRESSIVE_REG04=?");
+        PreparedStatement pstmt2 = conn.prepareStatement("update PUR04_SUPPLIER_ITEM_PRICES set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and ITEM_CODE_ITM01=? and PROGRESSIVE_REG04=?");
         while(rset.next()) {
           pstmt2.setInt(1,(int)(rset.getDouble(2)+rset.getDouble(2)*changes.getPercentage().doubleValue()/100));
 					pstmt.setString(2,username);
@@ -414,7 +414,7 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
       }
 
       if (changes.getDeltaValue()!=null) {
-        String sql = "update PUR04_SUPPLIER_PRICES set VALUE=VALUE+"+changes.getDeltaValue().doubleValue()+",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=?";
+        String sql = "update PUR04_SUPPLIER_ITEM_PRICES set VALUE=VALUE+"+changes.getDeltaValue().doubleValue()+",LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=?";
         pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1,username);
 				pstmt.setTimestamp(2,new java.sql.Timestamp(System.currentTimeMillis()));
@@ -474,7 +474,7 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
         // phisically delete records from PUR04...
         vo = (SupplierPricelistVO)list.get(i);
 
-        stmt.execute("delete from PUR04_SUPPLIER_PRICES where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01PUR03()+"' and PRICELIST_CODE_PUR03='"+vo.getPricelistCodePUR03()+"' and PROGRESSIVE_REG04="+vo.getProgressiveReg04PUR03());
+        stmt.execute("delete from PUR04_SUPPLIER_ITEM_PRICES where COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01PUR03()+"' and PRICELIST_CODE_PUR03='"+vo.getPricelistCodePUR03()+"' and PROGRESSIVE_REG04="+vo.getProgressiveReg04PUR03());
 
         // phisically delete record from SYS10...
         CompanyTranslationUtils.deleteTranslations(vo.getCompanyCodeSys01PUR03(),vo.getProgressiveSys10PUR03(),conn);
@@ -540,8 +540,8 @@ public class SupplierPricelistsBean  implements SupplierPricelists {
       Response res = null;
 
       pstmt = conn.prepareStatement(
-        "insert into PUR04_SUPPLIER_PRICES(COMPANY_CODE_SYS01,PRICELIST_CODE_PUR03,PROGRESSIVE_REG04,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE,CREATE_USER,CREATE_DATE) "+
-        "select ?,?,?,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE,?,? from PUR04_SUPPLIER_PRICES where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=?"
+        "insert into PUR04_SUPPLIER_ITEM_PRICES(COMPANY_CODE_SYS01,PRICELIST_CODE_PUR03,PROGRESSIVE_REG04,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE,CREATE_USER,CREATE_DATE) "+
+        "select ?,?,?,ITEM_CODE_ITM01,VALUE,START_DATE,END_DATE,?,? from PUR04_SUPPLIER_ITEM_PRICES where COMPANY_CODE_SYS01=? and PRICELIST_CODE_PUR03=? and PROGRESSIVE_REG04=?"
       );
 
       for (int i=0;i<list.size();i++) {

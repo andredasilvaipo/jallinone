@@ -320,12 +320,12 @@ public class SuppliersBean  implements Suppliers {
 
       if (gridPars.getOtherGridParams().get(ApplicationConsts.ITEM)!=null) {
         sql +=
-            " AND EXISTS(SELECT * FROM PUR04_SUPPLIER_PRICES WHERE "+
-            "PUR04_SUPPLIER_PRICES.COMPANY_CODE_SYS01=PUR01_SUPPLIERS.COMPANY_CODE_SYS01 AND "+
-            "PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04=PUR01_SUPPLIERS.PROGRESSIVE_REG04 AND "+
-            "PUR04_SUPPLIER_PRICES.ITEM_CODE_ITM01=? AND "+
-            "PUR04_SUPPLIER_PRICES.START_DATE<=? AND "+
-            "PUR04_SUPPLIER_PRICES.END_DATE>=? ) ";
+            " AND EXISTS(SELECT * FROM PUR04_SUPPLIER_ITEM_PRICES WHERE "+
+            "PUR04_SUPPLIER_ITEM_PRICES.COMPANY_CODE_SYS01=PUR01_SUPPLIERS.COMPANY_CODE_SYS01 AND "+
+            "PUR04_SUPPLIER_ITEM_PRICES.PROGRESSIVE_REG04=PUR01_SUPPLIERS.PROGRESSIVE_REG04 AND "+
+            "PUR04_SUPPLIER_ITEM_PRICES.ITEM_CODE_ITM01=? AND "+
+            "PUR04_SUPPLIER_ITEM_PRICES.START_DATE<=? AND "+
+            "(PUR04_SUPPLIER_ITEM_PRICES.END_DATE>=? or PUR04_SUPPLIER_ITEM_PRICES.END_DATE is null) ) ";
         java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
 
         values.add(gridPars.getOtherGridParams().get(ApplicationConsts.ITEM));
@@ -522,12 +522,12 @@ public class SuppliersBean  implements Suppliers {
 
       if (lookupPars.getLookupValidationParameters().get(ApplicationConsts.ITEM)!=null) {
         sql +=
-            " AND EXISTS(SELECT * FROM PUR04_SUPPLIER_PRICES WHERE "+
-            "PUR04_SUPPLIER_PRICES.COMPANY_CODE_SYS01=PUR01_SUPPLIERS.COMPANY_CODE_SYS01 AND "+
-            "PUR04_SUPPLIER_PRICES.PROGRESSIVE_REG04=PUR01_SUPPLIERS.PROGRESSIVE_REG04 AND "+
-            "PUR04_SUPPLIER_PRICES.ITEM_CODE_ITM01=? AND "+
-            "PUR04_SUPPLIER_PRICES.START_DATE<=? AND "+
-            "PUR04_SUPPLIER_PRICES.END_DATE>=? ) ";
+            " AND EXISTS(SELECT * FROM PUR04_SUPPLIER_ITEM_PRICES WHERE "+
+            "PUR04_SUPPLIER_ITEM_PRICES.COMPANY_CODE_SYS01=PUR01_SUPPLIERS.COMPANY_CODE_SYS01 AND "+
+            "PUR04_SUPPLIER_ITEM_PRICES.PROGRESSIVE_REG04=PUR01_SUPPLIERS.PROGRESSIVE_REG04 AND "+
+            "PUR04_SUPPLIER_ITEM_PRICES.ITEM_CODE_ITM01=? AND "+
+            "PUR04_SUPPLIER_ITEM_PRICES.START_DATE<=? AND "+
+            "(PUR04_SUPPLIER_ITEM_PRICES.END_DATE>=? or PUR04_SUPPLIER_ITEM_PRICES.END_DATE is null) ) ";
         java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
 
         values.add(lookupPars.getLookupValidationParameters().get(ApplicationConsts.ITEM));

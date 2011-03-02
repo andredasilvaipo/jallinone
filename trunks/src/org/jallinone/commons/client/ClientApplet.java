@@ -596,7 +596,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
    */
   public String getAboutText() {
     return
-        "JAllInOne ERP/CRM Application ver. 2.7.2\n"+
+        "JAllInOne ERP/CRM Application ver. 2.7.3\n"+
         "\n"+
         "Copyright: Copyright (C) 2006-2011 Mauro Carniel\n"+
         "Author: Mauro Carniel\n"+
@@ -748,9 +748,11 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
 //    ClientSettings.LOOK_AND_FEEL_CLASS_NAME = "org.fife.plaf.VisualStudio2005.VisualStudio2005LookAndFeel";
 
     ClientSettings.GRID_PROFILE_MANAGER = new FileGridProfileManager();
+		ClientSettings.STORE_INTERNAL_FRAME_PROFILE = true;
     ClientSettings.ON_INVALID_CODE = LookupController.ON_INVALID_CODE_RESTORE_LAST_VALID_CODE;
     ClientSettings.FORCE_FOCUS_ON_LOOKUP_CONTROL = true;
     ClientSettings.ASK_BEFORE_CLOSE = true;
+		ClientSettings.SHOW_FILTER_SYMBOL = true;
     ClientSettings.SHOW_FILTERING_CONDITIONS_IN_EXPORT = true;
     ClientSettings.SHOW_SORTING_ORDER = true;
     ClientSettings.LOOKUP_AUTO_COMPLETITION_WAIT_TIME = 1500;
