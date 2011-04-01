@@ -1307,17 +1307,20 @@ public class ItemFrame extends InternalFrame {
     colValue.setEditableOnEdit(true);
     colValue.setEditableOnInsert(true);
     colValue.setColumnName("valueSAL02");
-    colPriceStartDate.setColumnDuplicable(true);
+//    colPriceStartDate.setColumnDuplicable(true);
     colPriceStartDate.setColumnFilterable(true);
     colPriceStartDate.setColumnName("startDateSAL02");
     colPriceStartDate.setEditableOnEdit(true);
     colPriceStartDate.setEditableOnInsert(true);
-    colPriceEndDate.setColumnDuplicable(true);
+//    colPriceEndDate.setColumnDuplicable(true);
     colPriceEndDate.setColumnFilterable(true);
     colPriceEndDate.setColumnName("endDateSAL02");
     colPriceEndDate.setEditableOnEdit(true);
     colPriceEndDate.setEditableOnInsert(true);
-		colPriceEndDate.setColumnRequired(false);
+    colPriceEndDate.setColumnRequired(false);
+
+		colPricelistCode.setColumnDuplicable(true);
+		colPricelistDescr.setColumnDuplicable(true);
 
     pricesGrid.getColumnContainer().add(colPricelistCode, null);
     pricesGrid.getColumnContainer().add(colPricelistDescr, null);

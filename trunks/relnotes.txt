@@ -1,4 +1,13 @@
 
+Release Notes 2.7.4
+-------------------
+
+Changed filter condition to prices validity interval for end date to "less than".
+Improved duplicate command in prices definition frames.
+Fixed problem when closing delivery notes.
+
+
+
 Release Notes 2.7.3
 -------------------
 

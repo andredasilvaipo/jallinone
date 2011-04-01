@@ -1165,7 +1165,7 @@ public class OutDeliveryNotesBean  implements OutDeliveryNotes {
       String sql3 =
           "update DOC01_SELLING set DOC_STATE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where "+
           "COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? and "+
-          " EXISTS(SELECT * FROM DOC02_SELLING_ITEMS WHERE "+
+          " EXISTS(SELECT DOC_TYPE FROM DOC02_SELLING_ITEMS WHERE "+
           " COMPANY_CODE_SYS01=? and DOC_TYPE=? and DOC_YEAR=? and DOC_NUMBER=? "+
           " GROUP BY COMPANY_CODE_SYS01,DOC_TYPE,DOC_YEAR,DOC_NUMBER "+
           " HAVING SUM(QTY-OUT_QTY)=0 )"; // used to close delivery note requests documents

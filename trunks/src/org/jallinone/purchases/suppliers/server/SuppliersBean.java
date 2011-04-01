@@ -325,7 +325,7 @@ public class SuppliersBean  implements Suppliers {
             "PUR04_SUPPLIER_ITEM_PRICES.PROGRESSIVE_REG04=PUR01_SUPPLIERS.PROGRESSIVE_REG04 AND "+
             "PUR04_SUPPLIER_ITEM_PRICES.ITEM_CODE_ITM01=? AND "+
             "PUR04_SUPPLIER_ITEM_PRICES.START_DATE<=? AND "+
-            "(PUR04_SUPPLIER_ITEM_PRICES.END_DATE>=? or PUR04_SUPPLIER_ITEM_PRICES.END_DATE is null) ) ";
+            "(PUR04_SUPPLIER_ITEM_PRICES.END_DATE>? or PUR04_SUPPLIER_ITEM_PRICES.END_DATE is null) ) ";
         java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
 
         values.add(gridPars.getOtherGridParams().get(ApplicationConsts.ITEM));
@@ -527,7 +527,7 @@ public class SuppliersBean  implements Suppliers {
             "PUR04_SUPPLIER_ITEM_PRICES.PROGRESSIVE_REG04=PUR01_SUPPLIERS.PROGRESSIVE_REG04 AND "+
             "PUR04_SUPPLIER_ITEM_PRICES.ITEM_CODE_ITM01=? AND "+
             "PUR04_SUPPLIER_ITEM_PRICES.START_DATE<=? AND "+
-            "(PUR04_SUPPLIER_ITEM_PRICES.END_DATE>=? or PUR04_SUPPLIER_ITEM_PRICES.END_DATE is null) ) ";
+            "(PUR04_SUPPLIER_ITEM_PRICES.END_DATE>? or PUR04_SUPPLIER_ITEM_PRICES.END_DATE is null) ) ";
         java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
 
         values.add(lookupPars.getLookupValidationParameters().get(ApplicationConsts.ITEM));

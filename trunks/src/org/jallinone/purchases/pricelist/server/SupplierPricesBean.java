@@ -187,7 +187,7 @@ public class SupplierPricesBean  implements SupplierPrices {
         filterDate = new java.sql.Date( ((java.util.Date)gridParams.getOtherGridParams().get(ApplicationConsts.DATE_FILTER)).getTime() );
         sql +=
 					" and PUR04_SUPPLIER_ITEM_PRICES.START_DATE<=? "+
-					" and (PUR04_SUPPLIER_ITEM_PRICES.END_DATE>=? or PUR04_SUPPLIER_ITEM_PRICES.END_DATE is null) ";
+					" and (PUR04_SUPPLIER_ITEM_PRICES.END_DATE>? or PUR04_SUPPLIER_ITEM_PRICES.END_DATE is null) ";
       }
 
 

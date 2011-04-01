@@ -150,6 +150,7 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
       splitDiv,
       true
   );
+  GenericButton buttonReset = new GenericButton();
 
 
 
@@ -371,13 +372,13 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
     colItemType.setColumnSortable(false);
     colItemType.setEditableOnInsert(true);
     colItemType.setSortVersus(org.openswing.swing.util.java.Consts.NO_SORTED);
-    codtemCode.setColumnDuplicable(false);
+    codtemCode.setColumnDuplicable(true);
     codtemCode.setColumnFilterable(true);
     codtemCode.setColumnName("itemCodeItm01SAL02");
     codtemCode.setEditableOnInsert(true);
     codtemCode.setSortVersus(org.openswing.swing.util.java.Consts.ASC_SORTED);
     codtemCode.setMaxCharacters(20);
-    colItemDescr.setColumnDuplicable(false);
+    colItemDescr.setColumnDuplicable(true);
     colItemDescr.setColumnName("itemDescriptionSYS10");
     colItemDescr.setPreferredWidth(250);
     colValue.setDecimals(5);
@@ -387,12 +388,12 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
     colValue.setEditableOnEdit(true);
     colValue.setEditableOnInsert(true);
     colValue.setColumnName("valueSAL02");
-    colStartDate.setColumnDuplicable(true);
+//    colStartDate.setColumnDuplicable(true);
     colStartDate.setColumnFilterable(true);
     colStartDate.setColumnName("startDateSAL02");
     colStartDate.setEditableOnEdit(true);
     colStartDate.setEditableOnInsert(true);
-    colEndDate.setColumnDuplicable(true);
+//    colEndDate.setColumnDuplicable(true);
     colEndDate.setColumnFilterable(true);
     colEndDate.setColumnName("endDateSAL02");
     colEndDate.setEditableOnEdit(true);
@@ -403,6 +404,9 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
     impAllButton.addActionListener(new PricelistFrame_impAllButton_actionAdapter(this));
 
     prices2Split.setOrientation(JSplitPane.VERTICAL_SPLIT);
+    buttonReset.setButtonBehavior(Consts.BUTTON_TEXT_ONLY);
+		buttonReset.setText("Remove Filter");
+    buttonReset.addActionListener(new PricelistFrame_buttonReset_actionAdapter(this));
     prices2Split.add(pricesPanel,JSplitPane.TOP);
     prices2Split.add(variantsPricesPanel,JSplitPane.BOTTOM);
     variantsPricesPanel.setServerGridMethodName("loadVariantsPrices");
@@ -411,11 +415,11 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
     split.add(pricelistsPanel,JSplitPane.TOP);
     split.add(prices2Split,JSplitPane.BOTTOM);
 
-    pricesPanel.add(labelDateFilter,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+    pricesPanel.add(labelDateFilter,   new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    pricesPanel.add(controlDate,    new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 80, 0));
-    pricesPanel.add(pricesButtonsPanel,    new GridBagConstraints(0, 1, 2, 1, 1.0, 0.0
+    pricesPanel.add(controlDate,     new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 80, 0));
+    pricesPanel.add(pricesButtonsPanel,     new GridBagConstraints(0, 1, 3, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     pricesButtonsPanel.add(insertButton1, null);
     pricesButtonsPanel.add(copyButton1, null);
@@ -425,7 +429,7 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
     pricesButtonsPanel.add(deleteButton1, null);
     pricesButtonsPanel.add(exportButton1, null);
     pricesButtonsPanel.add(navigatorBar1, null);
-    pricesPanel.add(pricesGrid,   new GridBagConstraints(0, 2, 2, 1, 1.0, 1.0
+    pricesPanel.add(pricesGrid,    new GridBagConstraints(0, 2, 3, 1, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
     pricesGrid.getColumnContainer().add(colItemType, null);
     pricesGrid.getColumnContainer().add(codtemCode, null);
@@ -449,8 +453,10 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
     pricesGrid.getColumnContainer().add(colValue, null);
     pricesGrid.getColumnContainer().add(colStartDate, null);
     pricesGrid.getColumnContainer().add(colEndDate, null);
+    pricesPanel.add(buttonReset,   new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
     split.setDividerLocation(200);
-    prices2Split.setDividerLocation(splitDiv);
+    prices2Split.setDividerLocation(550);
   }
 
 
@@ -573,6 +579,14 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
 
 		}
 
+  void buttonReset_actionPerformed(ActionEvent e) {
+		controlDate.setDate(null);
+		if (grid.getMode()!=Consts.READONLY)
+			return;
+		pricesGrid.getOtherGridParams().remove(ApplicationConsts.DATE_FILTER);
+		pricesGrid.reloadData();
+  }
+
 
 
 }
@@ -596,5 +610,16 @@ class PricelistFrame_impAllButton_actionAdapter implements java.awt.event.Action
   }
   public void actionPerformed(ActionEvent e) {
     adaptee.impAllButton_actionPerformed(e);
+  }
+}
+
+class PricelistFrame_buttonReset_actionAdapter implements java.awt.event.ActionListener {
+  PricelistFrame adaptee;
+
+  PricelistFrame_buttonReset_actionAdapter(PricelistFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.buttonReset_actionPerformed(e);
   }
 }
