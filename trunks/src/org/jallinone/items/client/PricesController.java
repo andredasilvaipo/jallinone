@@ -82,6 +82,17 @@ public class PricesController extends CompanyGridController {
 		}
 
 
+		/**
+		 * Callback method invoked when the user has clicked on the insert button
+		 * @param valueObject empty value object just created: the user can manage it to fill some attribute values
+		 */
+		public void createValueObject(ValueObject valueObject) throws Exception {
+			PriceVO vo = (PriceVO)valueObject;
+			vo.setStartDateSAL02(new java.sql.Date(System.currentTimeMillis()));
+			vo.setEndDateSAL02(null);
+		}
+
+
   /**
    * Validate dates.
    */
