@@ -750,9 +750,13 @@ public class CompanyParametersFrame extends InternalFrame {
     controlAfternoonEndHour.setRequired(true);
     controlAfternoonStartHour.setRequired(true);
     controlMorningStartHour.setAttributeName("afternoonStartHourSCH02");
+    controlMorningStartHour.setLinkLabel(labelMorningStartHour);
     controlMorningEndHour.setAttributeName("afternoonEndHourSCH02");
+    controlMorningEndHour.setLinkLabel(labelMorningEndHour);
     controlAfternoonEndHour.setAttributeName("morningEndHourSCH02");
+    controlAfternoonEndHour.setLinkLabel(labelAfternoonEndHour);
     controlAfternoonStartHour.setAttributeName("morningStartHourSCH02");
+    controlAfternoonStartHour.setLinkLabel(labelAfternoonStartHour);
     controlMorningStartHour.setDateType(Consts.TYPE_TIME);
     controlMorningEndHour.setDateType(Consts.TYPE_TIME);
     controlAfternoonEndHour.setDateType(Consts.TYPE_TIME);

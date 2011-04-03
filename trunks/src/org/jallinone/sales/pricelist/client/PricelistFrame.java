@@ -259,7 +259,7 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
       public void itemStateChanged(ItemEvent e) {
         if (e.getStateChange()==e.SELECTED) {
           PriceVO vo = (PriceVO)pricesGrid.getVOListTableModel().getObjectForRow(pricesGrid.getSelectedRow());
-          PricelistVO pricelistVO = (PricelistVO)grid.getVOListTableModel().getObjectForRow(0);
+					PricelistVO pricelistVO = (PricelistVO)getPricesGrid().getOtherGridParams().get(ApplicationConsts.PRICELIST);
           vo.setItemCodeItm01SAL02(null);
           int selIndex = ((JComboBox)e.getSource()).getSelectedIndex();
           Object selValue = d.getDomainPairList()[selIndex].getCode();

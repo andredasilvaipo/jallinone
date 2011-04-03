@@ -1099,6 +1099,8 @@ public class ParamsBean  implements Params {
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.SALE_SECTIONAL);
         pstmt.setString(3,vo.getSaleSectionalDOC01());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
@@ -1117,6 +1119,8 @@ public class ParamsBean  implements Params {
         pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
         pstmt.setString(2,ApplicationConsts.INITIAL_VALUE);
         pstmt.setString(3,vo.getInitialValueSYS21().toString());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
         pstmt.executeUpdate();
       }
 
@@ -1136,6 +1140,8 @@ public class ParamsBean  implements Params {
 				pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
 				pstmt.setString(2,ApplicationConsts.ROUNDING_COSTS_CODE);
 				pstmt.setString(3,vo.getRoundingCostsAccountCodeAcc02DOC19());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
 				pstmt.executeUpdate();
 			}
 

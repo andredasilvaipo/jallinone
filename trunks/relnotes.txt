@@ -1,4 +1,12 @@
 
+Release Notes 2.7.5
+-------------------
+
+Fixed problem when saving prices in sale pricelist.
+Fixed problem when saving company parameters.
+
+
+
 Release Notes 2.7.4
 -------------------
 

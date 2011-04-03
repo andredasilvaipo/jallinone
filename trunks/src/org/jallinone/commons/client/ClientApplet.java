@@ -596,7 +596,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
    */
   public String getAboutText() {
     return
-        "JAllInOne ERP/CRM Application ver. 2.7.4\n"+
+        "JAllInOne ERP/CRM Application ver. 2.7.5\n"+
         "\n"+
         "Copyright: Copyright (C) 2006-2011 Mauro Carniel\n"+
         "Author: Mauro Carniel\n"+
