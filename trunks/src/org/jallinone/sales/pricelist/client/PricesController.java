@@ -115,7 +115,7 @@ public class PricesController extends CompanyGridController implements ImportIte
     PriceVO vo = null;
     Response response = null;
 
-    PricelistVO pricelistVO = (PricelistVO)frame.getGrid().getVOListTableModel().getObjectForRow(frame.getGrid().getSelectedRow());
+		PricelistVO pricelistVO = (PricelistVO)frame.getPricesGrid().getOtherGridParams().get(ApplicationConsts.PRICELIST);
 
     for(int i=0;i<newValueObjects.size();i++) {
       vo = (PriceVO)newValueObjects.get(i);
@@ -171,7 +171,7 @@ public class PricesController extends CompanyGridController implements ImportIte
    * @param price price to set for each imte
    */
   public void saveItems(ArrayList items,Date startDate,Date endDate,BigDecimal price) {
-    PricelistVO pricelistVO = (PricelistVO)frame.getGrid().getVOListTableModel().getObjectForRow(frame.getGrid().getSelectedRow());
+		PricelistVO pricelistVO = (PricelistVO)frame.getPricesGrid().getOtherGridParams().get(ApplicationConsts.PRICELIST);
 
     ArrayList persistentObjects = new ArrayList();
     GridItemVO vo = null;

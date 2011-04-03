@@ -13,6 +13,7 @@ import javax.swing.*;
 import org.jallinone.commons.client.CompanyGridController;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.openswing.swing.client.GridControl;
+import org.openswing.swing.util.java.Consts;
 
 
 /**
@@ -69,7 +70,7 @@ public class PricelistController extends CompanyGridController {
     if (firstTime && !error) {
       firstTime = false;
       if (frame.getGrid().getVOListTableModel().getRowCount()>0)
-        doubleClick(0,frame.getGrid().getVOListTableModel().getObjectForRow(0));
+        rowChanged(0);
     }
   }
 
@@ -90,7 +91,7 @@ public class PricelistController extends CompanyGridController {
 
     Response res = ClientUtils.getData("insertPricelists",newValueObjects);
     if (!res.isError()) {
-      doubleClick(0,(ValueObject)((VOListResponse)res).getRows().get(0));
+      rowChanged(0);
     }
 
     oldCompanyCodeSys01SAL01 = null;
@@ -127,18 +128,25 @@ public class PricelistController extends CompanyGridController {
   }
 
 
-  /**
-   * Callback method invoked when the user has double clicked on the selected row of the grid.
-   * @param rowNumber selected row index
-   * @param persistentObject v.o. related to the selected row
-   */
-  public void doubleClick(int rowNumber,ValueObject persistentObject) {
-    PricelistVO vo = (PricelistVO)persistentObject;
-    frame.setPricesPanelEnabled(true);
-    frame.getPricesGrid().getOtherGridParams().put(ApplicationConsts.PRICELIST,vo);
-    frame.getTreeLevelDataLocator().getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01SAL01());
+		/**
+		 * Callback method invoked when the user has selected another row.
+		 * @param rowNumber selected row index
+		 */
+  public void rowChanged(int rowNumber) {
+//			if (frame.getGrid().getMode()!=Consts.READONLY)
+//				return;
 
-    frame.getPricesGrid().reloadData();
+			if (rowNumber==-1) {
+				frame.getPricesGrid().clearData();
+				frame.getVariantsPricesPanel().removeAll();
+			}
+
+		  PricelistVO vo = (PricelistVO)frame.getGrid().getVOListTableModel().getObjectForRow(frame.getGrid().getSelectedRow());
+			frame.setPricesPanelEnabled(true);
+			frame.getPricesGrid().getOtherGridParams().put(ApplicationConsts.PRICELIST,vo);
+			frame.getTreeLevelDataLocator().getTreeNodeParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01SAL01());
+
+			frame.getPricesGrid().reloadData();
   }
 
 
