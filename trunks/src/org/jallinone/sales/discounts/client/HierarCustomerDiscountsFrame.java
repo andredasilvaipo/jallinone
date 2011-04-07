@@ -324,5 +324,8 @@ public class HierarCustomerDiscountsFrame extends InternalFrame {
   public HierarTreePanel getHierarTreePanel() {
     return hierarTreePanel;
   }
+  public ComboBoxControl getComboBoxControl1() {
+    return comboBoxControl1;
+  }
 
 }

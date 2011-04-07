@@ -101,6 +101,17 @@ public class HierarCustomerDiscountsController extends CompanyGridController imp
   }
 
 
+		/**
+		 * Callback method invoked on pressing INSERT button.
+		 * @return <code>true</code> allows to go to INSERT mode, <code>false</code> the mode change is interrupted
+		 */
+		public boolean beforeInsertGrid(GridControl grid) {
+			if (frame.getComboBoxControl1().getSelectedIndex()==-1)
+				return false;
+			return true;
+		}
+
+
   /**
    * Method invoked when the user has clicked on save button and the grid is in INSERT mode.
    * @param rowNumbers row indexes related to the new rows to save
@@ -116,6 +127,7 @@ public class HierarCustomerDiscountsController extends CompanyGridController imp
     Response response = null;
     for(int i=0;i<newValueObjects.size();i++) {
       vo = (HierarCustomerDiscountVO)newValueObjects.get(i);
+			vo.setCompanyCodeSys01SAL03(levelVO.getCompanySys01HIE01());
       vo.setProgressiveHie01SAL10(levelVO.getProgressiveHIE01());
 
       response = validateDiscount(vo);
@@ -167,6 +179,8 @@ public class HierarCustomerDiscountsController extends CompanyGridController imp
    */
   public void leftClick(DefaultMutableTreeNode node) {
     CompanyHierarchyLevelVO vo = (CompanyHierarchyLevelVO)node.getUserObject();
+		if (vo==null)
+			return;
     CompanyHierarchyLevelVO root = (CompanyHierarchyLevelVO)((DefaultMutableTreeNode)node.getRoot()).getUserObject();
 		frame.getGrid().getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanySys01HIE01());
     frame.getGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02HIE01());
