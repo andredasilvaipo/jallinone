@@ -235,6 +235,8 @@ public class ItemController extends CompanyFormController {
 
     Response res = ClientUtils.getData("updateItem",new ValueObject[]{oldPersistentObject,vo});
     if (!res.isError()) {
+			frame.getItemSparePartsPanel().init(vo,false);
+
       if (parentFrame!=null) {
  //       parentFrame.getGrid().reloadData();
       }

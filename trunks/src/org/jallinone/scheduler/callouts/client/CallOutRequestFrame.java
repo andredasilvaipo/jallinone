@@ -670,9 +670,19 @@ public class CallOutRequestFrame extends InternalFrame implements CloseActivity 
    */
   public final void subjectChanged(String subjectTypeREG04) {
     cardLayout1.show(cardPanel,subjectTypeREG04);
-    if (controlSubjectType.getValue()==null ||
-        !controlSubjectType.getValue().equals(subjectTypeREG04)) {
-      controlSubjectType.setValue(subjectTypeREG04);
+
+   	if (organizationPanel.getInsertButton()!=null &&
+		    organizationPanel.getMode()!=Consts.READONLY &&
+				peoplePanel.getMode()!=organizationPanel.getMode())
+ 	    peoplePanel.setMode(organizationPanel.getMode());
+		 else if (peoplePanel.getInsertButton()!=null &&
+				 peoplePanel.getMode()!=Consts.READONLY &&
+				 peoplePanel.getMode()!=organizationPanel.getMode())
+				organizationPanel.setMode(peoplePanel.getMode());
+
+//    if (controlSubjectType.getValue()==null ||
+//        !controlSubjectType.getValue().equals(subjectTypeREG04)) {
+{      controlSubjectType.setValue(subjectTypeREG04);
 
       if (ApplicationConsts.SUBJECT_ORGANIZATION.equals(subjectTypeREG04)) {
         organizationPanel.setInsertButton(insertButton5);

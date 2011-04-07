@@ -153,23 +153,23 @@ public class TranslationsGridFrame extends InternalFrame {
          VariantNameVO vo = null;
          for(int i=0;i<variantsNames.size();i++) {
            vo = (VariantNameVO)variantsNames.get(i);
-           if (!vo.getDescriptionSYS10().equals(ApplicationConsts.JOLLY)) {
+           if (!vo.getDescriptionSYS10().equals(ApplicationConsts.JOLLY) && i==0) {
              d.addDomainPair(new TopicVO(langs,"ITM06_VARIANT_TYPES_1","PROGRESSIVE_SYS10",true,true),ClientSettings.getInstance().getResources().getResource("variant type")+" "+vo.getDescriptionSYS10());
              d.addDomainPair(new TopicVO(langs,"ITM11_VARIANTS_1","PROGRESSIVE_SYS10",true,true),ClientSettings.getInstance().getResources().getResource("variant")+" "+vo.getDescriptionSYS10());
            }
-           else if (!vo.getDescriptionSYS10().equals(ApplicationConsts.JOLLY)) {
+           else if (!vo.getDescriptionSYS10().equals(ApplicationConsts.JOLLY) && i==1) {
              d.addDomainPair(new TopicVO(langs,"ITM07_VARIANT_TYPES_2","PROGRESSIVE_SYS10",true,true),ClientSettings.getInstance().getResources().getResource("variant type")+" "+vo.getDescriptionSYS10());
              d.addDomainPair(new TopicVO(langs,"ITM12_VARIANTS_2","PROGRESSIVE_SYS10",true,true),ClientSettings.getInstance().getResources().getResource("variant")+" "+vo.getDescriptionSYS10());
            }
-           else if (!vo.getDescriptionSYS10().equals(ApplicationConsts.JOLLY)) {
+           else if (!vo.getDescriptionSYS10().equals(ApplicationConsts.JOLLY) && i==2) {
              d.addDomainPair(new TopicVO(langs,"ITM08_VARIANT_TYPES_3","PROGRESSIVE_SYS10",true,true),ClientSettings.getInstance().getResources().getResource("variant type")+" "+vo.getDescriptionSYS10());
              d.addDomainPair(new TopicVO(langs,"ITM13_VARIANTS_3","PROGRESSIVE_SYS10",true,true),ClientSettings.getInstance().getResources().getResource("variant")+" "+vo.getDescriptionSYS10());
            }
-           else if (!vo.getDescriptionSYS10().equals(ApplicationConsts.JOLLY)) {
+           else if (!vo.getDescriptionSYS10().equals(ApplicationConsts.JOLLY) && i==3) {
              d.addDomainPair(new TopicVO(langs,"ITM09_VARIANT_TYPES_4","PROGRESSIVE_SYS10",true,true),ClientSettings.getInstance().getResources().getResource("variant type")+" "+vo.getDescriptionSYS10());
              d.addDomainPair(new TopicVO(langs,"ITM14_VARIANTS_4","PROGRESSIVE_SYS10",true,true),ClientSettings.getInstance().getResources().getResource("variant")+" "+vo.getDescriptionSYS10());
            }
-           else if (!vo.getDescriptionSYS10().equals(ApplicationConsts.JOLLY)) {
+           else if (!vo.getDescriptionSYS10().equals(ApplicationConsts.JOLLY) && i==4) {
              d.addDomainPair(new TopicVO(langs,"ITM10_VARIANT_TYPES_5","PROGRESSIVE_SYS10",true,true),ClientSettings.getInstance().getResources().getResource("variant type")+" "+vo.getDescriptionSYS10());
              d.addDomainPair(new TopicVO(langs,"ITM15_VARIANTS_5","PROGRESSIVE_SYS10",true,true),ClientSettings.getInstance().getResources().getResource("variant")+" "+vo.getDescriptionSYS10());
            }

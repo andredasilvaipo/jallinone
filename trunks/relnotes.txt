@@ -1,4 +1,13 @@
 
+Release Notes 2.7.6
+-------------------
+
+Fixed problem in translations window, related to variants list.
+Fixed problem on inserting sale discounts for customers hierarchy or items hierarchy.
+Fixed problem when creating new callout requests on changing from organization to private subject type.
+
+
+
 Release Notes 2.7.5
 -------------------
 
