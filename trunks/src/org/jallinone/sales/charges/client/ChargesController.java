@@ -15,7 +15,9 @@ import org.jallinone.commons.client.ApplicationClientFacade;
 import org.jallinone.system.java.ButtonCompanyAuthorizations;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.jallinone.commons.client.CompanyGridController;
-
+import org.jallinone.subjects.java.OrganizationVO;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -55,6 +57,15 @@ public class ChargesController extends CompanyGridController {
     gridFrame = new ChargesGridFrame(this);
     MDIFrame.add(gridFrame,true);
   }
+
+
+	/**
+	 * Callback method invoked when the user has clicked on the insert button
+	 * @param valueObject empty value object just created: the user can manage it to fill some attribute values
+	 */
+	public void createValueObject(ValueObject valueObject) throws Exception {
+	}
+
 
 
   /**
@@ -147,6 +158,18 @@ public class ChargesController extends CompanyGridController {
    */
   public boolean validateCell(int rowNumber,String attributeName,Object oldValue,Object newValue) {
     ChargeVO vo = (ChargeVO)gridFrame.getGrid().getVOListTableModel().getObjectForRow(rowNumber);
+
+		if (attributeName.equals("companyCodeSys01SAL06") && newValue!=null) {
+			vo.setCompanyCodeSys01SAL06(newValue.toString());
+			Response res =	ClientUtils.getData("loadCompany",vo.getCompanyCodeSys01SAL06());
+			if (!res.isError()) {
+				OrganizationVO compVO = (OrganizationVO)((VOResponse)res).getVo();
+				if (compVO!=null && compVO.getCurrencyCodeReg03()!=null && !compVO.getCurrencyCodeReg03().equals("")) {
+					vo.setCurrencyCodeReg03SAL06(compVO.getCurrencyCodeReg03());
+					gridFrame.getColCurrencyCod().forceValidate(gridFrame.getGrid().getSelectedRow()==-1?0:gridFrame.getGrid().getSelectedRow());
+				}
+			}
+		}
 
     // set vat data to null if the user has define a charge expressed as a value...
     if (attributeName.equals("percSAL06") && newValue!=null) {

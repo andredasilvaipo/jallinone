@@ -34,6 +34,7 @@ import java.util.Collection;
 import org.jallinone.variants.client.ProductVariantsPanel;
 import org.jallinone.variants.client.ProductVariantsController;
 import org.openswing.swing.form.client.Form;
+import org.jallinone.subjects.java.OrganizationVO;
 
 
 /**
@@ -106,7 +107,7 @@ public class SupplierPricelistPanel extends JPanel implements DateChangedListene
   ComboColumn colItemType = new ComboColumn();
   CodLookupColumn codtemCode = new CodLookupColumn();
   TextColumn colItemDescr = new TextColumn();
-  DecimalColumn colValue = new DecimalColumn();
+  CurrencyColumn colValue = new CurrencyColumn();
   DateColumn colStartDate = new DateColumn();
   DateColumn colEndDate = new DateColumn();
 
@@ -155,6 +156,8 @@ public class SupplierPricelistPanel extends JPanel implements DateChangedListene
       true
   );
 
+	private OrganizationVO compVO = null;
+	private ItemPricesGridCurrencySettings currSettings = new ItemPricesGridCurrencySettings();
 
 
   public SupplierPricelistPanel() {
@@ -179,6 +182,8 @@ public class SupplierPricelistPanel extends JPanel implements DateChangedListene
       currencyController.setFrameTitle("currencies");
       currencyController.setLookupValueObjectClassName("org.jallinone.registers.currency.java.CurrencyVO");
       currencyController.addLookup2ParentLink("currencyCodeREG03", "currencyCodeReg03PUR03");
+			currencyController.addLookup2ParentLink("decimalsREG03", "decimalsREG03");
+			currencyController.addLookup2ParentLink("currencySymbolREG03", "currencySymbolREG03");
       currencyController.setAllColumnVisible(false);
       currencyController.setVisibleColumn("currencyCodeREG03", true);
       currencyController.setVisibleColumn("currencySymbolREG03", true);
@@ -243,6 +248,14 @@ public class SupplierPricelistPanel extends JPanel implements DateChangedListene
 
   public final void init(DetailSupplierVO supplierVO) {
     this.supplierVO = supplierVO;
+
+		if (supplierVO != null) {
+			Response res =	ClientUtils.getData("loadCompany",supplierVO.getCompanyCodeSys01REG04());
+			if (!res.isError()) {
+				compVO = (OrganizationVO)((VOResponse)res).getVo();
+			}
+		}
+
   }
 
 
@@ -380,7 +393,9 @@ public class SupplierPricelistPanel extends JPanel implements DateChangedListene
     colItemDescr.setColumnDuplicable(false);
     colItemDescr.setColumnName("itemDescriptionSYS10");
     colItemDescr.setPreferredWidth(250);
-    colValue.setDecimals(5);
+//    colValue.setDecimals(5);
+		colValue.setDynamicSettings(currSettings);
+
     colValue.setMinValue(0.0);
     colValue.setColumnDuplicable(true);
     colValue.setColumnFilterable(true);
@@ -554,7 +569,50 @@ public class SupplierPricelistPanel extends JPanel implements DateChangedListene
     exportButton1.setEnabled(enabled);
     impAllPricesButton.setEnabled(enabled);
   }
+  public OrganizationVO getCompVO() {
+    return compVO;
+  }
+  public CodLookupColumn getColCurrencyCode() {
+    return colCurrencyCode;
+  }
 
+
+
+		class ItemPricesGridCurrencySettings implements CurrencyColumnSettings {
+
+			public double getMaxValue(int row) {
+				return Double.MAX_VALUE;
+			}
+
+			public double getMinValue(int row) {
+				return 0.0;
+			}
+
+
+			public boolean isGrouping(int row) {
+				return true;
+			}
+
+
+			public int getDecimals(int row) {
+				SupplierPricelistVO vo = (SupplierPricelistVO)grid.getVOListTableModel().getObjectForRow(grid.getSelectedRow());
+				if (vo!=null && vo.getDecimalsREG03()!=null)
+					return vo.getDecimalsREG03().intValue();
+				else
+					return 0;
+			}
+
+
+			public String getCurrencySymbol(int row) {
+				SupplierPricelistVO vo = (SupplierPricelistVO)grid.getVOListTableModel().getObjectForRow(grid.getSelectedRow());
+				if (vo!=null && vo.getCurrencySymbolREG03()!=null)
+					return vo.getCurrencySymbolREG03();
+				else
+				return "E";
+			}
+
+
+		}
 
 
 }

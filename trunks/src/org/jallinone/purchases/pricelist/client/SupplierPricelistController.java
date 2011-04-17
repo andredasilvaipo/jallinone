@@ -62,6 +62,18 @@ public class SupplierPricelistController extends CompanyGridController {
   }
 
 
+		/**
+		 * Callback method invoked when the user has clicked on the insert button
+		 * @param valueObject empty value object just created: the user can manage it to fill some attribute values
+		 */
+		public void createValueObject(ValueObject valueObject) throws Exception {
+			SupplierPricelistVO vo = (SupplierPricelistVO)valueObject;
+			if (panel.getCompVO()!=null && panel.getCompVO().getCurrencyCodeReg03()!=null && !panel.getCompVO().getCurrencyCodeReg03().equals("")) {
+				vo.setCurrencyCodeReg03PUR03(panel.getCompVO().getCurrencyCodeReg03());
+				panel.getColCurrencyCode().forceValidate(panel.getGrid().getSelectedRow()==-1?0:panel.getGrid().getSelectedRow());
+			}
+		}
+
   /**
    * Callback method invoked when the data loading is completed.
    * @param error <code>true</code> if data loading has terminated with errors, <code>false</code> otherwise

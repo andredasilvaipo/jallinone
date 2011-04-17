@@ -68,6 +68,17 @@ public class DiscountsController extends CompanyGridController {
     ItemDiscountVO vo = (ItemDiscountVO)valueObject;
     vo.setMinQtySAL03(new BigDecimal(1));
     vo.setMultipleQtySAL03(Boolean.FALSE);
+
+	  DetailItemVO itemVO = (DetailItemVO)frame.getFormPanel().getVOModel().getValueObject();
+		itemVO.setCompanyCodeSys01ITM01(itemVO.getCompanyCodeSys01());
+		Response res =	ClientUtils.getData("loadCompany",itemVO.getCompanyCodeSys01());
+		if (!res.isError()) {
+			OrganizationVO compVO = (OrganizationVO)((VOResponse)res).getVo();
+			if (compVO.getCurrencyCodeReg03()!=null && !compVO.getCurrencyCodeReg03().equals("")) {
+				vo.setCurrencyCodeReg03SAL03(compVO.getCurrencyCodeReg03());
+				frame.getColCurrencyCode().forceValidate(frame.getDiscountsGrid().getSelectedRow()==-1?0:frame.getDiscountsGrid().getSelectedRow());
+			}
+		}
   }
 
 

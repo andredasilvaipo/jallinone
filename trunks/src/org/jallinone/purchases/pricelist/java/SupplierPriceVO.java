@@ -54,6 +54,9 @@ public class SupplierPriceVO extends BaseValueObject implements VariantsItemDesc
   private Boolean useVariant4ITM01;
   private Boolean useVariant5ITM01;
 
+	private String currencySymbolREG03;
+	private BigDecimal decimalsREG03;
+
 
   public SupplierPriceVO() {
   }
@@ -191,6 +194,18 @@ public class SupplierPriceVO extends BaseValueObject implements VariantsItemDesc
   }
   public BigDecimal getDecimalsREG02() {
     return new BigDecimal(0); // not used;
+  }
+  public String getCurrencySymbolREG03() {
+    return currencySymbolREG03;
+  }
+  public BigDecimal getDecimalsREG03() {
+    return decimalsREG03;
+  }
+  public void setDecimalsREG03(BigDecimal decimalsREG03) {
+    this.decimalsREG03 = decimalsREG03;
+  }
+  public void setCurrencySymbolREG03(String currencySymbolREG03) {
+    this.currencySymbolREG03 = currencySymbolREG03;
   }
 
 

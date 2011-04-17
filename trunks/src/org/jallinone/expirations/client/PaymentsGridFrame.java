@@ -38,6 +38,9 @@ import org.jallinone.expirations.java.PaymentDistributionVO;
 import org.openswing.swing.message.send.java.GridParams;
 import org.jallinone.registers.currency.java.CurrencyConvVO;
 import org.openswing.swing.message.receive.java.VOListResponse;
+import org.jallinone.system.java.CompanyParametersVO;
+import org.jallinone.system.companies.java.CompanyVO;
+import org.jallinone.subjects.java.OrganizationVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -157,6 +160,7 @@ public class PaymentsGridFrame extends InternalFrame  {
   TitledBorder titledBorder1;
   TitledBorder titledBorder2;
   private java.util.List currConvs = new ArrayList();
+	private OrganizationVO compVO = null;
 
 
 	public PaymentsGridFrame(
@@ -297,6 +301,9 @@ public class PaymentsGridFrame extends InternalFrame  {
 			expController.setHeaderColumnName("paymentTypeCodeReg11DOC19", "paymentTypeCodeREG11");
 			expController.setHeaderColumnName("paymentDescriptionSYS10", "paymentTypeDescription");
 
+			expController.setColumnDynamicSettings("valueDOC19",payCurrencySettings);
+			expController.setColumnDynamicSettings("alreadyPayedDOC19",payCurrencySettings);
+
 			expController.setPreferredWidthColumn("descriptionDOC19",250);
 			expController.setPreferredWidthColumn("paymentDescriptionSYS10",160);
 			expController.setFramePreferedSize(new Dimension(750,400));
@@ -403,6 +410,7 @@ public class PaymentsGridFrame extends InternalFrame  {
 						buttonSearch.setEnabled(false);
 						payGrid.clearData();
 						payForm.setMode(Consts.READONLY);
+						compVO = null;
 
 	          insertButton1.setEnabled(false);
 						saveButton.setEnabled(false);
@@ -422,6 +430,12 @@ public class PaymentsGridFrame extends InternalFrame  {
 						payGrid.clearData();
 						payForm.setMode(Consts.READONLY);
 						grid.clearData();
+
+            Response res =	ClientUtils.getData("loadCompany",vo.getCompanyCodeSys01REG04());
+						if (!res.isError())
+							compVO = (OrganizationVO)((VOResponse)res).getVo();
+						else
+							compVO = null;
 
 						insertButton1.setEnabled(true);
 						saveButton.setEnabled(false);
@@ -496,6 +510,12 @@ public class PaymentsGridFrame extends InternalFrame  {
 						buttonSearch.setEnabled(true);
 						payGrid.clearData();
 						payForm.setMode(Consts.READONLY);
+
+						Response res =	ClientUtils.getData("loadCompany",vo.getCompanyCodeSys01REG04());
+						if (!res.isError())
+							compVO = (OrganizationVO)((VOResponse)res).getVo();
+						else
+							compVO = null;
 
 						insertButton1.setEnabled(true);
 						reloadButton.setEnabled(true);
@@ -903,12 +923,12 @@ public class PaymentsGridFrame extends InternalFrame  {
     payGrid.getColumnContainer().add(colBankDescr, null);
     this.getContentPane().add(filterPanel, BorderLayout.NORTH);
 
+		grid.getColumnContainer().add(colSelExp, null);
 		grid.getColumnContainer().add(colPayedValue, null);
     grid.getColumnContainer().add(colPayed, null);
 		grid.getColumnContainer().add(colAlreadyPayed, null);
 
 		grid.getColumnContainer().add(colValue, null);
-    grid.getColumnContainer().add(colSelExp, null);
 
 
 		grid.getColumnContainer().add(colDescr, null);
@@ -1100,6 +1120,12 @@ public class PaymentsGridFrame extends InternalFrame  {
 
   void controlValue_focusLost(FocusEvent e) {
 		maybeAllowInsertInGrid();
+  }
+  public CodLookupControl getControlCurrency() {
+    return controlCurrency;
+  }
+  public OrganizationVO getCompVO() {
+    return compVO;
   }
 
 

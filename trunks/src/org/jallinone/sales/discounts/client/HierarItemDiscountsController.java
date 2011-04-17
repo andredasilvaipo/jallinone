@@ -84,6 +84,18 @@ public class HierarItemDiscountsController extends CompanyGridController impleme
     HierarItemDiscountVO vo = (HierarItemDiscountVO)valueObject;
     vo.setMinQtySAL03(new BigDecimal(1));
     vo.setMultipleQtySAL03(Boolean.FALSE);
+
+		DefaultMutableTreeNode node = frame.getHierarTreePanel().getSelectedNode();
+		CompanyHierarchyLevelVO levelVO = (CompanyHierarchyLevelVO)node.getUserObject();
+		vo.setCompanyCodeSys01SAL03(levelVO.getCompanySys01HIE01());
+		Response res =	ClientUtils.getData("loadCompany",vo.getCompanyCodeSys01SAL03());
+		if (!res.isError()) {
+			OrganizationVO compVO = (OrganizationVO)((VOResponse)res).getVo();
+			if (compVO.getCurrencyCodeReg03()!=null && !compVO.getCurrencyCodeReg03().equals("")) {
+				vo.setCurrencyCodeReg03SAL03(compVO.getCurrencyCodeReg03());
+				frame.getColCurrencyCode().forceValidate(frame.getGrid().getSelectedRow()==-1?0:frame.getGrid().getSelectedRow());
+			}
+		}
   }
 
 

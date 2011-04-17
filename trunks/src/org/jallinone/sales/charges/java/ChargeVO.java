@@ -1,6 +1,7 @@
 package org.jallinone.sales.charges.java;
 
 import org.jallinone.system.customizations.java.BaseValueObject;
+import java.math.BigDecimal;
 
 
 /**
@@ -46,6 +47,8 @@ public class ChargeVO extends BaseValueObject {
   private String vatDescriptionSYS10;
   private java.math.BigDecimal vatValueREG01;
   private java.math.BigDecimal vatDeductibleREG01;
+	private String currencySymbolREG03;
+	private BigDecimal decimalsREG03;
 
 
   public ChargeVO() {
@@ -123,6 +126,18 @@ public class ChargeVO extends BaseValueObject {
   }
   public void setVatDeductibleREG01(java.math.BigDecimal vatDeductibleREG01) {
     this.vatDeductibleREG01 = vatDeductibleREG01;
+  }
+  public String getCurrencySymbolREG03() {
+    return currencySymbolREG03;
+  }
+  public BigDecimal getDecimalsREG03() {
+    return decimalsREG03;
+  }
+  public void setCurrencySymbolREG03(String currencySymbolREG03) {
+    this.currencySymbolREG03 = currencySymbolREG03;
+  }
+  public void setDecimalsREG03(BigDecimal decimalsREG03) {
+    this.decimalsREG03 = decimalsREG03;
   }
 
 }

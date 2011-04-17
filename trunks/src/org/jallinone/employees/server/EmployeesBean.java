@@ -32,6 +32,7 @@ import org.openswing.swing.message.send.java.GridParams;
 import org.openswing.swing.message.send.java.LookupValidationParams;
 import org.openswing.swing.server.QueryUtil;
 import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.commons.java.DateUtils;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -322,10 +323,10 @@ public class EmployeesBean  implements Employees {
         vo.setCompanyCodeSys01SCH02((String)gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01));
         vo.setProgressiveReg04SCH02((BigDecimal)gridParams.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_REG04));
         vo.setDayOfWeekSCH02(String.valueOf(Calendar.SUNDAY));
-        vo.setMorningStartHourSCH02(rset.getTimestamp(1));
-        vo.setMorningEndHourSCH02(rset.getTimestamp(2));
-        vo.setAfternoonStartHourSCH02(rset.getTimestamp(3));
-        vo.setAfternoonEndHourSCH02(rset.getTimestamp(4));
+        vo.setMorningStartHourSCH02(DateUtils.removeDate(rset.getTimestamp(1)));
+        vo.setMorningEndHourSCH02(DateUtils.removeDate(rset.getTimestamp(2)));
+        vo.setAfternoonStartHourSCH02(DateUtils.removeDate(rset.getTimestamp(3)));
+        vo.setAfternoonEndHourSCH02(DateUtils.removeDate(rset.getTimestamp(4)));
         list.add(vo);
       }
       rset.close();
@@ -339,10 +340,10 @@ public class EmployeesBean  implements Employees {
         vo.setCompanyCodeSys01SCH02((String)gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01));
         vo.setProgressiveReg04SCH02((BigDecimal)gridParams.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_REG04));
         vo.setDayOfWeekSCH02(String.valueOf(Calendar.MONDAY));
-        vo.setMorningStartHourSCH02(rset.getTimestamp(1));
-        vo.setMorningEndHourSCH02(rset.getTimestamp(2));
-        vo.setAfternoonStartHourSCH02(rset.getTimestamp(3));
-        vo.setAfternoonEndHourSCH02(rset.getTimestamp(4));
+        vo.setMorningStartHourSCH02(DateUtils.removeDate(rset.getTimestamp(1)));
+        vo.setMorningEndHourSCH02(DateUtils.removeDate(rset.getTimestamp(2)));
+        vo.setAfternoonStartHourSCH02(DateUtils.removeDate(rset.getTimestamp(3)));
+        vo.setAfternoonEndHourSCH02(DateUtils.removeDate(rset.getTimestamp(4)));
         list.add(vo);
       }
       rset.close();
@@ -356,10 +357,10 @@ public class EmployeesBean  implements Employees {
         vo.setCompanyCodeSys01SCH02((String)gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01));
         vo.setProgressiveReg04SCH02((BigDecimal)gridParams.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_REG04));
         vo.setDayOfWeekSCH02(String.valueOf(Calendar.TUESDAY));
-        vo.setMorningStartHourSCH02(rset.getTimestamp(1));
-        vo.setMorningEndHourSCH02(rset.getTimestamp(2));
-        vo.setAfternoonStartHourSCH02(rset.getTimestamp(3));
-        vo.setAfternoonEndHourSCH02(rset.getTimestamp(4));
+        vo.setMorningStartHourSCH02(DateUtils.removeDate(rset.getTimestamp(1)));
+        vo.setMorningEndHourSCH02(DateUtils.removeDate(rset.getTimestamp(2)));
+        vo.setAfternoonStartHourSCH02(DateUtils.removeDate(rset.getTimestamp(3)));
+        vo.setAfternoonEndHourSCH02(DateUtils.removeDate(rset.getTimestamp(4)));
         list.add(vo);
       }
       rset.close();
@@ -373,10 +374,10 @@ public class EmployeesBean  implements Employees {
         vo.setCompanyCodeSys01SCH02((String)gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01));
         vo.setProgressiveReg04SCH02((BigDecimal)gridParams.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_REG04));
         vo.setDayOfWeekSCH02(String.valueOf(Calendar.WEDNESDAY));
-        vo.setMorningStartHourSCH02(rset.getTimestamp(1));
-        vo.setMorningEndHourSCH02(rset.getTimestamp(2));
-        vo.setAfternoonStartHourSCH02(rset.getTimestamp(3));
-        vo.setAfternoonEndHourSCH02(rset.getTimestamp(4));
+        vo.setMorningStartHourSCH02(DateUtils.removeDate(rset.getTimestamp(1)));
+        vo.setMorningEndHourSCH02(DateUtils.removeDate(rset.getTimestamp(2)));
+        vo.setAfternoonStartHourSCH02(DateUtils.removeDate(rset.getTimestamp(3)));
+        vo.setAfternoonEndHourSCH02(DateUtils.removeDate(rset.getTimestamp(4)));
         list.add(vo);
       }
       rset.close();
@@ -390,10 +391,10 @@ public class EmployeesBean  implements Employees {
         vo.setCompanyCodeSys01SCH02((String)gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01));
         vo.setProgressiveReg04SCH02((BigDecimal)gridParams.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_REG04));
         vo.setDayOfWeekSCH02(String.valueOf(Calendar.THURSDAY));
-        vo.setMorningStartHourSCH02(rset.getTimestamp(1));
-        vo.setMorningEndHourSCH02(rset.getTimestamp(2));
-        vo.setAfternoonStartHourSCH02(rset.getTimestamp(3));
-        vo.setAfternoonEndHourSCH02(rset.getTimestamp(4));
+        vo.setMorningStartHourSCH02(DateUtils.removeDate(rset.getTimestamp(1)));
+        vo.setMorningEndHourSCH02(DateUtils.removeDate(rset.getTimestamp(2)));
+        vo.setAfternoonStartHourSCH02(DateUtils.removeDate(rset.getTimestamp(3)));
+        vo.setAfternoonEndHourSCH02(DateUtils.removeDate(rset.getTimestamp(4)));
         list.add(vo);
       }
       rset.close();
@@ -407,10 +408,10 @@ public class EmployeesBean  implements Employees {
         vo.setCompanyCodeSys01SCH02((String)gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01));
         vo.setProgressiveReg04SCH02((BigDecimal)gridParams.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_REG04));
         vo.setDayOfWeekSCH02(String.valueOf(Calendar.FRIDAY));
-        vo.setMorningStartHourSCH02(rset.getTimestamp(1));
-        vo.setMorningEndHourSCH02(rset.getTimestamp(2));
-        vo.setAfternoonStartHourSCH02(rset.getTimestamp(3));
-        vo.setAfternoonEndHourSCH02(rset.getTimestamp(4));
+        vo.setMorningStartHourSCH02(DateUtils.removeDate(rset.getTimestamp(1)));
+        vo.setMorningEndHourSCH02(DateUtils.removeDate(rset.getTimestamp(2)));
+        vo.setAfternoonStartHourSCH02(DateUtils.removeDate(rset.getTimestamp(3)));
+        vo.setAfternoonEndHourSCH02(DateUtils.removeDate(rset.getTimestamp(4)));
         list.add(vo);
       }
       rset.close();
@@ -424,10 +425,10 @@ public class EmployeesBean  implements Employees {
         vo.setCompanyCodeSys01SCH02((String)gridParams.getOtherGridParams().get(ApplicationConsts.COMPANY_CODE_SYS01));
         vo.setProgressiveReg04SCH02((BigDecimal)gridParams.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_REG04));
         vo.setDayOfWeekSCH02(String.valueOf(Calendar.SATURDAY));
-        vo.setMorningStartHourSCH02(rset.getTimestamp(1));
-        vo.setMorningEndHourSCH02(rset.getTimestamp(2));
-        vo.setAfternoonStartHourSCH02(rset.getTimestamp(3));
-        vo.setAfternoonEndHourSCH02(rset.getTimestamp(4));
+        vo.setMorningStartHourSCH02(DateUtils.removeDate(rset.getTimestamp(1)));
+        vo.setMorningEndHourSCH02(DateUtils.removeDate(rset.getTimestamp(2)));
+        vo.setAfternoonStartHourSCH02(DateUtils.removeDate(rset.getTimestamp(3)));
+        vo.setAfternoonEndHourSCH02(DateUtils.removeDate(rset.getTimestamp(4)));
         list.add(vo);
       }
       rset.close();
@@ -647,51 +648,77 @@ public class EmployeesBean  implements Employees {
    * Business logic to execute.
    */
   public VOListResponse updateEmployeeCalendars(ArrayList oldList,ArrayList newList,String serverLanguageId,String username) throws Throwable {
-
+		PreparedStatement pstmt = null;
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
      EmployeeCalendarVO oldVO = null;
       EmployeeCalendarVO newVO = null;
 
-
-      HashSet pkAttrs = new HashSet();
-      pkAttrs.add("companyCodeSys01SCH02");
-      pkAttrs.add("progressiveReg04SCH02");
-      pkAttrs.add("dayOfWeekSCH02");
-
-      HashMap attribute2dbField = new HashMap();
-      attribute2dbField.put("companyCodeSys01SCH02","COMPANY_CODE_SYS01");
-      attribute2dbField.put("progressiveReg04SCH02","PROGRESSIVE_REG04");
-      attribute2dbField.put("dayOfWeekSCH02","DAY_OF_WEEK");
-      attribute2dbField.put("morningStartHourSCH02","MORNING_START_HOUR");
-      attribute2dbField.put("morningEndHourSCH02","MORNING_END_HOUR");
-      attribute2dbField.put("afternoonStartHourSCH02","AFTERNOON_START_HOUR");
-      attribute2dbField.put("afternoonEndHourSCH02","AFTERNOON_END_HOUR");
-
-      Response res = null;
+			pstmt = conn.prepareStatement(
+			  "update SCH02_EMPLOYEE_CALENDAR set "+
+				"MORNING_START_HOUR=?,MORNING_END_HOUR=?,AFTERNOON_START_HOUR=?,AFTERNOON_END_HOUR=?, "+
+				"LAST_UPDATE_USER=?,LAST_UPDATE_DATE=? "+
+				"where "+
+				"COMPANY_CODE_SYS01=? and PROGRESSIVE_REG04=? and DAY_OF_WEEK=? "
+			);
       for(int i=0;i<newList.size();i++) {
-        oldVO = (EmployeeCalendarVO)oldList.get(i);
         newVO = (EmployeeCalendarVO)newList.get(i);
 
-        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
-            conn,
-            new UserSessionParameters(username),
-            pkAttrs,
-            oldVO,
-            newVO,
-            "SCH02_EMPLOYEE_CALENDAR",
-            attribute2dbField,
-            "Y",
-            "N",
-            null,
-            true
-        );
-        if (res.isError()) {
-          throw new Exception(res.getErrorMessage());
-        }
+				pstmt.setTimestamp(1,DateUtils.setTime(newVO.getMorningStartHourSCH02()));
+				pstmt.setTimestamp(2,DateUtils.setTime(newVO.getMorningEndHourSCH02()));
+				pstmt.setTimestamp(3,DateUtils.setTime(newVO.getAfternoonStartHourSCH02()));
+				pstmt.setTimestamp(4,DateUtils.setTime(newVO.getAfternoonEndHourSCH02()));
+				pstmt.setString(5,username);
+				pstmt.setTimestamp(6,new Timestamp(System.currentTimeMillis()));
+				pstmt.setString(7,newVO.getCompanyCodeSys01SCH02());
+				pstmt.setBigDecimal(8,newVO.getProgressiveReg04SCH02());
+				pstmt.setString(9,newVO.getDayOfWeekSCH02());
 
+				pstmt.execute();
       }
+//      HashSet pkAttrs = new HashSet();
+//      pkAttrs.add("companyCodeSys01SCH02");
+//      pkAttrs.add("progressiveReg04SCH02");
+//      pkAttrs.add("dayOfWeekSCH02");
+//
+//      HashMap attribute2dbField = new HashMap();
+//      attribute2dbField.put("companyCodeSys01SCH02","COMPANY_CODE_SYS01");
+//      attribute2dbField.put("progressiveReg04SCH02","PROGRESSIVE_REG04");
+//      attribute2dbField.put("dayOfWeekSCH02","DAY_OF_WEEK");
+//      attribute2dbField.put("morningStartHourSCH02","MORNING_START_HOUR");
+//      attribute2dbField.put("morningEndHourSCH02","MORNING_END_HOUR");
+//      attribute2dbField.put("afternoonStartHourSCH02","AFTERNOON_START_HOUR");
+//      attribute2dbField.put("afternoonEndHourSCH02","AFTERNOON_END_HOUR");
+//
+//      Response res = null;
+//      for(int i=0;i<newList.size();i++) {
+//        oldVO = (EmployeeCalendarVO)oldList.get(i);
+//        newVO = (EmployeeCalendarVO)newList.get(i);
+//
+//				newVO.setMorningStartHourSCH02(DateUtils.setTime(newVO.getMorningStartHourSCH02()));
+//				newVO.setMorningEndHourSCH02(DateUtils.setTime(newVO.getMorningEndHourSCH02()));
+//				newVO.setAfternoonStartHourSCH02(DateUtils.setTime(newVO.getAfternoonStartHourSCH02()));
+//				newVO.setAfternoonEndHourSCH02(DateUtils.setTime(newVO.getAfternoonEndHourSCH02()));
+//
+//        res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
+//            conn,
+//            new UserSessionParameters(username),
+//            pkAttrs,
+//            oldVO,
+//            newVO,
+//            "SCH02_EMPLOYEE_CALENDAR",
+//            attribute2dbField,
+//            "Y",
+//            "N",
+//            null,
+//            true
+//        );
+//        if (res.isError()) {
+//          throw new Exception(res.getErrorMessage());
+//        }
+//
+//      }
 
       return new VOListResponse(newList,false,newList.size());
     }
@@ -939,10 +966,10 @@ public class EmployeesBean  implements Employees {
       EmployeeCalendarVO calVO = new EmployeeCalendarVO();
       calVO.setCompanyCodeSys01SCH02(vo.getCompanyCodeSys01SCH01());
       calVO.setProgressiveReg04SCH02(vo.getProgressiveReg04SCH01());
-      calVO.setMorningStartHourSCH02(morningStartHour);
-      calVO.setMorningEndHourSCH02(morningEndHour);
-      calVO.setAfternoonStartHourSCH02(afternoonStartHour);
-      calVO.setAfternoonEndHourSCH02(afternoonEndHour);
+      calVO.setMorningStartHourSCH02(DateUtils.setTime(morningStartHour));
+      calVO.setMorningEndHourSCH02(DateUtils.setTime(morningEndHour));
+      calVO.setAfternoonStartHourSCH02(DateUtils.setTime(afternoonStartHour));
+      calVO.setAfternoonEndHourSCH02(DateUtils.setTime(afternoonEndHour));
 
       calVO.setDayOfWeekSCH02(String.valueOf(Calendar.MONDAY));
       ArrayList list = new ArrayList();

@@ -109,6 +109,13 @@ public class PaymentController extends FormController {
 		else
 			payVO.setCustomerSupplierCodeDOC27((String)frame.getControlCodSupplier().getValue());
 
+		if (frame.getCompVO()!=null &&
+				frame.getCompVO().getCurrencyCodeReg03()!=null &&
+				!frame.getCompVO().getCurrencyCodeReg03().equals("")) {
+			frame.getControlCurrency().setValue(frame.getCompVO().getCurrencyCodeReg03());
+			frame.getControlCurrency().getLookupController().forceValidate();
+		}
+
 	}
 
 

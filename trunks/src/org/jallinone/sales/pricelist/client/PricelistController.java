@@ -14,6 +14,7 @@ import org.jallinone.commons.client.CompanyGridController;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.openswing.swing.client.GridControl;
 import org.openswing.swing.util.java.Consts;
+import org.jallinone.subjects.java.OrganizationVO;
 
 
 /**
@@ -60,6 +61,9 @@ public class PricelistController extends CompanyGridController {
     frame = new PricelistFrame(this);
     MDIFrame.add(frame,true);
   }
+
+
+
 
 
   /**
@@ -165,6 +169,38 @@ public class PricelistController extends CompanyGridController {
 
     return true;
   }
+
+
+
+		/**
+		 * Callback method invoked each time a cell is edited: this method define if the new value is valid.
+		 * This method is invoked ONLY if:
+		 * - the edited value is not equals to the old value OR it has exmplicitely called setCellAt or setValueAt
+		 * - the cell is editable
+		 * Default behaviour: cell value is valid.
+		 * @param rowNumber selected row index
+		 * @param attributeName attribute name related to the column currently selected
+		 * @param oldValue old cell value (before cell editing)
+		 * @param newValue new cell value (just edited)
+		 * @return <code>true</code> if cell value is valid, <code>false</code> otherwise
+		 */
+		public boolean validateCell(int rowNumber,String attributeName,Object oldValue,Object newValue) {
+			PricelistVO pvo = (PricelistVO)frame.getGrid().getVOListTableModel().getObjectForRow(rowNumber);
+			if (attributeName.equals("companyCodeSys01SAL01") && newValue!=null) {
+				pvo.setCompanyCodeSys01SAL01(newValue.toString());
+				Response res =	ClientUtils.getData("loadCompany",pvo.getCompanyCodeSys01SAL01());
+				if (!res.isError()) {
+					OrganizationVO compVO = (OrganizationVO)((VOResponse)res).getVo();
+					if (compVO.getCurrencyCodeReg03()!=null && !compVO.getCurrencyCodeReg03().equals("")) {
+						pvo.setCurrencyCodeReg03SAL01(compVO.getCurrencyCodeReg03());
+						frame.getColCurrencyCode().forceValidate(frame.getGrid().getSelectedRow()==-1?0:frame.getGrid().getSelectedRow());
+					}
+				}
+			}
+
+			return true;
+		}
+
 
 
 }

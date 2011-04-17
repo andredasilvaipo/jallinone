@@ -304,6 +304,9 @@ public class SaleActivitiesGridFrame extends InternalFrame implements CurrencyCo
     else
     return "E";
   }
+  public CodLookupColumn getColCurrencyCod() {
+    return colCurrencyCod;
+  }
 
 
 }

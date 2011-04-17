@@ -110,6 +110,11 @@ public class EmployeeCalendarController extends CompanyGridController {
    * Check if start/end times are correct.
    */
   private boolean checkTimes(EmployeeCalendarVO vo) {
+		vo.setMorningStartHourSCH02(DateUtils.setTime(vo.getMorningStartHourSCH02()));
+		vo.setMorningEndHourSCH02(DateUtils.setTime(vo.getMorningEndHourSCH02()));
+		vo.setAfternoonStartHourSCH02(DateUtils.setTime(vo.getAfternoonStartHourSCH02()));
+		vo.setAfternoonEndHourSCH02(DateUtils.setTime(vo.getAfternoonEndHourSCH02()));
+
     if (vo.getMorningStartHourSCH02()!=null && vo.getMorningEndHourSCH02()==null ||
         vo.getMorningStartHourSCH02()==null && vo.getMorningEndHourSCH02()!=null ||
         vo.getAfternoonStartHourSCH02()!=null && vo.getAfternoonEndHourSCH02()==null ||

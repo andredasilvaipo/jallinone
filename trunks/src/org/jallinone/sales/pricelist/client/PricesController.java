@@ -23,6 +23,7 @@ import org.jallinone.variants.client.ProductVariantsPanel;
 import org.jallinone.items.java.ItemPK;
 import org.openswing.swing.util.java.Consts;
 import org.openswing.swing.client.GridControl;
+import org.jallinone.sales.pricelist.java.PriceVO;
 
 
 /**
@@ -91,6 +92,10 @@ public class PricesController extends CompanyGridController implements ImportIte
 			PriceVO vo = (PriceVO)valueObject;
 			vo.setStartDateSAL02(new java.sql.Date(System.currentTimeMillis()));
 			vo.setEndDateSAL02(null);
+			if (frame.getPricesGrid().getSelectedRow()>0) {
+				PriceVO pvo = (PriceVO)frame.getPricesGrid().getVOListTableModel().getObjectForRow(frame.getPricesGrid().getSelectedRow() - 1);
+				vo.setProgressiveHie02ITM01(pvo.getProgressiveHie02ITM01());
+			}
 		}
 
 

@@ -79,9 +79,9 @@ public class ItemsController extends CompanyGridController implements TreeContro
    */
   public void doubleClick(int rowNumber,ValueObject persistentObject) {
     // create item detail frame in READONLY mode...
-    GridItemVO vo = (GridItemVO)persistentObject;
-    ItemPK pk = new ItemPK(vo.getCompanyCodeSys01ITM01(),vo.getItemCodeITM01());
-    new ItemController(frame,pk,productsOnly);
+		GridItemVO vo = (GridItemVO)persistentObject;
+		ItemPK pk = new ItemPK(vo.getCompanyCodeSys01ITM01(),vo.getItemCodeITM01());
+		new ItemController(frame,pk,productsOnly);
   }
 
 

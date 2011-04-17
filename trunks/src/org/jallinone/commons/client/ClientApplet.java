@@ -596,7 +596,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
    */
   public String getAboutText() {
     return
-        "JAllInOne ERP/CRM Application ver. 2.7.6\n"+
+        "JAllInOne ERP/CRM Application ver. 2.7.7\n"+
         "\n"+
         "Copyright: Copyright (C) 2006-2011 Mauro Carniel\n"+
         "Author: Mauro Carniel\n"+
@@ -762,6 +762,11 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
 
     ClientSettings.GRID_PERMISSION_MANAGER = new JAIODbGridPermissions();
     ClientSettings.GRID_PERMISSION_MANAGER.setUsername(username.toUpperCase());
+
+   	ClientSettings.PRESET_LAST_VALUE_IN_COMBO_COLUMN = true;
+   	ClientSettings.PRESET_LAST_VALUE_IN_COMBO_CONTROL = true;
+
+		ClientSettings.BUTTONS_EXECUTE_AS_THREAD = true;
 
     ClientSettings.getInstance().setLanguage(languageId);
 

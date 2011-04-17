@@ -26,6 +26,8 @@ import org.openswing.swing.table.java.*;
 import org.openswing.swing.util.client.*;
 import org.openswing.swing.util.java.*;
 import java.awt.geom.AffineTransform;
+import org.openswing.swing.message.receive.java.Response;
+import org.jallinone.subjects.java.OrganizationVO;
 
 
 /**
@@ -335,6 +337,16 @@ public class ABCFrame extends InternalFrame {
             controlItemType.getComboBox().setSelectedIndex(0);
           else
             controlItemType.getComboBox().setSelectedIndex(-1);
+
+
+					res =	ClientUtils.getData("loadCompany",warehouseVO.getCompanyCodeSys01WAR01());
+					if (!res.isError()) {
+						OrganizationVO compVO = (OrganizationVO)((VOResponse)res).getVo();
+						if (compVO!=null && compVO.getCurrencyCodeReg03()!=null && !compVO.getCurrencyCodeReg03().equals("")) {
+							controlCurrency.setValue(compVO.getCurrencyCodeReg03());
+							controlCurrency.getLookupController().forceValidate();
+						}
+					}
 
         }
       }

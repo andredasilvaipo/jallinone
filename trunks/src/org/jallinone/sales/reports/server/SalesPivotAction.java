@@ -83,8 +83,8 @@ public class SalesPivotAction implements Action {
 		  return new ErrorResponse(ex.getMessage());
 	  }
   }
-  
-  
+
+
 
   /**
    * Business logic to execute.
@@ -144,6 +144,7 @@ public class SalesPivotAction implements Action {
 		  boolean itemAdded = false;
 		  boolean innerItemAdded = false;
 		  boolean rowFieldsContainsItemCode = false;
+			boolean rowFieldsContainsCustomerCode = false;
 		  for(int i=0;i<vo.getPivotPars().getRowFields().size();i++)
 			  if (((RowField)vo.getPivotPars().getRowFields().get(i)).getColumnName().equals("itemCodeItm01DOC02")) {
 				  rowFieldsContainsItemCode = true;
@@ -161,6 +162,23 @@ public class SalesPivotAction implements Action {
 				  " DOC01_SELLING.DOC_NUMBER=DOC02_SELLING_ITEMS.DOC_NUMBER ";
 			  innerItemAdded = true;
 		  }
+			for(int i=0;i<vo.getPivotPars().getRowFields().size();i++)
+				if (((RowField)vo.getPivotPars().getRowFields().get(i)).getColumnName().equals("customerCodeSAL07")) {
+					rowFieldsContainsCustomerCode = true;
+					break;
+				}
+			if (rowFieldsContainsCustomerCode) {
+				select += ",SAL07_CUSTOMERS.CUSTOMER_CODE ";
+				from += ",REG04_SUBJECTS,SAL07_CUSTOMERS ";
+				where +=
+					" and "+
+					"DOC01_SELLING.PROGRESSIVE_REG04=REG04_SUBJECTS.PROGRESSIVE and "+
+					"DOC01_SELLING.COMPANY_CODE_SYS01=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
+					"DOC01_SELLING.PROGRESSIVE_REG04=SAL07_CUSTOMERS.PROGRESSIVE_REG04 and "+
+					"DOC01_SELLING.COMPANY_CODE_SYS01=SAL07_CUSTOMERS.COMPANY_CODE_SYS01 ";
+
+				customerAdded = true;
+			}
 
 
 		  boolean dataFieldsContainsQty = false;
@@ -304,7 +322,7 @@ public class SalesPivotAction implements Action {
 
   }
 
-  
-  
+
+
 }
 

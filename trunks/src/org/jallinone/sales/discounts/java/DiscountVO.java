@@ -48,6 +48,10 @@ public class DiscountVO extends ValueObjectImpl {
   private java.sql.Date endDateSAL03;
   private java.math.BigDecimal minQtySAL03;
   private Boolean multipleQtySAL03;
+	private String currencySymbolREG03;
+	private String decimalSymbolREG03;
+	private String thousandSymbolREG03;
+	private java.math.BigDecimal decimalsREG03;
 
 
   public DiscountVO() {
@@ -143,6 +147,30 @@ public class DiscountVO extends ValueObjectImpl {
   }
   public void setMinQtySAL03(java.math.BigDecimal minQtySAL03) {
     this.minQtySAL03 = minQtySAL03;
+  }
+  public String getCurrencySymbolREG03() {
+    return currencySymbolREG03;
+  }
+  public java.math.BigDecimal getDecimalsREG03() {
+    return decimalsREG03;
+  }
+  public String getDecimalSymbolREG03() {
+    return decimalSymbolREG03;
+  }
+  public void setCurrencySymbolREG03(String currencySymbolREG03) {
+    this.currencySymbolREG03 = currencySymbolREG03;
+  }
+  public void setDecimalsREG03(java.math.BigDecimal decimalsREG03) {
+    this.decimalsREG03 = decimalsREG03;
+  }
+  public void setDecimalSymbolREG03(String decimalSymbolREG03) {
+    this.decimalSymbolREG03 = decimalSymbolREG03;
+  }
+  public void setThousandSymbolREG03(String thousandSymbolREG03) {
+    this.thousandSymbolREG03 = thousandSymbolREG03;
+  }
+  public String getThousandSymbolREG03() {
+    return thousandSymbolREG03;
   }
 
 }

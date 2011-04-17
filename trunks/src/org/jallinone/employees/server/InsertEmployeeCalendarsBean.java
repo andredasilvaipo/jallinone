@@ -12,6 +12,7 @@ import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.message.receive.java.VOListResponse;
 import org.openswing.swing.server.QueryUtil;
 import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.commons.java.DateUtils;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -101,6 +102,11 @@ public class InsertEmployeeCalendarsBean implements InsertEmployeeCalendars {
 
 	      for(int i=0;i<list.size();i++) {
 	        vo = (EmployeeCalendarVO)list.get(i);
+
+	        vo.setMorningStartHourSCH02(DateUtils.setTime(vo.getMorningStartHourSCH02()));
+					vo.setMorningEndHourSCH02(DateUtils.setTime(vo.getMorningEndHourSCH02()));
+					vo.setAfternoonStartHourSCH02(DateUtils.setTime(vo.getAfternoonStartHourSCH02()));
+					vo.setAfternoonEndHourSCH02(DateUtils.setTime(vo.getAfternoonEndHourSCH02()));
 
 	        // insert into SCH02...
 	        res = org.jallinone.commons.server.QueryUtilExtension.insertTable(

@@ -59,6 +59,25 @@ public class DiscountsController extends CompanyGridController {
   }
 
 
+		/**
+		 * Callback method invoked when the user has clicked on the insert button
+		 * @param valueObject empty value object just created: the user can manage it to fill some attribute values
+		 */
+		public void createValueObject(ValueObject valueObject) throws Exception {
+			CustomerDiscountVO vo = (CustomerDiscountVO)valueObject;
+			Subject customerVO = (Subject)frame.getCurrentForm().getVOModel().getValueObject();
+			vo.setCompanyCodeSys01SAL03(customerVO.getCompanyCodeSys01REG04());
+			Response res =	ClientUtils.getData("loadCompany",vo.getCompanyCodeSys01SAL03());
+			if (!res.isError()) {
+				OrganizationVO compVO = (OrganizationVO)((VOResponse)res).getVo();
+				if (compVO.getCurrencyCodeReg03()!=null && !compVO.getCurrencyCodeReg03().equals("")) {
+					vo.setCurrencyCodeReg03SAL03(compVO.getCurrencyCodeReg03());
+					frame.getColCurrencyCode().forceValidate(frame.getDiscountsGrid().getSelectedRow()==-1?0:frame.getDiscountsGrid().getSelectedRow());
+				}
+			}
+		}
+
+
   /**
    * Validate min/max values/percentages and dates.
    */
