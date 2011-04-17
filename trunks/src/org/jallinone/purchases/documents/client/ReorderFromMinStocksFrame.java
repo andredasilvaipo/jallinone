@@ -29,6 +29,7 @@ import org.openswing.swing.message.send.java.GridParams;
 import org.jallinone.items.java.ItemTypeVO;
 import org.jallinone.items.java.ItemPK;
 import org.jallinone.purchases.pricelist.java.SupplierPriceVO;
+import org.jallinone.subjects.java.OrganizationVO;
 
 
 /**
@@ -216,6 +217,16 @@ public class ReorderFromMinStocksFrame extends InternalFrame {
           supplierDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,warehouseVO.getCompanyCodeSys01WAR01());
 					grid.getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,warehouseVO.getCompanyCodeSys01WAR01());
           controlSupplierCode.setEnabled(true);
+
+					Response res =	ClientUtils.getData("loadCompany",warehouseVO.getCompanyCodeSys01WAR01());
+					if (!res.isError()) {
+						OrganizationVO compVO = (OrganizationVO)((VOResponse)res).getVo();
+						if (compVO!=null && compVO.getCurrencyCodeReg03()!=null && !compVO.getCurrencyCodeReg03().equals("")) {
+							controlCurrency.setValue(compVO.getCurrencyCodeReg03());
+							controlCurrency.getLookupController().forceValidate();
+						}
+					}
+
         }
       }
 

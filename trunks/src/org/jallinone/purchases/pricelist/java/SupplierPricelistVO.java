@@ -1,6 +1,7 @@
 package org.jallinone.purchases.pricelist.java;
 
 import org.jallinone.system.customizations.java.BaseValueObject;
+import java.math.BigDecimal;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -41,6 +42,8 @@ public class SupplierPricelistVO extends BaseValueObject {
   private java.math.BigDecimal progressiveReg04PUR03;
   private java.math.BigDecimal oldProgressiveReg04PUR03;
   private String name_1REG04;
+	private String currencySymbolREG03;
+	private BigDecimal decimalsREG03;
 
 
   public SupplierPricelistVO() {
@@ -99,5 +102,18 @@ public class SupplierPricelistVO extends BaseValueObject {
   public void setName_1REG04(String name_1REG04) {
     this.name_1REG04 = name_1REG04;
   }
+  public String getCurrencySymbolREG03() {
+    return currencySymbolREG03;
+  }
+  public void setCurrencySymbolREG03(String currencySymbolREG03) {
+    this.currencySymbolREG03 = currencySymbolREG03;
+  }
+  public BigDecimal getDecimalsREG03() {
+    return decimalsREG03;
+  }
+  public void setDecimalsREG03(BigDecimal decimalsREG03) {
+    this.decimalsREG03 = decimalsREG03;
+  }
+
 
 }

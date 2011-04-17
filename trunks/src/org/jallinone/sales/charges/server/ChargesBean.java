@@ -119,13 +119,16 @@ public class ChargesBean  implements Charges {
       String sql =
           "select SAL06_CHARGES.COMPANY_CODE_SYS01,SAL06_CHARGES.CHARGE_CODE,SAL06_CHARGES.PROGRESSIVE_SYS10,"+
           "SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,SAL06_CHARGES.VALUE,SAL06_CHARGES.PERC,SAL06_CHARGES.VAT_CODE_REG01,"+
-          "SAL06_CHARGES.CURRENCY_CODE_REG03,SAL06_CHARGES.ENABLED"+
-          " from SAL06_CHARGES,SYS10_COMPANY_TRANSLATIONS where "+
+          "SAL06_CHARGES.CURRENCY_CODE_REG03,SAL06_CHARGES.ENABLED,"+
+					"REG03_CURRENCIES.CURRENCY_SYMBOL,REG03_CURRENCIES.DECIMALS "+
+          " from SAL06_CHARGES,SYS10_COMPANY_TRANSLATIONS,REG03_CURRENCIES where "+
 					"SAL06_CHARGES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
           "SAL06_CHARGES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SAL06_CHARGES.ENABLED='Y' and "+
-          "SAL06_CHARGES.COMPANY_CODE_SYS01 in ("+companies+")";
+          "SAL06_CHARGES.COMPANY_CODE_SYS01 in ("+companies+") and "+
+					"REG03_CURRENCIES.CURRENCY_CODE=SAL06_CHARGES.CURRENCY_CODE_REG03";
+
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SAL06","SAL06_CHARGES.COMPANY_CODE_SYS01");
@@ -137,6 +140,8 @@ public class ChargesBean  implements Charges {
       attribute2dbField.put("vatCodeReg01SAL06","SAL06_CHARGES.VAT_CODE_REG01");
       attribute2dbField.put("currencyCodeReg03SAL06","SAL06_CHARGES.CURRENCY_CODE_REG03");
       attribute2dbField.put("enabledSAL06","SAL06_CHARGES.ENABLED");
+			attribute2dbField.put("currencySymbolREG03","REG03_CURRENCIES.CURRENCY_SYMBOL");
+			attribute2dbField.put("decimalsREG03","REG03_CURRENCIES.DECIMALS");
 
       ArrayList values = new ArrayList();
       values.add(serverLanguageId);
@@ -309,14 +314,16 @@ public class ChargesBean  implements Charges {
       String sql =
           "select SAL06_CHARGES.COMPANY_CODE_SYS01,SAL06_CHARGES.CHARGE_CODE,SAL06_CHARGES.PROGRESSIVE_SYS10,"+
           "SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,SAL06_CHARGES.VALUE,SAL06_CHARGES.PERC,SAL06_CHARGES.VAT_CODE_REG01,"+
-          "SAL06_CHARGES.CURRENCY_CODE_REG03,SAL06_CHARGES.ENABLED"+
-          " from SAL06_CHARGES,SYS10_COMPANY_TRANSLATIONS where "+
+          "SAL06_CHARGES.CURRENCY_CODE_REG03,SAL06_CHARGES.ENABLED,"+
+					"REG03_CURRENCIES.CURRENCY_SYMBOL,REG03_CURRENCIES.DECIMALS "+
+          " from SAL06_CHARGES,SYS10_COMPANY_TRANSLATIONS,REG03_CURRENCIES where "+
 					"SAL06_CHARGES.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
           "SAL06_CHARGES.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "SAL06_CHARGES.ENABLED='Y' and "+
           "SAL06_CHARGES.COMPANY_CODE_SYS01='"+validationPars.getLookupValidationParameters().get(ApplicationConsts.COMPANY_CODE_SYS01)+"' and "+
-          "SAL06_CHARGES.CHARGE_CODE='"+validationPars.getCode()+"'";
+          "SAL06_CHARGES.CHARGE_CODE='"+validationPars.getCode()+"' and "+
+					"REG03_CURRENCIES.CURRENCY_CODE=SAL06_CHARGES.CURRENCY_CODE_REG03";
 
       Map attribute2dbField = new HashMap();
       attribute2dbField.put("companyCodeSys01SAL06","SAL06_CHARGES.COMPANY_CODE_SYS01");
@@ -328,6 +335,8 @@ public class ChargesBean  implements Charges {
       attribute2dbField.put("vatCodeReg01SAL06","SAL06_CHARGES.VAT_CODE_REG01");
       attribute2dbField.put("currencyCodeReg03SAL06","SAL06_CHARGES.CURRENCY_CODE_REG03");
       attribute2dbField.put("enabledSAL06","SAL06_CHARGES.ENABLED");
+			attribute2dbField.put("currencySymbolREG03","REG03_CURRENCIES.CURRENCY_SYMBOL");
+			attribute2dbField.put("decimalsREG03","REG03_CURRENCIES.DECIMALS");
 
       ArrayList values = new ArrayList();
       values.add(serverLanguageId);

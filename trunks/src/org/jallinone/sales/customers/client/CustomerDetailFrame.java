@@ -1220,6 +1220,9 @@ public class CustomerDetailFrame extends InternalFrame {
   public CodLookupControl getControlActCode() {
     return controlActCode;
   }
+  public CodLookupColumn getColCurrencyCode() {
+    return colCurrencyCode;
+  }
 
 
 

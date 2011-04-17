@@ -30,6 +30,7 @@ import org.jallinone.items.java.ItemTypeVO;
 import org.openswing.swing.lookup.client.LookupController;
 import org.openswing.swing.lookup.client.LookupServerDataLocator;
 import javax.swing.tree.DefaultMutableTreeNode;
+import org.jallinone.sales.discounts.java.HierarItemDiscountVO;
 
 
 /**
@@ -80,8 +81,8 @@ public class HierarItemDiscountsFrame extends InternalFrame {
   TextColumn colDiscountCode = new TextColumn();
   TextColumn colDescr = new TextColumn();
   CodLookupColumn colCurrencyCode = new CodLookupColumn();
-  DecimalColumn colMinValue = new DecimalColumn();
-  DecimalColumn colMaxValue = new DecimalColumn();
+  CurrencyColumn colMinValue = new CurrencyColumn();
+  CurrencyColumn colMaxValue = new CurrencyColumn();
   DecimalColumn colMinPerc = new DecimalColumn();
   DecimalColumn colMaxPerc = new DecimalColumn();
   DateColumn colStartDate = new DateColumn();
@@ -94,6 +95,7 @@ public class HierarItemDiscountsFrame extends InternalFrame {
   SaveButton saveButton1 = new SaveButton();
   EditButton editButton1 = new EditButton();
   private java.util.List list = null;
+	private ItemPricesGridCurrencySettings currSettings = new ItemPricesGridCurrencySettings();
 
 
   public HierarItemDiscountsFrame(final HierarItemDiscountsController controller) {
@@ -130,6 +132,10 @@ public class HierarItemDiscountsFrame extends InternalFrame {
       currencyController.setFrameTitle("currencies");
       currencyController.setLookupValueObjectClassName("org.jallinone.registers.currency.java.CurrencyVO");
       currencyController.addLookup2ParentLink("currencyCodeREG03", "currencyCodeReg03SAL03");
+			currencyController.addLookup2ParentLink("decimalSymbolREG03", "decimalSymbolREG03");
+			currencyController.addLookup2ParentLink("thousandSymbolREG03", "thousandSymbolREG03");
+			currencyController.addLookup2ParentLink("decimalsREG03", "decimalsREG03");
+			currencyController.addLookup2ParentLink("currencySymbolREG03", "currencySymbolREG03");
       currencyController.setAllColumnVisible(false);
       currencyController.setVisibleColumn("currencyCodeREG03", true);
       currencyController.setVisibleColumn("currencySymbolREG03", true);
@@ -246,7 +252,11 @@ public class HierarItemDiscountsFrame extends InternalFrame {
     colCurrencyCode.setEditableOnInsert(true);
     colCurrencyCode.setMaxCharacters(20);
     colCurrencyCode.setPreferredWidth(70);
-    colMinValue.setDecimals(2);
+//    colMinValue.setDecimals(2);
+
+		colMinValue.setDynamicSettings(currSettings);
+		colMaxValue.setDynamicSettings(currSettings);
+
     colMinValue.setMinValue(0.0);
     colMinValue.setColumnDuplicable(true);
     colMinValue.setColumnRequired(false);
@@ -254,7 +264,7 @@ public class HierarItemDiscountsFrame extends InternalFrame {
     colMinValue.setColumnName("minValueSAL03");
     colMinValue.setEditableOnInsert(true);
     colMinValue.setPreferredWidth(80);
-    colMaxValue.setDecimals(2);
+//    colMaxValue.setDecimals(2);
     colMaxValue.setMinValue(0.0);
     colMaxValue.setColumnDuplicable(true);
     colMaxValue.setColumnRequired(false);
@@ -330,6 +340,44 @@ public class HierarItemDiscountsFrame extends InternalFrame {
   }
 
 
+		class ItemPricesGridCurrencySettings implements CurrencyColumnSettings {
+
+			public double getMaxValue(int row) {
+				return Double.MAX_VALUE;
+			}
+
+			public double getMinValue(int row) {
+				return 0.0;
+			}
+
+
+			public boolean isGrouping(int row) {
+				return true;
+			}
+
+
+			public int getDecimals(int row) {
+				HierarItemDiscountVO vo = (HierarItemDiscountVO)discountsGrid.getVOListTableModel().getObjectForRow(discountsGrid.getSelectedRow());
+				if (vo!=null && vo.getDecimalsREG03()!=null)
+					return vo.getDecimalsREG03().intValue();
+				else
+					return 0;
+			}
+
+
+			public String getCurrencySymbol(int row) {
+				HierarItemDiscountVO vo = (HierarItemDiscountVO)discountsGrid.getVOListTableModel().getObjectForRow(discountsGrid.getSelectedRow());
+				if (vo!=null && vo.getCurrencySymbolREG03()!=null)
+					return vo.getCurrencySymbolREG03();
+				else
+				return "E";
+			}
+
+
+		}
+
+
+
   public GridControl getGrid() {
     return discountsGrid;
   }
@@ -343,6 +391,9 @@ public class HierarItemDiscountsFrame extends InternalFrame {
   }
   public ComboBoxControl getComboBoxControl1() {
     return comboBoxControl1;
+  }
+  public CodLookupColumn getColCurrencyCode() {
+    return colCurrencyCode;
   }
 
 }

@@ -387,5 +387,7 @@ public class ApplicationConsts {
 	public static final String ROUNDING_COSTS_CODE = "ROUNDING_C_CODE";
 	public static final String ROUNDING_PROCEEDS_CODE = "ROUNDING_P_CODE";
 
+	public static final String CURRENCY_CODE = "CURRENCY_CODE";
+
 
 }

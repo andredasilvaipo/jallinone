@@ -159,7 +159,12 @@ public class OrderTrackingGridPanel extends JPanel {
         );
         p.getGrid().getOtherGridParams().put(ApplicationConsts.PROPERTIES_FILTER,vo);
         p.getGrid().setAutoLoadData(true);
-        p.setPreferredSize(new Dimension(OrderTrackingGridPanel.this.getWidth()-50,250));
+        p.setPreferredSize(
+		      new Dimension(
+		        OrderTrackingGridPanel.this.getWidth()-50,
+			      OrderTrackingGridPanel.this.getHeight()>250?250:Math.max(OrderTrackingGridPanel.this.getHeight()-110,100)
+			    )
+				);
         return p;
       }
 

@@ -43,6 +43,8 @@ import javax.swing.event.ChangeEvent;
 import org.jallinone.variants.client.ProductVariantsPanel;
 import org.jallinone.variants.client.ProductVariantsController;
 import org.jallinone.items.spareparts.client.ItemSparePartsPanel;
+import org.jallinone.sales.pricelist.java.PriceVO;
+import org.jallinone.sales.discounts.java.ItemDiscountVO;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -154,8 +156,8 @@ public class ItemFrame extends InternalFrame {
   TextColumn colDiscountCode = new TextColumn();
   TextColumn colDescr = new TextColumn();
   CodLookupColumn colCurrencyCode = new CodLookupColumn();
-  DecimalColumn colMinValue = new DecimalColumn();
-  DecimalColumn colMaxValue = new DecimalColumn();
+  CurrencyColumn colMinValue = new CurrencyColumn();
+  CurrencyColumn colMaxValue = new CurrencyColumn();
   DecimalColumn colMinPerc = new DecimalColumn();
   DecimalColumn colMaxPerc = new DecimalColumn();
   DateColumn colStartDate = new DateColumn();
@@ -177,7 +179,7 @@ public class ItemFrame extends InternalFrame {
   ExportButton exportButton2 = new ExportButton();
   SaveButton saveButton3 = new SaveButton();
   EditButton editButton3 = new EditButton();
-  DecimalColumn colValue = new DecimalColumn();
+  CurrencyColumn colValue = new CurrencyColumn();
   DateColumn colPriceStartDate = new DateColumn();
   DateColumn colPriceEndDate = new DateColumn();
   CodLookupColumn colPricelistCode = new CodLookupColumn();
@@ -248,6 +250,8 @@ public class ItemFrame extends InternalFrame {
   NumericControl controlMinStock = new NumericControl();
   private CustomizedControls customizedControls = null;
 	private ItemSparePartsPanel itemSparePartsPanel = new ItemSparePartsPanel(formPanel);
+	private ItemPricesGridCurrencySettings currSettings = new ItemPricesGridCurrencySettings();
+	private ItemPricesGridCurrencySettings2 currSettingsDisc = new ItemPricesGridCurrencySettings2();
 
 
   public ItemFrame(ItemController controller, boolean productsOnly) {
@@ -550,6 +554,8 @@ public class ItemFrame extends InternalFrame {
       currencyController.setAllColumnVisible(false);
       currencyController.setVisibleColumn("currencyCodeREG03", true);
       currencyController.setVisibleColumn("currencySymbolREG03", true);
+			currencyController.setVisibleColumn("decimalsREG03", true);
+
       new CustomizedColumns(new BigDecimal(182), currencyController);
 
       pricesGrid.setController(new PricesController(this));
@@ -1166,7 +1172,11 @@ public class ItemFrame extends InternalFrame {
     colCurrencyCode.setEditableOnInsert(true);
     colCurrencyCode.setMaxCharacters(20);
     colCurrencyCode.setPreferredWidth(70);
-    colMinValue.setDecimals(2);
+//    colMinValue.setDecimals(2);
+
+		colMinValue.setDynamicSettings(currSettingsDisc);
+		colMaxValue.setDynamicSettings(currSettingsDisc);
+
     colMinValue.setMinValue(0.0);
     colMinValue.setColumnDuplicable(true);
     colMinValue.setColumnRequired(false);
@@ -1174,7 +1184,7 @@ public class ItemFrame extends InternalFrame {
     colMinValue.setColumnName("minValueSAL03");
     colMinValue.setEditableOnInsert(true);
     colMinValue.setPreferredWidth(80);
-    colMaxValue.setDecimals(2);
+//    colMaxValue.setDecimals(2);
     colMaxValue.setMinValue(0.0);
     colMaxValue.setColumnDuplicable(true);
     colMaxValue.setColumnRequired(false);
@@ -1300,7 +1310,9 @@ public class ItemFrame extends InternalFrame {
     tab.repaint();
     repaint();
 
-    colValue.setDecimals(5);
+//    colValue.setDecimals(5);
+		colValue.setDynamicSettings(currSettings);
+
     colValue.setMinValue(0.0);
     colValue.setColumnDuplicable(true);
     colValue.setColumnFilterable(true);
@@ -1577,9 +1589,94 @@ public class ItemFrame extends InternalFrame {
 		tab.setEnabledAt(10, !controlNoWarehouseMov.isSelected());
     tab.setEnabledAt(11, !controlNoWarehouseMov.isSelected());
   }
+
+
   public ItemSparePartsPanel getItemSparePartsPanel() {
     return itemSparePartsPanel;
   }
+
+
+  public CodLookupColumn getColCurrencyCode() {
+    return colCurrencyCode;
+  }
+
+
+	class ItemPricesGridCurrencySettings implements CurrencyColumnSettings {
+
+		public double getMaxValue(int row) {
+			return Double.MAX_VALUE;
+		}
+
+		public double getMinValue(int row) {
+			return 0.0;
+		}
+
+
+		public boolean isGrouping(int row) {
+			return true;
+		}
+
+
+		public int getDecimals(int row) {
+			PriceVO vo = (PriceVO)pricesGrid.getVOListTableModel().getObjectForRow(pricesGrid.getSelectedRow());
+			if (vo!=null && vo.getDecimalsREG03()!=null)
+				return vo.getDecimalsREG03().intValue();
+			else
+				return 0;
+		}
+
+
+		public String getCurrencySymbol(int row) {
+			PriceVO vo = (PriceVO)pricesGrid.getVOListTableModel().getObjectForRow(pricesGrid.getSelectedRow());
+			if (vo!=null && vo.getCurrencySymbolREG03()!=null)
+				return vo.getCurrencySymbolREG03();
+			else
+			return "E";
+		}
+
+
+	}
+
+
+	class ItemPricesGridCurrencySettings2 implements CurrencyColumnSettings {
+
+		public double getMaxValue(int row) {
+			return Double.MAX_VALUE;
+		}
+
+		public double getMinValue(int row) {
+			return 0.0;
+		}
+
+
+		public boolean isGrouping(int row) {
+			return true;
+		}
+
+
+		public int getDecimals(int row) {
+			ItemDiscountVO vo = (ItemDiscountVO)discountsGrid.getVOListTableModel().getObjectForRow(discountsGrid.getSelectedRow());
+			if (vo!=null && vo.getDecimalsREG03()!=null)
+				return vo.getDecimalsREG03().intValue();
+			else
+				return 0;
+		}
+
+
+		public String getCurrencySymbol(int row) {
+			ItemDiscountVO vo = (ItemDiscountVO)discountsGrid.getVOListTableModel().getObjectForRow(discountsGrid.getSelectedRow());
+			if (vo!=null && vo.getCurrencySymbolREG03()!=null)
+				return vo.getCurrencySymbolREG03();
+			else
+			return "E";
+		}
+
+
+	}
+
+
+
+
 }
 
 class ItemFrame_smallImageButton_actionAdapter implements java.awt.event.ActionListener {

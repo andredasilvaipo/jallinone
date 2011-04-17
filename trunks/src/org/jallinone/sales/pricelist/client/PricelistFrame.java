@@ -179,6 +179,7 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
       currencyController.addLookup2ParentLink("currencyCodeREG03", "currencyCodeReg03SAL01");
 			currencyController.addLookup2ParentLink("decimalsREG03", "decimalsREG03");
 			currencyController.addLookup2ParentLink("currencySymbolREG03", "currencySymbolREG03");
+
       currencyController.setAllColumnVisible(false);
       currencyController.setVisibleColumn("currencyCodeREG03", true);
       currencyController.setVisibleColumn("currencySymbolREG03", true);
@@ -585,6 +586,9 @@ public class PricelistFrame extends InternalFrame implements DateChangedListener
 			return;
 		pricesGrid.getOtherGridParams().remove(ApplicationConsts.DATE_FILTER);
 		pricesGrid.reloadData();
+  }
+  public CodLookupColumn getColCurrencyCode() {
+    return colCurrencyCode;
   }
 
 

@@ -191,6 +191,8 @@ public class CompanyParametersFrame extends InternalFrame {
       creditController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
       creditController.addLookup2ParentLink("accountCodeACC02", "creditAccountCodeAcc02SAL07");
       creditController.addLookup2ParentLink("descriptionSYS10","creditAccountDescrSAL07");
+			creditController.setFilterableColumn("accountCodeACC02",true);
+			creditController.setFilterableColumn("descriptionSYS10",true);
       creditController.setFramePreferedSize(new Dimension(400,400));
       creditController.setAllColumnVisible(false);
       creditController.setVisibleColumn("accountCodeACC02", true);
@@ -223,6 +225,8 @@ public class CompanyParametersFrame extends InternalFrame {
       itemsController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
       itemsController.addLookup2ParentLink("accountCodeACC02", "itemsAccountCodeAcc02SAL07");
       itemsController.addLookup2ParentLink("descriptionSYS10","itemsAccountDescrSAL07");
+			itemsController.setFilterableColumn("accountCodeACC02",true);
+			itemsController.setFilterableColumn("descriptionSYS10",true);
       itemsController.setFramePreferedSize(new Dimension(400,400));
       itemsController.setAllColumnVisible(false);
       itemsController.setVisibleColumn("accountCodeACC02", true);
@@ -255,6 +259,8 @@ public class CompanyParametersFrame extends InternalFrame {
       actController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
       actController.addLookup2ParentLink("accountCodeACC02", "activitiesAccountCodeAcc02SAL07");
       actController.addLookup2ParentLink("descriptionSYS10","activitiesAccountDescrSAL07");
+			actController.setFilterableColumn("accountCodeACC02",true);
+			actController.setFilterableColumn("descriptionSYS10",true);
       actController.setFramePreferedSize(new Dimension(400,400));
       actController.setAllColumnVisible(false);
       actController.setVisibleColumn("accountCodeACC02", true);
@@ -287,6 +293,8 @@ public class CompanyParametersFrame extends InternalFrame {
       chargesController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
       chargesController.addLookup2ParentLink("accountCodeACC02", "chargesAccountCodeAcc02SAL07");
       chargesController.addLookup2ParentLink("descriptionSYS10","chargesAccountDescrSAL07");
+			chargesController.setFilterableColumn("accountCodeACC02",true);
+			chargesController.setFilterableColumn("descriptionSYS10",true);
       chargesController.setFramePreferedSize(new Dimension(400,400));
       chargesController.setAllColumnVisible(false);
       chargesController.setVisibleColumn("accountCodeACC02", true);
@@ -319,6 +327,8 @@ public class CompanyParametersFrame extends InternalFrame {
       debitController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
       debitController.addLookup2ParentLink("accountCodeACC02", "debitAccountCodeAcc02PUR01");
       debitController.addLookup2ParentLink("descriptionSYS10","debitAccountDescrPUR01");
+			debitController.setFilterableColumn("accountCodeACC02",true);
+			debitController.setFilterableColumn("descriptionSYS10",true);
       debitController.setFramePreferedSize(new Dimension(400,400));
       debitController.setAllColumnVisible(false);
       debitController.setVisibleColumn("accountCodeACC02", true);
@@ -351,6 +361,8 @@ public class CompanyParametersFrame extends InternalFrame {
       costsController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
       costsController.addLookup2ParentLink("accountCodeACC02", "costsAccountCodeAcc02PUR01");
       costsController.addLookup2ParentLink("descriptionSYS10","costsAccountDescrPUR01");
+			costsController.setFilterableColumn("accountCodeACC02",true);
+			costsController.setFilterableColumn("descriptionSYS10",true);
       costsController.setFramePreferedSize(new Dimension(400,400));
       costsController.setAllColumnVisible(false);
       costsController.setVisibleColumn("accountCodeACC02", true);
@@ -383,6 +395,8 @@ public class CompanyParametersFrame extends InternalFrame {
       caseController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
       caseController.addLookup2ParentLink("accountCodeACC02", "caseAccountCodeAcc02DOC21");
       caseController.addLookup2ParentLink("descriptionSYS10","caseAccountDescrDOC21");
+			caseController.setFilterableColumn("accountCodeACC02",true);
+			caseController.setFilterableColumn("descriptionSYS10",true);
       caseController.setFramePreferedSize(new Dimension(400,400));
       caseController.setAllColumnVisible(false);
       caseController.setVisibleColumn("accountCodeACC02", true);
@@ -414,6 +428,8 @@ public class CompanyParametersFrame extends InternalFrame {
       bankController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
       bankController.addLookup2ParentLink("accountCodeACC02", "bankAccountCodeAcc02DOC21");
       bankController.addLookup2ParentLink("descriptionSYS10","bankAccountDescrDOC21");
+			bankController.setFilterableColumn("accountCodeACC02",true);
+			bankController.setFilterableColumn("descriptionSYS10",true);
       bankController.setFramePreferedSize(new Dimension(400,400));
       bankController.setAllColumnVisible(false);
       bankController.setVisibleColumn("accountCodeACC02", true);
@@ -445,6 +461,8 @@ public class CompanyParametersFrame extends InternalFrame {
       vatEndController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
       vatEndController.addLookup2ParentLink("accountCodeACC02", "vatEndAccountCodeAcc02DOC21");
       vatEndController.addLookup2ParentLink("descriptionSYS10","vatEndAccountDescrDOC21");
+			vatEndController.setFilterableColumn("accountCodeACC02",true);
+			vatEndController.setFilterableColumn("descriptionSYS10",true);
       vatEndController.setFramePreferedSize(new Dimension(400,400));
       vatEndController.setAllColumnVisible(false);
       vatEndController.setVisibleColumn("accountCodeACC02", true);
@@ -489,6 +507,8 @@ public class CompanyParametersFrame extends InternalFrame {
      lossProfitEController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
      lossProfitEController.addLookup2ParentLink("accountCodeACC02", "lossProfitEAccountCodeAcc02DOC21");
      lossProfitEController.addLookup2ParentLink("descriptionSYS10","lossProfitEAccountDescrDOC21");
+		 lossProfitEController.setFilterableColumn("accountCodeACC02",true);
+		 lossProfitEController.setFilterableColumn("descriptionSYS10",true);
      lossProfitEController.setFramePreferedSize(new Dimension(400,400));
      lossProfitEController.setAllColumnVisible(false);
      lossProfitEController.setVisibleColumn("accountCodeACC02", true);
@@ -521,6 +541,8 @@ public class CompanyParametersFrame extends InternalFrame {
      lossProfitPController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
      lossProfitPController.addLookup2ParentLink("accountCodeACC02", "lossProfitPAccountCodeAcc02DOC21");
      lossProfitPController.addLookup2ParentLink("descriptionSYS10","lossProfitPAccountDescrDOC21");
+		 lossProfitPController.setFilterableColumn("accountCodeACC02",true);
+		 lossProfitPController.setFilterableColumn("descriptionSYS10",true);
      lossProfitPController.setFramePreferedSize(new Dimension(400,400));
      lossProfitPController.setAllColumnVisible(false);
      lossProfitPController.setVisibleColumn("accountCodeACC02", true);
@@ -553,6 +575,8 @@ public class CompanyParametersFrame extends InternalFrame {
      closingController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
      closingController.addLookup2ParentLink("accountCodeACC02", "closingAccountCodeAcc02DOC21");
      closingController.addLookup2ParentLink("descriptionSYS10","closingAccountDescrDOC21");
+		 closingController.setFilterableColumn("accountCodeACC02",true);
+		 closingController.setFilterableColumn("descriptionSYS10",true);
      closingController.setFramePreferedSize(new Dimension(400,400));
      closingController.setAllColumnVisible(false);
      closingController.setVisibleColumn("accountCodeACC02", true);
@@ -585,6 +609,8 @@ public class CompanyParametersFrame extends InternalFrame {
      openingController.setLookupValueObjectClassName("org.jallinone.accounting.accounts.java.AccountVO");
      openingController.addLookup2ParentLink("accountCodeACC02", "openingAccountCodeAcc02DOC21");
      openingController.addLookup2ParentLink("descriptionSYS10","openingAccountDescrDOC21");
+		 openingController.setFilterableColumn("accountCodeACC02",true);
+		 openingController.setFilterableColumn("descriptionSYS10",true);
      openingController.setFramePreferedSize(new Dimension(400,400));
      openingController.setAllColumnVisible(false);
      openingController.setVisibleColumn("accountCodeACC02", true);
@@ -621,6 +647,8 @@ public class CompanyParametersFrame extends InternalFrame {
 		 accCController.setAllColumnVisible(false);
 		 accCController.setVisibleColumn("accountCodeACC02", true);
 		 accCController.setVisibleColumn("descriptionSYS10", true);
+		 accCController.setFilterableColumn("accountCodeACC02",true);
+		 accCController.setFilterableColumn("descriptionSYS10",true);
 		 accCController.setPreferredWidthColumn("descriptionSYS10", 200);
 		 accCController.setFramePreferedSize(new Dimension(340,400));
 		 accCController.setSortedColumn("accountCodeACC02","ASC",1);
@@ -656,6 +684,8 @@ public class CompanyParametersFrame extends InternalFrame {
 		 accPController.setAllColumnVisible(false);
 		 accPController.setVisibleColumn("accountCodeACC02", true);
 		 accPController.setVisibleColumn("descriptionSYS10", true);
+		 accPController.setFilterableColumn("accountCodeACC02",true);
+		 accPController.setFilterableColumn("descriptionSYS10",true);
 		 accPController.setPreferredWidthColumn("descriptionSYS10", 200);
 		 accPController.setFramePreferedSize(new Dimension(340,400));
 		 accPController.setSortedColumn("accountCodeACC02","ASC",1);
@@ -675,7 +705,6 @@ public class CompanyParametersFrame extends InternalFrame {
 				 public void forceValidate() {}
 
 			});
-
 
       init();
 
@@ -967,74 +996,74 @@ public class CompanyParametersFrame extends InternalFrame {
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 
 
-    panel2.add(labelLossProfitE,                 new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+    panel2.add(labelLossProfitE,                   new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlLossProfitECode,               new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+    panel2.add(controlLossProfitECode,                 new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlLossProfitEDescr,                new GridBagConstraints(2, 0, 2, 1, 1.0, 0.0
+    panel2.add(controlLossProfitEDescr,                  new GridBagConstraints(2, 0, 2, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 
-    panel2.add(labelLossProfitP,                 new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+    panel2.add(labelLossProfitP,                   new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlLossProfitPCode,               new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+    panel2.add(controlLossProfitPCode,                 new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlLossProfitPDescr,                new GridBagConstraints(2, 1, 2, 1, 1.0, 0.0
+    panel2.add(controlLossProfitPDescr,                  new GridBagConstraints(2, 1, 2, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 
-    panel2.add(labelClosing,                 new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+    panel2.add(labelClosing,                   new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlClosingCode,               new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0
+    panel2.add(controlClosingCode,                 new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlClosingDescr,                new GridBagConstraints(2, 2, 2, 1, 1.0, 0.0
+    panel2.add(controlClosingDescr,                  new GridBagConstraints(2, 2, 2, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 
-    panel2.add(labelOpening,                    new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+    panel2.add(labelOpening,                      new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlOpeningCode,                new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
+    panel2.add(controlOpeningCode,                  new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlOpeningDescr,               new GridBagConstraints(2, 3, 2, 5, 1.0, 1.0
+    panel2.add(controlOpeningDescr,                 new GridBagConstraints(2, 3, 2, 7, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 0, 5), 0, 0));
 
 
 
-		panel2.add(controlRoundingP,       new GridBagConstraints(1, 5, 2, 1, 0.0, 0.0
+		panel2.add(controlRoundingP,         new GridBagConstraints(1, 5, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		panel2.add(controlRoundingCdescr,     new GridBagConstraints(2, 4, 2, 1, 1.0, 0.0
+		panel2.add(controlRoundingCdescr,       new GridBagConstraints(2, 4, 2, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-		panel2.add(controlRoundingPdescr,        new GridBagConstraints(2, 5, 2, 1, 1.0, 0.0
+		panel2.add(controlRoundingPdescr,          new GridBagConstraints(2, 5, 2, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-		panel2.add(labelRoundingCostsCode,     new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
-							,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		panel2.add(labelRoundingProAccCode,       new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+		panel2.add(labelRoundingCostsCode,       new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		panel2.add(controlRoundingC,     new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
-							,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		panel2.add(labelRoundingProAccCode,         new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		panel2.add(controlRoundingC,       new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
 
 
-    panel2.add(labelAfternoonStartHour,                 new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
+    panel2.add(labelAfternoonStartHour,                   new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
-    panel2.add(controlAfternoonStartHour,               new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0
+    panel2.add(controlAfternoonStartHour,                 new GridBagConstraints(1, 7, 1, 2, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
+    panel2.add(controlAfternoonEndHour,               new GridBagConstraints(3, 7, 1, 3, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlAfternoonEndHour,             new GridBagConstraints(3, 7, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(labelMorningStartHour,           new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
+    panel2.add(labelMorningStartHour,             new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlMorningEndHour,         new GridBagConstraints(3, 6, 1, 1, 0.0, 0.0
+    panel2.add(controlMorningEndHour,           new GridBagConstraints(3, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlMorningStartHour,      new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0
+    panel2.add(controlMorningStartHour,          new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(labelMorningEndHour,       new GridBagConstraints(2, 6, 1, 1, 0.0, 0.0
+    panel2.add(labelMorningEndHour,         new GridBagConstraints(2, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 9, 5), 0, 0));
-    panel2.add(labelAfternoonEndHour,     new GridBagConstraints(2, 7, 1, 1, 0.0, 0.0
+    panel2.add(labelAfternoonEndHour,       new GridBagConstraints(2, 7, 1, 3, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlSaleSectional,     new GridBagConstraints(1, 8, 2, 1, 0.0, 0.0
+    panel2.add(controlSaleSectional,         new GridBagConstraints(1, 10, 2, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(labelSaleSectional,   new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0
+    panel2.add(labelSaleSectional,     new GridBagConstraints(0, 10, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(labelInitialVal,   new GridBagConstraints(0, 9, 1, 1, 0.0, 1.0
+    panel2.add(labelInitialVal,     new GridBagConstraints(0, 11, 1, 1, 0.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlInitialVal,  new GridBagConstraints(1, 9, 1, 1, 0.0, 0.0
+    panel2.add(controlInitialVal,    new GridBagConstraints(1, 11, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
     controlCreditsCode.setAttributeName("creditAccountCodeAcc02SAL07");

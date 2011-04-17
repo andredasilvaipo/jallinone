@@ -1,4 +1,18 @@
 
+Release Notes 2.7.7
+-------------------
+
+Improved the usage of combo columns/controls, by presetting the last selected item in insert mode.
+Fixed problem with Sales Pivot table when adding row conditions.
+Fixed formatting issue in expirations selection grid, within the payments window.
+Improved all windows having a currency lookup: now is prefilled in insert with the default currency defined at company level.
+Improved all windows having a currency columns: now these columns always format numbers according to the related currency.
+Fixed problem on defining working hours with SQLServer database.
+Inserted some threads, in order to better decouple the opening of detail window from the parent grid and the whole application.
+Removed calendar button for time columns/controls.
+Includes 2.4.2 version of OpenSwing.
+
+
 Release Notes 2.7.6
 -------------------
 

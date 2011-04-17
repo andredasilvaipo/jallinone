@@ -84,7 +84,7 @@ public class SupplierItemPricesPanel extends JPanel {
   NavigatorBar navigatorBar1 = new NavigatorBar();
   CodLookupColumn colSupplierCode = new CodLookupColumn();
   TextColumn colSupplierDescr = new TextColumn();
-  DecimalColumn colValue = new DecimalColumn();
+  CurrencyColumn colValue = new CurrencyColumn();
   DateColumn colStartDate = new DateColumn();
   DateColumn colEndDate = new DateColumn();
   CodLookupColumn colPricelistCode = new CodLookupColumn();
@@ -94,6 +94,7 @@ public class SupplierItemPricesPanel extends JPanel {
   LookupServerDataLocator pricelistDataLocator = new LookupServerDataLocator();
   LookupController supplierController = new LookupController();
   LookupServerDataLocator supplierDataLocator = new LookupServerDataLocator();
+	private ItemPricesGridCurrencySettings currSettings = new ItemPricesGridCurrencySettings();
 
 
   /** prices grid data locator */
@@ -246,7 +247,9 @@ public class SupplierItemPricesPanel extends JPanel {
     pricesGrid.setReloadButton(reloadButton1);
     pricesGrid.setSaveButton(saveButton1);
     pricesGrid.setValueObjectClassName("org.jallinone.purchases.pricelist.java.SupplierPriceVO");
-    colValue.setDecimals(5);
+//    colValue.setDecimals(5);
+		colValue.setDynamicSettings(currSettings);
+
     colValue.setMinValue(0.0);
     colValue.setColumnDuplicable(true);
     colValue.setColumnFilterable(true);
@@ -308,6 +311,42 @@ public class SupplierItemPricesPanel extends JPanel {
     return frame;
   }
 
+
+		class ItemPricesGridCurrencySettings implements CurrencyColumnSettings {
+
+			public double getMaxValue(int row) {
+				return Double.MAX_VALUE;
+			}
+
+			public double getMinValue(int row) {
+				return 0.0;
+			}
+
+
+			public boolean isGrouping(int row) {
+				return true;
+			}
+
+
+			public int getDecimals(int row) {
+				SupplierPriceVO vo = (SupplierPriceVO)pricesGrid.getVOListTableModel().getObjectForRow(pricesGrid.getSelectedRow());
+				if (vo!=null && vo.getDecimalsREG03()!=null)
+					return vo.getDecimalsREG03().intValue();
+				else
+					return 0;
+			}
+
+
+			public String getCurrencySymbol(int row) {
+				SupplierPriceVO vo = (SupplierPriceVO)pricesGrid.getVOListTableModel().getObjectForRow(pricesGrid.getSelectedRow());
+				if (vo!=null && vo.getCurrencySymbolREG03()!=null)
+					return vo.getCurrencySymbolREG03();
+				else
+				return "E";
+			}
+
+
+		}
 
 
 }

@@ -65,6 +65,27 @@ public class HierarCustomerDiscountsController extends CompanyGridController imp
   }
 
 
+		/**
+		 * Callback method invoked when the user has clicked on the insert button
+		 * @param valueObject empty value object just created: the user can manage it to fill some attribute values
+		 */
+		public void createValueObject(ValueObject valueObject) throws Exception {
+			HierarCustomerDiscountVO vo = (HierarCustomerDiscountVO)valueObject;
+
+		  DefaultMutableTreeNode node = frame.getHierarTreePanel().getSelectedNode();
+		  CompanyHierarchyLevelVO levelVO = (CompanyHierarchyLevelVO)node.getUserObject();
+			vo.setCompanyCodeSys01SAL03(levelVO.getCompanySys01HIE01());
+			Response res =	ClientUtils.getData("loadCompany",vo.getCompanyCodeSys01SAL03());
+			if (!res.isError()) {
+				OrganizationVO compVO = (OrganizationVO)((VOResponse)res).getVo();
+				if (compVO.getCurrencyCodeReg03()!=null && !compVO.getCurrencyCodeReg03().equals("")) {
+					vo.setCurrencyCodeReg03SAL03(compVO.getCurrencyCodeReg03());
+					frame.getColCurrencyCode().forceValidate(frame.getGrid().getSelectedRow()==-1?0:frame.getGrid().getSelectedRow());
+				}
+			}
+		}
+
+
   /**
    * Validate min/max values/percentages and dates.
    */

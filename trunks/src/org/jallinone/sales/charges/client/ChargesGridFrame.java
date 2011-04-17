@@ -14,6 +14,14 @@ import java.math.BigDecimal;
 import org.jallinone.commons.client.*;
 import org.openswing.swing.lookup.client.LookupController;
 import org.openswing.swing.lookup.client.LookupServerDataLocator;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
+import org.jallinone.sales.charges.java.ChargeVO;
+import org.openswing.swing.message.receive.java.Response;
+import org.jallinone.subjects.java.OrganizationVO;
+import org.openswing.swing.util.client.ClientUtils;
+import org.openswing.swing.util.java.Consts;
+import org.openswing.swing.message.receive.java.VOResponse;
 
 
 /**
@@ -62,7 +70,7 @@ public class ChargesGridFrame extends InternalFrame {
   TextColumn colCharge = new TextColumn();
   TextColumn colDescr = new TextColumn();
   ExportButton exportButton = new ExportButton();
-  DecimalColumn colValue = new DecimalColumn();
+  CurrencyColumn colValue = new CurrencyColumn();
   DecimalColumn colPerc = new DecimalColumn();
   CodLookupColumn colCurrencyCod = new CodLookupColumn();
   CodLookupColumn colVatCode = new CodLookupColumn();
@@ -76,6 +84,7 @@ public class ChargesGridFrame extends InternalFrame {
   LookupController vatController = new LookupController();
   LookupServerDataLocator vatDataLocator = new LookupServerDataLocator();
   DecimalColumn colVatDeductible = new DecimalColumn();
+	private ItemPricesGridCurrencySettings currSettings = new ItemPricesGridCurrencySettings();
 
 
   public ChargesGridFrame(GridController controller) {
@@ -97,9 +106,12 @@ public class ChargesGridFrame extends InternalFrame {
       currencyController.setFrameTitle("currencies");
       currencyController.setLookupValueObjectClassName("org.jallinone.registers.currency.java.CurrencyVO");
       currencyController.addLookup2ParentLink("currencyCodeREG03", "currencyCodeReg03SAL06");
+			currencyController.addLookup2ParentLink("currencySymbolREG03", "currencySymbolREG03");
+			currencyController.addLookup2ParentLink("decimalsREG03", "decimalsREG03");
       currencyController.setAllColumnVisible(false);
       currencyController.setVisibleColumn("currencyCodeREG03", true);
       currencyController.setVisibleColumn("currencySymbolREG03", true);
+			currencyController.setVisibleColumn("decimalsREG03", true);
       new CustomizedColumns(new BigDecimal(182),currencyController);
 
       // lookup vat...
@@ -169,8 +181,9 @@ public class ChargesGridFrame extends InternalFrame {
     colDescr.setEditableOnEdit(true);
     colDescr.setEditableOnInsert(true);
     colDescr.setHeaderColumnName("chargeDescription");
-    colDescr.setPreferredWidth(190);
-    colValue.setDecimals(5);
+    colDescr.setPreferredWidth(160);
+//    colValue.setDecimals(5);
+		colValue.setDynamicSettings(currSettings);
     colValue.setMinValue(0.0);
     colValue.setColumnDuplicable(true);
     colValue.setColumnFilterable(true);
@@ -258,8 +271,59 @@ public class ChargesGridFrame extends InternalFrame {
     grid.getColumnContainer().add(colVatValue, null);
     grid.getColumnContainer().add(colVatDeductible, null);
   }
+
+
   public GridControl getGrid() {
     return grid;
   }
+
+
+  public CodLookupColumn getColCurrencyCod() {
+    return colCurrencyCod;
+  }
+
+
+  public CompaniesComboColumn getColCompanycode() {
+    return colCompanycode;
+  }
+
+
+
+		class ItemPricesGridCurrencySettings implements CurrencyColumnSettings {
+
+			public double getMaxValue(int row) {
+				return Double.MAX_VALUE;
+			}
+
+			public double getMinValue(int row) {
+				return 0.0;
+			}
+
+
+			public boolean isGrouping(int row) {
+				return true;
+			}
+
+
+			public int getDecimals(int row) {
+				ChargeVO vo = (ChargeVO)grid.getVOListTableModel().getObjectForRow(grid.getSelectedRow());
+				if (vo!=null && vo.getDecimalsREG03()!=null)
+					return vo.getDecimalsREG03().intValue();
+				else
+					return 0;
+			}
+
+
+			public String getCurrencySymbol(int row) {
+				ChargeVO vo = (ChargeVO)grid.getVOListTableModel().getObjectForRow(grid.getSelectedRow());
+				if (vo!=null && vo.getCurrencySymbolREG03()!=null)
+					return vo.getCurrencySymbolREG03();
+				else
+				return "E";
+			}
+
+
+		}
+
 
 }

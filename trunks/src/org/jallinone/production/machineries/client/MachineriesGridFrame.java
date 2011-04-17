@@ -15,6 +15,7 @@ import org.jallinone.commons.client.*;
 import org.jallinone.commons.java.ApplicationConsts;
 import org.openswing.swing.lookup.client.LookupController;
 import org.openswing.swing.lookup.client.LookupServerDataLocator;
+import org.jallinone.production.machineries.java.MachineryVO;
 
 
 /**
@@ -65,11 +66,12 @@ public class MachineriesGridFrame extends InternalFrame {
   ExportButton exportButton = new ExportButton();
   CompaniesComboColumn colCompany = new CompaniesComboColumn();
   CodLookupColumn colCurrency = new CodLookupColumn();
-  DecimalColumn colValue = new DecimalColumn();
+  CurrencyColumn colValue = new CurrencyColumn();
   DecimalColumn colDuration = new DecimalColumn();
   CheckBoxColumn colFiniteCap = new CheckBoxColumn();
   LookupController currencyController = new LookupController();
   LookupServerDataLocator currencyDataLocator = new LookupServerDataLocator();
+	private ItemPricesGridCurrencySettings currSettings = new ItemPricesGridCurrencySettings();
 
 
   public MachineriesGridFrame(GridController controller) {
@@ -90,6 +92,8 @@ public class MachineriesGridFrame extends InternalFrame {
       currencyController.setFrameTitle("currencies");
       currencyController.setLookupValueObjectClassName("org.jallinone.registers.currency.java.CurrencyVO");
       currencyController.addLookup2ParentLink("currencyCodeREG03", "currencyCodeReg03PRO03");
+			currencyController.addLookup2ParentLink("currencySymbolREG03", "currencySymbolREG03");
+			currencyController.addLookup2ParentLink("decimalsREG03", "decimalsREG03");
       currencyController.setAllColumnVisible(false);
       currencyController.setVisibleColumn("currencyCodeREG03", true);
       currencyController.setVisibleColumn("currencySymbolREG03", true);
@@ -141,7 +145,7 @@ public class MachineriesGridFrame extends InternalFrame {
     colDescr.setEditableOnEdit(true);
     colDescr.setEditableOnInsert(true);
     colDescr.setHeaderColumnName("machineryDescription");
-    colDescr.setPreferredWidth(250);
+    colDescr.setPreferredWidth(200);
     colCompany.setColumnName("companyCodeSys01PRO03");
     colCompany.setFunctionCode("PRO03");
     colCompany.setEditableOnEdit(false);
@@ -151,7 +155,9 @@ public class MachineriesGridFrame extends InternalFrame {
     colCurrency.setEditableOnInsert(true);
     colValue.setColumnName("valuePRO03");
     colValue.setEditableOnEdit(true);
+		colValue.setDynamicSettings(currSettings);
     colValue.setEditableOnInsert(true);
+    colValue.setPreferredWidth(70);
     colDuration.setColumnName("durationPRO03");
     colDuration.setEditableOnEdit(true);
     colDuration.setEditableOnInsert(true);
@@ -176,5 +182,52 @@ public class MachineriesGridFrame extends InternalFrame {
     grid.getColumnContainer().add(colDuration, null);
     grid.getColumnContainer().add(colFiniteCap, null);
   }
+
+
+  public CodLookupColumn getColCurrency() {
+    return colCurrency;
+  }
+
+
+  public GridControl getGrid() {
+    return grid;
+  }
+
+
+	class ItemPricesGridCurrencySettings implements CurrencyColumnSettings {
+
+	public double getMaxValue(int row) {
+		return Double.MAX_VALUE;
+	}
+
+	public double getMinValue(int row) {
+		return 0.0;
+	}
+
+
+	public boolean isGrouping(int row) {
+		return true;
+	}
+
+
+	public int getDecimals(int row) {
+		MachineryVO vo = (MachineryVO)grid.getVOListTableModel().getObjectForRow(grid.getSelectedRow());
+		if (vo!=null && vo.getDecimalsREG03()!=null)
+			return vo.getDecimalsREG03().intValue();
+		else
+			return 0;
+	}
+
+
+	public String getCurrencySymbol(int row) {
+		MachineryVO vo = (MachineryVO)grid.getVOListTableModel().getObjectForRow(grid.getSelectedRow());
+		if (vo!=null && vo.getCurrencySymbolREG03()!=null)
+			return vo.getCurrencySymbolREG03();
+		else
+		return "E";
+	}
+
+}
+
 
 }

@@ -10,6 +10,7 @@ import org.openswing.swing.util.client.ClientUtils;
 import org.jallinone.production.machineries.java.*;
 import java.math.BigDecimal;
 import javax.swing.*;
+import org.jallinone.subjects.java.OrganizationVO;
 
 
 /**
@@ -85,6 +86,35 @@ public class MachineriesController extends GridController {
     return ClientUtils.getData("deleteMachineries",persistentObjects);
   }
 
+
+		/**
+		 * Callback method invoked each time a cell is edited: this method define if the new value is valid.
+		 * This method is invoked ONLY if:
+		 * - the edited value is not equals to the old value OR it has exmplicitely called setCellAt or setValueAt
+		 * - the cell is editable
+		 * Default behaviour: cell value is valid.
+		 * @param rowNumber selected row index
+		 * @param attributeName attribute name related to the column currently selected
+		 * @param oldValue old cell value (before cell editing)
+		 * @param newValue new cell value (just edited)
+		 * @return <code>true</code> if cell value is valid, <code>false</code> otherwise
+		 */
+		public boolean validateCell(int rowNumber,String attributeName,Object oldValue,Object newValue) {
+			MachineryVO pvo = (MachineryVO)gridFrame.getGrid().getVOListTableModel().getObjectForRow(rowNumber);
+			if (attributeName.equals("companyCodeSys01PRO03") && newValue!=null) {
+				pvo.setCompanyCodeSys01PRO03(newValue.toString());
+				Response res =	ClientUtils.getData("loadCompany",pvo.getCompanyCodeSys01PRO03());
+				if (!res.isError()) {
+					OrganizationVO compVO = (OrganizationVO)((VOResponse)res).getVo();
+					if (compVO.getCurrencyCodeReg03()!=null && !compVO.getCurrencyCodeReg03().equals("")) {
+						pvo.setCurrencyCodeReg03PRO03(compVO.getCurrencyCodeReg03());
+						gridFrame.getColCurrency().forceValidate(rowNumber);
+					}
+				}
+			}
+
+			return true;
+		}
 
 
 

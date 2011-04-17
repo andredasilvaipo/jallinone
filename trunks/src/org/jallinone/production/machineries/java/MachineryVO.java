@@ -1,6 +1,7 @@
 package org.jallinone.production.machineries.java;
 
 import org.jallinone.system.customizations.java.BaseValueObject;
+import java.math.BigDecimal;
 
 
 /**
@@ -42,6 +43,8 @@ public class MachineryVO extends BaseValueObject {
   private java.math.BigDecimal progressiveSys10PRO03;
   private java.math.BigDecimal valuePRO03;
   private java.math.BigDecimal durationPRO03;
+	private String currencySymbolREG03;
+	private BigDecimal decimalsREG03;
 
 
   public MachineryVO() {
@@ -101,6 +104,18 @@ public class MachineryVO extends BaseValueObject {
   }
   public void setDurationPRO03(java.math.BigDecimal durationPRO03) {
     this.durationPRO03 = durationPRO03;
+  }
+  public String getCurrencySymbolREG03() {
+    return currencySymbolREG03;
+  }
+  public BigDecimal getDecimalsREG03() {
+    return decimalsREG03;
+  }
+  public void setCurrencySymbolREG03(String currencySymbolREG03) {
+    this.currencySymbolREG03 = currencySymbolREG03;
+  }
+  public void setDecimalsREG03(BigDecimal decimalsREG03) {
+    this.decimalsREG03 = decimalsREG03;
   }
 
 }
