@@ -154,7 +154,7 @@ public class CustomFunctionFrame extends InternalFrame {
 
         public void beforeLookupAction(ValueObject parentVO) {
           CustomFunctionVO vo = (CustomFunctionVO)parentVO;
-          treeLevelPosDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE02,new BigDecimal(2));  // tree menu hierarchy identifier...
+          treeLevelPosDataLocator.getTreeNodeParams().put(ApplicationConsts.PROGRESSIVE_HIE04,new BigDecimal(2));  // tree menu hierarchy identifier...
         }
 
         public void forceValidate() {}

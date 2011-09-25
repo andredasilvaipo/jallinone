@@ -168,7 +168,8 @@ public class SupplierItemPricesController extends CompanyGridController {
     if (attributeName.equals("pricelistCodePur03PUR04") &&
         ((SupplierPriceVO)grid.getVOListTableModel().getObjectForRow(row)).getSupplierCodePUR01()==null)
       return false;
-
+		if (attributeName.equals("valuePUR04") && ((SupplierPriceVO)grid.getVOListTableModel().getObjectForRow(row)).getPricelistCodePur03PUR04()==null)
+				return false;
     return ok;
   }
 

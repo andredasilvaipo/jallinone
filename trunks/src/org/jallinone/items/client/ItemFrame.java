@@ -1310,7 +1310,7 @@ public class ItemFrame extends InternalFrame {
     tab.repaint();
     repaint();
 
-//    colValue.setDecimals(5);
+    colValue.setDecimals(5);
 		colValue.setDynamicSettings(currSettings);
 
     colValue.setMinValue(0.0);
@@ -1618,23 +1618,37 @@ public class ItemFrame extends InternalFrame {
 
 
 		public int getDecimals(int row) {
-			PriceVO vo = (PriceVO)pricesGrid.getVOListTableModel().getObjectForRow(pricesGrid.getSelectedRow());
-			if (vo!=null && vo.getDecimalsREG03()!=null)
-				return vo.getDecimalsREG03().intValue();
-			else
+			try {
+				PriceVO vo = (PriceVO) pricesGrid.getVOListTableModel().getObjectForRow(
+					pricesGrid.getSelectedRow());
+				if (vo != null && vo.getDecimalsREG03() != null) {
+					return vo.getDecimalsREG03().intValue();
+				}
+				else {
+					return 0;
+				}
+			}
+			catch (Exception ex) {
 				return 0;
+			}
 		}
 
 
 		public String getCurrencySymbol(int row) {
-			PriceVO vo = (PriceVO)pricesGrid.getVOListTableModel().getObjectForRow(pricesGrid.getSelectedRow());
-			if (vo!=null && vo.getCurrencySymbolREG03()!=null)
-				return vo.getCurrencySymbolREG03();
-			else
-			return "E";
+			try {
+				PriceVO vo = (PriceVO) pricesGrid.getVOListTableModel().getObjectForRow(
+					pricesGrid.getSelectedRow());
+				if (vo != null && vo.getCurrencySymbolREG03() != null) {
+					return vo.getCurrencySymbolREG03();
+				}
+				else {
+					return "E";
+				}
+			}
+			catch (Exception ex) {
+				return "E";
+			}
 		}
-
-
 	}
 
 
