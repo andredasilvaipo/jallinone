@@ -1,4 +1,13 @@
 
+Release Notes 2.7.8
+-------------------
+
+Fixed problem when inserting prices in the item detail.
+Improved currency formatting in prices grids on item detail.
+Fixed a problem in Custom Functions, when viewing app menu in lookup.
+Includes 2.4.3 version of OpenSwing.
+
+
 Release Notes 2.7.7
 -------------------
 

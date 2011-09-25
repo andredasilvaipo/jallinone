@@ -165,7 +165,12 @@ public class SupplierItemPricesPanel extends JPanel {
 
         public void codeValidated(boolean validated) {}
 
-        public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {}
+        public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) {
+					SupplierPriceVO priceVO = (SupplierPriceVO)parentVO;
+					SupplierPricelistVO lookupVO = (SupplierPricelistVO)pricelistController.getLookupVO();
+					priceVO.setCurrencySymbolREG03(lookupVO.getCurrencySymbolREG03());
+					priceVO.setDecimalsREG03(lookupVO.getDecimalsREG03());
+				}
 
         public void beforeLookupAction(ValueObject parentVO) {
           SupplierPriceVO priceVO = (SupplierPriceVO)parentVO;
@@ -329,7 +334,7 @@ public class SupplierItemPricesPanel extends JPanel {
 
 
 			public int getDecimals(int row) {
-				SupplierPriceVO vo = (SupplierPriceVO)pricesGrid.getVOListTableModel().getObjectForRow(pricesGrid.getSelectedRow());
+				SupplierPriceVO vo = (SupplierPriceVO)pricesGrid.getVOListTableModel().getObjectForRow(row);
 				if (vo!=null && vo.getDecimalsREG03()!=null)
 					return vo.getDecimalsREG03().intValue();
 				else
@@ -338,7 +343,7 @@ public class SupplierItemPricesPanel extends JPanel {
 
 
 			public String getCurrencySymbol(int row) {
-				SupplierPriceVO vo = (SupplierPriceVO)pricesGrid.getVOListTableModel().getObjectForRow(pricesGrid.getSelectedRow());
+				SupplierPriceVO vo = (SupplierPriceVO)pricesGrid.getVOListTableModel().getObjectForRow(row);
 				if (vo!=null && vo.getCurrencySymbolREG03()!=null)
 					return vo.getCurrencySymbolREG03();
 				else

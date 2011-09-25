@@ -17,6 +17,7 @@ import org.jallinone.commons.client.CustomizedControls;
 import org.openswing.swing.util.java.Consts;
 import java.awt.event.*;
 import javax.swing.text.MaskFormatter;
+import java.text.*;
 
 
 /**
@@ -208,10 +209,10 @@ public class BanksFrame extends InternalFrame {
 
     MaskFormatter mask1 = new MaskFormatter("AAAA AAAA AAA* **** **** **** **** **");
 //    mask1.setPlaceholderCharacter(' ');
- 
+
     MaskFormatter mask2 = new MaskFormatter("AAAA AAAA AAAA AAA* **** **** **** **** **");
 //    mask2.setPlaceholderCharacter(' ');
-    
+
 //    MaskFormatter mask1 = new MaskFormatter("A AAAAA AAAAA AAAAAAAAAAAA");
     controlBban.setFormatter(mask1);
     controlBban.addFocusListener(new BanksFrame_controlBban_focusAdapter(this));
@@ -335,6 +336,7 @@ public class BanksFrame extends InternalFrame {
   void controlIban_focusLost(FocusEvent e) {
     controlIban.setText(controlIban.getText().toUpperCase());
   }
+
 
 
 
