@@ -91,6 +91,8 @@ public class DebugClientApplication extends ClientApplet {
       props.put("logoString", "JAllInOne");
       props.put("backgroundColor", "232 232 232");
       String color = "220 220 220";
+			props.put("selectionBackgroundColor", color);
+			props.put("menuSelectionBackgroundColor", color);
       props.put("disabledBackgroundColor", color);
       props.put("systemTextFont", "Arial PLAIN 11");
       props.put("controlTextFont", "Arial PLAIN 11");

@@ -276,58 +276,21 @@ public class ItemFrame extends InternalFrame {
       tab.addChangeListener(new ChangeListener() {
 
         public void stateChanged(ChangeEvent e) {
-//          if (tab.getSelectedIndex()==8) {
-          if (tab.getSelectedComponent() != null
-                  && tab.getSelectedComponent().equals(getItemVariantsPanel())) {
-            DetailItemVO vo = (DetailItemVO) formPanel.getVOModel().getValueObject();
-            getItemVariantsPanel().setContent(vo, getVariantsNames());
-            getItemVariantsPanel().revalidate();
-            getItemVariantsPanel().repaint();
-          } //          else if (tab.getSelectedIndex()==9) {
-          else if (tab.getSelectedComponent() != null
-                  && tab.getSelectedComponent().equals(getVariantBarcodesPanel())) {
-            getVariantBarcodesPanel().setItem(formPanel);
-            getVariantBarcodesPanel().revalidate();
-            getVariantBarcodesPanel().repaint();
-          } else if (tab.getSelectedComponent() != null
-                  && tab.getSelectedComponent().equals(getVariantMinStockPanel())) {
-            //else if (tab.getSelectedIndex()==10) {
-            getVariantMinStockPanel().setItem(formPanel);
-            getVariantMinStockPanel().revalidate();
-            getVariantMinStockPanel().repaint();
-          } else if (customizedControls != null
-                  && tab.getSelectedComponent() != null
-                  && tab.getSelectedComponent().equals(customizedControls)) {
-            customizedControls.setContent();
-            customizedControls.revalidate();
-            customizedControls.repaint();
-          } else if (tab.getSelectedComponent() != null
-                  && tab.getSelectedComponent().equals(discountsPanel)) {
-            discountsGrid.reloadData();
-          } else if (tab.getSelectedComponent() != null
-                  && tab.getSelectedComponent().equals(pricesSplit)) {
-            supplierPrices.getPricesGrid().reloadData();
-            pricesGrid.reloadData();
-          } else if (tab.getSelectedComponent() != null
-                  && tab.getSelectedComponent().equals(docsPanel)) {
-            docsPanel.getDocsGrid().reloadData();
-          } else if (tab.getSelectedComponent() != null
-                  && tab.getSelectedComponent().equals(bookedItemsPanel)) {
-            bookedItemsPanel.getGrid().reloadData();
-          } else if (tab.getSelectedComponent() != null
-                  && tab.getSelectedComponent().equals(orderedItemsPanel)) {
-            orderedItemsPanel.getGrid().reloadData();
-          } else if (tab.getSelectedComponent() != null
-                  && tab.getSelectedComponent().equals(billOfMaterialsPanel)) {
-            bomTabbedPane.getAltCompsGrid().reloadData();
-            bomTabbedPane.getComponentsGrid().reloadData();
-          } else if (tab.getSelectedComponent() != null
-						     	&& tab.getSelectedComponent().equals(itemSparePartsPanel)) {
-						DetailItemVO vo = (DetailItemVO) formPanel.getVOModel().getValueObject();
-						itemSparePartsPanel.init(vo,false);
-				   }
+					SwingUtilities.invokeLater(new Runnable() {
+
+						public void run() {
+							try {
+								tabChanged();
+							}
+							catch (Throwable ex) {
+								ex.printStackTrace();
+							}
+						}
+
+					});
 
         }
+
       });
 
       discountsGrid.setAutoLoadData(false);
@@ -678,6 +641,60 @@ public class ItemFrame extends InternalFrame {
     } // end if on res.isError (variants...)
   }
 
+
+	private void tabChanged() {
+		if (tab.getSelectedComponent() != null
+						&& tab.getSelectedComponent().equals(getItemVariantsPanel())) {
+			DetailItemVO vo = (DetailItemVO) formPanel.getVOModel().getValueObject();
+			getItemVariantsPanel().setContent(vo, getVariantsNames());
+			getItemVariantsPanel().revalidate();
+			getItemVariantsPanel().repaint();
+		}
+		else if (tab.getSelectedComponent() != null
+						&& tab.getSelectedComponent().equals(getVariantBarcodesPanel())) {
+			getVariantBarcodesPanel().setItem(formPanel);
+			getVariantBarcodesPanel().revalidate();
+			getVariantBarcodesPanel().repaint();
+		} else if (tab.getSelectedComponent() != null
+						&& tab.getSelectedComponent().equals(getVariantMinStockPanel())) {
+			getVariantMinStockPanel().setItem(formPanel);
+			getVariantMinStockPanel().revalidate();
+			getVariantMinStockPanel().repaint();
+		} else if (customizedControls != null
+						&& tab.getSelectedComponent() != null
+						&& tab.getSelectedComponent().equals(customizedControls)) {
+			customizedControls.setContent();
+			customizedControls.revalidate();
+			customizedControls.repaint();
+		} else if (tab.getSelectedComponent() != null
+						&& tab.getSelectedComponent().equals(discountsPanel)) {
+			discountsGrid.reloadData();
+		} else if (tab.getSelectedComponent() != null
+						&& tab.getSelectedComponent().equals(pricesSplit)) {
+			supplierPrices.getPricesGrid().reloadData();
+			pricesGrid.reloadData();
+		} else if (tab.getSelectedComponent() != null
+						&& tab.getSelectedComponent().equals(docsPanel)) {
+			docsPanel.getDocsGrid().reloadData();
+		} else if (tab.getSelectedComponent() != null
+						&& tab.getSelectedComponent().equals(bookedItemsPanel)) {
+			bookedItemsPanel.getGrid().reloadData();
+		} else if (tab.getSelectedComponent() != null
+						&& tab.getSelectedComponent().equals(orderedItemsPanel)) {
+			orderedItemsPanel.getGrid().reloadData();
+		} else if (tab.getSelectedComponent() != null
+						&& tab.getSelectedComponent().equals(billOfMaterialsPanel)) {
+			bomTabbedPane.getAltCompsGrid().reloadData();
+			bomTabbedPane.getComponentsGrid().reloadData();
+		} else if (tab.getSelectedComponent() != null
+						 && tab.getSelectedComponent().equals(itemSparePartsPanel)) {
+			DetailItemVO vo = (DetailItemVO) formPanel.getVOModel().getValueObject();
+			itemSparePartsPanel.init(vo,false);
+		 }
+	}
+
+
+
   public final Domain getItemTypes() {
     return d;
   }
@@ -690,10 +707,7 @@ public class ItemFrame extends InternalFrame {
    * Callback method called when the data loading is completed.
    * @param error <code>true</code> if an error occours during data loading, <code>false</code> if data loading is successfully completed
    */
-  public final void loadDataCompleted(boolean error, ItemPK pk) {
-    if (error) {
-      return;
-    }
+  public final void loadDataCompleted(ItemPK pk) {
 
     DetailItemVO vo = (DetailItemVO) formPanel.getVOModel().getValueObject();
     controlMinSellQty.setDecimals(vo.getMinSellingQtyDecimalsREG02().intValue());
@@ -745,10 +759,34 @@ public class ItemFrame extends InternalFrame {
     getDocsPanel().getDocsGrid().getOtherGridParams().put(ApplicationConsts.ITEM_PK, pk);
     getDocsPanel().getDocsGrid().reloadData();
 
-    getBomTabbedPane().loadDataCompleted(error, pk);
+    getBomTabbedPane().loadDataCompleted(true, pk);
 
     setBarcodeControl();
     setMinStockControl();
+
+		getBomTabbedPane().getComponentsGrid().getOtherGridParams().put(
+				ApplicationConsts.ITEM_PK,
+				pk
+		);
+		getBomTabbedPane().getExplosionPanel().getTreeDataLocator().getTreeNodeParams().put(
+				ApplicationConsts.ITEM_PK,
+				pk
+		);
+		getBomTabbedPane().getImplosionPanel().getTreeDataLocator().getTreeNodeParams().put(
+				ApplicationConsts.ITEM_PK,
+				pk
+		);
+		getBomTabbedPane().getAltCompsGrid().getOtherGridParams().put(
+				ApplicationConsts.ITEM_PK,
+				pk
+		);
+		getBomTabbedPane().getComponentsGrid().reloadData();
+		getBomTabbedPane().getExplosionPanel().reloadTree();
+		getBomTabbedPane().getImplosionPanel().reloadTree();
+		getBomTabbedPane().getAltCompsGrid().reloadData();
+		getBomTabbedPane().setCompButtonsEnabled(true);
+		getBomTabbedPane().setAltButtonsEnabled(true);
+
 
     if (vo.getLastPurchaseCostDecimals() != null) {
       controlLastPurCost.setDecimals(vo.getLastPurchaseCostDecimals().intValue());

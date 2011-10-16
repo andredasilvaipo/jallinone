@@ -1027,6 +1027,8 @@ public class BillOfMaterialsBean implements BillOfMaterials  {
 		pstmt.setString(11,vo.getTotalPrices()==null?null:format.format(vo.getTotalPrices().doubleValue()));
 		pstmt.setString(12,vo.getValuePRO02()==null?null:format.format(vo.getValuePRO02().doubleValue()));
 		pstmt.setString(13,vo.getTotalCosts()==null?null:format.format(vo.getTotalCosts().doubleValue()));
+		pstmt.setString(14,username);
+		pstmt.setTimestamp(15,new java.sql.Timestamp(System.currentTimeMillis()));
 		pstmt.execute();
 
 		progressive++;

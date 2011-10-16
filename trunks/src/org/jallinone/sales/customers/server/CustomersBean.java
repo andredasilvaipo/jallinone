@@ -326,7 +326,6 @@ public class CustomersBean  implements Customers {
         if (vo.getBankCodeReg12SAL07()!=null) {
           ResultSet rset = stmt.executeQuery(
             "select DESCRIPTION from REG12_BANKS where "+
-            "REG12_BANKS.COMPANY_CODE_SYS01='"+vo.getCompanyCodeSys01REG04()+"' and "+
             "REG12_BANKS.BANK_CODE='"+vo.getBankCodeReg12SAL07()+"'"
           );
           if (rset.next())

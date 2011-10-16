@@ -250,6 +250,8 @@ public class OperationsGridFrame extends InternalFrame implements CurrencyColumn
     opButtonsPanel.add(exportButton1, null);
     opPanel.add(operationsGridControl,  BorderLayout.CENTER);
     colCompanyCode.setColumnName("companyCodeSys01PRO04");
+		colCompanyCode.setEditableOnEdit(false);
+		colCompanyCode.setEditableOnInsert(true);
     colCompanyCode.setFunctionCode("PRO04");
     operationsGridControl.getColumnContainer().add(colCompanyCode, null);
     operationsGridControl.getColumnContainer().add(colOpCod, null);

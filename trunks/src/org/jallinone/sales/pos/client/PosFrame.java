@@ -41,6 +41,7 @@ import org.jallinone.sales.documents.invoices.client.SaleInvoiceDocFromSaleDocCo
 import org.openswing.swing.client.MultiLineLabelControl;
 import org.jallinone.sales.documents.java.ItemSoldToOtherCustomersVO;
 import org.jallinone.sales.pricelist.java.VariantsPriceVO;
+import org.openswing.swing.table.client.GridController;
 
 
 /**
@@ -237,6 +238,38 @@ public class PosFrame extends JFrame {
 		controlCustomer.setValue(customerCode);
 		controlW.setValue(warehouseCode);
 
+		grid.setController(new GridController() {
+
+  	/**
+		 * Callback method invoked when the data loading is completed.
+		 * @param error <code>true</code> if data loading has terminated with errors, <code>false</code> otherwise
+		 */
+		public void loadDataCompleted(boolean error) {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!controlBarcode.hasFocus())
+						controlBarcode.requestFocus();
+				}
+			});
+		}
+
+		/**
+		 * Callback method invoked when a grid cell is selected.
+		 * @param rowNumber selected row index
+		 * @param columnIndex column index related to the column currently selected
+		 * @param attributedName attribute name related to the column currently selected
+		 * @param persistentObject v.o. related to the selected row
+		 */
+		public void selectedCell(int rowNumber, int columnIndex, String attributedName, ValueObject persistentObject) {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!controlBarcode.hasFocus())
+						controlBarcode.requestFocus();
+				}
+			});
+		}
+
+		});
 		grid.setGridDataLocator(new GridDataLocator() {
 
 			public Response loadData(int action, int startIndex, Map filteredColumns,
@@ -750,8 +783,12 @@ public class PosFrame extends JFrame {
 
 	private void checkBarcode() {
 		if (controlBarcode.getValue()==null || controlBarcode.getValue().equals("")) {
-			if (!controlBarcode.hasFocus())
-				controlBarcode.requestFocus();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!controlBarcode.hasFocus())
+						controlBarcode.requestFocus();
+				}
+			});
 			return;
 		}
 		try {
@@ -796,8 +833,13 @@ public class PosFrame extends JFrame {
 				addRow(barcodeVO, priceItemVO);
 				controlBarcode.setValue(null);
 			}
-			else if (!controlBarcode.hasFocus())
-				controlBarcode.requestFocus();
+
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!controlBarcode.hasFocus())
+						controlBarcode.requestFocus();
+				}
+			});
 
 		}
 		catch (Exception ex) {
@@ -866,7 +908,7 @@ public class PosFrame extends JFrame {
 		vo.setMinSellingQtyItm01DOC02(priceItemVO.getMinSellingQtyITM01());
 		vo.setMinSellingQtyUmCodeReg02DOC02(priceItemVO.getMinSellingQtyUmCodeReg02ITM01());
 		vo.setProgressiveHie01ITM01(priceItemVO.getProgressiveHie01ITM01());
-		vo.setProgressiveHie02DOC02(warehouseVO.getProgressiveHie02WAR01());
+		vo.setProgressiveHie02DOC02(priceItemVO.getProgressiveHie02ITM01());
 		vo.setQtyDOC02(new BigDecimal(1));
 		vo.setSerialNumbers(sn);
 		vo.setStartDateSal02DOC02(priceItemVO.getStartDateSAL02());
@@ -948,7 +990,12 @@ public class PosFrame extends JFrame {
 			}
 		}.start();
 
-		controlBarcode.requestFocus();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				if (!controlBarcode.hasFocus())
+					controlBarcode.requestFocus();
+			}
+		});
 	}
 
 
@@ -2001,7 +2048,12 @@ public class PosFrame extends JFrame {
 			checkBarcode();
 		else if (controlBarcode.isEnabled() &&
 						!controlBarcode.hasFocus())
-			controlBarcode.requestFocus();
+		 SwingUtilities.invokeLater(new Runnable() {
+			 public void run() {
+				 if (!controlBarcode.hasFocus())
+					 controlBarcode.requestFocus();
+			 }
+		 });
 		else if (controlQty.isVisible() &&
 						 controlQty.getBigDecimal()!=null) {
 			DetailSaleDocRowVO vo = (DetailSaleDocRowVO)grid.getVOListTableModel().getObjectForRow(grid.getSelectedRow());
@@ -2072,7 +2124,12 @@ public class PosFrame extends JFrame {
 			if (value.length()>0)
 				value = value.substring(0,value.length()-1);
 			controlBarcode.setValue(value);
-			controlBarcode.requestFocus();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!controlBarcode.hasFocus())
+						controlBarcode.requestFocus();
+				}
+			});
 		}
 	}
 
@@ -2082,7 +2139,12 @@ public class PosFrame extends JFrame {
 			if (value==null)
 				value = "";
 			controlBarcode.setValue(value+"0");
-			controlBarcode.requestFocus();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!controlBarcode.hasFocus())
+						controlBarcode.requestFocus();
+				}
+			});
 		}
 	}
 
@@ -2092,7 +2154,12 @@ public class PosFrame extends JFrame {
 			if (value==null)
 				value = "";
 			controlBarcode.setValue(value+".");
-			controlBarcode.requestFocus();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!controlBarcode.hasFocus())
+						controlBarcode.requestFocus();
+				}
+			});
 		}
 	}
 
@@ -2104,7 +2171,12 @@ public class PosFrame extends JFrame {
 			if (value==null)
 				value = "";
 			controlBarcode.setValue(value+"1");
-			controlBarcode.requestFocus();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!controlBarcode.hasFocus())
+						controlBarcode.requestFocus();
+				}
+			});
 		}
 	}
 
@@ -2116,7 +2188,12 @@ public class PosFrame extends JFrame {
 			if (value==null)
 				value = "";
 			controlBarcode.setValue(value+"2");
-			controlBarcode.requestFocus();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!controlBarcode.hasFocus())
+						controlBarcode.requestFocus();
+				}
+			});
 		}
 	}
 
@@ -2128,7 +2205,12 @@ public class PosFrame extends JFrame {
 			if (value==null)
 				value = "";
 			controlBarcode.setValue(value+"3");
-			controlBarcode.requestFocus();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!controlBarcode.hasFocus())
+						controlBarcode.requestFocus();
+				}
+			});
 		}
 	}
 
@@ -2140,7 +2222,12 @@ public class PosFrame extends JFrame {
 			if (value==null)
 				value = "";
 			controlBarcode.setValue(value+"4");
-			controlBarcode.requestFocus();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!controlBarcode.hasFocus())
+						controlBarcode.requestFocus();
+				}
+			});
 		}
 	}
 
@@ -2152,7 +2239,12 @@ public class PosFrame extends JFrame {
 			if (value==null)
 				value = "";
 			controlBarcode.setValue(value+"5");
-			controlBarcode.requestFocus();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!controlBarcode.hasFocus())
+						controlBarcode.requestFocus();
+				}
+			});
 		}
 
 	}
@@ -2165,7 +2257,12 @@ public class PosFrame extends JFrame {
 			if (value==null)
 				value = "";
 			controlBarcode.setValue(value+"6");
-			controlBarcode.requestFocus();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!controlBarcode.hasFocus())
+						controlBarcode.requestFocus();
+				}
+			});
 		}
 
 	}
@@ -2178,7 +2275,12 @@ public class PosFrame extends JFrame {
 			if (value==null)
 				value = "";
 			controlBarcode.setValue(value+"7");
-			controlBarcode.requestFocus();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!controlBarcode.hasFocus())
+						controlBarcode.requestFocus();
+				}
+			});
 		}
 
 	}
@@ -2189,7 +2291,12 @@ public class PosFrame extends JFrame {
 			if (value==null)
 				value = "";
 			controlBarcode.setValue(value+"8");
-			controlBarcode.requestFocus();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!controlBarcode.hasFocus())
+						controlBarcode.requestFocus();
+				}
+			});
 		}
 
 	}
@@ -2200,7 +2307,12 @@ public class PosFrame extends JFrame {
 			if (value==null)
 				value = "";
 			controlBarcode.setValue(value+"9");
-			controlBarcode.requestFocus();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					if (!controlBarcode.hasFocus())
+						controlBarcode.requestFocus();
+				}
+			});
 		}
 
 	}

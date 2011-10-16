@@ -1,4 +1,23 @@
 
+Release Notes 2.7.9
+-------------------
+
+Improved item detail opening time and fix problem with navigation bar.
+Resized some windows: warehouse detail.
+Improved focus management in POS frame.
+Changed menu selection background color.
+Fixed problem with SQL selects having fields with () 
+Fixed problem on opening customer detail, when bank is set.
+Fixed problem when saving items in POS: now hierarchy type is correctly set.
+Fixed problem with Pivot table in sales, when adding qty data field.
+Fixed problem on definining the bill of materials in item detail frame.
+Fixed problem when printing the bill of materials, with nested components.
+Fixed problem with manufacturing and operations grids, when multiple companies have been defined.
+Fixed problem with the report related to the production order.
+Includes 2.4.4 version of OpenSwing.
+
+
+
 Release Notes 2.7.8
 -------------------
 

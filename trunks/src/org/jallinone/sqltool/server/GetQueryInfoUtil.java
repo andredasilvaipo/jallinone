@@ -170,7 +170,11 @@ public class GetQueryInfoUtil  {
       ArrayList pks = null;
       while(en.hasMoreElements()) {
         rset.close();
-        stmt.close();
+				try {
+					stmt.close();
+				}
+				catch (Exception ex1) {
+				}
 
         tableName = en.nextElement().toString();
         pks = (ArrayList)tables.get(tableName);

@@ -365,6 +365,8 @@ public class ManufacturesGridFrame extends InternalFrame implements CurrencyColu
     colDescr.setPreferredWidth(200);
     colCompanyCode.setColumnName("companyCodeSys01PRO01");
     colCompanyCode.setFunctionCode("PRO01");
+		colCompanyCode.setEditableOnEdit(false);
+		colCompanyCode.setEditableOnInsert(true);
     colManType.setColumnDuplicable(true);
     colManType.setColumnFilterable(true);
     colManType.setColumnSortable(true);
