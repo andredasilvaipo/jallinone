@@ -189,6 +189,8 @@ public class SalesPivotAction implements Action {
 			  }
 		  if (dataFieldsContainsQty) {
 			  select += ",DOC02_SELLING_ITEMS.QTY ";
+				select = select.replaceAll("DOC01_SELLING.TOTAL","DOC02_SELLING_ITEMS.VALUE");
+				attributesMap.put("totalDOC01","VALUE");
 			  if (!itemAdded && !innerItemAdded) {
 				  from +=
 					  ",DOC02_SELLING_ITEMS ";

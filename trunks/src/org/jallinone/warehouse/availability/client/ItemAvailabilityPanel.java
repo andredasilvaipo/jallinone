@@ -216,7 +216,7 @@ public class ItemAvailabilityPanel extends JPanel {
     colLocationDescription.setColumnFilterable(true);
     colLocationDescription.setColumnName("locationDescriptionSYS10");
     colLocationDescription.setColumnSortable(true);
-    colLocationDescription.setPreferredWidth(120);
+    colLocationDescription.setPreferredWidth(100);
     colItemCode.setColumnFilterable(true);
     colItemCode.setColumnName("itemCodeItm01WAR03");
     colItemCode.setColumnSortable(true);

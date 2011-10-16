@@ -16,6 +16,7 @@ import org.jallinone.commons.java.ApplicationConsts;
 import java.math.BigDecimal;
 import org.jallinone.hierarchies.java.CompanyHierarchyLevelVO;
 import org.openswing.swing.util.client.ClientSettings;
+import javax.swing.SwingUtilities;
 
 
 /**
@@ -134,7 +135,7 @@ public class ItemController extends CompanyFormController {
    // the pk attribute must be recalculated from the grid...
    int row = -1;
 	 if (parentFrame!=null)
-		 parentFrame.getGrid().getSelectedRow();
+		 row = parentFrame.getGrid().getSelectedRow();
    if (row!=-1) {
      GridItemVO gridVO = (GridItemVO)parentFrame.getGrid().getVOListTableModel().getObjectForRow(row);
      pk = new ItemPK(gridVO.getCompanyCodeSys01ITM01(),gridVO.getItemCodeITM01());
@@ -337,7 +338,19 @@ public class ItemController extends CompanyFormController {
    * @param error <code>true</code> if an error occours during data loading, <code>false</code> if data loading is successfully completed
    */
   public void loadDataCompleted(boolean error) {
-    frame.loadDataCompleted(error,pk);
+		if (!error)
+			SwingUtilities.invokeLater(new Runnable() {
+
+				public void run() {
+					try {
+						frame.loadDataCompleted(pk);
+					}
+					catch (Throwable ex) {
+						ex.printStackTrace();
+					}
+				}
+
+			});
   }
   public ItemsFrame getParentFrame() {
     return parentFrame;

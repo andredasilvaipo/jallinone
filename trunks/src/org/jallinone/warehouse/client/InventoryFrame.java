@@ -79,8 +79,8 @@ public class InventoryFrame extends InternalFrame {
   public InventoryFrame() {
     try {
       jbInit();
-      setSize(650,150);
-      setMinimumSize(new Dimension(650,150));
+      setSize(700,150);
+      setMinimumSize(new Dimension(700,150));
 
       // warehouse lookup...
       wareDataLocator.setGridMethodName("loadWarehouses");

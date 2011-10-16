@@ -97,8 +97,10 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
 				ClientSettings.LOOK_AND_FEEL_CLASS_NAME = lookAndFeelClassName; // "com.jtattoo.plaf.aero.McWinLookAndFeel";
       Properties props = new Properties();
       props.put("logoString", "JAllInOne");
+			String color = "220 220 220";
+      props.put("selectionBackgroundColor", color);
+      props.put("menuSelectionBackgroundColor", color);
       props.put("backgroundColor", "232 232 232");
-      String color = "220 220 220";
       props.put("disabledBackgroundColor", color);
       props.put("systemTextFont", "Arial PLAIN 11");
       props.put("controlTextFont", "Arial PLAIN 11");
@@ -596,7 +598,7 @@ public class ClientApplet extends ClientUtils implements MDIController,LoginCont
    */
   public String getAboutText() {
     return
-        "JAllInOne ERP/CRM Application ver. 2.7.8\n"+
+        "JAllInOne ERP/CRM Application ver. 2.7.9\n"+
         "\n"+
         "Copyright: Copyright (C) 2006-2011 Mauro Carniel\n"+
         "Author: Mauro Carniel\n"+

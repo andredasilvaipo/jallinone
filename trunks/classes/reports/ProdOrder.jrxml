@@ -46,7 +46,7 @@
 		<defaultValueExpression ><![CDATA[new java.math.BigDecimal(2)]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[select * from DOC22_PRODUCTION_ORDER WHERE COMPANY_CODE_SYS01=$P{COMPANY_CODE} and
-DOC_YEAR=$P{DOC_YEAR} and DOC_NUMBER=$P{DOC_NUMBER}]]></queryString>
+DOC_YEAR=$P{DOC_YEAR} and DOC_NUMBER=$P{DOC_NUMBER} ]]></queryString>
 
 	<field name="COMPANY_CODE_SYS01" class="java.lang.String"/>
 	<field name="DOC_YEAR" class="java.math.BigDecimal"/>
@@ -59,7 +59,10 @@ DOC_YEAR=$P{DOC_YEAR} and DOC_NUMBER=$P{DOC_NUMBER}]]></queryString>
 	<field name="DESCRIPTION_WAR01" class="java.lang.String"/>
 	<field name="DESCRIPTION2_WAR01" class="java.lang.String"/>
 	<field name="NOTE" class="java.lang.String"/>
-	<field name="ENABLED" class="java.lang.String"/>
+	<field name="CREATE_USER" class="java.lang.String"/>
+	<field name="CREATE_DATE" class="java.sql.Timestamp"/>
+	<field name="LAST_UPDATE_USER" class="java.lang.String"/>
+	<field name="LAST_UPDATE_DATE" class="java.sql.Timestamp"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -374,6 +377,9 @@ $R{closed}:$R{opened})]]></textFieldExpression>
 					</subreportParameter>
 					<subreportParameter  name="DECIMALS">
 						<subreportParameterExpression><![CDATA[$P{DECIMALS}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter  name="SUBREPORT_DIR">
+						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ProdOrder_subreport2.jasper"]]></subreportExpression>

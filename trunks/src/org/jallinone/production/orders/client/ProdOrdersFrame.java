@@ -114,13 +114,13 @@ public class ProdOrdersFrame extends InternalFrame {
     colDocYear.setColumnFilterable(true);
     colDocYear.setColumnName("docYearDOC22");
     colDocYear.setColumnSortable(true);
-    colDocYear.setPreferredWidth(50);
+    colDocYear.setPreferredWidth(70);
     colDocYear.setSortingOrder(1);
     colDocYear.setSortVersus(org.openswing.swing.util.java.Consts.DESC_SORTED);
     colDocNr.setColumnFilterable(true);
     colDocNr.setColumnName("docSequenceDOC22");
     colDocNr.setColumnSortable(true);
-    colDocNr.setPreferredWidth(70);
+    colDocNr.setPreferredWidth(90);
     colDocNr.setSortingOrder(2);
     colDocNr.setSortVersus(org.openswing.swing.util.java.Consts.DESC_SORTED);
 

@@ -37,7 +37,7 @@
 		<defaultValueExpression ><![CDATA[new java.math.BigDecimal(41)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="SUBREPORT_DIR" isForPrompting="true" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["F:\\Java\\Projects\\jAllInOne\\classes\\reports\\"]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<parameter name="DECIMALS" isForPrompting="false" class="java.math.BigDecimal">
 		<defaultValueExpression ><![CDATA[new java.math.BigDecimal(2)]]></defaultValueExpression>
