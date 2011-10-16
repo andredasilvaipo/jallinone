@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+     <!-- JNLP File for Manager Application -->
+<jnlp spec="1.0+" codebase = "$$codebase">
+
+	<application-desc main-class="org.jallinone.commons.client.ClientApplication"/>
+
+    <information>
+      <title>jAllInOne</title>
+      <description>jAllInOne - an ERP/CRM web application</description>
+	  <vendor>MC</vendor>
+      <icon href="appicon11.gif"/>
+      <icon kind="splash" href="jAllInOne.jpg"/>
+    </information>
+
+  <security>
+      <all-permissions/>
+  </security>
+
+    <resources>
+      <j2se version="1.6"/>
+      <jar href="clientjaio.jar" />
+      <jar href="clientos.jar" />
+      <jar href="commonos.jar" />
+      <jar href="jcalendar.jar" />
+      <jar href="jnlp.jar" />
+      <jar href="netscape.jar" />
+      <jar href="jasperreports-1.2.7.jar" />
+      <jar href="itext-1.3.1.jar" />
+      <jar href="jTattoo.jar" />
+      <property name="SERVERURL" value="$$context/controller"/> 
+      <property name="LOOK_AND_FEEL_CLASS_NAME" value="com.jtattoo.plaf.aluminium.AluminiumLookAndFeel"/>
+   </resources>
+
+</jnlp>
+
