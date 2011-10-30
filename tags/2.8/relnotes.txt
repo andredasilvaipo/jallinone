@@ -1,0 +1,687 @@
+
+Release Notes 2.8
+-----------------
+
+Fixed problem when saving item images.
+Added new feature in item detail to define images for each variants combination.
+Added new feature "Brands", to set a specific brand to an item in the item detail frame.
+Added new feature "Item characteristics", to define which item fields must be showed in the JAllInOne eCommerce web application.
+Added new company level properties to use in combination with the JAllInOne eCommerce web application: default customer, default warehouse, default expense, logo.
+Added customer lookup in users frame, in order to specify customers who can login onto the eCommerce web app.
+Fixed problem when defining sale prices per variants.
+Fixed problem in manual warehouse movement frame, when specifying variants.
+Fixed problem when navigating among customers in the the customer detail frame.
+Fixed problem on saving custom functions.
+
+Added new web Ajax based application: JAllInOne eCommerce, designed to work with JAllInOne.
+
+
+
+Release Notes 2.7.9
+-------------------
+
+Improved item detail opening time and fix problem with navigation bar.
+Resized some windows: warehouse detail.
+Improved focus management in POS frame.
+Changed menu selection background color.
+Fixed problem with SQL selects having fields with () 
+Fixed problem on opening customer detail, when bank is set.
+Fixed problem when saving items in POS: now hierarchy type is correctly set.
+Fixed problem with Pivot table in sales, when adding qty data field.
+Fixed problem on definining the bill of materials in item detail frame.
+Fixed problem when printing the bill of materials, with nested components.
+Fixed problem with manufacturing and operations grids, when multiple companies have been defined.
+Fixed problem with the report related to the production order.
+Includes 2.4.4 version of OpenSwing.
+
+
+
+Release Notes 2.7.8
+-------------------
+
+Fixed problem when inserting prices in the item detail.
+Improved currency formatting in prices grids on item detail.
+Fixed a problem in Custom Functions, when viewing app menu in lookup.
+Includes 2.4.3 version of OpenSwing.
+
+
+Release Notes 2.7.7
+-------------------
+
+Improved the usage of combo columns/controls, by presetting the last selected item in insert mode.
+Fixed problem with Sales Pivot table when adding row conditions.
+Fixed formatting issue in expirations selection grid, within the payments window.
+Improved all windows having a currency lookup: now is prefilled in insert with the default currency defined at company level.
+Improved all windows having a currency columns: now these columns always format numbers according to the related currency.
+Fixed problem on defining working hours with SQLServer database.
+Inserted some threads, in order to better decouple the opening of detail window from the parent grid and the whole application.
+Removed calendar button for time columns/controls.
+Includes 2.4.2 version of OpenSwing.
+
+
+Release Notes 2.7.6
+-------------------
+
+Fixed problem in translations window, related to variants list.
+Fixed problem on inserting sale discounts for customers hierarchy or items hierarchy.
+Fixed problem when creating new callout requests on changing from organization to private subject type.
+
+
+
+Release Notes 2.7.5
+-------------------
+
+Fixed problem when saving prices in sale pricelist.
+Fixed problem when saving company parameters.
+
+
+
+Release Notes 2.7.4
+-------------------
+
+Changed filter condition to prices validity interval for end date to "less than".
+Improved duplicate command in prices definition frames.
+Fixed problem when closing delivery notes.
+
+
+
+Release Notes 2.7.3
+-------------------
+
+Improved payments window: now insert/reload buttons are disabled until a customer/supplier has been defined.
+Improved sale pricelist: now it is possible to define multiple validity intervals within the same pricelist for the same item.
+Improved purchase pricelist: now it is possible to define multiple validity intervals within the same pricelist for the same item.
+Fixed problem on saving new companies.
+Fixed problem in accounting journal report when changing language.
+Fixed problem with payments recording related to purchase invoices.
+Now are showed in grid filters previously defined in grid by user and stored by "user profile" feature.
+
+
+
+Release Notes 2.7.2
+-------------------
+
+Fixed problem in purchase documents list after deleting a supplier pricelist.
+Fixed problem when closing inventory.
+Fixed problem on insert/update sale documents.
+
+
+
+Release Notes 2.7.1
+-------------------
+
+Fixed problem when creating new languages.
+Fixed problem when navigating in items tree window.
+
+
+
+Release Notes 2.7
+-----------------
+
+Refactored database tables related to hierarchies and translations, in order to fully support data decoupling among companies.
+Changed reports according to database changes.
+Fixed problem on customizing repository path for reports.
+Fixed problem on document management window, whem defining date type properties.
+Added multiple printing of invoices.
+Updated croatian translations.
+Include 2.3.8 version of OpenSwing.
+
+
+
+Release Notes 2.6
+-----------------
+
+Improved sale manual invoice and credit note: now it is possible to include items related to more than one pricelist.
+Improved sale/purchase pricelists window: now prices are formatted according to currency settings.
+Fixed prices viewing issue in sale/purchase documents, when selecting item from lookup window and price is lower than 1.
+Fixed problem when opening item detail for items having checked the flag "no warehouse movements".
+Fixed problem when duplicating an item using copy button in item detail window.
+Fixed some reports: journal of final entry, costs/proceeds report, debits/credits report, trial balance, purchase reports.
+Include 2.3.7 version of OpenSwing.
+
+
+
+Release Notes 2.5.9
+-------------------
+
+Improved currency conversion window: now it is possible to specify multiple conversions for the same currency, with a validity date.
+Improved payments window: now it is possible to specify a payment currency different from the expiration currency.
+Improved sale document windows: now it is possible to include items related to more than one pricelist.
+Fixed error on calculating expirations from end month when closing an invoice in another month.
+Improved sale estimate frame: now sale contract/order child window is automatically opened when converting estimate document.
+Improved login dialog when upgrading database: now it is possible to choose the language.
+Added "reports repository path" to application parameters window, in order to customize where reports must be stored.
+Added check to POS frame, in order to show a warning message if no pricelist has been defined for the default customer.
+
+
+
+
+Release Notes 2.5.8
+-------------------
+
+Include 2.3.6 version of OpenSwing.
+Added payments sub-window to expiration window.
+Fixed delivery notes report generation with Oracle database.
+Fixed problem with inventory report.
+Fixed problem with expirations creation in case of immediate payments.
+Fixed problem on validating warehouse motive in manual movements.
+
+
+
+
+Release Notes 2.5.7.1
+---------------------
+
+Added russian translations of JAllInOne Mobile.
+Fixed problem on upgrading database.
+
+
+
+Release Notes 2.5.7
+-------------------
+
+Changed payments, payment types and payment installments windows: now codes are defined per company.
+Added account code to payment types window, in order to define an account for payments used in expirations window.
+Improved expirations window:
+- added account code column, in order to specify the account code to use for payment
+- account code is automatically filled, starting from the one specified at payment type level
+- added rounding account code, which is mandatory when the value payed is not equal to the value to pay; this is used to generate an accounting item for roundings
+- fixed problem when using customers/suppliers lookup
+Added to company parameters window two new controls: rounding account codes for costs/proceeds, to use in expirations window to preset the rounding code.
+Fixed problem in in/out delivery note window, when inserting single items having no variant.
+Fixed problem on inserting/updating descriptions having a ' symbol.
+
+
+
+Release Notes 2.5.6
+-------------------
+
+Fixed contact to customer form: now are available accounting data too (thanks to  Michele Milidoni).
+Improved sale document windows: now doc. ref. num. is correctly showed.
+Changed purchase reports: now it is showed supplier item code instead of company's item code.
+Fixed problem when inserting components in BOM, when a child component is already an ancestor of the item.
+Fixed problem on inserting manual movements in warehouse, for items having no variants.
+Fixed viewing problem in due register window, with retail sales.
+Improved expirations window: 
+- now it is possible to define a payment date, payed value, payment type
+- will be generated an expiration also for invoices having immediate payment, with or without the payed flag already checked
+Improved retail detail window: 
+- now it is possible to change payment condition, in case of an incorrect payment condition previously defined.
+- preset default customer to retail sale window (if defined in user parameters).
+
+
+Release Notes 2.5.5
+-------------------
+
+Added russian translations.
+Fixed bug on calculating sale item discounts.
+
+
+
+
+Release Notes 2.5.4
+-------------------
+
+Improved call-outs management: 
+- now it is possible to link an item to a call-out request and manage its spare parts as call-out resources.
+- added spare parts catalogue shortcut in call-out request window.
+Fixed problem on creating invoice from a call-out document having items without variants.
+Fixed problem on calculating totals in sale documents, when using items without variants.
+Fixed detail loading problem, after saving data in detail windows synchronized with their parent grids.
+Fixed some configuration problems with JAlInOne SOA version.
+Fixed problem with Oracle database and LEVEL field name in version 2.5.3. 
+For those who have already upgraded to 2.5.3 with Oracle database and have errors, execute manually the following SQL instructions:
+
+DROP TABLE ITM24_LEAF_SHEETS;
+UPDATE SYS11_APPLICATION_PARS SET VALUE='7' where PARAM_CODE='VERSION'; 
+COMMIT;
+
+and apply this version to correctly upgrade to 2.5.4
+
+
+
+
+
+Release Notes 2.5.3
+-------------------
+
+Include 2.3.5 version of OpenSwing.
+New feature: spare parts supports (linkage with items through items model) and spare parts catalogue
+with technical documents management.
+Added discounts/costs panel to all invoice frames.
+Added "no warehouse movements" flag in item detail.
+Improved POS window: now it is possible to specify a percentage total discount (thanks to Michele Milidoni).
+Fixed problem with retail sale when applying discounts.
+Fixed problem with warehouse movement and with manual movement in warehouse.
+Enabled "alternative items" in item detail folder, also when the item is not a component.
+Relaxed customers filter in sale orders: now it is possible to manage private customers too.
+Fixed problem on loading/saving documents in "document management".
+Fixed problem when inserting items without variants in sale/purchase documents and in deliv. note documents.
+Fixed bug when creating sale invoices starting from delivery notes.
+Fixed bug on creating sale invoice from a sale desk document.
+Fixed bug on roles frame.
+
+
+Release Notes 2.5.2
+-------------------
+
+Include 2.3.6 version of OpenSwing.
+Fixed problem with werehouse movement and with manual movement in warehouse.
+
+
+
+Release Notes 2.5.1
+-------------------
+
+Include 2.3.6 version of OpenSwing.
+Added a "restart web application" message in setup procedure, in case of installation of SOA version.
+Fixed NullPointerException in item availabilities when the database is empty (after installation).
+Fixed problem on inserting items without variants in sale documents.
+
+
+Release Notes 2.5
+-----------------
+
+Added croatian translations to JAllInOne.
+Added german translations to JAllInOne Mobile.
+Added call-out requests graph in call-out requests list.
+Fixed problem with FK order.
+Added to setup wizard the selection SQLServer driver (older and newer)
+Added stop progress-bar button.
+
+
+
+Release Notes 2.4.1
+-------------------
+
+Include 2.3.4 version of OpenSwing.
+Added support for newer version of SQLServer JDBC driver.
+
+
+
+Release Notes 2.4
+-----------------
+
+Added sales graph functionality.
+
+
+
+Release Notes 2.3
+-----------------
+
+Added inventory functionality.
+Added new web application named "JAllInOne Mobile" for mobile devices, using the same database/business logic, 
+in order to manage warehouse: in/out delivery notes, validation of barcodes/serial numbers/item codes, inventory management.
+
+
+
+Release Notes 2.2
+-----------------
+
+Added german translations to JAllInOne, thanks to Michael Roth.
+Added launchXX_nolnf.jnlp start files, which start client side application without the "Aluminium" look and feel.
+Fixed problem with unicode characters when adding languagues.
+Fixed problem on creating additional companies and updating new company data.
+
+
+Release Notes 2.1
+-----------------
+
+Improved item descriptions in UI and reports: now item variants are translated according to the current language.
+Changed build.xml to fix a running problem with Mule, related to commons*.jars libraries.
+Available new SOA based version of JAllInOne and classic version and one for "SOA version" (based on java 1.6 and Mule).
+
+
+
+Release Notes 2.0
+-----------------
+
+Available new SOA based version of JAllInOne and classic version.
+Fixed some bugs on updating measure units, production orders, documents management, currency setting in sale documents,
+initial data translations with UTF8 database schemas.
+Changed build.xml in order to support two distinct compilations and deployes: one for "classic version" (no Mule, java 1.4 compatible) 
+and one for "SOA version" (based on java 1.6 and Mule).
+
+
+
+Release Notes 1.3.2
+-------------------
+
+Fixed problem with columns permission and profiles 
+and improved performance in detail item opening.
+
+
+
+Release Notes 1.3.2
+-------------------
+
+Fixed problem with columns permission
+
+
+
+Release Notes 1.3.1
+-------------------
+
+Added look and feel
+Fixed problem with print labes feature
+
+
+
+Release Notes 1.3
+-----------------
+
+Added "Data import" functionality, in order to initialize database (items, customers, pricelists), 
+starting from xls, csv or txt files. Added scheduler feature in order to auto start ETL processes periodically.
+Improved customized windows: now it is possible to customize item detail per line of business (item type).
+Improved login dialog: now it is possible to store account and select a language directly when logon on.
+Improved grid: now it is possible to define which columns to show/edit for each grid/role, using Administration/Roles functionality.
+Improved setup window: now JAllInOne upgrades based on .war file can be managed simply by removing past version of JallInOne web app 
+and replacing it with the newer; after that, simply follow the installation wizard and specify db schema info.
+Fixed problem with currencies in ABC classification.
+Changes in some tables, in order to specify distinct internal counters per company.
+
+
+
+Release Notes 1.2
+---------------------
+
+Added "Reorder from minimum stock per item/variants" functionality, in order to show the list of items under minimum stock.
+Added "ABC classification", based on unsold stocks/invoiced items.
+Added "Connected users" functionality, useful when publishing new versions of application.
+Included pooler.jar library to .war file distribution.
+Added PDF417 barcode format in "print labels" functionality.
+Fixed some problems during  installation process (indexes length, exceptions, ...)
+
+
+
+Release Notes 1.1.1
+---------------------
+
+Added "Translations" functionality, in order to manage translations for all languages (items, etc.)
+Fixed problem when using a subset of variants not starting from the first one
+Fixed problem with totals in sales documents when a vat is defined per customer
+Improved var register functionality
+
+
+
+Release Notes 1.1
+---------------------
+
+Now it is possible to automatically upgrade from database/application from 1.0 version, 
+simply by replacing the new .war file and reusing WEB-INF/classes/pooler.ini existing file
+Updated OpenSwing library version to 2.2.7
+Added "pivot table for sales" functionality
+Added "delivery requests" functionality, binded to sales orders/contracts
+Added a report for the delivery request document
+Added creation of out delivery notes starting from a collection of delivery requests
+Fixed confirmation problem in retail sale 
+Fixed a not blocking problem when opening sale documents
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 1.0
+---------------------
+
+Updated OpenSwing library version to 2.2.6
+Added "Orders tracking" feature with links to tracked documents
+Added support for barcodes at item level and at level of combination of item variants; supported barcode formats: EAN13, EAN128, Code128/A/B/C, Code39 Extended
+Added "print barcode labels" feature, in order to print barcodes from a purchase order or from a list of specified items
+Added prices definition for sales and purchases at variants level: it is possible to define a price for a combination of item's variants
+Added average/last costs calculus to item detail
+Other improvements:
+- added "point of sale" frame, to use with PCs POS 
+- added sub variants and variants for items
+- association variants combination to item
+- added variants support in sale documents, purchase documents and warehouse documents
+- improved the content of item detail and sale and purchase documents (title, input controls layout)
+- improved layout and usage of warehouse detail folders
+- improved in/out delivery notes (D.N.): now notes included in customer/supplier/orders related to the D.N. are automatically reported in D.N.
+Major bug fixes:
+- fixed problem when deleting an item type
+- fixed problem when creating customers (private or companies)
+- fixed problem when adding new languages
+- fixed problem when changing language
+- fixed problem on db schema creation with Postgresql db
+- fixed problem with reports translation and accounting reports
+- fixed some translations in english, italian, portuguese/brazilian, spanish within xml files
+- fixed problem on defining customer and warehouse codes for retail sale
+- fixed problem in many frames related to company selection
+- fixed problem when attaching documents in document management
+- fixed problem when creating call-out requests
+- fixed problem with toolbars in all documents when they are in closed/confirmed state
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+
+Release Notes 0.9.23
+---------------------
+
+Updated OpenSwing library version to 2.2.3.
+Added "Point of sale" feature
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+
+Release Notes 0.9.22
+---------------------
+
+Updated OpenSwing library version to 2.2.3.
+Added support for variants and sub variants
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+
+Release Notes 0.9.21
+---------------------
+
+Updated OpenSwing library version to 2.0.7.
+Added a portuguese/brazilian translation to JAllInOne, thanks to Gideoni.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+
+Release Notes 0.9.20
+---------------------
+
+Updated OpenSwing library version to 1.9.8.
+Fixed a problem on loading contacts's empty grids and when saving sub-contacts.
+Fixed problem on JAllInOne's installer, when using MS SQL Server.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.19
+---------------------
+
+Updated OpenSwing library version to 1.9.6.
+Fixed problem on contacts detail frame.
+Restored default look and feel, since Substance created some problems and hanged application.
+Changed setup, in order to support installation in PostgreSQL database.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.18
+---------------------
+
+Updated OpenSwing library version to 1.9.
+Fixed problem on opening some detail frames, having a lookup auto-completition feature enabled.
+Changed default look and feel, by setting Substance LNF.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.17
+---------------------
+
+Updated OpenSwing library version to 1.8.5.
+Improved menu in MDI menu bar: added tooltip in tree menu nodes, in menubar and onto status bar.
+Fixed problem with progress bar that could block the front-end.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.16
+---------------------
+
+Updated OpenSwing library version to 1.7.3.
+Improved "window" menu in MDI menu bar: 
+- added "switch..." menu item to open a window dialog showing all opened internal windows and select a window to set to front
+- added numeric mnemonic (1, 2, 3, ... 9) at the left of menu items related to internal opened windows
+- added "reduce to icon" and "reduce all to icon" menu items
+- added "cascade", "tile horizontally/verically" menu items
+Added commands for copy/cut/paste to a popup menu showed over an input control when right mouse clicking on it.
+Added filter conditions and title in export documents.
+Activated autocompletition feature in lookups.
+Showed sorting order in column headers.
+Fixed problem with installation in Tomcat having spaces in the path.
+Fixed problem with Tomcat 6 when printing reports: added "commons-logging.jar" library to WEB-INF/lib folder.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.15
+---------------------
+
+Updated OpenSwing library version to 1.6.
+Improved "window" menu in MDI menu bar: 
+- added "switch..." menu item to open a window dialog showing all opened internal windows and select a window to set to front
+- added numeric mnemonic (1, 2, 3, ... 9) at the left of menu items related to internal opened windows
+- added "reduce to icon" and "reduce all to icon" menu items
+- added "cascade", "tile horizontally/verically" menu items
+Added commands for copy/cut/paste to a popup menu showed over an input control when right mouse clicking on it.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.14
+---------------------
+
+Fix a problem in JAllInOne distribution: zip file was corrupted and jcalendar.jar file was not signed.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.13
+---------------------
+
+Updated OpenSwing library version to 1.5.9. Added an "Ask before close" dialog to grid/form frames.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.12
+---------------------
+
+Added sectional field to sale invoices. Sectional field value is defined through company parameters feature.
+Improved sale and purchase docs detail frames.
+Created distinct jnlp launch files for java 1.4, 1.5 and 1.6, to avoid client executions with JVM different from the one used on the server-side. 
+Updated OpenSwing library version to 1.5.2.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.11
+---------------------
+
+Final release 0.9.11 available
+Fixed problem on creating war file (clientos.jar file was not signed in past versions).
+Added a partial spanish translation to JAllInOne.
+Updated OpenSwing library version to 1.4.2.
+Provided three distinct launch1xxx.jnlp files: for java 1.4,1.5 and 1.6.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.10
+---------------------
+
+Fixed problem with jsp starting page.
+Updated OpenSwing library version to 1.4, by adding search capabilities to combo boxes, tree panels and grids.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.0.9
+---------------------
+
+Final release 0.9.0.9 available
+Fixed problem on creating new companies.
+Added missing translation on Duties feature.
+Updated OpenSwing library version to 1.3.9, so resolving some repaiting issues with grids.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.0.8
+---------------------
+
+Final release 0.9.0.8 available
+Changed currencies table; changed currency symbol: now it can be a 3 length text, e.g. "USD", "EUR" or unicode single character as the euro symbol.
+Updated OpenSwing library version to 1.3.8, so that focus is correctly setted inside frames having more than one grid control. 
+Moreover, it is changed the policy in all lookups when user digits an invalid code: now the lookup automatically restores the last valid code in case of invalid code. 
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.0.7
+---------------------
+
+Final release 0.9.0.7 available
+Changed bank table and bank detail by changing cab/abi field with BBAN/IBAN fields.
+Updated OpenSwing library version to 1.3.7.
+Improved grid cell editors: now they listen the first key pressed when the current cell is just selected but not yet in edit.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.0.6
+---------------------
+
+Final release 0.9.0.6 available
+Fixed some bugs in JAllInOne GUI usage: when updating item detail.
+Fixed problem when opening reports from development environment.
+Updated OpenSwing library version to 1.3.6 so resolving a problem with tree lookups having only the root node.
+Updated "Installation Info" section of this web site, by specifying more detailed information about how to compile the project.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.0.5
+---------------------
+
+Final release 0.9.0.5 available
+Fixed some bugs in JAllInOne GUI usage: when updating sales documents, when manually inserting prices in a sale pricelist.
+Improved some forms (customer detail, contacts detail, supplier detail, sales contract/order/estimate/desk details, buying order detail,warehouse detail, item detail) by linking navigation on detail window with grid parent window.
+Updated OpenSwing library version to 1.3.5.
+Updated "Installation Info" section of this web site, by adding a new chapter about how to setting up a development environment for JAllInOne. 
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.0.4
+---------------------
+
+Final release 0.9.0.4 available
+Fixed bug when installing JAllInOne with Oracle database.
+Changed "LEVEL" table field to "LEV" to support Oracle database installation.
+Changed all foreign key index names to support Oracle database installation.
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+Release Notes 0.9.0.3
+---------------------
+
+Final release 0.9.0.3 available
+Fixed bug when installing JAllInOne in a path having spaces. 
+Fixed bug when installing JAllInOne with SQLServer database. 
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+
+Release Notes 0.9.0.2
+---------------------
+
+Final release 0.9.0.2 available
+This distribution includes also Jar file libraries, source files, build.xml, licence and readme.txt installation instructions.
+
+
+
+Release Notes 0.9.0.1
+---------------------
+
+Final release 0.9.0.1 available
+This distribution includes also Jar file libraries, source files, licence and readme.txt installation instructions.
+
+
+
+Release Notes 0.9
+-------------------
+
+Final release 0.9 available
+This distribution includes also Jar file libraries, source files, licence and readme.txt installation instructions.
+
