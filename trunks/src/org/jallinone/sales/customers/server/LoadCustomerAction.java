@@ -17,6 +17,7 @@ import org.openswing.swing.message.receive.java.ErrorResponse;
 import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.server.Action;
 import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.commons.java.ApplicationConsts;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -65,10 +66,11 @@ public class LoadCustomerAction implements Action {
 
 			CustomizedWindows cust = ((JAIOUserSessionParameters)userSessionPars).getCustomizedWindows();
 			ArrayList customizedFields = cust.getCustomizedFields(new BigDecimal(282));
+			String imagePath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.IMAGE_PATH);
 
 			ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("SAL07");
 			Customers bean = (Customers)JAIOBeanFactory.getInstance().getBean(Customers.class);
-			Response answer = bean.loadCustomer(pk,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList,customizedFields);
+			Response answer = bean.loadCustomer(pk,imagePath,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList,customizedFields);
 
 			return answer;
 		}

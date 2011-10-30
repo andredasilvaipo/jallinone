@@ -1695,6 +1695,24 @@
   <object key="reports repository path" value="Path repository reports" />
   <object key="print invoices" value="Stampa massiva fatture" />
 
+  <object key="brands" value="Marchi" />
+  <object key="brand code" value="Cod. Marchio" />
+  <object key="ec customer" value="Cliente eCommerce" />
+  <object key="ec warehouse" value="Magazzino eCommerce" />
+  <object key="datetime" value="Data+Ora"/>
+  <object key="decimal" value="Decimale"/>
+  <object key="item characteristics in ECommerce" value="Caratteristiche articoli in eCommerce"/>
+  <object key="fieldTypeITM32" value="Tipo"/>
+  <object key="selectedITM32" value="Sel."/>
+  <object key="posTM32" value="Posizione"/>
+  <object key="images per variant" value="Immagini per combinazione di varianti"/>
+  <object key="lastVariantDescription" value="Variante"/>
+  <object key="smallImage" value="Immagine piccola"/>
+  <object key="largeImage" value="Immagine grande"/>
+  <object key="company logo" value="Logo societ&#224;"/>
+  <object key="ec expense" value="Spese eCommerce"/>
+
+  
 <!-- application translations -->
 
   <currencySymbol>&#8364;</currencySymbol>

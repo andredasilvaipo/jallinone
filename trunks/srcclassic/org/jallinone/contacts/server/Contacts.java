@@ -18,7 +18,7 @@ import org.jallinone.events.server.*;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
- * * <p>Description: Bean used to manage contacts and in case of organization, 
+ * * <p>Description: Bean used to manage contacts and in case of organization,
  * then manage also linked people contacts.</p>
  * <p>Copyright: Copyright (C) 2006 Mauro Carniel</p>
  *
@@ -49,19 +49,19 @@ import org.jallinone.events.server.*;
 public interface Contacts {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	 public GridContactVO getGridContactVO();
 
 	 public VOResponse deleteContact(SubjectPK vo,String serverLanguageId,String username) throws Throwable;
 
-	 public VOResponse insertOrganization(OrganizationVO vo,String t1,String t2,String serverLanguageId,String username,ArrayList companyCodes) throws Throwable;
+	 public VOResponse insertOrganization(OrganizationVO vo,String imagePath,String t1,String t2,String serverLanguageId,String username,ArrayList companyCodes) throws Throwable;
 
 	 public VOResponse insertPeople(PeopleVO vo,String t1,String t2,String serverLanguageId,String username,ArrayList companyCodes) throws Throwable;
 
 	 public VOListResponse loadContacts(GridParams gridParams,String serverLanguageId,String username,ArrayList companyCodes) throws Throwable;
 
-	 public VOResponse updateOrganization(OrganizationVO oldVO,OrganizationVO newVO,String t1,String t2,String serverLanguageId,String username) throws Throwable;
+	 public VOResponse updateOrganization(OrganizationVO oldVO,OrganizationVO newVO,String imagePath,String t1,String t2,String serverLanguageId,String username) throws Throwable;
 
 	 public VOResponse updatePeople(PeopleVO oldVO,PeopleVO newVO,String t1,String t2,String serverLanguageId,String username) throws Throwable;
 

@@ -21,6 +21,7 @@ import org.jallinone.items.java.*;
 
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -103,6 +104,11 @@ public class LoadItemsBean  implements LoadItems {
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
+			int blockSize = 50;
+			if (pars.getOtherGridParams().get(ApplicationConsts.BLOCK_SIZE)!=null)
+				blockSize = Integer.parseInt(pars.getOtherGridParams().get(ApplicationConsts.BLOCK_SIZE).toString());
+
+
       BigDecimal rootProgressiveHIE01 = (BigDecimal)pars.getOtherGridParams().get(ApplicationConsts.ROOT_PROGRESSIVE_HIE01);
       BigDecimal progressiveHIE01 = (BigDecimal)pars.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_HIE01);
       BigDecimal progressiveHIE02 = (BigDecimal)pars.getOtherGridParams().get(ApplicationConsts.PROGRESSIVE_HIE02);
@@ -127,6 +133,7 @@ public class LoadItemsBean  implements LoadItems {
 			attribute2dbField.put("useVariant3ITM01","ITM01_ITEMS.USE_VARIANT_3");
 			attribute2dbField.put("useVariant4ITM01","ITM01_ITEMS.USE_VARIANT_4");
 			attribute2dbField.put("useVariant5ITM01","ITM01_ITEMS.USE_VARIANT_5");
+			attribute2dbField.put("brandCodeItm31ITM01","ITM01_ITEMS.BRAND_CODE_ITM31");
 
 			attribute2dbField.put("noWarehouseMovITM01","ITM01_ITEMS.NO_WAREHOUSE_MOV");
 
@@ -150,19 +157,27 @@ public class LoadItemsBean  implements LoadItems {
       String select =
           "select ITM01_ITEMS.COMPANY_CODE_SYS01,ITM01_ITEMS.ITEM_CODE,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION,ITM01_ITEMS.PROGRESSIVE_HIE02,ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02,"+
           "ITM01_ITEMS.PROGRESSIVE_HIE01,ITM01_ITEMS.SERIAL_NUMBER_REQUIRED,REG02_MEASURE_UNITS.DECIMALS,"+
-					"ITM01_ITEMS.SHEET_CODE_ITM25,ITM01_ITEMS.NO_WAREHOUSE_MOV, "+
+					"ITM01_ITEMS.SHEET_CODE_ITM25,ITM01_ITEMS.NO_WAREHOUSE_MOV,ITM01_ITEMS.BRAND_CODE_ITM31, "+
           "ITM01_ITEMS.USE_VARIANT_1,ITM01_ITEMS.USE_VARIANT_2,ITM01_ITEMS.USE_VARIANT_3,ITM01_ITEMS.USE_VARIANT_4,ITM01_ITEMS.USE_VARIANT_5 ";
 				String from =
           "from SYS10_COMPANY_TRANSLATIONS,REG02_MEASURE_UNITS,ITM01_ITEMS ";
 				String where =
 					"where "+
-          "ITM01_ITEMS.PROGRESSIVE_HIE02=? and "+
 					"ITM01_ITEMS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 and "+
           "ITM01_ITEMS.PROGRESSIVE_SYS10=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE and "+
           "SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
           "ITM01_ITEMS.COMPANY_CODE_SYS01 in ("+companies+") and "+
           "ITM01_ITEMS.ENABLED='Y' and "+
           "ITM01_ITEMS.MIN_SELLING_QTY_UM_CODE_REG02=REG02_MEASURE_UNITS.UM_CODE ";
+
+				ArrayList values = new ArrayList();
+				values.add(serverLanguageId);
+				if (progressiveHIE02!=null) {
+					where += " and ITM01_ITEMS.PROGRESSIVE_HIE02=? ";
+					values.add(progressiveHIE02);
+				}
+
+
 
       if (productsOnly!=null && productsOnly.booleanValue())
         where += " and ITM01_ITEMS.MANUFACTURE_CODE_PRO01 is not null ";
@@ -242,9 +257,91 @@ public class LoadItemsBean  implements LoadItems {
       }
 
 
-      ArrayList values = new ArrayList();
-      values.add(progressiveHIE02);
-      values.add(serverLanguageId);
+
+			if (pars.getOtherGridParams().get(ApplicationConsts.SEARCH_PATTERN)!=null) {
+				// feature used in the E-Commerce catalogue...
+
+      	// 1. searching for item codes and descriptions
+				String pattern = pars.getOtherGridParams().get(ApplicationConsts.SEARCH_PATTERN).toString().toUpperCase();
+				String originalWhere = where;
+				where = originalWhere+" and (UPPER(ITM01_ITEMS.ITEM_CODE) like '%"+pattern+"%' or UPPER(SYS10_COMPANY_TRANSLATIONS.DESCRIPTION) like '%"+pattern+"%') ";
+
+				Response answer = QueryUtil.getQuery(
+						conn,
+						new UserSessionParameters(username),
+						select+from+where,
+						values,
+						attribute2dbField,
+						GridItemVO.class,
+						"Y",
+						"N",
+						null,
+						pars,
+						blockSize,
+						true
+				);
+				if (answer.isError())
+					throw new Exception(answer.getErrorMessage());
+				else {
+					VOListResponse res = (VOListResponse)answer;
+					if (res.getRows().size()==0) {
+						// 2. search in hierarchical levels...
+
+						pstmt = conn.prepareStatement(
+								"select "+
+								"HIE01_COMPANY_LEVELS.COMPANY_CODE_SYS01,"+
+								"HIE01_COMPANY_LEVELS.PROGRESSIVE,"+
+								"HIE01_COMPANY_LEVELS.PROGRESSIVE_HIE02 "+
+								"from HIE01_COMPANY_LEVELS,SYS10_COMPANY_TRANSLATIONS "+
+								"where COMPANY_CODE_SYS01 in ("+companies+") and ENABLED='Y' AND "+
+								"HIE01_COMPANY_LEVELS.COMPANY_CODE_SYS01=SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01 AND "+
+								"HIE01_COMPANY_LEVELS.PROGRESSIVE=SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE AND "+
+								"UPPER(SYS10_COMPANY_TRANSLATIONS.DESCRIPTION) LIKE '%"+pattern+"%' "
+						);
+						ResultSet rset = pstmt.executeQuery();
+						boolean found = false;
+						where = originalWhere+" and (";
+						while(rset.next()) {
+							found = true;
+							where +=
+								" ("+
+								"ITM01_ITEMS.COMPANY_CODE_SYS01='"+rset.getString(1)+"' and  "+
+								"ITM01_ITEMS.PROGRESSIVE_HIE01="+rset.getLong(2)+" and  "+
+								"ITM01_ITEMS.PROGRESSIVE_HIE02="+rset.getLong(3)+"  "+
+								") ";
+							where += " or ";
+						}
+					  where = where.substring(0,where.length()-4);
+						where += ") ";
+						if (!found)
+							return new VOListResponse(new ArrayList(),false,0);
+
+
+
+						answer = QueryUtil.getQuery(
+								conn,
+								new UserSessionParameters(username),
+								select+from+where,
+								values,
+								attribute2dbField,
+								GridItemVO.class,
+								"Y",
+								"N",
+								null,
+								pars,
+								blockSize,
+								true
+						);
+						if (answer.isError())
+							throw new Exception(answer.getErrorMessage());
+						else
+							return (VOListResponse)answer;
+					}
+					return res;
+				}
+
+      }
+
 
       // read from ITM01 table...
       Response answer = QueryUtil.getQuery(
@@ -258,7 +355,7 @@ public class LoadItemsBean  implements LoadItems {
           "N",
           null,
           pars,
-          50,
+          blockSize,
           true
       );
 

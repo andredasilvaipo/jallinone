@@ -35,6 +35,7 @@ import org.openswing.swing.message.receive.java.VOResponse;
 import org.jallinone.variants.client.ProductVariantsPanel;
 import org.jallinone.variants.client.ProductVariantsController;
 import javax.swing.JSplitPane;
+import java.awt.event.*;
 
 
 /**
@@ -154,6 +155,7 @@ public class ManualMovementDetailFrame extends InternalFrame {
   public ManualMovementDetailFrame(ManualMovementController controller) {
     try {
       jbInit();
+			super.setAskBeforeClose(false);
       setSize(620,550);
       setMinimumSize(new Dimension(620,550));
 
@@ -438,6 +440,7 @@ public class ManualMovementDetailFrame extends InternalFrame {
     controlNote.setLinkLabel(labelNote);
     controlNote.setRequired(true);
     controlNote.setAttributeName("noteWAR02");
+    saveButton.addActionListener(new ManualMovementDetailFrame_saveButton_actionAdapter(this));
     this.getContentPane().add(tabbedPane, BorderLayout.CENTER);
     tabbedPane.add(manualMovPanel, "manual movement");
     manualMovPanel.add(buttonsPanel, BorderLayout.NORTH);
@@ -481,7 +484,7 @@ public class ManualMovementDetailFrame extends InternalFrame {
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
     manualMovForm.add(controlUmCode,    new GridBagConstraints(5, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    manualMovForm.add(variantsPanel,   new GridBagConstraints(0, 2, 6, 1, 1.0, 0.0
+    manualMovForm.add(variantsPanel,    new GridBagConstraints(0, 2, 6, 1, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
     tabbedPane.setTitleAt(0,ClientSettings.getInstance().getResources().getResource("manual movement"));
   }
@@ -508,6 +511,22 @@ public class ManualMovementDetailFrame extends InternalFrame {
     return variantsPanel;
   }
 
+  void saveButton_actionPerformed(ActionEvent e) {
+		getVariantsPanel().stopCellEditing();
+
+  }
 
 
+
+}
+
+class ManualMovementDetailFrame_saveButton_actionAdapter implements java.awt.event.ActionListener {
+  ManualMovementDetailFrame adaptee;
+
+  ManualMovementDetailFrame_saveButton_actionAdapter(ManualMovementDetailFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.saveButton_actionPerformed(e);
+  }
 }

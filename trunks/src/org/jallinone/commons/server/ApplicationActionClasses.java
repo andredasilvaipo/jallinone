@@ -72,7 +72,7 @@ import org.jallinone.employees.server.UpdateEmployeeCalendarsAction;
 import org.jallinone.employees.server.ValidateEmployeeCodeAction;
 import org.jallinone.expirations.server.*;
 import org.jallinone.hierarchies.server.*;
-import org.jallinone.items.server.CreateBarcodeLabelsDataAction;
+import org.jallinone.items.server.*;
 import org.jallinone.items.server.DeleteBarcodeLabelsDataAction;
 import org.jallinone.items.server.DeleteItemAttachedDocsAction;
 import org.jallinone.items.server.DeleteItemTypeAction;
@@ -1299,6 +1299,20 @@ public class ApplicationActionClasses extends ActionsCollection {
 		a = new LoadExpirationPaymentsAction(); put(a.getRequestName(),a);
 		a = new LoadPaymentDistributionsAction(); put(a.getRequestName(),a);
 		a = new InsertPaymentAction(); put(a.getRequestName(),a);
+
+		a = new ValidateBrandCodeAction(); put(a.getRequestName(),a);
+		a = new InsertBrandsAction(); put(a.getRequestName(),a);
+		a = new UpdateBrandsAction(); put(a.getRequestName(),a);
+		a = new DeleteBrandsAction(); put(a.getRequestName(),a);
+		a = new LoadBrandsAction(); put(a.getRequestName(),a);
+		a = new LoadItemFieldsAction(); put(a.getRequestName(),a);
+		a = new UpdateItemFieldsAction(); put(a.getRequestName(),a);
+
+		a = new InsertItemVariantImagesAction(); put(a.getRequestName(),a);
+		a = new UpdateItemVariantImagesAction(); put(a.getRequestName(),a);
+		a = new DeleteItemVariantImagesAction(); put(a.getRequestName(),a);
+		a = new LoadItemVariantImagesAction(); put(a.getRequestName(),a);
+
 
     put("changeLanguage",new Action() {
 

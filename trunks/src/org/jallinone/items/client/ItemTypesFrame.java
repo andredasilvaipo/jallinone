@@ -74,6 +74,8 @@ public class ItemTypesFrame extends InternalFrame {
 
   CompaniesComboColumn colCompanies = new CompaniesComboColumn();
   JSplitPane split = new JSplitPane();
+  JTabbedPane tab = new JTabbedPane();
+  ItemFieldsPanel itemFieldsPanel = new ItemFieldsPanel();
 
 
   public ItemTypesFrame(GridController controller) {
@@ -161,7 +163,9 @@ public class ItemTypesFrame extends InternalFrame {
     grid.getColumnContainer().add(colCompanies,null);
     grid.getColumnContainer().add(colDescr, null);
     colCompanies.setFunctionCode("ITM02");
-    detailPanel.add(hierarTreePanel,  BorderLayout.CENTER);
+    detailPanel.add(tab, BorderLayout.CENTER);
+    tab.add(hierarTreePanel, ClientSettings.getInstance().getResources().getResource("hierarchy"));
+    tab.add(itemFieldsPanel, ClientSettings.getInstance().getResources().getResource("item characteristics in ECommerce"));
   }
 
 
@@ -172,6 +176,9 @@ public class ItemTypesFrame extends InternalFrame {
 
   public GridControl getGrid() {
     return grid;
+  }
+  public ItemFieldsPanel getItemFieldsPanel() {
+    return itemFieldsPanel;
   }
 
 

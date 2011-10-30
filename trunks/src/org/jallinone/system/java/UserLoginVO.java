@@ -56,7 +56,13 @@ public class UserLoginVO extends ValueObjectImpl {
 	  /** default company code */
 	  private String defCompanyCodeSys01SYS03;
 
-	  
+		/** customer identifier (optional) */
+		private java.math.BigDecimal customerProgressiveReg04SYS03;
+
+		/** customer identifier (optional) */
+		private String customerCodeSAL07;
+
+
 	public String getServerLanguageId() {
 		return serverLanguageId;
 	}
@@ -120,9 +126,21 @@ public class UserLoginVO extends ValueObjectImpl {
 	public void setLanguageId(String languageId) {
 		this.languageId = languageId;
 	}
+  public java.math.BigDecimal getCustomerProgressiveReg04SYS03() {
+    return customerProgressiveReg04SYS03;
+  }
+  public void setCustomerProgressiveReg04SYS03(java.math.BigDecimal customerProgressiveReg04SYS03) {
+    this.customerProgressiveReg04SYS03 = customerProgressiveReg04SYS03;
+  }
+  public String getCustomerCodeSAL07() {
+    return customerCodeSAL07;
+  }
+  public void setCustomerCodeSAL07(String customerCodeSAL07) {
+    this.customerCodeSAL07 = customerCodeSAL07;
+  }
 
-	  
-	  
-	
-	
+
+
+
+
 }

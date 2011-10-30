@@ -884,7 +884,11 @@ public class PosFrame extends JFrame {
 				priceItemVO.getUseVariant3ITM01().equals(Boolean.TRUE) ||
 				priceItemVO.getUseVariant4ITM01().equals(Boolean.TRUE) ||
 				priceItemVO.getUseVariant5ITM01().equals(Boolean.TRUE)) {
-			Response res = ClientUtils.getData("loadVariantsPrice",new Object[]{barcodeVO,customerVO.getPricelistCodeSal01SAL07()});
+			Response res = ClientUtils.getData("loadVariantsPrice",new Object[]{
+			  barcodeVO,
+				customerVO.getPricelistCodeSal01SAL07(),
+				priceItemVO.getStartDateSAL02()
+	    });
 			if (!res.isError()) {
 				java.util.List rows = ((VOListResponse)res).getRows();
 				if (rows.size()==1) {

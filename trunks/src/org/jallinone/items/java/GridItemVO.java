@@ -53,6 +53,7 @@ public class GridItemVO extends ValueObjectImpl implements VariantsItemDescripto
 	private String sheetCodeItm25ITM01;
 
 	private java.sql.Date docDateDOC01;
+	private String brandCodeItm31ITM01;
 
 
   public GridItemVO() {
@@ -162,6 +163,12 @@ public class GridItemVO extends ValueObjectImpl implements VariantsItemDescripto
   }
   public void setDocDateDOC01(java.sql.Date docDateDOC01) {
     this.docDateDOC01 = docDateDOC01;
+  }
+  public String getBrandCodeItm31ITM01() {
+    return brandCodeItm31ITM01;
+  }
+  public void setBrandCodeItm31ITM01(String brandCodeItm31ITM01) {
+    this.brandCodeItm31ITM01 = brandCodeItm31ITM01;
   }
 
 

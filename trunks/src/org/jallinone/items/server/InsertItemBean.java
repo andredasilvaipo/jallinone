@@ -193,6 +193,8 @@ public class InsertItemBean  implements InsertItem {
 			attribute2dbField.put("noWarehouseMovITM01","NO_WAREHOUSE_MOV");
 			attribute2dbField.put("sheetCodeItm25ITM01","SHEET_CODE_ITM25");
 
+			attribute2dbField.put("brandCodeITM01","BRAND_CODE_ITM31");
+
 
       if (vo.getSmallImage()!=null) {
         // save image on file system...
@@ -208,7 +210,8 @@ public class InsertItemBean  implements InsertItem {
 				BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01(),"ITM01_ITEMS","SMALL_IMG",conn);
 				String relativePath = FileUtils.getFilePath(appPath,"ITM01");
 				vo.setSmallImageITM01(relativePath+"SMALL_IMG"+imageProgressive);
-				attribute2dbField.put("smallImageITM01",imageProgressive);
+//				attribute2dbField.put("smallImageITM01",imageProgressive);
+				attribute2dbField.put("smallImageITM01","SMALL_IMG");
 
         new File(appPath+relativePath).mkdirs();
         FileOutputStream out = new FileOutputStream(appPath+vo.getSmallImageITM01());
@@ -231,7 +234,8 @@ public class InsertItemBean  implements InsertItem {
 				BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01(),"ITM01_ITEMS","LARGE_IMG",conn);
 				String relativePath = FileUtils.getFilePath(appPath,"ITM01");
 				vo.setLargeImageITM01(relativePath+"LARGE_IMG"+imageProgressive);
-				attribute2dbField.put("largeImageITM01",imageProgressive);
+//				attribute2dbField.put("largeImageITM01",imageProgressive);
+				attribute2dbField.put("largeImageITM01","LARGE_IMG");
 
         new File(appPath+relativePath).mkdirs();
         FileOutputStream out = new FileOutputStream(appPath+vo.getLargeImageITM01());

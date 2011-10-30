@@ -102,7 +102,7 @@ public class CompanyHierarchyUtil {
 	        }
 	        else {
 	          vo = new CompanyHierarchyLevelVO();
-						vo.setCompanySys01HIE01(companyCodeSys01);
+		  vo.setCompanySys01HIE01(companyCodeSys01);
 	          vo.setEnabledHIE01("Y");
 	          vo.setLevelHIE01(rset.getBigDecimal(3));
 	          vo.setProgressiveHIE01(rset.getBigDecimal(1));

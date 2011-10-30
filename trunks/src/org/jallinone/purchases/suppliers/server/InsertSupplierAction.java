@@ -82,6 +82,7 @@ public class InsertSupplierAction implements Action {
 
 		  CustomizedWindows cust = ((JAIOUserSessionParameters)userSessionPars).getCustomizedWindows();
 		  ArrayList customizedFields = cust.getCustomizedFields(ApplicationConsts.ID_SUPPLIER_GRID);
+			String imagePath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.IMAGE_PATH);
 
 		  // retrieve internationalization settings (Resources object)...
 		  ServerResourcesFactory factory = (ServerResourcesFactory)context.getAttribute(Controller.RESOURCES_FACTORY);
@@ -89,7 +90,7 @@ public class InsertSupplierAction implements Action {
 		  String t1 = factory.getResources(serverLanguageId).getResource("there is already another organization with the same corporate name.");
 
 		  Suppliers bean = (Suppliers)JAIOBeanFactory.getInstance().getBean(Suppliers.class);
-		  Response answer = bean.insertSupplier(vo,t1,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList,customizedFields);
+		  Response answer = bean.insertSupplier(vo,imagePath,t1,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList,customizedFields);
 
 		  return answer;
 	  }

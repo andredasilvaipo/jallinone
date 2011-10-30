@@ -17,6 +17,8 @@ import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
 import org.jallinone.items.java.DetailItemVO;
 import org.jallinone.items.java.VariantBarcodeVO;
+import org.jallinone.items.java.ItemPK;
+import java.math.BigDecimal;
 
 
 /**
@@ -74,15 +76,23 @@ public interface SalePrices {
 
 	public VOListResponse loadPrices(GridParams gridParams,String serverLanguageId,String username) throws Throwable;
 
-	public VOListResponse loadVariantsPrice(VariantBarcodeVO barcodeVO,String priceListCode,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadVariantsPrice(VariantBarcodeVO barcodeVO,String priceListCode,java.sql.Date startDate,String serverLanguageId,String username) throws Throwable;
 
-	public VOListResponse loadVariantsPrices(GridParams params,String serverLanguageId,String username) throws Throwable;
+	public VOListResponse loadVariantsPrices(GridParams params,java.sql.Date startDate,String serverLanguageId,String username) throws Throwable;
+
+	public VOListResponse loadItemVariantsPrices(ItemPK pk,String priceListCode,java.sql.Date startDate,String serverLanguageId,String username) throws Throwable;
 
 	public VOListResponse updatePrices(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
 
 	public VOResponse updateVariantsPrices(VariantsPrice variantsPrice,String serverLanguageId,String username) throws Throwable;
 
 	public VOResponse deletePrices(ArrayList list,String serverLanguageId,String username) throws Throwable;
+
+	public BigDecimal getAutoDiscount(
+			BigDecimal taxableIncome,
+			String companyCodeSYS01,String itemCode,
+			BigDecimal progressiveHIE01,BigDecimal progressiveHie02ITM01,BigDecimal progressiveREG04,String username) throws Throwable;
+
 
 }
 

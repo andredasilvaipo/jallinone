@@ -528,6 +528,15 @@ public class ProductVariantsPanel extends JPanel implements LookupListener {
   }
 
 
+	public void stopCellEditing() {
+		try {
+			grid.getTable().getGrid().stopCellEditing();
+		}
+		catch (Exception ex) {
+		}
+	}
+
+
   /**
    * Lookup code has been changed.
    */

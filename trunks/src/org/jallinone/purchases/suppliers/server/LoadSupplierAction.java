@@ -75,10 +75,11 @@ public class LoadSupplierAction implements Action {
 	  try {
 		  CustomizedWindows cust = ((JAIOUserSessionParameters)userSessionPars).getCustomizedWindows();
 		  ArrayList customizedFields = cust.getCustomizedFields(ApplicationConsts.ID_SUPPLIER_GRID);
+			String imagePath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.IMAGE_PATH);
 
-		  ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("ACC02"); 
+		  ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("ACC02");
 		  Suppliers bean = (Suppliers)JAIOBeanFactory.getInstance().getBean(Suppliers.class);
-		  Response answer = bean.loadSupplier(pk,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList,customizedFields);
+		  Response answer = bean.loadSupplier(pk,imagePath,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList,customizedFields);
 
 		  return answer;
 	  }

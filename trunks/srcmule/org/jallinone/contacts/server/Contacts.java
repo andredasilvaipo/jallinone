@@ -55,13 +55,13 @@ public interface Contacts {
 
 	 public VOResponse deleteContact(SubjectPK vo,String serverLanguageId,String username) throws Throwable;
 
-	 public VOResponse insertOrganization(OrganizationVO vo,String t1,String t2,String serverLanguageId,String username,ArrayList companyCodes) throws Throwable;
+	 public VOResponse insertOrganization(OrganizationVO vo,String imagePath,String t1,String t2,String serverLanguageId,String username,ArrayList companyCodes) throws Throwable;
 
 	 public VOResponse insertPeople(PeopleVO vo,String t1,String t2,String serverLanguageId,String username,ArrayList companyCodes) throws Throwable;
 
 	 public VOListResponse loadContacts(GridParams gridParams,String serverLanguageId,String username,ArrayList companyCodes) throws Throwable;
 
-	 public VOResponse updateOrganization(OrganizationVO oldVO,OrganizationVO newVO,String t1,String t2,String serverLanguageId,String username) throws Throwable;
+	 public VOResponse updateOrganization(OrganizationVO oldVO,OrganizationVO newVO,String imagePath,String t1,String t2,String serverLanguageId,String username) throws Throwable;
 
 	 public VOResponse updatePeople(PeopleVO oldVO,PeopleVO newVO,String t1,String t2,String serverLanguageId,String username) throws Throwable;
 

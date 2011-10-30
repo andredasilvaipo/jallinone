@@ -52,21 +52,21 @@ public interface Customers {
 
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public GridCustomerVO getGridCustomer();
 
 	public VOResponse deleteCustomers(ArrayList list,String serverLanguageId,String username) throws Throwable;
 
-	public VOResponse insertOrganization(OrganizationCustomerVO vo,String t1,String t2,String serverLanguageId,String username,ArrayList companiesList, ArrayList customizedFields) throws Throwable;
+	public VOResponse insertOrganization(OrganizationCustomerVO vo,String imagePath,String t1,String t2,String serverLanguageId,String username,ArrayList companiesList, ArrayList customizedFields) throws Throwable;
 
 	public VOResponse insertPeople(PeopleCustomerVO vo,String t1,String t2,String serverLanguageId,String username,ArrayList companiesList, ArrayList customizedFields) throws Throwable;
 
-	public VOResponse loadCustomer(CustomerPK pk,String serverLanguageId,String username,ArrayList companiesList, ArrayList customizedFields) throws Throwable;
+	public VOResponse loadCustomer(CustomerPK pk,String imagePath,String serverLanguageId,String username,ArrayList companiesList, ArrayList customizedFields) throws Throwable;
 
 	public VOListResponse loadCustomers(GridParams gridPars,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
 
-	public VOResponse updateOrganization(OrganizationVO oldVO,OrganizationVO newVO,String t1,String t2,String serverLanguageId,String username, ArrayList customizedFields) throws Throwable;
+	public VOResponse updateOrganization(OrganizationVO oldVO,OrganizationVO newVO,String imagePath,String t1,String t2,String serverLanguageId,String username, ArrayList customizedFields) throws Throwable;
 
 	public VOResponse updatePeople(PeopleVO oldVO,PeopleVO newVO,String t1,String t2,String serverLanguageId,String username, ArrayList customizedFields) throws Throwable;
 

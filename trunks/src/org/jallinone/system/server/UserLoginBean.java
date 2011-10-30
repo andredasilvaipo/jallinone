@@ -41,7 +41,7 @@ import org.jallinone.system.java.UserLoginVO;
 public class UserLoginBean implements UserLogin {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -49,9 +49,9 @@ public class UserLoginBean implements UserLogin {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -61,7 +61,7 @@ public class UserLoginBean implements UserLogin {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -69,7 +69,7 @@ public class UserLoginBean implements UserLogin {
   public UserLoginBean() {
   }
 
-  
+
   public UserLoginVO authenticateUser(String username,String password) throws Throwable {
     PreparedStatement pstmt = null;
     Statement stmt = null;
@@ -78,7 +78,9 @@ public class UserLoginBean implements UserLogin {
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       pstmt = conn.prepareStatement(
-          "select LANGUAGE_CODE_SYS09,PASSWD_EXPIRATION,COMPANY_CODE_SYS01,PROGRESSIVE_REG04,DEF_COMPANY_CODE_SYS01 from SYS03_USERS where "+
+          "select LANGUAGE_CODE_SYS09,PASSWD_EXPIRATION,COMPANY_CODE_SYS01,"+
+					"PROGRESSIVE_REG04,DEF_COMPANY_CODE_SYS01,CUSTOMER_PROGRESSIVE_REG04,CUSTOMER_CODE_SAL07 "+
+          "from SYS03_USERS where "+
           "USERNAME=? and PASSWD=?"
       );
       pstmt.setString(1,username.toUpperCase());
@@ -88,6 +90,8 @@ public class UserLoginBean implements UserLogin {
       String companyCodeSys01SYS03 = null;
       BigDecimal progressiveReg04SYS03 = null;
       String defCompanyCodeSys01SYS03 = null;
+      BigDecimal customerProgressiveReg04SYS03 = null;
+      String customerCodeSAL07 = null;
       if (rset.next()) {
 
         // verify date expiration...
@@ -99,6 +103,8 @@ public class UserLoginBean implements UserLogin {
         companyCodeSys01SYS03 = rset.getString(3);
         progressiveReg04SYS03 = rset.getBigDecimal(4);
         defCompanyCodeSys01SYS03 = rset.getString(5);
+        customerProgressiveReg04SYS03 = rset.getBigDecimal(6);
+        customerCodeSAL07 = rset.getString(7);
 
         stmt = conn.createStatement();
         ResultSet rset2 = stmt.executeQuery(
@@ -123,14 +129,31 @@ public class UserLoginBean implements UserLogin {
           pstmt2.setString(1,companyCodeSys01SYS03);
           pstmt2.setBigDecimal(2,progressiveReg04SYS03);
           rset2 = pstmt2.executeQuery();
-          rset2.next();
-          name_1 = rset2.getString(1);
-          name_2 = rset2.getString(2);
-          empCode = rset2.getString(3);
+					if (rset2.next()) {
+						name_1 = rset2.getString(1);
+						name_2 = rset2.getString(2);
+						empCode = rset2.getString(3);
+					}
           rset2.close();
           pstmt2.close();
         }
-
+				else if (customerProgressiveReg04SYS03!=null) {
+					// if customerProgressiveReg04SYS03 is not null, then retrieve employee data...
+					pstmt2 = conn.prepareStatement(
+							"select REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2 from REG04_SUBJECTS where "+
+							"REG04_SUBJECTS.COMPANY_CODE_SYS01=? and "+
+							"REG04_SUBJECTS.PROGRESSIVE=?  "
+					);
+					pstmt2.setString(1,companyCodeSys01SYS03);
+					pstmt2.setBigDecimal(2,customerProgressiveReg04SYS03);
+					rset2 = pstmt2.executeQuery();
+					if (rset2.next()) {
+						name_1 = rset2.getString(1);
+						name_2 = rset2.getString(2);
+					}
+					rset2.close();
+					pstmt2.close();
+				}
 
         UserLoginVO userLoginPars = new UserLoginVO();
         userLoginPars.setLanguageId(languageId);
@@ -141,6 +164,8 @@ public class UserLoginBean implements UserLogin {
         userLoginPars.setEmployeeCode(empCode);
         userLoginPars.setCompanyCodeSys01SYS03(companyCodeSys01SYS03);
         userLoginPars.setDefCompanyCodeSys01SYS03(defCompanyCodeSys01SYS03);
+        userLoginPars.setCustomerProgressiveReg04SYS03(customerProgressiveReg04SYS03);
+        userLoginPars.setCustomerCodeSAL07(customerCodeSAL07);
         return userLoginPars;
       }
       else
@@ -172,7 +197,7 @@ public class UserLoginBean implements UserLogin {
           }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
     }
   }
 

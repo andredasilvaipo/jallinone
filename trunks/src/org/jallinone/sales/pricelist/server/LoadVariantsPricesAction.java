@@ -70,11 +70,12 @@ public class LoadVariantsPricesAction implements Action {
 
 
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
-      GridParams params = (GridParams)inputPar;
+    GridParams params = (GridParams)inputPar;
     try {
+			java.sql.Date startDate = (java.sql.Date)params.getOtherGridParams().get(ApplicationConsts.START_DATE);
 
     	SalePrices bean = (SalePrices)JAIOBeanFactory.getInstance().getBean(SalePrices.class);
-      Response answer = bean.loadVariantsPrices(params,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+      Response answer = bean.loadVariantsPrices(params,startDate,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
     return answer;
     }

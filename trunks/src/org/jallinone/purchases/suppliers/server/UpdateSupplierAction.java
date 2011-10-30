@@ -86,9 +86,10 @@ public class UpdateSupplierAction implements Action {
 		  ServerResourcesFactory factory = (ServerResourcesFactory)context.getAttribute(Controller.RESOURCES_FACTORY);
 		  String serverLanguageId = ((JAIOUserSessionParameters)userSessionPars).getServerLanguageId();
 		  String t1 = factory.getResources(serverLanguageId).getResource("there is already another organization with the same corporate name.");
+			String imagePath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.IMAGE_PATH);
 
 		  Suppliers bean = (Suppliers)JAIOBeanFactory.getInstance().getBean(Suppliers.class);
-		  Response answer = bean.updateSupplier(oldVO,newVO,t1,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),customizedFields);
+		  Response answer = bean.updateSupplier(oldVO,newVO,imagePath,t1,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),customizedFields);
 
 		  return answer;
 	  }

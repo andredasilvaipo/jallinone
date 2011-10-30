@@ -112,6 +112,8 @@ import org.jallinone.warehouse.client.InventoryListFrame;
 import org.jallinone.sales.reports.client.SalesReportFrame;
 import org.jallinone.items.spareparts.client.*;
 import org.jallinone.reports.client.PrintInvoicesFrame;
+import org.jallinone.items.client.BrandsGridFrame;
+import org.jallinone.items.client.BrandsController;
 
 
 /**
@@ -1028,6 +1030,11 @@ public class ApplicationClientFacade implements ClientFacade {
 
 	public void printInvoices() {
 		new PrintInvoicesFrame();
+	}
+
+
+	public void getBrands() {
+		new BrandsController();
 	}
 
 

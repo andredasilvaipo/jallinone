@@ -274,6 +274,7 @@ public class PricesController extends CompanyGridController implements ImportIte
       variantsPricesPanel.removeAll();
       variantsPricesPanel.getOtherGridParams().put(ApplicationConsts.ITEM,new ItemPK(priceVO.getCompanyCodeSys01SAL02(),priceVO.getItemCodeItm01SAL02()));
       variantsPricesPanel.getOtherGridParams().put(ApplicationConsts.PRICELIST,priceVO.getPricelistCodeSal01SAL02());
+			variantsPricesPanel.getOtherGridParams().put(ApplicationConsts.START_DATE,priceVO.getStartDateSAL02());
       variantsPricesPanel.initGrid(priceVO);
       variantsPricesPanel.revalidate();
       variantsPricesPanel.repaint();

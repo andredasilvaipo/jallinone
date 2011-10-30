@@ -71,11 +71,12 @@ public class UpdateContactAction implements Action {
 			String serverLanguageId = ((JAIOUserSessionParameters)userSessionPars).getServerLanguageId();
 			String t1 = factory.getResources(serverLanguageId).getResource("there is already another people with the same first and last name.");
 			String t2 = factory.getResources(serverLanguageId).getResource("there is already another organization with the same corporate name.");
+			String imagePath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.IMAGE_PATH);
 
 			Contacts bean = (Contacts)JAIOBeanFactory.getInstance().getBean(Contacts.class);
 			Response answer = null;
-			if (newVO.getSubjectTypeREG04().equals(ApplicationConsts.SUBJECT_ORGANIZATION_CONTACT)) 
-				answer = bean.updateOrganization((OrganizationVO)oldVO,(OrganizationVO)newVO,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+			if (newVO.getSubjectTypeREG04().equals(ApplicationConsts.SUBJECT_ORGANIZATION_CONTACT))
+				answer = bean.updateOrganization((OrganizationVO)oldVO,(OrganizationVO)newVO,imagePath,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 			else
 				answer = bean.updatePeople((PeopleVO)oldVO,(PeopleVO)newVO,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 

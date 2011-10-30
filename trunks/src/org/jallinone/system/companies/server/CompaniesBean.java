@@ -21,6 +21,8 @@ import org.openswing.swing.logger.server.Logger;
 import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.message.receive.java.VOListResponse;
 import org.openswing.swing.message.receive.java.VOResponse;
+import java.io.FileInputStream;
+import java.io.File;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -102,7 +104,7 @@ public class CompaniesBean  implements Companies {
   /**
    * Business logic to execute.
    */
-  public VOResponse loadCompany(String companyCode,String serverLanguageId,String username) throws Throwable {
+  public VOResponse loadCompany(String companyCode,String imagePath,String serverLanguageId,String username) throws Throwable {
     Statement stmt = null;
     Connection conn = null;
     try {
@@ -113,7 +115,7 @@ public class CompaniesBean  implements Companies {
           "select REG04_SUBJECTS.SUBJECT_TYPE,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.NAME_2,REG04_SUBJECTS.ADDRESS,"+
           "REG04_SUBJECTS.CITY,REG04_SUBJECTS.ZIP,REG04_SUBJECTS.PROVINCE,REG04_SUBJECTS.COUNTRY,REG04_SUBJECTS.TAX_CODE,"+
           "REG04_SUBJECTS.PHONE_NUMBER,REG04_SUBJECTS.FAX_NUMBER,REG04_SUBJECTS.EMAIL_ADDRESS,REG04_SUBJECTS.WEB_SITE,"+
-          "REG04_SUBJECTS.LAWFUL_SITE,REG04_SUBJECTS.NOTE,SYS01_COMPANIES.CURRENCY_CODE_REG03,REG04_SUBJECTS.PROGRESSIVE "+
+          "REG04_SUBJECTS.LAWFUL_SITE,REG04_SUBJECTS.NOTE,SYS01_COMPANIES.CURRENCY_CODE_REG03,REG04_SUBJECTS.PROGRESSIVE,REG04_SUBJECTS.COMPANY_LOGO "+
           "from REG04_SUBJECTS,SYS01_COMPANIES where "+
           "COMPANY_CODE_SYS01='"+companyCode+"' and "+
           "REG04_SUBJECTS.COMPANY_CODE_SYS01=SYS01_COMPANIES.COMPANY_CODE and "+
@@ -141,7 +143,27 @@ public class CompaniesBean  implements Companies {
         vo.setNoteREG04(rset.getString(15));
         vo.setCurrencyCodeReg03(rset.getString(16));
         vo.setProgressiveREG04(rset.getBigDecimal(17));
+				vo.setCompanyLogoREG04(rset.getString(18));
         rset.close();
+
+
+				if (vo.getCompanyLogoREG04()!=null) {
+					// load image from file system...
+					String appPath = imagePath;
+					appPath = appPath.replace('\\','/');
+					if (!appPath.endsWith("/"))
+						appPath += "/";
+					if (!new File(appPath).isAbsolute()) {
+						// relative path (to "WEB-INF/classes/" folder)
+						appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
+					}
+					File f = new File(appPath+vo.getCompanyLogoREG04());
+					byte[] bytes = new byte[(int)f.length()];
+					FileInputStream in = new FileInputStream(f);
+					in.read(bytes);
+					in.close();
+					vo.setCompanyLogo(bytes);
+				}
 
       }
       else {
@@ -185,13 +207,13 @@ public class CompaniesBean  implements Companies {
   /**
    * Business logic to execute.
    */
-  public VOResponse updateCompany(OrganizationVO oldVO,OrganizationVO newVO,String t1,String serverLanguageId,String username) throws Throwable {
+  public VOResponse updateCompany(OrganizationVO oldVO,OrganizationVO newVO,String imagePath,String t1,String serverLanguageId,String username) throws Throwable {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       bean.setConn(conn);
 
-      Response res = bean.update(oldVO,newVO,t1,serverLanguageId,username);
+      Response res = bean.update(oldVO,newVO,imagePath,t1,serverLanguageId,username);
       Response answer = res;
       if (answer.isError()) throw new Exception(answer.getErrorMessage()); else return (VOResponse)answer;
     }
@@ -233,7 +255,7 @@ public class CompaniesBean  implements Companies {
   /**
    * Business logic to execute.
    */
-  public VOResponse insertCompany(OrganizationVO vo,String t1,String serverLanguageId,String username) throws Throwable {
+  public VOResponse insertCompany(OrganizationVO vo,String imagePath,String t1,String serverLanguageId,String username) throws Throwable {
     Statement stmt = null;
     PreparedStatement pstmt = null;
     Connection conn = null;
@@ -256,7 +278,7 @@ public class CompaniesBean  implements Companies {
 
       vo.setProgressiveREG04(new BigDecimal(2));
       vo.setSubjectTypeREG04(ApplicationConsts.SUBJECT_MY_COMPANY);
-      bean.insert(false,vo,t1,serverLanguageId,username);
+      bean.insert(false,vo,imagePath,t1,serverLanguageId,username);
 
       // add grants of the new company code to ADMIN user...
       pstmt = conn.prepareStatement(
@@ -270,18 +292,18 @@ public class CompaniesBean  implements Companies {
 			pstmt.execute();
       pstmt.close();
 
-      // insert company description...
-      pstmt = conn.prepareStatement(
-        "INSERT INTO REG04_SUBJECTS(COMPANY_CODE_SYS01,PROGRESSIVE,NAME_1,SUBJECT_TYPE,ENABLED,CREATE_USER,CREATE_DATE) "+
-        "VALUES(?,2,?,?,'Y',?,?)"
-      );
-      pstmt.setString(1,vo.getCompanyCodeSys01REG04());
-      pstmt.setString(2,vo.getName_1REG04());
-      pstmt.setString(3,ApplicationConsts.SUBJECT_MY_COMPANY);
-			pstmt.setString(4,username);
-			pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
-      pstmt.execute();
-      pstmt.close();
+//      // insert company description...
+//      pstmt = conn.prepareStatement(
+//        "INSERT INTO REG04_SUBJECTS(COMPANY_CODE_SYS01,PROGRESSIVE,NAME_1,SUBJECT_TYPE,ENABLED,CREATE_USER,CREATE_DATE) "+
+//        "VALUES(?,2,?,?,'Y',?,?)"
+//      );
+//      pstmt.setString(1,vo.getCompanyCodeSys01REG04());
+//      pstmt.setString(2,vo.getName_1REG04());
+//      pstmt.setString(3,ApplicationConsts.SUBJECT_MY_COMPANY);
+//			pstmt.setString(4,username);
+//			pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
+//      pstmt.execute();
+//      pstmt.close();
 
       // retrieve the first company code defined, that will be used to clone data defined per company...
       pstmt = conn.prepareStatement(
@@ -606,7 +628,8 @@ public class CompaniesBean  implements Companies {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       stmt = conn.createStatement();
       ResultSet rset = stmt.executeQuery(
-          "select SYS01_COMPANIES.COMPANY_CODE,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.PROGRESSIVE from SYS01_COMPANIES,REG04_SUBJECTS where "+
+          "select SYS01_COMPANIES.COMPANY_CODE,REG04_SUBJECTS.NAME_1,REG04_SUBJECTS.PROGRESSIVE,REG04_SUBJECTS.COMPANY_LOGO "+
+					"from SYS01_COMPANIES,REG04_SUBJECTS where "+
           "SYS01_COMPANIES.COMPANY_CODE=REG04_SUBJECTS.COMPANY_CODE_SYS01 and "+
           "SYS01_COMPANIES.ENABLED='Y' and "+
           "REG04_SUBJECTS.SUBJECT_TYPE='M'"
@@ -618,6 +641,7 @@ public class CompaniesBean  implements Companies {
         vo.setCompanyCodeSYS01(rset.getString(1));
         vo.setName_1REG04(rset.getString(2));
         vo.setProgressiveREG04(rset.getBigDecimal(3));
+				vo.setCompanyLogoREG04(rset.getString(4));
         list.add(vo);
       }
 

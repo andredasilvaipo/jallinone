@@ -1,4 +1,22 @@
 
+Release Notes 2.8
+-----------------
+
+Fixed problem when saving item images.
+Added new feature in item detail to define images for each variants combination.
+Added new feature "Brands", to set a specific brand to an item in the item detail frame.
+Added new feature "Item characteristics", to define which item fields must be showed in the JAllInOne eCommerce web application.
+Added new company level properties to use in combination with the JAllInOne eCommerce web application: default customer, default warehouse, default expense, logo.
+Added customer lookup in users frame, in order to specify customers who can login onto the eCommerce web app.
+Fixed problem when defining sale prices per variants.
+Fixed problem in manual warehouse movement frame, when specifying variants.
+Fixed problem when navigating among customers in the the customer detail frame.
+Fixed problem on saving custom functions.
+
+Added new web Ajax based application: JAllInOne eCommerce, designed to work with JAllInOne.
+
+
+
 Release Notes 2.7.9
 -------------------
 

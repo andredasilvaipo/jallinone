@@ -807,6 +807,19 @@
               <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/LoadSaleDocRow" /></inbound>
               <pooled-component><spring-object bean="LoadSaleDocRowBean" ></spring-object></pooled-component>
          </service>
+          <service name="BrandsService">
+               <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/Brands" /></inbound>
+               <pooled-component><spring-object bean="BrandsBean" ></spring-object></pooled-component>
+          </service>
+          <service name="ItemFieldsService">
+               <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/ItemFields" /></inbound>
+               <pooled-component><spring-object bean="ItemFieldsBean" ></spring-object></pooled-component>
+          </service>
+          <service name="ItemVariantImagesService">
+               <inbound><inbound-endpoint address="cxf:http://localhost:8777/services/ItemVariantImages" /></inbound>
+               <pooled-component><spring-object bean="ItemVariantImagesBean" ></spring-object></pooled-component>
+          </service>
+
      </model>
 </mule>
 

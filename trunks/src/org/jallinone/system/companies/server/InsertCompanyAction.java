@@ -16,6 +16,7 @@ import org.openswing.swing.server.Action;
 import org.openswing.swing.server.Controller;
 import org.openswing.swing.server.UserSessionParameters;
 import org.jallinone.variants.java.VariantDescriptionsVO;
+import org.jallinone.commons.java.ApplicationConsts;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -67,7 +68,8 @@ public class InsertCompanyAction implements Action {
 			String t1 = factory.getResources(serverLanguageId).getResource("there is already another organization with the same corporate name.");
 
 			Companies bean = (Companies)JAIOBeanFactory.getInstance().getBean(Companies.class);
-			Response answer = bean.insertCompany(vo,t1,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+			String imagePath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.IMAGE_PATH);
+			Response answer = bean.insertCompany(vo,imagePath,t1,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
 			VariantDescriptionsVO d = new VariantDescriptionsVO();
 			((JAIOUserSessionParameters)userSessionPars).getVariantDescriptionsVO().put(vo.getCompanyCodeSys01REG04(),d);

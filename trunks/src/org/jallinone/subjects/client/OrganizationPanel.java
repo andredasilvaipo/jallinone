@@ -75,6 +75,8 @@ public class OrganizationPanel extends Form {
   LabelControl companyLabel = new LabelControl();
   CompaniesComboControl companiesComboControl = new CompaniesComboControl();
   private boolean addCompaniesCombo;
+  LabelControl labelLogo = new LabelControl();
+  ImageControl controlLogo = new ImageControl();
 
 
   public OrganizationPanel(boolean addCompaniesCombo) {
@@ -149,6 +151,8 @@ public class OrganizationPanel extends Form {
     controlNote.setLinkLabel(labelNote);
     controlNote.setMaxCharacters(2000);
 
+    controlLogo.setAttributeName("companyLogo");
+
     if (addCompaniesCombo) {
       companyLabel.setFont(new java.awt.Font("MS Sans Serif", 0, 11));
       companyLabel.setLabel("companyCodeSYS01");
@@ -168,62 +172,69 @@ public class OrganizationPanel extends Form {
 
 
 
-    this.add(controlCorpName1,        new GridBagConstraints(1, 1, 5, 1, 1.0, 0.0
+    labelLogo.setLabel("company logo");
+    labelLogo.setText("labelControl1");
+    controlLogo.setLinkLabel(labelLogo);
+    this.add(controlCorpName1,           new GridBagConstraints(1, 1, 5, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlCorpName2,         new GridBagConstraints(1, 2, 2, 1, 0.0, 0.0
+    this.add(controlCorpName2,            new GridBagConstraints(1, 2, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 200, 0));
-    this.add(controlAddress,      new GridBagConstraints(1, 3, 3, 1, 0.0, 0.0
+    this.add(controlAddress,         new GridBagConstraints(1, 3, 3, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlCity,        new GridBagConstraints(1, 4, 1, 1, 1.0, 0.0
+    this.add(controlCity,           new GridBagConstraints(1, 4, 1, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlZip,      new GridBagConstraints(3, 4, 1, 1, 0.0, 0.0
+    this.add(controlZip,         new GridBagConstraints(3, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(labelProv,      new GridBagConstraints(4, 4, 1, 1, 0.0, 0.0
+    this.add(labelProv,         new GridBagConstraints(4, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlProv,      new GridBagConstraints(5, 4, 1, 1, 0.0, 0.0
+    this.add(controlProv,         new GridBagConstraints(5, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(labelCountry,      new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+    this.add(labelCountry,         new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlCountry,        new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0
+    this.add(controlCountry,           new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 50, 0));
-    this.add(labelVat,       new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0
+    this.add(labelVat,          new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlVat,      new GridBagConstraints(3, 5, 3, 1, 1.0, 0.0
+    this.add(controlVat,         new GridBagConstraints(3, 5, 3, 1, 1.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(labelCorpName1,      new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+    this.add(labelCorpName1,         new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(labelCorpName2,      new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+    this.add(labelCorpName2,         new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(labelAddress,      new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+    this.add(labelAddress,         new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(labelCity,      new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+    this.add(labelCity,         new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(labelPhone,      new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
+    this.add(labelPhone,         new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlPhone,        new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0
+    this.add(controlPhone,           new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(labelEmail,      new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
+    this.add(labelEmail,          new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlEmail,        new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0
+    this.add(controlEmail,            new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlWebSite,        new GridBagConstraints(3, 7, 3, 1, 0.0, 0.0
+    this.add(controlWebSite,            new GridBagConstraints(3, 7, 3, 1, 0.0, 0.0
             ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(labelLawfulSite,     new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0
+    this.add(labelLawfulSite,        new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlLawfulSite,     new GridBagConstraints(4, 2, 2, 1, 0.0, 0.0
+    this.add(controlLawfulSite,        new GridBagConstraints(4, 2, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(labelNote,       new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(controlNote,      new GridBagConstraints(1, 8, 5, 1, 1.0, 1.0
+    this.add(controlNote,            new GridBagConstraints(3, 8, 3, 1, 1.0, 1.0
             ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(labelZip,   new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0
+    this.add(labelZip,      new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 0, 0));
-    this.add(controlFax,    new GridBagConstraints(3, 6, 3, 1, 0.0, 0.0
+    this.add(controlFax,       new GridBagConstraints(3, 6, 3, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(labelWebSite,  new GridBagConstraints(2, 7, 1, 1, 0.0, 0.0
+    this.add(labelWebSite,      new GridBagConstraints(2, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    this.add(labelFax,  new GridBagConstraints(2, 6, 1, 1, 0.0, 0.0
+    this.add(labelFax,     new GridBagConstraints(2, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    this.add(labelLogo,      new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    this.add(controlLogo,     new GridBagConstraints(1, 8, 1, 1, 1.0, 1.0
+            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+    this.add(labelNote,   new GridBagConstraints(2, 8, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
   }
   public TextControl getControlCorpName1() {
     return controlCorpName1;

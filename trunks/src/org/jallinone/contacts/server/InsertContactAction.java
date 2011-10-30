@@ -77,11 +77,12 @@ public class InsertContactAction implements Action {
 			String t1 = factory.getResources(serverLanguageId).getResource("there is already another people with the same first and last name.");
 			String t2 = factory.getResources(serverLanguageId).getResource("there is already another organization with the same corporate name.");
 			ArrayList companyCodes = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("REG04_CONTACTS");
-			
+			String imagePath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.IMAGE_PATH);
+
 			Contacts bean = (Contacts)JAIOBeanFactory.getInstance().getBean(Contacts.class);
 			Response answer = null;
-			if (vo.getSubjectTypeREG04().equals(ApplicationConsts.SUBJECT_ORGANIZATION_CONTACT)) 
-				answer = bean.insertOrganization((OrganizationVO)vo,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companyCodes);
+			if (vo.getSubjectTypeREG04().equals(ApplicationConsts.SUBJECT_ORGANIZATION_CONTACT))
+				answer = bean.insertOrganization((OrganizationVO)vo,imagePath,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companyCodes);
 			else
 				answer = bean.insertPeople((PeopleVO)vo,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companyCodes);
 

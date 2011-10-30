@@ -33,7 +33,7 @@ import java.math.BigDecimal;
  */
 public class ApplicationConsts {
 
-  public static final int DB_VERSION = 15;
+  public static final int DB_VERSION = 16;
 
   public static final String DO_NOT_ADD_ENABLED = "DO_NOT_ADD_ENABLED";
 
@@ -90,6 +90,10 @@ public class ApplicationConsts {
   public static final String AFTERNOON_END_HOUR = "AFTERNOON_END_HOUR";
 
   public static final String SALE_SECTIONAL = "SALE_SECTIONAL";
+
+	public static final String EC_CUSTOMER_CODE = "EC_CUSTOMER_CODE";
+	public static final String EC_WARE_CODE = "EC_WARE_CODE";
+	public static final String EC_EXP_CODE = "EC_EXP_CODE";
 
   public static final String CREDITS_ACCOUNT_VALUE = "020.010";
   public static final String ITEMS_ACCOUNT_VALUE = "200.010";
@@ -388,6 +392,11 @@ public class ApplicationConsts {
 	public static final String ROUNDING_PROCEEDS_CODE = "ROUNDING_P_CODE";
 
 	public static final String CURRENCY_CODE = "CURRENCY_CODE";
+
+	public static final String SEARCH_PATTERN = "SEARCH_PATTERN";
+
+	public static final String SEARCH_NEW_ITEMS = "SEARCH_NEW_ITEMS";
+	public static final String SEARCH_ITEMS_WITH_DISCOUNT = "SEARCH_ITEMS_WITH_DISCOUNT";
 
 
 }

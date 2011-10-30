@@ -86,11 +86,12 @@ public class UpdateCustomerAction implements Action {
 		  String serverLanguageId = ((JAIOUserSessionParameters)userSessionPars).getServerLanguageId();
 		  String t1 = factory.getResources(serverLanguageId).getResource("there is already another people with the same first and last name.");
 		  String t2 = factory.getResources(serverLanguageId).getResource("there is already another organization with the same corporate name.");
+			String imagePath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.IMAGE_PATH);
 
 		  Customers bean = (Customers)JAIOBeanFactory.getInstance().getBean(Customers.class);
 		  Response answer = null;
-		  if (newVO.getSubjectTypeREG04().equals(ApplicationConsts.SUBJECT_ORGANIZATION_CUSTOMER)) 
-			  answer = bean.updateOrganization((OrganizationVO)oldVO,(OrganizationVO)newVO,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),customizedFields);
+		  if (newVO.getSubjectTypeREG04().equals(ApplicationConsts.SUBJECT_ORGANIZATION_CUSTOMER))
+			  answer = bean.updateOrganization((OrganizationVO)oldVO,(OrganizationVO)newVO,imagePath,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),customizedFields);
 		  else
 			  answer = bean.updatePeople((PeopleVO)oldVO,(PeopleVO)newVO,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),customizedFields);
 

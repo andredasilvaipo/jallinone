@@ -53,6 +53,8 @@ public class OrganizationVO extends ValueObjectImpl implements Subject {
   private String companyCodeSys01Reg04REG04;
   private java.math.BigDecimal progressiveReg04REG04;
   private String currencyCodeReg03;
+	private String companyLogoREG04;
+	private byte[] companyLogo;
 
 
   public OrganizationVO() {
@@ -178,6 +180,18 @@ public class OrganizationVO extends ValueObjectImpl implements Subject {
   }
   public void setCurrencyCodeReg03(String currencyCodeReg03) {
     this.currencyCodeReg03 = currencyCodeReg03;
+  }
+  public String getCompanyLogoREG04() {
+    return companyLogoREG04;
+  }
+  public void setCompanyLogoREG04(String companyLogoREG04) {
+    this.companyLogoREG04 = companyLogoREG04;
+  }
+  public byte[] getCompanyLogo() {
+    return companyLogo;
+  }
+  public void setCompanyLogo(byte[] companyLogo) {
+    this.companyLogo = companyLogo;
   }
 
 }
