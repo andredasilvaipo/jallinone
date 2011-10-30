@@ -14,6 +14,7 @@ import org.openswing.swing.util.java.Consts;
 import org.jallinone.commons.client.CompanyGridController;
 import org.openswing.swing.table.client.Grid;
 import org.openswing.swing.client.GridControl;
+import org.jallinone.commons.java.ApplicationConsts;
 
 
 /**
@@ -81,9 +82,14 @@ public class ItemTypesController extends CompanyGridController {
     Response res = ClientUtils.getData("insertItemType",newValueObjects.get(0));
     if (!res.isError()) {
       frame.getHierarTreePanel().setEnabled(true);
-      frame.getHierarTreePanel().setProgressiveHIE02(((ItemTypeVO)((VOResponse)res).getVo()).getProgressiveHie02ITM02());
-      frame.getHierarTreePanel().setCompanyCode( ((ItemTypeVO)((VOResponse)res).getVo()).getCompanyCodeSys01ITM02() );
+			ItemTypeVO vo = ((ItemTypeVO)((VOResponse)res).getVo());
+      frame.getHierarTreePanel().setProgressiveHIE02(vo.getProgressiveHie02ITM02());
+      frame.getHierarTreePanel().setCompanyCode( vo.getCompanyCodeSys01ITM02() );
       frame.getHierarTreePanel().reloadTree();
+
+			frame.getItemFieldsPanel().getGrid().getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01ITM02());
+			frame.getItemFieldsPanel().getGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02ITM02());
+			frame.getItemFieldsPanel().getGrid().reloadData();
 
       ArrayList list = new ArrayList();
       list.add((ItemTypeVO)((VOResponse)res).getVo());
@@ -130,7 +136,9 @@ public class ItemTypesController extends CompanyGridController {
     if (!res.isError()) {
       frame.getHierarTreePanel().setEnabled(false);
       frame.getHierarTreePanel().clearTree();
-    }
+			frame.getItemFieldsPanel().getGrid().clearData();
+
+	 }
     return res;
   }
 
@@ -156,6 +164,10 @@ public class ItemTypesController extends CompanyGridController {
     frame.getHierarTreePanel().setProgressiveHIE02(vo.getProgressiveHie02ITM02());
     frame.getHierarTreePanel().setCompanyCode( vo.getCompanyCodeSys01ITM02() );
     frame.getHierarTreePanel().reloadTree();
+
+	   frame.getItemFieldsPanel().getGrid().getOtherGridParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01ITM02());
+	   frame.getItemFieldsPanel().getGrid().getOtherGridParams().put(ApplicationConsts.PROGRESSIVE_HIE02,vo.getProgressiveHie02ITM02());
+	   frame.getItemFieldsPanel().getGrid().reloadData();
   }
 
 

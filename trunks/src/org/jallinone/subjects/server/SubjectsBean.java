@@ -120,14 +120,14 @@ public class SubjectsBean  implements Subjects {
   /**
    * Business logic to execute.
    */
-  public VOResponse insertOrganization(OrganizationVO inputPar,String t1,String t2,String serverLanguageId,String username) throws Throwable {
+  public VOResponse insertOrganization(OrganizationVO inputPar,String imagePath,String t1,String t2,String serverLanguageId,String username) throws Throwable {
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
 
       peopleBean.setConn(conn); // use same transaction...
       orgBean.setConn(conn); // use same transaction...
-      orgBean.insert(true,(OrganizationVO)inputPar,t2,serverLanguageId,username);
+      orgBean.insert(true,(OrganizationVO)inputPar,imagePath,t2,serverLanguageId,username);
       return new VOResponse(inputPar);
     }
     catch (Throwable ex) {
@@ -1023,14 +1023,14 @@ public class SubjectsBean  implements Subjects {
   /**
    * Business logic to execute.
    */
-  public void updateOrganization(OrganizationVO oldVO,OrganizationVO newVO,String t1,String t2,String serverLanguageId,String username) throws Throwable {
+  public void updateOrganization(OrganizationVO oldVO,OrganizationVO newVO,String imagePath,String t1,String t2,String serverLanguageId,String username) throws Throwable {
 
     Connection conn = null;
     try {
       if (this.conn==null) conn = getConn(); else conn = this.conn;
       peopleBean.setConn(conn); // use same transaction...
       orgBean.setConn(conn); // use same transaction...
-      orgBean.update((OrganizationVO)oldVO,(OrganizationVO)newVO,t2,serverLanguageId,username);
+      orgBean.update((OrganizationVO)oldVO,(OrganizationVO)newVO,imagePath,t2,serverLanguageId,username);
     }
     catch (Throwable ex) {
       Logger.error(username, this.getClass().getName(),

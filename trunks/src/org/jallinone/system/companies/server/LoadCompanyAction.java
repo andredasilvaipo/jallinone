@@ -12,6 +12,7 @@ import org.openswing.swing.message.receive.java.ErrorResponse;
 import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.server.Action;
 import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.commons.java.ApplicationConsts;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -59,7 +60,8 @@ public class LoadCompanyAction implements Action {
 		try {
 
 			Companies bean = (Companies)JAIOBeanFactory.getInstance().getBean(Companies.class);
-			Response answer = bean.loadCompany(companyCode,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+			String imagePath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.IMAGE_PATH);
+			Response answer = bean.loadCompany(companyCode,imagePath,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
 			return answer;
 		}

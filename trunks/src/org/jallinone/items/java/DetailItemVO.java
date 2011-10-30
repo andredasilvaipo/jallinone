@@ -104,6 +104,9 @@ public class DetailItemVO extends BaseValueObject implements VariantsItemDescrip
 	private Boolean noWarehouseMovITM01;
 	private String sheetCodeItm25ITM01;
 
+	private String brandCodeITM01;
+	private String descriptionITM31;
+
 
   public DetailItemVO() {
   }
@@ -496,6 +499,18 @@ public class DetailItemVO extends BaseValueObject implements VariantsItemDescrip
   }
   public void setSheetCodeItm25ITM01(String sheetCodeItm25ITM01) {
     this.sheetCodeItm25ITM01 = sheetCodeItm25ITM01;
+  }
+  public String getDescriptionITM31() {
+    return descriptionITM31;
+  }
+  public void setDescriptionITM31(String descriptionITM31) {
+    this.descriptionITM31 = descriptionITM31;
+  }
+  public String getBrandCodeITM01() {
+    return brandCodeITM01;
+  }
+  public void setBrandCodeITM01(String brandCodeITM01) {
+    this.brandCodeITM01 = brandCodeITM01;
   }
 
 

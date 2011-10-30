@@ -51,20 +51,20 @@ import org.jallinone.events.server.*;
 public interface Companies {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public CompanyVO getCompany();
 
 
 	public VOResponse deleteCompany(SubjectPK pk,String serverLanguageId,String username) throws Throwable;
 
-	public VOResponse insertCompany(OrganizationVO vo,String t1,String serverLanguageId,String username) throws Throwable;
+	public VOResponse insertCompany(OrganizationVO vo,String imagePath,String t1,String serverLanguageId,String username) throws Throwable;
 
 	public VOListResponse loadCompanies(String serverLanguageId,String username) throws Throwable;
 
-	public VOResponse loadCompany(String companyCode,String serverLanguageId,String username) throws Throwable;
+	public VOResponse loadCompany(String companyCode,String imagePath,String serverLanguageId,String username) throws Throwable;
 
-	public VOResponse updateCompany(OrganizationVO oldVO,OrganizationVO newVO,String t1,String serverLanguageId,String username) throws Throwable;
+	public VOResponse updateCompany(OrganizationVO oldVO,OrganizationVO newVO,String imagePath,String t1,String serverLanguageId,String username) throws Throwable;
 
 }
 

@@ -275,6 +275,8 @@ public class UpdateItemBean  implements UpdateItem {
 			attribute2dbField.put("noWarehouseMovITM01","NO_WAREHOUSE_MOV");
 			attribute2dbField.put("sheetCodeItm25ITM01","SHEET_CODE_ITM25");
 
+			attribute2dbField.put("brandCodeITM01","BRAND_CODE_ITM31");
+
       HashSet pkAttributes = new HashSet();
       pkAttributes.add("companyCodeSys01ITM01");
       pkAttributes.add("itemCodeITM01");

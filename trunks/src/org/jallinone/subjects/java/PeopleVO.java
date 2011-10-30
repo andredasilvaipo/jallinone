@@ -58,6 +58,7 @@ public class PeopleVO extends BaseValueObject implements Subject {
   private String nationalityREG04;
   private String companyCodeSys01Reg04REG04;
   private java.math.BigDecimal progressiveReg04REG04;
+	private String companyLogoREG04;
 
 
   public PeopleVO() {
@@ -207,6 +208,12 @@ public class PeopleVO extends BaseValueObject implements Subject {
   }
   public void setCompanyCodeSys01Reg04REG04(String companyCodeSys01Reg04REG04) {
     this.companyCodeSys01Reg04REG04 = companyCodeSys01Reg04REG04;
+  }
+  public String getCompanyLogoREG04() {
+    return companyLogoREG04;
+  }
+  public void setCompanyLogoREG04(String companyLogoREG04) {
+    this.companyLogoREG04 = companyLogoREG04;
   }
 
 }

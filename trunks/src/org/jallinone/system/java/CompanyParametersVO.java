@@ -75,6 +75,13 @@ public class CompanyParametersVO extends ValueObjectImpl {
 	private String roundingProceedsAccountCodeAcc02DOC19;
 	private String roundingProceedsDescrDOC19;
 
+	private String ecCustomerCode;
+	private String ecCustomerDescr;
+	private String ecWarehouseCode;
+	private String ecWarehouseDescr;
+	private String ecExpenceCode;
+	private String ecExpenceDescr;
+
 
   public CompanyParametersVO() {
   }
@@ -301,6 +308,42 @@ public class CompanyParametersVO extends ValueObjectImpl {
   }
   public void setRoundingCostsAccountCodeAcc02DOC19(String roundingCostsAccountCodeAcc02DOC19) {
     this.roundingCostsAccountCodeAcc02DOC19 = roundingCostsAccountCodeAcc02DOC19;
+  }
+  public String getEcCustomerCode() {
+    return ecCustomerCode;
+  }
+  public String getEcWarehouseCode() {
+    return ecWarehouseCode;
+  }
+  public void setEcCustomerCode(String ecCustomerCode) {
+    this.ecCustomerCode = ecCustomerCode;
+  }
+  public void setEcWarehouseCode(String ecWarehouseCode) {
+    this.ecWarehouseCode = ecWarehouseCode;
+  }
+  public String getEcCustomerDescr() {
+    return ecCustomerDescr;
+  }
+  public String getEcWarehouseDescr() {
+    return ecWarehouseDescr;
+  }
+  public void setEcCustomerDescr(String ecCustomerDescr) {
+    this.ecCustomerDescr = ecCustomerDescr;
+  }
+  public void setEcWarehouseDescr(String ecWarehouseDescr) {
+    this.ecWarehouseDescr = ecWarehouseDescr;
+  }
+  public String getEcExpenceCode() {
+    return ecExpenceCode;
+  }
+  public String getEcExpenceDescr() {
+    return ecExpenceDescr;
+  }
+  public void setEcExpenceCode(String ecExpenceCode) {
+    this.ecExpenceCode = ecExpenceCode;
+  }
+  public void setEcExpenceDescr(String ecExpenceDescr) {
+    this.ecExpenceDescr = ecExpenceDescr;
   }
 
 }

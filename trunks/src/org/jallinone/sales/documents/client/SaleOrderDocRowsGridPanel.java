@@ -162,7 +162,6 @@ public class SaleOrderDocRowsGridPanel extends JPanel implements CurrencyColumnS
   /** list of CustomValueObject objects, related to prices associated to item's variants, if any */
   private java.util.List pricesMatrix = null;
 
-
   private ProductVariantsPanel variantsPanel = new ProductVariantsPanel(
       new ProductVariantsController() {
 
@@ -502,6 +501,8 @@ public class SaleOrderDocRowsGridPanel extends JPanel implements CurrencyColumnS
           gridParams.getOtherGridParams().put(ApplicationConsts.VARIANTS_MATRIX_VO,variantsPanel.getVariantsMatrixVO());
 //          gridParams.getOtherGridParams().put(ApplicationConsts.PRICELIST,parentVO.getPricelistCodeSal01DOC01());
           gridParams.getOtherGridParams().put(ApplicationConsts.PRICELIST,controlPricelistCode.getValue());
+					DetailSaleDocRowVO vo = (DetailSaleDocRowVO)detailPanel.getVOModel().getValueObject();
+					gridParams.getOtherGridParams().put(ApplicationConsts.START_DATE,vo.getStartDateSal02DOC02());
           Response res = ClientUtils.getData("loadVariantsPrices",gridParams);
           if (!res.isError()) {
             pricesMatrix = ((VOListResponse)res).getRows();

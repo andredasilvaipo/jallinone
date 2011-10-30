@@ -69,13 +69,14 @@ public class LoadVariantsPriceAction implements Action {
 
 
   public final Response executeCommand(Object inputPar,UserSessionParameters userSessionPars,HttpServletRequest request, HttpServletResponse response,HttpSession userSession,ServletContext context) {
-      Object[] params = (Object[])inputPar;
-      VariantBarcodeVO barcodeVO = (VariantBarcodeVO)params[0];
-      String priceListCode = (String)params[1];
     try {
+			Object[] params = (Object[])inputPar;
+			VariantBarcodeVO barcodeVO = (VariantBarcodeVO)params[0];
+			String priceListCode = (String)params[1];
+			java.sql.Date startDate = (java.sql.Date)params[2];
 
     	SalePrices bean = (SalePrices)JAIOBeanFactory.getInstance().getBean(SalePrices.class);
-      Response answer = bean.loadVariantsPrice(barcodeVO,priceListCode,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+      Response answer = bean.loadVariantsPrice(barcodeVO,priceListCode,startDate,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
     return answer;
     }

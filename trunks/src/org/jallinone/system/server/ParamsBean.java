@@ -1167,6 +1167,67 @@ public class ParamsBean  implements Params {
 			}
 
 
+
+				// update default customer code for ecomerce app...
+			pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+			pstmt.setString(1,vo.getEcCustomerCode());
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+			pstmt.setString(5,ApplicationConsts.EC_CUSTOMER_CODE);
+			rows = pstmt.executeUpdate();
+			pstmt.close();
+			if (rows==0) {
+				// record not yet exists: it will be inserted...
+				pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
+				pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
+				pstmt.setString(2,ApplicationConsts.EC_CUSTOMER_CODE);
+				pstmt.setString(3,vo.getEcCustomerCode());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.executeUpdate();
+			}
+
+			// update default warehouse code for ecomerce app...
+			pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+			pstmt.setString(1,vo.getEcWarehouseCode());
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+			pstmt.setString(5,ApplicationConsts.EC_WARE_CODE);
+			rows = pstmt.executeUpdate();
+			pstmt.close();
+			if (rows==0) {
+				// record not yet exists: it will be inserted...
+				pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
+				pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
+				pstmt.setString(2,ApplicationConsts.EC_WARE_CODE);
+				pstmt.setString(3,vo.getEcWarehouseCode());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.executeUpdate();
+			}
+
+			// update default chanrge code for ecomerce app...
+			pstmt = conn.prepareStatement("update SYS21_COMPANY_PARAMS set VALUE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PARAM_CODE=?");
+			pstmt.setString(1,vo.getEcExpenceCode());
+			pstmt.setString(2,username);
+			pstmt.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(4,vo.getCompanyCodeSys01SYS21());
+			pstmt.setString(5,ApplicationConsts.EC_EXP_CODE);
+			rows = pstmt.executeUpdate();
+			pstmt.close();
+			if (rows==0) {
+				// record not yet exists: it will be inserted...
+				pstmt = conn.prepareStatement("insert into SYS21_COMPANY_PARAMS(COMPANY_CODE_SYS01,PARAM_CODE,VALUE,CREATE_USER,CREATE_DATE) values(?,?,?,?,?)");
+				pstmt.setString(1,vo.getCompanyCodeSys01SYS21());
+				pstmt.setString(2,ApplicationConsts.EC_EXP_CODE);
+				pstmt.setString(3,vo.getEcExpenceCode());
+				pstmt.setString(4,username);
+				pstmt.setTimestamp(5,new java.sql.Timestamp(System.currentTimeMillis()));
+				pstmt.executeUpdate();
+			}
+
       return new VOResponse(vo);
     } catch (Exception ex) {
       Logger.error(username,this.getClass().getName(),"executeCommand","Error while storing company parameters",ex);
@@ -1957,6 +2018,62 @@ public class ParamsBean  implements Params {
 			}
 			rset.close();
 
+			// retrieve default customer for ecommerce app...
+			pstmt.close();
+			pstmt = conn.prepareStatement(
+					"select VALUE,NAME_1||' '||NAME_2 from SYS21_COMPANY_PARAMS,SAL07_CUSTOMERS,REG04_SUBJECTS where "+
+					"SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=SAL07_CUSTOMERS.COMPANY_CODE_SYS01 AND "+
+					"SYS21_COMPANY_PARAMS.VALUE=SAL07_CUSTOMERS.CUSTOMER_CODE AND "+
+					"REG04_SUBJECTS.COMPANY_CODE_SYS01=SAL07_CUSTOMERS.COMPANY_CODE_SYS01 AND "+
+					"REG04_SUBJECTS.PROGRESSIVE=SAL07_CUSTOMERS.PROGRESSIVE_REG04 AND "+
+					"SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? "
+			);
+			pstmt.setString(1,companyCode);
+			pstmt.setString(2,ApplicationConsts.EC_CUSTOMER_CODE);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				vo.setEcCustomerCode(rset.getString(1)==null?null:rset.getString(1));
+				vo.setEcCustomerDescr(rset.getString(2)==null?null:rset.getString(2));
+			}
+			rset.close();
+
+			// retrieve default warehouse code for ecommerce app...
+			pstmt.close();
+			pstmt = conn.prepareStatement(
+					"select VALUE,DESCRIPTION from SYS21_COMPANY_PARAMS,WAR01_WAREHOUSES where "+
+					"SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=WAR01_WAREHOUSES.COMPANY_CODE_SYS01 AND "+
+					"SYS21_COMPANY_PARAMS.VALUE=WAR01_WAREHOUSES.WAREHOUSE_CODE AND "+
+					"SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? "
+			);
+			pstmt.setString(1,companyCode);
+			pstmt.setString(2,ApplicationConsts.EC_WARE_CODE);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				vo.setEcWarehouseCode(rset.getString(1)==null?null:rset.getString(1));
+				vo.setEcWarehouseDescr(rset.getString(2)==null?null:rset.getString(2));
+			}
+			rset.close();
+
+			// retrieve default charge for ecommerce app...
+			pstmt.close();
+			pstmt = conn.prepareStatement(
+					"select SYS21_COMPANY_PARAMS.VALUE,SYS10_COMPANY_TRANSLATIONS.DESCRIPTION from SYS21_COMPANY_PARAMS,SAL06_CHARGES,SYS10_COMPANY_TRANSLATIONS where "+
+					"SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=SAL06_CHARGES.COMPANY_CODE_SYS01 AND "+
+					"SYS21_COMPANY_PARAMS.VALUE=SAL06_CHARGES.CHARGE_CODE AND "+
+					"SYS10_COMPANY_TRANSLATIONS.COMPANY_CODE_SYS01=SAL06_CHARGES.COMPANY_CODE_SYS01 AND "+
+					"SYS10_COMPANY_TRANSLATIONS.PROGRESSIVE=SAL06_CHARGES.PROGRESSIVE_SYS10 AND "+
+					"SYS10_COMPANY_TRANSLATIONS.LANGUAGE_CODE=? and "+
+					"SYS21_COMPANY_PARAMS.COMPANY_CODE_SYS01=? and SYS21_COMPANY_PARAMS.PARAM_CODE=? "
+			);
+			pstmt.setString(1,serverLanguageId);
+			pstmt.setString(2,companyCode);
+			pstmt.setString(3,ApplicationConsts.EC_EXP_CODE);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				vo.setEcExpenceCode(rset.getString(1)==null?null:rset.getString(1));
+				vo.setEcExpenceDescr(rset.getString(2)==null?null:rset.getString(2));
+			}
+			rset.close();
 
 
       return new VOResponse(vo);

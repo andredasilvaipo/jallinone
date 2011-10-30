@@ -18,6 +18,15 @@
    <bean id="AccountingMotivesBean" scope="prototype" class="org.jallinone.accounting.accountingmotives.server.AccountingMotivesBean" >
      <property name="dataSource" ref="JALLINONE" />
    </bean>
+   <bean id="ItemVariantImagesBean" scope="prototype" class="org.jallinone.items.server.ItemVariantImagesBean" >
+     <property name="dataSource" ref="JALLINONE" />
+   </bean>
+   <bean id="ItemFieldsBean" scope="prototype" class="org.jallinone.items.server.ItemFieldsBean" >
+     <property name="dataSource" ref="JALLINONE" />
+   </bean>
+   <bean id="BrandsBean" scope="prototype" class="org.jallinone.items.server.BrandsBean" >
+     <property name="dataSource" ref="JALLINONE" />
+   </bean>
    <bean id="AccountsBean" scope="prototype" class="org.jallinone.accounting.accounts.server.AccountsBean">
      <property name="dataSource" ref="JALLINONE" />
    </bean>

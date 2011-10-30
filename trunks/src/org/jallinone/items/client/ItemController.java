@@ -315,6 +315,8 @@ public class ItemController extends CompanyFormController {
 			vo.setLevelDescriptionSYS10(levelVO.getDescriptionSYS10());
 			vo.setProgressiveHie01HIE02(levelVO.getProgressiveHie01HIE02());
 			vo.setCompanyCodeSys01ITM01(parentFrame.getSelectedItemType().getCompanyCodeSys01ITM02());
+			frame.getBrandDataLocator().getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01());
+			frame.getBrandDataLocator().getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01());
 		}
 
 
@@ -355,6 +357,16 @@ public class ItemController extends CompanyFormController {
   public ItemsFrame getParentFrame() {
     return parentFrame;
   }
+
+
+	/**
+	 * Callback method called when the Form mode is changed.
+	 * @param currentMode current Form mode
+	 */
+	public void modeChanged(int currentMode) {
+		if (currentMode!=Consts.READONLY)
+			frame.getButtonImgVars().setEnabled(false);
+	}
 
 
 }

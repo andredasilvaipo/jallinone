@@ -18,6 +18,7 @@ import org.openswing.swing.message.receive.java.ValueObject;
 import org.openswing.swing.server.Action;
 import org.openswing.swing.server.Controller;
 import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.commons.java.ApplicationConsts;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -75,12 +76,13 @@ public class UpdateSubjectAction implements Action {
 			String serverLanguageId = ((JAIOUserSessionParameters)userSessionPars).getServerLanguageId();
 			String t1 = factory.getResources(serverLanguageId).getResource("there is already another people with the same first and last name.");
 			String t2 = factory.getResources(serverLanguageId).getResource("there is already another organization with the same corporate name.");
+			String imagePath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.IMAGE_PATH);
 
 			Subjects bean = (Subjects)JAIOBeanFactory.getInstance().getBean(Subjects.class);
 			if (newVO instanceof PeopleVO)
 				bean.updatePeople((PeopleVO)oldVO,(PeopleVO)newVO,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 			else
-				bean.updateOrganization((OrganizationVO)oldVO,(OrganizationVO)newVO,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+				bean.updateOrganization((OrganizationVO)oldVO,(OrganizationVO)newVO,imagePath,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 			return new VOResponse(inputPar);
 		}
 		catch (Throwable ex) {

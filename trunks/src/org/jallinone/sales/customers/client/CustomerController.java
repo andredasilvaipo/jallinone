@@ -106,6 +106,8 @@ public class CustomerController extends CompanyFormController {
    * @param error <code>true</code> if an error occours during data loading, <code>false</code> if data loading is successfully completed
    */
   public void loadDataCompleted(boolean error) {
+		detailFrame.getCurrentForm().setMode(Consts.READONLY);
+
     detailFrame.getReferencesPanel().getGrid().getOtherGridParams().put(
         ApplicationConsts.SUBJECT_PK,
         new SubjectPK(pk.getCompanyCodeSys01SAL07(),pk.getProgressiveReg04SAL07())
@@ -155,7 +157,6 @@ public class CustomerController extends CompanyFormController {
       PeopleCustomerVO vo = (PeopleCustomerVO)detailFrame.getCurrentForm().getVOModel().getValueObject();
       detailFrame.setTitle(ClientSettings.getInstance().getResources().getResource("customer")+" "+vo.getCustomerCodeSAL07()+" - "+vo.getName_1REG04()+" "+(vo.getName_2REG04()==null?"":vo.getName_2REG04()));
     }
-
 
   }
 

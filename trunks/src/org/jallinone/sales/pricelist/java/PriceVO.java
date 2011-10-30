@@ -53,6 +53,16 @@ public class PriceVO extends BaseValueObject implements VariantsItemDescriptor {
 	private String currencySymbolREG03;
 	private BigDecimal decimalsREG03;
 
+	private String smallImageITM01;
+	private String largeImageITM01;
+
+	private String brandCodeItm31ITM01;
+	private String minSellingQtyUmCodeReg02ITM01;
+	private String vatCodeReg01ITM01;
+  private java.math.BigDecimal minSellingQtyITM01;
+	private java.math.BigDecimal valueWithVat;
+	private BigDecimal valueREG01;
+
 
   public PriceVO() {
   }
@@ -166,6 +176,55 @@ public class PriceVO extends BaseValueObject implements VariantsItemDescriptor {
   }
   public void setCurrencySymbolREG03(String currencySymbolREG03) {
     this.currencySymbolREG03 = currencySymbolREG03;
+  }
+  public String getLargeImageITM01() {
+    return largeImageITM01;
+  }
+  public String getSmallImageITM01() {
+    return smallImageITM01;
+  }
+  public void setLargeImageITM01(String largeImageITM01) {
+    this.largeImageITM01 = largeImageITM01;
+  }
+  public void setSmallImageITM01(String smallImageITM01) {
+    this.smallImageITM01 = smallImageITM01;
+  }
+
+  public String getMinSellingQtyUmCodeReg02ITM01() {
+    return minSellingQtyUmCodeReg02ITM01;
+  }
+  public void setMinSellingQtyUmCodeReg02ITM01(String minSellingQtyUmCodeReg02ITM01) {
+    this.minSellingQtyUmCodeReg02ITM01 = minSellingQtyUmCodeReg02ITM01;
+  }
+  public void setVatCodeReg01ITM01(String vatCodeReg01ITM01) {
+    this.vatCodeReg01ITM01 = vatCodeReg01ITM01;
+  }
+  public String getVatCodeReg01ITM01() {
+    return vatCodeReg01ITM01;
+  }
+  public java.math.BigDecimal getMinSellingQtyITM01() {
+    return minSellingQtyITM01;
+  }
+  public void setMinSellingQtyITM01(java.math.BigDecimal minSellingQtyITM01) {
+    this.minSellingQtyITM01 = minSellingQtyITM01;
+  }
+  public String getBrandCodeItm31ITM01() {
+    return brandCodeItm31ITM01;
+  }
+  public void setBrandCodeItm31ITM01(String brandCodeItm31ITM01) {
+    this.brandCodeItm31ITM01 = brandCodeItm31ITM01;
+  }
+  public java.math.BigDecimal getValueWithVat() {
+    return valueWithVat;
+  }
+  public void setValueWithVat(java.math.BigDecimal valueWithVat) {
+    this.valueWithVat = valueWithVat;
+  }
+  public BigDecimal getValueREG01() {
+    return valueREG01;
+  }
+  public void setValueREG01(BigDecimal valueREG01) {
+    this.valueREG01 = valueREG01;
   }
 
 }

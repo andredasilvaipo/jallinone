@@ -101,7 +101,8 @@ public class UsersBean  implements Users {
       String sql =
           "select SYS03_USERS.USERNAME,SYS03_USERS.PASSWD,SYS03_USERS.PASSWD_EXPIRATION,SYS03_USERS.LANGUAGE_CODE_SYS09,"+
           "SYS03_USERS.FIRST_NAME,SYS03_USERS.LAST_NAME,SYS03_USERS.COMPANY_CODE_SYS01,SYS03_USERS.PROGRESSIVE_REG04,"+
-          "SYS03_USERS.USERNAME_CREATE,SYS03_USERS.CREATE_DATE,SCH01_EMPLOYEES.EMPLOYEE_CODE,SYS03_USERS.DEF_COMPANY_CODE_SYS01 "+
+          "SYS03_USERS.USERNAME_CREATE,SYS03_USERS.CREATE_DATE,SCH01_EMPLOYEES.EMPLOYEE_CODE,SYS03_USERS.DEF_COMPANY_CODE_SYS01, "+
+					"SYS03_USERS.CUSTOMER_CODE_SAL07,SYS03_USERS.CUSTOMER_PROGRESSIVE_REG04 "+
           "from SYS03_USERS LEFT OUTER JOIN "+
           "(select SCH01_EMPLOYEES.COMPANY_CODE_SYS01,SCH01_EMPLOYEES.PROGRESSIVE_REG04,SCH01_EMPLOYEES.EMPLOYEE_CODE "+
           "from SCH01_EMPLOYEES) SCH01_EMPLOYEES ON "+
@@ -121,6 +122,8 @@ public class UsersBean  implements Users {
       attribute2dbField.put("usernameSYS03","SYS03_USERS.USERNAME");
       attribute2dbField.put("employeeCodeSCH01","SCH01_EMPLOYEES.EMPLOYEE_CODE");
       attribute2dbField.put("defCompanyCodeSys01SYS03","SYS03_USERS.DEF_COMPANY_CODE_SYS01");
+      attribute2dbField.put("customerCodeSAL07","SYS03_USERS.CUSTOMER_CODE_SAL07");
+      attribute2dbField.put("customerProgressiveReg04SYS03","SYS03_USERS.CUSTOMER_PROGRESSIVE_REG04");
 
 
       Response answer = QueryUtil.getQuery(
@@ -188,6 +191,8 @@ public class UsersBean  implements Users {
       attribute2dbField.put("usernameCreateSYS03","USERNAME_CREATE");
       attribute2dbField.put("usernameSYS03","USERNAME");
       attribute2dbField.put("defCompanyCodeSys01SYS03","DEF_COMPANY_CODE_SYS01");
+			attribute2dbField.put("customerCodeSAL07","CUSTOMER_CODE_SAL07");
+			attribute2dbField.put("customerProgressiveReg04SYS03","CUSTOMER_PROGRESSIVE_REG04");
 
       HashSet pkAttrs = new HashSet();
       pkAttrs.add("usernameSYS03");
@@ -261,7 +266,10 @@ public class UsersBean  implements Users {
       // insert record in SYS03...
       pstmt = conn.prepareStatement(
           "insert into SYS03_USERS(USERNAME,PASSWD,PASSWD_EXPIRATION,LANGUAGE_CODE_SYS09,FIRST_NAME,LAST_NAME,"+
-          "COMPANY_CODE_SYS01,PROGRESSIVE_REG04,USERNAME_CREATE,CREATE_DATE,DEF_COMPANY_CODE_SYS01,CREATE_USER) values(?,?,?,?,?,?,?,?,?,?,?,?)"
+          "COMPANY_CODE_SYS01,PROGRESSIVE_REG04,USERNAME_CREATE,CREATE_DATE,DEF_COMPANY_CODE_SYS01,CREATE_USER,"+
+					"CUSTOMER_CODE_SAL07,CUSTOMER_PROGRESSIVE_REG04) "+
+					"values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+
       );
       pstmt.setString(1,vo.getUsernameSYS03());
       pstmt.setString(2,vo.getPasswdSYS03());
@@ -275,6 +283,8 @@ public class UsersBean  implements Users {
 			pstmt.setTimestamp(10,new java.sql.Timestamp(System.currentTimeMillis()));
       pstmt.setString(11,vo.getDefCompanyCodeSys01SYS03());
 			pstmt.setString(12,username);
+			pstmt.setString(13,vo.getCustomerCodeSAL07());
+			pstmt.setBigDecimal(14,vo.getCustomerProgressiveReg04SYS03());
       pstmt.execute();
       pstmt.close();
 

@@ -347,7 +347,12 @@ public class ManualMovementsBean implements ManualMovements {
               }
               sn.clear();
               if (vo.getDeltaQtyWAR02().intValue()>0) {
-                sn.addAll(voTemplate.getSerialNumbers().subList(pos,pos+vo.getDeltaQtyWAR02().intValue()));
+								try {
+									sn.addAll(voTemplate.getSerialNumbers().subList(pos,
+										pos + vo.getDeltaQtyWAR02().intValue()));
+								}
+								catch (Exception ex1) {
+								}
               }
               vo.setSerialNumbers(sn);
               pos += vo.getDeltaQtyWAR02().intValue();

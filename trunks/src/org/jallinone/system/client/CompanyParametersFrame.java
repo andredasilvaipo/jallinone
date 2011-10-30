@@ -172,6 +172,23 @@ public class CompanyParametersFrame extends InternalFrame {
 	LookupServerDataLocator accCDataLocator = new LookupServerDataLocator();
 	LookupController accPController = new LookupController();
 	LookupServerDataLocator accPDataLocator = new LookupServerDataLocator();
+  LabelControl labelECCustomerCode = new LabelControl();
+  CodLookupControl controlECCustomerCode = new CodLookupControl();
+  TextControl controlECCustDescr = new TextControl();
+  LabelControl labelECWareCode = new LabelControl();
+  CodLookupControl controlECWareCode = new CodLookupControl();
+  TextControl controlWareDesc = new TextControl();
+	LabelControl labelECExpCode = new LabelControl();
+	CodLookupControl controlECExpCode = new CodLookupControl();
+	TextControl controlExpDesc = new TextControl();
+  JPanel jPanel1 = new JPanel();
+	LookupController eccController = new LookupController();
+	LookupServerDataLocator eccDataLocator = new LookupServerDataLocator();
+	LookupController ecwController = new LookupController();
+	LookupServerDataLocator ecwDataLocator = new LookupServerDataLocator();
+	LookupController ecxController = new LookupController();
+	LookupServerDataLocator ecxDataLocator = new LookupServerDataLocator();
+
 
 
   public CompanyParametersFrame(CompanyParametersController controller) {
@@ -706,10 +723,128 @@ public class CompanyParametersFrame extends InternalFrame {
 
 			});
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+			 // default warehouse for eccommerce app lookup...
+			 controlECCustomerCode.setLookupController(eccController);
+			 controlECCustomerCode.setControllerMethodName("getCustomers");
+			 eccController.setLookupDataLocator(eccDataLocator);
+			 eccDataLocator.setGridMethodName("loadCustomers");
+			 eccDataLocator.setValidationMethodName("validateCustomerCode");
+			 eccController.setFrameTitle("customers");
+			 eccController.setLookupValueObjectClassName("org.jallinone.sales.customers.java.GridCustomerVO");
+			 eccController.addLookup2ParentLink("customerCodeSAL07", "ecCustomerCode");
+			 eccController.addLookup2ParentLink("name_1REG04","ecCustomerDescr");
+			 eccController.setFilterableColumn("customerCodeSAL07",true);
+			 eccController.setFramePreferedSize(new Dimension(400,400));
+			 eccController.setAllColumnVisible(false);
+			 eccController.setVisibleColumn("customerCodeSAL07", true);
+			 eccController.setVisibleColumn("name_1REG04", true);
+			 eccController.setPreferredWidthColumn("customerCodeSAL07",100);
+			 eccController.setPreferredWidthColumn("name_1REG04",290);
+			 eccController.addLookupListener(new LookupListener() {
+
+				 public void codeValidated(boolean validated) {}
+
+				 public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) { }
+
+				 public void beforeLookupAction(ValueObject parentVO) {
+					 eccDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanies.getValue());
+					 eccDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanies.getValue());
+				 }
+
+				 public void forceValidate() {}
+
+			 });
+
+			 // default warehouse for eccommerce app lookup...
+			 controlECWareCode.setLookupController(ecwController);
+			 controlECWareCode.setControllerMethodName("getWarehouses");
+			 ecwController.setLookupDataLocator(ecwDataLocator);
+			 ecwDataLocator.setGridMethodName("loadWarehouses");
+			 ecwDataLocator.setValidationMethodName("validateWarehouseCode");
+			 ecwController.setFrameTitle("warehouses");
+			 ecwController.setLookupValueObjectClassName("org.jallinone.warehouse.java.WarehouseVO");
+			 ecwController.addLookup2ParentLink("warehouseCodeWAR01", "ecWarehouseCode");
+			 ecwController.addLookup2ParentLink("descriptionWAR01","ecWarehouseDescr");
+			 ecwController.setFilterableColumn("warehouseCodeWAR01",true);
+			 ecwController.setFilterableColumn("descriptionWAR01",true);
+			 ecwController.setFramePreferedSize(new Dimension(400,400));
+			 ecwController.setAllColumnVisible(false);
+			 ecwController.setVisibleColumn("warehouseCodeWAR01", true);
+			 ecwController.setVisibleColumn("descriptionWAR01", true);
+			 ecwController.setPreferredWidthColumn("warehouseCodeWAR01",100);
+			 ecwController.setPreferredWidthColumn("descriptionWAR01",290);
+			 ecwController.addLookupListener(new LookupListener() {
+
+				 public void codeValidated(boolean validated) {}
+
+				 public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) { }
+
+				 public void beforeLookupAction(ValueObject parentVO) {
+					 ecwDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanies.getValue());
+					 ecwDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanies.getValue());
+				 }
+
+				 public void forceValidate() {}
+
+			 });
+
+
+			 // default expense for eccommerce app lookup...
+			 controlECExpCode.setLookupController(ecxController);
+			 controlECExpCode.setControllerMethodName("getSaleChargesList");
+			 ecxController.setLookupDataLocator(ecxDataLocator);
+			 ecxDataLocator.setGridMethodName("loadCharges");
+			 ecxDataLocator.setValidationMethodName("validateChargeCode");
+			 ecxController.setFrameTitle("charges");
+			 ecxController.setLookupValueObjectClassName("org.jallinone.sales.charges.java.ChargeVO");
+			 ecxController.addLookup2ParentLink("chargeCodeSAL06", "ecExpenceCode");
+			 ecxController.addLookup2ParentLink("descriptionSYS10","ecExpenceDescr");
+			 ecxController.setFilterableColumn("chargeCodeSAL06",true);
+			 ecxController.setFilterableColumn("descriptionSYS10",true);
+			 ecxController.setFramePreferedSize(new Dimension(400,400));
+			 ecxController.setAllColumnVisible(false);
+			 ecxController.setVisibleColumn("chargeCodeSAL06", true);
+			 ecxController.setVisibleColumn("descriptionSYS10", true);
+			 ecxController.setPreferredWidthColumn("chargeCodeSAL06",100);
+			 ecxController.setPreferredWidthColumn("descriptionSYS10",290);
+			 ecxController.addLookupListener(new LookupListener() {
+
+				 public void codeValidated(boolean validated) {}
+
+				 public void codeChanged(ValueObject parentVO,Collection parentChangedAttributes) { }
+
+				 public void beforeLookupAction(ValueObject parentVO) {
+					 ecxDataLocator.getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanies.getValue());
+					 ecxDataLocator.getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,controlCompanies.getValue());
+				 }
+
+				 public void forceValidate() {}
+
+			 });
+
+
+
+
+
+
+
       init();
 
-      setSize(650,520);
-      setMinimumSize(new Dimension(650,520));
+      setSize(650,535);
+      setMinimumSize(new Dimension(650,535));
     }
     catch(Exception e) {
       e.printStackTrace();
@@ -799,8 +934,25 @@ public class CompanyParametersFrame extends InternalFrame {
     labelInitialVal.setTextAlignment(SwingConstants.LEFT);
     labelInitialVal.setText("initial value in progr");
     controlInitialVal.setRequired(true);
+    labelECCustomerCode.setText("ec customer");
+    controlECCustomerCode.setAttributeName("ecCustomerCode");
+    controlECCustomerCode.setMaxCharacters(20);
+    controlECCustDescr.setEnabledOnInsert(false);
+    controlECCustDescr.setEnabledOnEdit(false);
+    labelECWareCode.setText("ec warehouse");
+    controlECWareCode.setAttributeName("ecWarehouseCode");
+    controlECWareCode.setMaxCharacters(20);
+    controlWareDesc.setEnabledOnInsert(false);
+    controlWareDesc.setEnabledOnEdit(false);
     tabbed.add(panel1, "panel1");
     tabbed.add(panel2, "panel2");
+
+		labelECExpCode.setText("ec expense");
+		controlECExpCode.setAttributeName("ecExpenceCode");
+		controlECExpCode.setMaxCharacters(20);
+		controlExpDesc.setEnabledOnInsert(false);
+		controlExpDesc.setEnabledOnEdit(false);
+
 
     tabbed.setTitleAt(0,ClientSettings.getInstance().getResources().getResource("user level parameters"));
     tabbed.setTitleAt(1,ClientSettings.getInstance().getResources().getResource("company level parameters"));
@@ -996,75 +1148,97 @@ public class CompanyParametersFrame extends InternalFrame {
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 
 
-    panel2.add(labelLossProfitE,                   new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+    panel2.add(labelLossProfitE,                          new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlLossProfitECode,                 new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
+    panel2.add(controlLossProfitECode,                        new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlLossProfitEDescr,                  new GridBagConstraints(2, 0, 2, 1, 1.0, 0.0
+    panel2.add(controlLossProfitEDescr,                         new GridBagConstraints(2, 0, 2, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 
-    panel2.add(labelLossProfitP,                   new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+    panel2.add(labelLossProfitP,                          new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlLossProfitPCode,                 new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
+    panel2.add(controlLossProfitPCode,                        new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlLossProfitPDescr,                  new GridBagConstraints(2, 1, 2, 1, 1.0, 0.0
+    panel2.add(controlLossProfitPDescr,                         new GridBagConstraints(2, 1, 2, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 
-    panel2.add(labelClosing,                   new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+    panel2.add(labelClosing,                          new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlClosingCode,                 new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0
+    panel2.add(controlClosingCode,                        new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlClosingDescr,                  new GridBagConstraints(2, 2, 2, 1, 1.0, 0.0
+    panel2.add(controlClosingDescr,                         new GridBagConstraints(2, 2, 2, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
 
-    panel2.add(labelOpening,                      new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+    panel2.add(labelOpening,                             new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlOpeningCode,                  new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
+    panel2.add(controlOpeningCode,                         new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlOpeningDescr,                 new GridBagConstraints(2, 3, 2, 7, 1.0, 1.0
+    panel2.add(controlOpeningDescr,                         new GridBagConstraints(2, 3, 2, 1, 1.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 0, 5), 0, 0));
 
 
 
-		panel2.add(controlRoundingP,         new GridBagConstraints(1, 5, 2, 1, 0.0, 0.0
+		panel2.add(controlRoundingP,                new GridBagConstraints(1, 5, 2, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		panel2.add(controlRoundingCdescr,       new GridBagConstraints(2, 4, 2, 1, 1.0, 0.0
+		panel2.add(controlRoundingCdescr,              new GridBagConstraints(2, 4, 2, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-		panel2.add(controlRoundingPdescr,          new GridBagConstraints(2, 5, 2, 1, 1.0, 0.0
+		panel2.add(controlRoundingPdescr,                 new GridBagConstraints(2, 5, 2, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-		panel2.add(labelRoundingCostsCode,       new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+		panel2.add(labelRoundingCostsCode,              new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		panel2.add(labelRoundingProAccCode,         new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+		panel2.add(labelRoundingProAccCode,                new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		panel2.add(controlRoundingC,       new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
+		panel2.add(controlRoundingC,              new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
 
 
-    panel2.add(labelAfternoonStartHour,                   new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
-            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
-    panel2.add(controlAfternoonStartHour,                 new GridBagConstraints(1, 7, 1, 2, 0.0, 0.0
-            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
-    panel2.add(controlAfternoonEndHour,               new GridBagConstraints(3, 7, 1, 3, 0.0, 0.0
+    panel2.add(labelAfternoonStartHour,                           new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(labelMorningStartHour,             new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
+    panel2.add(controlAfternoonStartHour,                         new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    panel2.add(controlAfternoonEndHour,                       new GridBagConstraints(3, 7, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    panel2.add(labelMorningStartHour,                    new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlMorningEndHour,           new GridBagConstraints(3, 6, 1, 1, 0.0, 0.0
+    panel2.add(controlMorningEndHour,                  new GridBagConstraints(3, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlMorningStartHour,          new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0
+    panel2.add(controlMorningStartHour,                 new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(labelMorningEndHour,         new GridBagConstraints(2, 6, 1, 1, 0.0, 0.0
+    panel2.add(labelMorningEndHour,                new GridBagConstraints(2, 6, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 9, 5), 0, 0));
-    panel2.add(labelAfternoonEndHour,       new GridBagConstraints(2, 7, 1, 3, 0.0, 0.0
+    panel2.add(labelAfternoonEndHour,               new GridBagConstraints(2, 7, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlSaleSectional,         new GridBagConstraints(1, 10, 2, 1, 0.0, 0.0
+    panel2.add(controlSaleSectional,                new GridBagConstraints(1, 15, 2, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(labelSaleSectional,     new GridBagConstraints(0, 10, 1, 1, 0.0, 0.0
+    panel2.add(labelSaleSectional,            new GridBagConstraints(0, 15, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(labelInitialVal,     new GridBagConstraints(0, 11, 1, 1, 0.0, 1.0
+    panel2.add(labelInitialVal,            new GridBagConstraints(0, 16, 1, 1, 0.0, 1.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    panel2.add(controlInitialVal,    new GridBagConstraints(1, 11, 1, 1, 0.0, 0.0
+    panel2.add(controlInitialVal,           new GridBagConstraints(1, 16, 1, 1, 0.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    panel2.add(labelECCustomerCode,          new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    panel2.add(labelECWareCode,          new GridBagConstraints(0, 9, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		panel2.add(labelECExpCode,          new GridBagConstraints(0, 10, 1, 1, 0.0, 0.0
+						,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    panel2.add(controlECCustomerCode,      new GridBagConstraints(1, 8, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    panel2.add(controlECCustDescr,      new GridBagConstraints(2, 8, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    panel2.add(controlECWareCode,     new GridBagConstraints(1, 9, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    panel2.add(controlWareDesc,    new GridBagConstraints(2, 9, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+
+		panel2.add(controlECExpCode,     new GridBagConstraints(1, 10, 1, 1, 0.0, 0.0
+						,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+		panel2.add(controlExpDesc,    new GridBagConstraints(2, 10, 2, 1, 0.0, 0.0
+						,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+
+    panel2.add(jPanel1,  new GridBagConstraints(0, 12, 1, 1, 0.0, 1.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 
     controlCreditsCode.setAttributeName("creditAccountCodeAcc02SAL07");
     controlCreditsDescr.setAttributeName("creditAccountDescrSAL07");
@@ -1093,6 +1267,10 @@ public class CompanyParametersFrame extends InternalFrame {
     controlClosingDescr.setAttributeName("closingAccountDescrDOC21");
     controlOpeningCode.setAttributeName("openingAccountCodeAcc02DOC21");
     controlOpeningDescr.setAttributeName("openingAccountDescrDOC21");
+
+		controlWareDesc.setAttributeName("ecWarehouseDescr");
+		controlECCustDescr.setAttributeName("ecCustomerDescr");
+		controlExpDesc.setAttributeName("ecExpenceDescr");
 
   }
 

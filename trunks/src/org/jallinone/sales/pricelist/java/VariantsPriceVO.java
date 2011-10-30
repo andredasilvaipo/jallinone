@@ -2,6 +2,7 @@ package org.jallinone.sales.pricelist.java;
 
 import org.jallinone.system.customizations.java.BaseValueObject;
 import org.jallinone.commons.java.*;
+import java.math.BigDecimal;
 
 
 /**
@@ -54,6 +55,9 @@ public class VariantsPriceVO extends BaseValueObject {
   private String variantCodeItm14SAL11;
   private String variantTypeItm10SAL11;
   private String variantCodeItm15SAL11;
+	private BigDecimal valueWithVat;
+	private BigDecimal valueREG01;
+	private BigDecimal decimalsREG03;
 
 
   public VariantsPriceVO() {
@@ -201,6 +205,24 @@ public class VariantsPriceVO extends BaseValueObject {
   }
   public void setVariantCodeItm11SAL11(String variantCodeItm11SAL11) {
     this.variantCodeItm11SAL11 = variantCodeItm11SAL11;
+  }
+  public BigDecimal getValueWithVat() {
+    return valueWithVat;
+  }
+  public void setValueWithVat(BigDecimal valueWithVat) {
+    this.valueWithVat = valueWithVat;
+  }
+  public BigDecimal getValueREG01() {
+    return valueREG01;
+  }
+  public BigDecimal getDecimalsREG03() {
+    return decimalsREG03;
+  }
+  public void setDecimalsREG03(BigDecimal decimalsREG03) {
+    this.decimalsREG03 = decimalsREG03;
+  }
+  public void setValueREG01(BigDecimal valueREG01) {
+    this.valueREG01 = valueREG01;
   }
 
 

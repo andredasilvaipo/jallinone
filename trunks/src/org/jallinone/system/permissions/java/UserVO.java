@@ -45,6 +45,8 @@ public class UserVO extends ValueObjectImpl {
   private String oldUsernameSYS03;
   private String employeeCodeSCH01;
   private String defCompanyCodeSys01SYS03;
+	private java.math.BigDecimal customerProgressiveReg04SYS03;
+	private String customerCodeSAL07;
 
 
   public UserVO() {
@@ -128,6 +130,18 @@ public class UserVO extends ValueObjectImpl {
   }
   public void setDefCompanyCodeSys01SYS03(String defCompanyCodeSys01SYS03) {
     this.defCompanyCodeSys01SYS03 = defCompanyCodeSys01SYS03;
+  }
+  public java.math.BigDecimal getCustomerProgressiveReg04SYS03() {
+    return customerProgressiveReg04SYS03;
+  }
+  public void setCustomerProgressiveReg04SYS03(java.math.BigDecimal customerProgressiveReg04SYS03) {
+    this.customerProgressiveReg04SYS03 = customerProgressiveReg04SYS03;
+  }
+  public String getCustomerCodeSAL07() {
+    return customerCodeSAL07;
+  }
+  public void setCustomerCodeSAL07(String customerCodeSAL07) {
+    this.customerCodeSAL07 = customerCodeSAL07;
   }
 
 }

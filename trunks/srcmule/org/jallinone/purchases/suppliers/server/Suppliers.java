@@ -58,13 +58,13 @@ public interface Suppliers {
 	 */
 	public GridSupplierVO getGridSupplier();
 
-	public VOResponse insertSupplier(DetailSupplierVO vo,String t1,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable;
+	public VOResponse insertSupplier(DetailSupplierVO vo,String imagePath,String t1,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable;
 
-	public VOResponse loadSupplier(SubjectPK pk,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable;
+	public VOResponse loadSupplier(SubjectPK pk,String imagePath,String serverLanguageId,String username,ArrayList companiesList,ArrayList customizedFields) throws Throwable;
 
 	public VOListResponse loadSuppliers(GridParams gridPars,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
 
-	public VOResponse updateSupplier(OrganizationVO oldVO,OrganizationVO newVO,String t1,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
+	public VOResponse updateSupplier(OrganizationVO oldVO,OrganizationVO newVO,String imagePath,String t1,String serverLanguageId,String username,ArrayList customizedFields) throws Throwable;
 
 	public VOListResponse validateSupplierCode(LookupValidationParams lookupPars,String serverLanguageId,String username,ArrayList companiesList) throws Throwable;
 

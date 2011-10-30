@@ -102,6 +102,10 @@ public class UsersFrame extends InternalFrame {
   TextColumn colCompanyCode = new TextColumn();
   ComboColumn colDefCompany = new ComboColumn();
 
+	CodLookupColumn customerCode = new CodLookupColumn();
+	LookupController customerController = new LookupController();
+	LookupServerDataLocator customerDataLocator = new LookupServerDataLocator();
+
 
   public UsersFrame(GridController usersController) {
     try {
@@ -165,6 +169,26 @@ public class UsersFrame extends InternalFrame {
       empController.setPreferredWidthColumn("name_2REG04",150);
       empController.setFramePreferedSize(new Dimension(430,400));
 
+			// customers lookup...
+			customerDataLocator.setGridMethodName("loadCustomers");
+			customerDataLocator.setValidationMethodName("validateCustomerCode");
+			customerCode.setLookupController(customerController);
+			customerCode.setControllerMethodName("geCustomersList");
+			customerController.setLookupDataLocator(customerDataLocator);
+			customerController.setFrameTitle("customers");
+			customerController.setLookupValueObjectClassName("org.jallinone.sales.customers.java.GridCustomerVO");
+			customerController.addLookup2ParentLink("customerCodeSAL07", "customerCodeSAL07");
+			customerController.addLookup2ParentLink("companyCodeSys01REG04", "companyCodeSys01SYS03");
+			customerController.addLookup2ParentLink("progressiveREG04", "customerProgressiveReg04SYS03");
+			customerController.addLookup2ParentLink("name_1REG04", "firstNameSYS03");
+			customerController.addLookup2ParentLink("name_2REG04", "lastNameSYS03");
+			customerController.setAllColumnVisible(false);
+			customerController.setVisibleColumn("customerCodeSAL07", true);
+			customerController.setVisibleColumn("name_1REG04", true);
+			customerController.setVisibleColumn("name_2REG04", true);
+			customerController.setPreferredWidthColumn("name_1REG04",150);
+			customerController.setPreferredWidthColumn("name_2REG04",150);
+			customerController.setFramePreferedSize(new Dimension(430,400));
 
     }
     catch(Exception e) {
@@ -276,10 +300,13 @@ public class UsersFrame extends InternalFrame {
     colProgressiveREG04.setColumnSelectable(false);
     colProgressiveREG04.setColumnSortable(false);
     colProgressiveREG04.setColumnVisible(false);
+		colProgressiveREG04.setColumnRequired(false);
     colCompanyCode.setColumnName("companyCodeSys01SYS03");
     colCompanyCode.setColumnSelectable(false);
     colCompanyCode.setColumnVisible(false);
     colDefCompany.setHeaderColumnName("default company");
+		colDefCompany.setEditableOnEdit(true);
+		colDefCompany.setEditableOnInsert(true);
     usersPanel.add(buttonsPanel,BorderLayout.NORTH);
     usersPanel.add(usersGridControl,BorderLayout.CENTER);
     this.getContentPane().add(usersPanel,    new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0
@@ -287,6 +314,13 @@ public class UsersFrame extends InternalFrame {
     this.getContentPane().add(rolesPanel,     new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0
             ,GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 100));
     rolesPanel.add(rolesButtonsPanel, BorderLayout.NORTH);
+
+		customerCode.setColumnRequired(false);
+		customerCode.setEditableOnEdit(true);
+		customerCode.setEditableOnInsert(true);
+		customerCode.setPreferredWidth(90);
+		customerCode.setColumnName("customerCodeSAL07");
+
     usersGridControl.getColumnContainer().add(colUsername, null);
     usersGridControl.getColumnContainer().add(colPaswd, null);
     usersGridControl.getColumnContainer().add(colDateExp, null);
@@ -297,6 +331,7 @@ public class UsersFrame extends InternalFrame {
     usersGridControl.getColumnContainer().add(colCompanyCode, null);
     usersGridControl.getColumnContainer().add(colFirstName, null);
     usersGridControl.getColumnContainer().add(colLastName, null);
+		usersGridControl.getColumnContainer().add(customerCode, null);
     buttonsPanel.add(insertButton, null);
     buttonsPanel.add(copyButton, null);
     buttonsPanel.add(editButton, null);

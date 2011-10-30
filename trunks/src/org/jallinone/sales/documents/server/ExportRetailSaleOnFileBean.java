@@ -61,7 +61,7 @@ import org.openswing.swing.message.receive.java.VOResponse;
 public class ExportRetailSaleOnFileBean implements ExportRetailSaleOnFile {
 
 
-  private DataSource dataSource; 
+  private DataSource dataSource;
 
   public void setDataSource(DataSource dataSource) {
     this.dataSource = dataSource;
@@ -69,9 +69,9 @@ public class ExportRetailSaleOnFileBean implements ExportRetailSaleOnFile {
 
   /** external connection */
   private Connection conn = null;
-  
+
   /**
-   * Set external connection. 
+   * Set external connection.
    */
   public void setConn(Connection conn) {
     this.conn = conn;
@@ -81,7 +81,7 @@ public class ExportRetailSaleOnFileBean implements ExportRetailSaleOnFile {
    * Create local connection
    */
   public Connection getConn() throws Exception {
-    
+
     Connection c = dataSource.getConnection(); c.setAutoCommit(false); return c;
   }
 
@@ -109,7 +109,7 @@ public class ExportRetailSaleOnFileBean implements ExportRetailSaleOnFile {
    * Export to a text file the retail selling.
    */
   public VOResponse exportToFile(String t1,String t2,String t3,String t4,SaleDocPK pk,DetailSaleDocVO docVO,ArrayList rows,String serverLanguageId,String username) throws Throwable {
-    
+
     Connection conn = null;
     PreparedStatement pstmt = null;
     try {
@@ -159,7 +159,7 @@ public class ExportRetailSaleOnFileBean implements ExportRetailSaleOnFile {
 
       // retrieve company data...
       //SubjectPK subjectPK = new SubjectPK(pk.getCompanyCodeSys01DOC01(),progressiveREG04);
-      Response companyRes = companyAction.loadCompany(pk.getCompanyCodeSys01DOC01(),serverLanguageId,username);
+      Response companyRes = companyAction.loadCompany(pk.getCompanyCodeSys01DOC01(),"",serverLanguageId,username);
       if (companyRes.isError())
         throw new Exception(companyRes.getErrorMessage());
       OrganizationVO companyVO = (OrganizationVO)((VOResponse)companyRes).getVo();
@@ -245,7 +245,7 @@ public class ExportRetailSaleOnFileBean implements ExportRetailSaleOnFile {
     	  }
 
       }
-      catch (Exception exx) {}      
+      catch (Exception exx) {}
       try {
           userParAction.setConn(null);
           companyAction.setConn(null);

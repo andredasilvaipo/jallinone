@@ -48,17 +48,17 @@ import org.jallinone.events.server.*;
 public interface Subjects {
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public ReferenceVO getReferenceVO(SubjectPK pk);
 
 	/**
-	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type 
+	 * Unsupported method, used to force the generation of a complex type in wsdl file for the return type
 	 */
 	public SubjectHierarchyLevelVO getSubjectHierarchyLevel(SubjectVO vo);
-	
-	
-	
+
+
+
 
 	public VOResponse deleteReferences(ArrayList list,String serverLanguageId,String username) throws Throwable;
 
@@ -68,7 +68,7 @@ public interface Subjects {
 
 	public VOResponse insertPeople(PeopleVO inputPar,String t1,String t2,String serverLanguageId,String username) throws Throwable;
 
-	public VOResponse insertOrganization(OrganizationVO inputPar,String t1,String t2,String serverLanguageId,String username) throws Throwable;
+	public VOResponse insertOrganization(OrganizationVO inputPar,String imagePath,String t1,String t2,String serverLanguageId,String username) throws Throwable;
 	public VOResponse insertSubjectHierarchy(SubjectHierarchyVO vo,String serverLanguageId,String username) throws Throwable;
 	public VOResponse insertSubjectsLinks(HierarSubjectsVO hsVO,String serverLanguageId,String username) throws Throwable;
 	public VOListResponse loadHierarSubjects(GridParams pars,String serverLanguageId,String username) throws Throwable;
@@ -79,7 +79,7 @@ public interface Subjects {
 
 	public VOListResponse updateReferences(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;
 
-	public void updateOrganization(OrganizationVO oldVO,OrganizationVO newVO,String t1,String t2,String serverLanguageId,String username) throws Throwable;
+	public void updateOrganization(OrganizationVO oldVO,OrganizationVO newVO,String imagePath,String t1,String t2,String serverLanguageId,String username) throws Throwable;
 
 	public void updatePeople(PeopleVO oldVO,PeopleVO newVO,String t1,String t2,String serverLanguageId,String username) throws Throwable;
 	public VOListResponse updateSubjectHierarchies(ArrayList oldVOs,ArrayList newVOs,String serverLanguageId,String username) throws Throwable;

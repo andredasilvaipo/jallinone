@@ -84,17 +84,18 @@ public class InsertCustomerAction implements Action {
 		  String t1 = factory.getResources(serverLanguageId).getResource("there is already another people with the same first and last name.");
 		  String t2 = factory.getResources(serverLanguageId).getResource("there is already another organization with the same corporate name.");
 		  ArrayList companiesList = ((JAIOUserSessionParameters)userSessionPars).getCompanyBa().getCompaniesList("SAL07");
-		  
+
 		  CustomizedWindows cust = ((JAIOUserSessionParameters)userSessionPars).getCustomizedWindows();
 		  ArrayList customizedFields = cust.getCustomizedFields(new BigDecimal(282));
+			String imagePath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.IMAGE_PATH);
 
 		  Customers bean = (Customers)JAIOBeanFactory.getInstance().getBean(Customers.class);
 		  Response answer = null;
-	      if (vo.getSubjectTypeREG04().equals(ApplicationConsts.SUBJECT_ORGANIZATION_CUSTOMER)) 
-	    	answer = bean.insertOrganization((OrganizationCustomerVO)vo,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList,customizedFields);
+	      if (vo.getSubjectTypeREG04().equals(ApplicationConsts.SUBJECT_ORGANIZATION_CUSTOMER))
+	    	answer = bean.insertOrganization((OrganizationCustomerVO)vo,imagePath,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList,customizedFields);
 	      else
 		    answer = bean.insertPeople((PeopleCustomerVO)vo,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername(),companiesList,customizedFields);
-	    		  
+
 		  return answer;
 	  }
 	  catch (Throwable ex) {

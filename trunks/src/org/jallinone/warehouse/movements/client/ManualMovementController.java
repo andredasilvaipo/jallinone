@@ -67,7 +67,6 @@ public class ManualMovementController extends CompanyFormController {
    * @return an ErrorResponse value object in case of errors, VOResponse if the operation is successfully completed
    */
   public Response insertRecord(ValueObject newPersistentObject) throws Exception {
-
     if (detailFrame.isSerialNumbersRequired() &&
         !promptSerialNumbers(detailFrame.getVariantsPanel().getCells(),detailFrame.getVariantsPanel().getVariantsMatrixVO(),(MovementVO)newPersistentObject)) {
       return new ErrorResponse("insert not allowed until serial numbers are not defined");

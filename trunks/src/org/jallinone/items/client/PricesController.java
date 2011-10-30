@@ -192,6 +192,7 @@ public class PricesController extends CompanyGridController {
       variantsPricesPanel.removeAll();
       variantsPricesPanel.getOtherGridParams().put(ApplicationConsts.ITEM,new ItemPK(vo.getCompanyCodeSys01(),vo.getItemCodeITM01()));
       variantsPricesPanel.getOtherGridParams().put(ApplicationConsts.PRICELIST,priceVO.getPricelistCodeSal01SAL02());
+			variantsPricesPanel.getOtherGridParams().put(ApplicationConsts.START_DATE,priceVO.getStartDateSAL02());
       variantsPricesPanel.initGrid(vo);
       variantsPricesPanel.revalidate();
       variantsPricesPanel.repaint();

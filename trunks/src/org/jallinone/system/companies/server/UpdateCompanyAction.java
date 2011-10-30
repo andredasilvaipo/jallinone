@@ -16,6 +16,7 @@ import org.openswing.swing.message.receive.java.ValueObject;
 import org.openswing.swing.server.Action;
 import org.openswing.swing.server.Controller;
 import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.commons.java.ApplicationConsts;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -66,9 +67,10 @@ public class UpdateCompanyAction implements Action {
 			ServerResourcesFactory factory = (ServerResourcesFactory)context.getAttribute(Controller.RESOURCES_FACTORY);
 			String serverLanguageId = ((JAIOUserSessionParameters)userSessionPars).getServerLanguageId();
 			String t1 = factory.getResources(serverLanguageId).getResource("there is already another people with the same first and last name.");
+			String imagePath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.IMAGE_PATH);
 
 			Companies bean = (Companies)JAIOBeanFactory.getInstance().getBean(Companies.class);
-			Response answer = bean.updateCompany(oldVO,newVO,t1,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+			Response answer = bean.updateCompany(oldVO,newVO,imagePath,t1,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
 			return answer;
 		}

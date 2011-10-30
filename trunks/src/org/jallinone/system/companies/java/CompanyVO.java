@@ -34,6 +34,7 @@ public class CompanyVO extends ValueObjectImpl {
 
   private String companyCodeSYS01;
   private String name_1REG04;
+	private String companyLogoREG04;
   private java.math.BigDecimal progressiveREG04;
 
 
@@ -58,6 +59,12 @@ public class CompanyVO extends ValueObjectImpl {
   }
   public void setProgressiveREG04(java.math.BigDecimal progressiveREG04) {
     this.progressiveREG04 = progressiveREG04;
+  }
+  public String getCompanyLogoREG04() {
+    return companyLogoREG04;
+  }
+  public void setCompanyLogoREG04(String companyLogoREG04) {
+    this.companyLogoREG04 = companyLogoREG04;
   }
 
 }

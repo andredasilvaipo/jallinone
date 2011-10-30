@@ -16,6 +16,7 @@ import org.openswing.swing.message.receive.java.Response;
 import org.openswing.swing.server.Action;
 import org.openswing.swing.server.Controller;
 import org.openswing.swing.server.UserSessionParameters;
+import org.jallinone.commons.java.ApplicationConsts;
 
 /**
  * <p>Title: JAllInOne ERP/CRM application</p>
@@ -70,13 +71,14 @@ public class InsertSubjectAction implements Action {
 			String serverLanguageId = ((JAIOUserSessionParameters)userSessionPars).getServerLanguageId();
 			String t1 = factory.getResources(serverLanguageId).getResource("there is already another people with the same first and last name.");
 			String t2 = factory.getResources(serverLanguageId).getResource("there is already another organization with the same corporate name.");
+			String imagePath = (String)((JAIOUserSessionParameters)userSessionPars).getAppParams().get(ApplicationConsts.IMAGE_PATH);
 
 			Subjects bean = (Subjects)JAIOBeanFactory.getInstance().getBean(Subjects.class);
 			Response answer = null;
 			if (inputPar instanceof PeopleVO)
 				answer = bean.insertPeople((PeopleVO)inputPar,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 			else
-				answer = bean.insertOrganization((OrganizationVO)inputPar,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
+				answer = bean.insertOrganization((OrganizationVO)inputPar,imagePath,t1,t2,((JAIOUserSessionParameters)userSessionPars).getServerLanguageId(),userSessionPars.getUsername());
 
 			return answer;
 		}

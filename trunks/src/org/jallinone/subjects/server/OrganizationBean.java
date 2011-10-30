@@ -20,6 +20,8 @@ import org.jallinone.events.server.*;
 import org.jallinone.events.server.*;
 import org.jallinone.system.progressives.server.*;
 import org.jallinone.commons.server.QueryUtilExtension;
+import org.jallinone.commons.java.ApplicationConsts;
+import org.jallinone.documents.server.FileUtils;
 
 
 
@@ -94,7 +96,7 @@ public class OrganizationBean implements Organization {
   /**
    * (Optionally) generate progressive and insert record.
    */
-  public final void insert(boolean generateProgressive,OrganizationVO vo,String t1,String serverLanguageId,String username) throws Throwable  {
+  public final void insert(boolean generateProgressive,OrganizationVO vo,String imagePath,String t1,String serverLanguageId,String username) throws Throwable  {
     PreparedStatement pstmt = null;
     Connection conn = null;
     try {
@@ -105,7 +107,8 @@ public class OrganizationBean implements Organization {
       bean.checkOrganizationExist(vo,t1,serverLanguageId,username);
 
       // check if there already exists a progressive (a contact...)
-      if (vo.getProgressiveREG04()!=null) {
+      if (vo.getProgressiveREG04()!=null &&
+					!ApplicationConsts.SUBJECT_MY_COMPANY.equals(vo.getSubjectTypeREG04())) {
         // update subject type in REG04...
         pstmt = conn.prepareStatement(
           "update REG04_SUBJECTS set SUBJECT_TYPE=?,LAST_UPDATE_USER=?,LAST_UPDATE_DATE=?  where COMPANY_CODE_SYS01=? and PROGRESSIVE=? "
@@ -123,10 +126,35 @@ public class OrganizationBean implements Organization {
         vo.setProgressiveREG04( CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01REG04(),"REG04_SUBJECTS","PROGRESSIVE",conn) );
       }
 
+
+
+			if (vo.getCompanyLogo()!=null) {
+				// save image on file system...
+				String appPath = imagePath;
+				appPath = appPath.replace('\\','/');
+				if (!appPath.endsWith("/"))
+					appPath += "/";
+				if (!new File(appPath).isAbsolute()) {
+					// relative path (to "WEB-INF/classes/" folder)
+					appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
+				}
+
+				BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(vo.getCompanyCodeSys01REG04(),"REG04_SUBJECTS","COMPANY_LOGO",conn);
+				String relativePath = FileUtils.getFilePath(appPath,"REG04");
+				vo.setCompanyLogoREG04(relativePath+"COMPANY_LOGO"+imageProgressive);
+
+				new File(appPath+relativePath).mkdirs();
+				FileOutputStream out = new FileOutputStream(appPath+vo.getCompanyLogoREG04());
+				out.write(vo.getCompanyLogo());
+				out.close();
+			}
+
+
+
       // insert record in REG04...
       pstmt = conn.prepareStatement(
-          "insert into REG04_SUBJECTS(COMPANY_CODE_SYS01,NAME_1,NAME_2,ADDRESS,CITY,ZIP,PROVINCE,COUNTRY,TAX_CODE,PHONE_NUMBER,FAX_NUMBER,EMAIL_ADDRESS,WEB_SITE,LAWFUL_SITE,NOTE,ENABLED,SUBJECT_TYPE,PROGRESSIVE,COMPANY_CODE_SYS01_REG04,PROGRESSIVE_REG04,CREATE_USER,CREATE_DATE) VALUES("+
-          "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Y',?,?,?,?,?,?)"
+          "insert into REG04_SUBJECTS(COMPANY_CODE_SYS01,NAME_1,NAME_2,ADDRESS,CITY,ZIP,PROVINCE,COUNTRY,TAX_CODE,PHONE_NUMBER,FAX_NUMBER,EMAIL_ADDRESS,WEB_SITE,LAWFUL_SITE,NOTE,ENABLED,SUBJECT_TYPE,PROGRESSIVE,COMPANY_CODE_SYS01_REG04,PROGRESSIVE_REG04,CREATE_USER,CREATE_DATE,COMPANY_LOGO) VALUES("+
+          "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'Y',?,?,?,?,?,?,?)"
       );
       pstmt.setString(1,vo.getCompanyCodeSys01REG04());
       pstmt.setString(2,vo.getName_1REG04());
@@ -149,7 +177,10 @@ public class OrganizationBean implements Organization {
       pstmt.setBigDecimal(19,vo.getProgressiveReg04REG04());
 			pstmt.setString(20,username);
 			pstmt.setTimestamp(21,new java.sql.Timestamp(System.currentTimeMillis()));
+			pstmt.setString(22,vo.getCompanyLogoREG04());
       pstmt.execute();
+
+
     }
     catch (Exception ex) {
         try {
@@ -188,13 +219,55 @@ public class OrganizationBean implements Organization {
   /**
    * Update record.
    */
-  public VOResponse update(OrganizationVO oldVO,OrganizationVO newVO,String t1,String serverLanguageId,String username) throws Throwable  {
+  public VOResponse update(OrganizationVO oldVO,OrganizationVO newVO,String imagePath,String t1,String serverLanguageId,String username) throws Throwable  {
 	Connection conn = null;
 	try {
-		if (this.conn==null) conn = getConn(); else conn = this.conn;
-		bean.setConn(conn);
+			if (this.conn==null) conn = getConn(); else conn = this.conn;
+			bean.setConn(conn);
 
-		bean.checkOrganizationExist(newVO,t1,serverLanguageId,username);
+			bean.checkOrganizationExist(newVO,t1,serverLanguageId,username);
+
+
+			if (oldVO.getCompanyLogo()!=null && newVO.getCompanyLogo()==null) {
+				// remove image from file system...
+				String appPath = imagePath;
+				appPath = appPath.replace('\\','/');
+				if (!appPath.endsWith("/"))
+					appPath += "/";
+				if (!new File(appPath).isAbsolute()) {
+					// relative path (to "WEB-INF/classes/" folder)
+					appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
+				}
+				new File(appPath+oldVO.getCompanyLogoREG04()).delete();
+			}
+			else if (newVO.getCompanyLogo()!=null) {
+				// save image on file system...
+				String appPath = imagePath;
+				appPath = appPath.replace('\\','/');
+				if (!appPath.endsWith("/"))
+					appPath += "/";
+				if (!new File(appPath).isAbsolute()) {
+					// relative path (to "WEB-INF/classes/" folder)
+					appPath = this.getClass().getResource("/").getPath().replaceAll("%20"," ")+appPath;
+				}
+				new File(appPath).mkdirs();
+
+				if (oldVO.getCompanyLogo()==null) {
+					String relativePath = FileUtils.getFilePath(appPath,"REG03");
+					BigDecimal imageProgressive = CompanyProgressiveUtils.getInternalProgressive(newVO.getCompanyCodeSys01REG04(),"REG04_SUBJECTS","COMPANY_LOGO",conn);
+					newVO.setCompanyLogoREG04(relativePath+"COMPANY_LOGO"+imageProgressive);
+					new File(appPath+relativePath).mkdirs();
+				}
+				else
+					newVO.setCompanyLogoREG04(oldVO.getCompanyLogoREG04());
+
+				File f = new File(appPath+newVO.getCompanyLogoREG04());
+				f.delete();
+				FileOutputStream out = new FileOutputStream(f);
+				out.write(newVO.getCompanyLogo());
+				out.close();
+			}
+
 
 	    HashSet pkAttrs = new HashSet();
 	    pkAttrs.add("companyCodeSys01REG04");
@@ -219,6 +292,7 @@ public class OrganizationBean implements Organization {
 	    attr2dbFields.put("noteREG04","NOTE");
 	    attr2dbFields.put("companyCodeSys01Reg04REG04","COMPANY_CODE_SYS01_REG04");
 	    attr2dbFields.put("progressiveReg04REG04","PROGRESSIVE_REG04");
+			attr2dbFields.put("companyLogoREG04","COMPANY_LOGO");
 
 	    Response res = org.jallinone.commons.server.QueryUtilExtension.updateTable(
 	        conn,

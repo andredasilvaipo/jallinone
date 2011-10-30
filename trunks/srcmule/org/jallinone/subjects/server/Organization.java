@@ -51,9 +51,9 @@ import org.jallinone.system.progressives.server.CompanyProgressiveUtils;
 @javax.jws.WebService
 public interface Organization {
 	
-  public void insert(boolean generateProgressive,OrganizationVO vo,String t1,String serverLanguageId,String username) throws Throwable  ;
+  public void insert(boolean generateProgressive,OrganizationVO vo,String imagePath,String t1,String serverLanguageId,String username) throws Throwable  ;
 
-  public VOResponse update(OrganizationVO oldVO,OrganizationVO newVO,String t1,String serverLanguageId,String username) throws Throwable  ;
+  public VOResponse update(OrganizationVO oldVO,OrganizationVO newVO,String imagePath,String t1,String serverLanguageId,String username) throws Throwable  ;
 
 }
 

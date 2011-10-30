@@ -252,6 +252,12 @@ public class ItemFrame extends InternalFrame {
 	private ItemSparePartsPanel itemSparePartsPanel = new ItemSparePartsPanel(formPanel);
 	private ItemPricesGridCurrencySettings currSettings = new ItemPricesGridCurrencySettings();
 	private ItemPricesGridCurrencySettings2 currSettingsDisc = new ItemPricesGridCurrencySettings2();
+  LabelControl labelBrand = new LabelControl();
+  CodLookupControl controlBrandCode = new CodLookupControl();
+  TextControl controlBrandDescr = new TextControl();
+	LookupController brandController = new LookupController();
+	LookupServerDataLocator brandDataLocator = new LookupServerDataLocator();
+  GenericButton buttonImgVars = new GenericButton(new ImageIcon(ClientUtils.getImage("colors.gif")));
 
 
   public ItemFrame(ItemController controller, boolean productsOnly) {
@@ -375,7 +381,7 @@ public class ItemFrame extends InternalFrame {
         public void codeChanged(ValueObject parentVO, Collection parentChangedAttributes) {
           MeasureVO vo = (MeasureVO) umGWController.getLookupVO();
           if (vo != null && vo.getDecimalsREG02() != null) {
-            controlGW.setDecimals(vo.getDecimalsREG02().intValue());
+            controlGW.setDecimals(vo.getDecimalsREG02()==null?0:vo.getDecimalsREG02().intValue());
           }
           controlGW.setValue(null);
         }
@@ -405,7 +411,7 @@ public class ItemFrame extends InternalFrame {
 
         public void codeChanged(ValueObject parentVO, Collection parentChangedAttributes) {
           MeasureVO vo = (MeasureVO) umNWController.getLookupVO();
-          controlNW.setDecimals(vo.getDecimalsREG02().intValue());
+          controlNW.setDecimals(vo.getDecimalsREG02()==null?0:vo.getDecimalsREG02().intValue());
           controlNW.setValue(null);
         }
 
@@ -434,7 +440,7 @@ public class ItemFrame extends InternalFrame {
 
         public void codeChanged(ValueObject parentVO, Collection parentChangedAttributes) {
           MeasureVO vo = (MeasureVO) umWController.getLookupVO();
-          controlW.setDecimals(vo.getDecimalsREG02().intValue());
+          controlW.setDecimals(vo.getDecimalsREG02()==null?0:vo.getDecimalsREG02().intValue());
           controlW.setValue(null);
         }
 
@@ -463,7 +469,7 @@ public class ItemFrame extends InternalFrame {
 
         public void codeChanged(ValueObject parentVO, Collection parentChangedAttributes) {
           MeasureVO vo = (MeasureVO) umHController.getLookupVO();
-          controlH.setDecimals(vo.getDecimalsREG02().intValue());
+          controlH.setDecimals(vo.getDecimalsREG02()==null?0:vo.getDecimalsREG02().intValue());
           controlH.setValue(null);
         }
 
@@ -562,6 +568,25 @@ public class ItemFrame extends InternalFrame {
       {
         setVariants(controller.getPK().getCompanyCodeSys01ITM01());
       }
+
+
+			// brands lookup...
+			brandDataLocator.setGridMethodName("loadBrands");
+			brandDataLocator.setValidationMethodName("validateBrandCode");
+			brandController.setLookupDataLocator(brandDataLocator);
+			brandController.setFrameTitle("brands");
+			brandController.setLookupValueObjectClassName("org.jallinone.items.java.BrandVO");
+			brandController.addLookup2ParentLink("brandCodeITM31", "brandCodeITM01");
+			brandController.addLookup2ParentLink("descriptionITM31", "descriptionITM31");
+			brandController.setAllColumnVisible(false);
+			brandController.setHeaderColumnName("brandCodeITM31", "brand code");
+			brandController.setHeaderColumnName("descriptionITM31", "descriptionSYS10");
+			brandController.setVisibleColumn("brandCodeITM31", true);
+			brandController.setVisibleColumn("descriptionITM31", true);
+			brandController.setPreferredWidthColumn("brandCodeITM31", 80);
+			brandController.setPreferredWidthColumn("descriptionITM31", 180);
+			controlBrandCode.setControllerMethodName("getBrands");
+			controlBrandCode.setLookupController(brandController);
 
 
 			if (controller.getParentFrame()!=null) {
@@ -708,8 +733,22 @@ public class ItemFrame extends InternalFrame {
    * @param error <code>true</code> if an error occours during data loading, <code>false</code> if data loading is successfully completed
    */
   public final void loadDataCompleted(ItemPK pk) {
-
     DetailItemVO vo = (DetailItemVO) formPanel.getVOModel().getValueObject();
+		brandController.getLookupDataLocator().getLookupFrameParams().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01());
+		brandController.getLookupDataLocator().getLookupValidationParameters().put(ApplicationConsts.COMPANY_CODE_SYS01,vo.getCompanyCodeSys01());
+
+
+		if (
+				vo.getUseVariant1ITM01()!=null && vo.getUseVariant1ITM01().booleanValue() ||
+				vo.getUseVariant2ITM01()!=null && vo.getUseVariant2ITM01().booleanValue() ||
+				vo.getUseVariant3ITM01()!=null && vo.getUseVariant3ITM01().booleanValue() ||
+				vo.getUseVariant4ITM01()!=null && vo.getUseVariant4ITM01().booleanValue() ||
+				vo.getUseVariant5ITM01()!=null && vo.getUseVariant5ITM01().booleanValue()
+		) {
+			getButtonImgVars().setEnabled(true);
+		}
+
+
     controlMinSellQty.setDecimals(vo.getMinSellingQtyDecimalsREG02().intValue());
     if (vo.getGrossWeightDecimalsREG02() != null) {
       controlGW.setDecimals(vo.getGrossWeightDecimalsREG02().intValue());
@@ -1120,42 +1159,75 @@ public class ItemFrame extends InternalFrame {
     controlMinStock.setDecimals(5);
     controlBarcode.setCanCopy(false);
     controlBarcode.setMaxCharacters(1000);
+    labelBrand.setText("brand code");
+    controlBrandCode.setMaxCharacters(20);
+    buttonImgVars.addActionListener(new ItemFrame_buttonImgVars_actionAdapter(this));
     this.getContentPane().add(buttonsPanel, BorderLayout.NORTH);
     this.getContentPane().add(tab, BorderLayout.CENTER);
     tab.add(formPanel, "detailPanel");
 //    tab.setIconAt(0,new ImageIcon(ClientUtils.getImage("items.gif")));
-    formPanel.add(labelItemCode, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlItemCode, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelDescr, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlDescr, new GridBagConstraints(3, 0, 4, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelAddDescr, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlAddDescr, new GridBagConstraints(1, 2, 2, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelitemType, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlItemType, new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelVat, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlVat, new GridBagConstraints(1, 3, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 50, 0));
-    formPanel.add(labelGW, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlGW, new GridBagConstraints(1, 4, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlUMGW, new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelNW, new GridBagConstraints(3, 4, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlNW, new GridBagConstraints(6, 4, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 50, 0));
-    formPanel.add(controlUMNW, new GridBagConstraints(5, 4, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelW, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlW, new GridBagConstraints(1, 5, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlUMW, new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelH, new GridBagConstraints(3, 5, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlH, new GridBagConstraints(6, 5, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 50, 0));
-    formPanel.add(controlUMH, new GridBagConstraints(5, 5, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 40, 0));
-    formPanel.add(controlVatValue, new GridBagConstraints(4, 3, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlVatDescr, new GridBagConstraints(2, 3, 2, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-    formPanel.add(labelNote, new GridBagConstraints(0, 9, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlNote, new GridBagConstraints(1, 9, 6, 1, 1.0, 1.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labelItemCode,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlItemCode,  new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labelDescr,  new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlDescr,  new GridBagConstraints(3, 0, 4, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labelAddDescr,  new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlAddDescr,  new GridBagConstraints(1, 2, 2, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labelitemType,  new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlItemType,  new GridBagConstraints(1, 1, 2, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labelVat,  new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlVat,  new GridBagConstraints(1, 3, 1, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 50, 0));
+    formPanel.add(labelGW,   new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlGW,   new GridBagConstraints(1, 5, 1, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlUMGW,   new GridBagConstraints(2, 5, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labelNW,   new GridBagConstraints(3, 5, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlNW,   new GridBagConstraints(6, 5, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 50, 0));
+    formPanel.add(controlUMNW,   new GridBagConstraints(5, 5, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labelW,  new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlW,  new GridBagConstraints(1, 6, 1, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlUMW,  new GridBagConstraints(2, 6, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labelH,  new GridBagConstraints(3, 6, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlH,  new GridBagConstraints(6, 6, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 50, 0));
+    formPanel.add(controlUMH,  new GridBagConstraints(5, 6, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 40, 0));
+    formPanel.add(controlVatValue,  new GridBagConstraints(4, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlVatDescr,  new GridBagConstraints(2, 3, 2, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+    formPanel.add(labelNote,  new GridBagConstraints(0, 10, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlNote,  new GridBagConstraints(1, 10, 6, 1, 1.0, 1.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
     tab.add(imgPanel, "imagePanel");
 //    tab.setIconAt(1,new ImageIcon(ClientUtils.getImage("chart.gif")));
-    imgPanel.add(smallImageButton, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 0), 0, 0));
-    imgPanel.add(smallImage, new GridBagConstraints(2, 0, 1, 2, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 100, 100));
-    imgPanel.add(largeImageButton, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
-    imgPanel.add(largeImage, new GridBagConstraints(2, 2, 1, 2, 1.0, 1.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+    imgPanel.add(smallImageButton,  new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 0), 0, 0));
+    imgPanel.add(smallImage,  new GridBagConstraints(2, 0, 1, 2, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 100, 100));
+    imgPanel.add(largeImageButton,  new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 5), 0, 0));
+    imgPanel.add(largeImage,  new GridBagConstraints(2, 2, 2, 2, 1.0, 1.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
     buttonsPanel.add(insertButton1, null);
     buttonsPanel.add(copyButton1, null);
     buttonsPanel.add(editButton1, null);
@@ -1163,16 +1235,28 @@ public class ItemFrame extends InternalFrame {
     buttonsPanel.add(reloadButton1, null);
     buttonsPanel.add(deleteButton1, null);
     buttonsPanel.add(navigatorBar, null);
-    formPanel.add(controlUMSellQty, new GridBagConstraints(5, 2, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlMinSellQty, new GridBagConstraints(6, 2, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelMinSellQty, new GridBagConstraints(3, 2, 2, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 110, 0));
-    formPanel.add(controlVatDeductible, new GridBagConstraints(5, 3, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelLevel, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlSerialNumRequired, new GridBagConstraints(6, 3, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 120, 0));
-    formPanel.add(varsPanel, new GridBagConstraints(0, 8, 7, 1, 1.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-    imgPanel.add(clearSmallImageButton, new GridBagConstraints(1, 0, 1, 2, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    imgPanel.add(clearLargeImageButton, new GridBagConstraints(1, 2, 1, 2, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    imgPanel.add(jLabel1, new GridBagConstraints(0, 1, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+    formPanel.add(controlUMSellQty,  new GridBagConstraints(5, 2, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlMinSellQty,  new GridBagConstraints(6, 2, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labelMinSellQty,  new GridBagConstraints(3, 2, 2, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 110, 0));
+    formPanel.add(controlVatDeductible,  new GridBagConstraints(5, 3, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labelLevel,  new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlSerialNumRequired,  new GridBagConstraints(6, 3, 1, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 120, 0));
+    formPanel.add(varsPanel,  new GridBagConstraints(0, 9, 7, 1, 1.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+    imgPanel.add(clearSmallImageButton,  new GridBagConstraints(1, 0, 1, 2, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    imgPanel.add(clearLargeImageButton,  new GridBagConstraints(1, 2, 1, 2, 0.0, 0.0
+            ,GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    imgPanel.add(jLabel1,  new GridBagConstraints(0, 1, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+    imgPanel.add(buttonImgVars, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
     tab.add(discountsPanel, "discountPanel");
 //    tab.setIconAt(2,new ImageIcon(ClientUtils.getImage("calc.gif")));
     discountsPanel.add(discountsButtonsPanel, BorderLayout.NORTH);
@@ -1372,6 +1456,11 @@ public class ItemFrame extends InternalFrame {
 		colPricelistCode.setColumnDuplicable(true);
 		colPricelistDescr.setColumnDuplicable(true);
 
+		controlBrandCode.setAttributeName("brandCodeITM01");
+		controlBrandDescr.setAttributeName("descriptionITM31");
+		controlBrandDescr.setEnabledOnEdit(false);
+  	controlBrandDescr.setEnabledOnEdit(false);
+
     pricesGrid.getColumnContainer().add(colPricelistCode, null);
     pricesGrid.getColumnContainer().add(colPricelistDescr, null);
     pricesGrid.getColumnContainer().add(colValue, null);
@@ -1384,24 +1473,45 @@ public class ItemFrame extends InternalFrame {
     varsPanel.add(checkBoxControl3, null);
     varsPanel.add(checkBoxControl4, null);
     varsPanel.add(checkBoxControl5, null);
-    formPanel.add(controlLevel, new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 0, 0));
-    formPanel.add(controlLevelDescr, new GridBagConstraints(5, 1, 2, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelBarcode, new GridBagConstraints(2, 7, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlBarcode, new GridBagConstraints(5, 7, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelAvgPurCost, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlAvgPurCost, new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 120, 0));
-    formPanel.add(labelLastPurCost, new GridBagConstraints(2, 6, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 130, 0));
-    formPanel.add(controlLastPurCost, new GridBagConstraints(3, 6, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labeLstPur, new GridBagConstraints(5, 6, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlLastPurDate, new GridBagConstraints(6, 6, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 100, 0));
-    formPanel.add(controlBarcodeType, new GridBagConstraints(3, 7, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(labelMinStock, new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-    formPanel.add(controlMinStock, new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlLevel,  new GridBagConstraints(4, 1, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 0), 0, 0));
+    formPanel.add(controlLevelDescr,  new GridBagConstraints(5, 1, 2, 1, 1.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labelBarcode,  new GridBagConstraints(2, 8, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlBarcode,  new GridBagConstraints(5, 8, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labelAvgPurCost,  new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlAvgPurCost,  new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 120, 0));
+    formPanel.add(labelLastPurCost,  new GridBagConstraints(2, 7, 1, 1, 1.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 130, 0));
+    formPanel.add(controlLastPurCost,  new GridBagConstraints(3, 7, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labeLstPur,  new GridBagConstraints(5, 7, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlLastPurDate,  new GridBagConstraints(6, 7, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 100, 0));
+    formPanel.add(controlBarcodeType,  new GridBagConstraints(3, 8, 2, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labelMinStock,  new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlMinStock,  new GridBagConstraints(1, 8, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(labelBrand,   new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlBrandCode,   new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
+    formPanel.add(controlBrandDescr,   new GridBagConstraints(2, 4, 3, 1, 0.0, 0.0
+            ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));
     prices2Split.setDividerLocation(250);
     pricesSplit.setDividerLocation(280);
 
     controlBarcode.setAttributeName("barCodeITM01");
-
+	  buttonImgVars.setText("images per variant");
+  	buttonImgVars.setToolTipText("images per variant");
+		buttonImgVars.setButtonBehavior(Consts.BUTTON_IMAGE_AND_TEXT);
   }
 
   public Form getFormPanel() {
@@ -1637,6 +1747,9 @@ public class ItemFrame extends InternalFrame {
   public CodLookupColumn getColCurrencyCode() {
     return colCurrencyCode;
   }
+  public LookupServerDataLocator getBrandDataLocator() {
+    return brandDataLocator;
+  }
 
 
 	class ItemPricesGridCurrencySettings implements CurrencyColumnSettings {
@@ -1725,6 +1838,14 @@ public class ItemFrame extends InternalFrame {
 
 
 	}
+
+  void buttonImgVars_actionPerformed(ActionEvent e) {
+		DetailItemVO vo = (DetailItemVO) formPanel.getVOModel().getValueObject();
+		new ItemVariantImagesFrame(this,vo);
+  }
+  public GenericButton getButtonImgVars() {
+    return buttonImgVars;
+  }
 
 
 
@@ -1858,6 +1979,17 @@ class ItemFrame_controlNoWarehouseMov_itemAdapter implements java.awt.event.Item
 
   public void itemStateChanged(ItemEvent e) {
     adaptee.controlNoWarehouseMov_itemStateChanged(e);
+  }
+}
+
+class ItemFrame_buttonImgVars_actionAdapter implements java.awt.event.ActionListener {
+  ItemFrame adaptee;
+
+  ItemFrame_buttonImgVars_actionAdapter(ItemFrame adaptee) {
+    this.adaptee = adaptee;
+  }
+  public void actionPerformed(ActionEvent e) {
+    adaptee.buttonImgVars_actionPerformed(e);
   }
 }
 

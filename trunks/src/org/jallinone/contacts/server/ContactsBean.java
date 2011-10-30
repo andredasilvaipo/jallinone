@@ -245,7 +245,7 @@ public class ContactsBean  implements Contacts {
 	/**
 	 * Business logic to execute.
 	 */
-	public VOResponse updateOrganization(OrganizationVO oldVO,OrganizationVO newVO,String t1,String t2,String serverLanguageId,String username) throws Throwable {
+	public VOResponse updateOrganization(OrganizationVO oldVO,OrganizationVO newVO,String imagePath,String t1,String t2,String serverLanguageId,String username) throws Throwable {
 		Connection conn = null;
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -254,7 +254,7 @@ public class ContactsBean  implements Contacts {
 
 			Response res = null;
 			// update REG04...
-			res = organizationBean.update((OrganizationVO)oldVO,(OrganizationVO)newVO,t2,serverLanguageId,username);
+			res = organizationBean.update((OrganizationVO)oldVO,(OrganizationVO)newVO,imagePath,t2,serverLanguageId,username);
 			if (res.isError()) {
 				throw new Exception(res.getErrorMessage());
 			}
@@ -344,7 +344,7 @@ public class ContactsBean  implements Contacts {
 	/**
 	 * Business logic to execute.
 	 */
-	public VOResponse insertOrganization(OrganizationVO vo,String t1,String t2,String serverLanguageId,String username,ArrayList companyCodes) throws Throwable {
+	public VOResponse insertOrganization(OrganizationVO vo,String imagePath,String t1,String t2,String serverLanguageId,String username,ArrayList companyCodes) throws Throwable {
 		Connection conn = null;
 		try {
 			if (this.conn==null) conn = getConn(); else conn = this.conn;
@@ -356,7 +356,7 @@ public class ContactsBean  implements Contacts {
 				vo.setCompanyCodeSys01REG04(companyCode);
 
 			// insert into REG04...
-			organizationBean.insert(true,vo,t2,serverLanguageId,username);
+			organizationBean.insert(true,vo,imagePath,t2,serverLanguageId,username);
 			return new VOResponse(vo);
 		}
 		catch (Throwable ex) {
