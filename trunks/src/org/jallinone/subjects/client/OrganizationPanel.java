@@ -173,7 +173,7 @@ public class OrganizationPanel extends Form {
 
 
     labelLogo.setLabel("company logo");
-    labelLogo.setText("labelControl1");
+		labelLogo.setText("company logo");
     controlLogo.setLinkLabel(labelLogo);
     this.add(controlCorpName1,           new GridBagConstraints(1, 1, 5, 1, 1.0, 0.0
             ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 5), 0, 0));

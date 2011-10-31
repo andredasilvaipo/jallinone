@@ -381,7 +381,7 @@
   <object key="load large image" value="Carica immagine grande" />
   <object key="load small image" value="Carica immagine piccola" />
   <object key="clear large image" value="Cancella imm. grande" />
-  <object key="clear small image" value="Cancela imm. piccola" />
+  <object key="clear small image" value="Cancella imm. piccola" />
   <object key="serial number required" value="Num.di serie obblig." />
 
   <object key="firstname" value="Nome" />
